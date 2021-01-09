@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+    name: addem-se-letsencrypt
+spec:
+    acme:
+        email: andreas+acme@addem.se
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretRef:
+            name: addem-se-letsencrypt-private-key
+        solvers:
+            - http01:
+                ingress: {}

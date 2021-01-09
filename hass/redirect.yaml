@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: hass
+    annotations:
+        cert-manager.io/issuer: addem-se-letsencrypt
+spec:
+    tls:
+        - hosts:
+            - hass.addem.se
+          secretName: hass-cert
+    rules:
+        - host: hass.addem.se
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service: 
+                            name: hass
+                            port:
+                                name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hass
+spec:
+  type: ExternalName
+  externalName: surface-ubuntu.localdomain
+  ports:
+      - name: http
+        port: 80
