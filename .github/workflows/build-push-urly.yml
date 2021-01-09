@@ -17,6 +17,7 @@ jobs:
       with:
         image: ${{ env.IMAGE_NAME }}
         tag: ${{ env.IMAGE_TAG }}
+        context: ./urly
         dockerfiles: |
           ./urly/Dockerfile
 
