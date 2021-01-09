@@ -1,0 +1,34 @@
+name: Build and Push urly
+on: [push]
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: urly
+      IMAGE_TAG: latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build Image
+      uses: redhat-actions/buildah-build@v1
+      with:
+        image: ${{ env.IMAGE_NAME }}
+        tag: ${{ env.TAG }}
+        dockerfiles: |
+          ./urly/Dockerfile
+
+    - name: Push To Quay
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v1
+      with:
+        image: ${{ env.IMAGE_NAME }}
+        tag: ${{ env.TAG }}
+        registry: ghcr.io/${{ github.repository_owner }}
+        username: ${{ github.repository_owner }}
+        password: ${{ github.token }}
+
+    - name: Print image path
+      run: echo "New image has been pushed to ${{ steps.push-to-quay.outputs.registry-path }}"
