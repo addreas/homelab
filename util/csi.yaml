@@ -1,6 +1,34 @@
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
+  name: nfs-csi
+  namespace: kube-system
+spec:
+  repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+  chart: csi-driver-nfs
+  version: v2.0.0
+  set:
+    image.nfs.tag: canary
+    image.csiProvisioner.tag: v1.6.0
+    controller.replicas: 1
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: sergio.localdomain
+  share: /export/nfs-csi
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  - nfsvers=4.1
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
   name: smb-csi
   namespace: kube-system
 spec:

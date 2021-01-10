@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hass
+spec:
+  serviceName: hass
+  selector:
+    matchLabels:
+      app: hass
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: macvlan-conf
+      labels:
+        app: hass
+    spec:
+      containers:
+        - name: hass
+          image: homeassistant/home-assistant:latest
+          ports:
+            - containerPort: 8123
+          volumeMounts:
+            - name: config
+              mountPath: /config
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "nfs-csi"
+        resources:
+          requests:
+            storage: 1G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hass2
+spec:
+  selector:
+    app: hass
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8123
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hass2
+  annotations:
+    cert-manager.io/issuer: addem-se-letsencrypt
+spec:
+  tls:
+    - hosts:
+        - hass2.addem.se
+      secretName: hass2-cert
+  rules:
+    - host: hass2.addem.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hass2
+                port:
+                  number: 8080
