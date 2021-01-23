@@ -1,3 +1,8 @@
+#!/bin/sh
+
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml
+
+cat << EOF | kubectl apply -f -
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -11,3 +16,4 @@ spec:
         solvers:
             - http01:
                 ingress: {}
+EOF

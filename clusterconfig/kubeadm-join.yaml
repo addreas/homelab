@@ -1,0 +1,11 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: JoinConfiguration
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: nucles.localdomain:6443
+    token: "" # same as kubead-init.yaml
+    unsafeSkipCAVerification: true
+controlPlane:
+  certificateKey: "" # same as kubeadm-init.yaml
+
+#kubeadm join nucles.localdomain:6443 --config kubeadm-join.yaml
