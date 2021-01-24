@@ -49,7 +49,7 @@ kind: Ingress
 metadata:
   name: hass2
   annotations:
-    cert-manager.io/issuer: addem-se-letsencrypt
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
 spec:
   tls:
     - hosts:
