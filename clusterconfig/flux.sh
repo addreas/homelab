@@ -4,7 +4,7 @@ export GITHUB_USER=addreas
 
 flux bootstrap github \
   --owner=$GITHUB_USER \
-  --repository=homelab \    
+  --repository=homelab \
   --branch=main \
-  --path=./ \                   
+  --path=./ \
   --personal
