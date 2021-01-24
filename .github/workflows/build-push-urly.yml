@@ -17,9 +17,9 @@ jobs:
       with:
         image: ${{ env.IMAGE_NAME }}
         tag: ${{ env.IMAGE_TAG }}
-        context: ./urly
+        context: ./resources/urly
         dockerfiles: |
-          ./urly/Dockerfile
+          ./resources/urly/Dockerfile
 
     - name: Push To Quay
       id: push-to-quay
