@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: unifi-controller
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
 spec:
   rules:

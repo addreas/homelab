@@ -40,7 +40,7 @@ kind: Ingress
 metadata:
   name: urly
   annotations:
-    cert-manager.io/issuer: addem-se-letsencrypt
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
     kubernetes.io/ingress.class: traefik
 spec:
   tls:

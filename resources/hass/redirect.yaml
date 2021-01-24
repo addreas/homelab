@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
     name: hass
     annotations:
-        cert-manager.io/issuer: addem-se-letsencrypt
+        cert-manager.io/cluster-issuer: addem-se-letsencrypt
 spec:
     tls:
         - hosts:
@@ -16,7 +16,7 @@ spec:
                   - path: /
                     pathType: Prefix
                     backend:
-                        service: 
+                        service:
                             name: hass
                             port:
                                 name: http
