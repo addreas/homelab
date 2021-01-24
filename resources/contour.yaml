@@ -1,29 +1,25 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: haproxy
+  name: bitnami
   namespace: kube-system
 spec:
   interval: 1m
-  url: https://haproxytech.github.io/helm-charts
+  url: https://charts.bitnami.com/bitnami
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: haproxy
+  name: contour
   namespace: kube-system
 spec:
   interval: 5m
   chart:
     spec:
-      chart: kubernetes-ingress
-      version: v1.12.0
+      chart: contour
+      version: v3.3.3
       sourceRef:
         kind: HelmRepository
-        name: haproxy
+        name: bitnami
         namespace: kube-system
       interval: 1m
-  values:
-    controller:
-      service:
-        type: LoadBalancer

@@ -41,7 +41,6 @@ metadata:
   name: urly
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    kubernetes.io/ingress.class: traefik
 spec:
   tls:
     - hosts:
