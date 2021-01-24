@@ -5,6 +5,7 @@ metadata:
     annotations:
         cert-manager.io/cluster-issuer: addem-se-letsencrypt
         ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/websocket-routes: /api/websocket
 spec:
     tls:
         - hosts:
