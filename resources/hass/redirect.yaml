@@ -1,27 +1,34 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: hass
-    annotations:
-        cert-manager.io/cluster-issuer: addem-se-letsencrypt
-        ingress.kubernetes.io/force-ssl-redirect: "true"
-        projectcontour.io/websocket-routes: /api/websocket
+  name: hass
+  annotations:
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    projectcontour.io/websocket-routes: /api/websocket
 spec:
-    tls:
-        - hosts:
-            - hass.addem.se
-          secretName: hass-cert
-    rules:
-        - host: hass.addem.se
-          http:
-              paths:
-                  - path: /
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: hass
-                            port:
-                                name: http
+  tls:
+      - hosts:
+          - hass.addem.se
+        secretName: hass-cert
+  rules:
+    - host: hass.addem.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hass
+                port:
+                  name: http
+          - path: /api/websocket
+            pathType: Exact
+            backend:
+              service:
+                name: hass
+                port:
+                  name: http
 ---
 apiVersion: v1
 kind: Service
@@ -31,5 +38,5 @@ spec:
   type: ExternalName
   externalName: 192.168.1.9
   ports:
-      - name: http
-        port: 8123
+    - name: http
+      port: 8123
