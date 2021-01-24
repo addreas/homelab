@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: unifi-controller
+  annotations:
+    projectcontour.io/upstream-protocol.tls: "8443"
 spec:
   ports:
     - name: "3478"
