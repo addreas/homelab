@@ -23,3 +23,6 @@ spec:
         name: haproxy
         namespace: kube-system
       interval: 1m
+  values:
+    service:
+      type: LoadBalancer
