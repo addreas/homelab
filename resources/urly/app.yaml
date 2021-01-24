@@ -41,6 +41,7 @@ metadata:
   name: urly
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   tls:
     - hosts:

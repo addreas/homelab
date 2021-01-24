@@ -5,6 +5,8 @@ metadata:
   name: unifi-controller
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+
 spec:
   rules:
     - host: unifi.addem.se
