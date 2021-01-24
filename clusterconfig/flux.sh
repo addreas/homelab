@@ -6,5 +6,5 @@ flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=homelab \
   --branch=main \
-  --path=./ \
+  --path=./resources \
   --personal
