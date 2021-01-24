@@ -38,7 +38,7 @@ metadata:
   name: nfs-csi
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: sergio.localdomain
+  server: 192.168.1.10
   share: /export/nfs-csi
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
@@ -83,7 +83,7 @@ provisioner: smb.csi.k8s.io
 parameters:
   csi.storage.k8s.io/node-stage-secret-name: "smb-csi-admin-credentials" # keys username/password
   csi.storage.k8s.io/node-stage-secret-namespace: "kube-system"
-  source: "//sergio.localdomain/smb-csi"
+  source: "//192.168.1.10/smb-csi"
   createSubDir: "true"
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
