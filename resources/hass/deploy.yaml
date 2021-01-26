@@ -18,6 +18,10 @@ spec:
         - name: hass
           image: homeassistant/home-assistant:latest
           ports:
+            - containerPort: 1900
+              protocol: UDP
+            - containerPort: 5353
+              protocol: UDP
             - containerPort: 8123
           volumeMounts:
             - name: config
@@ -31,46 +35,3 @@ spec:
         resources:
           requests:
             storage: 1G
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: hass2
-spec:
-  selector:
-    app: hass
-  ports:
-    - name: http
-      port: 8123
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hass2
-  annotations:
-    cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    projectcontour.io/websocket-routes: /api/websocket
-spec:
-  tls:
-    - hosts:
-        - hass2.addem.se
-      secretName: hass2-cert
-  rules:
-    - host: hass2.addem.se
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: hass2
-                port:
-                  number: 8123
-          - path: /api/websocket
-            pathType: Exact
-            backend:
-              service:
-                name: hass2
-                port:
-                  number: 8123

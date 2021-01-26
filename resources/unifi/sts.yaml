@@ -12,7 +12,6 @@ spec:
       app: unifi-controller
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: unifi-controller
     spec:
@@ -27,6 +26,8 @@ spec:
           image: linuxserver/unifi-controller
           name: unifi-controller
           ports:
+            - containerPort: 1900
+              protocol: UDP
             - containerPort: 3478
               protocol: UDP
             - containerPort: 10001
