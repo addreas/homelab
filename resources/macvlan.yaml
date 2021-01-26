@@ -9,6 +9,6 @@ spec:
       "master": "eno1",
       "mode": "bridge",
       "ipam": {
-        "type": "dhcp",
+        "type": "dhcp"
       }
     }'
