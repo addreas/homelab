@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config-json
+data:
+  gateway.config.json: |
+    {
+      "system": {
+        "static-host-mapping": {
+          "host-name": {
+            "setup.ubnt.com": {
+              "alias": ["setup"],
+              "inet": ["192.168.1.1"]
+            },
+            "nucles.localdomain": {
+              "alias": ["nucles"],
+              "inet": ["192.168.1.10"]
+            }
+          }
+        }
+      }
+    }
