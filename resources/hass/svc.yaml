@@ -4,16 +4,7 @@ metadata:
   name: hass2
 spec:
   ports:
-    - name: ssdp
-      port: 1900
-      protocol: UDP
-      targetPort: 1900
-    - name: mdns
-      port: 5353
-      protocol: UDP
-      targetPort: 5353
-    - name: "8123"
+    - name: http
       port: 8123
-      targetPort: 8123
   selector:
     app: hass

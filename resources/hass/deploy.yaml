@@ -18,10 +18,6 @@ spec:
         - name: hass
           image: homeassistant/home-assistant:latest
           ports:
-            - containerPort: 1900
-              protocol: UDP
-            - containerPort: 5353
-              protocol: UDP
             - containerPort: 8123
           volumeMounts:
             - name: config

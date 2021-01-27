@@ -5,7 +5,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: "true"
-    projectcontour.io/websocket-routes: /api/websocket
 spec:
   tls:
     - hosts:
@@ -17,13 +16,6 @@ spec:
         paths:
           - path: /
             pathType: Prefix
-            backend:
-              service:
-                name: hass2
-                port:
-                  number: 8123
-          - path: /api/websocket
-            pathType: Exact
             backend:
               service:
                 name: hass2
