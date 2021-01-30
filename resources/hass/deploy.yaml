@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: hass
-          image: homeassistant/home-assistant:latest
+          # image: homeassistant/home-assistant:latest
+          image: quay.io/johannweging/homeassistant:latest
           resources:
             limits:
               addem.se/dev_deconz_conbee: "1"
