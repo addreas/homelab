@@ -20,6 +20,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
   volumeClaimTemplates:
     - metadata:
         name: data

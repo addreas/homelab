@@ -22,6 +22,10 @@ spec:
               value: "8080"
             - name: "REDIS_HOST"
               value: "urly-redis"
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
 ---
 apiVersion: v1
 kind: Service
