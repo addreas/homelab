@@ -17,16 +17,30 @@ spec:
       labels:
         app: unifi-controller
     spec:
+      initContainers:
+        - name: copy-static
+          image: quay.io/quay/busybox
+          command:
+            - cp
+            - -r
+            - --no-target-directory
+            - /static
+            - /
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: config-data-sites-default
+              mountPath: /static/config/data/sites/default
       containers:
-        - env:
+        - image: ghcr.io/linuxserver/unifi-controller:version-6.0.45
+          name: unifi-controller
+          env:
             - name: MEM_LIMIT
               value: 1024M
             - name: PGID
               value: "1000"
             - name: PUID
               value: "1000"
-          image: ghcr.io/linuxserver/unifi-controller:version-6.0.45
-          name: unifi-controller
           ports:
             - containerPort: 8443
           volumeMounts:
@@ -37,11 +51,14 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: config
+        - name: config-data-sites-default
+          configMap:
+            name: config-data-sites-default
   volumeClaimTemplates:
     - metadata:
         name: config
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes: ["ReadWriteOnce"]
         storageClassName: "nfs-csi"
         resources:
           requests:

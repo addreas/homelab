@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gateway-config-json
+  name: config-data-sites-default
 data:
-  gateway.config.json: |
+  config.gateway.json: |
     {
       "system": {
         "static-host-mapping": {
