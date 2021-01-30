@@ -25,7 +25,7 @@ spec:
               value: "1000"
             - name: PUID
               value: "1000"
-          image: linuxserver/unifi-controller
+          image: ghcr.io/linuxserver/unifi-controller:version-6.0.45
           name: unifi-controller
           ports:
             - containerPort: 8443
