@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+spec:
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        sysctls:
+          - name: net.ipv4.conf.all.src_valid_mark
+            value: "1"
+      containers:
+        - name: wg
+          image: ghcr.io/linuxserver/wireguard
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "NET_RAW"]
+          env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: UMASK
+            value: "002"
+          volumeMounts:
+            - name: wg0-conf
+              mountPath: /config
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
+        - name: deluge
+          image: ghcr.io/linuxserver/deluge
+          ports:
+          - containerPort: 8112
+          env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: UMASK
+            value: "002"
+          - name: TZ
+            value: "Europe/Stockholm"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /videos
+              name: nfs-videos
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+      volumes:
+        - name: wg0-conf
+          secret:
+            secretName: wg0-conf
+            defaultMode: 0600
+        - name: config
+          emptyDir: {}
+        - name: nfs-videos
+          nfs:
+            path: /export/videos
+            server: sergio.localdomain
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deluge
+spec:
+  selector:
+    app: deluge
+  ports:
+    - name: "http"
+      port: 8112
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deluge
+  annotations:
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - deluge.addem.se
+      secretName: deluge-cert
+  rules:
+    - host: deluge.addem.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deluge
+                port:
+                  number: 8112
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: deluge-lockdown
+spec:
+  endpointSelector:
+    matchLabels:
+      app: test-app
+  ingress:
+    - fromEntities:
+      - host
+      - remote-node
+  egress:
+    - toFQDNs:
+        - matchName: se1.wg.azirevpn.net
+      toPorts:
+      - ports:
+        - port: "51820"
+          protocol: UDP

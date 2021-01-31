@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: deluge
+          image: ghcr.io/hotio/sonarr
+          ports:
+          - containerPort: 8989
+          env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: UMASK
+            value: "002"
+          - name: TZ
+            value: "Europe/Stockholm"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /videos
+              name: nfs-videos
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: nfs-videos
+          nfs:
+            path: /export/videos
+            server: sergio.localdomain
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+spec:
+  selector:
+    app: sonarr
+  ports:
+    - name: "http"
+      port: 8989
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sonarr
+  annotations:
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - sonarr.addem.se
+      secretName: sonarr-cert
+  rules:
+    - host: sonarr.addem.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarr
+                port:
+                  number: 8989
