@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: deluge
 spec:
+  serviceName: deluge
   selector:
     matchLabels:
       app: deluge
@@ -12,9 +13,6 @@ spec:
         app: deluge
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
         sysctls:
           - name: net.ipv4.conf.all.src_valid_mark
             value: "1"
@@ -24,13 +22,6 @@ spec:
           securityContext:
             capabilities:
               add: ["NET_ADMIN", "NET_RAW"]
-          env:
-          - name: PUID
-            value: "1000"
-          - name: PGID
-            value: "1000"
-          - name: UMASK
-            value: "002"
           volumeMounts:
             - name: wg0-conf
               mountPath: /config
@@ -41,16 +32,16 @@ spec:
         - name: deluge
           image: ghcr.io/linuxserver/deluge
           ports:
-          - containerPort: 8112
+            - containerPort: 8112
           env:
-          - name: PUID
-            value: "1000"
-          - name: PGID
-            value: "1000"
-          - name: UMASK
-            value: "002"
-          - name: TZ
-            value: "Europe/Stockholm"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK
+              value: "002"
+            - name: TZ
+              value: "Europe/Stockholm"
           volumeMounts:
             - mountPath: /config
               name: config
@@ -65,12 +56,20 @@ spec:
           secret:
             secretName: wg0-conf
             defaultMode: 0600
-        - name: config
-          emptyDir: {}
         - name: nfs-videos
           nfs:
             path: /export/videos
             server: sergio.localdomain
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        resources:
+          requests:
+            storage: 1Gi
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
 ---
 apiVersion: v1
 kind: Service
@@ -117,12 +116,12 @@ spec:
       app: test-app
   ingress:
     - fromEntities:
-      - host
-      - remote-node
+        - host
+        - remote-node
   egress:
     - toFQDNs:
         - matchName: se1.wg.azirevpn.net
       toPorts:
-      - ports:
-        - port: "51820"
-          protocol: UDP
+        - ports:
+            - port: "51820"
+              protocol: UDP
