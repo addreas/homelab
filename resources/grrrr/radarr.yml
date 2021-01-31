@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: radarr
 spec:
+  serviceName: radarr
   selector:
     matchLabels:
       app: radarr
@@ -15,7 +16,7 @@ spec:
         - name: deluge
           image: ghcr.io/hotio/radarr
           ports:
-          - containerPort: 8989
+          - containerPort: 7878
           env:
           - name: PUID
             value: "1000"
@@ -25,6 +26,8 @@ spec:
             value: "002"
           - name: TZ
             value: "Europe/Stockholm"
+          - name: DEV
+            value: "yes"
           volumeMounts:
             - mountPath: /config
               name: config
@@ -35,12 +38,21 @@ spec:
               cpu: "250m"
               memory: "256Mi"
       volumes:
-        - name: config
-          emptyDir: {}
         - name: nfs-videos
           nfs:
             path: /export/videos
             server: sergio.localdomain
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        storageClassName: nfs-csi
+        resources:
+          requests:
+            storage: 1Gi
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
 ---
 apiVersion: v1
 kind: Service
@@ -51,7 +63,7 @@ spec:
     app: radarr
   ports:
     - name: "http"
-      port: 8989
+      port: 7878
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -75,4 +87,4 @@ spec:
               service:
                 name: radarr
                 port:
-                  number: 8989
+                  number: 7878
