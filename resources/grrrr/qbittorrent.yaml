@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: deluge
+  name: qbittorrent
 spec:
-  serviceName: deluge
+  serviceName: qbittorrent
   selector:
     matchLabels:
-      app: deluge
+      app: qbittorrent
   template:
     metadata:
       labels:
-        app: deluge
+        app: qbittorrent
     spec:
       securityContext:
         sysctls:
@@ -29,8 +29,8 @@ spec:
             limits:
               cpu: "100m"
               memory: "100Mi"
-        - name: deluge
-          image: ghcr.io/linuxserver/deluge
+        - name: qbittorrent
+          image: ghcr.io/hotio/qbittorrent
           ports:
             - containerPort: 8112
           env:
@@ -75,10 +75,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: deluge
+  name: qbittorrent
 spec:
   selector:
-    app: deluge
+    app: qbittorrent
   ports:
     - name: "http"
       port: 8112
@@ -86,7 +86,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: deluge
+  name: qbittorrent
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -96,24 +96,24 @@ metadata:
 spec:
   tls:
     - hosts:
-        - deluge.addem.se
-      secretName: deluge-cert
+        - qbittorrent.addem.se
+      secretName: qbittorrent-cert
   rules:
-    - host: deluge.addem.se
+    - host: qbittorrent.addem.se
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: deluge
+                name: qbittorrent
                 port:
                   number: 8112
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: deluge-lockdown
+  name: qbittorrent-lockdown
 spec:
   endpointSelector:
     matchLabels:
