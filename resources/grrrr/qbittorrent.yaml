@@ -32,7 +32,7 @@ spec:
         - name: qbittorrent
           image: ghcr.io/hotio/qbittorrent
           ports:
-            - containerPort: 8112
+            - containerPort: 8080
           env:
             - name: PUID
               value: "1000"
@@ -81,7 +81,7 @@ spec:
     app: qbittorrent
   ports:
     - name: "http"
-      port: 8112
+      port: 8080
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -108,7 +108,7 @@ spec:
               service:
                 name: qbittorrent
                 port:
-                  number: 8112
+                  number: 8080
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
