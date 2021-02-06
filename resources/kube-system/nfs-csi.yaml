@@ -45,12 +45,3 @@ volumeBindingMode: Immediate
 mountOptions:
   - hard
   - nfsvers=4.1
----
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: smb-csi
-  namespace: kube-system
-spec:
-  interval: 1m
-  url: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
