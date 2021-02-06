@@ -137,5 +137,5 @@ spec:
   egress:
     - to:
         - podSelector:
-          matchLabels:
-            vpn-egress: gateway
+            matchLabels:
+              vpn-egress: gateway
