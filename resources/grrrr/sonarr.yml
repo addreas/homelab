@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: sonarr
+        vpn-egress: client
     spec:
       containers:
         - name: sonarr
@@ -35,8 +36,8 @@ spec:
               name: nfs-videos
           resources:
             limits:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: "500m"
+              memory: "512Mi"
       volumes:
         - name: nfs-videos
           nfs:

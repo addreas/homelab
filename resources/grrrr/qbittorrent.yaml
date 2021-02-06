@@ -11,24 +11,9 @@ spec:
     metadata:
       labels:
         app: qbittorrent
+        vpn-egress: client
     spec:
-      securityContext:
-        sysctls:
-          - name: net.ipv4.conf.all.src_valid_mark
-            value: "1"
       containers:
-        - name: wg
-          image: ghcr.io/linuxserver/wireguard
-          securityContext:
-            capabilities:
-              add: ["NET_ADMIN", "NET_RAW"]
-          volumeMounts:
-            - name: wg0-conf
-              mountPath: /config
-          resources:
-            limits:
-              cpu: "100m"
-              memory: "100Mi"
         - name: qbittorrent
           image: ghcr.io/hotio/qbittorrent
           ports:
@@ -52,10 +37,6 @@ spec:
               cpu: "250m"
               memory: "256Mi"
       volumes:
-        - name: wg0-conf
-          secret:
-            secretName: wg0-conf
-            defaultMode: 0600
         - name: nfs-videos
           nfs:
             path: /export/videos
@@ -109,23 +90,3 @@ spec:
                 name: qbittorrent
                 port:
                   number: 8080
----
-apiVersion: "cilium.io/v2"
-kind: CiliumNetworkPolicy
-metadata:
-  name: qbittorrent-lockdown
-spec:
-  endpointSelector:
-    matchLabels:
-      app: test-app
-  ingress:
-    - fromEntities:
-        - host
-        - remote-node
-  egress:
-    - toFQDNs:
-        - matchName: se1.wg.azirevpn.net
-      toPorts:
-        - ports:
-            - port: "51820"
-              protocol: UDP

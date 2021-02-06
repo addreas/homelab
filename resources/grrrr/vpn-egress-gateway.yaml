@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dante
+spec:
+  selector:
+    matchLabels:
+      app: dante
+  template:
+    metadata:
+      labels:
+        app: dante
+        vpn-egress: gateway
+    spec:
+      securityContext:
+        sysctls:
+          - name: net.ipv4.conf.all.src_valid_mark
+            value: "1"
+      initContainers:
+        - name: wg-quick
+          image: nixery.dev/wireguard
+          command:
+            - wg-quick
+            - up
+            - /config/wg0.conf
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsGroup: 1000
+            capabilities:
+              add: ["NET_ADMIN", "NET_RAW"]
+          volumeMounts:
+            - name: wg0-conf
+              mountPath: /config
+      containers:
+        - name: dante
+          image: nixery.dev/dante
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsGroup: 1000
+          command:
+            - sockd
+            - -f
+            - /config/sockd.conf
+          volumeMounts:
+            # - name: tmp
+            #   mountPath: /tmp
+            - name: config
+              mountPath: /config
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 1080
+      volumes:
+        - name: wg0-conf
+          secret:
+            secretName: wg0-conf
+            defaultMode: 0600
+        # - name: tmp
+        #   emptyDir: {}
+        - name: config
+          configMap:
+            name: dante-config
+            items:
+              - key: sockd.conf
+                path: sockd.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dante-config
+data:
+  sockd.conf: |
+    logoutput: stdout
+    #debug: 1
+
+    internal: eth0 port = 1080
+    external: wg0
+
+    clientmethod: none
+    method: none
+
+    client pass {
+      from: 0.0.0.0/8 to: 0.0.0.0/0
+      log: error
+    }
+
+    pass {
+      from: 0.0.0.0/0 to: 0.0.0.0/0
+      log: error
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vpn-egress
+spec:
+  selector:
+    vpn-egress: gateway
+  ports:
+  - name: socks
+    port: 1080
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: vpn-egress-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      vpn-egress: gateway
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            vpn-egress: client
+  egress:
+    - toFQDNs:
+        - matchName: se1.wg.azirevpn.net
+      toPorts:
+        - ports:
+            - port: "51820"
+              protocol: UDP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vpn-egress-clients
+spec:
+  podSelector:
+    matchLabels:
+      vpn-egress: client
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        podSelector:
+          matchLabels:
+            vpn-egress: gateway

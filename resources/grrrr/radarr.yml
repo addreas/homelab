@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: radarr
+        vpn-egress: client
     spec:
       containers:
         - name: radarr
@@ -35,8 +36,8 @@ spec:
               name: nfs-videos
           resources:
             limits:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: "500m"
+              memory: "5126Mi"
       volumes:
         - name: nfs-videos
           nfs:
