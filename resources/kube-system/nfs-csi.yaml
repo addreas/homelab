@@ -17,18 +17,13 @@ spec:
   chart:
     spec:
       chart: csi-driver-nfs
-      version: v2.0.0
+      version: v3.0.0
       sourceRef:
         kind: HelmRepository
         name: nfs-csi
         namespace: kube-system
       interval: 1m
   values:
-    image:
-      nfs:
-        tag: canary
-      csiProvisioner:
-        tag: v1.6.0
     controller:
       replicas: 1
 ---
