@@ -114,6 +114,9 @@ spec:
         - matchLabels:
             vpn-egress: client
   egress:
+    - toEntities:
+        - host
+        - remote-node
     - toFQDNs:
         - matchName: se1.wg.azirevpn.net
       toPorts:
