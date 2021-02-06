@@ -18,7 +18,7 @@ spec:
             value: "1"
       initContainers:
         - name: wg-quick
-          image: nixery.dev/wireguard
+          image: nixery.dev/shell/wireguard
           command:
             - wg-quick
             - up
