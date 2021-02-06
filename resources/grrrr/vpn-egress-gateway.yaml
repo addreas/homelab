@@ -24,9 +24,6 @@ spec:
             - up
             - /config/wg0.conf
           securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 1000
-            runAsGroup: 1000
             capabilities:
               add: ["NET_ADMIN", "NET_RAW"]
           volumeMounts:
