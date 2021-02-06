@@ -38,9 +38,9 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: "true"
-    # nginx.ingress.kubernetes.io/auth-type: basic
-    # nginx.ingress.kubernetes.io/auth-secret: basic-auth-credentials
-    # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth-credentials
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
 spec:
   tls:
     - hosts:
@@ -69,9 +69,6 @@ spec:
     - namespaceSelector:
         matchLabels:
           app.kubernetes.io/name: ingress-nginx
-          nginx.ingress.kubernetes.io/auth-type: basic
-          nginx.ingress.kubernetes.io/auth-secret: basic-auth-credentials
-          nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
     ports:
     - protocol: TCP
       port: 3000
