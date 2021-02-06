@@ -69,6 +69,9 @@ spec:
     - namespaceSelector:
         matchLabels:
           app.kubernetes.io/name: ingress-nginx
+          nginx.ingress.kubernetes.io/auth-type: basic
+          nginx.ingress.kubernetes.io/auth-secret: basic-auth-credentials
+          nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
     ports:
     - protocol: TCP
       port: 3000
