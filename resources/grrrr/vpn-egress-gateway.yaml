@@ -101,8 +101,8 @@ spec:
   selector:
     vpn-egress: gateway
   ports:
-  - name: socks
-    port: 1080
+    - name: socks
+      port: 1080
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
@@ -136,6 +136,6 @@ spec:
     - Egress
   egress:
     - to:
-        podSelector:
+        - podSelector:
           matchLabels:
             vpn-egress: gateway
