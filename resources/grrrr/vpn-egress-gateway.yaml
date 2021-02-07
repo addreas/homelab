@@ -101,41 +101,41 @@ spec:
     - name: socks
       port: 1080
 ---
-apiVersion: "cilium.io/v2"
-kind: CiliumNetworkPolicy
-metadata:
-  name: vpn-egress-gateway
-spec:
-  endpointSelector:
-    matchLabels:
-      vpn-egress: gateway
-  ingress:
-    - fromEndpoints:
-        - matchLabels:
-            vpn-egress: client
-  egress:
-    - toEntities:
-        - host
-        - remote-node
-    - toFQDNs:
-        - matchName: se1.wg.azirevpn.net
-      toPorts:
-        - ports:
-            - port: "51820"
-              protocol: UDP
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: vpn-egress-clients
-spec:
-  podSelector:
-    matchLabels:
-      vpn-egress: client
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - podSelector:
-            matchLabels:
-              vpn-egress: gateway
+# apiVersion: "cilium.io/v2"
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: vpn-egress-gateway
+# spec:
+#   endpointSelector:
+#     matchLabels:
+#       vpn-egress: gateway
+#   ingress:
+#     - fromEndpoints:
+#         - matchLabels:
+#             vpn-egress: client
+#   egress:
+#     - toEntities:
+#         - host
+#         - remote-node
+#     - toFQDNs:
+#         - matchName: se1.wg.azirevpn.net
+#       toPorts:
+#         - ports:
+#             - port: "51820"
+#               protocol: UDP
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: vpn-egress-clients
+# spec:
+#   podSelector:
+#     matchLabels:
+#       vpn-egress: client
+#   policyTypes:
+#     - Egress
+#   egress:
+#     - to:
+#         - podSelector:
+#             matchLabels:
+#               vpn-egress: gateway
