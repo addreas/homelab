@@ -7,7 +7,6 @@ metadata:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/secure-backends: "true"
 spec:
-  ingressClassName: unauthenticated
   rules:
     - host: unifi.addem.se
       http:

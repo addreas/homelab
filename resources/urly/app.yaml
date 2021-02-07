@@ -46,7 +46,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
 spec:
-  ingressClassName: unauthenticated
   tls:
     - hosts:
         - url.addem.se
