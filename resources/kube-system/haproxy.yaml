@@ -24,5 +24,6 @@ spec:
         namespace: kube-system
       interval: 1m
   values:
-    service:
-      type: LoadBalancer
+    controller:
+      service:
+        type: LoadBalancer
