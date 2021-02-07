@@ -25,5 +25,7 @@ spec:
       interval: 1m
   values:
     controller:
+      replicaCount: 1
+      unprivileged: true
       service:
         type: LoadBalancer
