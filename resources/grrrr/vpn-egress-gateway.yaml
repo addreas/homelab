@@ -1,50 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dante
+  name: vpn-egress
 spec:
   selector:
     matchLabels:
-      app: dante
+      app: vpn-egress
   template:
     metadata:
       labels:
-        app: dante
+        app: vpn-egress
         vpn-egress: gateway
     spec:
       securityContext:
         sysctls:
-          - name: net.ipv4.conf.all.src_valid_mark
+          - name: "net.ipv4.conf.all.src_valid_mark"
             value: "1"
       initContainers:
         - name: wg-quick
-          image: nixery.dev/shell/wireguard
+          image: nixery.dev/shell/gawk/gnugrep/wireguard
           command:
             - wg-quick
             - up
             - /config/wg0.conf
           securityContext:
+            privileged: true # not sure which cap is required for sysctl
             capabilities:
               add: ["NET_ADMIN", "NET_RAW"]
           volumeMounts:
             - name: wg0-conf
               mountPath: /config
       containers:
-        - name: dante
-          image: nixery.dev/dante
+        - name: socks-proxy
+          image: xkuma/socks5
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 1000
             runAsGroup: 1000
-          command:
-            - sockd
-            - -f
-            - /config/sockd.conf
-          volumeMounts:
-            # - name: tmp
-            #   mountPath: /tmp
-            - name: config
-              mountPath: /config
           resources:
             limits:
               memory: "100Mi"
@@ -56,39 +48,6 @@ spec:
           secret:
             secretName: wg0-conf
             defaultMode: 0600
-        # - name: tmp
-        #   emptyDir: {}
-        - name: config
-          configMap:
-            name: dante-config
-            items:
-              - key: sockd.conf
-                path: sockd.conf
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dante-config
-data:
-  sockd.conf: |
-    logoutput: stdout
-    #debug: 1
-
-    internal: eth0 port = 1080
-    external: wg0
-
-    clientmethod: none
-    method: none
-
-    client pass {
-      from: 0.0.0.0/8 to: 0.0.0.0/0
-      log: error
-    }
-
-    pass {
-      from: 0.0.0.0/0 to: 0.0.0.0/0
-      log: error
-    }
 ---
 apiVersion: v1
 kind: Service
@@ -101,41 +60,63 @@ spec:
     - name: socks
       port: 1080
 ---
-# apiVersion: "cilium.io/v2"
-# kind: CiliumNetworkPolicy
-# metadata:
-#   name: vpn-egress-gateway
-# spec:
-#   endpointSelector:
-#     matchLabels:
-#       vpn-egress: gateway
-#   ingress:
-#     - fromEndpoints:
-#         - matchLabels:
-#             vpn-egress: client
-#   egress:
-#     - toEntities:
-#         - host
-#         - remote-node
-#     - toFQDNs:
-#         - matchName: se1.wg.azirevpn.net
-#       toPorts:
-#         - ports:
-#             - port: "51820"
-#               protocol: UDP
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: NetworkPolicy
-# metadata:
-#   name: vpn-egress-clients
-# spec:
-#   podSelector:
-#     matchLabels:
-#       vpn-egress: client
-#   policyTypes:
-#     - Egress
-#   egress:
-#     - to:
-#         - podSelector:
-#             matchLabels:
-#               vpn-egress: gateway
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: vpn-egress-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      vpn-egress: gateway
+  ingress:
+    - fromEntities:
+        - cluster
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toFQDNs:
+        - matchName: se1.wg.azirevpn.net
+      toPorts:
+        - ports:
+            - port: "51820"
+              protocol: UDP
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: vpn-egress-clients
+spec:
+  endpointSelector:
+    matchLabels:
+      vpn-egress: client
+  ingress:
+    - fromEntities:
+        - cluster
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEndpoints:
+        - matchLabels:
+            vpn-egress: gateway
+      toPorts:
+        - ports:
+            - port: "1080"
+              protocol: TCP
