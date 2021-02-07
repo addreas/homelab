@@ -27,3 +27,4 @@ spec:
     controller:
       extraArgs:
         watch-ingress-without-class: "true"
+        allow-cross-namespace: "true"
