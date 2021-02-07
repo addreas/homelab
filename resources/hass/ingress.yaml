@@ -4,8 +4,8 @@ metadata:
   name: hass2
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  ingressClassName: unauthenticated
   tls:
     - hosts:
         - hass2.addem.se

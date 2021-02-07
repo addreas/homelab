@@ -5,9 +5,9 @@ metadata:
   name: unifi-controller
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/ssl-redirect: "true"
     ingress.kubernetes.io/secure-backends: "true"
 spec:
+  ingressClassName: unauthenticated
   rules:
     - host: unifi.addem.se
       http:

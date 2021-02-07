@@ -43,4 +43,5 @@ spec:
             name: addem-se-letsencrypt-private-key
         solvers:
             - http01:
-                ingress: {}
+                ingress:
+                  class: unauthenticated
