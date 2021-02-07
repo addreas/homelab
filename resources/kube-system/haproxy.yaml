@@ -23,3 +23,7 @@ spec:
         name: haproxy-ingress
         namespace: kube-system
       interval: 1m
+  values:
+    controller:
+      extraArgs:
+        watch-ingress-without-class: "true"
