@@ -8,6 +8,7 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     haproxy.org/server-ssl: "true"
+    ingress.kubernetes.io/secure-backends: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
