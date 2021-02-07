@@ -70,15 +70,8 @@ metadata:
   name: qbittorrent
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    haproxy.org/auth-type: basic-auth
-    haproxy.org/auth-secret: default/basic-auth-credentials
-    ingress.kubernetes.io/auth-type: basic
-    ingress.kubernetes.io/auth-secret: basic-auth-credentials
-    ingress.kubernetes.io/auth-realm: "Authentication Required"
 spec:
+  ingressClassName: certificate-authenticated
   tls:
     - hosts:
         - qbittorrent.addem.se

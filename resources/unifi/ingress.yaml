@@ -5,12 +5,8 @@ metadata:
   name: unifi-controller
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    haproxy.org/server-ssl: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
     ingress.kubernetes.io/secure-backends: "true"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   rules:
     - host: unifi.addem.se

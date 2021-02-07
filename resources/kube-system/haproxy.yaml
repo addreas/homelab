@@ -27,3 +27,25 @@ spec:
     controller:
       extraArgs:
         watch-ingress-without-class: "true"
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: IngressClass
+metadata:
+  name: certificate-authenticated
+spec:
+  controller: haproxy-ingress.github.io/controller
+  parameters:
+    kind: ConfigMap
+    name: certificate-authenticated-ingress
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certificate-authenticated-ingress
+  namespace: kube-system
+data:
+  ssl-redirect: "true"
+  # auth-tls-error-page: https://getcert.addem.se
+  auth-tls-secret: client-auth-root-ca-cert
+  auth-tls-strict: "true"
+  auth-tls-verify-client: "on"

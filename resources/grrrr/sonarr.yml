@@ -72,12 +72,8 @@ metadata:
   name: sonarr
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    # ingress.kubernetes.io/auth-tls-error-page: https://getcert.addem.se
-    ingress.kubernetes.io/auth-tls-secret: client-auth-root-ca-cert
-    ingress.kubernetes.io/auth-tls-strict: "true"
-    ingress.kubernetes.io/auth-tls-verify-client: "on"
 spec:
+  ingressClassName: certificate-authenticated
   tls:
     - hosts:
         - sonarr.addem.se
