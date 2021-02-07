@@ -38,11 +38,10 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/force-ssl-redirect: "true"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    ingress.kubernetes.io/auth-type: basic
-    ingress.kubernetes.io/auth-secret: basic-auth-credentials
-    ingress.kubernetes.io/auth-realm: "Authentication Required"
+    ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
+    ingress.kubernetes.io/auth-tls-secret: client-auth-cert
+    ingress.kubernetes.io/auth-tls-strict: "true"
+    ingress.kubernetes.io/auth-tls-verify-client: "on"
 spec:
   tls:
     - hosts:

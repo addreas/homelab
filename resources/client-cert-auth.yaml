@@ -1,0 +1,41 @@
+
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: client-auth-selfsigned
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: client-auth-root-issuer
+spec:
+  ca:
+    secretName: client-auth-root-ca-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-auth-root-ca
+spec:
+  issuerRef:
+    name: client-auth-selfsigned
+  secretName: client-auth-root-ca-cert
+  commonName: addem.se
+  isCA: true
+  usages:
+    - cert sign
+    - crl sign
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: addem
+spec:
+  issuerRef:
+    name: client-auth-root-issuer
+  secretName: addem-cert
+  commonName: addem
+  usages:
+    - client auth
