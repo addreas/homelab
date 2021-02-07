@@ -115,6 +115,9 @@ spec:
               - matchPattern: "*"
     - toEndpoints:
         - matchLabels:
+            vpn-egress: client
+    - toEndpoints:
+        - matchLabels:
             vpn-egress: gateway
       toPorts:
         - ports:
