@@ -15,13 +15,20 @@ spec:
     spec:
       containers:
         - name: sonarr
-          image: nixery.dev/sonarr
-          command: ["NzbDrone", "-nobrowser", "-data=/config"]
+          image: ghcr.io/hotio/sonarr
           ports:
           - containerPort: 8989
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+          env:
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: UMASK
+            value: "002"
+          - name: TZ
+            value: "Europe/Stockholm"
+          - name: DEBUG
+            value: "yes"
           volumeMounts:
             - mountPath: /config
               name: config

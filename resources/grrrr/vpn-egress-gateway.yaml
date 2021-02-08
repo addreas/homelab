@@ -32,8 +32,7 @@ spec:
               mountPath: /config
       containers:
         - name: socks-proxy
-          image: nixery.dev/nylon
-          command: ["nylon", "-f"]
+          image: xkuma/socks5
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 1000

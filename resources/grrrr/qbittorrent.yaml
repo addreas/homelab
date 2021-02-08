@@ -13,24 +13,20 @@ spec:
         app: qbittorrent
         vpn-egress: client
     spec:
-      initContainers:
-        - name: insert-config
-          image: quay.io/quay/busybox
-          commmand: ["install", "/static/qBittorrent.conf", "/config/qBittorrent/config/qBittorrent.conf"]
-          volumeMounts:
-            - mountPath: /static
-              name: static-config
-            - mountPath: /config
-              name: config
       containers:
         - name: qbittorrent
-          image: nixery.dev/qbittorrent-nox
-          commmand: ["qbittorrent-nox", "--profile=/config"]
+          image: ghcr.io/hotio/qbittorrent
           ports:
             - containerPort: 8080
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK
+              value: "002"
+            - name: TZ
+              value: "Europe/Stockholm"
           volumeMounts:
             - mountPath: /config
               name: config
@@ -45,9 +41,6 @@ spec:
           nfs:
             path: /export/videos
             server: sergio.localdomain
-        - name: static-config
-          configMap:
-            name: qbittorrent-static-config
   volumeClaimTemplates:
     - metadata:
         name: config
@@ -98,17 +91,3 @@ spec:
                 name: qbittorrent
                 port:
                   number: 8080
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: qbittorrent-static-config
-data:
-  qBittorrent.conf: |
-    [LegalNotice]
-    Accepted=true
-
-    [Preferences]
-    Downloads\SavePath=/videos/downloads/
-    WebUI\AuthSubnetWhitelist=10.0.0.0/8
-    WebUI\AuthSubnetWhitelistEnabled=true
