@@ -16,7 +16,7 @@ spec:
       initContainers:
         - name: insert-config
           image: quay.io/quay/busybox
-          commmand: ["install", "/static/qBittorrent.conf", "/config/qBittorrent/config/qBittorrent.conf"]
+          command: ["install", "/static/qBittorrent.conf", "/config/qBittorrent/config/qBittorrent.conf"]
           volumeMounts:
             - mountPath: /static
               name: static-config
@@ -25,7 +25,7 @@ spec:
       containers:
         - name: qbittorrent
           image: nixery.dev/qbittorrent-nox
-          commmand: ["qbittorrent-nox", "--profile=/config"]
+          command: ["qbittorrent-nox", "--profile=/config"]
           ports:
             - containerPort: 8080
           securityContext:
