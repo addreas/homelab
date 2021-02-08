@@ -16,7 +16,7 @@ spec:
       initContainers:
         - name: insert-config
           image: quay.io/quay/busybox
-          command: ["install", "/static/qBittorrent.conf", "/config/qBittorrent/config/qBittorrent.conf"]
+          command: ["install", "-D", "/static/qBittorrent.conf", "/config/qBittorrent/config/qBittorrent.conf"]
           volumeMounts:
             - mountPath: /static
               name: static-config
