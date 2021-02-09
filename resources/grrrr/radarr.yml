@@ -36,13 +36,16 @@ spec:
               name: nfs-videos
           resources:
             limits:
+              cpu: "2"
+              memory: "512Mi"
+            requests:
               cpu: "500m"
-              memory: "5126Mi"
       volumes:
         - name: nfs-videos
           nfs:
             path: /export/videos
             server: sergio.localdomain
+      terminationGracePeriodSeconds: 0
   volumeClaimTemplates:
     - metadata:
         name: config

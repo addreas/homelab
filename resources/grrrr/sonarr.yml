@@ -36,8 +36,11 @@ spec:
               name: nfs-videos
           resources:
             limits:
-              cpu: "500m"
+              cpu: "2"
               memory: "512Mi"
+            requests:
+              cpu: "500m"
+      terminationGracePeriodSeconds: 0
       volumes:
         - name: nfs-videos
           nfs:
