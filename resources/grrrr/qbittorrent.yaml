@@ -11,22 +11,55 @@ spec:
     metadata:
       labels:
         app: qbittorrent
-        vpn-egress: client
+        vpn-egress: gateway
     spec:
+      securityContext:
+        fsGroup: 1000
+        sysctls:
+          - name: "net.ipv4.conf.all.src_valid_mark"
+            value: "1"
+      initContainers:
+        - name: wg-quick
+          image: nixery.dev/shell/gawk/gnugrep/wireguard
+          command:
+            - wg-quick
+            - up
+            - /config/wg0.conf
+          securityContext:
+            privileged: true # not sure which cap is required for sysctl
+            capabilities:
+              add: ["NET_ADMIN", "NET_RAW"]
+          volumeMounts:
+            - name: wg0-conf
+              mountPath: /config
+        - name: insert-config
+          image: quay.io/quay/busybox
+          command: ["sh", "-c"]
+          args:
+            - |
+              OLD="/config/qBittorrent/config/qBittorrent.conf"
+              if [ -f $OLD ]; then
+                echo "existing config:"
+                cat $OLD
+                NEW="/config/qBittorrent/config/qBittorrent.$(date "+%s").conf"
+                echo "moving existing config to $NEW"
+                cp $OLD $NEW
+              else
+                mkdir -p /config/qBittorrent/config
+              fi
+
+              cp /static/qBittorrent.conf $OLD
+          volumeMounts:
+            - mountPath: /static
+              name: static-config
+            - mountPath: /config
+              name: config
       containers:
         - name: qbittorrent
-          image: ghcr.io/hotio/qbittorrent
+          image: nixery.dev/qbittorrent-nox
+          command: ["qbittorrent-nox", "--profile=/config"]
           ports:
             - containerPort: 8080
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: UMASK
-              value: "002"
-            - name: TZ
-              value: "Europe/Stockholm"
           volumeMounts:
             - mountPath: /config
               name: config
@@ -36,7 +69,16 @@ spec:
             limits:
               cpu: "250m"
               memory: "256Mi"
+            requests:
+              cpu: "100m"
       volumes:
+        - name: wg0-conf
+          secret:
+            secretName: wg0-conf
+            defaultMode: 0600
+        - name: static-config
+          configMap:
+            name: qbittorrent-static-config
         - name: nfs-videos
           nfs:
             path: /export/videos
@@ -91,3 +133,20 @@ spec:
                 name: qbittorrent
                 port:
                   number: 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qbittorrent-static-config
+data:
+  qBittorrent.conf: |
+    [LegalNotice]
+    Accepted=true
+
+    [Preferences]
+    Connection\Interface=wg0
+    Connection\InterfaceName=wg0
+    Downloads\SavePath=/videos/downloads/
+    WebUI\AuthSubnetWhitelist=10.0.0.0/8
+    WebUI\AuthSubnetWhitelistEnabled=true
+    WebUI\UseUPnP=false

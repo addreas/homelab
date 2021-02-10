@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: radarr
+  name: jackett
 spec:
-  serviceName: radarr
+  serviceName: jackett
   selector:
     matchLabels:
-      app: radarr
+      app: jackett
   template:
     metadata:
       labels:
-        app: radarr
+        app: jackett
         vpn-egress: client
     spec:
       containers:
-        - name: radarr
-          image: ghcr.io/hotio/radarr
+        - name: jackett
+          image: ghcr.io/hotio/jackett
           ports:
-          - containerPort: 7878
+          - containerPort: 9117
           env:
           - name: PUID
             value: "1000"
@@ -32,19 +32,12 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /videos
-              name: nfs-videos
           resources:
             limits:
               cpu: "2"
               memory: "512Mi"
             requests:
               cpu: "100m"
-      volumes:
-        - name: nfs-videos
-          nfs:
-            path: /export/videos
-            server: sergio.localdomain
       terminationGracePeriodSeconds: 0
   volumeClaimTemplates:
     - metadata:
@@ -61,18 +54,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: radarr
+  name: jackett
 spec:
   selector:
-    app: radarr
+    app: jackett
   ports:
     - name: "http"
-      port: 7878
+      port: 9117
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: radarr
+  name: jackett
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/ssl-redirect: "true"
@@ -83,16 +76,16 @@ metadata:
 spec:
   tls:
     - hosts:
-        - radarr.addem.se
-      secretName: radarr-cert
+        - jackett.addem.se
+      secretName: jackett-cert
   rules:
-    - host: radarr.addem.se
+    - host: jackett.addem.se
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: radarr
+                name: jackett
                 port:
-                  number: 7878
+                  number: 9117

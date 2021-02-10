@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: radarr
+  name: jellyfin
 spec:
-  serviceName: radarr
+  serviceName: jellyfin
   selector:
     matchLabels:
-      app: radarr
+      app: jellyfin
   template:
     metadata:
       labels:
-        app: radarr
+        app: jellyfin
         vpn-egress: client
     spec:
       containers:
-        - name: radarr
-          image: ghcr.io/hotio/radarr
+        - name: jellyfin
+          image: ghcr.io/hotio/jellyfin
           ports:
-          - containerPort: 7878
+          - containerPort: 8096
           env:
           - name: PUID
             value: "1000"
@@ -39,7 +39,7 @@ spec:
               cpu: "2"
               memory: "512Mi"
             requests:
-              cpu: "100m"
+              cpu: "500m"
       volumes:
         - name: nfs-videos
           nfs:
@@ -61,18 +61,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: radarr
+  name: jellyfin
 spec:
   selector:
-    app: radarr
+    app: jellyfin
   ports:
     - name: "http"
-      port: 7878
+      port: 8096
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: radarr
+  name: jellyfin
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/ssl-redirect: "true"
@@ -83,16 +83,18 @@ metadata:
 spec:
   tls:
     - hosts:
-        - radarr.addem.se
-      secretName: radarr-cert
+        - jellyfin.addem.se
+      secretName: jellyfin-cert
   rules:
-    - host: radarr.addem.se
+    - host: jellyfin.addem.se
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: radarr
+                name: jellyfin
                 port:
-                  number: 7878
+                  number: 8096
+# TODO
+#To make your hardware devices available inside the container use the following argument --device=/dev/dri:/dev/dri for Intel QuickSync and --device=/dev/dvb:/dev/dvb for a tuner. NVIDIA users should go visit the NVIDIA github page for instructions. For Raspberry Pi OpenMAX you'll need to use --device=/dev/vchiq:/dev/vchiq -v /opt/vc/lib:/opt/vc/lib, V4L2 will need --device=/dev/video10:/dev/video10 --device=/dev/video11:/dev/video11 --device=/dev/video12:/dev/video12 and MMAL needs --device=/dev/vcsm:/dev/vcsm or --device=/dev/vc-mem:/dev/vc-mem

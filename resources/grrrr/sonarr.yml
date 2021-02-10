@@ -39,7 +39,7 @@ spec:
               cpu: "2"
               memory: "512Mi"
             requests:
-              cpu: "500m"
+              cpu: "100m"
       terminationGracePeriodSeconds: 0
       volumes:
         - name: nfs-videos

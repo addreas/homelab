@@ -55,6 +55,7 @@ metadata:
   name: vpn-egress
 spec:
   selector:
+    app: vpn-egress
     vpn-egress: gateway
   ports:
     - name: socks
@@ -102,20 +103,8 @@ spec:
     - fromEntities:
         - cluster
   egress:
-    - toEndpoints:
-        - matchLabels:
-            "k8s:io.kubernetes.pod.namespace": kube-system
-            "k8s:k8s-app": kube-dns
-      toPorts:
-        - ports:
-            - port: "53"
-              protocol: ANY
-          rules:
-            dns:
-              - matchPattern: "*"
-    - toEndpoints:
-        - matchLabels:
-            vpn-egress: client
+    - toEntities:
+        - cluster
     - toEndpoints:
         - matchLabels:
             vpn-egress: gateway
