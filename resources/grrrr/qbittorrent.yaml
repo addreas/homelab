@@ -19,7 +19,7 @@ spec:
             value: "1"
       initContainers:
         - name: wg-quick
-          image: nixery.dev/shell/gawk/gnugrep/wireguard
+          image: nixery.dev/shell/wireguard
           command:
             - wg-quick
             - up
@@ -32,17 +32,15 @@ spec:
             - name: wg0-conf
               mountPath: /config
         - name: post-up
-          image: nixery.dev/shell/iproute/iptables
+          image: nixery.dev/shell/wireguard
           command:
             - sh
             - -c
           args:
             - |
-              DROUTE=$(ip route | grep default | awk '{print $3}')
-              HOMENET=10.0.0.0/8
-              ip route add $HOMENET via $DROUTE
-              iptables -I OUTPUT -d $HOMENET -j ACCEPT
-              iptables -A OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+              ip route add 10.0.0.0/8 via eth0
+              iptables -I OUTPUT -d 10.0.0.0/8 -j ACCEPT
+              iptables -A OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
