@@ -21,9 +21,13 @@ spec:
         - name: wg-quick
           image: nixery.dev/shell/wireguard
           command:
-            - wg-quick
-            - up
-            - /config/wg0.conf
+            - sh
+            - -c
+          args:
+            - |
+              wg-quick up /config/wg0.conf
+              ip route add 10.96.0.0/12 dev eth0
+              ip route add 10.0.0.0/16 dev eth0
           securityContext:
             privileged: true # not sure which cap is required for sysctl
             capabilities:
@@ -31,32 +35,21 @@ spec:
           volumeMounts:
             - name: wg0-conf
               mountPath: /config
-        - name: local-route
-          image: nixery.dev/shell/iproute
-          command:
-          - sh
-          - -c
-          args:
-            - |
-              ip route add 10.96.0.0/12 dev eth0
-              ip route add 10.0.0.0/16 dev eth0
-          securityContext:
-            capabilities:
-              add: ["NET_ADMIN"]
         - name: insert-config
           image: quay.io/quay/busybox
           command: ["sh", "-c"]
           args:
             - |
-              OLD="/config/qBittorrent/config/qBittorrent.conf"
+              CONF_DIR=/config/app/config
+              OLD="$CONF_DIR/qBittorrent.conf"
               if [ -f $OLD ]; then
                 echo "existing config:"
                 cat $OLD
-                NEW="/config/qBittorrent/config/qBittorrent.$(date "+%s").conf"
+                NEW="$CONF_DIR/qBittorrent.$(date "+%s").conf"
                 echo "moving existing config to $NEW"
                 cp $OLD $NEW
               else
-                mkdir -p /config/qBittorrent/config
+                mkdir -p $CONF_DIR
               fi
 
               cp /static/qBittorrent.conf $OLD
@@ -67,10 +60,20 @@ spec:
               name: config
       containers:
         - name: qbittorrent
-          image: nixery.dev/qbittorrent-nox
-          command: ["qbittorrent-nox", "--profile=/config"]
+          image: hotio/bittorrent
           ports:
             - containerPort: 8080
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK
+              value: "002"
+            - name: TZ
+              value: "Europe/Stockholm"
+            - name: DEBUG
+              value: "yes"
           volumeMounts:
             - mountPath: /config
               name: config
@@ -163,9 +166,6 @@ metadata:
   name: qbittorrent-static-config
 data:
   qBittorrent.conf: |
-    [LegalNotice]
-    Accepted=true
-
     [Preferences]
     Advanced\AnonymousMode=true
     Advanced\RecheckOnCompletion=true
