@@ -31,16 +31,15 @@ spec:
           volumeMounts:
             - name: wg0-conf
               mountPath: /config
-        - name: post-up
-          image: nixery.dev/shell/iptables/wireguard
+        - name: local-route
+          image: nixery.dev/iproute
           command:
-            - sh
-            - -c
-          args:
-            - |
-              ip route add 10.0.0.0/8 via eth0
-              iptables -I OUTPUT -d 10.0.0.0/8 -j ACCEPT
-              iptables -A OUTPUT ! -o wg0 -m mark ! --mark $(wg show wg0 fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+            - ip
+            - route
+            - add
+            - 10.0.0.0/8
+            - via
+            - eth0
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
