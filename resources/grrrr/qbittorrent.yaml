@@ -11,27 +11,9 @@ spec:
     metadata:
       labels:
         app: qbittorrent
-        vpn-egress: gateway
+        vpn-egress: client
     spec:
-      securityContext:
-        fsGroup: 1000
-        sysctls:
-          - name: "net.ipv4.conf.all.src_valid_mark"
-            value: "1"
       initContainers:
-        - name: wg-quick
-          image: nixery.dev/shell/gawk/gnugrep/wireguard
-          command:
-            - wg-quick
-            - up
-            - /config/wg0.conf
-          securityContext:
-            privileged: true # not sure which cap is required for sysctl
-            capabilities:
-              add: ["NET_ADMIN", "NET_RAW"]
-          volumeMounts:
-            - name: wg0-conf
-              mountPath: /config
         - name: insert-config
           image: quay.io/quay/busybox
           command: ["sh", "-c"]
@@ -72,10 +54,6 @@ spec:
             requests:
               cpu: "100m"
       volumes:
-        - name: wg0-conf
-          secret:
-            secretName: wg0-conf
-            defaultMode: 0600
         - name: static-config
           configMap:
             name: qbittorrent-static-config
