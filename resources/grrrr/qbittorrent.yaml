@@ -32,14 +32,14 @@ spec:
             - name: wg0-conf
               mountPath: /config
         - name: local-route
-          image: nixery.dev/iproute
+          image: nixery.dev/shell/iproute
           command:
-            - ip
-            - route
-            - add
-            - 10.96.0.0/12
-            - dev
-            - eth0
+          - sh
+          - -c
+          args:
+            - |
+              ip route add 10.96.0.0/12 dev eth0
+              ip route add 10.0.0.0/16 dev eth0
           securityContext:
             capabilities:
               add: ["NET_ADMIN"]
