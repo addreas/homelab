@@ -38,7 +38,7 @@ spec:
             - route
             - add
             - 10.0.0.0/8
-            - via
+            - dev
             - eth0
           securityContext:
             capabilities:
