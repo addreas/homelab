@@ -169,8 +169,12 @@ data:
     Accepted=true
 
     [Preferences]
+    Advanced\AnonymousMode=true
     Advanced\RecheckOnCompletion=true
+    Connection\Interface=wg0
+    Connection\InterfaceName=wg0
     Downloads\SavePath=/videos/downloads/
+    General\UseRandomPort=true
     WebUI\AuthSubnetWhitelist=10.0.0.0/8
     WebUI\AuthSubnetWhitelistEnabled=true
 ---
