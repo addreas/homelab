@@ -60,7 +60,7 @@ spec:
               name: config
       containers:
         - name: qbittorrent
-          image: hotio/bittorrent
+          image: hotio/qbittorrent
           ports:
             - containerPort: 8080
           env:
