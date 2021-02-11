@@ -122,9 +122,11 @@ data:
     Accepted=true
 
     [Preferences]
-    Connection\Interface=wg0
-    Connection\InterfaceName=wg0
+    Advanced\RecheckOnCompletion=true
     Downloads\SavePath=/videos/downloads/
     WebUI\AuthSubnetWhitelist=10.0.0.0/8
     WebUI\AuthSubnetWhitelistEnabled=true
     WebUI\UseUPnP=false
+    Connection\Proxy\IP=vpn-egress
+    Connection\Proxy\Port=1080
+    Connection\ProxyType=2
