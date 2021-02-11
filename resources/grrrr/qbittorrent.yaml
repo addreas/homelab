@@ -85,9 +85,15 @@ spec:
               memory: "512Mi"
             requests:
               cpu: "100m"
-        - name: srelay
-          image: nixery.dev/srelay
-          command: ["srelay", "-f"]
+        - name: nylon
+          image: nixery.dev/nylon
+          command:
+          - nylon
+          - -f
+          - -i
+          - eth0
+          - -I
+          - wg0
           ports:
             - containerPort: 1080
           resources:
