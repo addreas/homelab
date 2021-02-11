@@ -31,6 +31,18 @@ spec:
           volumeMounts:
             - name: wg0-conf
               mountPath: /config
+        - name: local-route
+          image: nixery.dev/iproute
+          command:
+            - ip
+            - route
+            - add
+            - 10.96.0.0/12
+            - dev
+            - eth0
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
         - name: insert-config
           image: quay.io/quay/busybox
           command: ["sh", "-c"]
