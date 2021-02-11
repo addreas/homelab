@@ -100,6 +100,10 @@ spec:
             requests:
               cpu: "100m"
       volumes:
+        - name: wg0-conf
+          secret:
+            secretName: wg0-conf
+            defaultMode: 0600
         - name: static-config
           configMap:
             name: qbittorrent-static-config
