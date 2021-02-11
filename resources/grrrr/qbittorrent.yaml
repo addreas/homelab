@@ -32,7 +32,7 @@ spec:
             - name: wg0-conf
               mountPath: /config
         - name: post-up
-          image: nixery.dev/shell/wireguard
+          image: nixery.dev/shell/iptables/wireguard
           command:
             - sh
             - -c
