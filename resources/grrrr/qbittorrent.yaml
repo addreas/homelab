@@ -40,7 +40,7 @@ spec:
           command: ["sh", "-c"]
           args:
             - |
-              CONF_DIR=/config/app/config
+              CONF_DIR=/config/config
               OLD="$CONF_DIR/qBittorrent.conf"
               if [ -f $OLD ]; then
                 echo "existing config:"
@@ -163,6 +163,9 @@ data:
     [Preferences]
     Advanced\AnonymousMode=true
     Advanced\RecheckOnCompletion=true
+    Connection\GlobalDLLimitAlt=10240
+    Connection\GlobalUPLimitAlt=10240
+    Connection\alt_speeds_on=true
     Connection\Interface=wg0
     Connection\InterfaceName=wg0
     Downloads\SavePath=/videos/downloads/
