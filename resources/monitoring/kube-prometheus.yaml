@@ -69,3 +69,31 @@ spec:
     kind: GitRepository
     name: kube-prometheus
   timeout: 2m0s
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    # ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
+    ingress.kubernetes.io/auth-tls-secret: default/client-auth-root-ca-cert
+    ingress.kubernetes.io/auth-tls-strict: "true"
+    ingress.kubernetes.io/auth-tls-verify-client: "on"
+spec:
+  tls:
+    - hosts:
+        - grafana.addem.se
+      secretName: grafana-cert
+  rules:
+    - host: grafana.addem.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
