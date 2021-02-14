@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: kube-prometheus
+  namespace: monitoring
+spec:
+  interval: 30m0s
+  ref:
+    branch: main
+  url: https://github.com/prometheus-operator/kube-prometheus
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: kube-prometheus-setup
+  namespace: monitoring
+spec:
+  healthChecks:
+  - kind: Deployment
+    name: prometheus-operator
+    namespace: monitoring
+  interval: 1h0m0s
+  path: ./manifests/setup
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: kube-prometheus
+  timeout: 2m0s
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: kube-prometheus
+  namespace: monitoring
+spec:
+  healthChecks:
+  - kind: StatefulSet
+    name: prometheus-k8s
+    namespace: monitoring
+  - kind: StatefulSet
+    name: alertmanager-main
+    namespace: monitoring
+  - kind: Deployment
+    name: grafana
+    namespace: monitoring
+  - kind: DaemonSet
+    name: node-exporter
+    namespace: monitoring
+  - kind: Deployment
+    name: kube-state-metrics
+    namespace: monitoring
+  - kind: Deployment
+    name: prometheus-adapter
+    namespace: monitoring
+  - kind: Deployment
+    name: blackbox-exporter
+    namespace: monitoring
+  interval: 1h0m0s
+  path: ./manifests
+  prune: true
+  dependsOn:
+    - name: kube-prometheus-setup
+  sourceRef:
+    kind: GitRepository
+    name: kube-prometheus
+  timeout: 2m0s
