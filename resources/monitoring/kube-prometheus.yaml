@@ -11,7 +11,7 @@ metadata:
 spec:
   interval: 30m0s
   ref:
-    branch: main
+    branch: master
   url: https://github.com/prometheus-operator/kube-prometheus
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
