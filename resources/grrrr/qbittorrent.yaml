@@ -79,6 +79,13 @@ spec:
               name: config
             - mountPath: /videos
               name: nfs-videos
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
         - name: socks-proxy
           image: xkuma/socks5
           securityContext:
