@@ -89,7 +89,7 @@ spec:
           - containerPort: 8000
           env:
           - name: QBITTORRENT_HOST
-            value: localhost
+            value: qbittorrent
           - name: QBITTORRENT_PORT
             value: "8080"
         - name: socks-proxy
