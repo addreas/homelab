@@ -40,25 +40,6 @@ spec:
               memory: "512Mi"
             requests:
               cpu: "100m"
-        - name: exportarr
-          image: onedr0p/exportarr:master
-          command:
-          - exportarr
-          - sonarr
-          env:
-          - name: PORT2
-            value: "9707"
-          - name: URL
-            value: http://localhost:8989
-          - name: ENABLE_EPISODE_QUALITY_METRICS
-            value: "false"
-          - name: APIKEY
-            valueFrom:
-              secretKeyRef:
-                name: sonarr-apikey
-                key: apikey
-          ports:
-            - containerPort: 9707
       terminationGracePeriodSeconds: 0
       volumes:
         - name: nfs-videos
@@ -89,20 +70,6 @@ spec:
   ports:
     - name: "http"
       port: 8989
-    - name: "metrics"
-      port: 9707
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: sonarr
-spec:
-  endpoints:
-  - port: "metrics"
-    interval: 30s
-  selector:
-    matchLabels:
-      app: sonarr
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

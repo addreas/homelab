@@ -83,15 +83,6 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "100m"
-        - name: qbittorrent-metrics
-          image: esanchezm/prometheus-qbittorrent-exporter
-          ports:
-          - containerPort: 8000
-          env:
-          - name: QBITTORRENT_HOST
-            value: qbittorrent.default.svc.cluster.local
-          - name: QBITTORRENT_PORT
-            value: "8080"
         - name: socks-proxy
           image: xkuma/socks5
           securityContext:
@@ -132,28 +123,53 @@ apiVersion: v1
 kind: Service
 metadata:
   name: qbittorrent
-  labels:
-    app: qbittorrent
 spec:
   selector:
     app: qbittorrent
   ports:
     - name: "http"
       port: 8080
-    - name: "metrics"
-      port: 8000
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: qbittorrent
+  name: qbittorrent-exporter
 spec:
-  endpoints:
-  - port: "metrics"
-    interval: 30s
   selector:
     matchLabels:
-      app: qbittorrent
+      app: qbittorrent-exporter
+  template:
+    metadata:
+      labels:
+        app: qbittorrent-exporter
+    spec:
+      containers:
+        - name: metrics-exporter
+          image: esanchezm/prometheus-qbittorrent-exporter
+          ports:
+          - name: http-prom
+            containerPort: 8000
+          env:
+          - name: QBITTORRENT_HOST
+            value: qbittorrent.default.svc.cluster.local
+          - name: QBITTORRENT_PORT
+            value: "8080"
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: qbittorrent-exporter
+spec:
+  podMetricsEndpoints:
+    - port: http-prom
+      interval: 30s
+  selector:
+    matchLabels:
+      app: qbittorrent-exporter
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
