@@ -83,6 +83,15 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "100m"
+        - name: qbittorrent-metrics
+          image: esanchezm/prometheus-qbittorrent-exporter
+          ports:
+          - containerPort: 8000
+          env:
+          - name: QBITTORRENT_HOST
+            value: localhost
+          - name: QBITTORRENT_PORT
+            value: "8080"
         - name: socks-proxy
           image: xkuma/socks5
           securityContext:
@@ -129,6 +138,20 @@ spec:
   ports:
     - name: "http"
       port: 8080
+    - name: "metrics"
+      port: 8000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: qbittorrent
+spec:
+  endpoints:
+  - port: "metrics"
+    interval: 30s
+  selector:
+    matchLabels:
+      app: qbittorrent
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

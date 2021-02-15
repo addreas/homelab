@@ -40,6 +40,23 @@ spec:
               memory: "512Mi"
             requests:
               cpu: "100m"
+        - name: exportarr
+          image: onedr0p/exportarr
+          command:
+          - exportarr
+          - radarr
+          env:
+          - name: PORT
+            value: "9707"
+          - name: URL
+            value: http://localhost:7878
+          - name: APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: radarr-apikey
+                key: apikey
+          ports:
+            - containerPort: 9707
       volumes:
         - name: nfs-videos
           nfs:
@@ -68,6 +85,20 @@ spec:
   ports:
     - name: "http"
       port: 7878
+    - name: "metrics"
+      port: 9707
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: radarr
+spec:
+  endpoints:
+  - port: "metrics"
+    interval: 30s
+  selector:
+    matchLabels:
+      app: radarr
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
