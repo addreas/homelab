@@ -83,6 +83,15 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "100m"
+        - name: exporter
+          image: esanchezm/prometheus-qbittorrent-exporter
+          ports:
+          - containerPort: 8000
+          env:
+          - name: QBITTORRENT_HOST
+            value: localhost
+          - name: QBITTORRENT_PORT
+            value: "8080"
         - name: socks-proxy
           image: xkuma/socks5
           securityContext:
@@ -129,47 +138,22 @@ spec:
   ports:
     - name: "http"
       port: 8080
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: qbittorrent-exporter
-spec:
-  selector:
-    matchLabels:
-      app: qbittorrent-exporter
-  template:
-    metadata:
-      labels:
-        app: qbittorrent-exporter
-    spec:
-      containers:
-        - name: metrics-exporter
-          image: esanchezm/prometheus-qbittorrent-exporter
-          ports:
-          - name: http-prom
-            containerPort: 8000
-          env:
-          - name: QBITTORRENT_HOST
-            value: qbittorrent.default.svc.cluster.local
-          - name: QBITTORRENT_PORT
-            value: "8080"
-          resources:
-            limits:
-              cpu: "100m"
-              memory: "128Mi"
+    - name: "metrics"
+      port: 8000
 ---
 apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+kind: ServiceMonitor
 metadata:
-  name: qbittorrent-exporter
+  name: qbittorrent
+  labels:
+    app: qbittorrent
 spec:
-  podMetricsEndpoints:
-    - port: http-prom
-      interval: 30s
+  endpoints:
+  - port: "metrics"
+    interval: 30s
   selector:
     matchLabels:
-      app: qbittorrent-exporter
+      app: qbittorrent
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -217,6 +201,7 @@ data:
     General\UseRandomPort=true
     WebUI\AuthSubnetWhitelist=10.0.0.0/8
     WebUI\AuthSubnetWhitelistEnabled=true
+    WebUI\LocalHostAuth=false
 ---
 apiVersion: v1
 kind: Service
