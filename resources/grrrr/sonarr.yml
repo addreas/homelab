@@ -41,7 +41,7 @@ spec:
             requests:
               cpu: "100m"
         - name: exportarr
-          image: onedr0p/exportarr
+          image: onedr0p/exportarr:master
           command:
           - exportarr
           - sonarr
