@@ -94,14 +94,14 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: radarr
+  name: sonarr
 spec:
   endpoints:
   - port: "metrics"
     interval: 30s
   selector:
     matchLabels:
-      app: radarr
+      app: sonarr
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
