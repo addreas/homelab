@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: sonarr
-          image: ghcr.io/hotio/sonarr
+          image: ghcr.io/hotio/sonarr:nightly
+          imagePullPolicy: Always
           ports:
           - containerPort: 8989
           env:
@@ -40,12 +41,29 @@ spec:
               memory: "512Mi"
             requests:
               cpu: "100m"
-      terminationGracePeriodSeconds: 0
+        - name: exportarr
+          image: onedr0p/exportarr:master
+          command:
+          - exportarr
+          - sonarr
+          env:
+          - name: PORT
+            value: "9707"
+          - name: URL
+            value: http://localhost:8989
+          - name: APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: sonarr-apikey
+                key: apikey
+          ports:
+            - containerPort: 9707
       volumes:
         - name: nfs-videos
           nfs:
             path: /export/videos
             server: sergio.localdomain
+      terminationGracePeriodSeconds: 0
   volumeClaimTemplates:
     - metadata:
         name: config
@@ -70,6 +88,20 @@ spec:
   ports:
     - name: "http"
       port: 8989
+    - name: "metrics"
+      port: 9707
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: radarr
+spec:
+  endpoints:
+  - port: "metrics"
+    interval: 30s
+  selector:
+    matchLabels:
+      app: radarr
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

@@ -81,10 +81,18 @@ spec:
               name: nfs-videos
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "100m"
+              memory: "512Mi"
+              cpu: "400m"
         - name: exporter
           image: esanchezm/prometheus-qbittorrent-exporter
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsGroup: 1000
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "10m"
           ports:
           - containerPort: 8000
           env:
@@ -100,8 +108,8 @@ spec:
             runAsGroup: 1000
           resources:
             limits:
-              memory: "100Mi"
-              cpu: "100m"
+              memory: "64Mi"
+              cpu: "10m"
           ports:
             - containerPort: 1080
       volumes:
