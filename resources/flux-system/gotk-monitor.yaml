@@ -6,7 +6,7 @@ metadata:
 spec:
   podMetricsEndpoints:
     - port: http-prom
-      interval: 30s
+      interval: 60s
   selector:
     matchExpressions:
       - key: app

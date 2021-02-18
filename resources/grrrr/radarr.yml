@@ -98,7 +98,7 @@ metadata:
 spec:
   endpoints:
   - port: "metrics"
-    interval: 30s
+    interval: 60s
   selector:
     matchLabels:
       app: radarr
