@@ -28,7 +28,7 @@ spec:
             port:
               number: 8080
       - path: /notifications/hub
-        pathType: Prefix
+        pathType: Exact
         backend:
           service:
             name: bitwarden
