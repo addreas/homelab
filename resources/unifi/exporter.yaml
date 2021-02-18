@@ -46,7 +46,8 @@ spec:
   - name: metrics
     port: 9130
   selector:
-    app: unifi-exporter
+    matchLabels:
+      app: unifi-exporter
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
