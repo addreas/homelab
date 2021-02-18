@@ -58,4 +58,4 @@ spec:
       resources:
         requests:
           storage: "5Gi"
-      storageClassName: default
+      storageClassName: nfs-csi
