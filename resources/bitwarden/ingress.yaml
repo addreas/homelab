@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bitwarden
+  labels:
+    app: bitwarden
+  annotations:
+    cert-manager.io/cluster-issuer: addem-se-letsencrypt
+    ingress.kubernetes.io/ssl-redirect: "true"
+    # ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
+    ingress.kubernetes.io/auth-tls-secret: client-auth-root-ca-cert
+    ingress.kubernetes.io/auth-tls-strict: "true"
+    ingress.kubernetes.io/auth-tls-verify-client: "on"
+spec:
+  tls:
+  - hosts:
+    - bitwarden.addem.se
+    secretName: bitwarden-cert
+  rules:
+  - host: bitwarden.addem.se
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bitwarden
+            port:
+              number: 8080
+      - path: /notifications/hub
+        pathType: Prefix
+        backend:
+          service:
+            name: bitwarden
+            port:
+              number: 3012
