@@ -16,7 +16,7 @@ spec:
         app: bitwarden
     spec:
       containers:
-      - image: mprasil/bitwarden:latest
+      - image: bitwardenrs/server
         name: bitwarden
         envFrom:
         - configMapRef:

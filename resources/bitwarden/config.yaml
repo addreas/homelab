@@ -12,7 +12,7 @@ data:
   WEBSOCKET_ENABLED: 'true'
   DATA_FOLDER: '/data'
   DOMAIN: 'https://bitwarden.addem.se'
-  ROCKET_WORKERS: '10'
+  ROCKET_WORKERS: '2'
   SHOW_PASSWORD_HINT: 'false'
   WEB_VAULT_ENABLED: 'true'
   ROCKET_PORT: '8080'
