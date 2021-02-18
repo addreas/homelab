@@ -11,6 +11,9 @@ metadata:
     ingress.kubernetes.io/auth-tls-secret: client-auth-root-ca-cert
     ingress.kubernetes.io/auth-tls-strict: "true"
     ingress.kubernetes.io/auth-tls-verify-client: "on"
+    ingress.kubernetes.io/config-frontend: |
+      option forwardfor header X-Real-IP
+      http-request set-header X-Real-IP %[src]
 spec:
   tls:
   - hosts:
