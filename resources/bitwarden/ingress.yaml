@@ -7,10 +7,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/ssl-redirect: "true"
-    # ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-    ingress.kubernetes.io/auth-tls-secret: client-auth-root-ca-cert
-    ingress.kubernetes.io/auth-tls-strict: "true"
-    ingress.kubernetes.io/auth-tls-verify-client: "on"
     ingress.kubernetes.io/config-frontend: |
       option forwardfor header X-Real-IP
       http-request set-header X-Real-IP %[src]
