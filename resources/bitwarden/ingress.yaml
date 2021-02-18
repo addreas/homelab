@@ -7,7 +7,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
     ingress.kubernetes.io/ssl-redirect: "true"
-    ingress.kubernetes.io/config-frontend: |
+    ingress.kubernetes.io/config-backend: |
       option forwardfor header X-Real-IP
       http-request set-header X-Real-IP %[src]
 spec:
