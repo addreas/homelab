@@ -1,0 +1,36 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: unifi-exporter
+  namespace: default
+spec:
+  interval: 30m0s
+  ref:
+    branch: master
+  url: https://github.com/jessestuart/unifi_exporter
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: unifi-exporter
+  namespace: default
+spec:
+  interval: 1h0m0s
+  path: ./manifests
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: unifi-exporter
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: unifi-exporter-credentials
+  namespace: default
+spec:
+  encryptedData:
+    config.yml: AgA7ciVeKylwAIXF9LUMNrGicXfCIp+jE4/YqFvAxw/31QvFV+TTnWWTz+BhH+RqlVB+0HGfyB5i1CrodkmDM6cUr4tJQjQ2tbnzsO9p9XYr3Vom69m1scp2TAzl/nF7w08OWUSipIv5O0oFFRO7Gmvssp/V5sZXULM1See9BQSeDZlGkftAOghkJsM34lpdkWzfRWezg0q6UibpywUS/hNTglzEEM0Lc3YNPzILvqj3O/S0WEN8lwcq4xUAMPFs4AwH6shBQbqnBeocVD1qxoNJpkmlmmhUCPhbZ9CW5jrzwF1tTn9YBVjwpxHhEC9UVxO/7zRg0E6Gb6PhX1LYu/hTTokX0GFKjmDSTrPwyM/szyhd8zCNdLsSHk/RUnc5Q2Y+eCytgc0VnhUtozR+8h3+LIetk1yiWlHi0KTBslsRFV7duE9KzBOTW2h91vbjoOuKL5mg4I6KYifLG0QbZzE0DPqzNgEuWsRRsHtyx9G0AONr4I2K7X5St+Sn2TmM0cfpkXz6B/GyqJPWLp0+k4KXurQ3QvutItcTAa6rAiFpdRgw7mqALsUR0dcI+CXqUkVu0H6b2wm5zdKyZZ0xXHWH6zosxgq8OOd6YIjE9j/8p08Nxru30TlXWDpQhAELeqAmdib4L4kh3PyIvDICJhVIC4dAOwHOSIBQ/58pGJ6vfARtn3FO7f9lCBDS4/TUKnEy+iJcbJYoqbyNO0a98dkEfjOeREfFjy9Q6xRG+FowEuXVyKY7Muw4OR3kQ000tAZuZHOVkyxTF52GPShYBF+Ec4QpTI3/yXun7iQ2K0LPBypzioM8bTP0NgrEpdMlYZUiJTN9Ip+Bc0lpsBDg5B/XGvAW/phrwKMutIDq69zNCOzbPuiRW6LqSAVXDUCgiZGJoCTZjgVHhZdMEq1d5et0AJY4gtKS3W7T3izpf3EDQVKmVTpWLXQ1gRUEF0rycKCBghaRRRww
+  template:
+    metadata:
+      name: unifi-exporter-credentials
+      namespace: default
