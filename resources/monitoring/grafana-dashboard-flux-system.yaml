@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: grafana-dashboard-flux-system
   labels:
-    github: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards
+    github: fluxcd/flux2/manifests/monitoring/grafana/dashboards
   namespace: monitoring
 data:
   gotk-cluster.json: |-
