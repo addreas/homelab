@@ -38,6 +38,8 @@ metadata:
   name: kube-prometheus
   namespace: monitoring
 spec:
+  dependsOn:
+    - name: kube-prometheus-setup
   healthChecks:
   - kind: StatefulSet
     name: prometheus-k8s
@@ -62,9 +64,31 @@ spec:
     namespace: monitoring
   interval: 1h0m0s
   path: ./manifests
+  patchesStrategicMerge:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: grafana
+    spec:
+      template:
+        spec:
+          containers:
+          - name: grafana
+            volumeMounts:
+            - name: grafana-dashboard-flux-system
+              mountPath: /grafana-dashboard-definitions/0/flux-system
+              readOnly: false
+            - name: grafana-dashboard-qbittorrent
+              mountPath: /grafana-dashboard-definitions/0/qbittorrent
+              readOnly: false
+          volumes:
+            - configMap:
+                name: grafana-dashboard-flux-system
+              name: grafana-dashboard-flux-system
+            - configMap:
+                name: grafana-dashboard-qbittorrent
+              name: grafana-dashboard-qbittorrent
   prune: true
-  dependsOn:
-    - name: kube-prometheus-setup
   sourceRef:
     kind: GitRepository
     name: kube-prometheus
