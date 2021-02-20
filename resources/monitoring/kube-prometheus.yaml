@@ -69,6 +69,7 @@ spec:
     kind: Deployment
     metadata:
       name: grafana
+      namespace: monitoring
     spec:
       template:
         spec:
