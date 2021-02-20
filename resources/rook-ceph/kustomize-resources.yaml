@@ -22,6 +22,7 @@ spec:
     kind: Deployment
     metadata:
       name: rook-ceph-operator
+      namespace: rook-ceph
     spec:
       template:
         spec:
