@@ -26,6 +26,12 @@ spec:
   values:
     controller:
       replicaCount: 2
+      # stats:
+      #   enabled: true
+      # metrics:
+      #   enabled: true
+      # serviceMonitor:
+      #   enabled: true
       extraArgs:
         watch-ingress-without-class: "true"
         allow-cross-namespace: "true"

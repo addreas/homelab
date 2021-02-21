@@ -89,6 +89,26 @@ spec:
             - configMap:
                 name: grafana-dashboard-qbittorrent
               name: grafana-dashboard-qbittorrent
+  - apiVersion: monitoring.coreos.com/v1
+    kind: Prometheus
+    metadata:
+      name: k8s
+      namespace: monitoring
+    spec:
+      retention: 30d
+      retentionSize: 5Gi
+      storage:
+        volumeClaimTemplate:
+        - metadata:
+            name: config
+          spec:
+            storageClassName: nfs-csi
+            resources:
+              requests:
+                storage: 5Gi
+            volumeMode: Filesystem
+            accessModes:
+              - ReadWriteOnce
   prune: true
   sourceRef:
     kind: GitRepository
