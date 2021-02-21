@@ -13,6 +13,8 @@ spec:
         app: jackett
         vpn-egress: client
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: jackett
           image: ghcr.io/hotio/jackett
@@ -43,11 +45,9 @@ spec:
     - metadata:
         name: config
       spec:
-        storageClassName: nfs-csi
         resources:
           requests:
             storage: 1Gi
-        volumeMode: Filesystem
         accessModes:
           - ReadWriteOnce
 ---

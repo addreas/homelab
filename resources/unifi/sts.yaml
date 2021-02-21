@@ -17,6 +17,8 @@ spec:
       labels:
         app: unifi-controller
     spec:
+      securityContext:
+        fsGroup: 1000
       initContainers:
         - name: copy-static
           image: quay.io/quay/busybox
@@ -59,7 +61,6 @@ spec:
         name: config
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: "nfs-csi"
         resources:
           requests:
-            storage: 1G
+            storage: 5Gi

@@ -13,6 +13,8 @@ spec:
         app: radarr
         vpn-egress: client
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: radarr
           image: ghcr.io/hotio/radarr
@@ -69,11 +71,9 @@ spec:
     - metadata:
         name: config
       spec:
-        storageClassName: nfs-csi
         resources:
           requests:
-            storage: 1Gi
-        volumeMode: Filesystem
+            storage: 5Gi
         accessModes:
           - ReadWriteOnce
 ---

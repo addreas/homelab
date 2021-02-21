@@ -13,6 +13,8 @@ spec:
         app: sonarr
         vpn-egress: client
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: sonarr
           image: ghcr.io/hotio/sonarr:nightly
@@ -69,11 +71,9 @@ spec:
     - metadata:
         name: config
       spec:
-        storageClassName: nfs-csi
         resources:
           requests:
-            storage: 1Gi
-        volumeMode: Filesystem
+            storage: 5Gi
         accessModes:
           - ReadWriteOnce
 ---
