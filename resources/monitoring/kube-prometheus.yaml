@@ -82,6 +82,9 @@ spec:
             - name: grafana-dashboard-qbittorrent
               mountPath: /grafana-dashboard-definitions/0/qbittorrent
               readOnly: false
+            - name: grafana-dashboard-longhorn
+              mountPath: /grafana-dashboard-definitions/0/longhorn
+              readOnly: false
           volumes:
             - configMap:
                 name: grafana-dashboard-flux-system
@@ -89,6 +92,9 @@ spec:
             - configMap:
                 name: grafana-dashboard-qbittorrent
               name: grafana-dashboard-qbittorrent
+            - configMap:
+                name: grafana-dashboard-longhorn
+              name: grafana-dashboard-longhorn
   - apiVersion: monitoring.coreos.com/v1
     kind: Prometheus
     metadata:
