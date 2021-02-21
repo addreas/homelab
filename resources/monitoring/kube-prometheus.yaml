@@ -99,7 +99,7 @@ spec:
       retentionSize: 5Gi
       storage:
         volumeClaimTemplate:
-        - metadata:
+          metadata:
             name: config
           spec:
             storageClassName: nfs-csi
