@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: longhorn-prometheus-servicemonitor
-  namespace: monitoring
+  namespace: longhorn-system
   labels:
     name: longhorn-prometheus-servicemonitor
 spec:
@@ -22,7 +22,7 @@ metadata:
     prometheus: longhorn
     role: alert-rules
   name: prometheus-longhorn-rules
-  namespace: monitoring
+  namespace: longhorn-system
 spec:
   groups:
   - name: longhorn.rules
