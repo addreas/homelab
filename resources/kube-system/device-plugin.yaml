@@ -25,6 +25,24 @@ data:
             "ID_VENDOR": "FTDI",
             "ID_MODEL": "FT230X_Basic_UART"
           }
+        },
+        "addem.se/dev_deconz_conbee_ii": {
+          "containerPath": "/dev/deconz-conbee-ii",
+          "permissions": "rw",
+          "matchProperties": {
+            "SUBSYSTEM": "tty",
+            "ID_VENDOR": "dresden_elektronik_ingenieurtechnik_GmbH",
+            "ID_MODEL": "ConBee_II"
+          }
+        },
+        "addem.se/dev_aeotec_zstick": {
+          "containerPath": "/dev/aeotec-z-stick",
+          "permissions": "rw",
+          "matchProperties": {
+            "SUBSYSTEM": "tty",
+            "ID_VENDOR": "0658",
+            "ID_MODEL": "0200"
+          }
         }
       }
     }
