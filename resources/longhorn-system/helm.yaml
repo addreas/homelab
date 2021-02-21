@@ -28,3 +28,16 @@ spec:
         name: longhorn
         namespace: longhorn-system
       interval: 1h
+  values:
+    csi:
+      kubeletRootDir: /var/lib/kubelet
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "2880" # 48 hours in minutes
