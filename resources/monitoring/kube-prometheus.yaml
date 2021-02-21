@@ -102,7 +102,6 @@ spec:
           metadata:
             name: config
           spec:
-            storageClassName: nfs-csi
             resources:
               requests:
                 storage: 5Gi
