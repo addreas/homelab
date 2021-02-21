@@ -26,12 +26,24 @@ spec:
   values:
     prometheus:
       enabled: true
+      serviceMonitor:
+        enabled: true
     operator:
       prometheus:
         enabled: true
+        serviceMonitor:
+          enabled: true
     hubble:
       metrics:
-        enabled: true
+        enabled:
+        - dns:query;ignoreAAAA
+        - drop
+        - tcp
+        - flow
+        - icmp
+        - http
+        serviceMonitor:
+          enabled: true
 
 # perhaps?
 # https://archive.fosdem.org/2020/schedule/event/containers_bpf/
