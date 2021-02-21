@@ -9,7 +9,7 @@ metadata:
   name: kube-prometheus
   namespace: monitoring
 spec:
-  interval: 1h0m0s
+  interval: 1h
   ref:
     branch: master
   url: https://github.com/prometheus-operator/kube-prometheus
@@ -24,7 +24,7 @@ spec:
   - kind: Deployment
     name: prometheus-operator
     namespace: monitoring
-  interval: 1h0m0s
+  interval: 30m
   path: ./manifests/setup
   prune: true
   sourceRef:
@@ -62,7 +62,7 @@ spec:
   - kind: Deployment
     name: blackbox-exporter
     namespace: monitoring
-  interval: 1h0m0s
+  interval: 30m
   path: ./manifests
   patchesStrategicMerge:
   - apiVersion: apps/v1
