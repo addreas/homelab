@@ -9,7 +9,7 @@ metadata:
   name: kube-prometheus
   namespace: monitoring
 spec:
-  interval: 30m0s
+  interval: 1h0m0s
   ref:
     branch: master
   url: https://github.com/prometheus-operator/kube-prometheus
