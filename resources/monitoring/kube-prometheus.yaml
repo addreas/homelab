@@ -105,7 +105,7 @@ spec:
       storage:
         volumeClaimTemplate:
           metadata:
-            name: config
+            name: data
           spec:
             resources:
               requests:
