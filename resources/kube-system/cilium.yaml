@@ -23,6 +23,15 @@ spec:
         name: cilium
         namespace: kube-system
       interval: 1h
+  values:
+    prometheus:
+      enabled: true
+    operator:
+      prometheus:
+        enabled: true
+    hubble:
+      metrics: enabled
+
 # perhaps?
 # https://archive.fosdem.org/2020/schedule/event/containers_bpf/
 # https://docs.cilium.io/en/v1.9/gettingstarted/kubeproxy-free/
