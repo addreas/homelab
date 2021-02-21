@@ -30,7 +30,8 @@ spec:
       prometheus:
         enabled: true
     hubble:
-      metrics: enabled
+      metrics:
+        enabled: true
 
 # perhaps?
 # https://archive.fosdem.org/2020/schedule/event/containers_bpf/
