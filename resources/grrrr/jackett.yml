@@ -36,10 +36,10 @@ spec:
               name: config
           resources:
             limits:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: 100m
+              memory: 256Mi
             requests:
-              cpu: "100m"
+              cpu: 10m
       terminationGracePeriodSeconds: 0
   volumeClaimTemplates:
     - metadata:

@@ -85,6 +85,10 @@ spec:
             mountPath: /run/udev
           - name: config
             mountPath: /k8s-hostdevice-plugin
+        resources:
+          limits:
+            cpu: 10m
+            memory: 64Gi
       volumes:
         - name: device-plugin
           hostPath:

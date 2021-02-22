@@ -44,11 +44,11 @@ spec:
           name: data
         resources:
           limits:
-            cpu: 300m
-            memory: 1Gi
+            cpu: 100m
+            memory: 256Gi
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 5m
+            memory: 128Mi
   volumeClaimTemplates:
   - metadata:
       name: data

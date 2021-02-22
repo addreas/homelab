@@ -39,10 +39,11 @@ spec:
               name: nfs-videos
           resources:
             limits:
-              cpu: "1500m"
-              memory: "512Mi"
+              cpu: 1500m
+              memory: 2Gi
             requests:
-              cpu: "100m"
+              cpu: 100m
+              memory: 512Mi
         - name: exportarr
           image: onedr0p/exportarr:master
           imagePullPolicy: IfNotPresent
@@ -61,6 +62,10 @@ spec:
                 key: apikey
           ports:
             - containerPort: 9707
+          resources:
+            limits:
+              cpu: 10m
+              memory: 64Mi
       volumes:
         - name: nfs-videos
           nfs:
