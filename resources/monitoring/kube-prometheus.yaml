@@ -30,7 +30,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: kube-prometheus
-  timeout: 2m0s
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -137,7 +136,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: kube-prometheus
-  timeout: 2m0s
 ---
 apiVersion: v1
 kind: Service

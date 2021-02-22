@@ -1,7 +1,8 @@
-KIND=$1
-NAME=$2
-NAMESPACE=$3
-RELEASE=$4
-kubectl -n $3 annotate $KIND $NAME meta.helm.sh/release-name=$RELEASE
-kubectl -n $3 annotate $KIND $NAME meta.helm.sh/release-namespace=$NAMESPACE
-kubectl -n $3 label $KIND $NAME app.kubernetes.io/managed-by=Helm
+# usage: ./helm-takeover.sh haproxy kube-system role haproxy-haproxy-ingress
+RELEASE=$1
+NAMESPACE=$2
+KIND=$3
+NAME=$4
+kubectl -n $NAMESPACE annotate $KIND $NAME meta.helm.sh/release-name=$RELEASE
+kubectl -n $NAMESPACE annotate $KIND $NAME meta.helm.sh/release-namespace=$NAMESPACE
+kubectl -n $NAMESPACE label $KIND $NAME app.kubernetes.io/managed-by=Helm
