@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: grafana
+  name: alertmanager
   namespace: monitoring
   annotations:
     cert-manager.io/cluster-issuer: addem-se-letsencrypt
