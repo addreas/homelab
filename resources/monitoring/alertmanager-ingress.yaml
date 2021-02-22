@@ -22,6 +22,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: alertmanager
+                name: alertmanager-main
                 port:
                   number: 9093
