@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jonas
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: jonas-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: jonas
+  namespace: default
+
+# SECRET=$(kubectl get sa jonas -o jsonpath='{.secrets[0].name}')
+# CA=$(kubectl get secret $SECRET -o jsonpath={'.data.ca\.crt'})
+# TOKEN=$(kubectl get secret $SECRET -o jsonpath={'.data.token'} | python -m base64 -d)
+
+# kubectl config set-cluster nucles --server https://nucles.localdomain:6443 --certificate-authority <(echo $CA | python -m base64 -d) --embed-certs
+# kubectl config set-credentials jonas-nucles --token $TOKEN
+# kubectl config set-context nucles --cluster nucles --user jonas-nucles
