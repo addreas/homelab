@@ -44,6 +44,25 @@ spec:
         - http
         serviceMonitor:
           enabled: true
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+        - apiVersion: monitoring.coreos.com/v1
+          kind: ServiceMonitor
+          metadata:
+            name: cilium-agent
+            namespace: kube-system
+          spec:
+            targetLabels:
+              - k8s-app
+        - apiVersion: monitoring.coreos.com/v1
+          kind: ServiceMonitor
+          metadata:
+            name: cilium-operator
+            namespace: kube-system
+          spec:
+            targetLabels:
+              - io.cilium/app
 
 # perhaps?
 # https://archive.fosdem.org/2020/schedule/event/containers_bpf/
