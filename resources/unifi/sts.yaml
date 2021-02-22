@@ -65,9 +65,7 @@ spec:
           - containerPort: 9130
           volumeMounts:
             - name: config
-              mountPath: /unifi_exporter/config.yml
-              subPath: config.yml
-              readOnly: true
+              mountPath: /unifi_exporter
           resources:
             limits:
               cpu: 10m
