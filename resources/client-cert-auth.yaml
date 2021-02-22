@@ -39,3 +39,15 @@ spec:
   commonName: addem
   usages:
     - client auth
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jonas
+spec:
+  issuerRef:
+    name: client-auth-root-issuer
+  secretName: jonas-cert
+  commonName: jonas
+  usages:
+    - client auth
