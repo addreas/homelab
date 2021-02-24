@@ -6,7 +6,8 @@ kubectl apply -f https://github.com/weaveworks/kured/releases/download/1.6.1/kur
 
 sudo transactional-update shell
 
+ln -s /usr/bin/systemctl /bin/systemctl
 echo "REBOOT_METHOD=kured" > /etc/transactional-update.conf
 exit
 
-sudo reboot
+sudo systemctl reboot
