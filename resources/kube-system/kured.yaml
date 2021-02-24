@@ -29,3 +29,5 @@ spec:
       period: 10m
     metrics:
       create: true
+# requires /bin/systemctl to exist
+# ln -s /usr/bin/systemctl /bin/systemctl
