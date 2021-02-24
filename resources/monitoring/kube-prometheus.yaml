@@ -113,6 +113,9 @@ spec:
                 name: grafana-cilium-operator-dashboard
               name: grafana-cilium-operator-dashboard
             - configMap:
+                name: grafana-hubble-dashboard
+              name: grafana-hubble-dashboard
+            - configMap:
                 name: grafana-dashboard-unifi-controller
               name: grafana-dashboard-unifi-controller
   - apiVersion: monitoring.coreos.com/v1
