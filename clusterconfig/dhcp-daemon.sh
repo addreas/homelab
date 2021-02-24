@@ -9,4 +9,4 @@ sed -i 's#/opt/cni/bin#/usr/libexec/cni#' cni-dhcp.service
 systemctl enable cni-dhcp.socket
 exit
 
-sudo reboot
+sudo systemctl reboot
