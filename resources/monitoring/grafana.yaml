@@ -42,8 +42,17 @@ spec:
         folderAnnotation: grafana_dashboard
         provider:
           foldersFromFilesStructure: true
-      datasources:
-        enabeld: true
+
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+        - name: Prometheus
+          type: prometheus
+          url: "http://prometheus-k8s.monitoring.svc:9090"
+          access: proxy
+          isDefault: true
+          editable: false
     serviceMonitor:
       enabled: true
 

@@ -275,27 +275,3 @@ spec:
   ports:
   - name: https-metrics
     port: 10257
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: grafana-datasource-prometheus-k8s
-  labels:
-    grafana_datasource: "obviously"
-data:
-  key: |
-    {
-        "apiVersion": 1,
-        "datasources": [
-            {
-                "access": "proxy",
-                "editable": false,
-                "name": "prometheus",
-                "orgId": 1,
-                "type": "prometheus",
-                "url": "http://prometheus-k8s.monitoring.svc:9090",
-                "version": 1
-            }
-        ]
-    }
