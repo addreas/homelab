@@ -1,0 +1,11 @@
+[Unit]
+Description=Longhorn
+
+[Mount]
+What=/dev/disk/by-uuid/7779cb61-667c-4781-acb1-1783e33f0aca
+Where=/var/lib/longhorn
+Type=ext4
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target
