@@ -11,8 +11,11 @@ metadata:
 spec:
   interval: 1h
   ref:
-    branch: master
+    branch: main
   url: https://github.com/prometheus-operator/kube-prometheus
+  ignore: |
+    ./manifests/grafana-*
+    ./manifests/blackbox-*
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -46,9 +49,6 @@ spec:
   - kind: StatefulSet
     name: alertmanager-main
     namespace: monitoring
-  - kind: Deployment
-    name: grafana
-    namespace: monitoring
   - kind: DaemonSet
     name: node-exporter
     namespace: monitoring
@@ -58,66 +58,170 @@ spec:
   - kind: Deployment
     name: prometheus-adapter
     namespace: monitoring
-  - kind: Deployment
-    name: blackbox-exporter
-    namespace: monitoring
   interval: 30m
   path: ./manifests
   patchesStrategicMerge:
-  - apiVersion: apps/v1
-    kind: Deployment
+  - apiVersion: v1
+    kind: ConfigMap
     metadata:
-      name: grafana
+      name: grafana-dashboard-apiserver
       namespace: monitoring
-    spec:
-      template:
-        spec:
-          containers:
-          - name: grafana
-            volumeMounts:
-            - name: grafana-dashboard-flux-system
-              mountPath: /grafana-dashboard-definitions/0/flux-system
-              readOnly: false
-            - name: grafana-dashboard-qbittorrent
-              mountPath: /grafana-dashboard-definitions/0/qbittorrent
-              readOnly: false
-            - name: grafana-dashboard-longhorn
-              mountPath: /grafana-dashboard-definitions/0/longhorn
-              readOnly: false
-            - name: grafana-cilium-dashboard
-              mountPath: /grafana-dashboard-definitions/0/cilium
-              readOnly: false
-            - name: grafana-cilium-operator-dashboard
-              mountPath: /grafana-dashboard-definitions/0/cilium-operator
-              readOnly: false
-            - name: grafana-hubble-dashboard
-              mountPath: /grafana-dashboard-definitions/0/hubble
-              readOnly: false
-            - name: grafana-dashboard-unifi-controller
-              mountPath: /grafana-dashboard-definitions/0/unifi-controller
-              readOnly: false
-          volumes:
-            - configMap:
-                name: grafana-dashboard-flux-system
-              name: grafana-dashboard-flux-system
-            - configMap:
-                name: grafana-dashboard-qbittorrent
-              name: grafana-dashboard-qbittorrent
-            - configMap:
-                name: grafana-dashboard-longhorn
-              name: grafana-dashboard-longhorn
-            - configMap:
-                name: grafana-cilium-dashboard
-              name: grafana-cilium-dashboard
-            - configMap:
-                name: grafana-cilium-operator-dashboard
-              name: grafana-cilium-operator-dashboard
-            - configMap:
-                name: grafana-hubble-dashboard
-              name: grafana-hubble-dashboard
-            - configMap:
-                name: grafana-dashboard-unifi-controller
-              name: grafana-dashboard-unifi-controller
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-cluster-total
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-controller-manager
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-cluster
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-namespace
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-node
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-pod
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-workload
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-k8s-resources-workloads-namespace
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-kubelet
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-namespace-by-pod
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-namespace-by-workload
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-node-cluster-rsrc-use
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-node-rsrc-use
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-nodes
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-persistentvolumesusage
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-pod-total
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-prometheus
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-prometheus-remote-write
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-proxy
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-scheduler
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-statefulset
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: grafana-dashboard-workload-total
+      namespace: monitoring
+      labels:
+        grafana_dashboard: kube-prometheus
   - apiVersion: monitoring.coreos.com/v1
     kind: Prometheus
     metadata:
@@ -171,3 +275,27 @@ spec:
   ports:
   - name: https-metrics
     port: 10257
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource-prometheus-k8s
+  labels:
+    grafana_datasource: "obviously"
+data:
+  key: |
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+                "access": "proxy",
+                "editable": false,
+                "name": "prometheus",
+                "orgId": 1,
+                "type": "prometheus",
+                "url": "http://prometheus-k8s.monitoring.svc:9090",
+                "version": 1
+            }
+        ]
+    }

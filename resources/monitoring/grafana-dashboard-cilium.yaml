@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: grafana
+    grafana_dashboard: cilium
   name: grafana-cilium-dashboard
   namespace: monitoring
 data:
@@ -8161,7 +8161,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: grafana
+    grafana_dashboard: cilium
   name: grafana-cilium-operator-dashboard
   namespace: monitoring
 data:
@@ -9170,7 +9170,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: grafana
+    grafana_dashboard: cilium
   name: grafana-hubble-dashboard
   namespace: monitoring
 data:

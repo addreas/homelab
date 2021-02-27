@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    grafana_dashboard: longhorn
   name: grafana-dashboard-longhorn
   namespace: monitoring
 data:

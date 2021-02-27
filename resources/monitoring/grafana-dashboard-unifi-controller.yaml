@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    grafana_dashboard: unifi
   name: grafana-dashboard-unifi-controller
   namespace: monitoring
 data:

@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    grafana_dashboard: grrr
   name: grafana-dashboard-qbittorrent
   namespace: monitoring
 data:
