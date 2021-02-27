@@ -35,7 +35,7 @@ spec:
         org_role: "Admin"
 
     plugins:
-    - pie-chart-panel
+    - grafana-piechart-panel
     sidecar:
       dashboards:
         enabled: true
