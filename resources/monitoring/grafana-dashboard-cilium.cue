@@ -32,7 +32,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -130,7 +130,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -266,7 +266,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -383,7 +383,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -494,7 +494,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -613,7 +613,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "BPF memory usage in the entire system including components not managed by Cilium."
 					fieldConfig: {
 						defaults: custom: {}
@@ -746,7 +746,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -843,7 +843,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -940,7 +940,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1037,7 +1037,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1134,7 +1134,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1231,7 +1231,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1361,7 +1361,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1458,7 +1458,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   2
 					fieldConfig: {
 						defaults: custom: {}
@@ -1557,7 +1557,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1654,7 +1654,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1749,7 +1749,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1846,7 +1846,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -1943,7 +1943,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2059,7 +2059,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   2
 					fieldConfig: {
 						defaults: custom: {}
@@ -2158,7 +2158,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   2
 					fieldConfig: {
 						defaults: custom: {}
@@ -2257,7 +2257,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2354,7 +2354,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2451,7 +2451,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2565,7 +2565,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2658,7 +2658,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2774,7 +2774,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -2936,7 +2936,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3098,7 +3098,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3260,7 +3260,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3407,7 +3407,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   null
 					fieldConfig: {
 						defaults: custom: {}
@@ -3510,7 +3510,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3603,7 +3603,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3696,7 +3696,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3805,7 +3805,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -3901,7 +3901,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4020,7 +4020,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4116,7 +4116,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4258,7 +4258,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4374,7 +4374,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4472,7 +4472,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4592,7 +4592,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4690,7 +4690,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4822,7 +4822,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -4934,7 +4934,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5039,7 +5039,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5163,7 +5163,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5295,7 +5295,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5433,7 +5433,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5537,7 +5537,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5673,7 +5673,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   null
 					fieldConfig: {
 						defaults: custom: {}
@@ -5769,7 +5769,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:   null
 					fieldConfig: {
 						defaults: custom: {}
@@ -5870,7 +5870,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -5976,7 +5976,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6093,7 +6093,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6210,7 +6210,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6336,7 +6336,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6433,7 +6433,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6530,7 +6530,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6627,7 +6627,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6724,7 +6724,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6820,7 +6820,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -6915,7 +6915,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7010,7 +7010,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7105,7 +7105,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7204,7 +7204,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7303,7 +7303,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7402,7 +7402,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7497,7 +7497,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7592,7 +7592,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7687,7 +7687,7 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 					bars:       true
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7784,13 +7784,31 @@ k: ConfigMap: "grafana-cilium-dashboard": {
 			tags: []
 			templating: list: [
 				{
+					current: {
+						selected: false
+						text:     "Prometheus"
+						value:    "Prometheus"
+					}
+					hide:       2
+					includeAll: false
+					label:      null
+					multi:      false
+					name:       "DS_PROMETHEUS"
+					options: []
+					query:       "prometheus"
+					refresh:     1
+					regex:       ""
+					skipUrlSync: false
+					type:        "datasource"
+				},
+				{
 					allValue: "cilium.*"
 					current: {
 						selected: false
 						text:     "All"
 						value:    "$__all"
 					}
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					definition: "label_values(kube_pod_created{pod=~\"^cilium-[a-z|A-Z|0-9]+$\"},pod)"
 					hide:       0
 					includeAll: true
@@ -7875,7 +7893,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -7995,7 +8013,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8121,7 +8139,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8214,7 +8232,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8307,7 +8325,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8400,7 +8418,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8493,7 +8511,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8586,7 +8604,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8679,7 +8697,7 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fieldConfig: {
 						defaults: custom: {}
 						overrides: []
@@ -8772,7 +8790,26 @@ k: ConfigMap: "grafana-cilium-operator-dashboard": {
 			schemaVersion: 25
 			style:         "dark"
 			tags: []
-			templating: list: []
+			templating: list: [
+				{
+					current: {
+						selected: false
+						text:     "Prometheus"
+						value:    "Prometheus"
+					}
+					hide:       2
+					includeAll: false
+					label:      null
+					multi:      false
+					name:       "DS_PROMETHEUS"
+					options: []
+					query:       "prometheus"
+					refresh:     1
+					regex:       ""
+					skipUrlSync: false
+					type:        "datasource"
+				},
+			]
 			time: {
 				from: "now-30m"
 				to:   "now"
@@ -8851,7 +8888,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -8966,7 +9003,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9052,7 +9089,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9138,7 +9175,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9237,7 +9274,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9323,7 +9360,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9409,7 +9446,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9496,7 +9533,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9588,7 +9625,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9717,7 +9754,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9825,7 +9862,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -9946,7 +9983,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10054,7 +10091,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10170,7 +10207,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10265,7 +10302,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10351,7 +10388,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10451,7 +10488,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 4
@@ -10537,7 +10574,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 4
@@ -10623,7 +10660,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10709,7 +10746,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -10808,7 +10845,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 6
@@ -10895,7 +10932,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 6
@@ -10982,7 +11019,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11068,7 +11105,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11154,7 +11191,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11254,7 +11291,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11340,7 +11377,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11457,7 +11494,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11551,7 +11588,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11638,7 +11675,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11725,7 +11762,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11812,7 +11849,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 5
@@ -11902,7 +11939,7 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 					bars:       false
 					dashLength: 10
 					dashes:     false
-					datasource: "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					fill:       1
 					gridPos: {
 						h: 6
@@ -11992,7 +12029,26 @@ k: ConfigMap: "grafana-hubble-dashboard": {
 			schemaVersion: 18
 			style:         "dark"
 			tags: []
-			templating: list: []
+			templating: list: [
+				{
+					current: {
+						selected: false
+						text:     "Prometheus"
+						value:    "Prometheus"
+					}
+					hide:       2
+					includeAll: false
+					label:      null
+					multi:      false
+					name:       "DS_PROMETHEUS"
+					options: []
+					query:       "prometheus"
+					refresh:     1
+					regex:       ""
+					skipUrlSync: false
+					type:        "datasource"
+				},
+			]
 			time: {
 				from: "now-6h"
 				to:   "now"

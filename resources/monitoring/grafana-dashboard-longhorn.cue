@@ -87,7 +87,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:          "text"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "The total number of volumes in the Longhorn storage system"
 					fieldConfig: {
 						defaults: {
@@ -141,7 +141,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Healthy volumes are volumes that are attaching to a node and have the number of healthy replicas equals to the expected number of replicas."
 					fieldConfig: {
 						defaults: {
@@ -203,7 +203,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Note that Longhorn volume actual size is not the size of the filesystem inside a Longhorn volume.  See more at: https://longhorn.io/docs/1.0.2/volumes-and-nodes/volume-size/#volume-actual-size"
 					fieldConfig: {
 						defaults: custom: {}
@@ -304,7 +304,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					}
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Degraded volumes are volumes that have the number of healthy replicas smaller than the expected number of replicas. e.g. User creates a volume with 2 replicas but 1 replicas is failed."
 					fieldConfig: {
 						defaults: {
@@ -362,7 +362,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Fault volumes are volumes that doesn't have any healthy replica."
 					fieldConfig: {
 						defaults: {
@@ -420,7 +420,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "The capacity of each Longhorn volume"
 					fieldConfig: {
 						defaults: {
@@ -523,7 +523,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type: "table"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Attached volumes are volumes that are currently attaching to a node"
 					fieldConfig: {
 						defaults: {
@@ -581,7 +581,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Detached volumes are volumes that aren't currently attaching to a node"
 					fieldConfig: {
 						defaults: {
@@ -663,7 +663,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:          "text"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "The total number of nodes in the Longhorn storage system"
 					fieldConfig: {
 						defaults: {
@@ -717,7 +717,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Disabled nodes are nodes that are disabled by the user.  When users disable a node, Longhorn will not use the node's storage for replica scheduling. Note that Longhorn can still attach a volume to disabled nodes because the actual data of the volume could be on a different node."
 					fieldConfig: {
 						defaults: {
@@ -779,7 +779,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: ""
 					fieldConfig: {
 						defaults: custom: {}
@@ -870,7 +870,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					}
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Schedulable nodes are nodes that Longhorn can use their storage for replica scheduling."
 					fieldConfig: {
 						defaults: {
@@ -928,7 +928,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Failed Nodes are nodes that Longhorn cannot attach volumes to and cannot schedule replicas onto. e.g: when the nodes went down."
 					fieldConfig: {
 						defaults: {
@@ -986,7 +986,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					type:      "stat"
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: ""
 					fieldConfig: {
 						defaults: {
@@ -1186,7 +1186,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "The capacity of each Longhorn volume"
 					fieldConfig: {
 						defaults: custom: {}
@@ -1277,7 +1277,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					}
 				},
 				{
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: ""
 					fieldConfig: {
 						defaults: {
@@ -1385,7 +1385,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: ""
 					fieldConfig: {
 						defaults: custom: {}
@@ -1490,7 +1490,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: ""
 					fieldConfig: {
 						defaults: custom: {}
@@ -1595,7 +1595,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:    0
 					description: "Instance managers are pods that contains the engine and replica processes of Longhorn volumes. See more at https://longhorn.io/docs/1.0.2/concepts/#11-the-longhorn-manager-and-the-longhorn-engine "
 					fieldConfig: {
@@ -1691,7 +1691,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Instance managers are pods that contains the engine and replica processes of Longhorn volumes. See more at https://longhorn.io/docs/1.0.2/concepts/#11-the-longhorn-manager-and-the-longhorn-engine "
 					fieldConfig: {
 						defaults: custom: {}
@@ -1796,7 +1796,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					description: "Instance managers are pods that contains the engine and replica processes of Longhorn volumes. See more at https://longhorn.io/docs/1.0.2/concepts/#11-the-longhorn-manager-and-the-longhorn-engine "
 					fieldConfig: {
 						defaults: custom: {}
@@ -1890,7 +1890,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:    0
 					description: "Longhorn manager pods manage the control plane of the Longhorn system. e.g. Volume scheduling, attaching, detaching, backup, etc,.."
 					fieldConfig: {
@@ -1985,7 +1985,7 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 					bars:        false
 					dashLength:  10
 					dashes:      false
-					datasource:  "prometheus"
+					datasource: "${DS_PROMETHEUS}"
 					decimals:    null
 					description: "Longhorn manager pods manage the control plane of the Longhorn system. e.g. Volume scheduling, attaching, detaching, backup, etc,.."
 					fieldConfig: {
@@ -2080,7 +2080,26 @@ k: ConfigMap: "grafana-dashboard-longhorn": {
 			schemaVersion: 26
 			style:         "dark"
 			tags: []
-			templating: list: []
+			templating: list: [
+				{
+					current: {
+						selected: false
+						text:     "Prometheus"
+						value:    "Prometheus"
+					}
+					hide:       2
+					includeAll: false
+					label:      null
+					multi:      false
+					name:       "DS_PROMETHEUS"
+					options: []
+					query:       "prometheus"
+					refresh:     1
+					regex:       ""
+					skipUrlSync: false
+					type:        "datasource"
+				},
+			]
 			time: {
 				from: "now-1h"
 				to:   "now"

@@ -879,6 +879,24 @@ k: ConfigMap: "grafana-dashboard-qbittorrent": {
 			tags: []
 			templating: list: [
 				{
+					current: {
+						selected: false
+						text:     "Prometheus"
+						value:    "Prometheus"
+					}
+					hide:       2
+					includeAll: false
+					label:      null
+					multi:      false
+					name:       "DS_PROMETHEUS"
+					options: []
+					query:       "prometheus"
+					refresh:     1
+					regex:       ""
+					skipUrlSync: false
+					type:        "datasource"
+				},
+				{
 					allValue: ".*"
 					current: {}
 					datasource: "prometheus"
