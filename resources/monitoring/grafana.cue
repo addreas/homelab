@@ -1,6 +1,5 @@
 package kube
 
-
 k: Grafana: grafana: spec: {
 	config: {
 		server: root_url: "https://grafana.addem.se/"
@@ -27,4 +26,43 @@ k: Grafana: grafana: spec: {
 		}
 	}
 	dashboardLabelSelector: []
+}
+
+k: GitRepository: "grafana-operator": spec: {
+	interval: "1h"
+	ref: branch: "master"
+	url: "https://github.com/integr8ly/grafana-operator.git"
+	ignore: """
+		/*
+		!/deploy/crds
+		!/deploy/roles
+		!/deploy/cluster_roles
+		!/deploy/operator.yaml
+		"""
+}
+
+k: Kustomization: "grafana-operator": spec: {
+	healthChecks: [{
+		kind:      "Deployment"
+		name:      "grafana-operator"
+		namespace: "monitoring"
+	}]
+	interval: "30m"
+	path:     "./deploy"
+	prune:    true
+	sourceRef: {
+		kind: "GitRepository"
+		name: "grafana-operator"
+	}
+	targetNamespace: "monitoring"
+	patchesStrategicMerge: [{
+		apiVersion: "rbac.authorization.k8s.io/v1"
+		kind: "ClusterRoleBinding"
+		metadata: name: "grafana-operator"
+		subjects: [{
+			kind: "ServiceAccount"
+			name: "grafana-operator"
+			namespace: "monitoring"
+		}]
+	}]
 }

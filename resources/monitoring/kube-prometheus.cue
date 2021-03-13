@@ -9,10 +9,10 @@ k: GitRepository: "kube-prometheus": spec: {
 	ignore: """
 		/*
 		!/manifests/setup/
-		!/manifests/prometehus*
+		!/manifests/alertmanager*
 		!/manifests/kube*
 		!/manifests/node*
-		!/manifests/alertmanager*
+		!/manifests/prometheus*
 		"""
 }
 
@@ -66,6 +66,7 @@ k: Kustomization: "kube-prometheus": spec: {
 			namespace: "monitoring"
 		}
 		spec: {
+			replicas: 1
 			retentionSize: "4GB"
 			storage: volumeClaimTemplate: {
 				metadata: name: "data"
@@ -75,6 +76,14 @@ k: Kustomization: "kube-prometheus": spec: {
 				}
 			}
 		}
+	}, {
+		apiVersion: "monitoring.coreos.com/v1"
+		kind: "Alertmanager"
+		metadata: {
+			name: "main"
+			namespace: "monitoring"
+		}
+		spec: replicas: 1
 	}]
 	prune: true
 	sourceRef: {
