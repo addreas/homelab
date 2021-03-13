@@ -12,6 +12,7 @@ k: Grafana: grafana: spec: {
 			org_role: "Admin"
 		}
 	}
+	client: preferService: true
 	ingress: {
 		enabled: true
 		hostname: "grafana.addem.se"
