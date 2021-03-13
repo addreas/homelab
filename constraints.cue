@@ -32,7 +32,10 @@ k: ServiceMonitor: [string]: {
 	spec: selector: matchLabels: _selector
 }
 
-k: GrafanaDashboard: [string]: spec: {
-	json: *"" | string
-	jsonnet: *"" | string
+k: GrafanaDashboard: [string]: {
+	metadata: labels: grafana: "enabled"
+	spec: {
+		json: *"" | string
+		jsonnet: *"" | string
+	}
 }

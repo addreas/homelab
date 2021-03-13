@@ -25,7 +25,9 @@ k: Grafana: grafana: spec: {
 			"ingress.kubernetes.io/auth-tls-verify-client": "on"
 		}
 	}
-	dashboardLabelSelector: []
+	dashboardLabelSelector: [{
+		matchLabels: grafana: "enabled"
+	}]
 }
 
 k: GitRepository: "grafana-operator": spec: {
@@ -56,6 +58,13 @@ k: Kustomization: "grafana-operator": spec: {
 	}
 	targetNamespace: "monitoring"
 	patchesStrategicMerge: [{
+		apiVersion: "apps/v1"
+		kind: "Deployment"
+		metadata: name: "grafana-operator"
+		spec: template: spec: containers: [{
+			args: ["--scan-all"]
+		}]
+	}, {
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind: "ClusterRoleBinding"
 		metadata: name: "grafana-operator"
