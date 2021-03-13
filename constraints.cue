@@ -2,8 +2,6 @@ package kube
 
 context: *"nucles" | string
 
-k: [string]: [string]: metadata: labels: "cue": "true"
-
 k: StatefulSet: [Name=string]: spec: serviceName: Name
 
 k: ["Deployment" | "StatefulSet"]: [string]: {

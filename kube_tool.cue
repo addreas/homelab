@@ -36,6 +36,13 @@ command: apply: {
 	}
 }
 
+command: diff: {
+	task: diff: exec.Run & {
+		cmd: ["kubectl", "--context", context, "diff", "-f-"]
+		stdin: json.MarshalStream(resources)
+	}
+}
+
 command: seal: {
 	scope: *"strict" | "cluster-wide" @tag(scope)
 	task: stdinSecret: file.Read & {
