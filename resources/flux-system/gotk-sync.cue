@@ -8,8 +8,24 @@ k: GitRepository: "homelab": spec: {
 
 k: CueBuild: "homelab": spec: {
 	interval: "5m0s"
+	healthChecks: [{
+		kind:      "StatefulSet"
+		name:      "bitwarden"
+		namespace: "default"
+	}, {
+		kind:      "StatefulSet"
+		name:      "unifi-controller"
+		namespace: "default"
+	}]
 	packages: [
-		"./resources/...",
+		"./resources/bitwarden",
+		"./resources/default",
+		"./resources/flux-system",
+		"./resources/grrrr",
+		"./resources/kube-system",
+		"./resources/longhorn-system",
+		"./resources/monitoring",
+		"./resources/unifi",
 	]
 	prune: true
 	sourceRef: {
