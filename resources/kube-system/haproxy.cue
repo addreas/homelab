@@ -39,6 +39,6 @@ k: GrafanaDashboard: haproxy: spec: {
 	url: "https://grafana.com/api/dashboards/2428/revisions/7/download"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName: "DS_PROMETHEUS"
+		inputName: "DS_LOCALHOST"
 	}]
 }
