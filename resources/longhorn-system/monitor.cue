@@ -4,7 +4,7 @@ k: GrafanaDashboard: "longhorn": spec: {
 	url: "https://grafana.com/api/dashboards/13032/revisions/6/download"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName: "DS_PROMETHEUS"
+		inputName:      "DS_PROMETHEUS"
 	}]
 }
 
@@ -145,4 +145,3 @@ k: PrometheusRule: "prometheus-longhorn-rules": {
 		}]
 	}]
 }
-

@@ -66,35 +66,34 @@ k: HelmRelease: cilium: {
 }
 
 k: GrafanaDashboard: "cilium-agent": {
-	metadata: namespace: "kube-system",
+	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13537/revisions/1/download"
 		datasources: [{
 			datasourceName: "Promethues"
-			inputName: "DS_PROMETHEUS"
+			inputName:      "DS_PROMETHEUS"
 		}]
 	}
 }
 
 k: GrafanaDashboard: "cilium-operator": {
-	metadata: namespace: "kube-system",
+	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13538/revisions/1/download"
 		datasources: [{
 			datasourceName: "Promethues"
-			inputName: "DS_PROMETHEUS"
+			inputName:      "DS_PROMETHEUS"
 		}]
 	}
 }
 
 k: GrafanaDashboard: "cilium-hubble": {
-	metadata: namespace: "kube-system",
+	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13539/revisions/1/download"
 		datasources: [{
 			datasourceName: "Promethues"
-			inputName: "DS_PROMETHEUS"
+			inputName:      "DS_PROMETHEUS"
 		}]
 	}
 }
-

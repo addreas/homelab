@@ -66,7 +66,7 @@ k: Kustomization: "kube-prometheus": spec: {
 			namespace: "monitoring"
 		}
 		spec: {
-			replicas: 1
+			replicas:      1
 			retentionSize: "4GB"
 			storage: volumeClaimTemplate: {
 				metadata: name: "data"
@@ -78,9 +78,9 @@ k: Kustomization: "kube-prometheus": spec: {
 		}
 	}, {
 		apiVersion: "monitoring.coreos.com/v1"
-		kind: "Alertmanager"
+		kind:       "Alertmanager"
 		metadata: {
-			name: "main"
+			name:      "main"
 			namespace: "monitoring"
 		}
 		spec: replicas: 1
@@ -118,7 +118,6 @@ k: Ingress: alertmanager: {
 		}]
 	}
 }
-
 
 k: Service: "kube-scheduler": {
 	metadata: {
@@ -194,14 +193,14 @@ let dashboards = [
 	"proxy",
 	"scheduler",
 	"statefulset",
-	"workload-total"
+	"workload-total",
 ]
 
 k: GrafanaDashboard: {
 	for dashboard in dashboards {
 		"grafana-dashboard-\(dashboard)": spec: configMapRef: {
 			name: "grafana-dashboard-\(dashboard)"
-			key: "\(dashboard).json"
+			key:  "\(dashboard).json"
 		}
 	}
 }

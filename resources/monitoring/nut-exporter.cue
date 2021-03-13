@@ -16,7 +16,7 @@ k: HelmRelease: "nut-exporter": spec: {
 		enabled: true
 		targets: [{
 			hostname: "sergio.localdomain"
-			port: 3493
+			port:     3493
 		}]
 	}
 }

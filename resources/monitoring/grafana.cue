@@ -14,9 +14,9 @@ k: Grafana: grafana: spec: {
 	}
 	client: preferService: true
 	ingress: {
-		enabled: true
-		hostname: "grafana.addem.se"
-		tlsEnabled: true
+		enabled:       true
+		hostname:      "grafana.addem.se"
+		tlsEnabled:    true
 		tlsSecretName: "grafana-cert"
 		annotations: {
 			"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
@@ -60,19 +60,41 @@ k: Kustomization: "grafana-operator": spec: {
 	targetNamespace: "monitoring"
 	patchesStrategicMerge: [{
 		apiVersion: "apps/v1"
-		kind: "Deployment"
+		kind:       "Deployment"
 		metadata: name: "grafana-operator"
 		spec: template: spec: containers: [{
+			name: "grafana-operator"
 			args: ["--scan-all"]
 		}]
 	}, {
 		apiVersion: "rbac.authorization.k8s.io/v1"
-		kind: "ClusterRoleBinding"
+		kind:       "ClusterRoleBinding"
 		metadata: name: "grafana-operator"
 		subjects: [{
-			kind: "ServiceAccount"
-			name: "grafana-operator"
+			kind:      "ServiceAccount"
+			name:      "grafana-operator"
 			namespace: "monitoring"
 		}]
+	}]
+}
+
+k: ClusterRoleBinding: "grafana-operator-configmaps": {
+	roleRef: {
+		apiGroup: "rbac.authorization.k8s.io"
+		kind: "ClusterRole"
+		name: "grafana-operator-configmaps"
+	}
+	subjects: [{
+		kind: "ServiceAccount"
+		name: "grafana-operator"
+		namespace: "monitoring"
+	}]
+}
+
+k: ClusterRole: "grafana-operator-configmaps": {
+	rules: [{
+		apiGroups: [""]
+		resources: ["configmaps"]
+		verbs: ["list", "get"]
 	}]
 }

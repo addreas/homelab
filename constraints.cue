@@ -35,7 +35,7 @@ k: ServiceMonitor: [string]: {
 k: GrafanaDashboard: [string]: {
 	metadata: labels: grafana: "enabled"
 	spec: {
-		json: *"" | string
+		json:    *"" | string
 		jsonnet: *"" | string
 	}
 }

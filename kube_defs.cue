@@ -106,8 +106,8 @@ _kubernetesAPIs: {
 	"bitnami.com/v1alpha1": SealedSecret: sealed_secrets_v1alpha1.#SealedSecret
 
 	"integreatly.org/v1alpha1": {
-		"Grafana": grafana_v1alpha1.#Grafana
-		"GrafanaDashboard": grafana_v1alpha1.#GrafanaDashboard
+		"Grafana":           grafana_v1alpha1.#Grafana
+		"GrafanaDashboard":  grafana_v1alpha1.#GrafanaDashboard
 		"GrafanaDataSource": grafana_v1alpha1.#GrafanaDataSource
 	}
 

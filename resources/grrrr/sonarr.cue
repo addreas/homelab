@@ -142,7 +142,7 @@ k: Ingress: sonarr: {
 k: GrafanaDashboard: "sonarr": spec: {
 	url: "https://grafana.com/api/dashboards/12530/revisions/2/download"
 	plugins: [{
-		name: "grafana-piechart-panel"
+		name:    "grafana-piechart-panel"
 		version: "1.6.1"
 	}]
 }

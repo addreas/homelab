@@ -214,20 +214,20 @@ k: Ingress: qbittorrent: {
 k: ConfigMap: "qbittorrent-static-config": {
 	data: {
 		"qBittorrent.conf": #"""
-		[Preferences]
-		Advanced\AnonymousMode=true
-		Advanced\RecheckOnCompletion=true
-		Connection\GlobalDLLimitAlt=10240
-		Connection\GlobalUPLimitAlt=10240
-		Connection\alt_speeds_on=true
-		Connection\Interface=wg0
-		Connection\InterfaceName=wg0
-		Downloads\SavePath=/videos/downloads/
-		General\UseRandomPort=true
-		WebUI\AuthSubnetWhitelist=10.0.0.0/8
-		WebUI\AuthSubnetWhitelistEnabled=true
-		WebUI\LocalHostAuth=false
-		"""#
+			[Preferences]
+			Advanced\AnonymousMode=true
+			Advanced\RecheckOnCompletion=true
+			Connection\GlobalDLLimitAlt=10240
+			Connection\GlobalUPLimitAlt=10240
+			Connection\alt_speeds_on=true
+			Connection\Interface=wg0
+			Connection\InterfaceName=wg0
+			Downloads\SavePath=/videos/downloads/
+			General\UseRandomPort=true
+			WebUI\AuthSubnetWhitelist=10.0.0.0/8
+			WebUI\AuthSubnetWhitelistEnabled=true
+			WebUI\LocalHostAuth=false
+			"""#
 	}
 }
 
@@ -303,6 +303,6 @@ k: GrafanaDashboard: "qbittorrent": spec: {
 	url: "https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName: "DS_PROMETHEUS"
+		inputName:      "DS_PROMETHEUS"
 	}]
 }
