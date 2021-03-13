@@ -24,16 +24,21 @@ k: HelmRelease: haproxy: {
 		}
 		values: controller: {
 			replicaCount: 2
-			// stats:
-			//   enabled: true
-			// metrics:
-			//   enabled: true
-			// serviceMonitor:
-			//   enabled: true
+			stats: enabled: true
+			metrics: enabled: true
+			serviceMonitor: enabled: true
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"
 			}
 		}
 	}
+}
+
+k: GrafanaDashboard: haproxy: spec: {
+	url: "https://grafana.com/api/dashboards/2428/revisions/7/download"
+	datasources: [{
+		datasourceName: "Prometheus"
+		inputName: "DS_PROMETHEUS"
+	}]
 }
