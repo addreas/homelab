@@ -1,5 +1,15 @@
 package kube
 
+k: GrafanaDashboard: "longhorn": spec: {
+	url: "https://grafana.com/api/dashboards/13032/revisions/6/download"
+	datasources: [{
+		datasourceName: "Prometheus"
+		inputName: "DS_PROMETHEUS"
+	}]
+}
+
+k: _prometheusNamespaceRBAC
+
 k: ServiceMonitor: "longhorn-prometheus-servicemonitor": {
 	_selector: "app": "longhorn-manager"
 	spec: endpoints: [{
@@ -136,43 +146,3 @@ k: PrometheusRule: "prometheus-longhorn-rules": {
 	}]
 }
 
-k: RoleBinding: "prometheus-k8s": {
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "Role"
-		name:     "prometheus-k8s"
-	}
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "prometheus-k8s"
-		namespace: "monitoring"
-	}]
-}
-
-k: Role: "prometheus-k8s": rules: [{
-	apiGroups: [
-		"",
-	]
-	resources: [
-		"services",
-		"endpoints",
-		"pods",
-	]
-	verbs: [
-		"get",
-		"list",
-		"watch",
-	]
-}, {
-	apiGroups: [
-		"extensions",
-	]
-	resources: [
-		"ingresses",
-	]
-	verbs: [
-		"get",
-		"list",
-		"watch",
-	]
-}]

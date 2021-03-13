@@ -31,3 +31,8 @@ k: ServiceMonitor: [string]: {
 	metadata: labels: _selector
 	spec: selector: matchLabels: _selector
 }
+
+k: GrafanaDashboard: [string]: spec: {
+	json: *"" | string
+	jsonnet: *"" | string
+}

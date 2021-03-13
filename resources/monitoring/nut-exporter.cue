@@ -12,5 +12,11 @@ k: HelmRelease: "nut-exporter": spec: {
 		}
 		interval: "1h"
 	}
-	values: serviceMonitor: enabled: true
+	values: serviceMonitor: {
+		enabled: true
+		targets: [{
+			hostname: "sergio.localdomain"
+			port: 3493
+		}]
+	}
 }

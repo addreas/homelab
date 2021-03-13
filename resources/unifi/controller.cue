@@ -21,7 +21,7 @@ k: StatefulSet: "unifi-controller": {
 						name:      "config"
 						mountPath: "/config"
 					}, {
-						name:      "config-data-sites-default"
+						name:      "config-gateway-json"
 						mountPath: "/static/config/data/sites/default"
 					}]
 				}]
@@ -83,8 +83,8 @@ k: StatefulSet: "unifi-controller": {
 					name: "config"
 					persistentVolumeClaim: claimName: "config"
 				}, {
-					name: "config-data-sites-default"
-					configMap: name: "config-data-sites-default"
+					name: "config-gateway-json"
+					configMap: name: "config-gateway-json"
 				}, {
 					name: "exporter-config"
 					secret: secretName: "unifi-exporter-credentials"
@@ -99,6 +99,17 @@ k: StatefulSet: "unifi-controller": {
 			}
 		}]
 	}
+}
+
+k: Service: "unifi-controller": {
+	_selector: "app": "unifi-controller"
+	spec: ports: [{
+		name: "https"
+		port: 8443
+	}, {
+		name: "metrics"
+		port: 9130
+	}]
 }
 
 k: SealedSecret: "unifi-exporter-credentials": spec: encryptedData: "config.yml": "AgBr+zS5d8ocZzObOiP26RB7JelN1YYNEkX6Y9557PC7cZdyCwNT3vCOt3QAxRxyymkSlh+WJG7834Q4n/hBIl9ISfFAPTOU0tPY9Wyx2BL1Qd50h0glR8k4z1RKA3Mo1wEduiefBD2mZfVQFYhuqvk+FeJ88DyF8/39AdG+TW7EvUzhOabjhxEClYfFgwEDuWSLFqj+9gt3OD71f9ZOrxCYWCAUMp+2ManybcNsPMWC8PXMyFRdKF44jjZ0Zgh5oW7FsY04LgcvQ2/lwAbLZXafeg3uREFMNerBr89ErMzvRhI1QSlOs+zerJmasjO0Cf20xciktPB2LKtX/RimV3S5zGha4uR0MN1nMqV9BiZUtiWBdTkDbuuHmelR6QSNt9zWUxFxqqdt44Mxj/MDm8c6t6/xFzNlfbiCoZYDbcTLJsthBeIa2ARVRRFuzaPpj3Lw1Ui9vPcQp/dWtg6IrgMEgaWxf4qhkXaXVhFB31oiv4q6MH3rbdhJsgoZpNerz5KnOZwi+LOo9XW3RJBA0xZUl7XuGd1rqJYqE2RViDBRL9Y3sAK6Phhdn9ZJifllPItkg6p3hWJ0xyC8+40+yTSed6dtR8ZFwx+ulvC2gRVUUKd6ZyPRbsYLKWElnaQFEiru+0+ogDFnpoWnnRUdrzLML1rgdqycJUKzyODQKT58AKh+7IrabmFJ9ciup3vW435DQ+E6zd0xeEn0CDsYicxuwXQQXzTJqitF/uVcS8vml/uZSplvWDOUr6/sKlQ5iiexSMANANma05l77M4wVTPcK0nqSzskt+01++5JejAjpmM1Wbd3Q/I2k1xyV2t4o5Pg1l19kQglcTpVmOZKxemM5pFLGmCxY7L87v5+fCc6Qvaosq08ikWQNuhge9SkR9+EXP96Y1j0nGXCx2Ck0UkK7K+NAh4Em5eLb4Hz66uCY76z9V62bdKOqIZllllal7brKvgVvLQ="

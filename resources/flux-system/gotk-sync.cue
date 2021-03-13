@@ -19,9 +19,11 @@ k: CueBuild: "homelab": spec: {
 	}]
 	packages: [
 		"./resources/bitwarden",
+		"./resources/cert-manager",
 		"./resources/default",
 		"./resources/flux-system",
 		"./resources/grrrr",
+		"./resources/hass",
 		"./resources/kube-system",
 		"./resources/longhorn-system",
 		"./resources/monitoring",

@@ -7,8 +7,12 @@ k: GitRepository: "kube-prometheus": spec: {
 	ref: branch: "main"
 	url: "https://github.com/prometheus-operator/kube-prometheus"
 	ignore: """
-		./manifests/grafana*
-		./manifests/blackbox*
+		/*
+		!/manifests/setup/
+		!/manifests/prometehus*
+		!/manifests/kube*
+		!/manifests/node*
+		!/manifests/alertmanager*
 		"""
 }
 
@@ -55,190 +59,6 @@ k: Kustomization: "kube-prometheus": spec: {
 	interval: "30m"
 	path:     "./manifests"
 	patchesStrategicMerge: [{
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-apiserver"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-cluster-total"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-controller-manager"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-cluster"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-namespace"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-node"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-pod"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-workload"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-k8s-resources-workloads-namespace"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-kubelet"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-namespace-by-pod"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-namespace-by-workload"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-node-cluster-rsrc-use"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-node-rsrc-use"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-nodes"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-persistentvolumesusage"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-pod-total"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-prometheus"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-prometheus-remote-write"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-proxy"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-scheduler"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-statefulset"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "grafana-dashboard-workload-total"
-			namespace: "monitoring"
-			labels: grafana_dashboard: "kube-prometheus"
-		}
-	}, {
 		apiVersion: "monitoring.coreos.com/v1"
 		kind:       "Prometheus"
 		metadata: {
@@ -262,6 +82,34 @@ k: Kustomization: "kube-prometheus": spec: {
 		name: "kube-prometheus"
 	}
 }
+
+k: Ingress: alertmanager: {
+	metadata: annotations: {
+		"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
+		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
+		"ingress.kubernetes.io/auth-tls-secret":        "default/client-auth-root-ca-cert"
+		"ingress.kubernetes.io/auth-tls-strict":        "true"
+		"ingress.kubernetes.io/auth-tls-verify-client": "on"
+	}
+	spec: {
+		tls: [{
+			hosts: ["alertmanager.addem.se"]
+			secretName: "alertmanager-cert"
+		}]
+		rules: [{
+			host: "alertmanager.addem.se"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "alertmanager-main"
+					port: number: 9093
+				}
+			}]
+		}]
+	}
+}
+
 
 k: Service: "kube-scheduler": {
 	metadata: {
@@ -299,5 +147,52 @@ k: Service: "kube-controller-manager": {
 			name: "https-metrics"
 			port: 10257
 		}]
+	}
+}
+
+k: GrafanaDataSource: "prometheus": spec: {
+	name: "prometheus.yaml"
+	datasources: [{
+		name:      "Prometheus"
+		type:      "prometheus"
+		url:       "http://prometheus-k8s.monitoring.svc:9090"
+		access:    "proxy"
+		isDefault: true
+		editable:  false
+	}]
+}
+
+let dashboards = [
+	"apiserver",
+	"cluster-total",
+	"controller-manager",
+	"k8s-resources-cluster",
+	"k8s-resources-namespace",
+	"k8s-resources-node",
+	"k8s-resources-pod",
+	"k8s-resources-workload",
+	"k8s-resources-workloads-namespace",
+	"kubelet",
+	"namespace-by-pod",
+	"namespace-by-workload",
+	"node-cluster-rsrc-use",
+	"node-rsrc-use",
+	"nodes",
+	"persistentvolumesusage",
+	"pod-total",
+	"prometheus",
+	"prometheus-remote-write",
+	"proxy",
+	"scheduler",
+	"statefulset",
+	"workload-total"
+]
+
+k: GrafanaDashboard: {
+	for dashboard in dashboards {
+		"grafana-dashboard-\(dashboard)": spec: configMapRef: {
+			name: "grafana-dashboard-\(dashboard)"
+			key: "\(dashboard).json"
+		}
 	}
 }

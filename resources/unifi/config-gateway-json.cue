@@ -2,7 +2,7 @@ package kube
 
 import "encoding/json"
 
-k: ConfigMap: "config-data-sites-default": data: {
+k: ConfigMap: "config-gateway-json": data: {
 	"config.gateway.json": json.Marshal({
 		system: "static-host-mapping": "host-name": {
 			"setup.ubnt.com": {

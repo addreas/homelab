@@ -1,7 +1,5 @@
 package kube
 
-k: Namespace: "flux-system": {}
-
 k: GitRepository: "flux-components": spec: {
 	interval: "1h"
 	ref: branch: "main"

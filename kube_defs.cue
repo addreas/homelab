@@ -20,6 +20,8 @@ import (
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
 
+	grafana_v1alpha1 "github.com/integr8ly/grafana-operator/api/integreatly/v1alpha1"
+
 	certmanager_v1 "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
 
 	networkattachment_v1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
@@ -102,6 +104,12 @@ _kubernetesAPIs: {
 	"helm.toolkit.fluxcd.io/v2beta1": HelmRelease:        helm_controller_v2beta1.#HelmRelease
 
 	"bitnami.com/v1alpha1": SealedSecret: sealed_secrets_v1alpha1.#SealedSecret
+
+	"integreatly.org/v1alpha1": {
+		"Grafana": grafana_v1alpha1.#Grafana
+		"GrafanaDashboard": grafana_v1alpha1.#GrafanaDashboard
+		"GrafanaDataSource": grafana_v1alpha1.#GrafanaDataSource
+	}
 
 	"cert-manager.io/v1": {
 		Certificate:   certmanager_v1.#Certificate
