@@ -70,7 +70,7 @@ k: GrafanaDashboard: "cilium-agent": {
 	spec: {
 		url: "https://grafana.com/api/dashboards/13537/revisions/1/download"
 		datasources: [{
-			datasourceName: "Promethues"
+			datasourceName: "Prometheus"
 			inputName:      "DS_PROMETHEUS"
 		}]
 	}
@@ -81,7 +81,7 @@ k: GrafanaDashboard: "cilium-operator": {
 	spec: {
 		url: "https://grafana.com/api/dashboards/13538/revisions/1/download"
 		datasources: [{
-			datasourceName: "Promethues"
+			datasourceName: "Prometheus"
 			inputName:      "DS_PROMETHEUS"
 		}]
 	}
@@ -92,7 +92,7 @@ k: GrafanaDashboard: "cilium-hubble": {
 	spec: {
 		url: "https://grafana.com/api/dashboards/13539/revisions/1/download"
 		datasources: [{
-			datasourceName: "Promethues"
+			datasourceName: "Prometheus"
 			inputName:      "DS_PROMETHEUS"
 		}]
 	}
