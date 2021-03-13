@@ -1,7 +1,5 @@
 package kube
 
-import yaml656e63 "encoding/yaml"
-
 k: StatefulSet: qbittorrent: {
 	_selector: "app": "qbittorrent"
 	spec: {
@@ -215,8 +213,21 @@ k: Ingress: qbittorrent: {
 
 k: ConfigMap: "qbittorrent-static-config": {
 	data: {
-		"qBittorrent.conf": yaml656e63.Marshal(_cue_qBittorrent_conf)
-		let _cue_qBittorrent_conf = ["Preferences"]
+		"qBittorrent.conf": #"""
+		[Preferences]
+		Advanced\AnonymousMode=true
+		Advanced\RecheckOnCompletion=true
+		Connection\GlobalDLLimitAlt=10240
+		Connection\GlobalUPLimitAlt=10240
+		Connection\alt_speeds_on=true
+		Connection\Interface=wg0
+		Connection\InterfaceName=wg0
+		Downloads\SavePath=/videos/downloads/
+		General\UseRandomPort=true
+		WebUI\AuthSubnetWhitelist=10.0.0.0/8
+		WebUI\AuthSubnetWhitelistEnabled=true
+		WebUI\LocalHostAuth=false
+		"""#
 	}
 }
 
