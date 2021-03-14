@@ -22,7 +22,7 @@ k: Ingress: fogis: {
 }
 
 k: Service: fogis: {
-	metadata: labels: Labels
+	_selector: Labels
 	spec: ports: [{
 		name: "http"
 		port: 3000
@@ -30,7 +30,7 @@ k: Service: fogis: {
 }
 
 k: ServiceMonitor: fogis: {
-	metadata: labels: Labels
+	_selector: Labels
 	spec: endpoints: [{
 		port:     "http"
 		interval: "60s"

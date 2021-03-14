@@ -1,16 +1,14 @@
 package kube
 
-k: Deployment: "cirrus-exporter": {
-	metadata: labels: Labels
+k: Deployment: "fogis": {
+	_selector: Labels
 	spec: {
 		replicas: 1
-		selector: matchLabels: Labels
 		template: {
-			metadata: labels: Labels
 			spec: {
 				containers: [{
 					name:  "fogis-calendar-exporter"
-					image: "ghcr.io/jonasdahl/nextjs-fogis-calendar-exporter"
+					image: "ghcr.io/jonasdahl/nextjs-fogis-calendar-exporter:latest"
 					env: [{
 						name:  "APP_KEY"
 						value: "ABCDEF1234567890ABCDEF1234567890"
