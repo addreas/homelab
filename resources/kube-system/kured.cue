@@ -14,7 +14,7 @@ k: HelmRelease: kured: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "kured"
-			version: "2.3.2"
+			version: ">= 2.4.0"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "kured"
@@ -22,12 +22,6 @@ k: HelmRelease: kured: {
 			}
 			interval: "1h"
 		}
-		values: {
-			configuration: {
-				lockTtl: "3h"
-				period:  "10m"
-			}
-			metrics: create: true
-		}
+		values: metrics: create: true
 	}
 }

@@ -14,7 +14,7 @@ k: HelmRelease: haproxy: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "haproxy-ingress"
-			version: "0.12.0-beta.2"
+			version: ">= 0.12.1"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "haproxy-ingress"
@@ -23,10 +23,13 @@ k: HelmRelease: haproxy: {
 			interval: "1h"
 		}
 		values: controller: {
-			replicaCount: 2
 			stats: enabled: true
 			metrics: enabled: true
-			serviceMonitor: enabled: true
+			serviceMonitor: {
+				enabled: true
+				interval: "60s"
+			}
+			logs: enabled: true
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"
