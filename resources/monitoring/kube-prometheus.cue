@@ -66,7 +66,7 @@ k: Kustomization: "kube-prometheus": spec: {
 			namespace: "monitoring"
 		}
 		spec: {
-			replicas:      1
+			replicas:      2
 			retentionSize: "4GB"
 			storage: volumeClaimTemplate: {
 				metadata: name: "data"

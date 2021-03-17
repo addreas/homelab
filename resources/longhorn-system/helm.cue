@@ -21,5 +21,12 @@ k: HelmRelease: longhorn: spec: {
 		}
 		interval: "1h"
 	}
-	values: csi: kubeletRootDir: "/var/lib/kubelet"
+	values: {
+		csi: kubeletRootDir: "/var/lib/kubelet"
+		defaultSettings: {
+			autoSalvage: true
+			allowNodeDrainWithLastHealthyReplica: true
+		}
+		persistence: defaultClassReplicaCount: 2
+	}
 }
