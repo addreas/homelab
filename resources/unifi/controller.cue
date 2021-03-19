@@ -1,5 +1,7 @@
 package kube
 
+import "github.com/addreas/homelab/util"
+
 k: StatefulSet: "unifi-controller": {
 	_selector: "app": "unifi-controller"
 	spec: {
@@ -7,16 +9,7 @@ k: StatefulSet: "unifi-controller": {
 			metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 			spec: {
 				securityContext: fsGroup: 1000
-				initContainers: [{
-					name:  "copy-static"
-					image: "quay.io/quay/busybox"
-					command: [
-						"cp",
-						"-r",
-						"--no-target-directory",
-						"/static",
-						"/",
-					]
+				initContainers: [util.copyStatic & {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/config"

@@ -1,1 +1,1 @@
-module: "github.com/addreas/cuebernetes"
+module: "github.com/addreas/homelab"
