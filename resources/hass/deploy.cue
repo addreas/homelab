@@ -18,7 +18,7 @@ k: StatefulSet: hass: {
 						name:      "config"
 						mountPath: "/config"
 					}, {
-						name:      "hass-static-configuration"
+						name:      "hass-static-config"
 						mountPath: "/static/config"
 					}]
 				}]
