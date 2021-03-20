@@ -37,7 +37,7 @@ k: StatefulSet: bitwarden: {
 				resources: {
 					limits: {
 						cpu:    "100m"
-						memory: "256Gi"
+						memory: "256Mi"
 					}
 					requests: {
 						cpu:    "5m"
