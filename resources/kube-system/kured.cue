@@ -22,6 +22,13 @@ k: HelmRelease: kured: {
 			}
 			interval: "1h"
 		}
-		values: metrics: create: true
+		values: {
+			metrics: create: true
+			configuration: {
+				rebootDays: ["sa"]
+				startTime: "10:00"
+				endTime: "16:00"
+			}
+		}
 	}
 }
