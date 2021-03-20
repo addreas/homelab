@@ -13,6 +13,7 @@ k: GitRepository: "kube-prometheus": spec: {
 		!/manifests/kube*
 		!/manifests/node*
 		!/manifests/prometheus*
+		!/manifests/grafana-dashboardDefinitions.yaml
 		"""
 }
 
