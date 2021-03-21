@@ -55,8 +55,8 @@ k: StatefulSet: radarr: {
 						containerPort: 9707
 					}]
 					resources: limits: {
-						cpu:    "10m"
-						memory: "64Mi"
+						cpu:    "100m"
+						memory: "128Mi"
 					}
 					volumeMounts: [{
 						name:      "home-nonroot"
@@ -110,4 +110,16 @@ k: Ingress: radarr: {
 		"ingress.kubernetes.io/auth-tls-strict":        "true"
 		"ingress.kubernetes.io/auth-tls-verify-client": "on"
 	}
+}
+
+k: GrafanaDashboard: "radarr": spec: {
+	url: "https://grafana.com/api/dashboards/12896/revisions/1/download"
+	datasources: [{
+		datasourceName: "Prometheus"
+		inputName: "DS_RANCHER_MONITORING"
+	}]
+	plugins: [{
+		name:    "grafana-piechart-panel"
+		version: "1.6.1"
+	}]
 }

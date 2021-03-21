@@ -55,7 +55,7 @@ k: StatefulSet: sonarr: {
 						containerPort: 9707
 					}]
 					resources: limits: {
-						cpu:    "10m"
+						cpu:    "100m"
 						memory: "64Mi"
 					}
 					volumeMounts: [{
@@ -114,6 +114,10 @@ k: Ingress: sonarr: {
 
 k: GrafanaDashboard: "sonarr": spec: {
 	url: "https://grafana.com/api/dashboards/12530/revisions/2/download"
+	datasources: [{
+		datasourceName: "Prometheus"
+		inputName: "DS_PROMETHEUS"
+	}]
 	plugins: [{
 		name:    "grafana-piechart-panel"
 		version: "1.6.1"

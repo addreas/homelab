@@ -92,8 +92,8 @@ k: StatefulSet: qbittorrent: {
 					name:  "exporter"
 					image: "esanchezm/prometheus-qbittorrent-exporter"
 					resources: limits: {
+						cpu:    "150m"
 						memory: "64Mi"
-						cpu:    "100m"
 					}
 					ports: [{
 						containerPort: 8000

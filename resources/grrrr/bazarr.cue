@@ -24,7 +24,7 @@ k: StatefulSet: bazarr: {
 					}]
 					resources: {
 						limits: {
-							cpu:    "100m"
+							cpu:    "150m"
 							memory: "256Mi"
 						}
 						requests: cpu: "10m"
