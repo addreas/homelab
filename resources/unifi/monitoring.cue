@@ -9,7 +9,6 @@ k: GrafanaDashboard: "unifi-controller": spec: {
 }
 
 k: ServiceMonitor: "unifi-controller": {
-	_selector: "app": "unifi-controller"
 	spec: endpoints: [{
 		interval: "60s"
 		port:     "metrics"

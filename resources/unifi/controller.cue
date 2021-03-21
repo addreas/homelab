@@ -3,45 +3,35 @@ package kube
 import "github.com/addreas/homelab/util"
 
 k: StatefulSet: "unifi-controller": {
-	_selector: "app": "unifi-controller"
 	spec: {
 		template: {
 			metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 			spec: {
-				securityContext: fsGroup: 1000
 				initContainers: [util.copyStatic & {
 					volumeMounts: [{
 						name:      "config"
-						mountPath: "/config"
+						mountPath: "/usr/lib/unifi"
 					}, {
 						name:      "config-gateway-json"
-						mountPath: "/static/config/data/sites/default"
+						mountPath: "/static/usr/lib/unifi/data/sites/default"
 					}]
 				}]
 				containers: [{
 					image: "ghcr.io/linuxserver/unifi-controller:version-6.0.45"
 					name:  "unifi-controller"
-					env: [{
-						name:  "MEM_LIMIT"
-						value: "1024M"
-					}, {
-						name:  "PGID"
-						value: "1000"
-					}, {
-						name:  "PUID"
-						value: "1000"
-					}]
+					command: ["java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar", "start"]
 					ports: [{
 						containerPort: 8443
 					}]
-					volumeMounts: [{
-						mountPath: "/config"
+					volumeMounts: [for dir in ["data", "logs", "run"] {
 						name:      "config"
+						mountPath: "/usr/lib/unifi/\(dir)"
+						subPath: dir
 					}]
 					resources: {
 						limits: {
 							cpu:    "500m"
-							memory: "1Gi"
+							memory: "1024Mi"
 						}
 						requests: {
 							cpu:    "100m"
@@ -63,10 +53,6 @@ k: StatefulSet: "unifi-controller": {
 						name:      "exporter-config"
 						mountPath: "/unifi_exporter"
 					}]
-					securityContext: {
-						runAsUser:  1000
-						runAsGroup: 1000
-					}
 					resources: limits: {
 						cpu:    "100m"
 						memory: "128Mi"
@@ -95,7 +81,6 @@ k: StatefulSet: "unifi-controller": {
 }
 
 k: Service: "unifi-controller": {
-	_selector: "app": "unifi-controller"
 	spec: ports: [{
 		name: "https"
 		port: 8443

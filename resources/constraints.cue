@@ -13,11 +13,7 @@ k: ["Deployment" | "StatefulSet"]: [Name=string]: {
 		template: {
 			metadata: labels: _selector
 			spec: {
-				securityContext: {
-					fsGroup:    *1000 | int
-					runAsUser:  *1000 | int
-					runAsGroup: *1000 | int
-				}
+				securityContext: fsGroup: *1000 | int
 				containers: [...{
 					securityContext: {
 						allowPrivilegeEscalation: *false | bool
@@ -62,7 +58,7 @@ k: Ingress: [Name=string]: {
 					name: "\(Name)"
 					port: number: k.Service[Name].spec.ports[0].port
 				}
-			}]
+			}, ...]
 		}]
 	}
 }
