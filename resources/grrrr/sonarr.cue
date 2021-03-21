@@ -1,34 +1,20 @@
 package kube
 
 k: StatefulSet: sonarr: {
-	_selector: "app": "sonarr"
 	spec: {
 		template: {
 			metadata: labels: "vpn-egress": "client"
 			spec: {
-				securityContext: fsGroup: 1000
 				containers: [{
 					name:            "sonarr"
-					image:           "ghcr.io/hotio/sonarr:nightly"
+					image:           "ghcr.io/hotio/sonarr"
 					imagePullPolicy: "Always"
+					command: ["sh", "-c"]
+					args: ["""
+						mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
+						"""]
 					ports: [{
 						containerPort: 8989
-					}]
-					env: [{
-						name:  "PUID"
-						value: "1000"
-					}, {
-						name:  "PGID"
-						value: "1000"
-					}, {
-						name:  "UMASK"
-						value: "002"
-					}, {
-						name:  "TZ"
-						value: "Europe/Stockholm"
-					}, {
-						name:  "DEBUG"
-						value: "yes"
 					}]
 					volumeMounts: [{
 						mountPath: "/config"
@@ -72,6 +58,10 @@ k: StatefulSet: sonarr: {
 						cpu:    "10m"
 						memory: "64Mi"
 					}
+					volumeMounts: [{
+						name:      "home-nonroot"
+						mountPath: "/home/nonroot"
+					}]
 				}]
 				volumes: [{
 					name: "nfs-videos"
@@ -79,6 +69,9 @@ k: StatefulSet: sonarr: {
 						path:   "/export/videos"
 						server: "sergio.localdomain"
 					}
+				}, {
+					name: "home-nonroot"
+					emptyDir: {}
 				}]
 			}
 		}
@@ -93,7 +86,6 @@ k: StatefulSet: sonarr: {
 }
 
 k: Service: sonarr: {
-	_selector: "app": "sonarr"
 	spec: ports: [{
 		name: "http"
 		port: 8989
@@ -104,7 +96,6 @@ k: Service: sonarr: {
 }
 
 k: ServiceMonitor: sonarr: {
-	_selector: "app": "sonarr"
 	spec: endpoints: [{
 		port:     "metrics"
 		interval: "60s"
@@ -113,29 +104,11 @@ k: ServiceMonitor: sonarr: {
 
 k: Ingress: sonarr: {
 	metadata: annotations: {
-		"cert-manager.io/cluster-issuer":     "addem-se-letsencrypt"
 		"ingress.kubernetes.io/ssl-redirect": "true"
 		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
 		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
 		"ingress.kubernetes.io/auth-tls-strict":        "true"
 		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-	spec: {
-		tls: [{
-			hosts: ["sonarr.addem.se"]
-			secretName: "sonarr-cert"
-		}]
-		rules: [{
-			host: "sonarr.addem.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "sonarr"
-					port: number: 8989
-				}
-			}]
-		}]
 	}
 }
 

@@ -1,13 +1,11 @@
 package kube
 
 k: StatefulSet: qbittorrent: {
-	_selector: "app": "qbittorrent"
 	spec: {
 		template: {
 			metadata: labels: "vpn-egress": "gateway"
 			spec: {
 				securityContext: {
-					fsGroup: 1000
 					sysctls: [{
 						name:  "net.ipv4.conf.all.src_valid_mark"
 						value: "1"
@@ -37,15 +35,19 @@ k: StatefulSet: qbittorrent: {
 					command: ["sh", "-c"]
 					args: ["""
 						CONF_DIR=/config/config
-						OLD=\"$CONF_DIR/qBittorrent.conf\"
+						OLD="$CONF_DIR/qBittorrent.conf"
 						if [ -f $OLD ]; then
-						echo \"existing config:\"
-						cat $OLD
-						NEW=\"$CONF_DIR/qBittorrent.$(date \"+%s\").conf\"
-						echo \"moving existing config to $NEW\"
-						cp $OLD $NEW
+							if diff $OLD /static/qBittorrent.conf; then
+								echo "$OLD matches /static/qBittorrent.conf, not backing up"
+							else
+								echo "existing config:"
+								cat $OLD
+								NEW="$CONF_DIR/qBittorrent.$(date "+%s").conf"
+								echo "moving existing config to $NEW"
+								cp $OLD $NEW
+							fi
 						else
-						mkdir -p $CONF_DIR
+							mkdir -p $CONF_DIR
 						fi
 
 						cp /static/qBittorrent.conf $OLD
@@ -61,28 +63,16 @@ k: StatefulSet: qbittorrent: {
 				}]
 				containers: [{
 					name:  "qbittorrent"
-					image: "hotio/qbittorrent"
+					image: "ghcr.io/hotio/qbittorrent"
+					command: ["sh", "-c"]
+					args: ["""
+						/usr/bin/qbittorrent-nox --profile="$CONFIG_DIR" --webui-port=8080
+						"""]
 					ports: [{
 						containerPort: 8080
 					}]
-					env: [{
-						name:  "PUID"
-						value: "1000"
-					}, {
-						name:  "PGID"
-						value: "1000"
-					}, {
-						name:  "UMASK"
-						value: "002"
-					}, {
-						name:  "TZ"
-						value: "Europe/Stockholm"
-					}, {
-						name:  "DEBUG"
-						value: "yes"
-					}]
 					volumeMounts: [{
-						mountPath: "/config"
+						mountPath: "/config/qBittorrent"
 						name:      "config"
 					}, {
 						mountPath: "/videos"
@@ -101,11 +91,6 @@ k: StatefulSet: qbittorrent: {
 				}, {
 					name:  "exporter"
 					image: "esanchezm/prometheus-qbittorrent-exporter"
-					securityContext: {
-						allowPrivilegeEscalation: false
-						runAsUser:                1000
-						runAsGroup:               1000
-					}
 					resources: limits: {
 						memory: "64Mi"
 						cpu:    "100m"
@@ -123,11 +108,6 @@ k: StatefulSet: qbittorrent: {
 				}, {
 					name:  "socks-proxy"
 					image: "xkuma/socks5"
-					securityContext: {
-						allowPrivilegeEscalation: false
-						runAsUser:                1000
-						runAsGroup:               1000
-					}
 					resources: limits: {
 						memory: "64Mi"
 						cpu:    "10m"
@@ -165,7 +145,6 @@ k: StatefulSet: qbittorrent: {
 }
 
 k: Service: qbittorrent: {
-	_selector: "app": "qbittorrent"
 	spec: ports: [{
 		name: "http"
 		port: 8080
@@ -176,7 +155,6 @@ k: Service: qbittorrent: {
 }
 
 k: ServiceMonitor: qbittorrent: {
-	_selector: "app": "qbittorrent"
 	spec: endpoints: [{
 		port:     "metrics"
 		interval: "60s"
@@ -185,29 +163,11 @@ k: ServiceMonitor: qbittorrent: {
 
 k: Ingress: qbittorrent: {
 	metadata: annotations: {
-		"cert-manager.io/cluster-issuer":     "addem-se-letsencrypt"
 		"ingress.kubernetes.io/ssl-redirect": "true"
 		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
 		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
 		"ingress.kubernetes.io/auth-tls-strict":        "true"
 		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-	spec: {
-		tls: [{
-			hosts: ["qbittorrent.addem.se"]
-			secretName: "qbittorrent-cert"
-		}]
-		rules: [{
-			host: "qbittorrent.addem.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "qbittorrent"
-					port: number: 8080
-				}
-			}]
-		}]
 	}
 }
 
@@ -232,7 +192,7 @@ k: ConfigMap: "qbittorrent-static-config": {
 }
 
 k: Service: "vpn-egress": {
-	_selector: "vpn-egress": "gateway"
+	_selector: close({"vpn-egress": "gateway"})
 	spec: ports: [{
 		name: "socks"
 		port: 1080
