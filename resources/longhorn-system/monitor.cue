@@ -1,5 +1,7 @@
 package kube
 
+import "github.com/addreas/homelab/util"
+
 k: GrafanaDashboard: "longhorn": spec: {
 	url: "https://grafana.com/api/dashboards/13032/revisions/6/download"
 	datasources: [{
@@ -8,7 +10,7 @@ k: GrafanaDashboard: "longhorn": spec: {
 	}]
 }
 
-k: _prometheusNamespaceRBAC
+k: util.prometheusNamespaceRBAC
 
 k: ServiceMonitor: "longhorn-prometheus-servicemonitor": {
 	_selector: "app": "longhorn-manager"

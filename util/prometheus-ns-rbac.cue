@@ -1,6 +1,6 @@
-package kube
+package util
 
-_prometheusNamespaceRBAC: {
+prometheusNamespaceRBAC: {
 	RoleBinding: "prometheus-k8s": {
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"
