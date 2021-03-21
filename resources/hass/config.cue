@@ -1,99 +1,92 @@
 package kube
 
+import "encoding/yaml"
+
 k: ConfigMap: "hass-config": data: "configuration.yaml": """
-homeassistant:
-  # Name of the location where Home Assistant is running
-  name: Home
-  # Location required to calculate the time the sun rises and sets
-  latitude: 59.382683
-  longitude: 18.005288
-  # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 10
-  unit_system: metric
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: Europe/Stockholm
-  # Customization file
-  customize: !include customize.yaml
+	homeassistant:
+	  name: Home
+	  latitude: 59.382683
+	  longitude: 18.005288
+	  elevation: 10
+	  unit_system: metric
+	  time_zone: Europe/Stockholm
+	  customize: !include customize.yaml
 
-frontend:
-  themes: !include_dir_merge_named themes
+	group: !include groups.yaml
+	automation: !include automations.yaml
+	script: !include scripts.yaml
+	scene: !include scenes.yaml
 
-# Needed since we removed default_config:
-logbook:
-history:
-map:
-person:
-ssdp: # Scan for devices
-sun:
-system_health:
-updater:
-zeroconf:
-config:
-mobile_app:
-tv4_play:
-speedtestdotnet:
+	logger:
+	  default: info
 
-# Discover some devices automatically
-discovery:
+	frontend:
+	  themes: !include_dir_merge_named themes
 
-# Text to speech
-tts:
-  - platform: google_translate
+	logbook:
+	history:
+	map:
+	person:
+	ssdp:
+	sun:
+	system_health:
+	updater:
+	zeroconf:
+	discovery:
+	config:
+	mobile_app:
 
-group: !include groups.yaml
+	tts:
+	- platform: google_translate
 
-automation: !include automations.yaml
+	recorder:
+	  db_url: !env_var DB_URL
 
-script: !include scripts.yaml
+	tv4_play:
+	speedtestdotnet:
 
-scene: !include scenes.yaml
+	google_assistant:
+	  project_id: hass-dke
+	  service_account: !include hass-dke-8e86dc9cd8ce.json
+	  report_state: true
+	  exposed_domains:
+	  - switch
+	  - light
 
-# Example configuration.yaml entry
-logger:
-  default: info
+	\(yaml.Marshal(conf))
+	"""
 
-google_assistant:
-  project_id: hass-dke
-  service_account: !include hass-dke-8e86dc9cd8ce.json
-  report_state: true
-  exposed_domains:
-    - switch
-    - light
+let conf = {
 
-#vacuum:
-#  - platform: xiaomi_miio
-#    host: rockrobo
-#    token: 344f4e6d59764a4e535863747037564d
+	sensor: {}
 
-plant:
-  plant_1:
-    sensors:
-      moisture: sensor.xiaomi_hhccjcy01_48_63_moisture
-      temperature: sensor.xiaomi_hhccjcy01_48_63_temperature
-      conductivity: sensor.xiaomi_hhccjcy01_48_63_soil_conductivity
-      brightness: sensor.xiaomi_hhccjcy01_48_63_illuminance
-    min_moisture: 20
-  plant_2:
-    sensors:
-      moisture: sensor.xiaomi_hhccjcy01_48_a6_moisture
-      temperature: sensor.xiaomi_hhccjcy01_48_a6_temperature
-      conductivity: sensor.xiaomi_hhccjcy01_48_a6_soil_conductivity
-      brightness: sensor.xiaomi_hhccjcy01_48_a6_illuminance
-    min_moisture: 20
+	binary_sensor: [{
+		platform: "workday"
+		country:  "SE"
+	}]
 
-# To get temperatures and other sensors:
-sensor:
+	input_boolean: kitchen_auto_mode: name: "Automatiskt läge i Köket"
 
-binary_sensor:
-  - platform: workday
-    country: SE
+	plant: {
+		for i in ["xiaomi_hhccjcy01_48_63", "xiaomi_hhccjcy01_48_a6"] {
+			"plant_\(i)": {
+				min_moisture: 20
+				sensors: {
+					moisture:     "sensor.\(i)_moisture"
+					temperature:  "sensor.\(i)_temperature"
+					conductivity: "sensor.\(i)_soil_conductivity"
+					brightness:   "sensor.\(i)_illuminance"
+				}
+			}
+		}
+	}
+}
 
-input_boolean:
-  kitchen_auto_mode:
-    name: Automatiskt läge i Köket
-
-"""
-
-k: SealedSecret: "zwave-network-key": spec: encryptedData: "key": "AgAO8N40Ry+9p+fe+YehhHIGy9GfFMCkQq7KvpQhzUJ6rLzOaDs0pHwL8Ha8JQPPa5JZp/3qAObO0ZYOffsOcZGU+P749AZnbvvBStBmbBQ8v9H4+Ov12AsyHbCADfHwo5oCiZVJLVqcflaUJxqR7+mk2ZRf+RYh7g8Lyx6QZxfhdBmgqlalFPv85HCMf4mvGNmVS9vx2ieru7cyy6UPfr0eFoLZfOieqGPsmn9nLd73XAtUJYs/eoqN374wU4lidxjdwn9ISHaBOd/Wnan4YxIHecOrZeD+MkwszR4jlLe2ZZJc43fJxHzgo5+Pj311TuRI0mqonFzNaBboehAP5fqMFjX5DHmRuaIVixsgegJYDSLnjawv0KbCS3TKM5ERwlS3P3uTFBX6fnnw7bRWzRmeIIbVr9KLFw/C958WI8zLVxSIEDKL8dxnNyZb+xtfpeFsm5Jt/plVpIH8jhB6A5dbykP8BZFfQ5FZubyYy1ueALm9YRiFwzF0GOM56ElD6rrignv8APeXVW0b67t1H52XRo/ZbF4L0PWCuq2BOe+uBNmklz7E44zV6S1fvKo4abP5Q7IQOCvyKprVNBUiv3mD9HulDKrqOqXPZa8SF+YzaceOg/yCzFs8WYws/lBdPPHfnPvjixyyC7C8cdwTAxQhBSrdhiJz31bFfagHzksiUHexQfMmkmNGcmw3cVZxUwyYF2fg4UtduAUKBeE8wVtg+/GTZ6UZ7MbxeWznLkWo2A=="
+k: SealedSecret: "zwave-network-key": spec: encryptedData: key: "AgAO8N40Ry+9p+fe+YehhHIGy9GfFMCkQq7KvpQhzUJ6rLzOaDs0pHwL8Ha8JQPPa5JZp/3qAObO0ZYOffsOcZGU+P749AZnbvvBStBmbBQ8v9H4+Ov12AsyHbCADfHwo5oCiZVJLVqcflaUJxqR7+mk2ZRf+RYh7g8Lyx6QZxfhdBmgqlalFPv85HCMf4mvGNmVS9vx2ieru7cyy6UPfr0eFoLZfOieqGPsmn9nLd73XAtUJYs/eoqN374wU4lidxjdwn9ISHaBOd/Wnan4YxIHecOrZeD+MkwszR4jlLe2ZZJc43fJxHzgo5+Pj311TuRI0mqonFzNaBboehAP5fqMFjX5DHmRuaIVixsgegJYDSLnjawv0KbCS3TKM5ERwlS3P3uTFBX6fnnw7bRWzRmeIIbVr9KLFw/C958WI8zLVxSIEDKL8dxnNyZb+xtfpeFsm5Jt/plVpIH8jhB6A5dbykP8BZFfQ5FZubyYy1ueALm9YRiFwzF0GOM56ElD6rrignv8APeXVW0b67t1H52XRo/ZbF4L0PWCuq2BOe+uBNmklz7E44zV6S1fvKo4abP5Q7IQOCvyKprVNBUiv3mD9HulDKrqOqXPZa8SF+YzaceOg/yCzFs8WYws/lBdPPHfnPvjixyyC7C8cdwTAxQhBSrdhiJz31bFfagHzksiUHexQfMmkmNGcmw3cVZxUwyYF2fg4UtduAUKBeE8wVtg+/GTZ6UZ7MbxeWznLkWo2A=="
 
 k: SealedSecret: "hass-gcp-credential-json": spec: encryptedData: "hass-dke-8e86dc9cd8ce.json": "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"
+
+k: SealedSecret: "hass-postgres-credentials": spec: encryptedData: {
+	POSTGRESS_PASS: "AgCbQf52/xnZXryWwT7wE1wfUE6Yn0FxKkB/143N+fVP4C+HRhfrpV0aIxVb5jRXRTcA9l2gq0optGdcxrKo5qvjoMngoDibISyD8QoK868XV7DvgHeHbUSgiRUpP33IbUmTB3kaZxcch7S8r5e78CnI2pZBL4/CVZ1g5oWFdNW7tCaxR88dusIUaAIzEoGSmpvMhcTnKWRxnkLVIen2d8nifhr+g4Y53CvOGV+4rjt/Zwd3AZjj66xnl7nkHyOgDjG0S32F/YNzntXPOvpFMyx3828CqebSbK4tzWuLmQ4n0VcYmWZt5vNph+q3Otop7y1EdQK8ADgSxGSzwqZIQGvOEeLsj0Qtn3nJ6SBs0wgOaj3IWbLS6BaklZ3iCvGoP5sfmiLqp+fNohN4mI4rvxbZRmDBzHKgt1emC53sJkpdWBGkeZ4WZqZrkRPkxkGXuht8u9xyroPyCHwU+b8QCOHD/86cfeeahij3Y6zKITQhQ3ZyqS1m57Rox1wthmAJdjXXTn1k2tVDRjHkbM5eSxd3WLnhFQPi3bURoDaqdKLus/ZjF0cBi6+N9DNo6qGj5LccANmpnnAQRlHFI+bp3S12Jb8o/d50uc8BRG95zMfaKCeCTCi3R9iE/tYXWW97mK/pjtcXhwL1vps4dc+s0bRVwmiiBN5lYODTTtlIIDXDaukrVUS2E9aqo7FLrRqjUzic9DeF/hji+h1oHsVCdqeKt+xDXnOc4DK4DUKHa6uWug=="
+	POSTGRES_USER:  "AgBMXJaYlybQ8xUUUSQXbNcK1vJZXCvyXGUdgnI7qdOZwjhIdB08GTOURaefZoLEawvz+hq/JeLoScNZEHx2u0wbWkXEkeEbGW3TFQ9ju0z2dxykq2ebru5hdcPfYOmW4HrYWTdNVcpXVgJyUOm2cKy+ODpCN1IzWRSSmhW6KJUsuxkc5zTqIMLbKlUKb20IMZOZetpSl27qjEV4gdvZq9unvMzfzDmZN2XCBiDVvzVbTpv4YsJQsayOriNk0eWzRo7JHVe6raUT8fgasyJhmw+UIlyXvTR0pTawrzmchyvETQO4OWnnHZolxc+t87j0hyh2aBb0qVd0/5WVOWctDTTG5z6eSoqwnW1whZrI34sbdN4XSKL8dAPW98rtSLn4pMkGpDNAjz+Sl3DUJV223gFuqDCkRNIl4LNitaY+ij9LpQOqMLNGw+ze7fjz0UVm4rqObvrwxkpiVI9hu4sUcCnvyHi4R/g+YTHdEigKg6jiQtLGoQOtR4rf7DeR6SJQ0v3LMgWpVy10pOi6FA10d/gVlUsnvPYpqD3K3zHDZMJ+nR9Pyf4fosA5FcIY38ePiOu8b7WZI7yPN02MirgKuUmmI1g27t37MKFIhiXD/iNg/peNJGu3LBj82NHHRUxoCyAhdTBM2aPMtSs9jmPBjHD94nAhnKtXxZxthysdykCMlwKQ+RGt3GTPup0xkgDb8JYtqcTf"
+}

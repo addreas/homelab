@@ -1,7 +1,6 @@
 package kube
 
 k: StatefulSet: "yanzi-gateway": {
-	_selector: app: "yanzi-gateway"
 	spec: {
 		template: spec: {
 			containers: [{

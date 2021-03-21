@@ -13,34 +13,26 @@ context: string
 
 let resources = [ for resourceType in k for resource in resourceType {resource}]
 
-command: ls: {
-	task: print: cli.Print & {
-		text: tabwriter.Write([
-			for r in resources {
-				"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
-			},
-		])
-	}
+command: ls: task: print: cli.Print & {
+	text: tabwriter.Write([
+		for r in resources {
+			"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
+		},
+	])
 }
 
-command: dump: {
-	task: print: cli.Print & {
-		text: yaml.MarshalStream(resources)
-	}
+command: dump: task: print: cli.Print & {
+	text: yaml.MarshalStream(resources)
 }
 
-command: apply: {
-	task: apply: exec.Run & {
-		cmd: ["kubectl", "--context", context, "apply", "-f-"]
-		stdin: json.MarshalStream(resources)
-	}
+command: apply: task: apply: exec.Run & {
+	cmd: ["kubectl", "--context", context, "apply", "-f-"]
+	stdin: json.MarshalStream(resources)
 }
 
-command: diff: {
-	task: diff: exec.Run & {
-		cmd: ["kubectl", "--context", context, "diff", "-f-"]
-		stdin: json.MarshalStream(resources)
-	}
+command: diff: task: diff: exec.Run & {
+	cmd: ["kubectl", "--context", context, "diff", "-f-"]
+	stdin: json.MarshalStream(resources)
 }
 
 command: seal: {
