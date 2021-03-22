@@ -16,7 +16,13 @@ k: Deployment: "fogis": {
 							key:  "APP_KEY"
 						}
 					}, {
-						name: "VERSION"
+						name: "MAPS_API_KEY"
+						valueFrom: secretKeyRef: {
+							name: "fogis-google-maps-key"
+							key:  "MAPS_API_KEY"
+						}
+					}, {
+						name:  "VERSION"
 						value: "2"
 					}]
 					ports: [{containerPort: 3000}]
