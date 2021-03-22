@@ -15,6 +15,9 @@ k: Deployment: "fogis": {
 							name: "fogis-app-key"
 							key:  "APP_KEY"
 						}
+					}, {
+						name: "VERSION"
+						value: "2"
 					}]
 					ports: [{containerPort: 3000}]
 				}]
