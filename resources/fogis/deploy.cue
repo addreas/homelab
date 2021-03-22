@@ -10,8 +10,11 @@ k: Deployment: "fogis": {
 					name:  "fogis-calendar-exporter"
 					image: "ghcr.io/jonasdahl/nextjs-fogis-calendar-exporter:latest"
 					env: [{
-						name:  "APP_KEY"
-						value: "ABCDEF1234567890ABCDEF1234567890" // TODO
+						name: "APP_KEY"
+						valueFrom: secretKeyRef: {
+							name: "fogis-app-key"
+							key:  "APP_KEY"
+						}
 					}]
 					ports: [{containerPort: 3000}]
 				}]
