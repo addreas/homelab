@@ -82,12 +82,12 @@ k: Kustomization: "grafana-operator": spec: {
 k: ClusterRoleBinding: "grafana-operator-configmaps": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind: "ClusterRole"
-		name: "grafana-operator-configmaps"
+		kind:     "ClusterRole"
+		name:     "grafana-operator-configmaps"
 	}
 	subjects: [{
-		kind: "ServiceAccount"
-		name: "grafana-operator"
+		kind:      "ServiceAccount"
+		name:      "grafana-operator"
 		namespace: "monitoring"
 	}]
 }

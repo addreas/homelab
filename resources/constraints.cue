@@ -55,8 +55,8 @@ k: Ingress: [Name=string]: {
 				path:     _ | *"/"
 				pathType: _ | *"Prefix"
 				backend: service: {
-					name: "\(Name)"
-					port: number: k.Service[Name].spec.ports[0].port
+					name: _ | *"\(Name)"
+					port: number: _ | *k.Service[Name].spec.ports[0].port
 				}
 			}, ...]
 		}]
