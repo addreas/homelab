@@ -1,27 +1,8 @@
 package kube
 
-k: Ingress: hass: {
-	metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
-	spec: {
-		tls: [{
-			hosts: ["hass.addem.se"]
-			secretName: "hass-cert"
-		}]
-		rules: [{
-			host: "hass.addem.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "hass"
-					port: name: "http"
-				}
-			}]
-		}]
-	}
-}
+k: Ingress: oldhass: {}
 
-k: Service: hass: {
+k: Service: oldhass: {
 	spec: {
 		type:         "ExternalName"
 		externalName: "hass.localdomain"

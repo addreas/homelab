@@ -14,7 +14,7 @@ k: StatefulSet: "hass-postgres": {
 				ports: [{containerPort: 5432}]
 				volumeMounts: [{
 					name:      "data"
-					mountPath: "/var/lib/postgresql/data"
+					mountPath: "/var/lib/postgresql"
 					subPath:   "data"
 				}]
 			}]

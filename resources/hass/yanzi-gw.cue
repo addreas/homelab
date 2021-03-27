@@ -14,7 +14,11 @@ k: StatefulSet: "yanzi-gateway": {
 					mountPath: "/dev/net/tun"
 					name:      "dev-tun"
 				}]
-				securityContext: capabilities: add: ["NET_ADMIN"]
+				securityContext: {
+					capabilities: add: ["NET_ADMIN"]
+					runAsGroup: 0
+					runAsUser:  0
+				}
 				resources: limits: "addem.se/dev_yanzi_serial_radio": "1"
 			}, {
 				name:  "fiona"

@@ -4,6 +4,7 @@ k: Deployment: "hass-zwavejs": {
 	spec: template: spec: containers: [{
 		name:  "zwavejs"
 		image: "kpine/zwave-js-server:latest"
+		ports: [{containerPort: 3000}]
 		env: [{
 			name: "NETWORK_KEY"
 			valueFrom: secretKeyRef: {
@@ -22,4 +23,7 @@ k: Deployment: "hass-zwavejs": {
 }
 
 k: Service: "hass-zwavejs": {
+	spec: ports: [{
+		port: 3000
+	}]
 }

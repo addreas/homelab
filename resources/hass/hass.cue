@@ -5,32 +5,29 @@ import "github.com/addreas/homelab/util"
 k: StatefulSet: hass: {
 	spec: {
 		template: {
-			metadata: annotations: "k8s.v1.cni.cncf.io/networks": """
-				[{
-					"name": "macvlan-conf",
-					"default-route": ["192.168.1.1"]
-				}]
-				"""
+			metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 			spec: {
 				initContainers: [util.copyStatic & {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/config"
 					}, {
-						name:      "hass-static-config"
+						name:      "hass-config"
 						mountPath: "/static/config"
 					}]
 				}]
 				volumes: [{
-					name: "hass-static-config"
+					name: "hass-config"
 					projected: sources: [{
-						configMap: name: "hass-configuration-yaml"
-						secret: name:    "hass-gcp-credential-json"
+						configMap: name: "hass-config"
+					}, {
+						secret: name: "hass-gcp-credential-json"
 					}]
 				}]
 				containers: [{
 					name:  "hass"
 					image: "ghcr.io/linuxserver/homeassistant:version-2021.3.4"
+					command: ["hass", "-c", "/config"]
 					resources: {
 						limits: {
 							cpu:                             "500m"
@@ -45,7 +42,7 @@ k: StatefulSet: hass: {
 					envFrom: [{secretRef: name: "hass-postgres-credentials"}]
 					env: [{
 						name:  "DB_URL"
-						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASS)@hass-postgres/hass"
+						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
 					}]
 					ports: [{
 						containerPort: 8123
@@ -66,3 +63,24 @@ k: StatefulSet: hass: {
 		}]
 	}
 }
+
+k: Service: hass: {
+	spec: ports: [{
+		name: "http"
+		port: 8123
+	}]
+}
+
+k: ServiceMonitor: hass: {
+	spec: endpoints: [{
+		port:     "http"
+		interval: "60s"
+		path:     "/api/prometheus"
+		bearerTokenSecret: {
+			name: "hass-prometheus-api-key"
+			key:  "key"
+		}
+	}]
+}
+
+k: Ingress: hass: {}
