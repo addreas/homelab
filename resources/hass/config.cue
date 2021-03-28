@@ -67,9 +67,18 @@ let conf = {
 		turn_on_action: {
 			service: "media_player.turn_on"
 			target: entity_id: "media_player.vardagsrummet_tv"
-
 		}
 	}
+
+	light: [{
+		platform: "group"
+		name:     "Fönsterlamporna"
+		entities: [
+			"light.fonstret_vanster_level_light_color_on_off",
+			"light.fonstret_mitten_level_light_color_on_off",
+			"light.fonstret_hoger_level_light_color_on_off",
+		]
+	}]
 
 	sensor: {}
 
