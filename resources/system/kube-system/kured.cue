@@ -1,7 +1,6 @@
 package kube
 
 k: HelmRepository: kured: {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		url:      "https://weaveworks.github.io/kured"
@@ -9,7 +8,6 @@ k: HelmRepository: kured: {
 }
 
 k: HelmRelease: kured: {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		chart: spec: {
@@ -27,7 +25,7 @@ k: HelmRelease: kured: {
 			configuration: {
 				rebootDays: ["sa"]
 				startTime: "10:00"
-				endTime: "16:00"
+				endTime:   "16:00"
 			}
 		}
 	}

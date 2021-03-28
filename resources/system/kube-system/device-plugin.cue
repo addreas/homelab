@@ -3,7 +3,6 @@ package kube
 import json656e63 "encoding/json"
 
 k: ConfigMap: "hostdevice-plugin-config": {
-	metadata: namespace: "kube-system"
 	data: {
 		"config.json": json656e63.Marshal(_cue_config_json)
 		let _cue_config_json = {
@@ -51,7 +50,6 @@ k: ConfigMap: "hostdevice-plugin-config": {
 }
 
 k: DaemonSet: "hostdevice-plugin-daemonset": {
-	metadata: namespace: "kube-system"
 	spec: {
 		selector: matchLabels: app: "hostdevice-plugin"
 		template: {

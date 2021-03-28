@@ -1,7 +1,6 @@
 package kube
 
 k: StatefulSet: bitwarden: {
-	_selector: app: "bitwarden"
 	spec: {
 		template: {
 			spec: containers: [{

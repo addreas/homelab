@@ -1,6 +1,9 @@
 package kube
 
-import "encoding/yaml"
+import (
+	"encoding/json"
+	"encoding/yaml"
+)
 
 k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	homeassistant:
@@ -91,6 +94,18 @@ let conf = {
 		}
 	}
 
+}
+
+k: NetworkAttachmentDefinition: "macvlan-conf": {
+	spec: {
+		config: json.Marshal({
+			cniVersion: "0.3.0"
+			type:       "macvlan"
+			master:     "eno1"
+			mode:       "bridge"
+			ipam: type: "dhcp"
+		})
+	}
 }
 
 k: SealedSecret: "zwave-network-key": spec: encryptedData: key: "AgAO8N40Ry+9p+fe+YehhHIGy9GfFMCkQq7KvpQhzUJ6rLzOaDs0pHwL8Ha8JQPPa5JZp/3qAObO0ZYOffsOcZGU+P749AZnbvvBStBmbBQ8v9H4+Ov12AsyHbCADfHwo5oCiZVJLVqcflaUJxqR7+mk2ZRf+RYh7g8Lyx6QZxfhdBmgqlalFPv85HCMf4mvGNmVS9vx2ieru7cyy6UPfr0eFoLZfOieqGPsmn9nLd73XAtUJYs/eoqN374wU4lidxjdwn9ISHaBOd/Wnan4YxIHecOrZeD+MkwszR4jlLe2ZZJc43fJxHzgo5+Pj311TuRI0mqonFzNaBboehAP5fqMFjX5DHmRuaIVixsgegJYDSLnjawv0KbCS3TKM5ERwlS3P3uTFBX6fnnw7bRWzRmeIIbVr9KLFw/C958WI8zLVxSIEDKL8dxnNyZb+xtfpeFsm5Jt/plVpIH8jhB6A5dbykP8BZFfQ5FZubyYy1ueALm9YRiFwzF0GOM56ElD6rrignv8APeXVW0b67t1H52XRo/ZbF4L0PWCuq2BOe+uBNmklz7E44zV6S1fvKo4abP5Q7IQOCvyKprVNBUiv3mD9HulDKrqOqXPZa8SF+YzaceOg/yCzFs8WYws/lBdPPHfnPvjixyyC7C8cdwTAxQhBSrdhiJz31bFfagHzksiUHexQfMmkmNGcmw3cVZxUwyYF2fg4UtduAUKBeE8wVtg+/GTZ6UZ7MbxeWznLkWo2A=="

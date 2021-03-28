@@ -18,7 +18,7 @@ k: PodMonitor: "gotk-monitor": spec: {
 			"kustomize-controller",
 			"helm-controller",
 			"notification-controller",
-			"cuebuild-controller"
+			"cuebuild-controller",
 		]
 	}]
 }

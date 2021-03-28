@@ -1,7 +1,6 @@
 package kube
 
 k: HelmRepository: "haproxy-ingress": {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		url:      "https://haproxy-ingress.github.io/charts"
@@ -9,7 +8,6 @@ k: HelmRepository: "haproxy-ingress": {
 }
 
 k: HelmRelease: haproxy: {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		chart: spec: {
@@ -23,10 +21,10 @@ k: HelmRelease: haproxy: {
 			interval: "1h"
 		}
 		values: controller: {
-			stats: enabled: true
+			stats: enabled:   true
 			metrics: enabled: true
 			serviceMonitor: {
-				enabled: true
+				enabled:  true
 				interval: "60s"
 			}
 			replicaCount: 2
@@ -43,6 +41,6 @@ k: GrafanaDashboard: haproxy: spec: {
 	url: "https://grafana.com/api/dashboards/2428/revisions/7/download"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName: "DS_LOCALHOST"
+		inputName:      "DS_LOCALHOST"
 	}]
 }

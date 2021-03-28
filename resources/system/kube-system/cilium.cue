@@ -1,7 +1,6 @@
 package kube
 
 k: HelmRepository: cilium: {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		url:      "https://helm.cilium.io/"
@@ -9,7 +8,6 @@ k: HelmRepository: cilium: {
 }
 
 k: HelmRelease: cilium: {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		chart: spec: {
@@ -66,7 +64,6 @@ k: HelmRelease: cilium: {
 }
 
 k: GrafanaDashboard: "cilium-agent": {
-	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13537/revisions/1/download"
 		datasources: [{
@@ -77,7 +74,6 @@ k: GrafanaDashboard: "cilium-agent": {
 }
 
 k: GrafanaDashboard: "cilium-operator": {
-	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13538/revisions/1/download"
 		datasources: [{
@@ -88,7 +84,6 @@ k: GrafanaDashboard: "cilium-operator": {
 }
 
 k: GrafanaDashboard: "cilium-hubble": {
-	metadata: namespace: "kube-system"
 	spec: {
 		url: "https://grafana.com/api/dashboards/13539/revisions/1/download"
 		datasources: [{

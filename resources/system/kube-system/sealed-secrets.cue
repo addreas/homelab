@@ -1,7 +1,6 @@
 package kube
 
 k: HelmRepository: "sealed-secrets": {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		url:      "https://bitnami-labs.github.io/sealed-secrets"
@@ -9,7 +8,6 @@ k: HelmRepository: "sealed-secrets": {
 }
 
 k: HelmRelease: "sealed-secrets-controller": {
-	metadata: namespace: "kube-system"
 	spec: {
 		interval: "1h"
 		chart: spec: {

@@ -3,9 +3,10 @@ kind: JoinConfiguration
 discovery:
   bootstrapToken:
     apiServerEndpoint: nucles.localdomain:6443
-    token: "" # same as kubead-init.yaml
+    token: "" # from kubeadm-init.yaml or `kubeadm token create`
     unsafeSkipCAVerification: true
 controlPlane:
-  certificateKey: "" # same as kubeadm-init.yaml
+  certificateKey: "" # from kubeadm-init.yaml or `kubeadm init phase upload-certs --upload-certs`
 
 #kubeadm join nucles.localdomain:6443 --config kubeadm-join.yaml
+#kubectl taint nodes --all node-role.kubernetes.io/master-
