@@ -4,10 +4,10 @@ k: GitRepository: "multus-cni": spec: {
 	interval: "1h"
 	ref: branch: "master"
 	url: "https://github.com/k8snetworkplumbingwg/multus-cni"
-    ignore: """
-    /*
-    !/images/multus-daemonset.yml
-    """
+	ignore: """
+		/*
+		!/images/multus-daemonset.yml
+		"""
 }
 
 k: Kustomization: "multus-cni": spec: {
@@ -20,4 +20,3 @@ k: Kustomization: "multus-cni": spec: {
 	}
 	validation: "client"
 }
-

@@ -112,6 +112,7 @@ k: Ingress: "alertmanager": {
 	}
 }
 
+
 k: GrafanaDataSource: "prometheus": spec: {
 	name: "prometheus.yaml"
 	datasources: [{
