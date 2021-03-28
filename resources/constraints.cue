@@ -4,6 +4,30 @@ context: *"nucles" | string
 
 k: StatefulSet: [Name=string]: spec: serviceName: Name
 
+let podDefaults = {
+	securityContext: fsGroup: *1000 | int
+	containers: [...{
+		securityContext: {
+			allowPrivilegeEscalation: *false | bool
+			runAsUser:                *1000 | int
+			runAsGroup:               *1000 | int
+		}
+		ports: [...{protocol: *"TCP" | "UDP"}]
+	}]
+}
+
+k: DaemonSet: [Name=string]: {
+	_selector: _ | *{app: Name}
+	metadata: labels: _selector
+	spec: {
+		selector: matchLabels: _selector
+		template: {
+			metadata: labels: _selector
+			spec: podDefaults
+		}
+	}
+}
+
 k: ["Deployment" | "StatefulSet"]: [Name=string]: {
 	_selector: _ | *{app: Name}
 	metadata: labels: _selector
@@ -12,17 +36,7 @@ k: ["Deployment" | "StatefulSet"]: [Name=string]: {
 		selector: matchLabels: _selector
 		template: {
 			metadata: labels: _selector
-			spec: {
-				securityContext: fsGroup: *1000 | int
-				containers: [...{
-					securityContext: {
-						allowPrivilegeEscalation: *false | bool
-						runAsUser:                *1000 | int
-						runAsGroup:               *1000 | int
-					}
-					ports: [...{protocol: *"TCP" | "UDP"}]
-				}]
-			}
+			spec: podDefaults
 		}
 	}
 }

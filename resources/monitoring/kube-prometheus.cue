@@ -112,45 +112,6 @@ k: Ingress: "alertmanager": {
 	}
 }
 
-k: Service: "kube-scheduler": {
-	metadata: {
-		labels: {
-			"app.kubernetes.io/name": "kube-scheduler"
-			"k8s-app":                "kube-scheduler"
-		}
-		namespace: "kube-system"
-	}
-	spec: {
-		selector: {
-			component: "kube-scheduler"
-			tier:      "control-plane"
-		}
-		ports: [{
-			name: "https-metrics"
-			port: 10259
-		}]
-	}
-}
-k: Service: "kube-controller-manager": {
-	metadata: {
-		labels: {
-			"app.kubernetes.io/name": "kube-controller-manager"
-			"k8s-app":                "kube-controller-manager"
-		}
-		namespace: "kube-system"
-	}
-	spec: {
-		selector: {
-			component: "kube-controller-manager"
-			tier:      "control-plane"
-		}
-		ports: [{
-			name: "https-metrics"
-			port: 10257
-		}]
-	}
-}
-
 k: GrafanaDataSource: "prometheus": spec: {
 	name: "prometheus.yaml"
 	datasources: [{
