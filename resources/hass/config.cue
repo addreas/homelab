@@ -59,6 +59,15 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 let conf = {
 	prometheus: namespace: "hass"
 
+	webostv: {
+		host: "192.168.1.245"
+		turn_on_action: {
+			service: "media_player.turn_on"
+			target: entity_id: "media_player.vardagsrummet_tv"
+
+		}
+	}
+
 	sensor: {}
 
 	binary_sensor: [{
