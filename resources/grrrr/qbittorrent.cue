@@ -267,4 +267,8 @@ k: GrafanaDashboard: "qbittorrent": spec: {
 		datasourceName: "Prometheus"
 		inputName:      "DS_PROMETHEUS"
 	}]
+	plugins: [{
+		name: "grafana-piechart-panel"
+		version: "1.6.1"
+	}]
 }

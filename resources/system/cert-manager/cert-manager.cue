@@ -15,7 +15,7 @@ k: HelmRelease: "cert-manager": spec: {
 			name:      "cert-manager"
 			namespace: "cert-manager"
 		}
-		interval: "1m"
+		interval: "1h"
 	}
 	values: installCRDs: true
 }

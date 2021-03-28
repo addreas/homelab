@@ -1,7 +1,7 @@
 package kube
 
 k: GitRepository: "homelab": spec: {
-	interval: "5m0s"
+	interval: "1m0s"
 	ref: branch: "main"
 	url: "https://github.com/addreas/homelab"
 }
