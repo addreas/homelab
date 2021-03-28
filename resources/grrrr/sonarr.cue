@@ -86,6 +86,7 @@ k: StatefulSet: sonarr: {
 }
 
 k: Service: sonarr: {
+	_selector: app: "sonarr"
 	spec: ports: [{
 		name: "http"
 		port: 8989
@@ -96,6 +97,7 @@ k: Service: sonarr: {
 }
 
 k: ServiceMonitor: sonarr: {
+	_selector: app: "sonarr"
 	spec: endpoints: [{
 		port:     "metrics"
 		interval: "60s"

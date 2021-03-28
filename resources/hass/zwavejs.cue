@@ -23,6 +23,7 @@ k: Deployment: "hass-zwavejs": {
 }
 
 k: Service: "hass-zwavejs": {
+	_selector: app: "hass-zwavejs"
 	spec: ports: [{
 		port: 3000
 	}]

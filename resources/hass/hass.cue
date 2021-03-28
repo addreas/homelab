@@ -65,6 +65,7 @@ k: StatefulSet: hass: {
 }
 
 k: Service: hass: {
+	_selector: app: "hass"
 	spec: ports: [{
 		name: "http"
 		port: 8123
@@ -72,6 +73,7 @@ k: Service: hass: {
 }
 
 k: ServiceMonitor: hass: {
+	_selector: app: "hass"
 	spec: endpoints: [{
 		port:     "http"
 		interval: "60s"

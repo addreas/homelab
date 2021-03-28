@@ -81,6 +81,7 @@ k: StatefulSet: "unifi-controller": {
 }
 
 k: Service: "unifi-controller": {
+	_selector: app: "unifi-controller"
 	spec: ports: [{
 		name: "https"
 		port: 8443

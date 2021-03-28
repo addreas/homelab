@@ -42,6 +42,7 @@ k: StatefulSet: jackett: {
 }
 
 k: Service: jackett: {
+	_selector: app: "jackett"
 	spec: {
 		ports: [{
 			name: "http"

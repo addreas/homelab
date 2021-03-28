@@ -50,6 +50,7 @@ k: StatefulSet: bazarr: {
 }
 
 k: Service: bazarr: {
+	_selector: app: "bazarr"
 	spec: ports: [{
 		name: "http"
 		port: 6767

@@ -145,6 +145,7 @@ k: StatefulSet: qbittorrent: {
 }
 
 k: Service: qbittorrent: {
+	_selector: app: "qbittorrent"
 	spec: ports: [{
 		name: "http"
 		port: 8080
@@ -155,6 +156,7 @@ k: Service: qbittorrent: {
 }
 
 k: ServiceMonitor: qbittorrent: {
+	_selector: app: "qbittorrent"
 	spec: endpoints: [{
 		port:     "metrics"
 		interval: "60s"
@@ -192,7 +194,7 @@ k: ConfigMap: "qbittorrent-static-config": {
 }
 
 k: Service: "vpn-egress": {
-	_selector: close({"vpn-egress": "gateway"})
+	_selector: "vpn-egress": "gateway"
 	spec: ports: [{
 		name: "socks"
 		port: 1080

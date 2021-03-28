@@ -86,6 +86,7 @@ k: StatefulSet: radarr: {
 }
 
 k: Service: radarr: {
+	_selector: app: "radarr"
 	spec: ports: [{
 		name: "http"
 		port: 7878
@@ -96,6 +97,7 @@ k: Service: radarr: {
 }
 
 k: ServiceMonitor: radarr: {
+	_selector: app: "radarr"
 	spec: endpoints: [{
 		port:     "metrics"
 		interval: "60s"
