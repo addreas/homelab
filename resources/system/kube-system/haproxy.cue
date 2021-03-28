@@ -38,9 +38,9 @@ k: HelmRelease: haproxy: {
 }
 
 k: GrafanaDashboard: haproxy: spec: {
-	url: "https://grafana.com/api/dashboards/2428/revisions/7/download"
+	url: "https://grafana.com/api/dashboards/12693/revisions/1/download"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName:      "DS_LOCALHOST"
+		inputName:      "DS_PROMETHEUS"
 	}]
 }
