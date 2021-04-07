@@ -3,7 +3,7 @@ package kube
 import (
 	apps_v1 "k8s.io/api/apps/v1"
 	batch_v1 "k8s.io/api/batch/v1"
-	batch_v2alpha1 "k8s.io/api/batch/v2alpha1"
+	batch_v1beta1 "k8s.io/api/batch/v1beta1"
 	core_v1 "k8s.io/api/core/v1"
 	discovery_v1beta1 "k8s.io/api/discovery/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -66,10 +66,8 @@ _kubernetesAPIs: {
 		StatefulSet: apps_v1.#StatefulSet
 	}
 
-	"batch/v2alpha1": {
-		Job:     batch_v1.#Job
-		CronJob: batch_v2alpha1.#CronJob
-	}
+	"batch/v1": Job:     batch_v1.#Job
+	"batch/v1beta1": CronJob: batch_v1beta1.#CronJob
 
 	"discovery.k8s.io/v1beta1": EndpointSlice: discovery_v1beta1.#EndpointSlice
 
