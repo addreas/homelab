@@ -16,3 +16,20 @@ k: Kustomization: "flux-components": spec: {
 	}
 	validation: "client"
 }
+
+k: GitRepository: "cuebuild-controller": spec: {
+	interval: "1h"
+	ref: branch: "main"
+	url: "https://github.com/addreas/cuebuild-controller"
+}
+
+k: Kustomization: "cuebuild-controller": spec: {
+	interval: "1h"
+	path:     "./config/default"
+	prune:    true
+	sourceRef: {
+		kind: "GitRepository"
+		name: "cuebuild-controller"
+	}
+	validation: "client"
+}
