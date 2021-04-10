@@ -12,7 +12,7 @@ k: HelmRelease: cilium: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "cilium"
-			version: ">= v1.9.4"
+			version: "v1.9.4"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "cilium"
@@ -20,75 +20,5 @@ k: HelmRelease: cilium: {
 			}
 			interval: "1h"
 		}
-		values: {
-			prometheus: {
-				enabled: true
-				serviceMonitor: enabled: true
-			}
-			operator: prometheus: {
-				enabled: true
-				serviceMonitor: enabled: true
-			}
-			hubble: metrics: {
-				enabled: [
-					"dns:query;ignoreAAAA",
-					"drop",
-					"tcp",
-					"flow",
-					"icmp",
-					"http",
-				]
-				serviceMonitor: enabled: true
-			}
-		}
-		postRenderers: [{
-			kustomize: patchesStrategicMerge: [{
-				apiVersion: "monitoring.coreos.com/v1"
-				kind:       "ServiceMonitor"
-				metadata: {
-					name:      "cilium-agent"
-					namespace: "kube-system"
-				}
-				spec: targetLabels: ["k8s-app"]
-			}, {
-				apiVersion: "monitoring.coreos.com/v1"
-				kind:       "ServiceMonitor"
-				metadata: {
-					name:      "cilium-operator"
-					namespace: "kube-system"
-				}
-				spec: targetLabels: ["io.cilium/app"]
-			}]
-		}]
-	}
-}
-
-k: GrafanaDashboard: "cilium-agent": {
-	spec: {
-		url: "https://grafana.com/api/dashboards/13537/revisions/1/download"
-		datasources: [{
-			datasourceName: "Prometheus"
-			inputName:      "DS_PROMETHEUS"
-		}]
-	}
-}
-
-k: GrafanaDashboard: "cilium-operator": {
-	spec: {
-		url: "https://grafana.com/api/dashboards/13538/revisions/1/download"
-		datasources: [{
-			datasourceName: "Prometheus"
-			inputName:      "DS_PROMETHEUS"
-		}]
-	}
-}
-
-k: GrafanaDashboard: "cilium-hubble": {
-	spec: {
-		url: "https://grafana.com/api/dashboards/13539/revisions/1/download"
-		datasources: [{
-			datasourceName: "Prometheus"
-			inputName:      "DS_PROMETHEUS"
-		}]
 	}
 }
