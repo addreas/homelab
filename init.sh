@@ -1,7 +1,7 @@
 #!/bin/bash
 
-go mod init github.com/addreas/cuebernetes
-cue mod init github.com/addreas/cuebernetes
+go mod init github.com/addreas/homelab
+cue mod init github.com/addreas/homelab
 
 GO_PKG_URLS=(
     "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
