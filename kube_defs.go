@@ -13,7 +13,7 @@ import (
 	_ "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	_ "k8s.io/api/apps/v1"
 	_ "k8s.io/api/batch/v1"
-	_ "k8s.io/api/batch/v2alpha1"
+	_ "k8s.io/api/batch/v1beta1"
 	_ "k8s.io/api/core/v1"
 	_ "k8s.io/api/discovery/v1beta1"
 	_ "k8s.io/api/networking/v1"

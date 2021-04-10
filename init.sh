@@ -14,7 +14,7 @@ GO_PKG_URLS=(
     "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
     "k8s.io/api/apps/v1"
     "k8s.io/api/batch/v1"
-    "k8s.io/api/batch/v2alpha1"
+    "k8s.io/api/batch/v1beta1"
     "k8s.io/api/core/v1"
     "k8s.io/api/discovery/v1beta1"
     "k8s.io/api/networking/v1"

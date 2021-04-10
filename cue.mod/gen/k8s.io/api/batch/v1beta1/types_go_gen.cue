@@ -135,9 +135,14 @@ import (
 #CronJobStatus: {
 	// A list of pointers to currently running jobs.
 	// +optional
+	// +listType=atomic
 	active?: [...v1.#ObjectReference] @go(Active,[]v1.ObjectReference) @protobuf(1,bytes,rep)
 
 	// Information when was the last time the job was successfully scheduled.
 	// +optional
 	lastScheduleTime?: null | metav1.#Time @go(LastScheduleTime,*metav1.Time) @protobuf(4,bytes,opt)
+
+	// Information when was the last time the job successfully completed.
+	// +optional
+	lastSuccessfulTime?: null | metav1.#Time @go(LastSuccessfulTime,*metav1.Time) @protobuf(5,bytes,opt)
 }

@@ -151,7 +151,7 @@ import (
 	// a persistent volume defined by a pod's inline VolumeSource. This field
 	// is populated only for the CSIMigration feature. It contains
 	// translated fields from a pod's inline VolumeSource to a
-	// PersistentVolumeSpec. This field is alpha-level and is only
+	// PersistentVolumeSpec. This field is beta-level and is only
 	// honored by servers that enabled the CSIMigration feature.
 	// +optional
 	inlineVolumeSpec?: null | v1.#PersistentVolumeSpec @go(InlineVolumeSpec,*v1.PersistentVolumeSpec) @protobuf(2,bytes,opt)
@@ -245,6 +245,9 @@ import (
 	// If the CSIDriverRegistry feature gate is enabled and the value is
 	// specified to false, the attach operation will be skipped.
 	// Otherwise the attach operation will be called.
+	//
+	// This field is immutable.
+	//
 	// +optional
 	attachRequired?: null | bool @go(AttachRequired,*bool) @protobuf(1,varint,opt)
 
@@ -263,7 +266,7 @@ import (
 	// "csi.storage.k8s.io/pod.name": pod.Name
 	// "csi.storage.k8s.io/pod.namespace": pod.Namespace
 	// "csi.storage.k8s.io/pod.uid": string(pod.UID)
-	// "csi.storage.k8s.io/ephemeral": "true" iff the volume is an ephemeral inline volume
+	// "csi.storage.k8s.io/ephemeral": "true" if the volume is an ephemeral inline volume
 	//                                 defined by a CSIVolumeSource, otherwise "false"
 	//
 	// "csi.storage.k8s.io/ephemeral" is a new feature in Kubernetes 1.16. It is only
@@ -272,6 +275,9 @@ import (
 	// As Kubernetes 1.15 doesn't support this field, drivers can only support one mode when
 	// deployed on such a cluster and the deployment determines which mode that is, for example
 	// via a command line parameter of the driver.
+	//
+	// This field is immutable.
+	//
 	// +optional
 	podInfoOnMount?: null | bool @go(PodInfoOnMount,*bool) @protobuf(2,bytes,opt)
 
@@ -288,6 +294,9 @@ import (
 	// A driver can support one or more of these modes and
 	// more modes may be added in the future.
 	// This field is beta.
+	//
+	// This field is immutable.
+	//
 	// +optional
 	// +listType=set
 	volumeLifecycleModes?: [...#VolumeLifecycleMode] @go(VolumeLifecycleModes,[]VolumeLifecycleMode) @protobuf(3,bytes,opt)
@@ -306,10 +315,13 @@ import (
 	// unset or false and it can be flipped later when storage
 	// capacity information has been published.
 	//
-	// This is an alpha field and only available when the CSIStorageCapacity
+	// This field is immutable.
+	//
+	// This is a beta field and only available when the CSIStorageCapacity
 	// feature is enabled. The default is false.
 	//
 	// +optional
+	// +featureGate=CSIStorageCapacity
 	storageCapacity?: null | bool @go(StorageCapacity,*bool) @protobuf(4,bytes,opt)
 
 	// Defines if the underlying volume supports changing ownership and
@@ -317,6 +329,9 @@ import (
 	// Refer to the specific FSGroupPolicy values for additional details.
 	// This field is alpha-level, and is only honored by servers
 	// that enable the CSIVolumeFSGroupPolicy feature gate.
+	//
+	// This field is immutable.
+	//
 	// +optional
 	fsGroupPolicy?: null | #FSGroupPolicy @go(FSGroupPolicy,*FSGroupPolicy) @protobuf(5,bytes,opt)
 
@@ -336,7 +351,7 @@ import (
 	// most one token is empty string. To receive a new token after expiry,
 	// RequiresRepublish can be used to trigger NodePublishVolume periodically.
 	//
-	// This is an alpha feature and only available when the
+	// This is a beta feature and only available when the
 	// CSIServiceAccountToken feature is enabled.
 	//
 	// +optional
@@ -351,7 +366,7 @@ import (
 	// to NodePublishVolume should only update the contents of the volume. New
 	// mount points will not be seen by a running container.
 	//
-	// This is an alpha feature and only available when the
+	// This is a beta feature and only available when the
 	// CSIServiceAccountToken feature is enabled.
 	//
 	// +optional

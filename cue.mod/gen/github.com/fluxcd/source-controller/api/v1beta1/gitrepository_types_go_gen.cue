@@ -67,6 +67,12 @@ import (
 	// +kubebuilder:default:=go-git
 	// +optional
 	gitImplementation?: string @go(GitImplementation)
+
+	// When enabled, after the clone is created, initializes all submodules within,
+	// using their default settings.
+	// This option is available only when using the 'go-git' GitImplementation.
+	// +optional
+	recurseSubmodules?: bool @go(RecurseSubmodules)
 }
 
 // GitRepositoryRef defines the Git ref used for pull and checkout operations.

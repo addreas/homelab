@@ -107,6 +107,12 @@ import (
 	// with the EndpointSliceNodeName feature gate.
 	// +optional
 	nodeName?: null | string @go(NodeName,*string) @protobuf(6,bytes,opt)
+
+	// hints contains information associated with how an endpoint should be
+	// consumed.
+	// +featureGate=TopologyAwareHints
+	// +optional
+	hints?: null | #EndpointHints @go(Hints,*EndpointHints) @protobuf(7,bytes,opt)
 }
 
 // EndpointConditions represents the current condition of an endpoint.
@@ -133,6 +139,20 @@ import (
 	// with the EndpointSliceTerminatingCondition feature gate.
 	// +optional
 	terminating?: null | bool @go(Terminating,*bool) @protobuf(3,bytes)
+}
+
+// EndpointHints provides hints describing how an endpoint should be consumed.
+#EndpointHints: {
+	// forZones indicates the zone(s) this endpoint should be consumed by to
+	// enable topology aware routing. May contain a maximum of 8 entries.
+	// +listType=atomic
+	forZones?: [...#ForZone] @go(ForZones,[]ForZone) @protobuf(1,bytes)
+}
+
+// ForZone provides information about which zones should consume this endpoint.
+#ForZone: {
+	// name represents the name of the zone.
+	name: string @go(Name) @protobuf(1,bytes)
 }
 
 // EndpointPort represents a Port used by an EndpointSlice

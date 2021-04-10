@@ -80,6 +80,27 @@ import (
 	// Defaults to `digital signature` and `key encipherment` if not specified.
 	// +optional
 	usages?: [...#KeyUsage] @go(Usages,[]KeyUsage)
+
+	// Username contains the name of the user that created the CertificateRequest.
+	// Populated by the cert-manager webhook on creation and immutable.
+	// +optional
+	username?: string @go(Username)
+
+	// UID contains the uid of the user that created the CertificateRequest.
+	// Populated by the cert-manager webhook on creation and immutable.
+	// +optional
+	uid?: string @go(UID)
+
+	// Groups contains group membership of the user that created the CertificateRequest.
+	// Populated by the cert-manager webhook on creation and immutable.
+	// +listType=atomic
+	// +optional
+	groups?: [...string] @go(Groups,[]string)
+
+	// Extra contains extra attributes of the user that created the CertificateRequest.
+	// Populated by the cert-manager webhook on creation and immutable.
+	// +optional
+	extra?: {[string]: [...string]} @go(Extra,map[string][]string)
 }
 
 // CertificateRequestStatus defines the observed state of CertificateRequest and
@@ -113,7 +134,8 @@ import (
 
 // CertificateRequestCondition contains condition information for a CertificateRequest.
 #CertificateRequestCondition: {
-	// Type of the condition, known values are (`Ready`, `InvalidRequest`).
+	// Type of the condition, known values are (`Ready`, `InvalidRequest`,
+	// `Approved`, `Denied`).
 	type: #CertificateRequestConditionType @go(Type)
 
 	// Status of the condition, one of (`True`, `False`, `Unknown`).
@@ -140,7 +162,9 @@ import (
 
 #enumCertificateRequestConditionType:
 	#CertificateRequestConditionReady |
-	#CertificateRequestConditionInvalidRequest
+	#CertificateRequestConditionInvalidRequest |
+	#CertificateRequestConditionApproved |
+	#CertificateRequestConditionDenied
 
 // CertificateRequestConditionReady indicates that a certificate is ready for use.
 // This is defined as:
@@ -152,3 +176,15 @@ import (
 // parameters being invalid. Additional information about why the request
 // was rejected can be found in the `reason` and `message` fields.
 #CertificateRequestConditionInvalidRequest: #CertificateRequestConditionType & "InvalidRequest"
+
+// CertificateRequestConditionApproved indicates that a certificate request
+// is approved and ready for signing. Condition must never have a status of
+// `False`, and cannot be modified once set. Cannot be set alongside
+// `Denied`.
+#CertificateRequestConditionApproved: #CertificateRequestConditionType & "Approved"
+
+// CertificateRequestConditionDenied indicates that a certificate request is
+// denied, and must never be signed. Condition must never have a status of
+// `False`, and cannot be modified once set. Cannot be set alongside
+// `Approved`.
+#CertificateRequestConditionDenied: #CertificateRequestConditionType & "Denied"
