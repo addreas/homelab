@@ -2,7 +2,7 @@ package kube
 
 k: GitRepository: "multus-cni": spec: {
 	interval: "1h"
-	ref: branch: "master"
+	ref: tag: "v3.7.1"
 	url: "https://github.com/k8snetworkplumbingwg/multus-cni"
 	ignore: """
 		/*
