@@ -4,7 +4,7 @@
 
 package strfmt
 
-import "reflect"
+// import "reflect"
 
 // Format represents a string format.
 //
@@ -15,8 +15,8 @@ import "reflect"
 // Registry is a registry of string formats, with a validation method.
 #Registry: _
 
-_#knownFormat: {
-	Name:     string
-	OrigName: string
-	Type:     reflect.#Type
-}
+// _#knownFormat: {
+// 	Name:     string
+// 	OrigName: string
+// 	Type:     reflect.#Type
+// }
