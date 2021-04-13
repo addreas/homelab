@@ -19,7 +19,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	discovery:
 
 	default_config:
-	config:
 
 	recorder:
 	  db_url: !env_var DB_URL
