@@ -45,7 +45,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	recorder:
 	  db_url: !env_var DB_URL
 
-	tv4_play:
 	speedtestdotnet:
 
 	google_assistant:
