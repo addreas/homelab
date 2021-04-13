@@ -45,6 +45,8 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	\(yaml.Marshal(conf))
 	"""
 
+// yaml.Marshal cannot do the !include statements, so that's why it's split up
+// Prefer adding stuff below and not above
 let conf = {
 	prometheus: namespace: "hass"
 
