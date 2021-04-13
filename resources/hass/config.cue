@@ -6,9 +6,6 @@ import (
 )
 
 k: ConfigMap: "hass-config": data: "configuration.yaml": """
-	homeassistant:
-	  customize: !include customize.yaml
-
 	group: !include groups.yaml
 	automation: !include automations.yaml
 	script: !include scripts.yaml
