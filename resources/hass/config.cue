@@ -17,6 +17,8 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	  themes: !include_dir_merge_named themes
 
 	discovery:
+
+	default_config:
 	config:
 
 	recorder:
