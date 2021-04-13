@@ -10,7 +10,7 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	  name: Home
 	  latitude: 59.382683
 	  longitude: 18.005288
-	  elevation: 10
+	  elevation: 5
 	  unit_system: metric
 	  time_zone: Europe/Stockholm
 	  customize: !include customize.yaml
