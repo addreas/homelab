@@ -87,8 +87,6 @@ let conf = {
 		country:  "SE"
 	}]
 
-	input_boolean: kitchen_auto_mode: name: "Automatiskt läge i Köket"
-
 	plant: {
 		for i in ["xiaomi_hhccjcy01_48_63", "xiaomi_hhccjcy01_48_a6"] {
 			"plant_\(i)": {
