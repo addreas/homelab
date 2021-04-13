@@ -26,21 +26,9 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	frontend:
 	  themes: !include_dir_merge_named themes
 
-	logbook:
-	history:
-	map:
-	person:
-	ssdp:
-	sun:
-	system_health:
-	updater:
-	zeroconf:
 	discovery:
 	config:
 	mobile_app:
-
-	tts:
-	- platform: google_translate
 
 	recorder:
 	  db_url: !env_var DB_URL
