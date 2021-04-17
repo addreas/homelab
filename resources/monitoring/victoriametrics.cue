@@ -34,11 +34,10 @@ k: GrafanaDataSource: "prometheus": spec: {
 }
 
 k: VMAgent: "main": spec: {
-	serviceScrapeSelector: {}
-	podScrapeSelector: {}
-	probeSelector: {}
-	nodeScrapeSelector: {}
-	staticScrapeSelector: {}
+	for type in ["serviceScrape","podScrape","probe","nodeScrape","staticScrape"] {
+		"\(type)Selector": {}
+		"\(type)NamespaceSelector": {}
+	}
 	replicaCount: 1
 	resources: {
 		requests: {
