@@ -118,7 +118,7 @@ k: GrafanaDashboard: "radarr": spec: {
 	url: "https://grafana.com/api/dashboards/12896/revisions/1/download"
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName: "DS_RANCHER_MONITORING"
+		inputName:      "DS_RANCHER_MONITORING"
 	}]
 	plugins: [{
 		name:    "grafana-piechart-panel"

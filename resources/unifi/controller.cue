@@ -23,10 +23,10 @@ k: StatefulSet: "unifi-controller": {
 					ports: [{
 						containerPort: 8443
 					}]
-					volumeMounts: [for dir in ["data", "logs", "run"] {
+					volumeMounts: [ for dir in ["data", "logs", "run"] {
 						name:      "config"
 						mountPath: "/usr/lib/unifi/\(dir)"
-						subPath: dir
+						subPath:   dir
 					}]
 					resources: {
 						limits: {
