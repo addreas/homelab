@@ -3,6 +3,7 @@ module github.com/addreas/cuebernetes
 go 1.15
 
 require (
+	github.com/VictoriaMetrics/operator v0.13.1
 	github.com/addreas/cuebuild-controller/api v0.9.1-cue
 	github.com/bitnami-labs/sealed-secrets v0.15.0
 	github.com/cilium/cilium v1.9.5

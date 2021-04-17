@@ -29,6 +29,8 @@ import (
 	monitoring_v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 
 	cilium_v2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
+
+	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
 )
 
 k: close({
@@ -66,7 +68,7 @@ _kubernetesAPIs: {
 		StatefulSet: apps_v1.#StatefulSet
 	}
 
-	"batch/v1": Job:     batch_v1.#Job
+	"batch/v1": Job:          batch_v1.#Job
 	"batch/v1beta1": CronJob: batch_v1beta1.#CronJob
 
 	"discovery.k8s.io/v1beta1": EndpointSlice: discovery_v1beta1.#EndpointSlice
@@ -124,4 +126,18 @@ _kubernetesAPIs: {
 	}
 
 	"cilium.io/v2": CiliumNetworkPolicy: cilium_v2.#CiliumNetworkPolicy
+
+	"operator.victoriametrics.com/v1beta1": {
+		VMAgent:         victoriametrics_v1beta1.#VMAgent
+		VMAlert:         victoriametrics_v1beta1.#VMAlert
+		VMAlertmanager:  victoriametrics_v1beta1.#VMAlertmanager
+		VMCluster:       victoriametrics_v1beta1.#VMCluster
+		VMNodeScrape:    victoriametrics_v1beta1.#VMNodeScrape
+		VMPodScrape:     victoriametrics_v1beta1.#VMPodScrape
+		VMProbe:         victoriametrics_v1beta1.#VMProbe
+		VMRule:          victoriametrics_v1beta1.#VMRule
+		VMServiceScrape: victoriametrics_v1beta1.#VMServiceScrape
+		VMSingle:        victoriametrics_v1beta1.#VMSingle
+		VMStaticScrape:  victoriametrics_v1beta1.#VMStaticScrape
+	}
 }

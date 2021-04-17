@@ -1,20 +1,19 @@
 package kube
 
-
 k: DaemonSet: "hostnetwork-proxy": {
-    metadata: namespace: "kube-system"
-    spec: template: spec: {
-        hostNetwork: true
-        containers: [{
-            name:  "kube-scheduler"
-            image: "alpine/socat"
-            args: ["tcp-listen:11259,fork,reuseaddr", "tcp-connect:127.0.0.1:10259"]
-        }, {
-            name:  "kube-controller-manager"
-            image: "alpine/socat"
-            args: ["tcp-listen:11257,fork,reuseaddr", "tcp-connect:127.0.0.1:10257"]
-        }]
-    }
+	metadata: namespace: "kube-system"
+	spec: template: spec: {
+		hostNetwork: true
+		containers: [{
+			name:  "kube-scheduler"
+			image: "alpine/socat"
+			args: ["tcp-listen:11259,fork,reuseaddr", "tcp-connect:127.0.0.1:10259"]
+		}, {
+			name:  "kube-controller-manager"
+			image: "alpine/socat"
+			args: ["tcp-listen:11257,fork,reuseaddr", "tcp-connect:127.0.0.1:10257"]
+		}]
+	}
 }
 
 k: Service: "kube-scheduler": {

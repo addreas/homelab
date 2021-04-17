@@ -1,18 +1,17 @@
 package kube
 
-k: Namespace: monitoring: {}
-
 k: GitRepository: "kube-prometheus": spec: {
 	interval: "1h"
 	ref: branch: "main"
 	url: "https://github.com/prometheus-operator/kube-prometheus"
 	ignore: """
 		/*
-		!/manifests/setup/
-		!/manifests/alertmanager*
+		!/manifests/setup/*monitor*
+		!/manifests/setup/*probe*
+		!/manifests/setup/*rule*
 		!/manifests/kube*
 		!/manifests/node*
-		!/manifests/prometheus*
+		!/manifests/prometheus-adapter*
 		!/manifests/grafana-dashboardDefinitions.yaml
 		"""
 }
@@ -37,14 +36,6 @@ k: Kustomization: "kube-prometheus": spec: {
 		name: "kube-prometheus-setup"
 	}]
 	healthChecks: [{
-		kind:      "StatefulSet"
-		name:      "prometheus-k8s"
-		namespace: "monitoring"
-	}, {
-		kind:      "StatefulSet"
-		name:      "alertmanager-main"
-		namespace: "monitoring"
-	}, {
 		kind:      "DaemonSet"
 		name:      "node-exporter"
 		namespace: "monitoring"
@@ -60,69 +51,29 @@ k: Kustomization: "kube-prometheus": spec: {
 	interval: "30m"
 	path:     "./manifests"
 	patchesStrategicMerge: [{
-		apiVersion: "monitoring.coreos.com/v1"
-		kind:       "Prometheus"
+		apiVersion: "apps/v1"
+		kind:       "Deployment"
 		metadata: {
-			name:      "k8s"
+			name:      "prometheus-adapter"
 			namespace: "monitoring"
 		}
-		spec: {
-			replicas:      2
-			retentionSize: "4GB"
-			storage: volumeClaimTemplate: {
-				metadata: name: "data"
-				spec: {
-					resources: requests: storage: "5Gi"
-					accessModes: ["ReadWriteOnce"]
-				}
-			}
-		}
-	}, {
-		apiVersion: "monitoring.coreos.com/v1"
-		kind:       "Alertmanager"
-		metadata: {
-			name:      "main"
-			namespace: "monitoring"
-		}
-		spec: replicas: 1
+		spec: template: spec: containers: [{
+			name: "prometheus-adapter"
+			args: [
+				"--cert-dir=/var/run/serving-cert",
+				"--config=/etc/adapter/config.yaml",
+				"--logtostderr=true",
+				"--metrics-relist-interval=1m",
+				"--prometheus-url=http://vmsingle-main.monitoring.svc.cluster.local:8429/",
+				"--secure-port=6443",
+			]
+		}]
 	}]
 	prune: true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "kube-prometheus"
 	}
-}
-
-k: Ingress: "alertmanager": {
-	metadata: annotations: {
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "default/client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-	spec: {
-		rules: [{
-			http: paths: [{
-				backend: service: {
-					name: "alertmanager-main"
-					port: number: 9093
-				}
-			}]
-		}]
-	}
-}
-
-
-k: GrafanaDataSource: "prometheus": spec: {
-	name: "prometheus.yaml"
-	datasources: [{
-		name:      "Prometheus"
-		type:      "prometheus"
-		url:       "http://prometheus-k8s.monitoring.svc:9090"
-		access:    "proxy"
-		isDefault: true
-		editable:  false
-	}]
 }
 
 let dashboards = [

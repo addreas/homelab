@@ -1,6 +1,7 @@
 package kube
 
 import (
+	_ "github.com/VictoriaMetrics/operator/api/v1beta1"
 	_ "github.com/addreas/cuebuild-controller/api/v1alpha1"
 	_ "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
