@@ -10,8 +10,6 @@ k: GrafanaDashboard: "longhorn": spec: {
 	}]
 }
 
-k: util.prometheusNamespaceRBAC
-
 k: ServiceMonitor: "longhorn-prometheus-servicemonitor": {
 	_selector: "app": "longhorn-manager"
 	spec: endpoints: [{
