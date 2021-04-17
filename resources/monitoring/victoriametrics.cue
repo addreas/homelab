@@ -132,7 +132,7 @@ k: Ingress: "alertmanager": {
 		rules: [{
 			http: paths: [{
 				backend: service: {
-					name: "vmalertmanager-main-0"
+					name: "vmalertmanager-main"
 					port: number: 9093
 				}
 			}]
