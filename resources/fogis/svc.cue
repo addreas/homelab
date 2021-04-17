@@ -28,12 +28,3 @@ k: Service: fogis: {
 		port: 3000
 	}]
 }
-
-k: ServiceMonitor: fogis: {
-	_selector: Labels
-	spec: endpoints: [{
-		port:     "http"
-		interval: "60s"
-		path:     "/"
-	}]
-}
