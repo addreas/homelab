@@ -17,11 +17,6 @@ k: GitRepository: "kube-prometheus": spec: {
 }
 
 k: Kustomization: "kube-prometheus-setup": spec: {
-	healthChecks: [{
-		kind:      "Deployment"
-		name:      "prometheus-operator"
-		namespace: "monitoring"
-	}]
 	interval: "30m"
 	path:     "./manifests/setup"
 	prune:    true
