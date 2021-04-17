@@ -1,7 +1,5 @@
 package kube
 
-import "github.com/addreas/homelab/util"
-
 k: GrafanaDashboard: "longhorn": spec: {
 	url: "https://grafana.com/api/dashboards/13032/revisions/6/download"
 	datasources: [{
