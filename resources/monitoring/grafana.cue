@@ -12,6 +12,7 @@ k: Grafana: grafana: spec: {
 			enabled:  true
 			org_role: "Admin"
 		}
+        alerting: enabled: false
 	}
 	client: preferService: true
 	ingress: {
