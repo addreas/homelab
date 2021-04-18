@@ -11,7 +11,7 @@ k: VMSingle: "main": spec: {
 			memory: "350Mi"
 		}
 		limits: {
-			cpu:    "500m"
+			cpu:    "2"
 			memory: "850Mi"
 		}
 	}
