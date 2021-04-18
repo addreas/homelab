@@ -7,12 +7,12 @@ k: VMSingle: "main": spec: {
 	removePvcAfterDelete: true
 	resources: {
 		requests: {
-			cpu:    "250m"
-			memory: "350Mi"
+			cpu:    "500m"
+			memory: "512Mi"
 		}
 		limits: {
-			cpu:    "2"
-			memory: "850Mi"
+			cpu:    "4"
+			memory: "2Gi"
 		}
 	}
 	storage: {
