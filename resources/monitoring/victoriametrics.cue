@@ -12,7 +12,7 @@ k: VMSingle: "main": spec: {
 		}
 		limits: {
 			cpu:    "4"
-			memory: "2Gi"
+			memory: "4Gi"
 		}
 	}
 	storage: {
@@ -56,8 +56,8 @@ k: VMAgent: "main": spec: {
 k: VMAlert: "main": spec: {
 	replicaCount: 1
 	datasource: url: "http://vmsingle-main.monitoring.svc:8429"
-	notifiers: [{url: "http://vmalertmanager-main.default.svc:9093"}]
-	evaluationInterval: "30s"
+	notifiers: [{url: "http://vmalertmanager-main.monitoring.svc:9093"}]
+	evaluationInterval: "60s"
 	ruleSelector: {}
 	resources: {
 		requests: {
@@ -69,10 +69,7 @@ k: VMAlert: "main": spec: {
 			memory: "450Mi"
 		}
 	}
-	remoteWrite: {
-		url:         "http://vmsingle-main.monitoring.svc:8429"
-		concurrency: 12
-	}
+	remoteWrite: url: "http://vmsingle-main.monitoring.svc:8429"
 	remoteRead: url: "http://vmsingle-main.monitoring.svc:8429"
 }
 
