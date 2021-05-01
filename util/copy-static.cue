@@ -2,7 +2,7 @@ package util
 
 copyStatic: {
 	name:  "copy-static"
-	image: "quay.io/quay/busybox"
+	image: "busybox:stable"
 	command: [
 		"cp",
 		"-r",
