@@ -41,6 +41,8 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 let conf = {
 	prometheus: namespace: "hass"
 
+	zeroconf: default_interface: false
+
 	webostv: {
 		host: "192.168.1.245"
 		turn_on_action: {
