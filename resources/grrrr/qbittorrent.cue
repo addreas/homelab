@@ -31,7 +31,7 @@ k: StatefulSet: qbittorrent: {
 					}]
 				}, {
 					name:  "insert-config"
-					image: "quay.io/quay/busybox"
+					image: "busybox:stable"
 					command: ["sh", "-c"]
 					args: ["""
 						CONF_DIR=/config/config
