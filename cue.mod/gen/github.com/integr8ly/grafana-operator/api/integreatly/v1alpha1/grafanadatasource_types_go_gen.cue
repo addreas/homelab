@@ -119,7 +119,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	logAnalyticsClientId?:         string @go(LogAnalyticsClientId)
 	logAnalyticsSubscriptionId?:   string @go(LogAnalyticsSubscriptionId)
 	logAnalyticsTenantId?:         string @go(LogAnalyticsTenantId)
-	subscriptionI?:                string @go(SubscriptionId)
+	subscriptionId?:               string @go(SubscriptionId)
 	tenantId?:                     string @go(TenantId)
 
 	// Fields for InfluxDB data sources
@@ -134,6 +134,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Fields for Prometheus data sources
 	customQueryParameters?: string @go(CustomQueryParameters)
+	httpMethod?:            string @go(HTTPMethod)
 }
 
 #GrafanaDataSourceJsonDerivedFields: {

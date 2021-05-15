@@ -101,6 +101,9 @@ import (
 	envFrom?: [...v1.#EnvFromSource] @go(EnvFrom,[]v1.EnvFromSource)
 	skipCreateAdminAccount?: null | bool @go(SkipCreateAdminAccount,*bool)
 	priorityClassName?:      string      @go(PriorityClassName)
+	hostNetwork?:            null | bool @go(HostNetwork,*bool)
+	extraVolumes?: [...v1.#Volume] @go(ExtraVolumes,[]v1.Volume)
+	extraVolumeMounts?: [...v1.#VolumeMount] @go(ExtraVolumeMounts,[]v1.VolumeMount)
 }
 
 // GrafanaIngress provides a means to configure the ingress created
@@ -134,6 +137,7 @@ import (
 	"auth.github"?:                       null | #GrafanaConfigAuthGithub                    @go(AuthGithub,*GrafanaConfigAuthGithub)
 	"auth.gitlab"?:                       null | #GrafanaConfigAuthGitlab                    @go(AuthGitlab,*GrafanaConfigAuthGitlab)
 	"auth.generic_oauth"?:                null | #GrafanaConfigAuthGenericOauth              @go(AuthGenericOauth,*GrafanaConfigAuthGenericOauth)
+	"auth.okta"?:                         null | #GrafanaConfigAuthOkta                      @go(AuthOkta,*GrafanaConfigAuthOkta)
 	"auth.ldap"?:                         null | #GrafanaConfigAuthLdap                      @go(AuthLdap,*GrafanaConfigAuthLdap)
 	"auth.proxy"?:                        null | #GrafanaConfigAuthProxy                     @go(AuthProxy,*GrafanaConfigAuthProxy)
 	"auth.saml"?:                         null | #GrafanaConfigAuthSaml                      @go(AuthSaml,*GrafanaConfigAuthSaml)
@@ -229,6 +233,7 @@ import (
 	editors_can_admin?:    null | bool @go(EditorsCanAdmin,*bool)
 	login_hint?:           string      @go(LoginHint)
 	password_hint?:        string      @go(PasswordHint)
+	default_theme?:        string      @go(DefaultTheme)
 }
 
 #GrafanaConfigAuth: {
@@ -343,6 +348,21 @@ import (
 	tls_client_cert?:          string      @go(TLSClientCert)
 	tls_client_key?:           string      @go(TLSClientKey)
 	tls_client_ca?:            string      @go(TLSClientCa)
+}
+
+#GrafanaConfigAuthOkta: {
+	enabled?:             null | bool @go(Enabled,*bool)
+	name?:                string      @go(Name)
+	allow_sign_up?:       null | bool @go(AllowSignUp,*bool)
+	client_id?:           string      @go(ClientId)
+	client_secret?:       string      @go(ClientSecret)
+	scopes?:              string      @go(Scopes)
+	auth_url?:            string      @go(AuthUrl)
+	token_url?:           string      @go(TokenUrl)
+	api_url?:             string      @go(ApiUrl)
+	allowed_domains?:     string      @go(AllowedDomains)
+	allowed_groups?:      string      @go(AllowedGroups)
+	role_attribute_path?: string      @go(RoleAttributePath)
 }
 
 #GrafanaConfigAuthLdap: {

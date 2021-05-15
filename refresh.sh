@@ -1,7 +1,6 @@
 #!/bin/bash
 
-go mod init github.com/addreas/homelab
-cue mod init github.com/addreas/homelab
+go mod tidy
 
 GO_PKG_URLS=(
     "github.com/VictoriaMetrics/operator/api/v1beta1"
@@ -29,11 +28,9 @@ GO_PKG_URLS=(
 
 for URL in ${GO_PKG_URLS[@]}; do
     printf "$URL..."
-    go get $URL
     cue get go $URL
     printf "done\n"
 done
 
 # need to get rid of reference to "reflect" in ./cue.mod/gen/github.com/go-openapi/strfmt/format_go_gen.cue
 
-cue import -p kube -l '"k"' -l 'kind' -l metadata.name -f -R ./**/*.yaml

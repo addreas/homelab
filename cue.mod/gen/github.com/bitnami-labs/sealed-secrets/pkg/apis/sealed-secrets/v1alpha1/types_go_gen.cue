@@ -41,6 +41,9 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	// Used to facilitate programmatic handling of secret data.
 	// +optional
 	type?: apiv1.#SecretType @go(Type) @protobuf(3,bytes,opt,casttype=SecretType)
+
+	// Keys that should be templated using decrypted data
+	data: {[string]: string} @go(Data,map[string]string)
 }
 
 // SealedSecretSpec is the specification of a SealedSecret

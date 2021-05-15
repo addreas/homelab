@@ -20,6 +20,11 @@ import (
 // the `status.certificate` field is set.
 #CertificateRequestReasonIssued: "Issued"
 
+// Denied is a Ready condition reason that indicates that a
+// CertificateRequest has been denied, and the CertificateRequest will never
+// be issued.
+#CertificateRequestReasonDenied: "Denied"
+
 // A CertificateRequest is used to request a signed certificate from one of the
 // configured issuers.
 //

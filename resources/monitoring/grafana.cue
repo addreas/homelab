@@ -39,10 +39,7 @@ k: GitRepository: "grafana-operator": spec: {
 	url: "https://github.com/integr8ly/grafana-operator.git"
 	ignore: """
 		/*
-		!/deploy/crds
-		!/deploy/roles
-		!/deploy/cluster_roles
-		!/deploy/operator.yaml
+		!/config
 		"""
 }
 
@@ -53,50 +50,11 @@ k: Kustomization: "grafana-operator": spec: {
 		namespace: "monitoring"
 	}]
 	interval: "30m"
-	path:     "./deploy"
+	path:     "./config/default"
 	prune:    true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "grafana-operator"
 	}
 	targetNamespace: "monitoring"
-	patchesStrategicMerge: [{
-		apiVersion: "apps/v1"
-		kind:       "Deployment"
-		metadata: name: "grafana-operator"
-		spec: template: spec: containers: [{
-			name: "grafana-operator"
-			args: ["--scan-all"]
-		}]
-	}, {
-		apiVersion: "rbac.authorization.k8s.io/v1"
-		kind:       "ClusterRoleBinding"
-		metadata: name: "grafana-operator"
-		subjects: [{
-			kind:      "ServiceAccount"
-			name:      "grafana-operator"
-			namespace: "monitoring"
-		}]
-	}]
-}
-
-k: ClusterRoleBinding: "grafana-operator-configmaps": {
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "ClusterRole"
-		name:     "grafana-operator-configmaps"
-	}
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "grafana-operator"
-		namespace: "monitoring"
-	}]
-}
-
-k: ClusterRole: "grafana-operator-configmaps": {
-	rules: [{
-		apiGroups: [""]
-		resources: ["configmaps"]
-		verbs: ["list", "get"]
-	}]
 }

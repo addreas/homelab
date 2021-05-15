@@ -569,6 +569,15 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// MaintenanceInsertNodeIDs - excludes given node ids from insert requests routing, must contain pod suffixes - for pod-0, id will be 0 and etc.
+	// lets say, you have pod-0, pod-1, pod-2, pod-3. to exclude pod-0 and pod-3 from insert routing, define nodeIDs: [0,3].
+	// Useful at storage expanding, when you want to rebalance some data at cluster.
+	// +optional
+	maintenanceInsertNodeIDs?: [...int32] @go(MaintenanceInsertNodeIDs,[]int32)
+
+	// MaintenanceInsertNodeIDs - excludes given node ids from select requests routing, must contain pod suffixes - for pod-0, id will be 0 and etc.
+	maintenanceSelectNodeIDs?: [...int32] @go(MaintenanceSelectNodeIDs,[]int32)
 }
 
 #VMBackup: {

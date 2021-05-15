@@ -200,6 +200,13 @@ import (
 	// For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
 	enableAdminAPI?: bool @go(EnableAdminAPI)
 
+	// Enable access to Prometheus disabled features. By default, no features are enabled.
+	// Enabling disabled features is entirely outside the scope of what the maintainers will
+	// support and by doing so, you accept that this behaviour may break at any
+	// time without notice.
+	// For more information see https://prometheus.io/docs/prometheus/latest/disabled_features/
+	enableFeatures?: [...string] @go(EnableFeatures,[]string)
+
 	// The external URL the Prometheus instances will be available under. This is
 	// necessary to generate correct URLs. This is necessary if Prometheus is not
 	// served from root of a DNS name.
@@ -658,7 +665,7 @@ import (
 	//BasicAuth for the URL.
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
-	// File to read bearer token for remote write.
+	// Bearer token for remote write.
 	bearerToken?: string @go(BearerToken)
 
 	// File to read bearer token for remote write.
@@ -672,6 +679,9 @@ import (
 
 	// QueueConfig allows tuning of the remote write queue parameters.
 	queueConfig?: null | #QueueConfig @go(QueueConfig,*QueueConfig)
+
+	// MetadataConfig configures the sending of series metadata to remote storage.
+	metadataConfig?: null | #MetadataConfig @go(MetadataConfig,*MetadataConfig)
 }
 
 // QueueConfig allows the tuning of remote_write queue_config parameters. This object
@@ -728,7 +738,7 @@ import (
 	// BasicAuth for the URL.
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
-	// bearer token for remote read.
+	// Bearer token for remote read.
 	bearerToken?: string @go(BearerToken)
 
 	// File to read bearer token for remote read.
@@ -917,6 +927,8 @@ import (
 	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
 
 	// RelabelConfigs to apply to samples before scraping.
+	// Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields
+	// and replaces original scrape job name with __tmp_prometheus_job_name.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
 	relabelings?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
 
@@ -1006,7 +1018,9 @@ import (
 	// MetricRelabelConfigs to apply to samples before ingestion.
 	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
 
-	// RelabelConfigs to apply to samples before ingestion.
+	// RelabelConfigs to apply to samples before scraping.
+	// Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields
+	// and replaces original scrape job name with __tmp_prometheus_job_name.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
 	relabelings?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
 
@@ -1056,6 +1070,18 @@ import (
 
 	// Timeout for scraping metrics from the Prometheus exporter.
 	scrapeTimeout?: string @go(ScrapeTimeout)
+
+	// TLS configuration to use when scraping the endpoint.
+	tlsConfig?: null | #ProbeTLSConfig @go(TLSConfig,*ProbeTLSConfig)
+
+	// Secret to mount to read bearer token for scraping targets. The secret
+	// needs to be in the same namespace as the probe and accessible by
+	// the Prometheus Operator.
+	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+
+	// BasicAuth allow an endpoint to authenticate over basic authentication.
+	// More info: https://prometheus.io/docs/operating/configuration/#endpoint
+	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 }
 
 // ProbeTargets defines a set of static and dynamically discovered targets for the prober.
@@ -1476,6 +1502,16 @@ import (
 	items: [...#Alertmanager] @go(Items,[]Alertmanager)
 }
 
+// Configures the sending of series metadata to remote storage.
+// +k8s:openapi-gen=true
+#MetadataConfig: {
+	// Whether metric metadata is sent to remote storage or not.
+	send?: bool @go(Send)
+
+	// How frequently metric metadata is sent to remote storage.
+	sendInterval?: string @go(SendInterval)
+}
+
 // AlertmanagerStatus is the most recent observed status of the Alertmanager cluster. Read-only. Not
 // included when requesting from the apiserver, only from the Prometheus
 // Operator API itself. More info:
@@ -1532,4 +1568,10 @@ import (
 
 	// Minimum amount of time to wait before resending an alert to Alertmanager.
 	resendDelay?: string @go(ResendDelay)
+}
+
+// ProbeTLSConfig specifies TLS configuration parameters.
+// +k8s:openapi-gen=true
+#ProbeTLSConfig: {
+	#SafeTLSConfig
 }

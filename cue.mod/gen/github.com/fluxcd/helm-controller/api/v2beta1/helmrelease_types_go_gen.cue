@@ -185,9 +185,19 @@ import (
 	// +optional
 	interval?: null | metav1.#Duration @go(Interval,*metav1.Duration)
 
-	// Alternative values file to use as the default chart values, expected to be a
-	// relative path in the SourceRef. Ignored when omitted.
+	// Alternative list of values files to use as the chart values (values.yaml
+	// is not included by default), expected to be a relative path in the SourceRef.
+	// Values files are merged in the order of this list with the last file overriding
+	// the first. Ignored when omitted.
 	// +optional
+	valuesFiles?: [...string] @go(ValuesFiles,[]string)
+
+	// Alternative values file to use as the default chart values, expected to
+	// be a relative path in the SourceRef. Deprecated in favor of ValuesFiles,
+	// for backwards compatibility the file defined here is merged before the
+	// ValuesFiles items. Ignored when omitted.
+	// +optional
+	// +deprecated
 	valuesFile?: string @go(ValuesFile)
 }
 
@@ -235,8 +245,33 @@ import (
 
 	// SkipCRDs tells the Helm install action to not install any CRDs. By default,
 	// CRDs are installed if not already present.
+	//
+	// Deprecated use CRD policy (`crds`) attribute with value `Skip` instead.
+	//
+	// +deprecated
 	// +optional
 	skipCRDs?: bool @go(SkipCRDs)
+
+	// CRDs upgrade CRDs from the Helm Chart's crds directory according
+	// to the CRD upgrade policy provided here. Valid values are `Skip`,
+	// `Create` or `CreateReplace`. Default is `Create` and if omitted
+	// CRDs are installed but not updated.
+	//
+	// Skip: do neither install nor replace (update) any CRDs.
+	//
+	// Create: new CRDs are created, existing CRDs are neither updated nor deleted.
+	//
+	// CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
+	// but not deleted.
+	//
+	// By default, CRDs are applied (installed) during Helm install action.
+	// With this option users can opt-in to CRD replace existing CRDs on Helm
+	// install actions, which is not (yet) natively supported by Helm.
+	// https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
+	//
+	// +kubebuilder:validation:Enum=Skip;Create;CreateReplace
+	// +optional
+	crds?: #CRDsPolicy @go(CRDs)
 
 	// CreateNamespace tells the Helm install action to create the
 	// HelmReleaseSpec.TargetNamespace if it does not exist yet.
@@ -264,6 +299,26 @@ import (
 	// +optional
 	remediateLastFailure?: null | bool @go(RemediateLastFailure,*bool)
 }
+
+// CRDsPolicy defines the install/upgrade approach to use for CRDs when
+// installing or upgrading a HelmRelease.
+#CRDsPolicy: string // #enumCRDsPolicy
+
+#enumCRDsPolicy:
+	#Skip |
+	#Create |
+	#CreateReplace
+
+// Skip CRDs do neither install nor replace (update) any CRDs.
+#Skip: #CRDsPolicy & "Skip"
+
+// Create CRDs which do not already exist, do not replace (update) already existing
+// CRDs and keep (do not delete) CRDs which no longer exist in the current release.
+#Create: #CRDsPolicy & "Create"
+
+// Create CRDs which do not already exist, Replace (update) already existing CRDs
+// and keep (do not delete) CRDs which no longer exist in the current release.
+#CreateReplace: #CRDsPolicy & "CreateReplace"
 
 // Upgrade holds the configuration for Helm upgrade actions for this
 // HelmRelease.
@@ -307,6 +362,26 @@ import (
 	// upgrade action when it fails.
 	// +optional
 	cleanupOnFail?: bool @go(CleanupOnFail)
+
+	// CRDs upgrade CRDs from the Helm Chart's crds directory according
+	// to the CRD upgrade policy provided here. Valid values are `Skip`,
+	// `Create` or `CreateReplace`. Default is `Skip` and if omitted
+	// CRDs are neither installed nor upgraded.
+	//
+	// Skip: do neither install nor replace (update) any CRDs.
+	//
+	// Create: new CRDs are created, existing CRDs are neither updated nor deleted.
+	//
+	// CreateReplace: new CRDs are created, existing CRDs are updated (replaced)
+	// but not deleted.
+	//
+	// By default, CRDs are not applied during Helm upgrade action. With this
+	// option users can opt-in to CRD upgrade, which is not (yet) natively supported by Helm.
+	// https://helm.sh/docs/chart_best_practices/custom_resource_definitions.
+	//
+	// +kubebuilder:validation:Enum=Skip;Create;CreateReplace
+	// +optional
+	crds?: #CRDsPolicy @go(CRDs)
 }
 
 // UpgradeRemediation holds the configuration for Helm upgrade remediation.

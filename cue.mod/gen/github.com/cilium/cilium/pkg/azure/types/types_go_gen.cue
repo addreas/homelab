@@ -91,4 +91,9 @@ package types
 
 	// SecurityGroup is the security group associated with the interface
 	"security-group"?: string @go(SecurityGroup)
+
+	// GatewayIP is the interface's subnet's default route
+	//
+	// +optional
+	GatewayIP: string
 }

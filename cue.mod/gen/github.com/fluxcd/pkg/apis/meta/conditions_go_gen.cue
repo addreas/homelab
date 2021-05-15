@@ -8,6 +8,12 @@ package meta
 // resources.
 #ReadyCondition: "Ready"
 
+// StalledCondition is the name of the Stalled kstatus condition
+#StalledCondition: "Stalled"
+
+// ReconcilingCondition is the name of the Reconciling kstatus condition
+#ReconcilingCondition: "Reconciling"
+
 // ReconciliationSucceededReason represents the fact that the reconciliation of
 // a toolkit resource has succeeded.
 #ReconciliationSucceededReason: "ReconciliationSucceeded"

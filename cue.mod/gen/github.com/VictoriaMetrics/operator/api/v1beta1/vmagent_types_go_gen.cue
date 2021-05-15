@@ -212,6 +212,10 @@ import (
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Key at Configmap with relabelConfig name",xDescriptors="urn:alm:descriptor:io.kubernetes:ConfigMapKeySelector"
 	relabelConfig?: null | v1.#ConfigMapKeySelector @go(RelabelConfig,*v1.ConfigMapKeySelector)
 
+	// InlineRelabelConfig - defines GlobalRelabelConfig for vmagent, can be defined directly at CRD.
+	// +optional
+	inlineRelabelConfig?: [...#RelabelConfig] @go(InlineRelabelConfig,[]RelabelConfig)
+
 	// ServiceScrapeSelector defines ServiceScrapes to be selected for target discovery.
 	// +optional
 	serviceScrapeSelector?: null | metav1.#LabelSelector @go(ServiceScrapeSelector,*metav1.LabelSelector)
@@ -256,6 +260,19 @@ import (
 	// check own namespace.
 	// +optional
 	staticScrapeNamespaceSelector?: null | metav1.#LabelSelector @go(StaticScrapeNamespaceSelector,*metav1.LabelSelector)
+
+	// InlineScrapeConfig As scrape configs are appended, the user is responsible to make sure it
+	// is valid. Note that using this feature may expose the possibility to
+	// break upgrades of VMAgent. It is advised to review VMAgent release
+	// notes to ensure that no incompatible scrape configs are going to break
+	// VMAgent after the upgrade.
+	// it should be defined as single yaml file.
+	// inlineScrapeConfig: |
+	//     - job_name: "prometheus"
+	//       static_configs:
+	//       - targets: ["localhost:9090"]
+	// +optional
+	inlineScrapeConfig?: string @go(InlineScrapeConfig)
 
 	// AdditionalScrapeConfigs As scrape configs are appended, the user is responsible to make sure it
 	// is valid. Note that using this feature may expose the possibility to
@@ -366,6 +383,10 @@ import (
 	// +optional
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Key at Configmap with relabelConfig for remoteWrite",xDescriptors="urn:alm:descriptor:io.kubernetes:ConfigMapKeySelector"
 	urlRelabelConfig?: null | v1.#ConfigMapKeySelector @go(UrlRelabelConfig,*v1.ConfigMapKeySelector)
+
+	// InlineUrlRelabelConfig defines relabeling config for remoteWriteURL, it can be defined at crd spec.
+	// +optional
+	inlineUrlRelabelConfig?: [...#RelabelConfig] @go(InlineUrlRelabelConfig,[]RelabelConfig)
 
 	// TLSConfig describes tls configuration for remote write target
 	// +optional

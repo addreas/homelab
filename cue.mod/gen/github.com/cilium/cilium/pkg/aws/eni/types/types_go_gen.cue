@@ -154,8 +154,7 @@ package types
 	// +optional
 	vpc?: #AwsVPC @go(VPC)
 
-	// Addresses is the list of all IPs associated with the ENI, including
-	// all secondary addresses
+	// Addresses is the list of all secondary IPs associated with the ENI
 	//
 	// +optional
 	addresses?: [...string] @go(Addresses,[]string)
