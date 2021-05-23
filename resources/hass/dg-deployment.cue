@@ -1,6 +1,8 @@
 package kube
 
-k: Deployment: "fogis": {
+Labels: app: "boat-trip"
+
+k: Deployment: "boat-trip": {
 	_selector: Labels
 	spec: {
 		replicas: 1
