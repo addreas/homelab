@@ -1,9 +1,10 @@
 package kube
 
+MosquittoLabels: app: "mosquitto"
+
 k: StatefulSet: mosquitto: {
 	spec: {
 		template: {
-			metadata: labels: app: "mosquitto"
 			spec: {
 				volumes: [{
 					name: "config"
@@ -16,7 +17,7 @@ k: StatefulSet: mosquitto: {
 					volumeMounts: [{
 						name:      "data"
 						mountPath: "/mosquitto/data"
-					},{
+					}, {
 						mountPath: "/mosquitto/config"
 						name:      "config"
 					}]
@@ -34,14 +35,16 @@ k: StatefulSet: mosquitto: {
 }
 
 k: Service: mosquitto: {
-	selector: matchLabels: app: "mosquitto"
-	spec: ports: [{
-        name: "tcp0",
-		port: 1883
-	}, {
-        name: "tcp1",
-		port: 9001
-	}]
+	_selector: app: "mosquitto"
+	spec: {
+		ports: [{
+			name: "tcp0"
+			port: 1883
+		}, {
+			name: "tcp1"
+			port: 9001
+		}]
+	}
 }
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
@@ -49,4 +52,6 @@ k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	log_dest stdout
 	allow_anonymous true
 	connection_messages true
+	listener 1883 0.0.0.0
+	
 	"""
