@@ -3,7 +3,6 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/addreas/homelab/util"
 )
 
 MosquittoLabels: app: "mosquitto"
