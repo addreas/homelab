@@ -12,6 +12,9 @@ k: Deployment: "boat-trip": {
 					name:  "dg-exporter"
 					image: "ghcr.io/jonasdahl/dg-to-mqtt:latest"
 					env: [{
+						name:  "TZ"
+						value: "Europe/Stockholm"
+					}, {
 						name:  "DEPARTURE_TIME"
 						value: "2021-05-27 20:15:00.000+02:00"
 					}, {
