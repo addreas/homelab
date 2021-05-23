@@ -1,10 +1,19 @@
 package kube
 
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"github.com/addreas/homelab/util"
+)
+
 MosquittoLabels: app: "mosquitto"
 
 k: StatefulSet: mosquitto: {
 	spec: {
 		template: {
+			metadata: {
+				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
+			}
 			spec: {
 				volumes: [{
 					name: "config"
