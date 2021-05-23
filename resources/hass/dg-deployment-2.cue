@@ -1,9 +1,6 @@
 package kube
 
-Labels: app: "boat-trip-2"
-
 k: Deployment: "boat-trip-2": {
-	_selector: Labels
 	spec: {
 		replicas: 1
 		template: {
