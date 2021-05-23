@@ -34,7 +34,7 @@ k: StatefulSet: mosquitto: {
 }
 
 k: Service: mosquitto: {
-	_selector: app: "mosquitto"
+	selector: matchLabels: app: "mosquitto"
 	spec: ports: [{
         name: "tcp0",
 		port: 1883
