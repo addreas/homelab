@@ -1,30 +1,49 @@
 package kube
 
 k: Deployment: "hass-zwavejs": {
-	spec: template: spec: containers: [{
-		name:  "zwavejs"
-		image: "kpine/zwave-js-server:latest"
-		ports: [{containerPort: 3000}]
-		env: [{
-			name: "NETWORK_KEY"
-			valueFrom: secretKeyRef: {
-				name: "zwave-network-key"
-				key:  "key"
-			}
-		}, {
-			name:  "USB_PATH"
-			value: "/dev/aeotec-z-stick"
-		}, {
-			name:  "LOGLEVEL"
-			value: "info"
-		}]
-		resources: limits: "addem.se/dev_aeotec_zstick": "1"
-	}]
+	spec: {
+  		strategy: type: "Recreate"
+
+		template: spec: {
+			containers: [{
+				name:  "zwavejs"
+				image: "zwavejs/zwavejs2mqtt:5.1.0"
+				ports: [{containerPort: 3000}, {containerPort: 8091}]
+				env: [{
+					name: "NETWORK_KEY"
+					valueFrom: secretKeyRef: {
+						name: "zwave-network-key"
+						key:  "key"
+					}
+				}]
+				resources: limits: "addem.se/dev_aeotec_zstick": "1"
+				volumeMounts: [{
+					name:      "config"
+					mountPath: "/usr/src/app/store"
+				}, {
+					name: "store-settings-json"
+					mountPath: "/usr/src/app/store/settings.json"
+					subPath: "settings.json"
+				}]
+			}]
+			volumes: [{
+				name: "config"
+				emptyDir: {}
+			}, {
+				name: "store-settings-json"
+				configMap: name: "zwave-js-settings-json"
+			}]
+		}
+	}
 }
 
 k: Service: "hass-zwavejs": {
 	_selector: app: "hass-zwavejs"
 	spec: ports: [{
+		name: "http"
+		port: 8091
+	}, {
+		name: "websocket"
 		port: 3000
 	}]
 }
