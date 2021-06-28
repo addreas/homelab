@@ -33,7 +33,7 @@ k: StatefulSet: hass: {
 				}]
 				containers: [{
 					name:  "hass"
-					image: "ghcr.io/linuxserver/homeassistant:version-2021.6.6"
+					image: "ghcr.io/home-assistant/home-assistant:2021.6.6"
 					command: ["hass", "-c", "/config"]
 					resources: {
 						limits: {
@@ -49,7 +49,7 @@ k: StatefulSet: hass: {
 					envFrom: [{secretRef: name: "hass-postgres-credentials"}]
 					env: [{
 						name:  "DB_URL"
-						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
+						value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
 					}]
 					ports: [{
 						containerPort: 8123
