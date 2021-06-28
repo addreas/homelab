@@ -43,6 +43,12 @@ let conf = {
 
 	zeroconf: default_interface: false
 
+    http: {
+      use_x_forwarded_for: true
+      trusted_proxies: ["10.0.0.0/8"]
+
+    }
+
 	webostv: {
 		host: "192.168.1.245"
 		turn_on_action: {
