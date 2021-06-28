@@ -23,8 +23,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	recorder:
 	  db_url: !env_var DB_URL
 
-	speedtestdotnet:
-
 	google_assistant:
 	  project_id: hass-dke
 	  service_account: !include hass-dke-8e86dc9cd8ce.json
@@ -40,8 +38,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 // Prefer adding stuff below and not above
 let conf = {
 	prometheus: namespace: "hass"
-
-	zeroconf: default_interface: false
 
     http: {
       use_x_forwarded_for: true
