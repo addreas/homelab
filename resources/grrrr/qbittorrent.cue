@@ -90,7 +90,7 @@ k: StatefulSet: qbittorrent: {
 					}
 				}, {
 					name:  "exporter"
-					image: "esanchezm/prometheus-qbittorrent-exporter"
+					image: "esanchezm/prometheus-qbittorrent-exporter:v1.1.0"
 					resources: limits: {
 						cpu:    "150m"
 						memory: "64Mi"
