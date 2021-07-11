@@ -72,6 +72,7 @@ k: Kustomization: "kube-prometheus": spec: {
 }
 
 let dashboards = [
+	"alertmanager-overview",
 	"apiserver",
 	"cluster-total",
 	"controller-manager",
@@ -93,7 +94,6 @@ let dashboards = [
 	"prometheus-remote-write",
 	"proxy",
 	"scheduler",
-	"statefulset",
 	"workload-total",
 ]
 

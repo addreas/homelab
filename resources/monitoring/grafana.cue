@@ -12,10 +12,10 @@ k: Grafana: grafana: spec: {
 			enabled:  true
 			org_role: "Admin"
 		}
-        alerting: enabled: false
+		alerting: enabled: false
 	}
 	client: {
-		timeout: 5
+		timeout:       5
 		preferService: true
 	}
 	ingress: {
@@ -30,6 +30,8 @@ k: Grafana: grafana: spec: {
 			"ingress.kubernetes.io/auth-tls-strict":        "true"
 			"ingress.kubernetes.io/auth-tls-verify-client": "on"
 		}
+		path:     "/"
+		pathType: "Prefix"
 	}
 	dashboardLabelSelector: [{
 		matchLabels: grafana: "enabled"
@@ -39,25 +41,11 @@ k: Grafana: grafana: spec: {
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
 	ref: branch: "master"
-	url: "https://github.com/integr8ly/grafana-operator.git"
+	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """
 		/*
-		!/config/crd
-		!/deploy/roles
-		!/deploy/cluster_roles
-		!/deploy/operator.yaml
+		!/config
 		"""
-}
-
-k: Kustomization: "grafana-operator-crds": spec: {
-	interval: "30m"
-	path:     "./config/crd"
-	prune:    false
-	sourceRef: {
-		kind: "GitRepository"
-		name: "grafana-operator"
-	}
-
 }
 
 k: Kustomization: "grafana-operator": spec: {
@@ -67,50 +55,165 @@ k: Kustomization: "grafana-operator": spec: {
 		namespace: "monitoring"
 	}]
 	interval: "30m"
-	path:     "./deploy"
+	path:     "./config/default"
 	prune:    true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "grafana-operator"
 	}
 	targetNamespace: "monitoring"
+	images: [{
+		name:    "quay.io/integreatly/grafana-operator:latest"
+		newName: "ghcr.io/addreas/grafana-operator"
+	}]
 	patchesStrategicMerge: [{
 		apiVersion: "apps/v1"
 		kind:       "Deployment"
-		metadata: name: "grafana-operator"
+		metadata: {
+			name:      "controller-manager"
+			namespace: "system"
+		}
 		spec: template: spec: containers: [{
-			name: "grafana-operator"
+			name: "manager"
 			args: ["--scan-all"]
-		}]
-	}, {
-		apiVersion: "rbac.authorization.k8s.io/v1"
-		kind:       "ClusterRoleBinding"
-		metadata: name: "grafana-operator"
-		subjects: [{
-			kind:      "ServiceAccount"
-			name:      "grafana-operator"
-			namespace: "monitoring"
+			resources: limits: memory: "256Mi"
+			env: [{
+				name: "WATCH_NAMESPACE"
+				valueFrom: fieldRef: fieldPath: "metadata.namespace"
+			}, {
+				name: "POD_NAME"
+				valueFrom: fieldRef: fieldPath: "metadata.name"
+			}]
 		}]
 	}]
 }
 
-k: ClusterRoleBinding: "grafana-operator-configmaps": {
+k: ClusterRoleBinding: "grafana-operator-missing-resources": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
 		kind:     "ClusterRole"
-		name:     "grafana-operator-configmaps"
+		name:     "grafana-operator-missing-resources"
 	}
 	subjects: [{
 		kind:      "ServiceAccount"
-		name:      "grafana-operator"
+		name:      "default"
 		namespace: "monitoring"
 	}]
 }
 
-k: ClusterRole: "grafana-operator-configmaps": {
+k: ClusterRole: "grafana-operator-missing-resources": {
 	rules: [{
 		apiGroups: [""]
-		resources: ["configmaps"]
-		verbs: ["list", "get"]
+		resources: [
+			"pods",
+			"services",
+			"endpoints",
+			"persistentvolumeclaims",
+			"configmaps",
+			"secrets",
+			"serviceaccounts",
+			"configmaps",
+		]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+		]
+	}, {
+		apiGroups: [""]
+		resources: [
+			"events",
+		]
+		verbs: [
+			"get",
+			"list",
+			"watch",
+			"create",
+			"delete",
+			"update",
+			"patch",
+		]
+	}, {
+		apiGroups: ["apps"]
+		resources: [
+			"deployments",
+			"deployments/finalizers",
+			"daemonsets",
+			"replicasets",
+			"statefulsets",
+		]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+		]
+	}, {
+		apiGroups: ["route.openshift.io"]
+		resources: [
+			"routes",
+			"routes/custom-host",
+		]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+			"create",
+		]
+	}, {
+		apiGroups: ["extensions"]
+		resources: ["ingresses"]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+		]
+	}, {
+		apiGroups: ["integreatly.org"]
+		resources: [
+			"grafanas",
+			"grafanas/status",
+			"grafanas/finalizers",
+			"grafanadashboards",
+			"grafanadatasources",
+			"grafanadatasources/status",
+		]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+		]
+	}, {
+		apiGroups: ["networking.k8s.io"]
+		resources: ["ingresses"]
+		verbs: [
+			"get",
+			"list",
+			"create",
+			"update",
+			"delete",
+			"deletecollection",
+			"watch",
+			"create",
+		]
 	}]
 }

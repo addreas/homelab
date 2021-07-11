@@ -34,7 +34,7 @@ k: GrafanaDataSource: "prometheus": spec: {
 }
 
 k: VMAgent: "main": spec: {
-	for type in ["serviceScrape","podScrape","probe","nodeScrape","staticScrape"] {
+	for type in ["serviceScrape", "podScrape", "probe", "nodeScrape", "staticScrape"] {
 		"\(type)Selector": {}
 		"\(type)NamespaceSelector": {}
 	}
@@ -70,7 +70,7 @@ k: VMAlert: "main": spec: {
 		}
 	}
 	remoteWrite: url: "http://vmsingle-main.monitoring.svc:8429"
-	remoteRead: url: "http://vmsingle-main.monitoring.svc:8429"
+	remoteRead: url:  "http://vmsingle-main.monitoring.svc:8429"
 }
 
 k: VMAlertmanager: "main": spec: {
