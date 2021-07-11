@@ -22,9 +22,8 @@ k: Certificate: addem: {
 		issuerRef: name: "client-auth-root-issuer"
 		secretName: "addem-cert"
 		commonName: "addem"
-		usages: [
-			"client auth",
-		]
+        duration: "\(24 * 364 * 5)h"
+		usages: ["client auth"]
 	}
 }
 
@@ -33,6 +32,7 @@ k: Certificate: jonas: {
 		issuerRef: name: "client-auth-root-issuer"
 		secretName: "jonas-cert"
 		commonName: "jonas"
+        duration: "\(24 * 364 * 5)h"
 		usages: ["client auth"]
 	}
 }
