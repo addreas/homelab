@@ -11,7 +11,7 @@ k: ConfigMap: "config-gateway-json": data: {
 			}
 			"nucles.localdomain": {
 				alias: ["nucles"]
-				inet: ["192.168.1.10"]
+				inet: ["192.168.1.2"]
 			}
 		}
 	})

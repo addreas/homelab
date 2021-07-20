@@ -65,7 +65,6 @@ k: CueBuild: "homelab": spec: {
 		"./resources/system/flux-system",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
-		"./resources/system/metallb-system",
 	]
 	prune: true
 	sourceRef: {

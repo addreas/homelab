@@ -1,0 +1,86 @@
+package kube
+
+k: DaemonSet: "kube-vip-ds": spec: {
+	selector: matchLabels: name: "kube-vip-ds"
+	template: {
+		metadata: labels: name: "kube-vip-ds"
+		spec: {
+			containers: [{
+				args: ["manager"]
+				env: [{
+					name:  "vip_arp"
+					value: "true"
+				}, {
+					name:  "vip_interface"
+					value: "eno1"
+				}, {
+					name:  "port"
+					value: "6443"
+				}, {
+					name:  "cp_enable"
+					value: "true"
+				}, {
+					name:  "cp_namespace"
+					value: "kube-system"
+				}, {
+					name:  "svc_enable"
+					value: "true"
+				}, {
+					name:  "vip_leaderelection"
+					value: "true"
+				}, {
+					name:  "vip_leaseduration"
+					value: "5"
+				}, {
+					name:  "vip_renewdeadline"
+					value: "3"
+				}, {
+					name:  "vip_retryperiod"
+					value: "1"
+				}, {
+					name:  "vip_address"
+					value: "192.168.1.2"
+				}]
+				image:           "plndr/kube-vip:0.3.1"
+				imagePullPolicy: "Always"
+				name:            "kube-vip"
+				resources: {}
+				securityContext: capabilities: add: [
+					"NET_ADMIN",
+					"NET_RAW",
+					"SYS_TIME",
+				]
+			}]
+			hostNetwork: true
+			nodeSelector: "node-role.kubernetes.io/master": "true"
+			serviceAccountName: "kube-vip"
+			tolerations: [{
+				effect: "NoSchedule"
+				key:    "node-role.kubernetes.io/master"
+			}]
+		}
+	}
+}
+
+k: GitRepository: "kube-vip-cloud-provider": spec: {
+	interval: "1h"
+	ref: tag: "0.1"
+	url: "https://github.com/kube-vip/kube-vip-cloud-provider"
+	ignore: """
+		/*
+		!/manifest
+		"""
+}
+
+k: Kustomization: "kube-vip-cloud-provider": spec: {
+	interval: "1h"
+	path:     "./manifest"
+	prune:    true
+	sourceRef: {
+		kind: "GitRepository"
+		name: "kube-vip-cloud-provider"
+	}
+	validation: "client"
+}
+
+k: ConfigMap: "kubevip": data: "range-global": "192.168.1.6-192.168.1.9"
