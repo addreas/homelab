@@ -17,7 +17,7 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:version-6.0.45"
+					image: "ghcr.io/linuxserver/unifi-controller:version-6.2.26"
 					name:  "unifi-controller"
 					command: ["java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar", "start"]
 					ports: [{
@@ -31,7 +31,7 @@ k: StatefulSet: "unifi-controller": {
 					resources: {
 						limits: {
 							cpu:    "500m"
-							memory: "1024Mi"
+							memory: "2048Mi"
 						}
 						requests: {
 							cpu:    "100m"
