@@ -2,7 +2,7 @@ package kube
 
 k: Deployment: "hass-zwavejs": {
 	spec: {
-  		strategy: type: "Recreate"
+		strategy: type: "Recreate"
 
 		template: spec: {
 			containers: [{
@@ -21,9 +21,9 @@ k: Deployment: "hass-zwavejs": {
 					name:      "config"
 					mountPath: "/usr/src/app/store"
 				}, {
-					name: "store-settings-json"
+					name:      "store-settings-json"
 					mountPath: "/usr/src/app/store/settings.json"
-					subPath: "settings.json"
+					subPath:   "settings.json"
 				}]
 			}]
 			volumes: [{
