@@ -41,7 +41,7 @@ k: DaemonSet: "kube-vip-ds": spec: {
 					name:  "vip_address"
 					value: "192.168.1.2"
 				}]
-				image:           "plndr/kube-vip:0.3.1"
+				image:           "plndr/kube-vip:0.3.7"
 				imagePullPolicy: "Always"
 				name:            "kube-vip"
 				resources: {}
@@ -52,7 +52,7 @@ k: DaemonSet: "kube-vip-ds": spec: {
 				]
 			}]
 			hostNetwork: true
-			nodeSelector: "node-role.kubernetes.io/master": "true"
+			nodeSelector: "node-role.kubernetes.io/master": ""
 			serviceAccountName: "kube-vip"
 			tolerations: [{
 				effect: "NoSchedule"
@@ -60,6 +60,34 @@ k: DaemonSet: "kube-vip-ds": spec: {
 			}]
 		}
 	}
+}
+
+k: ServiceAccount: "kube-vip": {}
+
+k: ClusterRole: "system:kube-vip-role": {
+	metadata: annotations: "rbac.authorization.kubernetes.io/autoupdate": "true"
+	rules: [{
+		apiGroups: [""]
+		resources: ["services", "services/status", "nodes"]
+		verbs: ["list", "get", "watch", "update"]
+	}, {
+		apiGroups: ["coordination.k8s.io"]
+		resources: ["leases"]
+		verbs: ["list", "get", "watch", "update", "create"]
+	}]
+}
+
+k: ClusterRoleBinding: "system:kube-vip-binding": {
+	roleRef: {
+		apiGroup: "rbac.authorization.k8s.io"
+		kind:     "ClusterRole"
+		name:     "system:kube-vip-role"
+	}
+	subjects: [{
+		kind:      "ServiceAccount"
+		name:      "kube-vip"
+		namespace: "kube-system"
+	}]
 }
 
 k: GitRepository: "kube-vip-cloud-provider": spec: {

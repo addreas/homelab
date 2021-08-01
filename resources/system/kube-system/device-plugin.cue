@@ -74,7 +74,6 @@ k: DaemonSet: "hostdevice-plugin-daemonset": {
 					image: "ghcr.io/addreas/k8s-hostdevice-plugin:187ff128a5d4ab5794fe13d96afd61398d59a4d9"
 					name:  "plugin"
 					securityContext: {
-						allowPrivilegeEscalation: false
 						capabilities: drop: ["ALL"]
 						runAsUser:  0
 						runAsGroup: 0
