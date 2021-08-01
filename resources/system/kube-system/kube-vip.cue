@@ -47,11 +47,11 @@ k: DaemonSet: "kube-vip-ds": spec: {
 				resources: {}
 				securityContext: {
 					runAsGroup: 0
-					runAsUser: 0
+					runAsUser:  0
 					capabilities: add: [
 						"NET_ADMIN",
 						"NET_RAW",
-						"SYS_TIME"
+						"SYS_TIME",
 					]
 				}
 			}]

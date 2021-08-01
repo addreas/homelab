@@ -1,11 +1,18 @@
 package kube
 
-import "github.com/addreas/homelab/util"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"github.com/addreas/homelab/util"
+)
 
 k: StatefulSet: "unifi-controller": {
 	spec: {
 		template: {
-			metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+			metadata: {
+				annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+				labels: "config-hash":                      hex.Encode(md5.Sum(k.ConfigMap."config-gateway-json".data."config.gateway.json"))
+			}
 			spec: {
 				initContainers: [util.copyStatic & {
 					volumeMounts: [{

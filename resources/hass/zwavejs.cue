@@ -1,38 +1,45 @@
 package kube
 
+import (
+	"crypto/md5"
+	"encoding/hex"
+)
+
 k: Deployment: "hass-zwavejs": {
 	spec: {
 		strategy: type: "Recreate"
-
-		template: spec: {
-			containers: [{
-				name:  "zwavejs"
-				image: "zwavejs/zwavejs2mqtt:5.1.0"
-				ports: [{containerPort: 3000}, {containerPort: 8091}]
-				env: [{
-					name: "NETWORK_KEY"
-					valueFrom: secretKeyRef: {
-						name: "zwave-network-key"
-						key:  "key"
-					}
+		template: {
+			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
+			spec: {
+				containers: [{
+					name:  "zwavejs"
+					image: "zwavejs/zwavejs2mqtt:5.1.0"
+					ports: [{containerPort: 3000}, {containerPort: 8091}]
+					env: [{
+						name: "NETWORK_KEY"
+						valueFrom: secretKeyRef: {
+							name: "zwave-network-key"
+							key:  "key"
+						}
+					}]
+					resources: limits: "addem.se/dev_aeotec_zstick": "1"
+					volumeMounts: [{
+						name:      "config"
+						mountPath: "/usr/src/app/store"
+					}, {
+						name:      "store-settings-json"
+						mountPath: "/usr/src/app/store/settings.json"
+						subPath:   "settings.json"
+					}]
 				}]
-				resources: limits: "addem.se/dev_aeotec_zstick": "1"
-				volumeMounts: [{
-					name:      "config"
-					mountPath: "/usr/src/app/store"
+				volumes: [{
+					name: "config"
+					emptyDir: {}
 				}, {
-					name:      "store-settings-json"
-					mountPath: "/usr/src/app/store/settings.json"
-					subPath:   "settings.json"
+					name: "store-settings-json"
+					configMap: name: "zwave-js-settings-json"
 				}]
-			}]
-			volumes: [{
-				name: "config"
-				emptyDir: {}
-			}, {
-				name: "store-settings-json"
-				configMap: name: "zwave-js-settings-json"
-			}]
+			}
 		}
 	}
 }
