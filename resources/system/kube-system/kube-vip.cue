@@ -41,7 +41,7 @@ k: DaemonSet: "kube-vip-ds": spec: {
 					name:  "vip_address"
 					value: "192.168.1.2"
 				}]
-				image:           "plndr/kube-vip:0.3.7"
+				image:           "plndr/kube-vip:v0.3.7"
 				imagePullPolicy: "Always"
 				name:            "kube-vip"
 				resources: {}
