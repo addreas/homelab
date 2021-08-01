@@ -45,11 +45,15 @@ k: DaemonSet: "kube-vip-ds": spec: {
 				imagePullPolicy: "Always"
 				name:            "kube-vip"
 				resources: {}
-				securityContext: capabilities: add: [
-					"NET_ADMIN",
-					"NET_RAW",
-					"SYS_TIME",
-				]
+				securityContext: {
+					runAsGroup: 0
+					runAsUser: 0
+					capabilities: add: [
+						"NET_ADMIN",
+						"NET_RAW",
+						"SYS_TIME"
+					]
+				}
 			}]
 			hostNetwork: true
 			nodeSelector: "node-role.kubernetes.io/master": ""
