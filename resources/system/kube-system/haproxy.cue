@@ -29,7 +29,6 @@ k: HelmRelease: haproxy: {
 			}
 			replicaCount: 2
 			logs: enabled:           true
-			service: loadBalancerIP: "192.168.1.6"
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"
