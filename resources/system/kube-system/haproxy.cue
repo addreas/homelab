@@ -27,7 +27,7 @@ k: HelmRelease: haproxy: {
 				enabled:  true
 				interval: "60s"
 			}
-			replicaCount: 2
+			kind: "DaemonSet"
 			logs: enabled:           true
 			extraArgs: {
 				"watch-ingress-without-class": "true"
