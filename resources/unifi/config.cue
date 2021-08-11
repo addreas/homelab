@@ -14,6 +14,15 @@ k: ConfigMap: "config-gateway-json": data: {
 				inet: ["192.168.1.2"]
 			}
 		}
+		protocols: bgp: "64512": {
+			"parameters": "router-id": "192.168.1.1"
+			"neighbor": {
+				"192.168.1.11": "remote-as": "64512"
+				"192.168.1.12": "remote-as": "64512"
+				"192.168.1.13": "remote-as": "64512"
+			}
+		}
+
 	})
 }
 

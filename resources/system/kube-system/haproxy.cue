@@ -28,7 +28,7 @@ k: HelmRelease: haproxy: {
 				interval: "60s"
 			}
 			kind: "DaemonSet"
-			logs: enabled:           true
+			logs: enabled: true
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"

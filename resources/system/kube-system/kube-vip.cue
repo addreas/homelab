@@ -7,41 +7,31 @@ k: DaemonSet: "kube-vip-ds": spec: {
 		spec: {
 			containers: [{
 				args: ["manager"]
-				env: [{
-					name:  "vip_arp"
-					value: "true"
-				}, {
-					name:  "vip_interface"
-					value: "eno1"
-				}, {
-					name:  "port"
-					value: "6443"
-				}, {
-					name:  "cp_enable"
-					value: "true"
-				}, {
-					name:  "cp_namespace"
-					value: "kube-system"
-				}, {
-					name:  "svc_enable"
-					value: "true"
-				}, {
-					name:  "vip_leaderelection"
-					value: "true"
-				}, {
-					name:  "vip_leaseduration"
-					value: "5"
-				}, {
-					name:  "vip_renewdeadline"
-					value: "3"
-				}, {
-					name:  "vip_retryperiod"
-					value: "1"
-				}, {
-					name:  "vip_address"
-					value: "192.168.1.2"
+				let config = {
+					vip_arp:             "false"
+					vip_interface:       "lo"
+					vip_address:         "192.168.1.2"
+					port:                "6443"
+					cp_enable:           "true"
+					cp_namespace:        "kube-system"
+					svc_enable:          "true"
+					vip_leaderelection:  "true"
+					vip_leaseduration:   "5"
+					vip_renewdeadline:   "3"
+					vip_retryperiod:     "1"
+					bgp_enable:          "true"
+					bgp_routerinterface: "eno1"
+					bgp_as:              "64512"
+					bgp_peeras:          "64512"
+					bgp_peeraddress:     "192.168.1.1"
+					bgp_peers:           "192.168.1.11:64512::false,192.168.1.12:64512::false,192.168.1.13:64512::false"
+				}
+
+				env: [ for k, v in config {
+					name:  k
+					value: v
 				}]
-				image:           "plndr/kube-vip:v0.3.7"
+				image:           "ghcr.io/kube-vip/kube-vip:v0.3.7"
 				imagePullPolicy: "Always"
 				name:            "kube-vip"
 				resources: {}
@@ -115,4 +105,3 @@ k: Kustomization: "kube-vip-cloud-provider": spec: {
 	validation: "client"
 }
 
-k: ConfigMap: "kubevip": data: "range-global": "192.168.1.6-192.168.1.9"
