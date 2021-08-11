@@ -9,7 +9,7 @@ k: Deployment: "hass-zwavejs": {
 	spec: {
 		strategy: type: "Recreate"
 		template: {
-			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
+			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 			spec: {
 				containers: [{
 					name:  "zwavejs"
