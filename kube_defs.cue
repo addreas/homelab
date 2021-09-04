@@ -31,6 +31,8 @@ import (
 	cilium_v2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
 
 	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
+
+	kpack_v1alpha1 "github.com/pivotal/kpack/pkg/apis/build/v1alpha1"
 )
 
 k: close({
@@ -139,5 +141,16 @@ _kubernetesAPIs: {
 		VMServiceScrape: victoriametrics_v1beta1.#VMServiceScrape
 		VMSingle:        victoriametrics_v1beta1.#VMSingle
 		VMStaticScrape:  victoriametrics_v1beta1.#VMStaticScrape
+	}
+
+	"kpack.io/v1alpha1": {
+		Build:          kpack_v1alpha1.#Build
+		Builder:        kpack_v1alpha1.#Builder
+		ClusterBuilder: kpack_v1alpha1.#ClusterBuilder
+		ClusterStack:   kpack_v1alpha1.#ClusterStack
+		ClusterStore:   kpack_v1alpha1.#ClusterStore
+		Image:          kpack_v1alpha1.#Image
+		ImageBuilder:   kpack_v1alpha1.#ImageBuilder
+		SourceResolver: kpack_v1alpha1.#SourceResolver
 	}
 }

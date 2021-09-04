@@ -1,0 +1,2 @@
+resources:
+  - https://github.com/pivotal/kpack/releases/download/v0.3.1/release-0.3.1.yaml
