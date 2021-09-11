@@ -31,7 +31,7 @@ k: DaemonSet: "kube-vip-ds": spec: {
 					name:  k
 					value: v
 				}]
-				image:           "ghcr.io/kube-vip/kube-vip:v0.3.7"
+				image:           "ghcr.io/kube-vip/kube-vip:v0.3.8"
 				imagePullPolicy: "Always"
 				name:            "kube-vip"
 				resources: {}
