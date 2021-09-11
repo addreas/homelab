@@ -12,7 +12,7 @@ k: HelmRelease: haproxy: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "haproxy-ingress"
-			version: ">= 0.12.1"
+			version: "0.13.3"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "haproxy-ingress"
