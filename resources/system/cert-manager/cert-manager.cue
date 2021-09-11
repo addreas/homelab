@@ -9,7 +9,7 @@ k: HelmRelease: "cert-manager": spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "cert-manager"
-		version: "v1.1.0"
+		version: "v1.5.3"
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "cert-manager"
