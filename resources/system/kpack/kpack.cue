@@ -15,6 +15,15 @@ k: Kustomization: kpack: spec: {
 		name: "homelab"
 	}
 	validation: "client"
+	patchesStrategicMerge: [{
+		apiVersion: "v1"
+		kind:       "ConfigMap"
+		metadata: {
+			name:      "lifecycle-image"
+			namespace: "kpack"
+		}
+		data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
+	}]
 }
 
 k: ServiceAccount: "test-service-account": {
@@ -27,8 +36,6 @@ k: ServiceAccount: "test-service-account": {
 }
 
 k: ClusterStore: default: spec: sources: [{
-	image: "gcr.io/paketo-buildpacks/java"
-}, {
 	image: "gcr.io/paketo-buildpacks/nodejs"
 }]
 
@@ -38,7 +45,7 @@ k: ClusterStack: base: spec: {
 	runImage: image:   "paketobuildpacks/run:base-cnb"
 }
 
-k: Builder: "my-builder": spec: {
+k: Builder: "test-builder": spec: {
 	serviceAccount: "test-service-account"
 	tag:            "registry.addem.se/kpack/test-builder"
 	stack: {
@@ -51,30 +58,20 @@ k: Builder: "my-builder": spec: {
 	}
 	order: [{
 		group: [{
-			id: "paketo-buildpacks/java"
-		}]
-	}, {
-		group: [{
 			id: "paketo-buildpacks/nodejs"
 		}]
 	}]
 }
 
 k: Image: "test-image": spec: {
-	tag:            "registry.adde.se/kpack/test-image"
+	tag:            "registry.addem.se/kpack/test-image"
 	serviceAccount: "test-service-account"
 	builder: {
-		name: "my-builder"
+		name: "test-builder"
 		kind: "Builder"
 	}
 	source: git: {
-		url:      "https://github.com/spring-projects/spring-petclinic"
-		revision: "82cb521d636b282340378d80a6307a08e3d4a4c4"
+		url:      "https://github.com/shapeshed/express_example"
+		revision: "3de0ae190114ad8b42434170f57146ba9e700d32"
 	}
 }
-
-k: Pod: "kp": spec: containers: [{
-	name: "kp"
-	image: "kpack/kp"
-	command: ["sleep", "10000"]
-}]
