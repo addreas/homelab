@@ -12,7 +12,7 @@ k: HelmRelease: kured: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "kured"
-			version: ">= 2.4.0"
+			version: "2.9.0"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "kured"
