@@ -12,7 +12,7 @@ k: HelmRelease: cilium: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "cilium"
-			version: "v1.9.4"
+			version: "v1.10.4"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "cilium"
