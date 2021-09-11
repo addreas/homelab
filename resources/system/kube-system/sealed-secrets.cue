@@ -12,7 +12,7 @@ k: HelmRelease: "sealed-secrets-controller": {
 		interval: "1h"
 		chart: spec: {
 			chart:   "sealed-secrets"
-			version: "1.15.0-r2"
+			version: "1.16.1"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "sealed-secrets"
