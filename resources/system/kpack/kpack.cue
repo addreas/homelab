@@ -1,30 +1,52 @@
 package kube
 
-k: GitRepository: homelab: spec: {
-	interval: "1h"
-	ref: branch: "main"
-	url: "https://github.com/addreas/homelab"
-}
+// k: GitRepository: homelab: spec: {
+// 	interval: "1h"
+// 	ref: branch: "main"
+// 	url: "https://github.com/addreas/homelab"
+// }
 
-k: Kustomization: kpack: spec: {
-	interval: "1h"
-	path:     "./resources/system/kpack"
-	prune:    true
-	sourceRef: {
-		kind: "GitRepository"
-		name: "homelab"
-	}
-	validation: "client"
-	patchesStrategicMerge: [{
-		apiVersion: "v1"
-		kind:       "ConfigMap"
-		metadata: {
-			name:      "lifecycle-image"
-			namespace: "kpack"
-		}
-		data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
-	}]
-}
+// k: Kustomization: kpack: spec: {
+// 	interval: "1h"
+// 	path:     "./resources/system/kpack"
+// 	prune:    true
+// 	sourceRef: {
+// 		kind: "GitRepository"
+// 		name: "homelab"
+// 	}
+// 	validation: "client"
+// 	patchesStrategicMerge: [{
+// 		apiVersion: "v1"
+// 		kind:       "ConfigMap"
+// 		metadata: {
+// 			name:      "lifecycle-image"
+// 			namespace: "kpack"
+// 		}
+// 		data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
+// 	}, {
+// 		apiVersion: "apps/v1"
+// 		kind: "Deployment"
+// 		metadata: {
+// 			name: "kpack-controller"
+// 			namespace: "kpack"
+// 		}
+// 		spec: template: spec: containers: [{
+// 			name: "controller"
+// 			image: "gcr.io/cf-build-service-public/kpack/controller@sha256:28048eeea9f7b2a1d15cf6b13e8f326376f17b934e31b3aedecf2e3ee8dd1d94"
+// 		}]
+// 	}, {
+// 		apiVersion: "apps/v1"
+// 		kind: "Deployment"
+// 		metadata: {
+// 			name: "kpack-webhook"
+// 			namespace: "kpack"
+// 		}
+// 		spec: template: spec: containers: [{
+// 			name: "webhook"
+// 			image: "gcr.io/cf-build-service-public/kpack/webhook@sha256:305750b32736adef29d8e8b45eea956bab402d4e4ac4ad81cc930a4f078c3f57"
+// 		}]
+// 	}]
+// }
 
 k: ServiceAccount: "test-service-account": {
 	secrets: [{
@@ -35,14 +57,22 @@ k: ServiceAccount: "test-service-account": {
 	}]
 }
 
-k: ClusterStore: default: spec: sources: [{
-	image: "gcr.io/paketo-buildpacks/nodejs"
-}]
+k: ClusterStore: default: spec: {
+	serviceAccountRef: {
+		name: "test-service-account"
+		namespace: "kpack"
+	}
+	sources: [{
+		image: "gcr.io/paketo-buildpacks/nodejs"
+	}, {
+		image: "registry.addem.se/kpack/elixir-buildpack"
+	}]
+}
 
 k: ClusterStack: base: spec: {
 	id: "io.buildpacks.stacks.bionic"
-	buildImage: image: "paketobuildpacks/build:base-cnb"
-	runImage: image:   "paketobuildpacks/run:base-cnb"
+	buildImage: image: "paketobuildpacks/build:full-cnb"
+	runImage: image:   "paketobuildpacks/run:full-cnb"
 }
 
 k: Builder: "test-builder": spec: {
@@ -57,6 +87,10 @@ k: Builder: "test-builder": spec: {
 		kind: "ClusterStore"
 	}
 	order: [{
+		group: [{
+			id: "app.elixir-buildpack"
+		}]
+	}, {
 		group: [{
 			id: "paketo-buildpacks/nodejs"
 		}]
@@ -73,5 +107,18 @@ k: Image: "test-image": spec: {
 	source: git: {
 		url:      "https://github.com/shapeshed/express_example"
 		revision: "3de0ae190114ad8b42434170f57146ba9e700d32"
+	}
+}
+
+k: Image: "test-image-elixir": spec: {
+	tag:            "registry.addem.se/kpack/test-image"
+	serviceAccount: "test-service-account"
+	builder: {
+		name: "test-builder"
+		kind: "Builder"
+	}
+	source: git: {
+		url:      "https://github.com/sebastianseilund/phoenix-static-blog-example"
+		revision: "9c4072b8ae44134498861c9856c70b1056cb8e31"
 	}
 }

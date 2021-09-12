@@ -32,7 +32,7 @@ import (
 
 	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
 
-	kpack_v1alpha1 "github.com/pivotal/kpack/pkg/apis/build/v1alpha1"
+	kpack_v1alpha2 "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
 )
 
 k: close({
@@ -143,14 +143,14 @@ _kubernetesAPIs: {
 		VMStaticScrape:  victoriametrics_v1beta1.#VMStaticScrape
 	}
 
-	"kpack.io/v1alpha1": {
-		Build:          kpack_v1alpha1.#Build
-		Builder:        kpack_v1alpha1.#Builder
-		ClusterBuilder: kpack_v1alpha1.#ClusterBuilder
-		ClusterStack:   kpack_v1alpha1.#ClusterStack
-		ClusterStore:   kpack_v1alpha1.#ClusterStore
-		Image:          kpack_v1alpha1.#Image
-		ImageBuilder:   kpack_v1alpha1.#ImageBuilder
-		SourceResolver: kpack_v1alpha1.#SourceResolver
+	"kpack.io/v1alpha2": {
+		Build:          kpack_v1alpha2.#Build
+		Builder:        kpack_v1alpha2.#Builder
+		ClusterBuilder: kpack_v1alpha2.#ClusterBuilder
+		ClusterStack:   kpack_v1alpha2.#ClusterStack
+		ClusterStore:   kpack_v1alpha2.#ClusterStore
+		Image:          kpack_v1alpha2.#Image
+		ImageBuilder:   kpack_v1alpha2.#ImageBuilder
+		SourceResolver: kpack_v1alpha2.#SourceResolver
 	}
 }
