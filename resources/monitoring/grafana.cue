@@ -51,7 +51,7 @@ k: GitRepository: "grafana-operator": spec: {
 k: Kustomization: "grafana-operator": spec: {
 	healthChecks: [{
 		kind:      "Deployment"
-		name:      "grafana-operator"
+		name:      "grafana-operator-controller-manager"
 		namespace: "monitoring"
 	}]
 	interval: "30m"
