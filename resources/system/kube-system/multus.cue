@@ -2,7 +2,7 @@ package kube
 
 k: GitRepository: "multus-cni": spec: {
 	interval: "1h"
-	ref: tag: "v3.7.2"
+	ref: tag: "v3.8"
 	url: "https://github.com/k8snetworkplumbingwg/multus-cni"
 	ignore: """
 		/*
@@ -18,5 +18,34 @@ k: Kustomization: "multus-cni": spec: {
 		kind: "GitRepository"
 		name: "multus-cni"
 	}
-	validation: "client"
+	images: [{
+		name: "ghcr.io/k8snetworkplumbingwg/multus-cni"
+		newTag: "stable@sha256:9479537fe0827d23bc40056e98f8d1e75778ec294d89ae4d8a62f83dfc74a31d"
+	}]
+	patchesStrategicMerge: [{
+		apiVersion: "apps/v1"
+		kind: "DaemonSet"
+		metadata: {
+			name: "kube-multus-ds"
+			namespace: "kube-system"
+		}
+		spec: template: spec: {
+			containers: [{
+				name: "kube-multus"
+				args: [
+					"--multus-conf-file=auto",
+					"--cni-version=0.3.1",
+					"--restart-crio=true"
+				]
+				volumeMounts: [{
+					name: "run"
+					mountPath: "/run"
+				}]
+			}]
+			volumes: [{
+				name: "run"
+				hostPath: path: "/run"
+			}]
+		}
+	}]
 }

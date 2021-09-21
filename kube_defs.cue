@@ -93,7 +93,10 @@ _kubernetesAPIs: {
 		ClusterRoleBinding: rbac_v1.#ClusterRoleBinding
 	}
 
-	"storage.k8s.io/v1": StorageClass: storage_v1.#StorageClass
+	"storage.k8s.io/v1": {
+		CSIDriver:    storage_v1.#CSIDriver
+		StorageClass: storage_v1.#StorageClass
+	}
 
 	"apiextensions.k8s.io/v1": CustomResourceDefinition: apiextensions_v1.#CustomResourceDefinition
 

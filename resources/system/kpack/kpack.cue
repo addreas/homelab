@@ -69,56 +69,8 @@ k: ClusterStore: default: spec: {
 	}]
 }
 
-k: ClusterStack: base: spec: {
+k: ClusterStack: "full-cnb": spec: {
 	id: "io.buildpacks.stacks.bionic"
 	buildImage: image: "paketobuildpacks/build:full-cnb"
 	runImage: image:   "paketobuildpacks/run:full-cnb"
-}
-
-k: Builder: "test-builder": spec: {
-	serviceAccount: "test-service-account"
-	tag:            "registry.addem.se/kpack/test-builder"
-	stack: {
-		name: "base"
-		kind: "ClusterStack"
-	}
-	store: {
-		name: "default"
-		kind: "ClusterStore"
-	}
-	order: [{
-		group: [{
-			id: "app.elixir-buildpack"
-		}]
-	}, {
-		group: [{
-			id: "paketo-buildpacks/nodejs"
-		}]
-	}]
-}
-
-k: Image: "test-image": spec: {
-	tag:            "registry.addem.se/kpack/test-image"
-	serviceAccount: "test-service-account"
-	builder: {
-		name: "test-builder"
-		kind: "Builder"
-	}
-	source: git: {
-		url:      "https://github.com/shapeshed/express_example"
-		revision: "3de0ae190114ad8b42434170f57146ba9e700d32"
-	}
-}
-
-k: Image: "test-image-elixir": spec: {
-	tag:            "registry.addem.se/kpack/test-image"
-	serviceAccount: "test-service-account"
-	builder: {
-		name: "test-builder"
-		kind: "Builder"
-	}
-	source: git: {
-		url:      "https://github.com/sebastianseilund/phoenix-static-blog-example"
-		revision: "9c4072b8ae44134498861c9856c70b1056cb8e31"
-	}
 }
