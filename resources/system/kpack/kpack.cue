@@ -65,7 +65,7 @@ k: ClusterStore: default: spec: {
 	sources: [{
 		image: "gcr.io/paketo-buildpacks/nodejs"
 	}, {
-		image: "registry.addem.se/kpack/elixir-buildpack"
+		image: "ghcr.io/addreas/elixir-buildpack"
 	}]
 }
 
