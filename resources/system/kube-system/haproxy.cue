@@ -12,7 +12,7 @@ k: HelmRelease: haproxy: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "haproxy-ingress"
-			version: "0.13.3"
+			version: "0.13.4"
 			sourceRef: {
 				kind:      "HelmRepository"
 				name:      "haproxy-ingress"
@@ -21,14 +21,14 @@ k: HelmRelease: haproxy: {
 			interval: "1h"
 		}
 		values: controller: {
-			stats: enabled:   true
-			metrics: enabled: true
+			stats: enabled:   false
+			metrics: enabled: false
 			serviceMonitor: {
-				enabled:  true
+				enabled:  false
 				interval: "60s"
 			}
-			kind: "DaemonSet"
-			logs: enabled: true
+			logs: enabled: false
+			replicaCount: 2
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"
@@ -37,10 +37,10 @@ k: HelmRelease: haproxy: {
 	}
 }
 
-k: GrafanaDashboard: haproxy: spec: {
-	url: "https://grafana.com/api/dashboards/12693/revisions/1/download"
-	datasources: [{
-		datasourceName: "Prometheus"
-		inputName:      "DS_PROMETHEUS"
-	}]
-}
+// k: GrafanaDashboard: haproxy: spec: {
+// 	url: "https://grafana.com/api/dashboards/12693/revisions/1/download"
+// 	datasources: [{
+// 		datasourceName: "Prometheus"
+// 		inputName:      "DS_PROMETHEUS"
+// 	}]
+// }
