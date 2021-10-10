@@ -57,11 +57,11 @@ k: ServiceMonitor: [Name=string]: {
 }
 
 k: Ingress: [Name=string]: {
-	metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
+	metadata: annotations: _ | *{ "cert-manager.io/cluster-issuer": "addem-se-letsencrypt" }
 	spec: {
-		tls: [{
-			hosts:      _ | *["\(Name).addem.se"]
-			secretName: _ | *"\(Name)-cert"
+		tls: _ | *[{
+			hosts:      ["\(Name).addem.se"]
+			secretName: "\(Name)-cert"
 		}]
 		rules: [{
 			host: _ | *"\(Name).addem.se"

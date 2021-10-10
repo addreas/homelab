@@ -66,6 +66,8 @@ k: ClusterStore: default: spec: {
 		image: "gcr.io/paketo-buildpacks/nodejs"
 	}, {
 		image: "ghcr.io/addreas/elixir-buildpack"
+	}, {
+		image: "ghcr.io/addreas/fwup-buildpack"
 	}]
 }
 
