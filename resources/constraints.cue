@@ -57,15 +57,15 @@ k: ServiceMonitor: [Name=string]: {
 }
 
 k: Ingress: [Name=string]: {
-	metadata: annotations: _ | *{ "cert-manager.io/cluster-issuer": "addem-se-letsencrypt" }
+	metadata: annotations: _ | *{"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"}
 	spec: {
 		tls: _ | *[{
-			hosts:      ["\(Name).addem.se"]
+			hosts: ["\(Name).addem.se", ...]
 			secretName: "\(Name)-cert"
-		}]
-		rules: [{
+		}, ...]
+		rules: _ | *[{
 			host: _ | *"\(Name).addem.se"
-			http: paths: [{
+			http: paths: _ | *[{
 				path:     _ | *"/"
 				pathType: _ | *"Prefix"
 				backend: service: {
@@ -73,7 +73,7 @@ k: Ingress: [Name=string]: {
 					port: number: _ | *k.Service[Name].spec.ports[0].port
 				}
 			}, ...]
-		}]
+		}, ...]
 	}
 }
 
