@@ -40,6 +40,9 @@ package models
 	// Status of all endpoint controllers
 	controllers?: #ControllerStatuses @go(Controllers)
 
+	// Status of transparent encryption
+	encryption?: null | #EncryptionStatus @go(Encryption,*EncryptionStatus)
+
 	// Status of host routing
 	"host-routing"?: null | #HostRouting @go(HostRouting,*HostRouting)
 

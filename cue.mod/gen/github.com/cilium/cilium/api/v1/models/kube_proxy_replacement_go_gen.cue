@@ -10,6 +10,11 @@ package models
 //
 // swagger:model KubeProxyReplacement
 #KubeProxyReplacement: {
+	//
+	//
+	// +k8s:deepcopy-gen=true
+	deviceList: [...null | #KubeProxyReplacementDeviceListItems0] @go(DeviceList,[]*KubeProxyReplacementDeviceListItems0)
+
 	// devices
 	devices: [...string] @go(Devices,[]string)
 
@@ -35,6 +40,21 @@ package models
 
 // KubeProxyReplacementModePartial captures enum value "Partial"
 #KubeProxyReplacementModePartial: "Partial"
+
+// KubeProxyReplacementDeviceListItems0
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementDeviceListItems0
+#KubeProxyReplacementDeviceListItems0: {
+	//
+	//
+	// +k8s:deepcopy-gen=true
+	ip: [...string] @go(IP,[]string)
+
+	// name
+	name?: string @go(Name)
+}
 
 // KubeProxyReplacementFeatures
 //

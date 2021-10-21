@@ -102,6 +102,5 @@ k: Kustomization: "kube-vip-cloud-provider": spec: {
 		kind: "GitRepository"
 		name: "kube-vip-cloud-provider"
 	}
-	validation: "client"
 }
 

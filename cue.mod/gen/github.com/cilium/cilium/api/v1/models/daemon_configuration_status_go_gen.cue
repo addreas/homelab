@@ -41,8 +41,11 @@ package models
 	// kvstore configuration
 	kvstoreConfiguration?: null | #KVstoreConfiguration @go(KvstoreConfiguration,*KVstoreConfiguration)
 
-	// Status of masquerading feature
+	// masquerade
 	masquerade?: bool @go(Masquerade)
+
+	// masquerade protocols
+	masqueradeProtocols?: null | #DaemonConfigurationStatusMasqueradeProtocols @go(MasqueradeProtocols,*DaemonConfigurationStatusMasqueradeProtocols)
 
 	// Status of the node monitor
 	nodeMonitor?: null | #MonitorStatus @go(NodeMonitor,*MonitorStatus)
@@ -52,4 +55,15 @@ package models
 
 	// MTU for network facing routes
 	routeMTU?: int64 @go(RouteMTU)
+}
+
+// DaemonConfigurationStatusMasqueradeProtocols Status of masquerading feature
+//
+// swagger:model DaemonConfigurationStatusMasqueradeProtocols
+#DaemonConfigurationStatusMasqueradeProtocols: {
+	// Status of masquerading for IPv4 traffic
+	ipv4?: bool @go(IPV4)
+
+	// Status of masquerading for IPv6 traffic
+	ipv6?: bool @go(IPV6)
 }

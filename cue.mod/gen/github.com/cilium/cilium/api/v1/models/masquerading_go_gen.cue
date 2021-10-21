@@ -10,8 +10,11 @@ package models
 //
 // swagger:model Masquerading
 #Masquerading: {
-	// Is masquerading enabled
+	// enabled
 	enabled?: bool @go(Enabled)
+
+	// enabled protocols
+	enabledProtocols?: null | #MasqueradingEnabledProtocols @go(EnabledProtocols,*MasqueradingEnabledProtocols)
 
 	// Is BPF ip-masq-agent enabled
 	"ip-masq-agent"?: bool @go(IPMasqAgent)
@@ -20,8 +23,17 @@ package models
 	// Enum: [BPF iptables]
 	mode?: string @go(Mode)
 
-	// Any packet sent to IP addr belonging to CIDR will not be SNAT'd
+	// This field is obsolete, please use snat-exclusion-cidr-v4 or snat-exclusion-cidr-v6.
 	"snat-exclusion-cidr"?: string @go(SnatExclusionCidr)
+
+	// SnatExclusionCIDRv4 exempts SNAT from being performed on any packet sent to
+	// an IPv4 address that belongs to this CIDR.
+	"snat-exclusion-cidr-v4"?: string @go(SnatExclusionCidrV4)
+
+	// SnatExclusionCIDRv6 exempts SNAT from being performed on any packet sent to
+	// an IPv6 address that belongs to this CIDR.
+	// For IPv6 we only do masquerading in iptables mode.
+	"snat-exclusion-cidr-v6"?: string @go(SnatExclusionCidrV6)
 }
 
 // MasqueradingModeBPF captures enum value "BPF"
@@ -29,3 +41,14 @@ package models
 
 // MasqueradingModeIptables captures enum value "iptables"
 #MasqueradingModeIptables: "iptables"
+
+// MasqueradingEnabledProtocols Is masquerading enabled
+//
+// swagger:model MasqueradingEnabledProtocols
+#MasqueradingEnabledProtocols: {
+	// Is masquerading enabled for IPv4 traffic
+	ipv4?: bool @go(IPV4)
+
+	// Is masquerading enabled for IPv6 traffic
+	ipv6?: bool @go(IPV6)
+}

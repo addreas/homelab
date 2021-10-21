@@ -73,7 +73,9 @@ import (
 	configRawYaml?: string @go(ConfigRawYaml)
 
 	// ConfigSecret is the name of a Kubernetes Secret in the same namespace as the
-	// VMAlertmanager object, which contains configuration for this VMAlertmanager
+	// VMAlertmanager object, which contains configuration for this VMAlertmanager,
+	// configuration must be inside secret key: alertmanager.yaml.
+	// It must be created by user.
 	// instance. Defaults to 'vmalertmanager-<alertmanager-name>'
 	// The secret is mounted into /etc/alertmanager/config.
 	// +optional
@@ -240,6 +242,26 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// ConfigSelector defines selector for VMAlertmanagerConfig, result config will be merged with with Raw or Secret config.
+	// If nil, VMAlertmanagerConfig wont be used.
+	// If empty - {}, everything will be selected based on namespace selector.
+	// +optional
+	configSelector?: null | metav1.#LabelSelector @go(ConfigSelector,*metav1.LabelSelector)
+
+	//  ConfigNamespaceSelector defines namespace selector for VMAlertmanagerConfig.
+	// If nil, own namespace will be used.
+	// +optional
+	configNamespaceSelector?: null | metav1.#LabelSelector @go(ConfigNamespaceSelector,*metav1.LabelSelector)
+
+	// ExtraArgs that will be passed to  VMAuth pod
+	// for example remoteWrite.tmpDataPath: /tmp
+	// +optional
+	extraArgs?: {[string]: string} @go(ExtraArgs,map[string]string)
+
+	// ExtraEnvs that will be added to VMAuth pod
+	// +optional
+	extraEnvs?: [...v1.#EnvVar] @go(ExtraEnvs,[]v1.EnvVar)
 }
 
 // VMAlertmanagerList is a list of Alertmanagers.

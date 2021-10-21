@@ -3,5 +3,4 @@
 //cue:generate cue get go github.com/cilium/cilium/pkg/k8s/slim/k8s/apis/meta/v1
 
 // Package types contains slimmer versions of k8s types.
-// +groupName=meta
 package v1

@@ -93,7 +93,7 @@ package reflect
 // available in the memory directly following the rtype value.
 //
 // tflag values must be kept in sync with copies in:
-//       cmd/compile/internal/gc/reflect.go
+//       cmd/compile/internal/reflectdata/reflect.go
 //       cmd/link/internal/ld/decodesym.go
 //       runtime/type.go
 _#tflag: uint8
@@ -139,12 +139,13 @@ _#tflagRegularMemory: _#tflag & 8
 // Method represents a single method.
 #Method: {
 	// Name is the method name.
+	Name: string
+
 	// PkgPath is the package path that qualifies a lower case (unexported)
 	// method name. It is empty for upper case (exported) method names.
 	// The combination of PkgPath and Name uniquely identifies a method
 	// in a method set.
 	// See https://golang.org/ref/spec#Uniqueness_of_identifiers
-	Name:    string
 	PkgPath: string
 	Type:    #Type
 	Index:   int

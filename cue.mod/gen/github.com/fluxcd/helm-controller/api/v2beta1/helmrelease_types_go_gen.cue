@@ -185,6 +185,15 @@ import (
 	// +optional
 	interval?: null | metav1.#Duration @go(Interval,*metav1.Duration)
 
+	// Determines what enables the creation of a new artifact. Valid values are
+	// ('ChartVersion', 'Revision').
+	// See the documentation of the values for an explanation on their behavior.
+	// Defaults to ChartVersion when omitted.
+	// +kubebuilder:validation:Enum=ChartVersion;Revision
+	// +kubebuilder:default:=ChartVersion
+	// +optional
+	reconcileStrategy?: string @go(ReconcileStrategy)
+
 	// Alternative list of values files to use as the chart values (values.yaml
 	// is not included by default), expected to be a relative path in the SourceRef.
 	// Values files are merged in the order of this list with the last file overriding
@@ -228,6 +237,11 @@ import (
 	// install has been performed.
 	// +optional
 	disableWait?: bool @go(DisableWait)
+
+	// DisableWaitForJobs disables waiting for jobs to complete after a Helm
+	// install has been performed.
+	// +optional
+	disableWaitForJobs?: bool @go(DisableWaitForJobs)
 
 	// DisableHooks prevents hooks from running during the Helm install action.
 	// +optional
@@ -338,6 +352,11 @@ import (
 	// upgrade has been performed.
 	// +optional
 	disableWait?: bool @go(DisableWait)
+
+	// DisableWaitForJobs disables waiting for jobs to complete after a Helm
+	// upgrade has been performed.
+	// +optional
+	disableWaitForJobs?: bool @go(DisableWaitForJobs)
 
 	// DisableHooks prevents hooks from running during the Helm upgrade action.
 	// +optional
@@ -458,6 +477,11 @@ import (
 	// +optional
 	disableWait?: bool @go(DisableWait)
 
+	// DisableWaitForJobs disables waiting for jobs to complete after a Helm
+	// rollback has been performed.
+	// +optional
+	disableWaitForJobs?: bool @go(DisableWaitForJobs)
+
 	// DisableHooks prevents hooks from running during the Helm rollback action.
 	// +optional
 	disableHooks?: bool @go(DisableHooks)
@@ -554,7 +578,9 @@ import (
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 	spec?:     #HelmReleaseSpec   @go(Spec)
-	status?:   #HelmReleaseStatus @go(Status)
+
+	// +kubebuilder:default:={"observedGeneration":-1}
+	status?: #HelmReleaseStatus @go(Status)
 }
 
 // HelmReleaseList contains a list of HelmRelease objects.

@@ -8,6 +8,7 @@ import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/api/autoscaling/v2beta2"
 )
 
 _#vmPathPrefixFlagName: "http.pathPrefix"
@@ -18,7 +19,9 @@ _#snapshotCreate:       "/snapshot/create"
 _#snapshotDelete:       "/snapshot/delete"
 
 // FinalizerName name of our finalizer.
-#FinalizerName: "apps.victoriametrics.com/finalizer"
+#FinalizerName:            "apps.victoriametrics.com/finalizer"
+#SkipValidationAnnotation: "operator.victoriametrics.com/skip-validation"
+#SkipValidationValue:      "true"
 
 // EmbeddedObjectMetadata contains a subset of the fields included in k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta
 // Only fields which are relevant to embedded resources are included.
@@ -96,13 +99,19 @@ _#snapshotDelete:       "/snapshot/delete"
 #BasicAuth: {
 	// The secret in the service scrape namespace that contains the username
 	// for authentication.
+	// It must be at them same namespace as CRD
 	// +optional
 	username?: v1.#SecretKeySelector @go(Username)
 
 	// The secret in the service scrape namespace that contains the password
 	// for authentication.
+	// It must be at them same namespace as CRD
 	// +optional
 	password?: v1.#SecretKeySelector @go(Password)
+
+	// PasswordFile defines path to password file at disk
+	// +optional
+	password_file?: string @go(PasswordFile)
 }
 
 // ServiceSpec defines additional service for CRD with user-defined params.
@@ -150,4 +159,19 @@ _#snapshotDelete:       "/snapshot/delete"
 	// StartupProbe that will be added to CRD pod
 	// +optional
 	startupProbe?: null | v1.#Probe @go(StartupProbe,*v1.Probe)
+}
+
+// EmbeddedHPA embeds HorizontalPodAutoScaler spec v2.
+// https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2beta2/
+#EmbeddedHPA: {
+	minReplicas?: null | int32 @go(MinReplicas,*int32)
+	maxReplicas?: int32        @go(MaxReplicas)
+	metrics?: [...v2beta2.#MetricSpec] @go(Metrics,[]v2beta2.MetricSpec)
+	behaviour?: null | v2beta2.#HorizontalPodAutoscalerBehavior @go(Behaviour,*v2beta2.HorizontalPodAutoscalerBehavior)
+}
+
+// DiscoverySelector can be used at CRD components discovery
+#DiscoverySelector: {
+	namespaceSelector?: null | #NamespaceSelector    @go(Namespace,*NamespaceSelector)
+	labelSelector?:     null | metav1.#LabelSelector @go(Labels,*metav1.LabelSelector)
 }

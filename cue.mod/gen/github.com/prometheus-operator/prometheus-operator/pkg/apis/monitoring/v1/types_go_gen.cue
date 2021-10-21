@@ -176,13 +176,13 @@ import (
 	// Log format for Prometheus to be configured with.
 	logFormat?: string @go(LogFormat)
 
-	// Interval between consecutive scrapes.
+	// Interval between consecutive scrapes. Default: `1m`
 	scrapeInterval?: string @go(ScrapeInterval)
 
 	// Number of seconds to wait for target to respond before erroring.
 	scrapeTimeout?: string @go(ScrapeTimeout)
 
-	// Interval between consecutive evaluations.
+	// Interval between consecutive evaluations. Default: `1m`
 	evaluationInterval?: string @go(EvaluationInterval)
 
 	// /--rules.*/ command-line arguments.
@@ -308,9 +308,12 @@ import (
 	// InitContainers allows adding initContainers to the pod definition. Those can be used to e.g.
 	// fetch secrets for injection into the Prometheus configuration from external sources. Any errors
 	// during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-	// Using initContainers for any use case other then secret fetching is entirely outside the scope
-	// of what the maintainers will support and by doing so, you accept that this behaviour may break
-	// at any time without notice.
+	// InitContainers described here modify an operator
+	// generated init containers if they share the same name and modifications are
+	// done via a strategic merge patch. The current init container name is:
+	// `init-config-reloader`. Overriding init containers is entirely outside the
+	// scope of what the maintainers will support and by doing so, you accept that
+	// this behaviour may break at any time without notice.
 	initContainers?: [...v1.#Container] @go(InitContainers,[]v1.Container)
 
 	// AdditionalScrapeConfigs allows specifying a key of a Secret containing
@@ -392,9 +395,15 @@ import (
 	// within their current namespace.  Defaults to false.
 	ignoreNamespaceSelectors?: bool @go(IgnoreNamespaceSelectors)
 
-	// EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert
-	// and metric that is user created. The label value will always be the namespace of the object that is
-	// being created.
+	// EnforcedNamespaceLabel If set, a label will be added to
+	//
+	// 1. all user-metrics (created by `ServiceMonitor`, `PodMonitor` and `ProbeConfig` object) and
+	// 2. in all `PrometheusRule` objects (except the ones excluded in `prometheusRulesExcludedFromEnforce`) to
+	//    * alerting & recording rules and
+	//    * the metrics used in their expressions (`expr`).
+	//
+	// Label name is this field's value.
+	// Label value is the namespace of the created object (mentioned above).
 	enforcedNamespaceLabel?: string @go(EnforcedNamespaceLabel)
 
 	// PrometheusRulesExcludedFromEnforce - list of prometheus rules to be excluded from enforcing
@@ -422,13 +431,48 @@ import (
 	// This is still experimental in Prometheus so it may change in any upcoming release.
 	allowOverlappingBlocks?: bool @go(AllowOverlappingBlocks)
 
-	// EnforcedTargetLimit defines a global limit on the number of scraped targets.
-	// This overrides any TargetLimit set per ServiceMonitor or/and PodMonitor.
-	// It is meant to be used by admins to
-	// enforce the TargetLimit to keep overall number of targets under
-	// the desired limit.
-	// Note that if TargetLimit is higher that value will be taken instead.
+	// EnforcedTargetLimit defines a global limit on the number of scraped
+	// targets.  This overrides any TargetLimit set per ServiceMonitor or/and
+	// PodMonitor.  It is meant to be used by admins to enforce the TargetLimit
+	// to keep the overall number of targets under the desired limit.
+	// Note that if TargetLimit is lower, that value will be taken instead,
+	// except if either value is zero, in which case the non-zero value will be
+	// used.  If both values are zero, no limit is enforced.
 	enforcedTargetLimit?: null | uint64 @go(EnforcedTargetLimit,*uint64)
+
+	// Per-scrape limit on number of labels that will be accepted for a sample. If
+	// more than this number of labels are present post metric-relabeling, the
+	// entire scrape will be treated as failed. 0 means no limit.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	enforcedLabelLimit?: null | uint64 @go(EnforcedLabelLimit,*uint64)
+
+	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// If a label name is longer than this number post metric-relabeling, the entire
+	// scrape will be treated as failed. 0 means no limit.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	enforcedLabelNameLengthLimit?: null | uint64 @go(EnforcedLabelNameLengthLimit,*uint64)
+
+	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// If a label value is longer than this number post metric-relabeling, the
+	// entire scrape will be treated as failed. 0 means no limit.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	enforcedLabelValueLengthLimit?: null | uint64 @go(EnforcedLabelValueLengthLimit,*uint64)
+
+	// EnforcedBodySizeLimit defines the maximum size of uncompressed response body
+	// that will be accepted by Prometheus. Targets responding with a body larger than this many bytes
+	// will cause the scrape to fail. Example: 100MB.
+	// If defined, the limit will apply to all service/pod monitors and probes.
+	// This is an experimental feature, this behaviour could
+	// change or be removed in the future.
+	// Only valid in Prometheus versions 2.28.0 and newer.
+	enforcedBodySizeLimit?: string @go(EnforcedBodySizeLimit)
+
+	// Minimum number of seconds for which a newly created pod should be ready
+	// without any of its container crashing for it to be considered available.
+	// Defaults to 0 (pod will be considered available as soon as it is ready)
+	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+	// +optional
+	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 }
 
 // PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces
@@ -569,7 +613,48 @@ import (
 // +k8s:openapi-gen=true
 #WebSpec: {
 	// The prometheus web page title
-	pageTitle?: null | string @go(PageTitle,*string)
+	pageTitle?: null | string        @go(PageTitle,*string)
+	tlsConfig?: null | #WebTLSConfig @go(TLSConfig,*WebTLSConfig)
+}
+
+// WebTLSConfig defines the TLS parameters for HTTPS.
+// +k8s:openapi-gen=true
+#WebTLSConfig: {
+	// Secret containing the TLS key for the server.
+	keySecret: v1.#SecretKeySelector @go(KeySecret)
+
+	// Contains the TLS certificate for the server.
+	cert: #SecretOrConfigMap @go(Cert)
+
+	// Server policy for client authentication. Maps to ClientAuth Policies.
+	// For more detail on clientAuth options:
+	// https://golang.org/pkg/crypto/tls/#ClientAuthType
+	clientAuthType?: string @go(ClientAuthType)
+
+	// Contains the CA certificate for client certificate authentication to the server.
+	client_ca?: #SecretOrConfigMap @go(ClientCA)
+
+	// Minimum TLS version that is acceptable. Defaults to TLS12.
+	minVersion?: string @go(MinVersion)
+
+	// Maximum TLS version that is acceptable. Defaults to TLS13.
+	maxVersion?: string @go(MaxVersion)
+
+	// List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
+	// Go default cipher suites are used. Available cipher suites are documented
+	// in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+	cipherSuites?: [...string] @go(CipherSuites,[]string)
+
+	// Controls whether the server selects the
+	// client's most preferred cipher suite, or the server's most preferred
+	// cipher suite. If true then the server's preference, as expressed in
+	// the order of elements in cipherSuites, is used.
+	preferServerCipherSuites?: null | bool @go(PreferServerCipherSuites,*bool)
+
+	// Elliptic curves that will be used in an ECDHE handshake, in preference
+	// order. Available curves are documented in the go documentation:
+	// https://golang.org/pkg/crypto/tls/#CurveID
+	curvePreferences?: [...string] @go(CurvePreferences,[]string)
 }
 
 // ThanosSpec defines parameters for a Prometheus server within a Thanos deployment.
@@ -638,6 +723,13 @@ import (
 
 	// MinTime for Thanos sidecar to be configured with. Option can be a constant time in RFC3339 format or time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
 	minTime?: string @go(MinTime)
+
+	// ReadyTimeout is the maximum time Thanos sidecar will wait for Prometheus to start. Eg 10m
+	readyTimeout?: string @go(ReadyTimeout)
+
+	// VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition.
+	// VolumeMounts specified will be appended to other VolumeMounts in the thanos-sidecar container.
+	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
 }
 
 // RemoteWriteSpec defines the remote_write configuration for prometheus.
@@ -651,6 +743,9 @@ import (
 	// Only valid in Prometheus versions 2.15.0 and newer.
 	name?: string @go(Name)
 
+	// Enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the enableFeature option for exemplars to be scraped in the first place.  Only valid in Prometheus versions 2.27.0 and newer.
+	sendExemplars?: null | bool @go(SendExemplars,*bool)
+
 	// Timeout for requests to the remote write endpoint.
 	remoteTimeout?: string @go(RemoteTimeout)
 
@@ -662,7 +757,10 @@ import (
 	// The list of remote write relabel configurations.
 	writeRelabelConfigs?: [...#RelabelConfig] @go(WriteRelabelConfigs,[]RelabelConfig)
 
-	//BasicAuth for the URL.
+	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
+	// BasicAuth for the URL.
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
 	// Bearer token for remote write.
@@ -670,6 +768,9 @@ import (
 
 	// File to read bearer token for remote write.
 	bearerTokenFile?: string @go(BearerTokenFile)
+
+	// Authorization section for remote write
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
 
 	// TLS Config to use for remote write.
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
@@ -738,11 +839,17 @@ import (
 	// BasicAuth for the URL.
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
+	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
 	// Bearer token for remote read.
 	bearerToken?: string @go(BearerToken)
 
 	// File to read bearer token for remote read.
 	bearerTokenFile?: string @go(BearerTokenFile)
+
+	// Authorization section for remote read
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
 
 	// TLS Config to use for remote read.
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
@@ -801,6 +908,9 @@ import (
 
 	// TLS Config to use for accessing apiserver.
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// Authorization section for accessing apiserver
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
 }
 
 // AlertmanagerEndpoints defines a selection of a single Endpoints object
@@ -829,6 +939,9 @@ import (
 	// Alertmanager.
 	bearerTokenFile?: string @go(BearerTokenFile)
 
+	// Authorization section for this alertmanager endpoint
+	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
+
 	// Version of the Alertmanager API that Prometheus uses to send alerts. It
 	// can be "v1" or "v2".
 	apiVersion?: string @go(APIVersion)
@@ -853,13 +966,17 @@ import (
 // ServiceMonitorSpec contains specification parameters for a ServiceMonitor.
 // +k8s:openapi-gen=true
 #ServiceMonitorSpec: {
-	// The label to use to retrieve the job name from.
+	// Chooses the label of the Kubernetes `Endpoints`.
+	// Its value will be used for the `job`-label's value of the created metrics.
+	//
+	// Default & fallback value: the name of the respective Kubernetes `Endpoint`.
 	jobLabel?: string @go(JobLabel)
 
-	// TargetLabels transfers labels on the Kubernetes Service onto the target.
+	// TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics.
+	// All labels set in `selector.matchLabels` are automatically transferred.
 	targetLabels?: [...string] @go(TargetLabels,[]string)
 
-	// PodTargetLabels transfers labels on the Kubernetes Pod onto the target.
+	// PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics.
 	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 
 	// A list of endpoints allowed as part of this ServiceMonitor.
@@ -868,7 +985,7 @@ import (
 	// Selector to select Endpoints objects.
 	selector: metav1.#LabelSelector @go(Selector)
 
-	// Selector to select which namespaces the Endpoints objects are discovered from.
+	// Selector to select which namespaces the Kubernetes Endpoints objects are discovered from.
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
 	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
@@ -876,6 +993,18 @@ import (
 
 	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
 	targetLimit?: uint64 @go(TargetLimit)
+
+	// Per-scrape limit on number of labels that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelLimit?: uint64 @go(LabelLimit)
+
+	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelNameLengthLimit?: uint64 @go(LabelNameLengthLimit)
+
+	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
 }
 
 // Endpoint defines a scrapeable endpoint serving Prometheus metrics.
@@ -913,6 +1042,9 @@ import (
 	// the Prometheus Operator.
 	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
 
+	// Authorization section for this endpoint
+	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
+
 	// HonorLabels chooses the metric's labels on collisions with target labels.
 	honorLabels?: bool @go(HonorLabels)
 
@@ -922,6 +1054,9 @@ import (
 	// BasicAuth allow an endpoint to authenticate over basic authentication
 	// More info: https://prometheus.io/docs/operating/configuration/#endpoints
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
+
+	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// MetricRelabelConfigs to apply to samples before ingestion.
 	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
@@ -971,6 +1106,18 @@ import (
 
 	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
 	targetLimit?: uint64 @go(TargetLimit)
+
+	// Per-scrape limit on number of labels that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelLimit?: uint64 @go(LabelLimit)
+
+	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelNameLengthLimit?: uint64 @go(LabelNameLengthLimit)
+
+	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
 }
 
 // PodMetricsEndpoint defines a scrapeable endpoint of a Kubernetes Pod serving Prometheus metrics.
@@ -1014,6 +1161,12 @@ import (
 	// BasicAuth allow an endpoint to authenticate over basic authentication.
 	// More info: https://prometheus.io/docs/operating/configuration/#endpoint
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
+
+	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
+	// Authorization section for this endpoint
+	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
 
 	// MetricRelabelConfigs to apply to samples before ingestion.
 	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
@@ -1082,6 +1235,33 @@ import (
 	// BasicAuth allow an endpoint to authenticate over basic authentication.
 	// More info: https://prometheus.io/docs/operating/configuration/#endpoint
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
+
+	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
+	// MetricRelabelConfigs to apply to samples before ingestion.
+	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
+
+	// Authorization section for this endpoint
+	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
+
+	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+	sampleLimit?: uint64 @go(SampleLimit)
+
+	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
+	targetLimit?: uint64 @go(TargetLimit)
+
+	// Per-scrape limit on number of labels that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelLimit?: uint64 @go(LabelLimit)
+
+	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelNameLengthLimit?: uint64 @go(LabelNameLengthLimit)
+
+	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// Only valid in Prometheus versions 2.27.0 and newer.
+	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
 }
 
 // ProbeTargets defines a set of static and dynamically discovered targets for the prober.
@@ -1136,6 +1316,30 @@ import (
 	// Path to collect metrics from.
 	// Defaults to `/probe`.
 	path?: string @go(Path)
+
+	// Optional ProxyURL.
+	proxyUrl?: string @go(ProxyURL)
+}
+
+// OAuth2 allows an endpoint to authenticate with OAuth2.
+// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#oauth2
+// +k8s:openapi-gen=true
+#OAuth2: {
+	// The secret or configmap containing the OAuth2 client id
+	clientId: #SecretOrConfigMap @go(ClientID)
+
+	// The secret containing the OAuth2 client secret
+	clientSecret: v1.#SecretKeySelector @go(ClientSecret)
+
+	// The URL to fetch the token from
+	// +kubebuilder:validation:MinLength=1
+	tokenUrl: string @go(TokenURL)
+
+	// OAuth2 scopes used for the token request
+	scopes?: [...string] @go(Scopes,[]string)
+
+	// Parameters to append to the token URL
+	endpointParams?: {[string]: string} @go(EndpointParams,map[string]string)
 }
 
 // BasicAuth allow an endpoint to authenticate over basic authentication
@@ -1249,6 +1453,7 @@ import (
 // PrometheusRule defines recording and alerting rules for a Prometheus instance
 // +genclient
 // +k8s:openapi-gen=true
+// +kubebuilder:resource:categories="prometheus-operator"
 #PrometheusRule: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1276,7 +1481,8 @@ import (
 	partial_response_strategy?: string @go(PartialResponseStrategy)
 }
 
-// Rule describes an alerting or recording rule.
+// Rule describes an alerting or recording rule
+// See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
 // +k8s:openapi-gen=true
 #Rule: {
 	record?: string              @go(Record)
@@ -1487,6 +1693,13 @@ import (
 	// Namespaces to be selected for AlertmanagerConfig discovery. If nil, only
 	// check own namespace.
 	alertmanagerConfigNamespaceSelector?: null | metav1.#LabelSelector @go(AlertmanagerConfigNamespaceSelector,*metav1.LabelSelector)
+
+	// Minimum number of seconds for which a newly created pod should be ready
+	// without any of its container crashing for it to be considered available.
+	// Defaults to 0 (pod will be considered available as soon as it is ready)
+	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+	// +optional
+	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 }
 
 // AlertmanagerList is a list of Alertmanagers.
@@ -1574,4 +1787,25 @@ import (
 // +k8s:openapi-gen=true
 #ProbeTLSConfig: {
 	#SafeTLSConfig
+}
+
+// SafeAuthorization specifies a subset of the Authorization struct, that is
+// safe for use in Endpoints (no CredentialsFile field)
+// +k8s:openapi-gen=true
+#SafeAuthorization: {
+	// Set the authentication type. Defaults to Bearer, Basic will cause an
+	// error
+	type?: string @go(Type)
+
+	// The secret's key that contains the credentials of the request
+	credentials?: null | v1.#SecretKeySelector @go(Credentials,*v1.SecretKeySelector)
+}
+
+// Authorization contains optional `Authorization` header configuration.
+// This section is only understood by versions of Prometheus >= 2.26.0.
+#Authorization: {
+	#SafeAuthorization
+
+	// File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)
+	credentialsFile?: string @go(CredentialsFile)
 }

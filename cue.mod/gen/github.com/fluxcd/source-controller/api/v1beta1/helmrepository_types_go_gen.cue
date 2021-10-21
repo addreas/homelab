@@ -31,6 +31,15 @@ import (
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
 
+	// PassCredentials allows the credentials from the SecretRef to be passed on to
+	// a host that does not match the host as defined in URL.
+	// This may be required if the host of the advertised chart URLs in the index
+	// differ from the defined URL.
+	// Enabling this should be done with caution, as it can potentially result in
+	// credentials getting stolen in a MITM-attack.
+	// +optional
+	passCredentials?: bool @go(PassCredentials)
+
 	// The interval at which to check the upstream for updates.
 	// +required
 	interval: metav1.#Duration @go(Interval)

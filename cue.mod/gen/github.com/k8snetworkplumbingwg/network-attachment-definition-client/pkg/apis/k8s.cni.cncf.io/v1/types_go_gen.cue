@@ -32,15 +32,68 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	options?: [...string] @go(Options,[]string)
 }
 
+#DeviceInfoTypePCI:       "pci"
+#DeviceInfoTypeVHostUser: "vhost-user"
+#DeviceInfoTypeMemif:     "memif"
+#DeviceInfoTypeVDPA:      "vdpa"
+#DeviceInfoVersion:       "1.0.0"
+
+// DeviceInfo contains the information of the device associated
+// with this network (if any)
+#DeviceInfo: {
+	type?:         string              @go(Type)
+	version?:      string              @go(Version)
+	pci?:          null | #PciDevice   @go(Pci,*PciDevice)
+	vdpa?:         null | #VdpaDevice  @go(Vdpa,*VdpaDevice)
+	"vhost-user"?: null | #VhostDevice @go(VhostUser,*VhostDevice)
+	memif?:        null | #MemifDevice @go(Memif,*MemifDevice)
+}
+
+#PciDevice: {
+	"pci-address"?:    string @go(PciAddress)
+	"vhost-net"?:      string @go(Vhostnet)
+	"rdma-device"?:    string @go(RdmaDevice)
+	"pf-pci-address"?: string @go(PfPciAddress)
+}
+
+#VdpaDevice: {
+	"parent-device"?:  string @go(ParentDevice)
+	driver?:           string @go(Driver)
+	path?:             string @go(Path)
+	"pci-address"?:    string @go(PciAddress)
+	"pf-pci-address"?: string @go(PfPciAddress)
+}
+
+#VhostDeviceModeClient: "client"
+#VhostDeviceModeServer: "server"
+
+#VhostDevice: {
+	mode?: string @go(Mode)
+	path?: string @go(Path)
+}
+
+#MemifDeviceRoleMaster:   "master"
+#MemitDeviceRoleSlave:    "slave"
+#MemifDeviceModeEthernet: "ethernet"
+#MemitDeviceModeIP:       "ip"
+#MemitDeviceModePunt:     "punt"
+
+#MemifDevice: {
+	role?: string @go(Role)
+	path?: string @go(Path)
+	mode?: string @go(Mode)
+}
+
 // NetworkStatus is for network status annotation for pod
 // +k8s:deepcopy-gen=false
 #NetworkStatus: {
 	name:       string @go(Name)
 	interface?: string @go(Interface)
 	ips?: [...string] @go(IPs,[]string)
-	mac?:     string @go(Mac)
-	default?: bool   @go(Default)
-	dns?:     #DNS   @go(DNS)
+	mac?:           string             @go(Mac)
+	default?:       bool               @go(Default)
+	dns?:           #DNS               @go(DNS)
+	"device-info"?: null | #DeviceInfo @go(DeviceInfo,*DeviceInfo)
 }
 
 // PortMapEntry for CNI PortMapEntry

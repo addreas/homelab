@@ -72,5 +72,4 @@ k: CueBuild: "homelab": spec: {
 		kind: "GitRepository"
 		name: "homelab"
 	}
-	validation: "client"
 }

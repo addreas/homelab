@@ -7,9 +7,18 @@ package v1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
-#JobCompletionIndexAnnotationAlpha: "batch.kubernetes.io/job-completion-index"
+#JobCompletionIndexAnnotation: "batch.kubernetes.io/job-completion-index"
+
+// JobTrackingFinalizer is a finalizer for Job's pods. It prevents them from
+// being deleted before being accounted in the Job status.
+// The apiserver and job controller use this string as a Job annotation, to
+// mark Jobs that are being tracked using pod finalizers. Two releases after
+// the JobTrackingWithFinalizers graduates to GA, JobTrackingFinalizer will
+// no longer be used as a Job annotation.
+#JobTrackingFinalizer: "batch.kubernetes.io/job-tracking"
 
 // Job represents the configuration of a single job.
 #Job: {
@@ -143,9 +152,11 @@ import (
 	// for each index.
 	// When value is `Indexed`, .spec.completions must be specified and
 	// `.spec.parallelism` must be less than or equal to 10^5.
+	// In addition, The Pod name takes the form
+	// `$(job-name)-$(index)-$(random-string)`,
+	// the Pod hostname takes the form `$(job-name)-$(index)`.
 	//
-	// This field is alpha-level and is only honored by servers that enable the
-	// IndexedJob feature gate. More completion modes can be added in the future.
+	// This field is beta-level. More completion modes can be added in the future.
 	// If the Job controller observes a mode that it doesn't recognize, the
 	// controller skips updates for the Job.
 	// +optional
@@ -157,9 +168,11 @@ import (
 	// false to true), the Job controller will delete all active Pods associated
 	// with this Job. Users must design their workload to gracefully handle this.
 	// Suspending a Job will reset the StartTime field of the Job, effectively
-	// resetting the ActiveDeadlineSeconds timer too. This is an alpha field and
-	// requires the SuspendJob feature gate to be enabled; otherwise this field
-	// may not be set to true. Defaults to false.
+	// resetting the ActiveDeadlineSeconds timer too. Defaults to false.
+	//
+	// This field is beta-level, gated by SuspendJob feature flag (enabled by
+	// default).
+	//
 	// +optional
 	suspend?: null | bool @go(Suspend,*bool) @protobuf(10,varint,opt)
 }
@@ -214,6 +227,38 @@ import (
 	// represented as "1,3-5,7".
 	// +optional
 	completedIndexes?: string @go(CompletedIndexes) @protobuf(7,bytes,opt)
+
+	// UncountedTerminatedPods holds the UIDs of Pods that have terminated but
+	// the job controller hasn't yet accounted for in the status counters.
+	//
+	// The job controller creates pods with a finalizer. When a pod terminates
+	// (succeeded or failed), the controller does three steps to account for it
+	// in the job status:
+	// (1) Add the pod UID to the arrays in this field.
+	// (2) Remove the pod finalizer.
+	// (3) Remove the pod UID from the arrays while increasing the corresponding
+	//     counter.
+	//
+	// This field is alpha-level. The job controller only makes use of this field
+	// when the feature gate PodTrackingWithFinalizers is enabled.
+	// Old jobs might not be tracked using this field, in which case the field
+	// remains null.
+	// +optional
+	uncountedTerminatedPods?: null | #UncountedTerminatedPods @go(UncountedTerminatedPods,*UncountedTerminatedPods) @protobuf(8,bytes,opt)
+}
+
+// UncountedTerminatedPods holds UIDs of Pods that have terminated but haven't
+// been accounted in Job status counters.
+#UncountedTerminatedPods: {
+	// Succeeded holds UIDs of succeeded Pods.
+	// +listType=set
+	// +optional
+	succeeded?: [...types.#UID] @go(Succeeded,[]types.UID) @protobuf(1,bytes,rep,casttype=k8s.io/apimachinery/pkg/types.UID)
+
+	// Failed holds UIDs of failed Pods.
+	// +listType=set
+	// +optional
+	failed?: [...types.#UID] @go(Failed,[]types.UID) @protobuf(2,bytes,rep,casttype=k8s.io/apimachinery/pkg/types.UID)
 }
 
 #JobConditionType: string // #enumJobConditionType

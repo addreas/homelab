@@ -31,6 +31,15 @@ import (
 	// +required
 	interval: metav1.#Duration @go(Interval)
 
+	// Determines what enables the creation of a new artifact. Valid values are
+	// ('ChartVersion', 'Revision').
+	// See the documentation of the values for an explanation on their behavior.
+	// Defaults to ChartVersion when omitted.
+	// +kubebuilder:validation:Enum=ChartVersion;Revision
+	// +kubebuilder:default:=ChartVersion
+	// +optional
+	reconcileStrategy?: string @go(ReconcileStrategy)
+
 	// Alternative list of values files to use as the chart values (values.yaml
 	// is not included by default), expected to be a relative path in the SourceRef.
 	// Values files are merged in the order of this list with the last file overriding
@@ -50,6 +59,12 @@ import (
 	// +optional
 	suspend?: bool @go(Suspend)
 }
+
+// ReconcileStrategyChartVersion reconciles when the version of the Helm chart is different.
+#ReconcileStrategyChartVersion: "ChartVersion"
+
+// ReconcileStrategyRevision reconciles when the Revision of the source is different.
+#ReconcileStrategyRevision: "Revision"
 
 // LocalHelmChartSourceReference contains enough information to let you locate
 // the typed referenced object at namespace level.

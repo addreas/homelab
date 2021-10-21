@@ -56,6 +56,7 @@ import (
 	// An empty TopologySelectorTerm list means there is no topology restriction.
 	// This field is only honored by servers that enable the VolumeScheduling feature.
 	// +optional
+	// +listType=atomic
 	allowedTopologies?: [...v1.#TopologySelectorTerm] @go(AllowedTopologies,[]v1.TopologySelectorTerm) @protobuf(8,bytes,rep)
 }
 
@@ -327,11 +328,15 @@ import (
 	// Defines if the underlying volume supports changing ownership and
 	// permission of the volume before being mounted.
 	// Refer to the specific FSGroupPolicy values for additional details.
-	// This field is alpha-level, and is only honored by servers
+	// This field is beta, and is only honored by servers
 	// that enable the CSIVolumeFSGroupPolicy feature gate.
 	//
 	// This field is immutable.
 	//
+	// Defaults to ReadWriteOnceWithFSType, which will examine each volume
+	// to determine if Kubernetes should modify ownership and permissions of the volume.
+	// With the default policy the defined fsGroup will only be applied
+	// if a fstype is defined and the volume's access mode contains ReadWriteOnce.
 	// +optional
 	fsGroupPolicy?: null | #FSGroupPolicy @go(FSGroupPolicy,*FSGroupPolicy) @protobuf(5,bytes,opt)
 
@@ -351,9 +356,6 @@ import (
 	// most one token is empty string. To receive a new token after expiry,
 	// RequiresRepublish can be used to trigger NodePublishVolume periodically.
 	//
-	// This is a beta feature and only available when the
-	// CSIServiceAccountToken feature is enabled.
-	//
 	// +optional
 	// +listType=atomic
 	tokenRequests?: [...#TokenRequest] @go(TokenRequests,[]TokenRequest) @protobuf(6,bytes,opt)
@@ -365,9 +367,6 @@ import (
 	// Note: After a successful initial NodePublishVolume call, subsequent calls
 	// to NodePublishVolume should only update the contents of the volume. New
 	// mount points will not be seen by a running container.
-	//
-	// This is a beta feature and only available when the
-	// CSIServiceAccountToken feature is enabled.
 	//
 	// +optional
 	requiresRepublish?: null | bool @go(RequiresRepublish,*bool) @protobuf(7,varint,opt)
@@ -393,10 +392,11 @@ import (
 #ReadWriteOnceWithFSTypeFSGroupPolicy: #FSGroupPolicy & "ReadWriteOnceWithFSType"
 
 // FileFSGroupPolicy indicates that CSI driver supports volume ownership
-// and permission change via fsGroup, and Kubernetes may use fsGroup
-// to change permissions and ownership of the volume to match user requested fsGroup in
+// and permission change via fsGroup, and Kubernetes will change the permissions
+// and ownership of every file in the volume to match the user requested fsGroup in
 // the pod's SecurityPolicy regardless of fstype or access mode.
-// This mode should be defined if the fsGroup is expected to always change on mount
+// Use this mode if Kubernetes should modify the permissions and ownership
+// of the volume.
 #FileFSGroupPolicy: #FSGroupPolicy & "File"
 
 // NoneFSGroupPolicy indicates that volumes will be mounted without performing

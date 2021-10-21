@@ -8,7 +8,7 @@ GO_PKG_URLS=(
     "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
     "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
     "github.com/fluxcd/helm-controller/api/v2beta1"
-    "github.com/fluxcd/kustomize-controller/api/v1beta1"
+    "github.com/fluxcd/kustomize-controller/api/v1beta2"
     "github.com/fluxcd/source-controller/api/v1beta1"
     "github.com/integr8ly/grafana-operator/api/integreatly/v1alpha1"
     "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"

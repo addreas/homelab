@@ -72,6 +72,20 @@ import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	labelSelector?: string @go(LabelSelector)
 }
 
+// Patch contains either a StrategicMerge or a JSON6902 patch, either a file or inline,
+// and the target the patch should be applied to.
+#Patch: {
+	// Patch contains the JSON6902 patch document with an array of
+	// operation objects.
+	// +required
+	patch?: string @go(Patch)
+
+	// Target points to the resources that the patch document should
+	// be applied to.
+	// +optional
+	target?: #Selector @go(Target)
+}
+
 // JSON6902 is a JSON6902 operation object.
 // https://tools.ietf.org/html/rfc6902#section-4
 #JSON6902: {

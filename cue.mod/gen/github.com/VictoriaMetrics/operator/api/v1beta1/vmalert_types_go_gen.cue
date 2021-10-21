@@ -233,6 +233,10 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 }
 
 // VMAgentRemoteReadSpec defines the remote storage configuration for VmAlert to read alerts from
@@ -252,8 +256,15 @@ import (
 // VMAlertNotifierSpec defines the notifier url for sending information about alerts
 // +k8s:openapi-gen=true
 #VMAlertNotifierSpec: {
-	// AlertManager url. Required parameter. E.g. http://127.0.0.1:9093
-	url: string @go(URL)
+	// AlertManager url.  E.g. http://127.0.0.1:9093
+	// +optional
+	url?: string @go(URL)
+
+	// Selector allows service discovery for alertmanager
+	// in this case all matched vmalertmanager replicas will be added into vmalert notifier.url
+	// as statefulset pod.fqdn
+	// +optional
+	selector?: null | #DiscoverySelector @go(Selector,*DiscoverySelector)
 
 	// BasicAuth allow notifier to authenticate over basic authentication
 	// +optional

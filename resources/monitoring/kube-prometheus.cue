@@ -1,5 +1,7 @@
 package kube
 
+import "encoding/yaml"
+
 k: GitRepository: "kube-prometheus": spec: {
 	interval: "1h"
 	ref: branch: "main"
@@ -45,24 +47,26 @@ k: Kustomization: "kube-prometheus": spec: {
 	}]
 	interval: "30m"
 	path:     "./manifests"
-	patchesStrategicMerge: [{
-		apiVersion: "apps/v1"
-		kind:       "Deployment"
-		metadata: {
-			name:      "prometheus-adapter"
-			namespace: "monitoring"
-		}
-		spec: template: spec: containers: [{
-			name: "prometheus-adapter"
-			args: [
-				"--cert-dir=/var/run/serving-cert",
-				"--config=/etc/adapter/config.yaml",
-				"--logtostderr=true",
-				"--metrics-relist-interval=1m",
-				"--prometheus-url=http://vmsingle-main.monitoring.svc.cluster.local:8429/",
-				"--secure-port=6443",
-			]
-		}]
+	patches: [{
+		patch: yaml.Marshal({
+			apiVersion: "apps/v1"
+			kind:       "Deployment"
+			metadata: {
+				name:      "prometheus-adapter"
+				namespace: "monitoring"
+			}
+			spec: template: spec: containers: [{
+				name: "prometheus-adapter"
+				args: [
+					"--cert-dir=/var/run/serving-cert",
+					"--config=/etc/adapter/config.yaml",
+					"--logtostderr=true",
+					"--metrics-relist-interval=1m",
+					"--prometheus-url=http://vmsingle-main.monitoring.svc.cluster.local:8429/",
+					"--secure-port=6443",
+				]
+			}]
+		})
 	}]
 	prune: true
 	sourceRef: {

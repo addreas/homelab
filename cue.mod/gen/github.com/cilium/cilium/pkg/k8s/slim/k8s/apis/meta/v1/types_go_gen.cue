@@ -151,16 +151,16 @@ import "k8s.io/apimachinery/pkg/types"
 // A label selector is a label query over a set of resources. The result of matchLabels and
 // matchExpressions are ANDed. An empty label selector matches all objects. A null
 // label selector matches no objects.
+// +structType=atomic
 #LabelSelector: {
-	// MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+	// matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
 	// map is equivalent to an element of matchExpressions, whose key field is "key", the
 	// operator is "In", and the values array contains only "value". The requirements are ANDed.
 	//
 	// +kubebuilder:validation:Optional
 	matchLabels?: {[string]: string} @go(MatchLabels,map[string]string) @protobuf(1,bytes,rep)
 
-	// MatchExpressions is a list of label selector requirements. The requirements are ANDed.
-	//
+	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +kubebuilder:validation:Optional
 	matchExpressions?: [...#LabelSelectorRequirement] @go(MatchExpressions,[]LabelSelectorRequirement) @protobuf(2,bytes,rep)
 }
@@ -169,14 +169,7 @@ import "k8s.io/apimachinery/pkg/types"
 //
 // +kubebuilder:validation:MaxLength=63
 // +kubebuilder:validation:Pattern=`^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$`
-#MatchLabelsValue: string // #enumMatchLabelsValue
-
-#enumMatchLabelsValue:
-	#NamespaceDefault |
-	#NamespaceAll |
-	#NamespaceNone |
-	#NamespaceSystem |
-	#NamespacePublic
+#MatchLabelsValue: string
 
 // A label selector requirement is a selector that contains values, a key, and an operator that
 // relates the key and values.

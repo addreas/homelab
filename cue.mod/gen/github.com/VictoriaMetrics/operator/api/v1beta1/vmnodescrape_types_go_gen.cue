@@ -35,13 +35,26 @@ import (
 	// +optional
 	params?: {[string]: [...string]} @go(Params,map[string][]string)
 
+	// FollowRedirects controls redirects for scraping.
+	// +optional
+	follow_redirects?: null | bool @go(FollowRedirects,*bool)
+
 	// Interval at which metrics should be scraped
 	// +optional
 	interval?: string @go(Interval)
 
+	// ScrapeInterval is the same as Interval and has priority over it.
+	// one of scrape_interval or interval can be used
+	// +optional
+	scrape_interval?: string @go(ScrapeInterval)
+
 	// Timeout after which the scrape is ended
 	// +optional
 	scrapeTimeout?: string @go(ScrapeTimeout)
+
+	// OAuth2 defines auth configuration
+	// +optional
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// TLSConfig configuration to use when scraping the node
 	// +optional
@@ -93,6 +106,10 @@ import (
 	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
 	// +optional
 	sampleLimit?: uint64 @go(SampleLimit)
+
+	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
+	// +optional
+	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
 }
 
 // VMNodeScrapeStatus defines the observed state of VMNodeScrape

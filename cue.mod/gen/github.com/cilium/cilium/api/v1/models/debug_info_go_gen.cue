@@ -20,6 +20,9 @@ package models
 	// cilium version
 	"cilium-version"?: string @go(CiliumVersion)
 
+	// encryption
+	encryption?: null | #DebugInfoEncryption @go(Encryption,*DebugInfoEncryption)
+
 	// endpoint list
 	"endpoint-list": [...null | #Endpoint] @go(EndpointList,[]*Endpoint)
 
@@ -37,4 +40,12 @@ package models
 
 	// subsystem
 	subsystem?: {[string]: string} @go(Subsystem,map[string]string)
+}
+
+// DebugInfoEncryption debug info encryption
+//
+// swagger:model DebugInfoEncryption
+#DebugInfoEncryption: {
+	// Status of the Wireguard agent
+	wireguard?: null | #WireguardStatus @go(Wireguard,*WireguardStatus)
 }

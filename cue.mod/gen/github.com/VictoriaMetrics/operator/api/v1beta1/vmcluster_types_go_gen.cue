@@ -87,10 +87,13 @@ import (
 
 // VMClusterStatus defines the observed state of VMCluster
 #VMClusterStatus: {
-	updateFailCount: int    @go(UpdateFailCount)
-	lastSync?:       string @go(LastSync)
-	clusterStatus:   string @go(ClusterStatus)
-	reason?:         string @go(Reason)
+	// Deprecated.
+	updateFailCount: int @go(UpdateFailCount)
+
+	// Deprecated.
+	lastSync?:     string @go(LastSync)
+	clusterStatus: string @go(ClusterStatus)
+	reason?:       string @go(Reason)
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -248,6 +251,11 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+	hpa?: null | #EmbeddedHPA @go(HPA,*EmbeddedHPA)
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 }
 
 #InsertPorts: {
@@ -412,6 +420,13 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// HPA defines kubernetes PodAutoScaling configuration version 2.
+	hpa?: null | #EmbeddedHPA @go(HPA,*EmbeddedHPA)
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 }
 
 #VMStorage: {
@@ -578,6 +593,10 @@ import (
 
 	// MaintenanceInsertNodeIDs - excludes given node ids from select requests routing, must contain pod suffixes - for pod-0, id will be 0 and etc.
 	maintenanceSelectNodeIDs?: [...int32] @go(MaintenanceSelectNodeIDs,[]int32)
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 }
 
 #VMBackup: {
@@ -585,6 +604,14 @@ import (
 	// otherwise backupmanager cannot be added to single/cluster version.
 	// https://victoriametrics.com/assets/VM_EULA.pdf
 	acceptEULA: bool @go(AcceptEULA)
+
+	// SnapshotCreateURL overwrites url for snapshot create
+	// +optional
+	snapshotCreateURL?: string @go(SnapshotCreateURL)
+
+	// SnapShotDeleteURL overwrites url for snapshot delete
+	// +optional
+	snapshotDeleteURL?: string @go(SnapShotDeleteURL)
 
 	// Defines number of concurrent workers. Higher concurrency may reduce backup duration (default 10)
 	// +optional
@@ -647,6 +674,12 @@ import (
 
 	// +optional
 	extraEnvs?: [...v1.#EnvVar] @go(ExtraEnvs,[]v1.EnvVar)
+
+	// VolumeMounts allows configuration of additional VolumeMounts on the output Deployment definition.
+	// VolumeMounts specified will be appended to other VolumeMounts in the vmbackupmanager container,
+	// that are generated as a result of StorageSpec objects.
+	// +optional
+	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
 }
 
 // Image defines docker image settings

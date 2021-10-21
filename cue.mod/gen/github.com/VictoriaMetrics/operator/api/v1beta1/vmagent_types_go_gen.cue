@@ -331,6 +331,35 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// ServiceScrapeRelabelTemplate defines relabel config, that will be added to each VMServiceScrape.
+	// it's useful for adding specific labels to all targets
+	// +optional
+	serviceScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(ServiceScrapeRelabelTemplate,[]*RelabelConfig)
+
+	// PodScrapeRelabelTemplate defines relabel config, that will be added to each VMPodScrape.
+	// it's useful for adding specific labels to all targets
+	// +optional
+	podScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(PodScrapeRelabelTemplate,[]*RelabelConfig)
+
+	// NodeScrapeRelabelTemplate defines relabel config, that will be added to each VMNodeScrape.
+	// it's useful for adding specific labels to all targets
+	// +optional
+	nodeScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(NodeScrapeRelabelTemplate,[]*RelabelConfig)
+
+	// StaticScrapeRelabelTemplate defines relabel config, that will be added to each VMStaticScrape.
+	// it's useful for adding specific labels to all targets
+	// +optional
+	staticScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(StaticScrapeRelabelTemplate,[]*RelabelConfig)
+
+	// ProbeScrapeRelabelTemplate defines relabel config, that will be added to each VMProbeScrape.
+	// it's useful for adding specific labels to all targets
+	// +optional
+	probeScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(ProbeScrapeRelabelTemplate,[]*RelabelConfig)
 }
 
 // VMAgentRemoteWriteSettings - defines global settings for all remoteWrite urls.
@@ -359,6 +388,10 @@ import (
 	// +optional
 	// +kubebuilder:validation:Pattern:="[0-9]+(ms|s|m|h)"
 	flushInterval?: null | string @go(FlushInterval,*string)
+
+	// Optional labels in the form 'name=value' to add to all the metrics before sending them
+	// +optional
+	label?: {[string]: string} @go(Labels,map[string]string)
 }
 
 // VMAgentRemoteWriteSpec defines the remote storage configuration for VmAgent
@@ -375,10 +408,6 @@ import (
 	// +optional
 	bearerTokenSecret?: null | v1.#SecretKeySelector @go(BearerTokenSecret,*v1.SecretKeySelector)
 
-	// Optional labels in the form 'name=value' to add to all the metrics before sending them
-	// +optional
-	label?: {[string]: string} @go(Labels,map[string]string)
-
 	// ConfigMap with relabeling config which is applied to metrics before sending them to the corresponding -remoteWrite.url
 	// +optional
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Key at Configmap with relabelConfig for remoteWrite",xDescriptors="urn:alm:descriptor:io.kubernetes:ConfigMapKeySelector"
@@ -387,6 +416,10 @@ import (
 	// InlineUrlRelabelConfig defines relabeling config for remoteWriteURL, it can be defined at crd spec.
 	// +optional
 	inlineUrlRelabelConfig?: [...#RelabelConfig] @go(InlineUrlRelabelConfig,[]RelabelConfig)
+
+	// OAuth2 defines auth configuration
+	// +optional
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// TLSConfig describes tls configuration for remote write target
 	// +optional

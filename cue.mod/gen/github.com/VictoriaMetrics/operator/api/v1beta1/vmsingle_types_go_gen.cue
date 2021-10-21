@@ -56,6 +56,11 @@ import (
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Number of pods",xDescriptors="urn:alm:descriptor:com.tectonic.ui:podCount,urn:alm:descriptor:io.kubernetes:custom"
 	replicaCount?: null | int32 @go(ReplicaCount,*int32)
 
+	// StorageDataPath disables spec.storage option and overrides arg for victoria-metrics binary --storageDataPath,
+	// its users responsibility to mount proper device into given path.
+	// + optional
+	storageDataPath?: string @go(StorageDataPath)
+
 	// Storage is the definition of how storage will be used by the VMSingle
 	// by default it`s empty dir
 	// +optional
@@ -185,6 +190,10 @@ import (
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
 
 	#EmbeddedProbes
+
+	// NodeSelector Define which Nodes the Pods are scheduled on.
+	// +optional
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 }
 
 // VMSingleStatus defines the observed state of VMSingle

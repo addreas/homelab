@@ -27,7 +27,8 @@ import (
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors=true
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors.displayName="Pod selector"
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors.x-descriptors="urn:alm:descriptor:com.tectonic.ui:selector:"
-	selector: metav1.#LabelSelector @go(Selector)
+	// +optional
+	selector?: metav1.#LabelSelector @go(Selector)
 
 	// Selector to select which namespaces the Endpoints objects are discovered from.
 	// +optional
@@ -89,13 +90,26 @@ import (
 	// +optional
 	params?: {[string]: [...string]} @go(Params,map[string][]string)
 
+	// FollowRedirects controls redirects for scraping.
+	// +optional
+	follow_redirects?: null | bool @go(FollowRedirects,*bool)
+
 	// Interval at which metrics should be scraped
 	// +optional
 	interval?: string @go(Interval)
 
+	// ScrapeInterval is the same as Interval and has priority over it.
+	// one of scrape_interval or interval can be used
+	// +optional
+	scrape_interval?: string @go(ScrapeInterval)
+
 	// Timeout after which the scrape is ended
 	// +optional
 	scrapeTimeout?: string @go(ScrapeTimeout)
+
+	// SampleLimit defines per-podEndpoint limit on number of scraped samples that will be accepted.
+	// +optional
+	sampleLimit?: uint64 @go(SampleLimit)
 
 	// HonorLabels chooses the metric's labels on collisions with target labels.
 	// +optional
@@ -136,6 +150,14 @@ import (
 	// TLSConfig configuration to use when scraping the endpoint
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// OAuth2 defines auth configuration
+	// +optional
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
+	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
+	// +optional
+	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
 }
 
 // ArbitraryFSAccessThroughSMsConfig enables users to configure, whether

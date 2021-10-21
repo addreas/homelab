@@ -26,6 +26,8 @@ _#flagRO:          _#flag & 96
 	Kind:   #Kind
 }
 
+_#debugReflectCall: false
+
 // StringHeader is the runtime representation of a string.
 // It cannot be used safely or portably and its representation may
 // change in a later release.

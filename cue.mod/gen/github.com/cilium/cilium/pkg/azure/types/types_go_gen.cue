@@ -94,6 +94,18 @@ package types
 
 	// GatewayIP is the interface's subnet's default route
 	//
+	// OBSOLETE: This field is obsolete, please use Gateway field instead.
+	//
 	// +optional
 	GatewayIP: string
+
+	// Gateway is the interface's subnet's default route
+	//
+	// +optional
+	gateway: string @go(Gateway)
+
+	// CIDR is the range that the interface belongs to.
+	//
+	// +optional
+	cidr?: string @go(CIDR)
 }

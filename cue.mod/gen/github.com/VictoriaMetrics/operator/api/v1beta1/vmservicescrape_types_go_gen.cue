@@ -40,7 +40,8 @@ import (
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors=true
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors.displayName="Service selector"
 	// +operator-sdk:gen-csv:customresourcedefinitions.specDescriptors.x-descriptors="urn:alm:descriptor:com.tectonic.ui:selector:"
-	selector: metav1.#LabelSelector @go(Selector)
+	// +optional
+	selector?: metav1.#LabelSelector @go(Selector)
 
 	// Selector to select which namespaces the Endpoints objects are discovered from.
 	// +optional
@@ -94,6 +95,8 @@ import (
 	matchNames?: [...string] @go(MatchNames,[]string)
 }
 
+_#nsMatcher: _
+
 // Endpoint defines a scrapeable endpoint serving Prometheus metrics.
 // +k8s:openapi-gen=true
 #Endpoint: {
@@ -117,13 +120,30 @@ import (
 	// +optional
 	params?: {[string]: [...string]} @go(Params,map[string][]string)
 
+	// FollowRedirects controls redirects for scraping.
+	// +optional
+	follow_redirects?: null | bool @go(FollowRedirects,*bool)
+
 	// Interval at which metrics should be scraped
 	// +optional
 	interval?: string @go(Interval)
 
+	// ScrapeInterval is the same as Interval and has priority over it.
+	// one of scrape_interval or interval can be used
+	// +optional
+	scrape_interval?: string @go(ScrapeInterval)
+
 	// Timeout after which the scrape is ended
 	// +optional
 	scrapeTimeout?: string @go(ScrapeTimeout)
+
+	// SampleLimit defines per-endpoint limit on number of scraped samples that will be accepted.
+	// +optional
+	sampleLimit?: uint64 @go(SampleLimit)
+
+	// OAuth2 defines auth configuration
+	// +optional
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// TLSConfig configuration to use when scraping the endpoint
 	// +optional
@@ -164,6 +184,78 @@ import (
 	// ProxyURL eg http://proxyserver:2195 Directs scrapes to proxy through this endpoint.
 	// +optional
 	proxyURL?: null | string @go(ProxyURL,*string)
+
+	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
+	// +optional
+	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
+}
+
+// VMScrapeParams defines scrape target configuration that compatible only with VictoriaMetrics scrapers
+// VMAgent and VMSingle
+#VMScrapeParams: {
+	// +optional
+	relabel_debug?: null | bool @go(RelabelDebug,*bool)
+
+	// +optional
+	metric_relabel_debug?: null | bool @go(MetricRelabelDebug,*bool)
+
+	// +optional
+	disable_compression?: null | bool @go(DisableCompression,*bool)
+
+	// +optional
+	disable_keep_alive?: null | bool @go(DisableKeepAlive,*bool)
+
+	// +optional
+	stream_parse?: null | bool @go(StreamParse,*bool)
+
+	// +optional
+	scrape_align_interval?: null | string @go(ScrapeAlignInterval,*string)
+
+	// +optional
+	scrape_offset?: null | string @go(ScrapeOffset,*string)
+
+	// ProxyClientConfig configures proxy auth settings for scraping
+	// See feature description https://docs.victoriametrics.com/vmagent.html#scraping-targets-via-a-proxy
+	// +optional
+	proxy_client_config?: null | #ProxyAuth @go(ProxyClientConfig,*ProxyAuth)
+}
+
+// ProxyAuth represent proxy auth config
+// Only VictoriaMetrics scrapers supports it.
+// See https://github.com/VictoriaMetrics/VictoriaMetrics/commit/a6a71ef861444eb11fe8ec6d2387f0fc0c4aea87
+#ProxyAuth: {
+	basic_auth?:        null | #BasicAuth            @go(BasicAuth,*BasicAuth)
+	bearer_token?:      null | v1.#SecretKeySelector @go(BearerToken,*v1.SecretKeySelector)
+	bearer_token_file?: string                       @go(BearerTokenFile)
+	tls_config?:        null | #TLSConfig            @go(TLSConfig,*TLSConfig)
+}
+
+// OAuth2 defines OAuth2 configuration
+#OAuth2: {
+	// The secret or configmap containing the OAuth2 client id
+	// +required
+	client_id: #SecretOrConfigMap @go(ClientID)
+
+	// The secret containing the OAuth2 client secret
+	// +optional
+	client_secret?: null | v1.#SecretKeySelector @go(ClientSecret,*v1.SecretKeySelector)
+
+	// ClientSecretFile defines path for client secret file.
+	// +optional
+	client_secret_file?: string @go(ClientSecretFile)
+
+	// The URL to fetch the token from
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	token_url: string @go(TokenURL)
+
+	// OAuth2 scopes used for the token request
+	// +optional
+	scopes?: [...string] @go(Scopes,[]string)
+
+	// Parameters to append to the token URL
+	// +optional
+	endpoint_params?: {[string]: string} @go(EndpointParams,map[string]string)
 }
 
 // TLSConfig specifies TLSConfig configuration parameters.
@@ -263,50 +355,6 @@ import (
 	// Action to perform based on regex matching. Default is 'replace'
 	// +optional
 	action?: string @go(Action)
-}
-
-// RemoteWriteSpec defines the remote_write configuration.
-// +k8s:openapi-gen=true
-#RemoteWriteSpec: {
-	// The URL of the endpoint to send samples to.
-	url: string @go(URL)
-
-	// The name of the remote write queue, must be unique if specified. The
-	// name is used in metrics and logging in order to differentiate queues.
-	// +optional
-	name?: string @go(Name)
-
-	// Timeout for requests to the remote write endpoint.
-	// +optional
-	remoteTimeout?: string @go(RemoteTimeout)
-
-	// The list of remote write relabel configurations.
-	// +optional
-	writeRelabelConfigs?: [...#RelabelConfig] @go(WriteRelabelConfigs,[]RelabelConfig)
-
-	//BasicAuth for the URL.
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
-
-	// File to read bearer token for remote write.
-	// +optional
-	bearerToken?: string @go(BearerToken)
-
-	// File to read bearer token for remote write.
-	// +optional
-	bearerTokenFile?: string @go(BearerTokenFile)
-
-	// TLSConfig Config to use for remote write.
-	// +optional
-	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
-
-	// Optional ProxyURL
-	// +optional
-	proxyURL?: string @go(ProxyURL)
-
-	// QueueConfig allows tuning of the remote write queue parameters.
-	// +optional
-	queueConfig?: null | #QueueConfig @go(QueueConfig,*QueueConfig)
 }
 
 // QueueConfig allows the tuning of remote_write queue_config parameters. This object

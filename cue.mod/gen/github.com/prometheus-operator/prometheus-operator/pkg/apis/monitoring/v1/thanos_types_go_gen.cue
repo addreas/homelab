@@ -215,6 +215,13 @@ import (
 	// of all alerts.
 	// Maps to the '--alert.query-url' CLI arg.
 	alertQueryUrl?: string @go(AlertQueryURL)
+
+	// Minimum number of seconds for which a newly created pod should be ready
+	// without any of its container crashing for it to be considered available.
+	// Defaults to 0 (pod will be considered available as soon as it is ready)
+	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+	// +optional
+	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 }
 
 // ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only. Not

@@ -10,6 +10,7 @@ import (
 	"github.com/cilium/cilium/pkg/node/addressing"
 	eniTypes "github.com/cilium/cilium/pkg/aws/eni/types"
 	azureTypes "github.com/cilium/cilium/pkg/azure/types"
+	alibabaCloudTypes "github.com/cilium/cilium/pkg/alibabacloud/eni/types"
 	ipamTypes "github.com/cilium/cilium/pkg/ipam/types"
 )
 
@@ -270,6 +271,11 @@ import (
 	// +kubebuilder:validation:Optional
 	azure?: azureTypes.#AzureSpec @go(Azure)
 
+	// AlibabaCloud is the AlibabaCloud IPAM specific configuration.
+	//
+	// +kubebuilder:validation:Optional
+	"alibaba-cloud"?: alibabaCloudTypes.#Spec @go(AlibabaCloud)
+
 	// IPAM is the address management specification. This section can be
 	// populated by a user or it can be automatically populated by an IPAM
 	// operator.
@@ -322,6 +328,11 @@ import (
 	//
 	// +kubebuilder:validation:Optional
 	ipam?: ipamTypes.#IPAMStatus @go(IPAM)
+
+	// AlibabaCloud is the AlibabaCloud specific status of the node.
+	//
+	// +kubebuilder:validation:Optional
+	"alibaba-cloud"?: alibabaCloudTypes.#ENIStatus @go(AlibabaCloud)
 }
 
 // CiliumNodeList is a list of CiliumNode objects.

@@ -1,5 +1,7 @@
 package kube
 
+import "encoding/yaml"
+
 k: Grafana: grafana: spec: {
 	baseImage: "grafana/grafana:latest"
 	config: {
@@ -66,25 +68,27 @@ k: Kustomization: "grafana-operator": spec: {
 		name:    "quay.io/integreatly/grafana-operator:latest"
 		newName: "ghcr.io/addreas/grafana-operator"
 	}]
-	patchesStrategicMerge: [{
-		apiVersion: "apps/v1"
-		kind:       "Deployment"
-		metadata: {
-			name:      "controller-manager"
-			namespace: "system"
-		}
-		spec: template: spec: containers: [{
-			name: "manager"
-			args: ["--scan-all"]
-			resources: limits: memory: "256Mi"
-			env: [{
-				name: "WATCH_NAMESPACE"
-				valueFrom: fieldRef: fieldPath: "metadata.namespace"
-			}, {
-				name: "POD_NAME"
-				valueFrom: fieldRef: fieldPath: "metadata.name"
+	patches: [{
+		patch: yaml.Marshal({
+			apiVersion: "apps/v1"
+			kind:       "Deployment"
+			metadata: {
+				name:      "controller-manager"
+				namespace: "system"
+			}
+			spec: template: spec: containers: [{
+				name: "manager"
+				args: ["--scan-all"]
+				resources: limits: memory: "256Mi"
+				env: [{
+					name: "WATCH_NAMESPACE"
+					valueFrom: fieldRef: fieldPath: "metadata.namespace"
+				}, {
+					name: "POD_NAME"
+					valueFrom: fieldRef: fieldPath: "metadata.name"
+				}]
 			}]
-		}]
+		})
 	}]
 }
 

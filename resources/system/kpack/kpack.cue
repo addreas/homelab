@@ -1,5 +1,7 @@
 package kube
 
+// import "encoding/yaml"
+
 // k: GitRepository: homelab: spec: {
 // 	interval: "1h"
 // 	ref: branch: "main"
@@ -14,37 +16,42 @@ package kube
 // 		kind: "GitRepository"
 // 		name: "homelab"
 // 	}
-// 	validation: "client"
 // 	patchesStrategicMerge: [{
-// 		apiVersion: "v1"
-// 		kind:       "ConfigMap"
-// 		metadata: {
-// 			name:      "lifecycle-image"
-// 			namespace: "kpack"
-// 		}
-// 		data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
+// 		patches: yaml.Marshal({
+// 			apiVersion: "v1"
+// 			kind:       "ConfigMap"
+// 			metadata: {
+// 				name:      "lifecycle-image"
+// 				namespace: "kpack"
+// 			}
+// 			data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
+// 		})
 // 	}, {
-// 		apiVersion: "apps/v1"
-// 		kind: "Deployment"
-// 		metadata: {
-// 			name: "kpack-controller"
-// 			namespace: "kpack"
-// 		}
-// 		spec: template: spec: containers: [{
-// 			name: "controller"
-// 			image: "gcr.io/cf-build-service-public/kpack/controller@sha256:28048eeea9f7b2a1d15cf6b13e8f326376f17b934e31b3aedecf2e3ee8dd1d94"
-// 		}]
+// 		patches: yaml.Marshal({
+// 			apiVersion: "apps/v1"
+// 			kind: "Deployment"
+// 			metadata: {
+// 				name: "kpack-controller"
+// 				namespace: "kpack"
+// 			}
+// 			spec: template: spec: containers: [{
+// 				name: "controller"
+// 				image: "gcr.io/cf-build-service-public/kpack/controller@sha256:28048eeea9f7b2a1d15cf6b13e8f326376f17b934e31b3aedecf2e3ee8dd1d94"
+// 			}]
+// 		})
 // 	}, {
-// 		apiVersion: "apps/v1"
-// 		kind: "Deployment"
-// 		metadata: {
-// 			name: "kpack-webhook"
-// 			namespace: "kpack"
-// 		}
-// 		spec: template: spec: containers: [{
-// 			name: "webhook"
-// 			image: "gcr.io/cf-build-service-public/kpack/webhook@sha256:305750b32736adef29d8e8b45eea956bab402d4e4ac4ad81cc930a4f078c3f57"
-// 		}]
+// 		patches: yaml.Marshal({
+// 			apiVersion: "apps/v1"
+// 			kind: "Deployment"
+// 			metadata: {
+// 				name: "kpack-webhook"
+// 				namespace: "kpack"
+// 			}
+// 			spec: template: spec: containers: [{
+// 				name: "webhook"
+// 				image: "gcr.io/cf-build-service-public/kpack/webhook@sha256:305750b32736adef29d8e8b45eea956bab402d4e4ac4ad81cc930a4f078c3f57"
+// 			}]
+// 		})
 // 	}]
 // }
 

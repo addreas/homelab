@@ -73,6 +73,23 @@ import (
 	// This option is available only when using the 'go-git' GitImplementation.
 	// +optional
 	recurseSubmodules?: bool @go(RecurseSubmodules)
+
+	// Extra git repositories to map into the repository
+	include?: [...#GitRepositoryInclude] @go(Include,[]GitRepositoryInclude)
+}
+
+// GitRepositoryInclude defines a source with a from and to path.
+#GitRepositoryInclude: {
+	// Reference to a GitRepository to include.
+	repository: meta.#LocalObjectReference @go(GitRepositoryRef)
+
+	// The path to copy contents from, defaults to the root directory.
+	// +optional
+	fromPath: string @go(FromPath)
+
+	// The path to copy contents to, defaults to the name of the source ref.
+	// +optional
+	toPath: string @go(ToPath)
 }
 
 // GitRepositoryRef defines the Git ref used for pull and checkout operations.
@@ -123,6 +140,10 @@ import (
 	// Artifact represents the output of the last successful repository sync.
 	// +optional
 	artifact?: null | #Artifact @go(Artifact,*Artifact)
+
+	// IncludedArtifacts represents the included artifacts from the last successful repository sync.
+	// +optional
+	includedArtifacts?: [...null | #Artifact] @go(IncludedArtifacts,[]*Artifact)
 
 	meta.#ReconcileRequestStatus
 }

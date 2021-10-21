@@ -4,7 +4,10 @@
 
 package v1beta1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
 
 // VMProbeSpec contains specification parameters for a Probe.
 // +k8s:openapi-gen=true
@@ -28,8 +31,52 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// If not specified Prometheus' global scrape interval is used.
 	interval?: string @go(Interval)
 
+	// ScrapeInterval is the same as Interval and has priority over it.
+	// one of scrape_interval or interval can be used
+	// +optional
+	scrape_interval?: string @go(ScrapeInterval)
+
 	// Timeout for scraping metrics from the Prometheus exporter.
 	scrapeTimeout?: string @go(ScrapeTimeout)
+
+	// Optional HTTP URL parameters
+	// +optional
+	params?: {[string]: [...string]} @go(Params,map[string][]string)
+
+	// FollowRedirects controls redirects for scraping.
+	// +optional
+	follow_redirects?: null | bool @go(FollowRedirects,*bool)
+
+	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+	// +optional
+	sampleLimit?: uint64 @go(SampleLimit)
+
+	// File to read bearer token for scraping targets.
+	// +optional
+	bearerTokenFile?: string @go(BearerTokenFile)
+
+	// Secret to mount to read bearer token for scraping targets. The secret
+	// needs to be in the same namespace as the service scrape and accessible by
+	// the victoria-metrics operator.
+	// +optional
+	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+
+	// BasicAuth allow an endpoint to authenticate over basic authentication
+	// More info: https://prometheus.io/docs/operating/configuration/#endpoints
+	// +optional
+	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
+
+	// OAuth2 defines auth configuration
+	// +optional
+	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
+
+	// TLSConfig configuration to use when scraping the endpoint
+	// +optional
+	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
+	// +optional
+	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
 }
 
 // VMProbeTargets defines a set of static and dynamically discovered targets for the prober.

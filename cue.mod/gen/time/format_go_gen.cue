@@ -4,6 +4,7 @@
 
 package time
 
+#Layout:      "01/02 03:04:05PM '06 -0700"
 #ANSIC:       "Mon Jan _2 15:04:05 2006"
 #UnixDate:    "Mon Jan _2 15:04:05 MST 2006"
 #RubyDate:    "Mon Jan 02 15:04:05 -0700 2006"
@@ -60,3 +61,7 @@ _#stdNeedDate:              256
 _#stdNeedClock:             512
 _#stdArgShift:              16
 _#stdMask:                  65535
+
+_#lowerhex:  "0123456789abcdef"
+_#runeSelf:  0x80
+_#runeError: 65533 // '\uFFFD'

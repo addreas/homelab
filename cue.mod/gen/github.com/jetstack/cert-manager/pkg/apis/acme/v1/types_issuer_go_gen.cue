@@ -7,7 +7,7 @@ package v1
 import (
 	cmmeta "github.com/jetstack/cert-manager/pkg/apis/meta/v1"
 	corev1 "k8s.io/api/core/v1"
-	apiext "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 // ACMEIssuer contains the specification for an ACME issuer.
@@ -105,9 +105,11 @@ import (
 	// encoded data.
 	keySecretRef: cmmeta.#SecretKeySelector @go(Key)
 
-	// keyAlgorithm is the MAC key algorithm that the key is used for.
-	// Valid values are "HS256", "HS384" and "HS512".
-	keyAlgorithm: #HMACKeyAlgorithm @go(KeyAlgorithm)
+	// Deprecated: keyAlgorithm field exists for historical compatibility
+	// reasons and should not be used. The algorithm is now hardcoded to HS256
+	// in golang/x/crypto/acme.
+	// +optional
+	keyAlgorithm?: #HMACKeyAlgorithm @go(KeyAlgorithm)
 }
 
 // HMACKeyAlgorithm is the name of a key algorithm used for HMAC encryption
@@ -123,8 +125,9 @@ import (
 #HS384: #HMACKeyAlgorithm & "HS384"
 #HS512: #HMACKeyAlgorithm & "HS512"
 
-// Configures an issuer to solve challenges using the specified options.
-// Only one of HTTP01 or DNS01 may be provided.
+// An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of.
+// A selector may be provided to use different solving strategies for different DNS names.
+// Only one of HTTP01 or DNS01 must be provided.
 #ACMEChallengeSolver: {
 	// Selector selects a set of DNSNames on the Certificate resource that
 	// should be solved using this challenge solver.
@@ -185,6 +188,7 @@ import (
 // Typically this is accomplished through creating 'routes' of some description
 // that configure ingress controllers to direct traffic to 'solver pods', which
 // are responsible for responding to the ACME server's HTTP requests.
+// Only one of Ingress / Gateway can be specified.
 #ACMEChallengeSolverHTTP01: {
 	// The ingress based HTTP01 challenge solver will solve challenges by
 	// creating or modifying Ingress resources in order to route requests for
@@ -192,10 +196,18 @@ import (
 	// provisioned by cert-manager for each Challenge to be completed.
 	// +optional
 	ingress?: null | #ACMEChallengeSolverHTTP01Ingress @go(Ingress,*ACMEChallengeSolverHTTP01Ingress)
+
+	// The Gateway API is a sig-network community API that models service networking
+	// in Kubernetes (https://gateway-api.sigs.k8s.io/). The Gateway solver will
+	// create HTTPRoutes with the specified labels in the same namespace as the challenge.
+	// This solver is experimental, and fields / behaviour may change in the future.
+	// +optional
+	gatewayHTTPRoute?: null | #ACMEChallengeSolverHTTP01GatewayHTTPRoute @go(GatewayHTTPRoute,*ACMEChallengeSolverHTTP01GatewayHTTPRoute)
 }
 
 #ACMEChallengeSolverHTTP01Ingress: {
-	// Optional service type for Kubernetes solver service
+	// Optional service type for Kubernetes solver service. Supported values
+	// are NodePort or ClusterIP. If unset, defaults to NodePort.
 	// +optional
 	serviceType?: corev1.#ServiceType @go(ServiceType)
 
@@ -214,14 +226,28 @@ import (
 	name?: string @go(Name)
 
 	// Optional pod template used to configure the ACME challenge solver pods
-	// used for HTTP01 challenges
+	// used for HTTP01 challenges.
 	// +optional
 	podTemplate?: null | #ACMEChallengeSolverHTTP01IngressPodTemplate @go(PodTemplate,*ACMEChallengeSolverHTTP01IngressPodTemplate)
 
 	// Optional ingress template used to configure the ACME challenge solver
-	// ingress used for HTTP01 challenges
+	// ingress used for HTTP01 challenges.
 	// +optional
 	ingressTemplate?: null | #ACMEChallengeSolverHTTP01IngressTemplate @go(IngressTemplate,*ACMEChallengeSolverHTTP01IngressTemplate)
+}
+
+// The ACMEChallengeSolverHTTP01GatewayHTTPRoute solver will create HTTPRoute objects for a Gateway class
+// routing to an ACME challenge solver pod.
+#ACMEChallengeSolverHTTP01GatewayHTTPRoute: {
+	// Optional service type for Kubernetes solver service. Supported values
+	// are NodePort or ClusterIP. If unset, defaults to NodePort.
+	// +optional
+	serviceType?: corev1.#ServiceType @go(ServiceType)
+
+	// The labels that cert-manager will use when creating the temporary
+	// HTTPRoute needed for solving the HTTP-01 challenge. These labels
+	// must match the label selector of at least one Gateway.
+	labels?: {[string]: string} @go(Labels,map[string]string)
 }
 
 #ACMEChallengeSolverHTTP01IngressPodTemplate: {
@@ -528,7 +554,7 @@ import (
 	// For details on the schema of this field, consult the webhook provider
 	// implementation's documentation.
 	// +optional
-	config?: null | apiext.#JSON @go(Config,*apiext.JSON)
+	config?: null | apiextensionsv1.#JSON @go(Config,*apiextensionsv1.JSON)
 }
 
 #ACMEIssuerStatus: {

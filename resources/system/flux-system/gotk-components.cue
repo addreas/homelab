@@ -14,7 +14,6 @@ k: Kustomization: "flux-components": spec: {
 		kind: "GitRepository"
 		name: "flux-components"
 	}
-	validation: "client"
 }
 
 k: GitRepository: "cuebuild-controller": spec: {
@@ -31,5 +30,8 @@ k: Kustomization: "cuebuild-controller": spec: {
 		kind: "GitRepository"
 		name: "cuebuild-controller"
 	}
-	validation: "client"
+	images: [{
+		name: "ghcr.io/addreas/cuebuild-controller"
+		newTag: "0.16"
+	}]
 }
