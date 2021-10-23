@@ -1,9 +1,8 @@
 package kube
 
-import "encoding/yaml"
+// import "encoding/yaml"
 
 k: Grafana: grafana: spec: {
-	baseImage: "grafana/grafana:latest"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		auth: {
@@ -64,31 +63,22 @@ k: Kustomization: "grafana-operator": spec: {
 		name: "grafana-operator"
 	}
 	targetNamespace: "monitoring"
-	images: [{
-		name:    "quay.io/integreatly/grafana-operator:latest"
-		newName: "ghcr.io/addreas/grafana-operator"
-	}]
 	patches: [{
-		patch: yaml.Marshal({
-			apiVersion: "apps/v1"
-			kind:       "Deployment"
-			metadata: {
-				name:      "controller-manager"
-				namespace: "system"
-			}
-			spec: template: spec: containers: [{
-				name: "manager"
-				args: ["--scan-all"]
-				resources: limits: memory: "256Mi"
-				env: [{
-					name: "WATCH_NAMESPACE"
-					valueFrom: fieldRef: fieldPath: "metadata.namespace"
-				}, {
-					name: "POD_NAME"
-					valueFrom: fieldRef: fieldPath: "metadata.name"
-				}]
-			}]
-		})
+		target: {
+			group: "apps"
+			version: "v1"
+			kind: "Deployment"
+			name: "controller-manager"
+		}
+		patch: """
+			- op: add
+			  path: /spec/template/spec/containers/1/args
+			  value:
+			  - --scan-all
+			- op: replace
+			  path: /spec/template/spec/containers/1/image
+			  value: ghcr.io/addreas/grafana-operator:4.0.1
+			"""
 	}]
 }
 
@@ -110,6 +100,7 @@ k: ClusterRole: "grafana-operator-missing-resources": {
 		apiGroups: [""]
 		resources: [
 			"pods",
+			"nodes",
 			"services",
 			"endpoints",
 			"persistentvolumeclaims",

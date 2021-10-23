@@ -1,7 +1,7 @@
 package kube
 
 k: GrafanaDashboard: "unifi-controller": spec: {
-	url: "https://grafana.com/api/dashboards/9390/revisions/1/download"
+	grafanaCom: id: 9390
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_PROMETHEUS"

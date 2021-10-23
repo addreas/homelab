@@ -115,7 +115,7 @@ k: Ingress: sonarr: {
 }
 
 k: GrafanaDashboard: "sonarr": spec: {
-	url: "https://grafana.com/api/dashboards/12530/revisions/2/download"
+	grafanaCom: id: 12530
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_PROMETHEUS"

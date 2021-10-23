@@ -51,10 +51,7 @@ k: Kustomization: "kube-prometheus": spec: {
 		patch: yaml.Marshal({
 			apiVersion: "apps/v1"
 			kind:       "Deployment"
-			metadata: {
-				name:      "prometheus-adapter"
-				namespace: "monitoring"
-			}
+			metadata: name: "prometheus-adapter"
 			spec: template: spec: containers: [{
 				name: "prometheus-adapter"
 				args: [

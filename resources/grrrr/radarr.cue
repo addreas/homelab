@@ -115,7 +115,7 @@ k: Ingress: radarr: {
 }
 
 k: GrafanaDashboard: "radarr": spec: {
-	url: "https://grafana.com/api/dashboards/12896/revisions/1/download"
+	grafanaCom: id: 12896
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_RANCHER_MONITORING"

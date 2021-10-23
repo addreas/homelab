@@ -1,7 +1,7 @@
 package kube
 
 k: GrafanaDashboard: "longhorn": spec: {
-	url: "https://grafana.com/api/dashboards/13032/revisions/6/download"
+	grafanaCom: id: 13032
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_PROMETHEUS"

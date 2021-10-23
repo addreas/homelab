@@ -20,7 +20,7 @@ import (
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
 
-	grafana_v1alpha1 "github.com/integr8ly/grafana-operator/api/integreatly/v1alpha1"
+	grafana_v1alpha1 "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
 
 	certmanager_v1 "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
 
