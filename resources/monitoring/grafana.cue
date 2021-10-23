@@ -3,6 +3,7 @@ package kube
 // import "encoding/yaml"
 
 k: Grafana: grafana: spec: {
+	baseImage: "grafana/grafana:latest"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		auth: {
