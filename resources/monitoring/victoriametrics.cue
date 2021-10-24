@@ -160,4 +160,24 @@ k: Kustomization: "victoriametrics-operator": spec: {
 		kind: "GitRepository"
 		name: "victoriametrics-operator"
 	}
+	patches: [{
+		target: {
+			group: "operator.victoriametrics.com"
+			version: "v1beta1"
+			kind: "VMServiceScrape"
+			name: "controller-manager-metrics-monitor"
+		}
+		patch: """
+		apiVersion: operator.victoriametrics.com/v1beta1
+		kind: VMServiceScrape
+		metadata:
+		  name: controller-manager-metrics-monitor
+		  namespace: system
+		spec:
+		  endpoints:
+		    - path: /metrics
+		      port: https
+		      scheme: https
+		"""
+	}]
 }
