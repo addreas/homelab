@@ -92,12 +92,12 @@ k: VMAlertmanager: "main": spec: {
 			source_match: severity:    "critical"
 			target_match_re: severity: "warning|info"
 		}, {
-			"equal": ["namespace", "alertname"]
+			equal: ["namespace", "alertname"]
 			source_match: severity:    "warning"
 			target_match_re: severity: "info"
 		}]
 		receivers: [{name: "Default"}, {name: "Watchdog"}, {name: "Critical"}]
-		"route": {
+		route: {
 			group_by: ["namespace"]
 			group_interval:  "5m"
 			group_wait:      "30s"
@@ -153,7 +153,8 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	targetNamespace: "monitoring"
 	images: [{
 		name:   "victoriametrics/operator"
-		newTag: "v0.19.1"
+		newTag: "v0.19.2-amd64"
+		newName: "ghcr.io/addreas/victoriametrics-operator"
 	}]
 	prune: true
 	sourceRef: {
@@ -167,17 +168,11 @@ k: Kustomization: "victoriametrics-operator": spec: {
 			kind: "VMServiceScrape"
 			name: "controller-manager-metrics-monitor"
 		}
-		patch: """
-		apiVersion: operator.victoriametrics.com/v1beta1
-		kind: VMServiceScrape
-		metadata:
-		  name: controller-manager-metrics-monitor
-		  namespace: system
-		spec:
-		  endpoints:
-		    - path: /metrics
-		      port: https
-		      scheme: https
-		"""
+		patch: yaml.Marshal({
+			"$patch": "delete"
+			apiVersion: "operator.victoriametrics.com/v1beta1"
+			kind: "VMServiceScrape"
+			metadata: name: "controller-manager-metrics-monitor"
+		})
 	}]
 }

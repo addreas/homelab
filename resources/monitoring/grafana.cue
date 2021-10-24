@@ -1,6 +1,6 @@
 package kube
 
-// import "encoding/yaml"
+import "encoding/yaml"
 
 k: Grafana: grafana: spec: {
 	baseImage: "grafana/grafana:8.2.2"
@@ -80,6 +80,19 @@ k: Kustomization: "grafana-operator": spec: {
 			  path: /spec/template/spec/containers/1/image
 			  value: ghcr.io/addreas/grafana-operator:4.0.1
 			"""
+	}, {
+		target: {
+			group: ""
+			version: "v1"
+			kind: "Service"
+			name: "controller-manager-metrics-serivce"
+		}
+		patch: yaml.Marshal({
+			"$patch": "delete"
+			apiVersion: "v1"
+			kind: "Service"
+			metadata: name: "controller-manager-metrics-service"
+		})
 	}]
 }
 
