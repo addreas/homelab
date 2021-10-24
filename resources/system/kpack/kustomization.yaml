@@ -1,0 +1,13 @@
+kind: Kustomization
+resources:
+  - https://github.com/pivotal/kpack/releases/download/v0.4.0/release-0.4.0.yaml
+
+patchesStrategicMerge:
+- |-
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: lifecycle-image
+    namespace: kpack
+  data:
+    image: ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920

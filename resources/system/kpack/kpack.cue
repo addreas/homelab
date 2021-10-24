@@ -1,61 +1,22 @@
 package kube
 
-// import "encoding/yaml"
+k: GitRepository: homelab: spec: {
+	interval: "1h"
+	ref: branch: "main"
+	url: "https://github.com/addreas/homelab"
+}
 
-// k: GitRepository: homelab: spec: {
-// 	interval: "1h"
-// 	ref: branch: "main"
-// 	url: "https://github.com/addreas/homelab"
-// }
+k: Kustomization: kpack: spec: {
+	interval: "1h"
+	path:     "./resources/system/kpack"
+	prune:    true
+	sourceRef: {
+		kind: "GitRepository"
+		name: "homelab"
+	}
+}
 
-// k: Kustomization: kpack: spec: {
-// 	interval: "1h"
-// 	path:     "./resources/system/kpack"
-// 	prune:    true
-// 	sourceRef: {
-// 		kind: "GitRepository"
-// 		name: "homelab"
-// 	}
-// 	patchesStrategicMerge: [{
-// 		patches: yaml.Marshal({
-// 			apiVersion: "v1"
-// 			kind:       "ConfigMap"
-// 			metadata: {
-// 				name:      "lifecycle-image"
-// 				namespace: "kpack"
-// 			}
-// 			data: image: "ghcr.io/addreas/kpack-lifecycle@sha256:db90b57428b6a711611acfb2b8c8a74e2bd3ebca60c46ef335853cd437450920"
-// 		})
-// 	}, {
-// 		patches: yaml.Marshal({
-// 			apiVersion: "apps/v1"
-// 			kind: "Deployment"
-// 			metadata: {
-// 				name: "kpack-controller"
-// 				namespace: "kpack"
-// 			}
-// 			spec: template: spec: containers: [{
-// 				name: "controller"
-// 				image: "gcr.io/cf-build-service-public/kpack/controller@sha256:28048eeea9f7b2a1d15cf6b13e8f326376f17b934e31b3aedecf2e3ee8dd1d94"
-// 			}]
-// 		})
-// 	}, {
-// 		patches: yaml.Marshal({
-// 			apiVersion: "apps/v1"
-// 			kind: "Deployment"
-// 			metadata: {
-// 				name: "kpack-webhook"
-// 				namespace: "kpack"
-// 			}
-// 			spec: template: spec: containers: [{
-// 				name: "webhook"
-// 				image: "gcr.io/cf-build-service-public/kpack/webhook@sha256:305750b32736adef29d8e8b45eea956bab402d4e4ac4ad81cc930a4f078c3f57"
-// 			}]
-// 		})
-// 	}]
-// }
-
-k: ServiceAccount: "test-service-account": {
+k: ServiceAccount: "cluster-store-default": {
 	secrets: [{
 		name: "registry-credentials"
 	}]
@@ -66,7 +27,7 @@ k: ServiceAccount: "test-service-account": {
 
 k: ClusterStore: default: spec: {
 	serviceAccountRef: {
-		name: "test-service-account"
+		name: "cluster-store-default"
 		namespace: "kpack"
 	}
 	sources: [{
