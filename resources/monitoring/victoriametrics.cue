@@ -153,7 +153,7 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	targetNamespace: "monitoring"
 	images: [{
 		name:   "victoriametrics/operator"
-		newTag: "v0.13.1"
+		newTag: "v0.19.1"
 	}]
 	prune: true
 	sourceRef: {
