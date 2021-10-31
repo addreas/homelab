@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/VictoriaMetrics/operator v0.19.1
-	github.com/addreas/cuebuild-controller/api v0.9.1-cue
+	github.com/addreas/cuebuild-controller/api v0.16.0-cue
 	github.com/bitnami-labs/sealed-secrets v0.16.0
 	github.com/cilium/cilium v1.10.5
 	github.com/fluxcd/helm-controller/api v0.12.1
