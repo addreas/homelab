@@ -25,6 +25,13 @@ k: Kustomization: "multus-cni": spec: {
 		newTag: "stable@sha256:9479537fe0827d23bc40056e98f8d1e75778ec294d89ae4d8a62f83dfc74a31d"
 	}]
 	patches: [{
+		target: {
+			group: "apps"
+			version: "v1"
+			kind: "DaemonSet"
+			name: "kube-multus-ds"
+			namespace: "kube-system"
+		}
 		patch: yaml.Marshal({
 			apiVersion: "apps/v1"
 			kind: "DaemonSet"
