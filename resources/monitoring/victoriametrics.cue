@@ -151,11 +151,6 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	interval:        "1h"
 	path:            "./config/default"
 	targetNamespace: "monitoring"
-	images: [{
-		name:   "victoriametrics/operator"
-		newTag: "v0.19.2-amd64"
-		newName: "ghcr.io/addreas/victoriametrics-operator"
-	}]
 	prune: true
 	sourceRef: {
 		kind: "GitRepository"
