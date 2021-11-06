@@ -13,7 +13,7 @@ k: HelmRelease: longhorn: spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "longhorn"
-		version: "1.2.0"
+		version: "1.2.2"
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "longhorn"
