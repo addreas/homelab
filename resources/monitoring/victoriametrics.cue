@@ -140,7 +140,7 @@ k: Ingress: "alertmanager": {
 k: GitRepository: "victoriametrics-operator": spec: {
 	interval: "1h"
 	ref: branch: "master"
-	url: "https://github.com/victoriametrics/operator"
+	url: "https://github.com/addreas/victoriametrics-operator"
 	ignore: """
 		/*
 		!/config/
@@ -156,6 +156,10 @@ k: Kustomization: "victoriametrics-operator": spec: {
 		kind: "GitRepository"
 		name: "victoriametrics-operator"
 	}
+	images: [{
+		name: "victoriametrics/operator"
+		newTag: "master"
+	}]
 	patches: [{
 		target: {
 			group: "operator.victoriametrics.com"
