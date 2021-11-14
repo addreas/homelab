@@ -194,7 +194,7 @@ k: ConfigMap: "qbittorrent-static-config": {
 }
 
 k: Service: "vpn-egress": {
-	_selector: "vpn-egress": "gateway"
+	_selector: close({"vpn-egress": "gateway"})
 	spec: ports: [{
 		name: "socks"
 		port: 1080

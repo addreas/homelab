@@ -42,7 +42,7 @@ k: ["Deployment" | "StatefulSet"]: [Name=string]: {
 }
 
 k: Service: [Name=string]: {
-	_selector: _
+	_selector: _ | *{app: Name}
 	metadata: labels: _selector
 	spec: {
 		selector: _selector
@@ -51,7 +51,7 @@ k: Service: [Name=string]: {
 }
 
 k: ServiceMonitor: [Name=string]: {
-	_selector: _
+	_selector: _ | *{app: Name}
 	metadata: labels: _selector
 	spec: selector: matchLabels: _selector
 }
