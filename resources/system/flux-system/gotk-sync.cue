@@ -14,13 +14,13 @@ k: CueBuild: "homelab": spec: {
 		"./resources/fogis",
 		"./resources/grrrr",
 		"./resources/hass",
-		"./resources/monitoring",
 		"./resources/unifi",
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
 		"./resources/system/kpack",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
+		"./resources/system/monitoring",
 	]
 	prune: true
 	sourceRef: {
