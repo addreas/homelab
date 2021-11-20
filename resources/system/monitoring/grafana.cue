@@ -66,10 +66,10 @@ k: Kustomization: "grafana-operator": spec: {
 	targetNamespace: "monitoring"
 	patches: [{
 		target: {
-			group: "apps"
+			group:   "apps"
 			version: "v1"
-			kind: "Deployment"
-			name: "controller-manager"
+			kind:    "Deployment"
+			name:    "controller-manager"
 		}
 		patch: """
 			- op: add
@@ -82,15 +82,15 @@ k: Kustomization: "grafana-operator": spec: {
 			"""
 	}, {
 		target: {
-			group: ""
+			group:   ""
 			version: "v1"
-			kind: "Service"
-			name: "controller-manager-metrics-serivce"
+			kind:    "Service"
+			name:    "controller-manager-metrics-serivce"
 		}
 		patch: yaml.Marshal({
-			"$patch": "delete"
+			"$patch":   "delete"
 			apiVersion: "v1"
-			kind: "Service"
+			kind:       "Service"
 			metadata: name: "controller-manager-metrics-service"
 		})
 	}]

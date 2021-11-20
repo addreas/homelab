@@ -49,10 +49,10 @@ k: Kustomization: "kube-prometheus": spec: {
 	path:     "./manifests"
 	patches: [{
 		target: {
-			group: "apps"
+			group:   "apps"
 			version: "v1"
-			kind: "Deployment"
-			name: "prometheus-adapter"
+			kind:    "Deployment"
+			name:    "prometheus-adapter"
 		}
 		patch: yaml.Marshal({
 			apiVersion: "apps/v1"

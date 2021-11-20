@@ -27,7 +27,7 @@ k: ServiceAccount: "cluster-store-default": {
 
 k: ClusterStore: default: spec: {
 	serviceAccountRef: {
-		name: "cluster-store-default"
+		name:      "cluster-store-default"
 		namespace: "kpack"
 	}
 	sources: [{

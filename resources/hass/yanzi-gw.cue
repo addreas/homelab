@@ -23,7 +23,7 @@ k: StatefulSet: "yanzi-gateway": {
 			}, {
 				name:  "fiona"
 				image: "ghcr.io/addreas/gw-fiona:4.9.9"
-                command: ["java", "-DexitToReboot", "-jar", "/app/fiona.jar"]
+				command: ["java", "-DexitToReboot", "-jar", "/app/fiona.jar"]
 				securityContext: capabilities: add: ["NET_BIND_SERVICE"]
 				volumeMounts: [{
 					name:      "var-db-yanzi"

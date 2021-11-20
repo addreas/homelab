@@ -31,7 +31,7 @@ k: Kustomization: "cuebuild-controller": spec: {
 		name: "cuebuild-controller"
 	}
 	images: [{
-		name: "ghcr.io/addreas/cuebuild-controller"
-		newTag: "0.16"
+		name:   "ghcr.io/addreas/cuebuild-controller"
+		newTag: "0.18"
 	}]
 }

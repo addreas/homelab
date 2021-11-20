@@ -151,26 +151,26 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	interval:        "1h"
 	path:            "./config/default"
 	targetNamespace: "monitoring"
-	prune: true
+	prune:           true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "victoriametrics-operator"
 	}
 	images: [{
-		name: "victoriametrics/operator"
+		name:   "victoriametrics/operator"
 		newTag: "master"
 	}]
 	patches: [{
 		target: {
-			group: "operator.victoriametrics.com"
+			group:   "operator.victoriametrics.com"
 			version: "v1beta1"
-			kind: "VMServiceScrape"
-			name: "controller-manager-metrics-monitor"
+			kind:    "VMServiceScrape"
+			name:    "controller-manager-metrics-monitor"
 		}
 		patch: yaml.Marshal({
-			"$patch": "delete"
+			"$patch":   "delete"
 			apiVersion: "operator.victoriametrics.com/v1beta1"
-			kind: "VMServiceScrape"
+			kind:       "VMServiceScrape"
 			metadata: name: "controller-manager-metrics-monitor"
 		})
 	}]

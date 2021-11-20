@@ -24,9 +24,13 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:version-6.2.26"
-					name:  "unifi-controller"
-					command: ["java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar", "start"]
+					image: "ghcr.io/linuxserver/unifi-controller:version-6.4.54"
+					name:  "controller"
+					command: ["sh", "-c"]
+					args: ["""
+						java -Xmx1024M -jar /usr/lib/unifi/lib/ace.jar start &
+						exec tail -f --retry --pid=$! /usr/lib/unifi/logs/server.log
+						"""]
 					ports: [{
 						containerPort: 8443
 					}]
@@ -43,6 +47,21 @@ k: StatefulSet: "unifi-controller": {
 						requests: {
 							cpu:    "100m"
 							memory: "512Mi"
+						}
+					}
+				}, {
+					image: "busybox:stable"
+					name:  "mongo"
+					command: ["tail", "-F", "/usr/lib/unifi/logs/mongod.log"]
+					volumeMounts: [{
+						name:      "config"
+						mountPath: "/usr/lib/unifi/logs"
+						subPath:   "logs"
+					}]
+					resources: {
+						requests: {
+							cpu:    "10m"
+							memory: "64Mi"
 						}
 					}
 				}, {
