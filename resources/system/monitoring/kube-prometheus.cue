@@ -5,6 +5,8 @@ import (
 	"github.com/prometheus-operator/kube-prometheus/manifests"
 )
 
+k: CustomResourceDefinition: manifests.CustomResourceDefinition
+
 k: VMRule: "kube-prometheus-rules": {
 	metadata: labels: "app.kubernetes.io/name": "kube-prometheus"
 	spec: manifests.PrometheusRule["kube-prometheus-rules"].spec
