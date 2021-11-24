@@ -74,3 +74,27 @@ k: GrafanaDashboard: [string]: {
 		jsonnet: *"" | string
 	}
 }
+
+k: HelmRelease: [Name=string]: {
+	metadata: namespace: string
+	spec: {
+		interval: _ | *"1h"
+		chart: spec: {
+			interval:  _ | *"1h"
+			chart:     _ | *Name
+			sourceRef: _ | *{
+				kind:      "HelmRepository"
+				name:      _ | *Name
+				namespace: _ | *metadata.namespace
+			}
+		}
+	}
+}
+
+k: Kustomization: [Name=string]: spec: {
+	interval:  _ | *"1h"
+	sourceRef: _ | *{
+		kind: "GitRepository"
+		name: _ | *Name
+	}
+}

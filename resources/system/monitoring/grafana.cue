@@ -56,13 +56,9 @@ k: Kustomization: "grafana-operator": spec: {
 		name:      "grafana-operator-controller-manager"
 		namespace: "monitoring"
 	}]
-	interval: "30m"
-	path:     "./config/default"
-	prune:    true
-	sourceRef: {
-		kind: "GitRepository"
-		name: "grafana-operator"
-	}
+	interval:        "30m"
+	path:            "./config/default"
+	prune:           true
 	targetNamespace: "monitoring"
 	patches: [{
 		target: {

@@ -1,0 +1,6 @@
+[submodule "cue.mod/pkg/github.com/kubernetes-monitoring/kubernetes-mixin"]
+	path = cue.mod/pkg/github.com/kubernetes-monitoring/kubernetes-mixin
+	url = git@github.com:kubernetes-monitoring/kubernetes-mixin.git
+[submodule "cue.mod/pkg/github.com/prometheus-operator/kube-prometheus"]
+	path = cue.mod/pkg/github.com/prometheus-operator/kube-prometheus
+	url = git@github.com:prometheus-operator/kube-prometheus.git

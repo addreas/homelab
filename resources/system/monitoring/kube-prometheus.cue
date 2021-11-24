@@ -1,114 +1,60 @@
 package kube
 
-import "encoding/yaml"
+import (
+	monitoring_v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
+	"github.com/prometheus-operator/kube-prometheus/manifests"
+)
 
-k: GitRepository: "kube-prometheus": spec: {
-	interval: "1h"
-	ref: branch: "main"
-	url: "https://github.com/prometheus-operator/kube-prometheus"
-	ignore: """
-		/*
-		!/manifests/setup/*monitor*
-		!/manifests/setup/*probe*
-		!/manifests/setup/*rule*
-		!/manifests/kube*
-		!/manifests/node*
-		!/manifests/prometheus-adapter*
-		!/manifests/grafana-dashboardDefinitions.yaml
-		"""
+k: VMRule: "kube-prometheus-rules": {
+	metadata: labels: "app.kubernetes.io/name": "kube-prometheus"
+	spec: manifests.PrometheusRule["kube-prometheus-rules"].spec
 }
 
-k: Kustomization: "kube-prometheus-setup": spec: {
-	interval: "30m"
-	path:     "./manifests/setup"
-	prune:    true
-	sourceRef: {
-		kind: "GitRepository"
-		name: "kube-prometheus"
-	}
+let endpointMapping = {
+	"metricRelabelings": "metricRelabelConfigs"
+	"relabelings":       "relabelConfigs"
+	"proxyUrl":          "proxyURL"
 }
 
-k: Kustomization: "kube-prometheus": spec: {
-	dependsOn: [{
-		name: "kube-prometheus-setup"
-	}]
-	healthChecks: [{
-		kind:      "DaemonSet"
-		name:      "node-exporter"
-		namespace: "monitoring"
-	}, {
-		kind:      "Deployment"
-		name:      "kube-state-metrics"
-		namespace: "monitoring"
-	}, {
-		kind:      "Deployment"
-		name:      "prometheus-adapter"
-		namespace: "monitoring"
-	}]
-	interval: "30m"
-	path:     "./manifests"
-	patches: [{
-		target: {
-			group:   "apps"
-			version: "v1"
-			kind:    "Deployment"
-			name:    "prometheus-adapter"
+let util = {
+	S: monitoring_v1.#ServiceMonitor
+
+	spec: {
+		for key, value in S.spec if key != "endpoints" {
+			"\(key)": _ | *value
 		}
-		patch: yaml.Marshal({
-			apiVersion: "apps/v1"
-			kind:       "Deployment"
-			metadata: name: "prometheus-adapter"
-			spec: template: spec: containers: [{
-				name: "prometheus-adapter"
-				args: [
-					"--cert-dir=/var/run/serving-cert",
-					"--config=/etc/adapter/config.yaml",
-					"--logtostderr=true",
-					"--metrics-relist-interval=1m",
-					"--prometheus-url=http://vmsingle-main.monitoring.svc.cluster.local:8429/",
-					"--secure-port=6443",
-				]
-			}]
-		})
-	}]
-	prune: true
-	sourceRef: {
-		kind: "GitRepository"
-		name: "kube-prometheus"
+		endpoints: [ for endpoint in S.spec.endpoints {
+			for key, value in endpoint {
+				"\(*endpointMapping[key] | key)": _ | *value
+			}
+		}]
 	}
 }
 
-let dashboards = [
-	"alertmanager-overview",
-	"apiserver",
-	"cluster-total",
-	"controller-manager",
-	"k8s-resources-cluster",
-	"k8s-resources-namespace",
-	"k8s-resources-node",
-	"k8s-resources-pod",
-	"k8s-resources-workload",
-	"k8s-resources-workloads-namespace",
-	"kubelet",
-	"namespace-by-pod",
-	"namespace-by-workload",
-	"node-cluster-rsrc-use",
-	"node-rsrc-use",
-	"nodes",
-	"persistentvolumesusage",
-	"pod-total",
-	"prometheus",
-	"prometheus-remote-write",
-	"proxy",
-	"scheduler",
-	"workload-total",
-]
+k: VMServiceScrape: "kube-apiserver": {
+	metadata: labels: "app.kubernetes.io/name": "apiserver"
+	spec: (util & {S: manifests.ServiceMonitor["kube-apiserver"]}).spec
+}
 
-k: GrafanaDashboard: {
-	for dashboard in dashboards {
-		"grafana-dashboard-\(dashboard)": spec: configMapRef: {
-			name: "grafana-dashboard-\(dashboard)"
-			key:  "\(dashboard).json"
-		}
-	}
+k: VMServiceScrape: "coredns": {
+	metadata: labels: "app.kubernetes.io/name": "coredns"
+	spec: (util & {S: manifests.ServiceMonitor["coredns"]}).spec
+}
+
+k: VMNodeScrape: "kubelet": {
+	metadata: labels: "app.kubernetes.io/name": "kubelet"
+	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[0]
+	spec: port: "10250"
+}
+
+k: VMNodeScrape: "cadvisor": {
+	metadata: labels: "app.kubernetes.io/name": "cadvisor"
+	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[1]
+	spec: port: "10250"
+}
+
+k: VMNodeScrape: "kubelet-probes": {
+	metadata: labels: "app.kubernetes.io/name": "kubelet-probes"
+	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[2]
+	spec: port: "10250"
 }

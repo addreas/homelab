@@ -148,14 +148,9 @@ k: GitRepository: "victoriametrics-operator": spec: {
 }
 
 k: Kustomization: "victoriametrics-operator": spec: {
-	interval:        "1h"
 	path:            "./config/default"
 	targetNamespace: "monitoring"
 	prune:           true
-	sourceRef: {
-		kind: "GitRepository"
-		name: "victoriametrics-operator"
-	}
 	images: [{
 		name:   "victoriametrics/operator"
 		newTag: "master"
