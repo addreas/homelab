@@ -13,7 +13,7 @@ k: Deployment: "hass-zwavejs": {
 			spec: {
 				containers: [{
 					name:  "zwavejs"
-					image: "zwavejs/zwavejs2mqtt:5.12.0"
+					image: "zwavejs/zwavejs2mqtt:6.0.1"
 					ports: [{containerPort: 3000}, {containerPort: 8091}]
 					env: [{
 						name: "NETWORK_KEY"
