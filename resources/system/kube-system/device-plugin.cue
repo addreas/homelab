@@ -60,7 +60,7 @@ k: DaemonSet: "hostdevice-plugin-daemonset": {
 				// Mark this pod as a critical add-on; when enabled, the critical add-on scheduler
 				// reserves resources for critical add-on pods so that they can be rescheduled after
 				// a failure.  This annotation works in tandem with the toleration below.
-				priorityClassName: "critical-pod"
+				priorityClassName: "system-node-critical"
 				tolerations: [{
 					// Allow this pod to be rescheduled while the node is in "critical add-ons only" mode.
 					// This, along with the annotation above marks this pod as a critical add-on.
