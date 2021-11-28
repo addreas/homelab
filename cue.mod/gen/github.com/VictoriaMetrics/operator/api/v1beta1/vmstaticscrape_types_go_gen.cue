@@ -84,7 +84,8 @@ import (
 	// needs to be in the same namespace as the service scrape and accessible by
 	// the victoria-metrics operator.
 	// +optional
-	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+	// +nullable
+	bearerTokenSecret?: null | v1.#SecretKeySelector @go(BearerTokenSecret,*v1.SecretKeySelector)
 
 	// BasicAuth allow an endpoint to authenticate over basic authentication
 	// More info: https://prometheus.io/docs/operating/configuration/#endpoints

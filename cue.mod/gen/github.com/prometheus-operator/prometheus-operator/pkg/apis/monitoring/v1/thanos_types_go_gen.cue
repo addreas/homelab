@@ -189,12 +189,12 @@ import (
 	// TracingConfig configures tracing in Thanos. This is an experimental feature, it may change in any upcoming release in a breaking way.
 	tracingConfig?: null | v1.#SecretKeySelector @go(TracingConfig,*v1.SecretKeySelector)
 
-	// Labels configure the external label pairs to ThanosRuler. If not provided, default replica label
-	// `thanos_ruler_replica` will be added as a label and be dropped in alerts.
+	// Labels configure the external label pairs to ThanosRuler. A default replica label
+	// `thanos_ruler_replica` will be always added  as a label with the value of the pod's name and it will be dropped in the alerts.
 	labels?: {[string]: string} @go(Labels,map[string]string)
 
 	// AlertDropLabels configure the label names which should be dropped in ThanosRuler alerts.
-	// If `labels` field is not provided, `thanos_ruler_replica` will be dropped in alerts by default.
+	// The replica label `thanos_ruler_replica` will always be dropped in alerts.
 	alertDropLabels?: [...string] @go(AlertDropLabels,[]string)
 
 	// The external URL the Thanos Ruler instances will be available under. This is
@@ -222,6 +222,16 @@ import (
 	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
 	// +optional
 	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
+
+	// AlertRelabelConfigs configures alert relabeling in ThanosRuler.
+	// Alert relabel configurations must have the form as specified in the official Prometheus documentation:
+	// https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs
+	// Alternative to AlertRelabelConfigFile, and lower order priority.
+	alertRelabelConfigs?: null | v1.#SecretKeySelector @go(AlertRelabelConfigs,*v1.SecretKeySelector)
+
+	// AlertRelabelConfigFile specifies the path of the alert relabeling configuration file.
+	// When used alongside with AlertRelabelConfigs, alertRelabelConfigFile takes precedence.
+	alertRelabelConfigFile?: null | string @go(AlertRelabelConfigFile,*string)
 }
 
 // ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only. Not

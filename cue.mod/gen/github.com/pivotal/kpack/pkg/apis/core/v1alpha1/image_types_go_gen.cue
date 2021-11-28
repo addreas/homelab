@@ -4,19 +4,6 @@
 
 package v1alpha1
 
-import corev1 "k8s.io/api/core/v1"
-
-// +k8s:openapi-gen=true
-// +k8s:deepcopy-gen=true
-#ImageBuild: {
-	// +listType
-	bindings?: #Bindings @go(Bindings)
-
-	// +listType
-	env?: [...corev1.#EnvVar] @go(Env,[]corev1.EnvVar)
-	resources?: corev1.#ResourceRequirements @go(Resources)
-}
-
 #ImageTaggingStrategy: string // #enumImageTaggingStrategy
 
 #enumImageTaggingStrategy:

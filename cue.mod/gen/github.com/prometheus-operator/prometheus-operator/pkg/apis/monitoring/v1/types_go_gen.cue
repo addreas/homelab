@@ -531,7 +531,8 @@ import (
 }
 
 // StorageSpec defines the configured storage for a group Prometheus servers.
-// If neither `emptyDir` nor `volumeClaimTemplate` is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.
+// If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.
+// If multiple storage options are specified, priority will be given as follows: EmptyDir, Ephemeral, and lastly VolumeClaimTemplate.
 // +k8s:openapi-gen=true
 #StorageSpec: {
 	// Deprecated: subPath usage will be disabled by default in a future release, this option will become unnecessary.
@@ -541,6 +542,11 @@ import (
 	// EmptyDirVolumeSource to be used by the Prometheus StatefulSets. If specified, used in place of any volumeClaimTemplate. More
 	// info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
 	emptyDir?: null | v1.#EmptyDirVolumeSource @go(EmptyDir,*v1.EmptyDirVolumeSource)
+
+	// EphemeralVolumeSource to be used by the Prometheus StatefulSets.
+	// This is a beta field in k8s 1.21, for lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate.
+	// More info: https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes
+	ephemeral?: null | v1.#EphemeralVolumeSource @go(Ephemeral,*v1.EphemeralVolumeSource)
 
 	// A PVC spec to be used by the Prometheus StatefulSets.
 	volumeClaimTemplate?: #EmbeddedPersistentVolumeClaim @go(VolumeClaimTemplate)
@@ -772,6 +778,9 @@ import (
 	// Authorization section for remote write
 	authorization?: null | #Authorization @go(Authorization,*Authorization)
 
+	// Sigv4 allows to configures AWS's Signature Verification 4
+	sigv4?: null | #Sigv4 @go(Sigv4,*Sigv4)
+
 	// TLS Config to use for remote write.
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 
@@ -812,6 +821,26 @@ import (
 
 	// MaxBackoff is the maximum retry delay.
 	maxBackoff?: string @go(MaxBackoff)
+}
+
+// Sigv4 optionally configures AWS's Signature Verification 4 signing process to
+// sign requests. Cannot be set at the same time as basic_auth or authorization.
+// +k8s:openapi-gen=true
+#Sigv4: {
+	// Region is the AWS region. If blank, the region from the default credentials chain used.
+	region?: string @go(Region)
+
+	// AccessKey is the AWS API key. If blank, the environment variable `AWS_ACCESS_KEY_ID` is used.
+	accessKey?: null | v1.#SecretKeySelector @go(AccessKey,*v1.SecretKeySelector)
+
+	// SecretKey is the AWS API secret. If blank, the environment variable `AWS_SECRET_ACCESS_KEY` is used.
+	secretKey?: null | v1.#SecretKeySelector @go(SecretKey,*v1.SecretKeySelector)
+
+	// Profile is the named AWS profile used to authenticate.
+	profile?: string @go(Profile)
+
+	// RoleArn is the named AWS profile used to authenticate.
+	roleArn?: string @go(RoleArn)
 }
 
 // RemoteReadSpec defines the remote_read configuration for prometheus.

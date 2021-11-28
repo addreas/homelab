@@ -23,16 +23,40 @@ import (
 #ImageSpec: {
 	tag:                       string                             @go(Tag)
 	builder?:                  corev1.#ObjectReference            @go(Builder)
-	serviceAccount?:           string                             @go(ServiceAccount)
+	serviceAccountName?:       string                             @go(ServiceAccountName)
 	source:                    corev1alpha1.#SourceConfig         @go(Source)
 	cache?:                    null | #ImageCacheConfig           @go(Cache,*ImageCacheConfig)
 	failedBuildHistoryLimit?:  null | int64                       @go(FailedBuildHistoryLimit,*int64)
 	successBuildHistoryLimit?: null | int64                       @go(SuccessBuildHistoryLimit,*int64)
 	imageTaggingStrategy?:     corev1alpha1.#ImageTaggingStrategy @go(ImageTaggingStrategy)
 	projectDescriptorPath?:    string                             @go(ProjectDescriptorPath)
-	build?:                    null | corev1alpha1.#ImageBuild    @go(Build,*corev1alpha1.ImageBuild)
+	build?:                    null | #ImageBuild                 @go(Build,*ImageBuild)
 	notary?:                   null | corev1alpha1.#NotaryConfig  @go(Notary,*corev1alpha1.NotaryConfig)
+	cosign?:                   null | #CosignConfig               @go(Cosign,*CosignConfig)
 	defaultProcess?:           string                             @go(DefaultProcess)
+
+	// +listType
+	additionalTags?: [...string] @go(AdditionalTags,[]string)
+}
+
+// +k8s:openapi-gen=true
+#ImageBuild: {
+	// +listType
+	services?: #Services @go(Services)
+
+	// +listType
+	cnbBindings?: corev1alpha1.#CNBBindings @go(CNBBindings)
+
+	// +listType
+	env?: [...corev1.#EnvVar] @go(Env,[]corev1.EnvVar)
+	resources?: corev1.#ResourceRequirements @go(Resources)
+
+	// +listType
+	tolerations?: [...corev1.#Toleration] @go(Tolerations,[]corev1.Toleration)
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+	affinity?:         null | corev1.#Affinity @go(Affinity,*corev1.Affinity)
+	runtimeClassName?: null | string           @go(RuntimeClassName,*string)
+	schedulerName?:    string                  @go(SchedulerName)
 }
 
 // +k8s:openapi-gen=true

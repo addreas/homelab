@@ -7,6 +7,7 @@ package v1beta1
 import (
 	"github.com/fluxcd/pkg/apis/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/fluxcd/pkg/apis/acl"
 )
 
 // HelmRepositoryKind is the string representation of a HelmRepository.
@@ -52,6 +53,10 @@ import (
 	// This flag tells the controller to suspend the reconciliation of this source.
 	// +optional
 	suspend?: bool @go(Suspend)
+
+	// AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+	// +optional
+	accessFrom?: null | acl.#AccessFrom @go(AccessFrom,*acl.AccessFrom)
 }
 
 // HelmRepositoryStatus defines the observed state of the HelmRepository.

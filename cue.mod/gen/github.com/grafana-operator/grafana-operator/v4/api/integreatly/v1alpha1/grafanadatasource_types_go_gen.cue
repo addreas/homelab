@@ -54,7 +54,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	editable?:          bool                             @go(Editable)
 }
 
-// The most common json options
+// GrafanaDataSourceJsonData contains the most common json options
 // See https://grafana.com/docs/administration/provisioning/#datasources
 #GrafanaDataSourceJsonData: {
 	oauthPassThru?:           bool   @go(OauthPassThru)
@@ -139,6 +139,20 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Fields for tracing data sources
 	tracesToLogs?: #GrafanaDataSourceJsonTracesToLogs @go(TracesToLogs)
+
+	// Fields for Github data sources
+	githubUrl?: string @go(GithubUrl)
+
+	// Fields for Alertmanager data sources
+	implementation?: string @go(Implementation)
+
+	// Fields for AWS Prometheus data sources
+	sigV4Auth?:          bool   @go(SigV4Auth)
+	sigV4AuthType?:      string @go(SigV4AuthType)
+	sigV4ExternalId?:    string @go(SigV4ExternalId)
+	sigV4AssumeRoleArn?: string @go(SigV4AssumeRoleArn)
+	sigV4Region?:        string @go(SigV4Region)
+	sigV4Profile?:       string @go(SigV4Profile)
 }
 
 #GrafanaDataSourceJsonDerivedFields: {
@@ -155,7 +169,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	tags?: [...string] @go(Tags,[]string)
 }
 
-// The most common secure json options
+// GrafanaDataSourceSecureJsonData contains the most common secure json options
 // See https://grafana.com/docs/administration/provisioning/#datasources
 #GrafanaDataSourceSecureJsonData: {
 	tlsCACert?:         string @go(TlsCaCert)
@@ -188,4 +202,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Fields for InfluxDB data sources
 	token?: string @go(Token)
+
+	// Fields for Github data sources
+	accessToken?: string @go(AccessToken)
+
+	// Fields for AWS data sources
+	sigV4AccessKey?: string @go(SigV4AccessKey)
+	sigV4SecretKey?: string @go(SigV4SecretKey)
 }

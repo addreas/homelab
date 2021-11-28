@@ -60,6 +60,7 @@ _#stdFracSecond9:           35
 _#stdNeedDate:              256
 _#stdNeedClock:             512
 _#stdArgShift:              16
+_#stdSeparatorShift:        28
 _#stdMask:                  65535
 
 _#lowerhex:  "0123456789abcdef"

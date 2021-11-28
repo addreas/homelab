@@ -62,6 +62,14 @@ import (
 	// it also may contain any url encoded params.
 	// +optional
 	target_path_suffix?: string @go(TargetPathSuffix)
+
+	// Headers represent additional http headers, that vmauth uses
+	// in form of ["header_key: header_value"]
+	// multiple values for header key:
+	// ["header_key: value1,value2"]
+	// it's available since 1.68.0 version of vmauth
+	// +optional
+	headers?: [...string] @go(Headers,[]string)
 }
 
 // CRDRef describe CRD target reference.

@@ -56,7 +56,7 @@ import (
 	libraryLabelSelector?: null | metav1.#LabelSelector @go(LibraryLabelSelector,*metav1.LabelSelector)
 }
 
-// Grafana API client settings
+// GrafanaClient contains the Grafana API client settings
 #GrafanaClient: {
 	// +nullable
 	timeout?: null | int @go(TimeoutSeconds,*int)
@@ -120,7 +120,7 @@ import (
 }
 
 // GrafanaHttpProxy provides a means to configure the Grafana deployment
-// to use a HTTP(S) proxy when making requests and resolving plugins.
+// to use an HTTP(S) proxy when making requests and resolving plugins.
 #GrafanaHttpProxy: {
 	enabled: bool   @go(Enabled)
 	url?:    string @go(URL)
@@ -526,7 +526,8 @@ import (
 
 #GrafanaConfigDashboards: {
 	// +nullable
-	versions_to_keep?: null | int @go(VersionsToKeep,*int)
+	versions_to_keep?:            null | int @go(VersionsToKeep,*int)
+	default_home_dashboard_path?: string     @go(DefaultHomeDashboardPath)
 }
 
 #GrafanaConfigSmtp: {

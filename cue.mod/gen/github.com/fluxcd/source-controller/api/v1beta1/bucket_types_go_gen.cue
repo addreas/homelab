@@ -7,6 +7,7 @@ package v1beta1
 import (
 	"github.com/fluxcd/pkg/apis/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/fluxcd/pkg/apis/acl"
 )
 
 // BucketKind is the string representation of a Bucket.
@@ -15,7 +16,7 @@ import (
 // BucketSpec defines the desired state of an S3 compatible bucket
 #BucketSpec: {
 	// The S3 compatible storage provider name, default ('generic').
-	// +kubebuilder:validation:Enum=generic;aws
+	// +kubebuilder:validation:Enum=generic;aws;gcp
 	// +kubebuilder:default:=generic
 	// +optional
 	provider?: string @go(Provider)
@@ -59,10 +60,15 @@ import (
 	// This flag tells the controller to suspend the reconciliation of this source.
 	// +optional
 	suspend?: bool @go(Suspend)
+
+	// AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+	// +optional
+	accessFrom?: null | acl.#AccessFrom @go(AccessFrom,*acl.AccessFrom)
 }
 
 #GenericBucketProvider: "generic"
 #AmazonBucketProvider:  "aws"
+#GoogleBucketProvider:  "gcp"
 
 // BucketStatus defines the observed state of a bucket
 #BucketStatus: {

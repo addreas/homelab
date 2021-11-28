@@ -22,7 +22,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	revision: string @go(Revision)
 
-	// Checksum is the SHA1 checksum of the artifact.
+	// Checksum is the SHA256 checksum of the artifact.
 	// +optional
 	checksum: string @go(Checksum)
 

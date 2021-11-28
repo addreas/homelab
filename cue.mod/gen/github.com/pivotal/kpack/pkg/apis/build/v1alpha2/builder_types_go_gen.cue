@@ -33,7 +33,8 @@ import (
 // +k8s:openapi-gen=true
 #NamespacedBuilderSpec: {
 	#BuilderSpec
-	serviceAccount?: string @go(ServiceAccount)
+	serviceAccountName?: string @go(ServiceAccountName)
+	serviceAccount?:     string @go(BackwardsCompatibleServiceAccount)
 }
 
 // +k8s:openapi-gen=true

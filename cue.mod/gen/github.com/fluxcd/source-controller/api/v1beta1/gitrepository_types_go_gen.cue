@@ -7,6 +7,7 @@ package v1beta1
 import (
 	"github.com/fluxcd/pkg/apis/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/fluxcd/pkg/apis/acl"
 )
 
 // GitRepositoryKind is the string representation of a GitRepository.
@@ -76,6 +77,10 @@ import (
 
 	// Extra git repositories to map into the repository
 	include?: [...#GitRepositoryInclude] @go(Include,[]GitRepositoryInclude)
+
+	// AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+	// +optional
+	accessFrom?: null | acl.#AccessFrom @go(AccessFrom,*acl.AccessFrom)
 }
 
 // GitRepositoryInclude defines a source with a from and to path.
@@ -95,7 +100,6 @@ import (
 // GitRepositoryRef defines the Git ref used for pull and checkout operations.
 #GitRepositoryRef: {
 	// The Git branch to checkout, defaults to master.
-	// +kubebuilder:default:=master
 	// +optional
 	branch?: string @go(Branch)
 

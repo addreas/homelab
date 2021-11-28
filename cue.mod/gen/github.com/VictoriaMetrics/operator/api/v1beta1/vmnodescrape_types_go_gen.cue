@@ -68,7 +68,8 @@ import (
 	// needs to be  accessible by
 	// the victoria-metrics operator.
 	// +optional
-	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+	// +nullable
+	bearerTokenSecret?: null | v1.#SecretKeySelector @go(BearerTokenSecret,*v1.SecretKeySelector)
 
 	// HonorLabels chooses the metric's labels on collisions with target labels.
 	// +optional

@@ -26,11 +26,11 @@ import corev1 "k8s.io/api/core/v1"
 
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
-#Bindings: [...#Binding]
+#CNBBindings: [...#CNBBinding]
 
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
-#Binding: {
+#CNBBinding: {
 	name?:        string                              @go(Name)
 	metadataRef?: null | corev1.#LocalObjectReference @go(MetadataRef,*corev1.LocalObjectReference)
 	secretRef?:   null | corev1.#LocalObjectReference @go(SecretRef,*corev1.LocalObjectReference)

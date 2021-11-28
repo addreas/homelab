@@ -6,8 +6,6 @@ package v1alpha1
 
 import corev1 "k8s.io/api/core/v1"
 
-_#imagePullSecretsDirName: "image-pull-secrets-dir"
-
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
 #SourceConfig: {

@@ -6,6 +6,7 @@ package v1beta1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/fluxcd/pkg/apis/acl"
 	"github.com/fluxcd/pkg/apis/meta"
 )
 
@@ -58,6 +59,10 @@ import (
 	// This flag tells the controller to suspend the reconciliation of this source.
 	// +optional
 	suspend?: bool @go(Suspend)
+
+	// AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+	// +optional
+	accessFrom?: null | acl.#AccessFrom @go(AccessFrom,*acl.AccessFrom)
 }
 
 // ReconcileStrategyChartVersion reconciles when the version of the Helm chart is different.

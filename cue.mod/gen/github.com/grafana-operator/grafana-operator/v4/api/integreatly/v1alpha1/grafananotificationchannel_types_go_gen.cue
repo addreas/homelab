@@ -10,8 +10,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // GrafanaNotificationChannelSpec defines the desired state of GrafanaNotificationChannel
 #GrafanaNotificationChannelSpec: {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
 	json: string @go(Json)
 	name: string @go(Name)
 }

@@ -620,6 +620,12 @@ import (
 	// Defines destination for backup
 	destination?: string @go(Destination)
 
+	// DestinationDisableSuffixAdd - disables suffix adding for cluster version backups
+	// each vmstorage backup must have unique backup folder
+	// so operator adds POD_NAME as suffix for backup destination folder.
+	// +optional
+	destinationDisableSuffixAdd?: bool @go(DestinationDisableSuffixAdd)
+
 	// Custom S3 endpoint for use with S3-compatible storages (e.g. MinIO). S3 is used if not set
 	// +optional
 	customS3Endpoint?: null | string @go(CustomS3Endpoint,*string)

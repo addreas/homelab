@@ -19,7 +19,7 @@ import (
 
 // +k8s:openapi-gen=true
 #SourceResolverSpec: {
-	serviceAccount?: string                     @go(ServiceAccount)
+	serviceAccount?: string                     @go(ServiceAccountName)
 	source:          corev1alpha1.#SourceConfig @go(Source)
 }
 

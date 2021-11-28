@@ -8,8 +8,8 @@ import (
 	"github.com/fluxcd/pkg/runtime/dependency"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/fluxcd/pkg/apis/meta"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"github.com/fluxcd/pkg/apis/kustomize"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 #KustomizationKind:         "Kustomization"
@@ -62,6 +62,11 @@ import (
 	// A list of resources to be included in the health assessment.
 	// +optional
 	healthChecks?: [...meta.#NamespacedObjectKindReference] @go(HealthChecks,[]meta.NamespacedObjectKindReference)
+
+	// Strategic merge and JSON patches, defined as inline YAML objects,
+	// capable of targeting objects based on kind, label and annotation selectors.
+	// +optional
+	patches?: [...kustomize.#Patch] @go(Patches,[]kustomize.Patch)
 
 	// Strategic merge patches, defined as inline YAML objects.
 	// +optional
@@ -218,9 +223,11 @@ import (
 // Kustomization is the Schema for the kustomizations API.
 #Kustomization: {
 	metav1.#TypeMeta
-	metadata?: metav1.#ObjectMeta   @go(ObjectMeta)
-	spec?:     #KustomizationSpec   @go(Spec)
-	status?:   #KustomizationStatus @go(Status)
+	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
+	spec?:     #KustomizationSpec @go(Spec)
+
+	// +kubebuilder:default:={"observedGeneration":-1}
+	status?: #KustomizationStatus @go(Status)
 }
 
 // KustomizationList contains a list of kustomizations.

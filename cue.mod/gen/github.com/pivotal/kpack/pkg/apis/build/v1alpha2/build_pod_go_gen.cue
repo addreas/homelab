@@ -4,23 +4,33 @@
 
 package v1alpha2
 
-#SecretTemplateName:           "secret-volume-%s"
-#SecretPathName:               "/var/build-secrets/%s"
-#BuildLabel:                   "kpack.io/build"
-#DOCKERSecretAnnotationPrefix: "kpack.io/docker"
-#GITSecretAnnotationPrefix:    "kpack.io/git"
-_#cacheDirName:                "cache-dir"
-_#layersDirName:               "layers-dir"
-_#platformDir:                 "platform-dir"
-_#homeDir:                     "home-dir"
-_#workspaceDir:                "workspace-dir"
-_#imagePullSecretsDirName:     "image-pull-secrets-dir"
-_#builderPullSecretsDirName:   "builder-pull-secrets-dir"
-_#notaryDirName:               "notary-dir"
-_#reportDirName:               "report-dir"
-_#networkWaitLauncherDir:      "network-wait-launcher-dir"
-_#buildChangesEnvVar:          "BUILD_CHANGES"
-_#platformAPIEnvVar:           "CNB_PLATFORM_API"
+import corev1 "k8s.io/api/core/v1"
+
+#SecretTemplateName:                     "secret-volume-%s"
+#DefaultSecretPathName:                  "/var/build-secrets/%s"
+#CosignDefaultSecretPathName:            "/var/build-secrets/cosign/%s"
+#BuildLabel:                             "kpack.io/build"
+#DOCKERSecretAnnotationPrefix:           "kpack.io/docker"
+#GITSecretAnnotationPrefix:              "kpack.io/git"
+#COSIGNDockerMediaTypesAnnotationPrefix: "kpack.io/cosign.docker-media-types"
+#COSIGNRespositoryAnnotationPrefix:      "kpack.io/cosign.repository"
+#COSIGNSecretDataCosignKey:              "cosign.key"
+#COSIGNSecretDataCosignPassword:         "cosign.password"
+_#k8sOSLabel:                            "kubernetes.io/os"
+_#cacheDirName:                          "cache-dir"
+_#layersDirName:                         "layers-dir"
+_#platformDir:                           "platform-dir"
+_#homeDir:                               "home-dir"
+_#workspaceDir:                          "workspace-dir"
+_#registrySourcePullSecretsDir:          "registry-source-pull-secrets-dir"
+_#notaryDirName:                         "notary-dir"
+_#reportDirName:                         "report-dir"
+_#networkWaitLauncherDir:                "network-wait-launcher-dir"
+_#buildChangesEnvVar:                    "BUILD_CHANGES"
+_#platformAPIEnvVar:                     "CNB_PLATFORM_API"
+_#serviceBindingRootEnvVar:              "SERVICE_BINDING_ROOT"
+
+#ServiceBinding: _
 
 #BuildPodImages: {
 	BuildInitImage:         string
@@ -28,6 +38,13 @@ _#platformAPIEnvVar:           "CNB_PLATFORM_API"
 	RebaseImage:            string
 	BuildInitWindowsImage:  string
 	CompletionWindowsImage: string
+}
+
+#BuildContext: {
+	BuildPodBuilderConfig: #BuildPodBuilderConfig
+	Secrets: [...corev1.#Secret] @go(,[]corev1.Secret)
+	Bindings: [...#ServiceBinding] @go(,[]ServiceBinding)
+	ImagePullSecrets: [...corev1.#LocalObjectReference] @go(,[]corev1.LocalObjectReference)
 }
 
 #BuildPodBuilderConfig: {

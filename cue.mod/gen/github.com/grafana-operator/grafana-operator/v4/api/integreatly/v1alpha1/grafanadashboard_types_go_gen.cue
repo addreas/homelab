@@ -11,9 +11,7 @@ import (
 
 // GrafanaDashboardSpec defines the desired state of GrafanaDashboard
 #GrafanaDashboardSpec: {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-	json:          string                              @go(Json)
+	json?:         string                              @go(Json)
 	jsonnet?:      string                              @go(Jsonnet)
 	plugins?:      #PluginList                         @go(Plugins)
 	url?:          string                              @go(Url)
@@ -33,7 +31,7 @@ import (
 	revision?: null | int @go(Revision,*int)
 }
 
-// Used to keep a dashboard reference without having access to the dashboard
+// GrafanaDashboardRef is used to keep a dashboard reference without having access to the dashboard
 // struct itself
 #GrafanaDashboardRef: {
 	name:       string       @go(Name)
@@ -47,10 +45,10 @@ import (
 #GrafanaDashboardStatus: {
 }
 
+// GrafanaDashboard is the Schema for the grafanadashboards API
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-// GrafanaDashboard is the Schema for the grafanadashboards API
 #GrafanaDashboard: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta      @go(ObjectMeta)
@@ -58,8 +56,8 @@ import (
 	status?:   #GrafanaDashboardStatus @go(Status)
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // GrafanaDashboardList contains a list of GrafanaDashboard
+//+k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 #GrafanaDashboardList: {
 	metav1.#TypeMeta

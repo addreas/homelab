@@ -469,18 +469,38 @@ import (
 	// if both this and ClientID are left unset MSI will be used
 	// +optional
 	clientSecretSecretRef?: null | cmmeta.#SecretKeySelector @go(ClientSecret,*cmmeta.SecretKeySelector)
-	subscriptionID:         string                           @go(SubscriptionID)
+
+	// ID of the Azure subscription
+	subscriptionID: string @go(SubscriptionID)
 
 	// when specifying ClientID and ClientSecret then this field is also needed
 	// +optional
-	tenantID?:         string @go(TenantID)
+	tenantID?: string @go(TenantID)
+
+	// resource group the DNS zone is located in
 	resourceGroupName: string @go(ResourceGroupName)
 
+	// name of the DNS zone that should be used
 	// +optional
 	hostedZoneName?: string @go(HostedZoneName)
 
+	// name of the Azure environment (default AzurePublicCloud)
 	// +optional
 	environment?: #AzureDNSEnvironment @go(Environment)
+
+	// managed identity configuration, can not be used at the same time as clientID, clientSecretSecretRef or tenantID
+	// +optional
+	managedIdentity?: null | #AzureManagedIdentity @go(ManagedIdentity,*AzureManagedIdentity)
+}
+
+#AzureManagedIdentity: {
+	// client ID of the managed identity, can not be used at the same time as resourceID
+	// +optional
+	clientID?: string @go(ClientID)
+
+	// resource ID of the managed identity, can not be used at the same time as clientID
+	// +optional
+	resourceID?: string @go(ResourceID)
 }
 
 // +kubebuilder:validation:Enum=AzurePublicCloud;AzureChinaCloud;AzureGermanCloud;AzureUSGovernmentCloud

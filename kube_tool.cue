@@ -51,22 +51,8 @@ command: seal: {
 	}
 }
 
-command: yamls: {
-	let outdir = "yamls"
-	task: {
-		mkdirs: exec.Run & {
-			cmd:    ["mkdir", "-p"] + [ for r in resources {"\(outdir)/\(*(r.metadata.namespace+"/") | "")\(r.kind)/"}]
-			stdout: string
-		}
-		for r in resources {
-			let name = "\(outdir)/\(*(r.metadata.namespace+"/") | "")\(r.kind)/\(r.metadata.name).yaml"
-			"write \(name)": file.Create & {
-				filename: name + mkdirs.stdout
-				contents: yaml.Marshal(r)
-			}
-			"print \(name)": cli.Print & {
-				text: name + mkdirs.stdout
-			}
-		}
+command: kubeImport: {
+	task: import: exec.Run & {
+		cmd: "cue import -p kube -l '\"k\"' -l 'kind' -l metadata.name -f ./**/*.yaml"
 	}
 }

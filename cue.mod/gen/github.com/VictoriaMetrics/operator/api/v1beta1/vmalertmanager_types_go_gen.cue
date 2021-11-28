@@ -244,13 +244,18 @@ import (
 	#EmbeddedProbes
 
 	// ConfigSelector defines selector for VMAlertmanagerConfig, result config will be merged with with Raw or Secret config.
-	// If nil, VMAlertmanagerConfig wont be used.
-	// If empty - {}, everything will be selected based on namespace selector.
+	// Works in combination with NamespaceSelector.
+	// If both nil - match everything.
+	// NamespaceSelector nil - only objects at VMAlertmanager namespace.
+	// Selector nil - only objects at NamespaceSelector namespaces.
 	// +optional
 	configSelector?: null | metav1.#LabelSelector @go(ConfigSelector,*metav1.LabelSelector)
 
 	//  ConfigNamespaceSelector defines namespace selector for VMAlertmanagerConfig.
-	// If nil, own namespace will be used.
+	// Works in combination with Selector.
+	// If both nil - match everything.
+	// NamespaceSelector nil - only objects at VMAlertmanager namespace.
+	// Selector nil - only objects at NamespaceSelector namespaces.
 	// +optional
 	configNamespaceSelector?: null | metav1.#LabelSelector @go(ConfigNamespaceSelector,*metav1.LabelSelector)
 

@@ -145,7 +145,8 @@ import (
 	// needs to be in the same namespace as the service scrape and accessible by
 	// the victoria-metrics operator.
 	// +optional
-	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+	// +nullable
+	bearerTokenSecret?: null | v1.#SecretKeySelector @go(BearerTokenSecret,*v1.SecretKeySelector)
 
 	// TLSConfig configuration to use when scraping the endpoint
 	// +optional

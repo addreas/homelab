@@ -145,11 +145,18 @@ import (
 	port?: string @go(Port)
 
 	// UserSelector defines VMUser to be selected for config file generation.
+	// Works in combination with NamespaceSelector.
+	// If both nil - match everything.
+	// NamespaceSelector nil - only objects at VMAuth namespace.
+	// Selector nil - only objects at NamespaceSelector namespaces.
 	// +optional
 	userSelector?: null | metav1.#LabelSelector @go(UserSelector,*metav1.LabelSelector)
 
-	// UserNamespaceSelector Namespaces to be selected for  VMAuth discovery. If nil, only
-	// check own namespace.
+	// UserNamespaceSelector Namespaces to be selected for  VMAuth discovery.
+	// Works in combination with Selector.
+	// If both nil - match everything.
+	// NamespaceSelector nil - only objects at VMAuth namespace.
+	// Selector nil - only objects at NamespaceSelector namespaces.
 	// +optional
 	userNamespaceSelector?: null | metav1.#LabelSelector @go(UserNamespaceSelector,*metav1.LabelSelector)
 

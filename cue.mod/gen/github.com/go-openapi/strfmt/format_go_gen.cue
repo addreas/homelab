@@ -4,6 +4,7 @@
 
 package strfmt
 
+
 // Format represents a string format.
 //
 // All implementations of Format provide a string representation and text
@@ -12,3 +13,8 @@ package strfmt
 
 // Registry is a registry of string formats, with a validation method.
 #Registry: _
+
+_#knownFormat: {
+	Name:     string
+	OrigName: string
+}

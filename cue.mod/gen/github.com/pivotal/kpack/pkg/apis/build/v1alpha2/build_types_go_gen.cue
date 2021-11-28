@@ -22,13 +22,16 @@ import (
 #BuildSpec: {
 	// +listType
 	tags?: [...string] @go(Tags,[]string)
-	builder?:        corev1alpha1.#BuildBuilderSpec @go(Builder)
-	serviceAccount?: string                         @go(ServiceAccount)
-	source:          corev1alpha1.#SourceConfig     @go(Source)
-	cache?:          null | #BuildCacheConfig       @go(Cache,*BuildCacheConfig)
+	builder?:            corev1alpha1.#BuildBuilderSpec @go(Builder)
+	serviceAccountName?: string                         @go(ServiceAccountName)
+	source:              corev1alpha1.#SourceConfig     @go(Source)
+	cache?:              null | #BuildCacheConfig       @go(Cache,*BuildCacheConfig)
 
 	// +listType
-	bindings?: corev1alpha1.#Bindings @go(Bindings)
+	services?: #Services @go(Services)
+
+	// +listType
+	cnbBindings?: corev1alpha1.#CNBBindings @go(CNBBindings)
 
 	// +listType
 	env?: [...corev1.#EnvVar] @go(Env,[]corev1.EnvVar)
@@ -36,7 +39,15 @@ import (
 	resources?:             corev1.#ResourceRequirements      @go(Resources)
 	lastBuild?:             null | #LastBuild                 @go(LastBuild,*LastBuild)
 	notary?:                null | corev1alpha1.#NotaryConfig @go(Notary,*corev1alpha1.NotaryConfig)
+	cosign?:                null | #CosignConfig              @go(Cosign,*CosignConfig)
 	defaultProcess?:        string                            @go(DefaultProcess)
+
+	// +listType
+	tolerations?: [...corev1.#Toleration] @go(Tolerations,[]corev1.Toleration)
+	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+	affinity?:         null | corev1.#Affinity @go(Affinity,*corev1.Affinity)
+	runtimeClassName?: null | string           @go(RuntimeClassName,*string)
+	schedulerName?:    string                  @go(SchedulerName)
 }
 
 // +k8s:openapi-gen=true
@@ -51,14 +62,8 @@ import (
 }
 
 // +k8s:openapi-gen=true
-#Bindings: [...#Binding]
-
-// +k8s:openapi-gen=true
-#Binding: {
-	name?:        string                              @go(Name)
-	metadataRef?: null | corev1.#LocalObjectReference @go(MetadataRef,*corev1.LocalObjectReference)
-	secretRef?:   null | corev1.#LocalObjectReference @go(SecretRef,*corev1.LocalObjectReference)
-}
+// +k8s:deepcopy-gen=true
+#Services: [...corev1.#ObjectReference]
 
 // +k8s:openapi-gen=true
 #LastBuild: {
