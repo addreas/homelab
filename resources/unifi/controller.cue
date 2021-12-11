@@ -24,11 +24,11 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:version-6.4.54"
+					image: "ghcr.io/linuxserver/unifi-controller:version-6.5.54"
 					name:  "controller"
 					command: ["sh", "-c"]
 					args: ["""
-						java -Xmx1024M -jar /usr/lib/unifi/lib/ace.jar start &
+						java -Xmx1024M -Dlog4j2.formatMsgNoLookups=true -jar /usr/lib/unifi/lib/ace.jar start &
 						exec tail -f --retry --pid=$! /usr/lib/unifi/logs/server.log
 						"""]
 					ports: [{
