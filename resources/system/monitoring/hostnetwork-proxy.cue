@@ -1,51 +1,50 @@
 package kube
 
+let services = {
+    kubelet: {
+        from: 10250
+        to: 11250
+    }
+    "kube-scheduler": {
+        from: 10259
+        to: 11259
+    }
+    "kube-controller-manager": {
+        from: 10257
+        to: 11257
+    }
+}
+
 k: DaemonSet: "hostnetwork-proxy": {
 	metadata: namespace: "kube-system"
 	spec: template: spec: {
 		hostNetwork: true
-		containers: [{
-			name:  "kube-scheduler"
+        containers: [ for n, p in services {
+			name:  n
 			image: "alpine/socat"
-			args: ["tcp-listen:11259,fork,reuseaddr", "tcp-connect:127.0.0.1:10259"]
-		}, {
-			name:  "kube-controller-manager"
-			image: "alpine/socat"
-			args: ["tcp-listen:11257,fork,reuseaddr", "tcp-connect:127.0.0.1:10257"]
-		}]
+			args: ["tcp-listen:\(p.to),fork,reuseaddr", "tcp-connect:127.0.0.1:\(p.from)"]
+        }]
 	}
 }
 
-k: Service: "kube-scheduler": {
-	metadata: {
-		labels: {
-			"app.kubernetes.io/name": "kube-scheduler"
-			"k8s-app":                "kube-scheduler"
-		}
-		namespace: "kube-system"
-	}
-	spec: {
-		selector: app: "hostnetwork-proxy"
-		ports: [{
-			name: "https-metrics"
-			port: 11259
-		}]
-	}
-}
+k: Service: {
+    for name, p in services {
+        "\(name)": {
+            metadata: {
+                labels: {
+                    "app.kubernetes.io/name": name
+                    "k8s-app":                name
+                }
+                namespace: "kube-system"
+            }
+            spec: {
+                selector: app: "hostnetwork-proxy"
+                ports: [{
+                    name: "https-metrics"
+                    port: p.to
+                }]
+            }
 
-k: Service: "kube-controller-manager": {
-	metadata: {
-		labels: {
-			"app.kubernetes.io/name": "kube-controller-manager"
-			"k8s-app":                "kube-controller-manager"
-		}
-		namespace: "kube-system"
-	}
-	spec: {
-		selector: app: "hostnetwork-proxy"
-		ports: [{
-			name: "https-metrics"
-			port: 11257
-		}]
-	}
+        }
+    }
 }

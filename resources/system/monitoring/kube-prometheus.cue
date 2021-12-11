@@ -43,20 +43,7 @@ k: VMServiceScrape: "coredns": {
 	spec: (util & {S: manifests.ServiceMonitor["coredns"]}).spec
 }
 
-k: VMNodeScrape: "kubelet": {
+k: VMServiceScrape: "kubelet": {
 	metadata: labels: "app.kubernetes.io/name": "kubelet"
-	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[0]
-	spec: port: "10250"
-}
-
-k: VMNodeScrape: "cadvisor": {
-	metadata: labels: "app.kubernetes.io/name": "cadvisor"
-	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[1]
-	spec: port: "10250"
-}
-
-k: VMNodeScrape: "kubelet-probes": {
-	metadata: labels: "app.kubernetes.io/name": "kubelet-probes"
-	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec.endpoints[2]
-	spec: port: "10250"
+	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec
 }
