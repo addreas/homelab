@@ -10,7 +10,7 @@ k: StatefulSet: jackett: {
 					image: "ghcr.io/hotio/jackett"
 					command: ["sh", "-c"]
 					args: ["""
-						$APP_DIR/jackett --NoRestart --ListenPublic --NoUpdates --DataFolder="$CONFIG_DIR"
+						exec $APP_DIR/jackett --NoRestart --ListenPublic --NoUpdates --DataFolder="$CONFIG_DIR"
 						"""]
 					ports: [{
 						containerPort: 9117

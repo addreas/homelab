@@ -11,7 +11,8 @@ k: StatefulSet: sonarr: {
 					imagePullPolicy: "Always"
 					command: ["sh", "-c"]
 					args: ["""
-						mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
+						source /etc/cont-init.d/01-cert-sync
+						exec mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
 						"""]
 					ports: [{
 						containerPort: 8989
@@ -22,7 +23,10 @@ k: StatefulSet: sonarr: {
 					}, {
 						mountPath: "/videos"
 						name:      "nfs-videos"
-					}]
+					}, {
+                        mountPath: "/usr/share/.mono"
+                        name: "mono-dir"
+                    }]
 					resources: {
 						limits: {
 							cpu:    "1500m"
@@ -72,7 +76,10 @@ k: StatefulSet: sonarr: {
 				}, {
 					name: "home-nonroot"
 					emptyDir: {}
-				}]
+				}, {
+                    name: "mono-dir"
+                    emptyDir: {}
+                }]
 			}
 		}
 		volumeClaimTemplates: [{

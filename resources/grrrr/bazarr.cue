@@ -10,7 +10,7 @@ k: StatefulSet: bazarr: {
 					image: "ghcr.io/hotio/bazarr"
 					command: ["sh", "-c"]
 					args: ["""
-						python3 $APP_DIR/bin/bazarr.py --no-update --config $CONFIG_DIR
+						exec python3 $APP_DIR/bin/bazarr.py --no-update --config $CONFIG_DIR
 						"""]
 					ports: [{
 						containerPort: 6767

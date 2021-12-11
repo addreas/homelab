@@ -11,7 +11,7 @@ k: StatefulSet: radarr: {
 					imagePullPolicy: "Always"
 					command: ["sh", "-c"]
 					args: ["""
-						$APP_DIR/bin/Radarr --nobrowser --data="$CONFIG_DIR"
+						exec $APP_DIR/bin/Radarr --nobrowser --data="$CONFIG_DIR"
 						"""]
 					ports: [{
 						containerPort: 7878
