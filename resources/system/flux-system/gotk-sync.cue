@@ -17,7 +17,6 @@ k: CueBuild: "homelab": spec: {
 		"./resources/unifi",
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
-		"./resources/system/kpack",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
 		"./resources/system/monitoring",
