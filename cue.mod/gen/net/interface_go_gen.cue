@@ -24,6 +24,14 @@ package net
 	#FlagPointToPoint |
 	#FlagMulticast
 
+#values_Flags: {
+	FlagUp:           #FlagUp
+	FlagBroadcast:    #FlagBroadcast
+	FlagLoopback:     #FlagLoopback
+	FlagPointToPoint: #FlagPointToPoint
+	FlagMulticast:    #FlagMulticast
+}
+
 #FlagUp:           #Flags & 1
 #FlagBroadcast:    #Flags & 2
 #FlagLoopback:     #Flags & 4

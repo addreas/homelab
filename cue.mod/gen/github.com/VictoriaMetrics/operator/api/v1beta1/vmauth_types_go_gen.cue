@@ -7,7 +7,7 @@ package v1beta1
 import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/api/extensions/v1beta1"
+	v12 "k8s.io/api/networking/v1"
 )
 
 // VMAuthSpec defines the desired state of VMAuth
@@ -144,19 +144,25 @@ import (
 	// +optional
 	port?: string @go(Port)
 
+	// SelectAllByDefault changes default behavior for empty CRD selectors, such userSelector.
+	// with selectAllByDefault: true and empty userSelector and userNamespaceSelector
+	// Operator selects all exist users
+	// with selectAllByDefault: false - selects nothing
+	// +optional
+	selectAllByDefault?: bool @go(SelectAllByDefault)
+
 	// UserSelector defines VMUser to be selected for config file generation.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAuth namespace.
-	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	userSelector?: null | metav1.#LabelSelector @go(UserSelector,*metav1.LabelSelector)
 
 	// UserNamespaceSelector Namespaces to be selected for  VMAuth discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAuth namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	userNamespaceSelector?: null | metav1.#LabelSelector @go(UserNamespaceSelector,*metav1.LabelSelector)
 
@@ -206,12 +212,12 @@ import (
 	// ExtraRules - additional rules for ingress,
 	// must be checked for correctness by user.
 	// +optional
-	extraRules?: [...v1beta1.#IngressRule] @go(ExtraRules,[]v1beta1.IngressRule)
+	extraRules?: [...v12.#IngressRule] @go(ExtraRules,[]v12.IngressRule)
 
 	// ExtraTLS - additional TLS configuration for ingress
 	// must be checked for correctness by user.
 	// +optional
-	extraTls?: [...v1beta1.#IngressTLS] @go(ExtraTLS,[]v1beta1.IngressTLS)
+	extraTls?: [...v12.#IngressTLS] @go(ExtraTLS,[]v12.IngressTLS)
 }
 
 // VMAuthStatus defines the observed state of VMAuth

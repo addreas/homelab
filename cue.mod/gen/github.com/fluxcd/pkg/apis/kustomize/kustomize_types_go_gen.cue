@@ -6,8 +6,7 @@ package kustomize
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-// Image contains an image name, a new name, a new tag or digest,
-// which will replace the original name and tag.
+// Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag.
 #Image: {
 	// Name is a tag-less image name.
 	// +required
@@ -27,19 +26,17 @@ import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	digest?: string @go(Digest)
 }
 
-// Selector specifies a set of resources.
-// Any resource that matches intersection of all conditions is included in this set.
+// Selector specifies a set of resources. Any resource that matches intersection of all conditions is included in this
+// set.
 #Selector: {
 	// Group is the API group to select resources from.
-	// Together with Version and Kind it is capable of unambiguously
-	// identifying and/or selecting resources.
+	// Together with Version and Kind it is capable of unambiguously identifying and/or selecting resources.
 	// https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
 	// +optional
 	group?: string @go(Group)
 
 	// Version of the API Group to select resources from.
-	// Together with Group and Kind it is capable of unambiguously
-	// identifying and/or selecting resources.
+	// Together with Group and Kind it is capable of unambiguously identifying and/or selecting resources.
 	// https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/api-group.md
 	// +optional
 	version?: string @go(Version)
@@ -72,47 +69,52 @@ import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	labelSelector?: string @go(LabelSelector)
 }
 
-// Patch contains either a StrategicMerge or a JSON6902 patch, either a file or inline,
-// and the target the patch should be applied to.
+// Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+// be applied to.
 #Patch: {
-	// Patch contains the JSON6902 patch document with an array of
-	// operation objects.
+	// Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
+	// an array of operation objects.
 	// +required
 	patch?: string @go(Patch)
 
-	// Target points to the resources that the patch document should
-	// be applied to.
+	// Target points to the resources that the patch document should be applied to.
 	// +optional
 	target?: #Selector @go(Target)
 }
 
 // JSON6902 is a JSON6902 operation object.
-// https://tools.ietf.org/html/rfc6902#section-4
+// https://datatracker.ietf.org/doc/html/rfc6902#section-4
 #JSON6902: {
+	// Op indicates the operation to perform. Its value MUST be one of "add", "remove", "replace", "move", "copy", or
+	// "test".
+	// https://datatracker.ietf.org/doc/html/rfc6902#section-4
 	// +kubebuilder:validation:Enum=test;remove;add;replace;move;copy
 	// +required
 	op: string @go(Op)
 
+	// Path contains the JSON-pointer value that references a location within the target document where the operation
+	// is performed. The meaning of the value depends on the value of Op.
 	// +required
 	path: string @go(Path)
 
+	// From contains a JSON-pointer value that references a location within the target document where the operation is
+	// performed. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
 	// +optional
 	from?: string @go(From)
 
+	// Value contains a valid JSON structure. The meaning of the value depends on the value of Op, and is NOT taken into
+	// account by all operations.
 	// +optional
 	value?: null | apiextensionsv1.#JSON @go(Value,*apiextensionsv1.JSON)
 }
 
-// JSON6902Patch contains a JSON6902 patch and the target the patch
-// should be applied to.
+// JSON6902Patch contains a JSON6902 patch and the target the patch should be applied to.
 #JSON6902Patch: {
-	// Patch contains the JSON6902 patch document with an array of
-	// operation objects.
+	// Patch contains the JSON6902 patch document with an array of operation objects.
 	// +required
 	patch: [...#JSON6902] @go(Patch,[]JSON6902)
 
-	// Target points to the resources that the patch document should
-	// be applied to.
+	// Target points to the resources that the patch document should be applied to.
 	// +required
 	target: #Selector @go(Target)
 }

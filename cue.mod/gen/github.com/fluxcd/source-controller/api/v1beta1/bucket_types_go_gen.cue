@@ -104,7 +104,9 @@ import (
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 	spec?:     #BucketSpec        @go(Spec)
-	status?:   #BucketStatus      @go(Status)
+
+	// +kubebuilder:default={"observedGeneration":-1}
+	status?: #BucketStatus @go(Status)
 }
 
 // BucketList contains a list of Bucket

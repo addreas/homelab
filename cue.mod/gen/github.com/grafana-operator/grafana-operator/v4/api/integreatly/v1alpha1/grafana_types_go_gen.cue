@@ -37,19 +37,21 @@ import (
 }
 
 #ReadinessProbeSpec: {
-	initialDelaySeconds?: int32 @go(InitialDelaySeconds)
-	timeoutSeconds?:      int32 @go(TimeOutSeconds)
-	periodSeconds?:       int32 @go(PeriodSeconds)
-	successThreshold?:    int32 @go(SuccessThreshold)
-	failureThreshold?:    int32 @go(FailureThreshold)
+	initialDelaySeconds?: null | int32  @go(InitialDelaySeconds,*int32)
+	timeoutSeconds?:      null | int32  @go(TimeOutSeconds,*int32)
+	periodSeconds?:       null | int32  @go(PeriodSeconds,*int32)
+	successThreshold?:    null | int32  @go(SuccessThreshold,*int32)
+	failureThreshold?:    null | int32  @go(FailureThreshold,*int32)
+	scheme?:              v1.#URIScheme @go(Scheme)
 }
 
 #LivenessProbeSpec: {
-	initialDelaySeconds?: int32 @go(InitialDelaySeconds)
-	timeoutSeconds?:      int32 @go(TimeOutSeconds)
-	periodSeconds?:       int32 @go(PeriodSeconds)
-	successThreshold?:    int32 @go(SuccessThreshold)
-	failureThreshold?:    int32 @go(FailureThreshold)
+	initialDelaySeconds?: null | int32  @go(InitialDelaySeconds,*int32)
+	timeoutSeconds?:      null | int32  @go(TimeOutSeconds,*int32)
+	periodSeconds?:       null | int32  @go(PeriodSeconds,*int32)
+	successThreshold?:    null | int32  @go(SuccessThreshold,*int32)
+	failureThreshold?:    null | int32  @go(FailureThreshold,*int32)
+	scheme?:              v1.#URIScheme @go(Scheme)
 }
 
 #JsonnetConfig: {
@@ -178,6 +180,7 @@ import (
 	"external_image_storage.gcs"?:        null | #GrafanaConfigExternalImageStorageGcs       @go(ExternalImageStorageGcs,*GrafanaConfigExternalImageStorageGcs)
 	"external_image_storage.azure_blob"?: null | #GrafanaConfigExternalImageStorageAzureBlob @go(ExternalImageStorageAzureBlob,*GrafanaConfigExternalImageStorageAzureBlob)
 	alerting?:                            null | #GrafanaConfigAlerting                      @go(Alerting,*GrafanaConfigAlerting)
+	unified_alerting?:                    null | #GrafanaConfigUnifiedAlerting               @go(UnifiedAlerting,*GrafanaConfigUnifiedAlerting)
 	panels?:                              null | #GrafanaConfigPanels                        @go(Panels,*GrafanaConfigPanels)
 	plugins?:                             null | #GrafanaConfigPlugins                       @go(Plugins,*GrafanaConfigPlugins)
 	rendering?:                           null | #GrafanaConfigRendering                     @go(Rendering,*GrafanaConfigRendering)
@@ -654,6 +657,15 @@ import (
 
 	// +nullable
 	max_attempts?: null | int @go(MaxAttempts,*int)
+}
+
+#GrafanaConfigUnifiedAlerting: {
+	// +nullable
+	enabled?:            null | bool @go(Enabled,*bool)
+	execute_alerts?:     null | bool @go(ExecuteAlerts,*bool)
+	evaluation_timeout?: string      @go(EvaluationTimeout)
+	max_attempts?:       null | int  @go(MaxAttempts,*int)
+	min_interval?:       string      @go(MinInterval)
 }
 
 #GrafanaConfigPanels: {

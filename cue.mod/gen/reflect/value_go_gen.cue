@@ -58,7 +58,14 @@ _#debugReflectCall: false
 	_#_ |
 	#SelectSend |
 	#SelectRecv |
-		#SelectDefault
+	#SelectDefault
+
+#values_SelectDir: {
+	"_":           _#_
+	SelectSend:    #SelectSend
+	SelectRecv:    #SelectRecv
+	SelectDefault: #SelectDefault
+}
 #SelectSend:    #SelectDir & 1
 #SelectRecv:    #SelectDir & 2
 #SelectDefault: #SelectDir & 3

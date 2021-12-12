@@ -2,7 +2,6 @@
 
 //cue:generate cue get go github.com/fluxcd/pkg/apis/kustomize
 
-// Package kustomize contains a selective set of Kustomize APIs for use by
-// toolkit components.
+// Package kustomize contains a selective set of Kustomize API types for use by GitOps Toolkit components.
 // +kubebuilder:object:generate=true
 package kustomize

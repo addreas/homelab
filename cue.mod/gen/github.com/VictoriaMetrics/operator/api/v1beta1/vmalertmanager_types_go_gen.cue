@@ -243,19 +243,26 @@ import (
 
 	#EmbeddedProbes
 
+	// SelectAllByDefault changes default behavior for empty CRD selectors, such ConfigSelector.
+	// with selectAllScrapes: true and undefined ConfigSelector and ConfigNamespaceSelector
+	// Operator selects all exist alertManagerConfigs
+	// with selectAllScrapes: false - selects nothing
+	// +optional
+	selectAllByDefault?: bool @go(SelectAllByDefault)
+
 	// ConfigSelector defines selector for VMAlertmanagerConfig, result config will be merged with with Raw or Secret config.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAlertmanager namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	configSelector?: null | metav1.#LabelSelector @go(ConfigSelector,*metav1.LabelSelector)
 
 	//  ConfigNamespaceSelector defines namespace selector for VMAlertmanagerConfig.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAlertmanager namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	configNamespaceSelector?: null | metav1.#LabelSelector @go(ConfigNamespaceSelector,*metav1.LabelSelector)
 

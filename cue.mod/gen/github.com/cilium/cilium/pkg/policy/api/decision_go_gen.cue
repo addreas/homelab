@@ -12,6 +12,12 @@ package api
 	#Allowed |
 	#Denied
 
+#values_Decision: {
+	Undecided: #Undecided
+	Allowed:   #Allowed
+	Denied:    #Denied
+}
+
 // Undecided means that we have not come to a decision yet
 #Undecided: #Decision & 0
 

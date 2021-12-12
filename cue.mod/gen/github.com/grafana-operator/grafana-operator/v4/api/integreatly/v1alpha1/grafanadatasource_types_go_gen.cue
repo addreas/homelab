@@ -63,7 +63,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	tlsSkipVerify?:           bool   @go(TlsSkipVerify)
 	graphiteVersion?:         string @go(GraphiteVersion)
 	timeInterval?:            string @go(TimeInterval)
-	esVersion?:               int    @go(EsVersion)
+	esVersion?:               string @go(EsVersion)
 	timeField?:               string @go(TimeField)
 	interval?:                string @go(Interval)
 	logMessageField?:         string @go(LogMessageField)

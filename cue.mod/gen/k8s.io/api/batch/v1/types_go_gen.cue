@@ -54,6 +54,7 @@ import (
 }
 
 // CompletionMode specifies how Pod completions of a Job are tracked.
+// +enum
 #CompletionMode: string // #enumCompletionMode
 
 #enumCompletionMode:
@@ -133,8 +134,6 @@ import (
 	// guarantees (e.g. finalizers) will be honored. If this field is unset,
 	// the Job won't be automatically deleted. If this field is set to zero,
 	// the Job becomes eligible to be deleted immediately after it finishes.
-	// This field is alpha-level and is only honored by servers that enable the
-	// TTLAfterFinished feature.
 	// +optional
 	ttlSecondsAfterFinished?: null | int32 @go(TTLSecondsAfterFinished,*int32) @protobuf(8,varint,opt)
 
@@ -206,7 +205,7 @@ import (
 	// +optional
 	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time) @protobuf(3,bytes,opt)
 
-	// The number of actively running pods.
+	// The number of pending and running pods.
 	// +optional
 	active?: int32 @go(Active) @protobuf(4,varint,opt)
 
@@ -239,12 +238,20 @@ import (
 	// (3) Remove the pod UID from the arrays while increasing the corresponding
 	//     counter.
 	//
-	// This field is alpha-level. The job controller only makes use of this field
-	// when the feature gate PodTrackingWithFinalizers is enabled.
+	// This field is beta-level. The job controller only makes use of this field
+	// when the feature gate JobTrackingWithFinalizers is enabled (enabled
+	// by default).
 	// Old jobs might not be tracked using this field, in which case the field
 	// remains null.
 	// +optional
 	uncountedTerminatedPods?: null | #UncountedTerminatedPods @go(UncountedTerminatedPods,*UncountedTerminatedPods) @protobuf(8,bytes,opt)
+
+	// The number of pods which have a Ready condition.
+	//
+	// This field is alpha-level. The job controller populates the field when
+	// the feature gate JobReadyPods is enabled (disabled by default).
+	// +optional
+	ready?: null | int32 @go(Ready,*int32) @protobuf(9,varint,opt)
 }
 
 // UncountedTerminatedPods holds UIDs of Pods that have terminated but haven't
@@ -261,6 +268,7 @@ import (
 	failed?: [...types.#UID] @go(Failed,[]types.UID) @protobuf(2,bytes,rep,casttype=k8s.io/apimachinery/pkg/types.UID)
 }
 
+// +enum
 #JobConditionType: string // #enumJobConditionType
 
 #enumJobConditionType:
@@ -389,6 +397,7 @@ import (
 // Only one of the following concurrent policies may be specified.
 // If none of the following policies is specified, the default one
 // is AllowConcurrent.
+// +enum
 #ConcurrencyPolicy: string // #enumConcurrencyPolicy
 
 #enumConcurrencyPolicy:

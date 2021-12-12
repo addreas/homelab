@@ -28,3 +28,10 @@ package v1alpha1
 	#NamespaceWideScope |
 	#ClusterWideScope |
 	#DefaultScope
+
+#values_SealingScope: {
+	StrictScope:        #StrictScope
+	NamespaceWideScope: #NamespaceWideScope
+	ClusterWideScope:   #ClusterWideScope
+	DefaultScope:       #DefaultScope
+}

@@ -157,17 +157,24 @@ import (
 	// +optional
 	enforcedNamespaceLabel?: string @go(EnforcedNamespaceLabel)
 
+	// SelectAllByDefault changes default behavior for empty CRD selectors, such RuleSelector.
+	// with selectAllByDefault: true and empty serviceScrapeSelector and RuleNamespaceSelector
+	// Operator selects all exist serviceScrapes
+	// with selectAllByDefault: false - selects nothing
+	// +optional
+	selectAllByDefault?: bool @go(SelectAllByDefault)
+
 	// RuleSelector selector to select which VMRules to mount for loading alerting
 	// rules from.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// NamespaceSelector nil - only objects at VMAlert namespace.
 	// +optional
 	ruleSelector?: null | metav1.#LabelSelector @go(RuleSelector,*metav1.LabelSelector)
 
 	// RuleNamespaceSelector to be selected for VMRules discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// NamespaceSelector nil - only objects at VMAlert namespace.
 	// +optional
 	ruleNamespaceSelector?: null | metav1.#LabelSelector @go(RuleNamespaceSelector,*metav1.LabelSelector)
@@ -184,13 +191,20 @@ import (
 	// If specified both notifier and notifiers, notifier will be added as last element to notifiers.
 	notifiers?: [...#VMAlertNotifierSpec] @go(Notifiers,[]VMAlertNotifierSpec)
 
-	// RemoteWrite Optional URL to remote-write compatible storage where to write timeseriesbased on active alerts. E.g. http://127.0.0.1:8428
+	// RemoteWrite Optional URL to remote-write compatible storage to persist
+	// vmalert state and rule results to.
+	// Rule results will be persisted according to each rule.
+	// Alerts state will be persisted in the form of time series named ALERTS and ALERTS_FOR_STATE
+	// see -remoteWrite.url docs in vmalerts for details.
+	// E.g. http://127.0.0.1:8428
 	// +optional
 	remoteWrite?: null | #VMAlertRemoteWriteSpec @go(RemoteWrite,*VMAlertRemoteWriteSpec)
 
-	// RemoteRead victoria metrics address for loading state
-	// This configuration makes sense only if remoteWrite was configured before and has
-	// been successfully persisted its state.
+	// RemoteRead Optional URL to read vmalert state (persisted via RemoteWrite)
+	// This configuration only makes sense if alerts state has been successfully
+	// persisted (via RemoteWrite) before.
+	// see -remoteRead.url docs in vmalerts for details.
+	// E.g. http://127.0.0.1:8428
 	// +optional
 	remoteRead?: null | #VMAlertRemoteReadSpec @go(RemoteRead,*VMAlertRemoteReadSpec)
 

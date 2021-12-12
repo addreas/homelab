@@ -61,6 +61,36 @@ package reflect
 	#Struct |
 	#UnsafePointer
 
+#values_Kind: {
+	Invalid:       #Invalid
+	Bool:          #Bool
+	Int:           #Int
+	Int8:          #Int8
+	Int16:         #Int16
+	Int32:         #Int32
+	Int64:         #Int64
+	Uint:          #Uint
+	Uint8:         #Uint8
+	Uint16:        #Uint16
+	Uint32:        #Uint32
+	Uint64:        #Uint64
+	Uintptr:       #Uintptr
+	Float32:       #Float32
+	Float64:       #Float64
+	Complex64:     #Complex64
+	Complex128:    #Complex128
+	Array:         #Array
+	Chan:          #Chan
+	Func:          #Func
+	Interface:     #Interface
+	Map:           #Map
+	Ptr:           #Ptr
+	Slice:         #Slice
+	String:        #String
+	Struct:        #Struct
+	UnsafePointer: #UnsafePointer
+}
+
 #Invalid:       #Kind & 0
 #Bool:          #Kind & 1
 #Int:           #Kind & 2
@@ -131,6 +161,12 @@ _#tflagRegularMemory: _#tflag & 8
 	#RecvDir |
 	#SendDir |
 	#BothDir
+
+#values_ChanDir: {
+	RecvDir: #RecvDir
+	SendDir: #SendDir
+	BothDir: #BothDir
+}
 
 #RecvDir: #ChanDir & 1
 #SendDir: #ChanDir & 2

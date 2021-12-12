@@ -163,9 +163,11 @@ import (
 // GitRepository is the Schema for the gitrepositories API
 #GitRepository: {
 	metav1.#TypeMeta
-	metadata?: metav1.#ObjectMeta   @go(ObjectMeta)
-	spec?:     #GitRepositorySpec   @go(Spec)
-	status?:   #GitRepositoryStatus @go(Status)
+	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
+	spec?:     #GitRepositorySpec @go(Spec)
+
+	// +kubebuilder:default={"observedGeneration":-1}
+	status?: #GitRepositoryStatus @go(Status)
 }
 
 // GitRepositoryList contains a list of GitRepository

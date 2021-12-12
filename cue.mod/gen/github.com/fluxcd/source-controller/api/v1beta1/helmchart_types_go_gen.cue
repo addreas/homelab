@@ -131,7 +131,9 @@ import (
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 	spec?:     #HelmChartSpec     @go(Spec)
-	status?:   #HelmChartStatus   @go(Status)
+
+	// +kubebuilder:default={"observedGeneration":-1}
+	status?: #HelmChartStatus @go(Status)
 }
 
 // HelmChartList contains a list of HelmChart

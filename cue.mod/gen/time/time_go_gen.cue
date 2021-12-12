@@ -144,6 +144,21 @@ _#nsecShift:    30
 	#November |
 	#December
 
+#values_Month: {
+	January:   #January
+	February:  #February
+	March:     #March
+	April:     #April
+	May:       #May
+	June:      #June
+	July:      #July
+	August:    #August
+	September: #September
+	October:   #October
+	November:  #November
+	December:  #December
+}
+
 #January:   #Month & 1
 #February:  #Month & 2
 #March:     #Month & 3
@@ -168,6 +183,16 @@ _#nsecShift:    30
 	#Thursday |
 	#Friday |
 	#Saturday
+
+#values_Weekday: {
+	Sunday:    #Sunday
+	Monday:    #Monday
+	Tuesday:   #Tuesday
+	Wednesday: #Wednesday
+	Thursday:  #Thursday
+	Friday:    #Friday
+	Saturday:  #Saturday
+}
 
 #Sunday:    #Weekday & 0
 #Monday:    #Weekday & 1
@@ -208,6 +233,17 @@ _#internalToWall:     int64 & -59453308800
 	#Second |
 	#Minute |
 	#Hour
+
+#values_Duration: {
+	minDuration: _#minDuration
+	maxDuration: _#maxDuration
+	Nanosecond:  #Nanosecond
+	Microsecond: #Microsecond
+	Millisecond: #Millisecond
+	Second:      #Second
+	Minute:      #Minute
+	Hour:        #Hour
+}
 
 _#minDuration: #Duration & -9223372036854775808
 _#maxDuration: #Duration & 9223372036854775807

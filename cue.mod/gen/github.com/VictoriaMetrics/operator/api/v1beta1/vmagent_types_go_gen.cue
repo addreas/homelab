@@ -216,67 +216,74 @@ import (
 	// +optional
 	inlineRelabelConfig?: [...#RelabelConfig] @go(InlineRelabelConfig,[]RelabelConfig)
 
+	// SelectAllByDefault changes default behavior for empty CRD selectors, such ServiceScrapeSelector.
+	// with selectAllScrapes: true and empty serviceScrapeSelector and ServiceScrapeNamespaceSelector
+	// Operator selects all exist serviceScrapes
+	// with selectAllScrapes: false - selects nothing
+	// +optional
+	selectAllByDefault?: bool @go(SelectAllByDefault)
+
 	// ServiceScrapeSelector defines ServiceScrapes to be selected for target discovery.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	serviceScrapeSelector?: null | metav1.#LabelSelector @go(ServiceScrapeSelector,*metav1.LabelSelector)
 
 	// ServiceScrapeNamespaceSelector Namespaces to be selected for VMServiceScrape discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	serviceScrapeNamespaceSelector?: null | metav1.#LabelSelector @go(ServiceScrapeNamespaceSelector,*metav1.LabelSelector)
 
 	// PodScrapeSelector defines PodScrapes to be selected for target discovery.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	podScrapeSelector?: null | metav1.#LabelSelector @go(PodScrapeSelector,*metav1.LabelSelector)
 
 	// PodScrapeNamespaceSelector defines Namespaces to be selected for VMPodScrape discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	podScrapeNamespaceSelector?: null | metav1.#LabelSelector @go(PodScrapeNamespaceSelector,*metav1.LabelSelector)
 
 	// ProbeSelector defines VMProbe to be selected for target probing.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	probeSelector?: null | metav1.#LabelSelector @go(ProbeSelector,*metav1.LabelSelector)
 
 	// ProbeNamespaceSelector defines Namespaces to be selected for VMProbe discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	probeNamespaceSelector?: null | metav1.#LabelSelector @go(ProbeNamespaceSelector,*metav1.LabelSelector)
 
 	// NodeScrapeSelector defines VMNodeScrape to be selected for scraping.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	nodeScrapeSelector?: null | metav1.#LabelSelector @go(NodeScrapeSelector,*metav1.LabelSelector)
 
 	// NodeScrapeNamespaceSelector defines Namespaces to be selected for VMNodeScrape discovery.
 	// Works in combination with Selector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	nodeScrapeNamespaceSelector?: null | metav1.#LabelSelector @go(NodeScrapeNamespaceSelector,*metav1.LabelSelector)
 
@@ -290,9 +297,9 @@ import (
 
 	// StaticScrapeNamespaceSelector defines Namespaces to be selected for VMStaticScrape discovery.
 	// Works in combination with NamespaceSelector.
-	// If both nil - match everything.
 	// NamespaceSelector nil - only objects at VMAgent namespace.
 	// Selector nil - only objects at NamespaceSelector namespaces.
+	// If both nil - behaviour controlled by selectAllByDefault
 	// +optional
 	staticScrapeNamespaceSelector?: null | metav1.#LabelSelector @go(StaticScrapeNamespaceSelector,*metav1.LabelSelector)
 

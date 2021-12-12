@@ -105,6 +105,8 @@ import (
 }
 
 #VMSelect: {
+	// Name is deprecated and will be removed at 0.22.0 release
+	// +deprecated
 	name?: string @go(Name)
 
 	// PodMetadata configures Labels and Annotations which are propagated to the VMSelect pods.
@@ -277,6 +279,8 @@ import (
 }
 
 #VMInsert: {
+	// Name is deprecated and will be removed at 0.22.0 release
+	// +deprecated
 	// +optional
 	name?: string @go(Name)
 
@@ -310,7 +314,7 @@ import (
 	// +kubebuilder:validation:Enum=INFO;WARN;ERROR;FATAL;PANIC
 	logLevel?: string @go(LogLevel)
 
-	// ReplicaCount is the expected size of the VMSelect cluster. The controller will
+	// ReplicaCount is the expected size of the VMInsert cluster. The controller will
 	// eventually make the size of the running cluster equal to the expected
 	// size.
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Number of pods",xDescriptors="urn:alm:descriptor:com.tectonic.ui:podCount,urn:alm:descriptor:io.kubernetes:custom"
@@ -430,6 +434,8 @@ import (
 }
 
 #VMStorage: {
+	// Name is deprecated and will be removed at 0.22.0 release
+	// +deprecated
 	// +optional
 	name?: string @go(Name)
 
@@ -463,7 +469,7 @@ import (
 	// +kubebuilder:validation:Enum=INFO;WARN;ERROR;FATAL;PANIC
 	logLevel?: string @go(LogLevel)
 
-	// ReplicaCount is the expected size of the VMSelect cluster. The controller will
+	// ReplicaCount is the expected size of the VMStorage cluster. The controller will
 	// eventually make the size of the running cluster equal to the expected
 	// size.
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Number of pods",xDescriptors="urn:alm:descriptor:com.tectonic.ui:podCount,urn:alm:descriptor:io.kubernetes:custom"

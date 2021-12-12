@@ -91,9 +91,11 @@ import (
 // HelmRepository is the Schema for the helmrepositories API
 #HelmRepository: {
 	metav1.#TypeMeta
-	metadata?: metav1.#ObjectMeta    @go(ObjectMeta)
-	spec?:     #HelmRepositorySpec   @go(Spec)
-	status?:   #HelmRepositoryStatus @go(Status)
+	metadata?: metav1.#ObjectMeta  @go(ObjectMeta)
+	spec?:     #HelmRepositorySpec @go(Spec)
+
+	// +kubebuilder:default={"observedGeneration":-1}
+	status?: #HelmRepositoryStatus @go(Status)
 }
 
 // HelmRepositoryList contains a list of HelmRepository
