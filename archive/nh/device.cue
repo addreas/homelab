@@ -92,7 +92,6 @@ k: Ingress: "nerves-hub-device": {
 
 k: Image: "nerves-hub-device": spec: {
 	tag:            "ghcr.io/addreas/nerves_hub_device"
-	serviceAccount: "default"
 	builder: {
 		name: "nh-builder"
 		kind: "Builder"

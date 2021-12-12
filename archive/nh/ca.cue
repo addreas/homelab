@@ -88,7 +88,6 @@ k: Service: "nerves-hub-ca": spec: {
 
 k: Image: "nerves-hub-ca": spec: {
 	tag:            "ghcr.io/addreas/nerves_hub_ca"
-	serviceAccount: "default"
 	builder: {
 		name: "nh-builder"
 		kind: "Builder"
