@@ -2,6 +2,8 @@ package kube
 
 import (
 	"strings"
+    "regexp"
+    "encoding/json"
 	"tool/file"
 	"tool/exec"
 )
@@ -29,6 +31,32 @@ command: godeps: {
 			cmd: "sed -i /reflect/d ./cue.mod/gen/github.com/go-openapi/strfmt/format_go_gen.cue"
 		}
 	}
+}
+
+command: depversions: task: {
+		readGoMod: file.Read & {
+			filename: "go.mod"
+			contents: string
+		}
+		let re = #"^\s+([-\w./]+)\s+([-\w.]+)$"#
+        let packages = {
+			for line in strings.Split(readGoMod.contents, "\n") if line =~ re {
+				let match = regexp.FindSubmatch(re, line)
+				"\(match[1])": match[2]
+			}
+		}
+        writeVersionsCue: file.Create & {
+            filename: "util/go-mod-versions.cue"
+            contents: """
+            package util
+
+            goModVersions: \(json.Indent(json.Marshal(packages), "", "\t"))
+            """
+        }
+		cueFmt: exec.Run & {
+			$after: [writeVersionsCue]
+			cmd: "cue fmt ./util/go-mod-versions.cue"
+		}
 }
 
 command: jsonnetdeps: task: {

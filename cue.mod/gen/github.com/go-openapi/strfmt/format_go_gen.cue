@@ -4,7 +4,6 @@
 
 package strfmt
 
-import "reflect"
 
 // Format represents a string format.
 //
@@ -18,5 +17,4 @@ import "reflect"
 _#knownFormat: {
 	Name:     string
 	OrigName: string
-	Type:     reflect.#Type
 }

@@ -1,6 +1,9 @@
 package kube
 
-import "encoding/yaml"
+import (
+	"encoding/yaml"
+	"github.com/addreas/homelab/util"
+)
 
 k: VMSingle: "main": spec: {
 	retentionPeriod:      "2w"
@@ -139,7 +142,7 @@ k: Ingress: "alertmanager": {
 
 k: GitRepository: "victoriametrics-operator": spec: {
 	interval: "1h"
-	ref: branch: "master"
+	ref: branch: util.goModVersions["github.com/VictoriaMetrics/operator"]
 	url: "https://github.com/addreas/victoriametrics-operator"
 	ignore: """
 		/*
@@ -153,7 +156,7 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	prune:           true
 	images: [{
 		name:   "victoriametrics/operator"
-		newTag: "master"
+		newTag: util.goModVersions["github.com/VictoriaMetrics/operator"]
 	}]
 	patches: [{
 		target: {

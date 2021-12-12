@@ -1,6 +1,9 @@
 package kube
 
-import "encoding/yaml"
+import (
+	"encoding/yaml"
+	"github.com/addreas/homelab/util"
+)
 
 k: Grafana: grafana: spec: {
 	baseImage: "grafana/grafana:8.2.2"
@@ -42,7 +45,7 @@ k: Grafana: grafana: spec: {
 
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
-	ref: branch: "master"
+	ref: branch: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """
 		/*

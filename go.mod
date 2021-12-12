@@ -15,11 +15,11 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.2.0
 	github.com/pivotal/kpack v0.4.3
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.52.1
-	k8s.io/api v0.24.0-alpha.0
-	k8s.io/apimachinery v0.24.0-alpha.0
+	k8s.io/api v0.22.4
+	k8s.io/apimachinery v0.22.4
 )
 
 replace (
 	github.com/optiopay/kafka => github.com/cilium/kafka v0.0.0-20180809090225-01ce283b732b
-	k8s.io/client-go => k8s.io/client-go v0.22.2
+	k8s.io/client-go => k8s.io/client-go v0.22.4
 )

@@ -1,5 +1,7 @@
 package kube
 
+import "github.com/addreas/homelab/util"
+
 k: HelmRepository: "cert-manager": spec: {
 	interval: "1h"
 	url:      "https://charts.jetstack.io"
@@ -9,7 +11,7 @@ k: HelmRelease: "cert-manager": spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "cert-manager"
-		version: "v1.5.3"
+		version: util.goModVersions["github.com/jetstack/cert-manager"]
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "cert-manager"
