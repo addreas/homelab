@@ -24,10 +24,9 @@ k: HelmRelease: "kubevious": {
 	}
 }
 
-
 k: Ingress: "kubevious": {
 	metadata: annotations: {
-		"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
+		"cert-manager.io/cluster-issuer":               "addem-se-letsencrypt"
 		"ingress.kubernetes.io/auth-tls-secret":        "default/client-auth-root-ca-cert"
 		"ingress.kubernetes.io/auth-tls-strict":        "true"
 		"ingress.kubernetes.io/auth-tls-verify-client": "on"

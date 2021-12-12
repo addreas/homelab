@@ -26,9 +26,9 @@ k: Deployment: "nerves-hub-ca": spec: template: spec: {
 			name: "LOCAL_IPV4"
 			valueFrom: fieldRef: fieldPath: "status.podIP"
 		}, {
-            name:  "LOG_LEVEL"
-            value: "info"
-        }]
+			name:  "LOG_LEVEL"
+			value: "info"
+		}]
 		volumeMounts: [{
 			mountPath: "/etc/ssl"
 			name:      "etc-ssl"

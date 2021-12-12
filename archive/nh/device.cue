@@ -40,9 +40,9 @@ k: Deployment: "nerves-hub-device": spec: template: spec: {
 			name: "LOCAL_IPV4"
 			valueFrom: fieldRef: fieldPath: "status.podIP"
 		}, {
-            name:  "LOG_LEVEL"
-            value: "info"
-        }]
+			name:  "LOG_LEVEL"
+			value: "info"
+		}]
 	}]
 	volumes: [{
 		name: "etc-ssl"
@@ -81,7 +81,7 @@ k: Service: "nerves-hub-device": spec: {
 }
 
 k: Ingress: "nerves-hub-device": {
-	metadata: annotations: close({ "ingress.kubernetes.io/ssl-passthrough": "true" })
+	metadata: annotations: close({"ingress.kubernetes.io/ssl-passthrough": "true"})
 	spec: {
 		tls: []
 		rules: [{

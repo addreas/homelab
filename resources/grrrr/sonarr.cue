@@ -24,9 +24,9 @@ k: StatefulSet: sonarr: {
 						mountPath: "/videos"
 						name:      "nfs-videos"
 					}, {
-                        mountPath: "/usr/share/.mono"
-                        name: "mono-dir"
-                    }]
+						mountPath: "/usr/share/.mono"
+						name:      "mono-dir"
+					}]
 					resources: {
 						limits: {
 							cpu:    "1500m"
@@ -77,9 +77,9 @@ k: StatefulSet: sonarr: {
 					name: "home-nonroot"
 					emptyDir: {}
 				}, {
-                    name: "mono-dir"
-                    emptyDir: {}
-                }]
+					name: "mono-dir"
+					emptyDir: {}
+				}]
 			}
 		}
 		volumeClaimTemplates: [{

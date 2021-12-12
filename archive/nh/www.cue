@@ -34,9 +34,9 @@ k: Deployment: "nerves-hub-www": spec: template: spec: containers: [{
 		name: "LOCAL_IPV4"
 		valueFrom: fieldRef: fieldPath: "status.podIP"
 	}, {
-        name:  "LOG_LEVEL"
-        value: "info"
-    }]
+		name:  "LOG_LEVEL"
+		value: "info"
+	}]
 }]
 
 k: Service: "nerves-hub-www": spec: {

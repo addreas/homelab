@@ -57,12 +57,12 @@ k: Role: "secret-creator": rules: [{
 k: RoleBinding: "default-pod-getter": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind: "Role"
-		name: "pod-getter"
+		kind:     "Role"
+		name:     "pod-getter"
 	}
 	subjects: [{
-		kind: "ServiceAccount"
-		name: "default"
+		kind:      "ServiceAccount"
+		name:      "default"
 		namespace: "nh"
 	}]
 }
@@ -70,12 +70,12 @@ k: RoleBinding: "default-pod-getter": {
 k: RoleBinding: "default-secret-creator": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind: "Role"
-		name: "secret-creator"
+		kind:     "Role"
+		name:     "secret-creator"
 	}
 	subjects: [{
-		kind: "ServiceAccount"
-		name: "default"
+		kind:      "ServiceAccount"
+		name:      "default"
 		namespace: "nh"
 	}]
 }

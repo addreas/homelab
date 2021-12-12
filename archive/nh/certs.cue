@@ -39,23 +39,23 @@ k: Certificate: "server-root-ca": spec: {
 k: Job: "nerves-hub-ca-certificates-setup": spec: template: spec: {
 	serviceAccount: "default"
 	containers: [{
-		name: "cert-setup"
+		name:  "cert-setup"
 		image: "nixery.dev/shell/kubectl"
 		command: [
 			"sh",
 			"-c",
 			"""
-			cat /etc/ssl/*/*-ca.pem > /etc/ssl/ca.pem
-			cp /etc/ssl/*/*.pem /etc/ssl
+				cat /etc/ssl/*/*-ca.pem > /etc/ssl/ca.pem
+				cp /etc/ssl/*/*.pem /etc/ssl
 
-			cd  /etc/ssl
-			kubectl create secret generic nerves-hub-ca-certificates \\
-				--from-file=ca.pem \\
-				--from-file=root-ca.pem \\
-				--from-file=user-root-ca.pem \\
-				--from-file=server-root-ca.pem \\
-				--from-file=device-root-ca.pem
-			"""
+				cd  /etc/ssl
+				kubectl create secret generic nerves-hub-ca-certificates \\
+					--from-file=ca.pem \\
+					--from-file=root-ca.pem \\
+					--from-file=user-root-ca.pem \\
+					--from-file=server-root-ca.pem \\
+					--from-file=device-root-ca.pem
+				""",
 		]
 		volumeMounts: [{
 			mountPath: "/etc/ssl"

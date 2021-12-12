@@ -1,6 +1,9 @@
 package kube
 
-import "github.com/addreas/homelab/util"
+import (
+	"strings"
+	"github.com/addreas/homelab/util"
+)
 
 k: HelmRepository: "sealed-secrets": spec: {
 	interval: "1h"
@@ -11,7 +14,7 @@ k: HelmRelease: "sealed-secrets-controller": spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "sealed-secrets"
-		version: util.goModVersions["github.com/bitnami-labs/sealed-secrets"]
+		version: strings.TrimPrefix(util.goModVersions["github.com/bitnami-labs/sealed-secrets"], "v")
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "sealed-secrets"
