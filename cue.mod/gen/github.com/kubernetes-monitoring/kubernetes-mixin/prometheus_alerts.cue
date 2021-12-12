@@ -314,7 +314,7 @@ alerts: groups: [{
 	}, {
 		alert: "KubeMemoryOvercommit"
 		annotations: {
-			description: "Cluster has overcommitted memory resource requests for Pods by {{ $value }} bytes and cannot tolerate node failure."
+			description: "Cluster has overcommitted memory resource requests for Pods by {{ $value | humanize }} bytes and cannot tolerate node failure."
 			runbook_url: "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubememoryovercommit"
 			summary:     "Cluster has overcommitted memory resource requests."
 		}
@@ -449,6 +449,8 @@ alerts: groups: [{
 			kubelet_volume_stats_used_bytes{job=\"kubelet\"} > 0
 			unless on(namespace, persistentvolumeclaim)
 			kube_persistentvolumeclaim_access_mode{ access_mode=\"ReadOnlyMany\"} == 1
+			unless on(namespace, persistentvolumeclaim)
+			kube_persistentvolumeclaim_labels{label_excluded_from_alerts=\"true\"} == 1
 
 			"""
 
@@ -473,6 +475,8 @@ alerts: groups: [{
 			predict_linear(kubelet_volume_stats_available_bytes{job=\"kubelet\"}[6h], 4 * 24 * 3600) < 0
 			unless on(namespace, persistentvolumeclaim)
 			kube_persistentvolumeclaim_access_mode{ access_mode=\"ReadOnlyMany\"} == 1
+			unless on(namespace, persistentvolumeclaim)
+			kube_persistentvolumeclaim_labels{label_excluded_from_alerts=\"true\"} == 1
 
 			"""
 

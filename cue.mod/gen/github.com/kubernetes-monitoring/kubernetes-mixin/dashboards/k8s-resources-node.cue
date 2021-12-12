@@ -19,14 +19,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         1
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -36,12 +39,29 @@ package dashboards
 			pointradius:   5
 			points:        false
 			renderer:      "flot"
-			seriesOverrides: []
+			seriesOverrides: [{
+				alias:        "max capacity"
+				color:        "#F2495C"
+				dashes:       true
+				fill:         0
+				hiddenSeries: true
+				hideTooltip:  true
+				legend:       true
+				linewidth:    2
+				stack:        false
+			}]
 			spaceLength: 10
 			span:        12
 			stack:       true
 			steppedLine: false
 			targets: [{
+				expr:           "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"cpu\"})"
+				format:         "time_series"
+				intervalFactor: 2
+				legendFormat:   "max capacity"
+				legendLink:     null
+				step:           10
+			}, {
 				expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
 				format:         "time_series"
 				intervalFactor: 2
@@ -99,14 +119,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       1
 			id:         2
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 1
@@ -313,14 +336,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         3
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -330,12 +356,29 @@ package dashboards
 			pointradius:   5
 			points:        false
 			renderer:      "flot"
-			seriesOverrides: []
+			seriesOverrides: [{
+				alias:        "max capacity"
+				color:        "#F2495C"
+				dashes:       true
+				fill:         0
+				hiddenSeries: true
+				hideTooltip:  true
+				legend:       true
+				linewidth:    2
+				stack:        false
+			}]
 			spaceLength: 10
 			span:        12
 			stack:       true
 			steppedLine: false
 			targets: [{
+				expr:           "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"memory\"})"
+				format:         "time_series"
+				intervalFactor: 2
+				legendFormat:   "max capacity"
+				legendLink:     null
+				step:           10
+			}, {
 				expr:           "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)"
 				format:         "time_series"
 				intervalFactor: 2
@@ -393,14 +436,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       1
 			id:         4
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 1

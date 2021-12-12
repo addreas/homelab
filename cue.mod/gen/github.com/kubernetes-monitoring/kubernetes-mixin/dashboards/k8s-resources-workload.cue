@@ -19,14 +19,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         1
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -106,14 +109,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       1
 			id:         2
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 1
@@ -365,14 +371,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         3
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -452,14 +461,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       1
 			id:         4
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 1
@@ -713,13 +725,15 @@ package dashboards
 			id:         5
 			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 1
@@ -978,14 +992,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         6
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1053,14 +1070,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         7
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1138,14 +1158,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         8
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1213,14 +1236,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         9
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1298,14 +1324,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         10
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1373,14 +1402,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         11
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1458,14 +1490,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         12
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1533,14 +1568,17 @@ package dashboards
 			datasource: "$datasource"
 			fill:       10
 			id:         13
+			interval:   "1m"
 			legend: {
-				avg:     false
-				current: false
-				max:     false
-				min:     false
-				show:    true
-				total:   false
-				values:  false
+				alignAsTable: true
+				avg:          false
+				current:      false
+				max:          false
+				min:          false
+				rightSide:    true
+				show:         true
+				total:        false
+				values:       false
 			}
 			lines:     true
 			linewidth: 0
@@ -1681,9 +1719,9 @@ package dashboards
 		includeAll: false
 		label:      null
 		multi:      false
-		name:       "workload"
+		name:       "type"
 		options: []
-		query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload)"
+		query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload_type)"
 		refresh:        2
 		regex:          ""
 		sort:           1
@@ -1703,9 +1741,9 @@ package dashboards
 		includeAll: false
 		label:      null
 		multi:      false
-		name:       "type"
+		name:       "workload"
 		options: []
-		query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\"}, workload_type)"
+		query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}, workload)"
 		refresh:        2
 		regex:          ""
 		sort:           1

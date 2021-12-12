@@ -23,14 +23,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 2
+			id:       2
+			interval: "1m"
 			legend: {
 				alignAsTable: true
 				avg:          true
 				current:      true
 				max:          true
 				min:          true
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -121,7 +122,11 @@ package dashboards
 			}
 			gridPos: {}
 			id:       3
-			interval: null
+			interval: "1m"
+			legend: {
+				alignAsTable: true
+				rightSide:    true
+			}
 			links: []
 			mappingType: 1
 			mappingTypes: [{
@@ -200,14 +205,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 4
+			id:       4
+			interval: "1m"
 			legend: {
 				alignAsTable: true
 				avg:          true
 				current:      true
 				max:          true
 				min:          true
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -298,7 +304,11 @@ package dashboards
 			}
 			gridPos: {}
 			id:       5
-			interval: null
+			interval: "1m"
+			legend: {
+				alignAsTable: true
+				rightSide:    true
+			}
 			links: []
 			mappingType: 1
 			mappingTypes: [{

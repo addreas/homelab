@@ -48,7 +48,11 @@ package dashboards
 			}
 			gridPos: {}
 			id:       3
-			interval: null
+			interval: "1m"
+			legend: {
+				alignAsTable: true
+				rightSide:    true
+			}
 			links: []
 			mappingType: 1
 			mappingTypes: [{
@@ -107,14 +111,15 @@ package dashboards
 			fill:         10
 			fillGradient: 0
 			gridPos: {}
-			id: 4
+			id:       4
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -204,7 +209,11 @@ package dashboards
 			}
 			gridPos: {}
 			id:       5
-			interval: null
+			interval: "1m"
+			legend: {
+				alignAsTable: true
+				rightSide:    true
+			}
 			links: []
 			mappingType: 1
 			mappingTypes: [{
@@ -262,14 +271,15 @@ package dashboards
 			fill:         10
 			fillGradient: 0
 			gridPos: {}
-			id: 6
+			id:       6
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -350,14 +360,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 7
+			id:       7
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -426,14 +437,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 8
+			id:       8
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -521,7 +533,11 @@ package dashboards
 			}
 			gridPos: {}
 			id:       9
-			interval: null
+			interval: "1m"
+			legend: {
+				alignAsTable: true
+				rightSide:    true
+			}
 			links: []
 			mappingType: 1
 			mappingTypes: [{
@@ -579,14 +595,15 @@ package dashboards
 			fill:         10
 			fillGradient: 0
 			gridPos: {}
-			id: 10
+			id:       10
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -667,14 +684,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 11
+			id:       11
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -743,14 +761,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 12
+			id:       12
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -829,14 +848,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 13
+			id:       13
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         false
 				sideWidth:    null
 				total:        false
@@ -904,14 +924,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 14
+			id:       14
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         false
 				sideWidth:    null
 				total:        false
@@ -979,7 +1000,8 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 15
+			id:       15
+			interval: "1m"
 			legend: {
 				alignAsTable: true
 				avg:          false
@@ -1065,14 +1087,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 16
+			id:       16
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -1140,14 +1163,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 17
+			id:       17
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
@@ -1215,14 +1239,15 @@ package dashboards
 			fill:         1
 			fillGradient: 0
 			gridPos: {}
-			id: 18
+			id:       18
+			interval: "1m"
 			legend: {
-				alignAsTable: false
+				alignAsTable: true
 				avg:          false
 				current:      false
 				max:          false
 				min:          false
-				rightSide:    false
+				rightSide:    true
 				show:         true
 				sideWidth:    null
 				total:        false
