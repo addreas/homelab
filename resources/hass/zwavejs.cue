@@ -5,9 +5,8 @@ import (
 	"encoding/hex"
 )
 
-k: Deployment: "hass-zwavejs": {
+k: StatefulSet: "hass-zwavejs": {
 	spec: {
-		strategy: type: "Recreate"
 		template: {
 			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 			spec: {
@@ -41,6 +40,13 @@ k: Deployment: "hass-zwavejs": {
 				}]
 			}
 		}
+        volumeClaimTemplates: [{
+			metadata: name: "config"
+			spec: {
+				accessModes: ["ReadWriteOnce"]
+				resources: requests: storage: "1Gi"
+			}
+		}]
 	}
 }
 
