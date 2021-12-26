@@ -1,10 +1,5 @@
 package kube
 
-import (
-	"strings"
-	"github.com/addreas/homelab/util"
-)
-
 k: HelmRepository: "sealed-secrets": spec: {
 	interval: "1h"
 	url:      "https://bitnami-labs.github.io/sealed-secrets"
