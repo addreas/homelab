@@ -45,7 +45,7 @@ k: Grafana: grafana: spec: {
 
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
-	ref: branch: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
+	ref: tag: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """
 		/*
