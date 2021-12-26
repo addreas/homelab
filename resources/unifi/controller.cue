@@ -24,7 +24,7 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:version-6.5.54"
+					image: "ghcr.io/linuxserver/unifi-controller:version-6.5.55"
 					name:  "controller"
 					command: ["sh", "-c"]
 					args: ["""
