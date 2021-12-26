@@ -14,7 +14,7 @@ k: HelmRelease: "sealed-secrets-controller": spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "sealed-secrets"
-		version: strings.TrimPrefix(util.goModVersions["github.com/bitnami-labs/sealed-secrets"], "v")
+		version: "2.0.2" 
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "sealed-secrets"
