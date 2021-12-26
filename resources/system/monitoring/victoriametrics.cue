@@ -143,7 +143,7 @@ k: Ingress: "alertmanager": {
 k: GitRepository: "victoriametrics-operator": spec: {
 	interval: "1h"
 	ref: tag: util.goModVersions["github.com/VictoriaMetrics/operator"]
-	url: "https://github.com/addreas/victoriametrics-operator"
+	url: "https://github.com/victoriametrics/operator"
 	ignore: """
 		/*
 		!/config/
