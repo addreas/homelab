@@ -66,7 +66,7 @@ k: StatefulSet: qbittorrent: {
 					image: "ghcr.io/hotio/qbittorrent"
 					command: ["sh", "-c"]
 					args: ["""
-						exec /usr/bin/qbittorrent-nox --profile="$CONFIG_DIR" --webui-port=8080
+						exec /$APP_DIR/qbittorrent-nox --profile="$CONFIG_DIR" --webui-port=8080
 						"""]
 					ports: [{
 						containerPort: 8080
