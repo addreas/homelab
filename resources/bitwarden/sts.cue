@@ -4,7 +4,7 @@ k: StatefulSet: bitwarden: {
 	spec: {
 		template: {
 			spec: containers: [{
-				image: "bitwardenrs/server"
+				image: "vaultwarden/server"
 				name:  "bitwarden"
 				envFrom: [{
 					configMapRef: name: "bitwarden"
