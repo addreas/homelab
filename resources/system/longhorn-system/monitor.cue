@@ -4,7 +4,7 @@ k: GrafanaDashboard: "longhorn": spec: {
 	grafanaCom: id: 13032
 	datasources: [{
 		datasourceName: "Prometheus"
-		inputName:      "DS_PROMETHEUS"
+		inputName:      "DS_RANCHER_MONITORING"
 	}]
 }
 
