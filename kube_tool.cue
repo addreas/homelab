@@ -56,3 +56,9 @@ command: kubeImport: {
 		cmd: "cue import -p kube -l '\"k\"' -l 'kind' -l metadata.name -f ./**/*.yaml"
 	}
 }
+
+command: fluxBootstrap: {
+	task: apply: exec.Run & {
+		cmd: "kubectl apply -k https://github.com/fluxcd/flux2/manifests/install"
+	}
+}
