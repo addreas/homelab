@@ -31,3 +31,22 @@ k: HelmRelease: "prometheus-adapter": spec: {
 		}
 	}
 }
+
+k: VMServiceScrape: "prometheus-adapter": spec: {
+	endpoints: [{
+		bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+		interval: "30s"
+		port: "https"
+		scheme: "https"
+		tlsConfig: insecureSkipVerify: true
+		metricRelabelConfigs: [{
+			action: "drop"
+			regex: "(apiserver_client_certificate_.*|apiserver_envelope_.*|apiserver_flowcontrol_.*|apiserver_storage_.*|apiserver_webhooks_.*|workqueue_.*)"
+			sourceLabels: ["__name__"]
+		}]
+	}]
+	selector: matchLabels: {
+		"app.kubernetes.io/instance": "prometheus-adapter"
+		"app.kubernetes.io/name": "prometheus-adapter"
+	}
+}
