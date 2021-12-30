@@ -41,6 +41,7 @@ k: VMAgent: "main": spec: {
 		"\(type)Selector": {}
 		"\(type)NamespaceSelector": {}
 	}
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "vmagent"
 	replicaCount: 1
 	resources: {
 		requests: {
@@ -60,6 +61,7 @@ k: VMAlert: "main": spec: {
 	replicaCount: 1
 	datasource: url: "http://vmsingle-main.monitoring.svc:8429"
 	notifiers: [{url: "http://vmalertmanager-main.monitoring.svc:9093"}]
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "vmalert"
 	evaluationInterval: "60s"
 	ruleSelector: {}
 	resources: {
@@ -87,6 +89,7 @@ k: VMAlertmanager: "main": spec: {
 			memory: "250Mi"
 		}
 	}
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
 	replicaCount:  1
 	configRawYaml: yaml.Marshal({
 		global: resolve_timeout: "5m"
