@@ -37,10 +37,10 @@ k: HelmRelease: haproxy: {
 	}
 }
 
-k: GrafanaDashboard: haproxy: spec: {
-	grafanaCom: id: 12693
-	datasources: [{
-		datasourceName: "Prometheus"
-		inputName:      "DS_PROMETHEUS"
-	}]
-}
+//k: GrafanaDashboard: haproxy: spec: {
+//	grafanaCom: id: 12693
+//	datasources: [{
+//		datasourceName: "Prometheus"
+//		inputName:      "DS_PROMETHEUS"
+//	}]
+//}
