@@ -24,7 +24,7 @@ let serviceEndpointMapping = {
 
 k: PodMonitor: "kube-proxy": manifests.PodMonitor."kube-proxy"
 
-for name in ["kube-apiserver", "coredns", "kube-controller-manager", "kube-scheduler", "kubelet"] {
+for name in ["kube-apiserver", "coredns", "kube-controller-manager", "kube-scheduler", "kubelet", "kube-state-metrics"] {
 	let S = manifests.ServiceMonitor[name]
 	k: VMServiceScrape: "\(name)": {
 		metadata: labels: "app.kubernetes.io/name": S.metadata.labels."app.kubernetes.io/name"
