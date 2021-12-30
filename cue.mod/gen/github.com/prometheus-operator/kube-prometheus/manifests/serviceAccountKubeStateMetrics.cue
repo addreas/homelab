@@ -1,0 +1,16 @@
+package manifests
+
+ServiceAccount: "kube-state-metrics": {
+	apiVersion: "v1"
+	kind:       "ServiceAccount"
+	metadata: {
+		labels: {
+			"app.kubernetes.io/component": "exporter"
+			"app.kubernetes.io/name":      "kube-state-metrics"
+			"app.kubernetes.io/part-of":   "kube-prometheus"
+			"app.kubernetes.io/version":   "2.3.0"
+		}
+		name:      "kube-state-metrics"
+		namespace: "monitoring"
+	}
+}

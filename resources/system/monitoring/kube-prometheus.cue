@@ -1,49 +1,42 @@
 package kube
 
-import (
-	monitoring_v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	"github.com/prometheus-operator/kube-prometheus/manifests"
-)
+import "github.com/prometheus-operator/kube-prometheus/manifests"
 
 k: CustomResourceDefinition: manifests.CustomResourceDefinition
 
-k: VMRule: "kube-prometheus-rules": {
-	metadata: labels: "app.kubernetes.io/name": "kube-prometheus"
-	spec: manifests.PrometheusRule["kube-prometheus-rules"].spec
+for kind in ["ClusterRole", "ClusterRoleBinding", "Deployment", "Service", "ServiceAccount"] {
+	k: "\(kind)": "kube-state-metrics": manifests[kind]."kube-state-metrics"
 }
 
-let endpointMapping = {
+for name in ["kube-prometheus-rules", "kube-state-metrics-rules"] {
+	let R = manifests.PrometheusRule[name]
+	k: VMRule: "\(name)": {
+		metadata: labels: "app.kubernetes.io/name": R.metadata.labels."app.kubernetes.io/name"
+		spec: R.spec
+	}
+}
+
+let serviceEndpointMapping = {
 	"metricRelabelings": "metricRelabelConfigs"
 	"relabelings":       "relabelConfigs"
 	"proxyUrl":          "proxyURL"
 }
 
-let util = {
-	S: monitoring_v1.#ServiceMonitor
+k: PodMonitor: "kube-proxy": manifests.PodMonitor."kube-proxy"
 
-	spec: {
-		for key, value in S.spec if key != "endpoints" {
-			"\(key)": _ | *value
-		}
-		endpoints: [ for endpoint in S.spec.endpoints {
-			for key, value in endpoint {
-				"\(*endpointMapping[key] | key)": _ | *value
+for name in ["kube-apiserver", "coredns", "kube-controller-manager", "kube-scheduler", "kubelet"] {
+	let S = manifests.ServiceMonitor[name]
+	k: VMServiceScrape: "\(name)": {
+		metadata: labels: "app.kubernetes.io/name": S.metadata.labels."app.kubernetes.io/name"
+		spec: {
+			for key, value in S.spec if key != "endpoints" {
+				"\(key)": value
 			}
-		}]
+			endpoints: [ for endpoint in S.spec.endpoints {
+				for key, value in endpoint {
+					"\(*serviceEndpointMapping[key] | key)": value
+				}
+			}]
+		}
 	}
-}
-
-k: VMServiceScrape: "kube-apiserver": {
-	metadata: labels: "app.kubernetes.io/name": "apiserver"
-	spec: (util & {S: manifests.ServiceMonitor["kube-apiserver"]}).spec
-}
-
-k: VMServiceScrape: "coredns": {
-	metadata: labels: "app.kubernetes.io/name": "coredns"
-	spec: (util & {S: manifests.ServiceMonitor["coredns"]}).spec
-}
-
-k: VMServiceScrape: "kubelet": {
-	metadata: labels: "app.kubernetes.io/name": "kubelet"
-	spec: (util & {S: manifests.ServiceMonitor["kubelet"]}).spec
 }

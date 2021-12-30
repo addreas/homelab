@@ -15,7 +15,12 @@ ServiceMonitor: coredns: {
 		endpoints: [{
 			bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
 			interval:        "15s"
-			port:            "metrics"
+			metricRelabelings: [{
+				action: "drop"
+				regex:  "coredns_cache_misses_total"
+				sourceLabels: ["__name__"]
+			}]
+			port: "metrics"
 		}]
 		jobLabel: "app.kubernetes.io/name"
 		namespaceSelector: matchNames: [
