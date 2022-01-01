@@ -6,7 +6,7 @@ import (
 )
 
 k: Grafana: grafana: spec: {
-	baseImage: "grafana/grafana:8.2.2"
+	baseImage: "grafana/grafana:8.3.3"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		auth: {
