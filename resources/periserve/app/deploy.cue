@@ -1,6 +1,9 @@
 package kube
 
 k: Deployment: "periserve": {
+	metadata: annotations: {
+		"version": "a5859b5c-416b-4f5e-9f0b-8ef550e0fbac"
+	}
 	spec: {
 		replicas: 1
 		template: {
