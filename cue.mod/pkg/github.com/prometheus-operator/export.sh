@@ -11,7 +11,7 @@ jb install
 
 jsonnet -J vendor -m manifests -c ../export.jsonnet
 
-cue import -p manifests -l kind -l metadata.name -f ./manifests/*.json
+cue import -p manifests -f ./manifests/*.json
 
 mkdir -p ../../../../gen/github.com/prometheus-operator/kube-prometheus/manifests
 mv manifests/*.cue ../../../../gen/github.com/prometheus-operator/kube-prometheus/manifests

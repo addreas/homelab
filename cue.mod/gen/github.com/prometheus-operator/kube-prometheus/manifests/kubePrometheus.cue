@@ -1,6 +1,6 @@
 package manifests
 
-PrometheusRule: "kube-prometheus-rules": {
+kubePrometheus: PrometheusRule: "kube-prometheus-rules": {
 	apiVersion: "monitoring.coreos.com/v1"
 	kind:       "PrometheusRule"
 	metadata: {

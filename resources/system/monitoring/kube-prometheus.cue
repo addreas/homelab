@@ -2,32 +2,33 @@ package kube
 
 import "github.com/prometheus-operator/kube-prometheus/manifests"
 
-k: CustomResourceDefinition: manifests.CustomResourceDefinition
+k: CustomResourceDefinition: manifests.prometheusOperator.CustomResourceDefinition
 
-for kind in ["ClusterRole", "ClusterRoleBinding", "Deployment", "Service", "ServiceAccount"] {
-	k: "\(kind)": "kube-state-metrics": manifests[kind]."kube-state-metrics"
-}
+k: { for kind, resource in manifests.kubeStateMetrics if kind != "ServiceMonitor" { "\(kind)": resource } }
+k: { for kind, resource in manifests.prometheusAdapter if kind != "ServiceMonitor" { "\(kind)": resource } }
 
-for name in ["kube-prometheus-rules", "kube-state-metrics-rules"] {
-	let R = manifests.PrometheusRule[name]
-	k: VMRule: "\(name)": {
-		metadata: labels: "app.kubernetes.io/name": R.metadata.labels."app.kubernetes.io/name"
+let promRules = [
+	manifests.kubePrometheus.PrometheusRule."kube-prometheus-rules",
+	manifests.kubeStateMetrics.PrometheusRule."kube-state-metrics-rules"
+]
+
+let serviceMonitors = [
+	for _, r in manifests.kubernetesControlPlane if r.kind != _|_ { r }
+] + [
+	manifests.kubeStateMetrics.ServiceMonitor."kube-state-metrics",
+	manifests.prometheusAdapter.ServiceMonitor."prometheus-adapter",
+]
+
+for R in promRules  {
+	k: VMRule: "\(R.metadata.name)": {
+		metadata: R.metadata
 		spec: R.spec
 	}
 }
 
-let serviceEndpointMapping = {
-	"metricRelabelings": "metricRelabelConfigs"
-	"relabelings":       "relabelConfigs"
-	"proxyUrl":          "proxyURL"
-}
-
-k: PodMonitor: "kube-proxy": manifests.PodMonitor."kube-proxy"
-
-for name in ["kube-apiserver", "coredns", "kube-controller-manager", "kube-scheduler", "kubelet", "kube-state-metrics"] {
-	let S = manifests.ServiceMonitor[name]
-	k: VMServiceScrape: "\(name)": {
-		metadata: labels: "app.kubernetes.io/name": S.metadata.labels."app.kubernetes.io/name"
+for S in serviceMonitors {
+	k: VMServiceScrape: "\(S.metadata.name)": {
+		metadata: S.metadata
 		spec: {
 			for key, value in S.spec if key != "endpoints" {
 				"\(key)": value
@@ -40,3 +41,10 @@ for name in ["kube-apiserver", "coredns", "kube-controller-manager", "kube-sched
 		}
 	}
 }
+
+let serviceEndpointMapping = {
+	"metricRelabelings": "metricRelabelConfigs"
+	"relabelings":       "relabelConfigs"
+	"proxyUrl":          "proxyURL"
+}
+

@@ -8,7 +8,7 @@ import (
 	discovery_v1beta1 "k8s.io/api/discovery/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	networking_v1 "k8s.io/api/networking/v1"
-	policy_v1beta1 "k8s.io/api/policy/v1beta1"
+	policy_v1 "k8s.io/api/policy/v1"
 	rbac_v1 "k8s.io/api/rbac/v1"
 	storage_v1 "k8s.io/api/storage/v1"
 	apiextensions_v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -81,9 +81,9 @@ _kubernetesAPIs: {
 		NetworkPolicy: networking_v1.#NetworkPolicy
 	}
 
-	"policy/v1beta1": {
-		PodDisruptionBudget: policy_v1beta1.#PodDisruptionBudget
-		PodSecurityPolicy:   policy_v1beta1.#PodSecurityPolicy
+	"policy/v1": {
+		PodDisruptionBudget: policy_v1.#PodDisruptionBudget
+		PodSecurityPolicy:   policy_v1.#PodSecurityPolicy
 	}
 
 	"rbac.authorization.k8s.io/v1": {
@@ -99,6 +99,8 @@ _kubernetesAPIs: {
 	}
 
 	"apiextensions.k8s.io/v1": CustomResourceDefinition: apiextensions_v1.#CustomResourceDefinition
+
+	"apiregistration.k8s.io/v1": APIService: _
 
 	"source.toolkit.fluxcd.io/v1beta1": {
 		GitRepository:  source_controller_v1beta1.#GitRepository
