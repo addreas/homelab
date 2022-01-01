@@ -2,7 +2,7 @@ package kube
 
 import (
 	"encoding/yaml"
-	"github.com/addreas/homelab/util"
+	// "github.com/addreas/homelab/util"
 )
 
 k: Grafana: grafana: spec: {
@@ -45,8 +45,10 @@ k: Grafana: grafana: spec: {
 
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
-	ref: tag: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
-	url: "https://github.com/grafana-operator/grafana-operator.git"
+	// ref: tag: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
+	// url: "https://github.com/grafana-operator/grafana-operator.git"
+	ref: branch: "master"
+	url: "https://github.com/addreas/grafana-operator.git"
 	ignore: """
 		/*
 		!/config
@@ -77,7 +79,7 @@ k: Kustomization: "grafana-operator": spec: {
 			  - --scan-all
 			- op: replace
 			  path: /spec/template/spec/containers/1/image
-			  value: ghcr.io/addreas/grafana-operator:4.1.0
+			  value: ghcr.io/addreas/grafana-operator:4.1.1
 			"""
 	}, {
 		target: {
@@ -92,136 +94,5 @@ k: Kustomization: "grafana-operator": spec: {
 			kind:       "Service"
 			metadata: name: "controller-manager-metrics-service"
 		})
-	}]
-}
-
-k: ClusterRoleBinding: "grafana-operator-missing-resources": {
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "ClusterRole"
-		name:     "grafana-operator-missing-resources"
-	}
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "default"
-		namespace: "monitoring"
-	}]
-}
-
-k: ClusterRole: "grafana-operator-missing-resources": {
-	rules: [{
-		apiGroups: [""]
-		resources: [
-			"pods",
-			"nodes",
-			"services",
-			"endpoints",
-			"persistentvolumeclaims",
-			"configmaps",
-			"secrets",
-			"serviceaccounts",
-			"configmaps",
-		]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-		]
-	}, {
-		apiGroups: [""]
-		resources: [
-			"events",
-		]
-		verbs: [
-			"get",
-			"list",
-			"watch",
-			"create",
-			"delete",
-			"update",
-			"patch",
-		]
-	}, {
-		apiGroups: ["apps"]
-		resources: [
-			"deployments",
-			"deployments/finalizers",
-			"daemonsets",
-			"replicasets",
-			"statefulsets",
-		]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-		]
-	}, {
-		apiGroups: ["route.openshift.io"]
-		resources: [
-			"routes",
-			"routes/custom-host",
-		]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-			"create",
-		]
-	}, {
-		apiGroups: ["extensions"]
-		resources: ["ingresses"]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-		]
-	}, {
-		apiGroups: ["integreatly.org"]
-		resources: [
-			"grafanas",
-			"grafanas/status",
-			"grafanas/finalizers",
-			"grafanadashboards",
-			"grafanadatasources",
-			"grafanadatasources/status",
-		]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-		]
-	}, {
-		apiGroups: ["networking.k8s.io"]
-		resources: ["ingresses"]
-		verbs: [
-			"get",
-			"list",
-			"create",
-			"update",
-			"delete",
-			"deletecollection",
-			"watch",
-			"create",
-		]
 	}]
 }
