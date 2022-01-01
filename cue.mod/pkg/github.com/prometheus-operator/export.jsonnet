@@ -22,7 +22,7 @@ local resources(name, filter = function(r) true) = std.foldr(
   {});
 
 {
- "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind == "CustomResourceDefinition"),
+ "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind == "CustomResourceDefinition" && !std.member(["prometheuses.monitoring.coreos.com", "thanosrulers.monitoring.coreos.com"], r.metadata.name)),
  "prometheusAdapter.json": resources("prometheusAdapter"),
  "kubeStateMetrics.json": resources("kubeStateMetrics"),
  "nodeExporter.json": resources("nodeExporter"),
