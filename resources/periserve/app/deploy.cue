@@ -1,0 +1,24 @@
+package kube
+
+k: Deployment: "periserve": {
+	spec: {
+		replicas: 1
+		template: {
+			spec: {
+				containers: [{
+					name:  "periserve"
+					image: "ghcr.io/jonasdahl/periserve:main"
+					env: [{
+						name:  "SESSION_SECRET"
+						value: "ABCDEF1234567890"
+					}, {
+						name:  "DATABASE_URL"
+						value: "postgresql://johndoe:randompasswordright@postgres:5432/mydb?schema=public"
+					}]
+					ports: [{containerPort: 3000}]
+				}]
+                imagePullSecrets: [{name: "periserve-ghcr"}]
+			}
+		}
+	}
+}
