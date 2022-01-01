@@ -25,6 +25,7 @@ local resources(name, filter = function(r) true) = std.foldr(
  "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind == "CustomResourceDefinition"),
  "prometheusAdapter.json": resources("prometheusAdapter"),
  "kubeStateMetrics.json": resources("kubeStateMetrics"),
+ "nodeExporter.json": resources("nodeExporter"),
  "kubernetesControlPlane.json": resources("kubernetesControlPlane", function(r) r.kind == "ServiceMonitor"),
  "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules")
 }

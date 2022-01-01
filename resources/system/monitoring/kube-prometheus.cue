@@ -6,6 +6,7 @@ k: CustomResourceDefinition: manifests.prometheusOperator.CustomResourceDefiniti
 
 k: { for kind, resource in manifests.kubeStateMetrics if kind != "ServiceMonitor" { "\(kind)": resource } }
 k: { for kind, resource in manifests.prometheusAdapter if kind != "ServiceMonitor" { "\(kind)": resource } }
+k: { for kind, resource in manifests.nodeExporter if kind != "ServiceMonitor" { "\(kind)": resource } }
 
 let promRules = [
 	manifests.kubePrometheus.PrometheusRule."kube-prometheus-rules",
@@ -17,6 +18,7 @@ let serviceMonitors = [
 ] + [
 	manifests.kubeStateMetrics.ServiceMonitor."kube-state-metrics",
 	manifests.prometheusAdapter.ServiceMonitor."prometheus-adapter",
+	manifests.nodeExporter.ServiceMonitor."node-exporter",
 ]
 
 for R in promRules  {
