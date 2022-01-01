@@ -14,7 +14,7 @@ let promRules = [
 ]
 
 let serviceMonitors = [
-	for _, r in manifests.kubernetesControlPlane if r.kind != _|_ { r }
+	for _, r in manifests.kubernetesControlPlane for _, rr in r{ rr }
 ] + [
 	manifests.kubeStateMetrics.ServiceMonitor."kube-state-metrics",
 	manifests.prometheusAdapter.ServiceMonitor."prometheus-adapter",
