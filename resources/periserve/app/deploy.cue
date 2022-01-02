@@ -8,6 +8,18 @@ k: Deployment: "periserve": {
 		replicas: 1
 		template: {
 			spec: {
+				initContainers: [{
+					name:  "migrate"
+					image: "ghcr.io/jonasdahl/periserve:main"
+					env: [{
+						name:  "SESSION_SECRET"
+						value: "ABCDEF1234567890"
+					}, {
+						name:  "DATABASE_URL"
+						value: "postgresql://johndoe:randompasswordright@postgres:5432/mydb?schema=public"
+					}]
+					command: ["npm", "run", "prisma", "migrate", "deploy"]
+				}]
 				containers: [{
 					name:  "periserve"
 					image: "ghcr.io/jonasdahl/periserve:main"
