@@ -1,34 +1,36 @@
 package kube
 
-import "github.com/prometheus-operator/kube-prometheus/manifests"
+import (
+	"strings"
+	encodingJson "encoding/json"
+	m "github.com/prometheus-operator/kube-prometheus/manifests"
+)
 
-k: CustomResourceDefinition: manifests.prometheusOperator.CustomResourceDefinition
+k: CustomResourceDefinition: m.prometheusOperator.CustomResourceDefinition
 
-k: { for kind, resource in manifests.kubeStateMetrics if kind != "ServiceMonitor" { "\(kind)": resource } }
-k: { for kind, resource in manifests.prometheusAdapter if kind != "ServiceMonitor" { "\(kind)": resource } }
-k: { for kind, resource in manifests.nodeExporter if kind != "ServiceMonitor" { "\(kind)": resource } }
-
-let promRules = [
-	manifests.kubePrometheus.PrometheusRule."kube-prometheus-rules",
-	manifests.kubeStateMetrics.PrometheusRule."kube-state-metrics-rules"
-]
-
-let serviceMonitors = [
-	for _, r in manifests.kubernetesControlPlane for _, rr in r{ rr }
-] + [
-	manifests.kubeStateMetrics.ServiceMonitor."kube-state-metrics",
-	manifests.prometheusAdapter.ServiceMonitor."prometheus-adapter",
-	manifests.nodeExporter.ServiceMonitor."node-exporter",
-]
-
-for R in promRules  {
-	k: VMRule: "\(R.metadata.name)": {
-		metadata: R.metadata
-		spec: R.spec
+k: GrafanaDashboard: {
+	for name, content in m.grafanaDashboards {
+		"grafana-dashboard-\(strings.TrimSuffix(name, ".json"))": spec: json: encodingJson.Marshal(content)
 	}
 }
 
-for S in serviceMonitors {
+
+let things = m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter
+
+for kind, resources in things
+if kind != "ServiceMonitor" &&
+	kind != "PrometheusRule" {
+	k: "\(kind)": resources
+}
+
+for R in things.PrometheusRule {
+	k: VMRule: "\(R.metadata.name)": {
+		metadata: R.metadata
+		spec:     R.spec
+	}
+}
+
+for S in things.ServiceMonitor {
 	k: VMServiceScrape: "\(S.metadata.name)": {
 		metadata: S.metadata
 		spec: {
@@ -49,4 +51,3 @@ let serviceEndpointMapping = {
 	"relabelings":       "relabelConfigs"
 	"proxyUrl":          "proxyURL"
 }
-

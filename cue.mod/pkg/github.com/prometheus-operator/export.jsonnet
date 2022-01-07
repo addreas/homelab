@@ -26,8 +26,13 @@ local resources(name, filter = function(r) true) = std.foldr(
  "prometheusAdapter.json": resources("prometheusAdapter"),
  "kubeStateMetrics.json": resources("kubeStateMetrics"),
  "nodeExporter.json": resources("nodeExporter"),
- "kubernetesControlPlane.json": resources("kubernetesControlPlane", function(r) r.kind == "ServiceMonitor"),
- "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules")
+ "kubernetesControlPlane.json": resources("kubernetesControlPlane", function(r) std.member(["ServiceMonitor", "PrometheusRule"], r.kind)),
+ "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
+ "grafanaDashboards.json": { grafanaDashboards:
+    kp.nodeExporter.mixin.grafanaDashboards + 
+    kp.prometheus.mixin.grafanaDashboards +
+    kp.kubernetesControlPlane.mixin.grafanaDashboards
+  }
 }
 
 //{["prometheusOperator" + name + ".json"]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) if std.endsWith(name, "CustomResourceDefinition")} +
