@@ -67,13 +67,7 @@ k: Ingress: [Name=string]: {
 	}
 }
 
-k: GrafanaDashboard: [string]: {
-	metadata: labels: grafana: "enabled"
-	spec: {
-		json:    *"" | string
-		jsonnet: *"" | string
-	}
-}
+k: GrafanaDashboard: [string]: metadata: labels: grafana: "enabled"
 
 k: HelmRelease: [Name=string]: {
 	metadata: namespace: string

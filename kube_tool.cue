@@ -1,6 +1,7 @@
 package kube
 
 import (
+	"list"
 	"encoding/yaml"
 	"encoding/json"
 	"text/tabwriter"
@@ -11,23 +12,42 @@ import (
 
 context: string
 
-let resources = [ for resourceType in k for resource in resourceType {resource}]
+let earlyKinds = ["Namespace", "CustomResourceDefinition"]
+let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds, kind) {r}]
+let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) {r}]
 
-command: ls: task: print: cli.Print & {
-	text: tabwriter.Write([
-		for r in resources {
-			"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
-		},
-	])
+command: ls: task: {
+	printEarly: cli.Print & {
+		text: tabwriter.Write([
+			for r in earlyResources {
+				"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
+			},
+		]) + "\n" + tabwriter.Write([
+			for r in resources {
+				"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
+			},
+		])
+	}
 }
 
 command: dump: task: print: cli.Print & {
 	text: yaml.MarshalStream(resources)
 }
 
-command: apply: task: apply: exec.Run & {
-	cmd: ["kubectl", "--context", context, "apply", "-f-"]
-	stdin: json.MarshalStream(resources)
+command: apply: task: {
+	if len(earlyResources) > 0 {
+		applyEarly: exec.Run & {
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
+			stdin: json.MarshalStream(earlyResources)
+		}
+	}
+	if len(resources) > 0 {
+		apply: exec.Run & {
+			$after: [task.applyEarly]
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
+			stdin: json.MarshalStream(resources)
+		}
+	}
 }
 
 command: diff: task: diff: exec.Run & {
