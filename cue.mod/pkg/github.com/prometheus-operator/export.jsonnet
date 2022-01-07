@@ -30,7 +30,6 @@ local resources(name, filter = function(r) true) = std.foldr(
  "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
  "grafanaDashboards.json": { grafanaDashboards:
     kp.nodeExporter.mixin.grafanaDashboards + 
-    kp.prometheus.mixin.grafanaDashboards +
     kp.kubernetesControlPlane.mixin.grafanaDashboards
   }
 }
