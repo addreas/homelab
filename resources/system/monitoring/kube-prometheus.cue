@@ -14,7 +14,6 @@ k: GrafanaDashboard: {
 	}
 }
 
-
 let things = m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter
 
 for kind, resources in things

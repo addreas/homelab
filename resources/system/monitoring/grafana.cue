@@ -13,12 +13,15 @@ k: Grafana: grafana: spec: {
 			disable_login_form:   true
 			disable_signout_menu: true
 		}
+		users: default_theme:                    "light"
+		dashboards: default_home_dashboard_path: "/etc/grafana-configmaps/grafana-home-dashboard/dashboard.json"
 		"auth.anonymous": {
 			enabled:  true
 			org_role: "Admin"
 		}
 		alerting: enabled: false
 	}
+	configMaps: ["grafana-home-dashboard"]
 	client: {
 		timeout:       5
 		preferService: true
