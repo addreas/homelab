@@ -4,7 +4,7 @@ k: Job: "kratos-migrate": spec: template: spec: {
 	restartPolicy: "OnFailure"
 	containers: [{
 		name:  "migrate"
-		image: "oryd/kratos:v0.8.0-alpha.3"
+		image: "oryd/kratos:\(_kratosTag)"
 		command: ["kratos"]
 		args: [
 			"migrate",
@@ -13,14 +13,13 @@ k: Job: "kratos-migrate": spec: template: spec: {
 			"-y",
 		]
 		envFrom: [{secretRef: name: "kratos"}]
-		securityContext: runAsUser: 0
 	}]
 }
 
 k: Deployment: kratos: spec: template: spec: {
 	containers: [{
 		name:  "kratos"
-		image: "oryd/kratos:v0.8.0-alpha.3"
+		image: "oryd/kratos:\(_kratosTag)"
 		command: ["kratos"]
 		args: [
 			"serve",
@@ -36,14 +35,14 @@ k: Deployment: kratos: spec: template: spec: {
 			containerPort: 4433
 		}]
 		envFrom: [{secretRef: name: "kratos"}]
-		// livenessProbe: httpGet: {
-		//  path: "/health/alive"
-		//  port: "http-admin"
-		// }
-		// readinessProbe: httpGet: {
-		//  path: "/health/ready"
-		//  port: "http-admin"
-		// }
+		livenessProbe: httpGet: {
+		 path: "/health/alive"
+		 port: "http-admin"
+		}
+		readinessProbe: httpGet: {
+		 path: "/health/ready"
+		 port: "http-admin"
+		}
 		volumeMounts: [{
 			name:      "kratos-config-volume"
 			mountPath: "/etc/config"

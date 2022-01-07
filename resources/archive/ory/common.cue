@@ -9,6 +9,8 @@ k: Namespace: ory: {}
 
 k: [string]: [string]: metadata: namespace: "ory"
 
+_kratosTag: "v0.8.2"
+
 k: Deployment: [string]: spec: template: spec: containers: [...{
 	securityContext: _ | *{
 		capabilities: drop: ["ALL"]

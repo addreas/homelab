@@ -16,7 +16,14 @@ k: StatefulSet: postgres: spec: {
 				name:      "data"
 				mountPath: "/var/lib/postgresql"
 				subPath:   "data"
+			}, {
+				name: "init"
+				mountPath: "/docker-entrypoint-initdb.d/"
 			}]
+		}]
+		volumes: [{
+			name: "init"
+			configMap: name: "postgres-init"
 		}]
 	}
 	volumeClaimTemplates: [{
@@ -39,3 +46,9 @@ k: Secret: "postgres-credentials": stringData: {
 	POSTGRES_PASSWORD: "kratos"
 	POSTGRES_USER:     "kratos"
 }
+
+k: ConfigMap: "postgres-init": data: "create-hydra.sql": """
+	CREATE USER hydra PASSWORD 'hydra';
+	CREATE DATABASE hydra;
+	GRANT ALL PRIVILEGES ON DATABASE hydra TO hydra;
+	"""

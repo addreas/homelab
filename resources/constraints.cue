@@ -2,30 +2,33 @@ package kube
 
 context: *"nucles" | string
 
+let podTemplate = {
+	metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
+	spec: {
+		securityContext: fsGroup: *1000 | int
+		containers: [...{
+			securityContext: {
+				allowPrivilegeEscalation: *false | bool
+				runAsUser:                *1000 | int
+				runAsGroup:               *1000 | int
+			}
+			ports: [...{protocol: *"TCP" | "UDP"}]
+		}]
+	}
+}
+
 k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 	_selector: _ | *{app: Name}
 	metadata: labels: _selector
 	spec: {
 		selector: matchLabels: _selector
-		template: {
-			metadata: {
-				labels: _selector
-				annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
-			}
-			spec: {
-				securityContext: fsGroup: *1000 | int
-				containers: [...{
-					securityContext: {
-						allowPrivilegeEscalation: *false | bool
-						runAsUser:                *1000 | int
-						runAsGroup:               *1000 | int
-					}
-					ports: [...{protocol: *"TCP" | "UDP"}]
-				}]
-			}
+		template: podTemplate & {
+			metadata: labels: _selector
 		}
 	}
 }
+
+k: Job: [Name=string]: spec: template: podTemplate
 
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 

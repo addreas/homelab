@@ -2,20 +2,21 @@ package kube
 
 k: Deployment: "kratos-selfservice-ui-node": spec: template: spec: containers: [{
 	name:  "kratos-selfservice-ui-node"
-	image: "oryd/kratos-selfservice-ui-node:v0.8.0-alpha.3"
+	image: "oryd/kratos-selfservice-ui-node:v0.8.2-alpha.1"
+	// image: "oryd/kratos-selfservice-ui-node:\(_kratosTag)"
 	envFrom: [{configMapRef: name: "kratos-selfservice-ui-node"}]
 	ports: [{
 		name:          "http"
 		containerPort: 3000
 	}]
-	// livenessProbe: httpGet: {
-	//  path: "/health/alive"
-	//  port: "http"
-	// }
-	// readinessProbe: httpGet: {
-	//  path: "/health/ready"
-	//  port: "http"
-	// }
+	livenessProbe: httpGet: {
+	 path: "/health/alive"
+	 port: "http"
+	}
+	readinessProbe: httpGet: {
+	 path: "/health/ready"
+	 port: "http"
+	}
 }]
 
 k: Service: "kratos-selfservice-ui-node": spec: ports: [{

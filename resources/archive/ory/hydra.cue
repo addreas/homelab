@@ -2,7 +2,23 @@ package kube
 
 import "encoding/yaml"
 
-k: ServiceAccount: "hydra-hydra-maester-account": {}
+_hydraTag: "v1.10.7"
+
+k: Job: "hydra-migrate": spec: template: spec: {
+	restartPolicy: "OnFailure"
+	containers: [{
+		name:  "migrate"
+		image: "oryd/hydra:\(_hydraTag)"
+		command: ["hydra"]
+		args: [
+			"migrate",
+			"sql",
+			"-e",
+			"-y",
+		]
+		envFrom: [{secretRef: name: "hydra"}]
+	}]
+}
 
 k: ConfigMap: hydra: data: "config.yaml": yaml.Marshal({
 	existingSecret: ""
@@ -11,50 +27,8 @@ k: ConfigMap: hydra: data: "config.yaml": yaml.Marshal({
 		public: port: 4444
 		tls: allow_termination_from: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 	}
-	urls: self: {}
+	urls: self: issuer: "http://localhost:4444"
 })
-
-k: ClusterRole: "hydra-hydra-maester-role": rules: [{
-	apiGroups: ["hydra.ory.sh"]
-	resources: ["oauth2clients", "oauth2clients/status"]
-	verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-}, {
-	apiGroups: [""]
-	resources: ["secrets"]
-	verbs: ["list", "watch", "create"]
-}]
-
-k: ClusterRoleBinding: "hydra-hydra-maester-role-binding": {
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "hydra-hydra-maester-account" // Service account assigned to the controller pod.
-		namespace: "ory"
-	}]
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "ClusterRole"
-		name:     "hydra-hydra-maester-role"
-	}
-}
-
-k: Role: "hydra-hydra-maester-role-ory": rules: [{
-	apiGroups: [""]
-	resources: ["secrets"]
-	verbs: ["get", "list", "watch", "create"]
-}]
-
-k: RoleBinding: "hydra-hydra-maester-role-binding-ory": {
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "hydra-hydra-maester-account" // Service account assigned to the controller pod.
-		namespace: "ory"
-	}]
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "Role"
-		name:     "hydra-hydra-maester-role-ory"
-	}
-}
 
 k: Service: "hydra-admin": spec: {
 	type: "ClusterIP"
@@ -76,31 +50,14 @@ k: Service: "hydra-public": spec: {
 	selector: app: "hydra"
 }
 
-k: Deployment: "hydra-hydra-maester": spec: template: spec: {
-	containers: [{
-		name:            "hydra-maester"
-		image:           "oryd/hydra-maester:v0.0.24"
-		imagePullPolicy: "IfNotPresent"
-		command: ["/manager"]
-		args: [
-			"--metrics-addr=127.0.0.1:8080",
-			"--hydra-url=http://hydra-admin",
-			"--hydra-port=4445",
-		]
-	}]
-	serviceAccountName:           "hydra-hydra-maester-account"
-	automountServiceAccountToken: true
-}
-
 k: Deployment: hydra: spec: template: spec: {
 	volumes: [{
 		name: "hydra-config-volume"
 		configMap: name: "hydra"
 	}]
-	serviceAccountName: "hydra"
 	containers: [{
 		name:  "hydra"
-		image: "oryd/hydra:v1.10.5"
+		image: "oryd/hydra:\(_hydraTag)"
 		command: ["hydra"]
 		volumeMounts: [{
 			name:      "hydra-config-volume"
@@ -112,6 +69,7 @@ k: Deployment: hydra: spec: template: spec: {
 			"all",
 			"--config",
 			"/etc/config/config.yaml",
+			"--dangerous-force-http",
 		]
 		ports: [{
 			name:          "http-public"
@@ -128,34 +86,12 @@ k: Deployment: hydra: spec: template: spec: {
 			path: "/health/ready"
 			port: "http-admin"
 		}
-		env: [{
-			name:  "URLS_SELF_ISSUER"
-			value: "http://127.0.0.1:4444/"
-		}, {
-			name: "DSN"
-			valueFrom: secretKeyRef: {
-				name: "hydra"
-				key:  "dsn"
-			}
-		}, {
-			name: "SECRETS_SYSTEM"
-			valueFrom: secretKeyRef: {
-				name: "hydra"
-				key:  "secretsSystem"
-			}
-		}, {
-			name: "SECRETS_COOKIE"
-			valueFrom: secretKeyRef: {
-				name: "hydra"
-				key:  "secretsCookie"
-			}
-		}]
+		envFrom: [{ secretRef: name: "hydra" }]
 	}]
 }
 
 k: Secret: hydra: stringData: {
-	// Generate a random secret if the user doesn't give one. User given password has priority
-	secretsSystem: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
-	secretsCookie: "bHZPQUphY1o3WWNyN2RBMUprRnpxWU5HRmZrWmhpRTI="
-	dsn:           ""
+	SECRETS_SYSTEM: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
+	SECRETS_COOKIE: "bHZPQUphY1o3WWNyN2RBMUprRnpxWU5HRmZrWmhpRTI="
+	DSN: "postgres://kratos:kratos@postgres:5432/hydra"
 }

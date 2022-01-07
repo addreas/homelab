@@ -31,7 +31,7 @@ command: ls: task: {
 }
 
 command: dump: task: print: cli.Print & {
-	text: yaml.MarshalStream(resources)
+	text: yaml.MarshalStream(earlyResources + resources)
 }
 
 command: apply: task: {

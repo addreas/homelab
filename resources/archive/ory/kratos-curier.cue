@@ -3,7 +3,7 @@ package kube
 k: StatefulSet: "kratos-courier": spec: template: spec: {
 	containers: [{
 		name:  "kratos-courier"
-		image: "oryd/kratos:v0.8.0-alpha.3"
+		image: "oryd/kratos:\(_kratosTag)"
 		args: ["courier", "watch", "--config", "/etc/config/kratos.yaml"]
 		envFrom: [{secretRef: name: "kratos"}]
 		env: [{
