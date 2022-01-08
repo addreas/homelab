@@ -1,82 +1,89 @@
 package kube
 
-import (
-	"encoding/json"
-	"encoding/yaml"
-)
+_hostname: "ory.addem.se"
 
-k: Namespace: ory: {}
-
-k: [string]: [string]: metadata: namespace: "ory"
-
-_kratosTag: "v0.8.2"
-
-k: Deployment: [string]: spec: template: spec: containers: [...{
-	securityContext: _ | *{
-		capabilities: drop: ["ALL"]
-		privileged:             false
-		readOnlyRootFilesystem: true
-		runAsNonRoot:           true
-		runAsUser:              1000
+k: Ingress: "ory": {
+	metadata: annotations: "ingress.kubernetes.io/rewrite-target": "/"
+	spec: {
+		tls: [{
+			hosts: [_hostname]
+			secretName: "ory-cert"
+		}]
+		rules: [{
+			host: _hostname
+			http: paths: [{
+				path:     "/api"
+				pathType: "Prefix"
+				backend: service: {
+					name: "kratos-public"
+					port: name: "http"
+				}
+			}, {
+				path:     "/hydra"
+				pathType: "Prefix"
+				backend: service: {
+					name: "hydra-login-consent-node"
+					port: name: "http"
+				}
+			}, {
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "kratos-selfservice-ui-node"
+					port: name: "http"
+				}
+			}]
+		}]
 	}
-}]
-
-k: Secret: kratos: stringData: {
-	DSN:                         "postgres://kratos:kratos@postgres:5432/kratos"
-	COURIER_SMTP_CONNECTION_URI: "smtps://test:test@mailslurper:1025/?skip_ssl_verify=true"
-	SECRETS_COOKIE:              "PLEASE-CHANGE-ME-I-AM-VERY-INSECURE"
-	SECRETS_CIPHER:              "32-LONG-SECRET-NOT-SECURE-AT-ALL"
 }
 
-k: ConfigMap: "kratos-config": data: {
-	"kratos.yaml":        yaml.Marshal(config)
-	"person.schema.json": json.Marshal(schema)
-}
-
-let config = {
+_kratos_config: {
 	serve: {
 		public: {
-			base_url: "https://kratos.addem.se/api"
+			base_url: "https://\(_hostname)/api"
 			cors: enabled: false
 		}
 		admin: base_url: "http://kratos:4434/"
 	}
 
 	selfservice: {
-		default_browser_return_url: "https://kratos.addem.se/"
-		whitelisted_return_urls: ["https://kratos.addem.se/"]
+		default_browser_return_url: "https://\(_hostname)/"
+		whitelisted_return_urls: [
+			"https://\(_hostname)/",
+			"https://\(_hostname)/hydra/login",
+		]
 
 		methods: password: enabled: true
 
 		flows: {
-			error: ui_url: "https://kratos.addem.se/error"
+			error: ui_url: "https://\(_hostname)/error"
 
 			settings: {
-				ui_url:                     "https://kratos.addem.se/settings"
+				ui_url:                     "https://\(_hostname)/settings"
 				privileged_session_max_age: "15m"
 			}
 
 			recovery: {
 				enabled: true
-				ui_url:  "https://kratos.addem.se/recovery"
+				ui_url:  "https://\(_hostname)/recovery"
 			}
 
 			verification: {
 				enabled: true
-				ui_url:  "https://kratos.addem.se/verification"
-				after: default_browser_return_url: "https://kratos.addem.se/"
+				ui_url:  "https://\(_hostname)/verification"
+				after: default_browser_return_url: "https://\(_hostname)/"
 			}
 
-			logout: after: default_browser_return_url: "https://kratos.addem.se/"
+			logout: after: default_browser_return_url: "https://\(_hostname)/"
 
 			login: {
-				ui_url:   "https://kratos.addem.se/login"
+				ui_url:   "https://\(_hostname)/login"
 				lifespan: "10m"
 			}
 
 			registration: {
 				lifespan: "10m"
-				ui_url:   "https://kratos.addem.se/registration"
+				ui_url:   "https://\(_hostname)/registration"
 				after: password: hooks: [{hook: "session"}]
 			}
 		}
@@ -98,8 +105,8 @@ let config = {
 	identity: default_schema_url: "file:///etc/config/person.schema.json"
 }
 
-let schema = {
-	"$id":     "https://kratos.addem.se/person.schema.json"
+_person_schema: {
+	"$id":     "https://\(_hostname)/person.schema.json"
 	"$schema": "http://json-schema.org/draft-07/schema#"
 	"title":   "Person"
 	"type":    "object"
@@ -121,5 +128,21 @@ let schema = {
 			}
 			"additionalProperties": false
 		}
+	}
+}
+
+_hydra_config: {
+	existingSecret: ""
+	serve: {
+		admin: port:  4445
+		public: port: 4444
+		tls: allow_termination_from: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+	}
+	urls: {
+		self: issuer: "http://localhost:4444"
+		self: public: "http://localhost:4444"
+		consent: "https://\(_hostname)/hydra/consent"
+		login: "https://\(_hostname)/hydra/login"
+		logout: "https://\(_hostname)/logout"
 	}
 }

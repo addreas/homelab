@@ -34,4 +34,3 @@ k: Service: "kratos-courier": spec: {
 	}]
 }
 
-k: Ingress: "kratos-courier": {}

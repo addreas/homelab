@@ -1,23 +1,26 @@
 package kube
 
-k: Job: "kratos-migrate": spec: template: spec: {
-	restartPolicy: "OnFailure"
-	containers: [{
-		name:  "migrate"
-		image: "oryd/kratos:\(_kratosTag)"
-		command: ["kratos"]
-		args: [
-			"migrate",
-			"sql",
-			"-e",
-			"-y",
-		]
-		envFrom: [{secretRef: name: "kratos"}]
-	}]
+import (
+	"encoding/json"
+	"encoding/yaml"
+)
+
+_kratosTag: "v0.8.2"
+
+k: Secret: kratos: stringData: {
+	DSN:                         "postgres://kratos:kratos@postgres:5432/kratos"
+	COURIER_SMTP_CONNECTION_URI: "smtps://test:test@mailslurper:1025/?skip_ssl_verify=true"
+	SECRETS_COOKIE:              "PLEASE-CHANGE-ME-I-AM-VERY-INSECURE"
+	SECRETS_CIPHER:              "32-LONG-SECRET-NOT-SECURE-AT-ALL"
+}
+
+k: ConfigMap: "kratos-config": data: {
+	"kratos.yaml":        yaml.Marshal(_kratos_config)
+	"person.schema.json": json.Marshal(_person_schema)
 }
 
 k: Deployment: kratos: spec: template: spec: {
-	containers: [{
+	containers: [_probes & {
 		name:  "kratos"
 		image: "oryd/kratos:\(_kratosTag)"
 		command: ["kratos"]
@@ -35,14 +38,6 @@ k: Deployment: kratos: spec: template: spec: {
 			containerPort: 4433
 		}]
 		envFrom: [{secretRef: name: "kratos"}]
-		livenessProbe: httpGet: {
-		 path: "/health/alive"
-		 port: "http-admin"
-		}
-		readinessProbe: httpGet: {
-		 path: "/health/ready"
-		 port: "http-admin"
-		}
 		volumeMounts: [{
 			name:      "kratos-config-volume"
 			mountPath: "/etc/config"
@@ -71,4 +66,20 @@ k: Service: "kratos-public": spec: {
 		name:       "http"
 	}]
 	selector: app: "kratos"
+}
+
+k: Job: "kratos-migrate": spec: template: spec: {
+	restartPolicy: "OnFailure"
+	containers: [{
+		name:  "migrate"
+		image: "oryd/kratos:\(_kratosTag)"
+		command: ["kratos"]
+		args: [
+			"migrate",
+			"sql",
+			"-e",
+			"-y",
+		]
+		envFrom: [{secretRef: name: "kratos"}]
+	}]
 }

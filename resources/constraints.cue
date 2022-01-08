@@ -61,9 +61,9 @@ k: Ingress: [Name=string]: {
 			http: paths: _ | *[{
 				path:     _ | *"/"
 				pathType: _ | *"Prefix"
-				backend: service: {
-					name: _ | *"\(Name)"
-					port: number: _ | *k.Service[Name].spec.ports[0].port
+				backend: service: _ | *{
+					name: "\(Name)"
+					port: number: k.Service[Name].spec.ports[0].port
 				}
 			}, ...]
 		}, ...]

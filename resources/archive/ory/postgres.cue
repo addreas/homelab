@@ -17,7 +17,7 @@ k: StatefulSet: postgres: spec: {
 				mountPath: "/var/lib/postgresql"
 				subPath:   "data"
 			}, {
-				name: "init"
+				name:      "init"
 				mountPath: "/docker-entrypoint-initdb.d/"
 			}]
 		}]
