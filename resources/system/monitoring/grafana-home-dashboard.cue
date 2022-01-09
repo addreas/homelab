@@ -25,6 +25,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 	"editable":             true
 	"fiscalYearStartMonth": 0
 	"graphTooltip":         0
+	"id":                   32
 	"links": []
 	"liveNow": false
 	"panels": [
@@ -225,7 +226,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "rate(hass_sensor_unit_samples{entity=~\"sensor.yanzi_sample_counter_872855\"}[10m])"
+					"expr":         "sum without (pod, instance) (rate(hass_sensor_unit_samples{entity=~\"sensor.yanzi_sample_counter_872855\"}))"
 					"interval":     ""
 					"legendFormat": ""
 					"refId":        "A"
@@ -287,7 +288,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "hass_switch_state == 1"
+					"expr":         "sum without (pod, instance) (hass_switch_state == 1)"
 					"interval":     ""
 					"legendFormat": "{{ friendly_name }}"
 					"refId":        "A"
@@ -350,7 +351,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "topk(3, hass_sensor_energy_kwh)"
+					"expr":         "sum without (pod, instance) (topk(3, hass_sensor_energy_kwh))"
 					"interval":     ""
 					"legendFormat": "{{ friendly_name }}"
 					"refId":        "A"
@@ -426,7 +427,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "sort(hass_sensor_battery_percent{entity!~\".*battery_level\"} < 50)"
+					"expr":         "sum without (pod, instance) (sort(hass_sensor_battery_percent{entity!~\".*battery_level\"} < 50))"
 					"interval":     ""
 					"legendFormat": "{{ friendly_name }}"
 					"refId":        "A"
@@ -510,7 +511,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "{__name__=~\"hass_sensor_temperature_celsius|hass_sensor_unit_celsius\", entity!=\"sensor.in2023_battery_temperature\"}"
+					"expr":         "sum without (pod, instance) ({__name__=~\"hass_sensor_temperature_celsius|hass_sensor_unit_celsius\", entity!=\"sensor.in2023_battery_temperature\"})"
 					"interval":     ""
 					"legendFormat": "{{ friendly_name }}"
 					"refId":        "A"
@@ -583,6 +584,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 	}
 	"timezone":  "browser"
 	"title":     "Home"
-	"version":   0
+	"uid":       "T_LEgW1nz"
+	"version":   1
 	"weekStart": ""
 })
