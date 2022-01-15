@@ -156,7 +156,7 @@ k: GitRepository: "victoriametrics-operator": spec: {
 k: Kustomization: "victoriametrics-operator": spec: {
 	path:            "./config/default"
 	targetNamespace: "monitoring"
-	prune:           true
+	prune:           false
 	images: [{
 		name:   "victoriametrics/operator"
 		newTag: util.goModVersions["github.com/VictoriaMetrics/operator"]

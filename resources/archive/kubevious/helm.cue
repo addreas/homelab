@@ -1,5 +1,7 @@
 package kube
 
+k: [string]: [string]: metadata: namespace: "kubevious"
+
 k: HelmRepository: "kubevious": {
 	spec: {
 		interval: "1h"
