@@ -103,7 +103,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "hass_binary_sensor_state{entity=~\".*motion\"}"
+					"expr":         "sum without(pod, instance) (hass_binary_sensor_state{entity=~\".*motion\"})"
 					"interval":     ""
 					"legendFormat": "{{ friendly_name }}"
 					"refId":        "A"
