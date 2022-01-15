@@ -11,6 +11,7 @@ import (
 	_ "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
 	_ "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	_ "github.com/ory/hydra-maester/api/v1alpha1"
 	_ "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
 	_ "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	_ "k8s.io/api/apps/v1"
@@ -23,4 +24,5 @@ import (
 	_ "k8s.io/api/rbac/v1"
 	_ "k8s.io/api/storage/v1"
 	_ "k8s.io/apimachinery/pkg/apis/meta/v1"
+	_ "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 )

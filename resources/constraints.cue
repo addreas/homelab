@@ -72,6 +72,8 @@ k: Ingress: [Name=string]: {
 
 k: GrafanaDashboard: [string]: metadata: labels: grafana: "enabled"
 
+k: GitRepository: [string]: spec: interval: "1h"
+
 k: HelmRelease: [Name=string]: {
 	metadata: namespace: string
 	spec: {
@@ -94,4 +96,5 @@ k: Kustomization: [Name=string]: spec: {
 		kind: "GitRepository"
 		name: _ | *Name
 	}
+	prune: true
 }

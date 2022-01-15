@@ -55,13 +55,11 @@ _#debugReflectCall: false
 #SelectDir: int // #enumSelectDir
 
 #enumSelectDir:
-	_#_ |
 	#SelectSend |
 	#SelectRecv |
 	#SelectDefault
 
 #values_SelectDir: {
-	"_":           _#_
 	SelectSend:    #SelectSend
 	SelectRecv:    #SelectRecv
 	SelectDefault: #SelectDefault

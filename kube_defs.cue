@@ -12,6 +12,7 @@ import (
 	rbac_v1 "k8s.io/api/rbac/v1"
 	storage_v1 "k8s.io/api/storage/v1"
 	apiextensions_v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiregistration_v1 "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 
 	source_controller_v1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
 	kustomize_controller_v1beta2 "github.com/fluxcd/kustomize-controller/api/v1beta2"
@@ -33,6 +34,8 @@ import (
 	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
 
 	kpack_v1alpha2 "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
+
+	hydra_v1alpha1 "github.com/ory/hydra-maester/api/v1alpha1"
 )
 
 k: close({
@@ -100,7 +103,7 @@ _kubernetesAPIs: {
 
 	"apiextensions.k8s.io/v1": CustomResourceDefinition: apiextensions_v1.#CustomResourceDefinition
 
-	"apiregistration.k8s.io/v1": APIService: _
+	"apiregistration.k8s.io/v1": APIService: apiregistration_v1.#APIService
 
 	"source.toolkit.fluxcd.io/v1beta1": {
 		GitRepository:  source_controller_v1beta1.#GitRepository
@@ -158,4 +161,6 @@ _kubernetesAPIs: {
 		ImageBuilder:   kpack_v1alpha2.#ImageBuilder
 		SourceResolver: kpack_v1alpha2.#SourceResolver
 	}
+
+	"hydra.ory.sh": OAuth2Client: hydra_v1alpha1.#OAuth2Client
 }

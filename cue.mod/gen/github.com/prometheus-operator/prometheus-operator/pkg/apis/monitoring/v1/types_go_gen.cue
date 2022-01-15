@@ -821,6 +821,10 @@ import (
 
 	// MaxBackoff is the maximum retry delay.
 	maxBackoff?: string @go(MaxBackoff)
+
+	// Retry upon receiving a 429 status code from the remote-write storage.
+	// This is experimental feature and might change in the future.
+	retryOnRateLimit?: bool @go(RetryOnRateLimit)
 }
 
 // Sigv4 optionally configures AWS's Signature Verification 4 signing process to
@@ -860,6 +864,11 @@ import (
 
 	// Timeout for requests to the remote read endpoint.
 	remoteTimeout?: string @go(RemoteTimeout)
+
+	// Custom HTTP headers to be sent along with each remote read request.
+	// Be aware that headers that are set by Prometheus itself can't be overwritten.
+	// Only valid in Prometheus versions 2.26.0 and newer.
+	headers?: {[string]: string} @go(Headers,map[string]string)
 
 	// Whether reads should be made for queries for time ranges that
 	// the local storage should have complete data for.
@@ -1501,7 +1510,7 @@ import (
 // RuleGroup is a list of sequentially evaluated recording and alerting rules.
 // Note: PartialResponseStrategy is only used by ThanosRuler and will
 // be ignored by Prometheus instances.  Valid values for this field are 'warn'
-// or 'abort'.  More info: https://github.com/thanos-io/thanos/blob/master/docs/components/rule.md#partial-response
+// or 'abort'.  More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 // +k8s:openapi-gen=true
 #RuleGroup: {
 	name:      string @go(Name)
