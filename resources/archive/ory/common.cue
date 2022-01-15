@@ -132,7 +132,6 @@ _person_schema: {
 }
 
 _hydra_config: {
-	existingSecret: ""
 	serve: {
 		admin: port:  4445
 		public: port: 4444
