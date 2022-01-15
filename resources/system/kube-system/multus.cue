@@ -15,7 +15,7 @@ k: GitRepository: "multus-cni": spec: {
 k: Kustomization: "multus-cni": spec: {
 	interval: "1h"
 	path:     "./images"
-	prune:    true
+	prune:    false // If this gets accidentally pruned things get very sad
 	sourceRef: {
 		kind: "GitRepository"
 		name: "multus-cni"

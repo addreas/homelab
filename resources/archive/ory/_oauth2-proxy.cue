@@ -1,6 +1,10 @@
 package kube
 
-k: OAuth2Client: "oauth2-proxy": spec: {}
+k: OAuth2Client: "oauth2-proxy": spec: {
+	clientName: "oauth2-proxy"
+	redirectUris: ["http://oauth2-proxy.addem.se/*"]
+	secretName: "oauth2-proxy-client-credentials"
+}
 
 k: Deployment: "oauth2-proxy": spec: template: spec: containers: [{
 	name: "proxy"
@@ -10,7 +14,7 @@ k: Deployment: "oauth2-proxy": spec: template: spec: containers: [{
 		"--provider-display-name Louset",
 		"--client-id oauth2-proxy",
 		"--client-secret $(CLIENT_SECRET)",
-		"--redirect-url http://127.0.0.1:4180/oauth2/callback",
+		"--redirect-url=https://oauth2-proxy.addem.se/oauth2/callback",
 		"--oidc-issuer-url http://127.0.0.1:5556/dex",
 		"--cookie-secure=true",
 		"--cookie-secret=secret",
@@ -21,7 +25,7 @@ k: Deployment: "oauth2-proxy": spec: template: spec: containers: [{
 	env: [{
 		name: "CLIENT_SECRET",
 		valueFrom: secretKeyRef: {
-			name: "oauth2-proxy-client-secret"
+			name: "oauth2-proxy-client-credentials"
 			key: "secret"
 		}
 	}]

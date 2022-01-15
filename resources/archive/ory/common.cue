@@ -12,7 +12,7 @@ k: Ingress: "ory": {
 		rules: [{
 			host: _hostname
 			http: paths: [{
-				path:     "/api"
+				path:     "/kratos"
 				pathType: "Prefix"
 				backend: service: {
 					name: "kratos-public"
@@ -20,6 +20,13 @@ k: Ingress: "ory": {
 				}
 			}, {
 				path:     "/hydra"
+				pathType: "Prefix"
+				backend: service: {
+					name: "hydra-public"
+					port: name: "http"
+				}
+			}, {
+				path:     "/hydra-consent"
 				pathType: "Prefix"
 				backend: service: {
 					name: "hydra-login-consent-node"
@@ -40,7 +47,7 @@ k: Ingress: "ory": {
 _kratos_config: {
 	serve: {
 		public: {
-			base_url: "https://\(_hostname)/api"
+			base_url: "https://\(_hostname)/kratos"
 			cors: enabled: false
 		}
 		admin: base_url: "http://kratos:4434/"
@@ -50,7 +57,7 @@ _kratos_config: {
 		default_browser_return_url: "https://\(_hostname)/"
 		whitelisted_return_urls: [
 			"https://\(_hostname)/",
-			"https://\(_hostname)/hydra/login",
+			"https://\(_hostname)/hydra-consent/login",
 		]
 
 		methods: password: enabled: true
@@ -138,10 +145,10 @@ _hydra_config: {
 		tls: allow_termination_from: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 	}
 	urls: {
-		self: issuer: "http://localhost:4444"
-		self: public: "http://localhost:4444"
-		consent: "https://\(_hostname)/hydra/consent"
-		login: "https://\(_hostname)/hydra/login"
+		self: issuer: "https://\(_hostname)/hydra"
+		self: public: "https://\(_hostname)/hydra"
+		consent: "https://\(_hostname)/hydra-consent/consent"
+		login: "https://\(_hostname)/hydra-consent/login"
 		logout: "https://\(_hostname)/logout"
 	}
 }

@@ -9,7 +9,7 @@ k: GitRepository: "flux-components": spec: {
 k: Kustomization: "flux-components": spec: {
 	interval: "1h"
 	path:     "./manifests/install"
-	prune:    true
+	prune:    false // if this gets pruned things get messy
 	sourceRef: {
 		kind: "GitRepository"
 		name: "flux-components"
@@ -25,7 +25,7 @@ k: GitRepository: "cuebuild-controller": spec: {
 k: Kustomization: "cuebuild-controller": spec: {
 	interval: "1h"
 	path:     "./config/default"
-	prune:    true
+	prune:    false // dont prune this either
 	sourceRef: {
 		kind: "GitRepository"
 		name: "cuebuild-controller"
