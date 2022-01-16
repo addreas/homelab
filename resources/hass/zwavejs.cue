@@ -18,7 +18,7 @@ k: StatefulSet: "hass-zwavejs": {
 					}, {
 						name:      "store-settings-json"
 						mountPath: "/static/usr/src/app/store/settings.json"
-
+						subPath:   "settings.json"
 					}]
 				}]
 				containers: [{
