@@ -145,8 +145,8 @@ _hydra_config: {
 		tls: allow_termination_from: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 	}
 	urls: {
-		self: issuer: "https://\(_hostname)/hydra"
-		self: public: "https://\(_hostname)/hydra"
+		self: issuer: "https://\(_hostname)/hydra/"
+		self: public: "https://\(_hostname)/hydra/"
 		consent: "https://\(_hostname)/hydra-consent/consent"
 		login: "https://\(_hostname)/hydra-consent/login"
 		logout: "https://\(_hostname)/logout"

@@ -63,7 +63,7 @@ k: Deployment: "hydra-maester": spec: template: spec: {
 		args: [
 			"--metrics-addr=127.0.0.1:8080",
 			"--hydra-url=http://hydra-admin",
-			"--hydra-port=4445",
+			"--hydra-port=80",
 		]
 	}]
 	serviceAccountName:           "hydra-maester"

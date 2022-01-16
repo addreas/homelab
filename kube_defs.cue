@@ -162,5 +162,5 @@ _kubernetesAPIs: {
 		SourceResolver: kpack_v1alpha2.#SourceResolver
 	}
 
-	"hydra.ory.sh": OAuth2Client: hydra_v1alpha1.#OAuth2Client
+	"hydra.ory.sh/v1alpha1": OAuth2Client: hydra_v1alpha1.#OAuth2Client
 }

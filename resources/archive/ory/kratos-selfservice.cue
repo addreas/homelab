@@ -19,7 +19,7 @@ k: Service: "kratos-selfservice-ui-node": spec: ports: [{
 
 k: ConfigMap: "kratos-selfservice-ui-node": data: {
 	BASE_URL:           _hostname
-	KRATOS_BROWSER_URL: "https://\(_hostname)/api"
+	KRATOS_BROWSER_URL: "https://\(_hostname)/kratos"
 	KRATOS_ADMIN_URL:   "http://kratos-admin/"
 	KRATOS_PUBLIC_URL:  "http://kratos-public/"
 }
