@@ -20,7 +20,7 @@ k: Deployment: "periserve": {
 				}]
 				containers: [{
 					name:  "periserve"
-					image: "ghcr.io/jonasdahl/periserve:main"
+					image: "ghcr.io/jonasdahl/periserve:\(periserveVersion)"
 					env: [{
 						name:  "SESSION_SECRET"
 						value: "ABCDEF1234567890"
