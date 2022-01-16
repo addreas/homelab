@@ -3,6 +3,7 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/addreas/homelab/util"
 )
 
 k: StatefulSet: "hass-zwavejs": {
@@ -10,6 +11,16 @@ k: StatefulSet: "hass-zwavejs": {
 		template: {
 			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 			spec: {
+				initContainers: [util.copyStatic & {
+					volumeMounts: [{
+						name:      "config"
+						mountPath: "/usr/src/app/store"
+					}, {
+						name:      "store-settings-json"
+						mountPath: "/static/usr/src/app/store/settings.json"
+
+					}]
+				}]
 				containers: [{
 					name:  "zwavejs"
 					image: "zwavejs/zwavejs2mqtt:6.4.0"
@@ -25,16 +36,13 @@ k: StatefulSet: "hass-zwavejs": {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/usr/src/app/store"
-					}, {
-						name:      "store-settings-json"
-						mountPath: "/usr/src/app/store/settings.json"
-						subPath:   "settings.json"
+					// }, {
+					// 	name:      "store-settings-json"
+					// 	mountPath: "/usr/src/app/store/settings.json"
+					// 	subPath:   "settings.json"
 					}]
 				}]
 				volumes: [{
-					name: "config"
-					emptyDir: {}
-				}, {
 					name: "store-settings-json"
 					configMap: name: "zwave-js-settings-json"
 				}]
