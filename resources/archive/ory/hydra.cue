@@ -47,7 +47,7 @@ k: Deployment: hydra: spec: template: spec: {
 k: Service: "hydra-admin": spec: {
 	type: "ClusterIP"
 	ports: [{
-		port:       4445
+		port:       80
 		targetPort: "http-admin"
 		name:       "http"
 	}]
@@ -57,7 +57,7 @@ k: Service: "hydra-admin": spec: {
 k: Service: "hydra-public": spec: {
 	type: "ClusterIP"
 	ports: [{
-		port:       4444
+		port:       80
 		targetPort: "http-public"
 		name:       "http"
 	}]
