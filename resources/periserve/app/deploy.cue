@@ -6,8 +6,8 @@ k: Deployment: "periserve": {
 		template: {
 			spec: {
 				initContainers: [{
-					name:  "migrations"
-					image: "ghcr.io/jonasdahl/periserve:main"
+					name:            "migrations"
+					image:           "ghcr.io/jonasdahl/periserve:\(periserveVersion)"
 					imagePullPolicy: "Always"
 					env: [{
 						name:  "SESSION_SECRET"
@@ -30,7 +30,7 @@ k: Deployment: "periserve": {
 					}]
 					ports: [{containerPort: 3000}]
 				}]
-                imagePullSecrets: [{name: "periserve-ghcr"}]
+				imagePullSecrets: [{name: "periserve-ghcr"}]
 			}
 		}
 	}

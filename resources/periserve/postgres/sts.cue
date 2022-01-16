@@ -7,9 +7,9 @@ k: StatefulSet: postgres: spec: {
 			name:  "postgres"
 			image: "postgres:14"
 			env: [
-				{name:"POSTGRES_USER",value:"johndoe"},
-				{name:"POSTGRES_PASSWORD",value:"randompasswordright"},
-				{name:"POSTGRES_DB",value:"mydb"},
+				{name: "POSTGRES_USER", value:     "johndoe"},
+				{name: "POSTGRES_PASSWORD", value: "randompasswordright"},
+				{name: "POSTGRES_DB", value:       "mydb"},
 			]
 			ports: [{containerPort: 5432}]
 			readinessProbe: tcpSocket: port: 5432

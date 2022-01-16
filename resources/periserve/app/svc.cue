@@ -13,7 +13,7 @@ let HttpBackend = {
 
 k: Ingress: periserve: {
 	metadata: annotations: {
-		"cert-manager.io/cluster-issuer": "periserve-letsencrypt"
+		"cert-manager.io/cluster-issuer":     "periserve-letsencrypt"
 		"ingress.kubernetes.io/ssl-redirect": "true"
 	}
 	spec: {
@@ -25,10 +25,10 @@ k: Ingress: periserve: {
 			secretName: "periserve-se-cert"
 		}]
 		rules: [
-			{ host: "periserve.se", http: HttpBackend }, 
-			{ host: "www.periserve.se", http: HttpBackend }, 
-			{ host: "periserve.com", http: HttpBackend }, 
-			{ host: "www.periserve.com", http: HttpBackend }, 
+			{host: "periserve.se", http:      HttpBackend},
+			{host: "www.periserve.se", http:  HttpBackend},
+			{host: "periserve.com", http:     HttpBackend},
+			{host: "www.periserve.com", http: HttpBackend},
 		]
 	}
 }
