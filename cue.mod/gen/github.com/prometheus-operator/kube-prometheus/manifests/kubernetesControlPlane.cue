@@ -167,7 +167,7 @@ kubernetesControlPlane: {
 					     !=
 					    0
 					  ) or (
-					    kube_daemonset_updated_number_scheduled{job="kube-state-metrics"}
+					    kube_daemonset_status_updated_number_scheduled{job="kube-state-metrics"}
 					     !=
 					    kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
 					  ) or (
@@ -176,7 +176,7 @@ kubernetesControlPlane: {
 					    kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
 					  )
 					) and (
-					  changes(kube_daemonset_updated_number_scheduled{job="kube-state-metrics"}[5m])
+					  changes(kube_daemonset_status_updated_number_scheduled{job="kube-state-metrics"}[5m])
 					    ==
 					  0
 					)
@@ -1620,6 +1620,18 @@ kubernetesControlPlane: {
 
 					"""
 				labels: workload_type: "statefulset"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    kube_pod_owner{job="kube-state-metrics", owner_kind="Job"},
+					    "workload", "$1", "owner_name", "(.*)"
+					  )
+					)
+
+					"""
+				labels: workload_type: "job"
 				record: "namespace_workload_pod:kube_pod_owner:relabel"
 			}]
 		}, {
