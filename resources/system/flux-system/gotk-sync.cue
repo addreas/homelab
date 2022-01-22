@@ -21,7 +21,7 @@ k: CueBuild: "homelab": spec: {
 		"./resources/system/longhorn-system",
 		"./resources/system/monitoring",
 	]
-	prune: true
+	prune: false
 	sourceRef: {
 		kind: "GitRepository"
 		name: "homelab"
