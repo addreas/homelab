@@ -43,6 +43,9 @@ package models
 	// Status of transparent encryption
 	encryption?: null | #EncryptionStatus @go(Encryption,*EncryptionStatus)
 
+	// Status of the host firewall
+	"host-firewall"?: null | #HostFirewall @go(HostFirewall,*HostFirewall)
+
 	// Status of host routing
 	"host-routing"?: null | #HostRouting @go(HostRouting,*HostRouting)
 

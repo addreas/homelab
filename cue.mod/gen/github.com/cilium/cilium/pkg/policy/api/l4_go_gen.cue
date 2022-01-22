@@ -12,10 +12,14 @@ import "github.com/cilium/cilium/pkg/policy/api/kafka"
 #enumL4Proto:
 	#ProtoTCP |
 	#ProtoUDP |
+	#ProtoICMP |
+	#ProtoICMPv6 |
 	#ProtoAny
 
 #ProtoTCP:        #L4Proto & "TCP"
 #ProtoUDP:        #L4Proto & "UDP"
+#ProtoICMP:       #L4Proto & "ICMP"
+#ProtoICMPv6:     #L4Proto & "ICMPV6"
 #ProtoAny:        #L4Proto & "ANY"
 #PortProtocolAny: "0/ANY"
 

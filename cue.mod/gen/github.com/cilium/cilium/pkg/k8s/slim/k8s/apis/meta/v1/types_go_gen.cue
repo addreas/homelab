@@ -131,6 +131,15 @@ import "k8s.io/apimachinery/pkg/types"
 	// More info: http://kubernetes.io/docs/user-guide/annotations
 	// +optional
 	annotations?: {[string]: string} @go(Annotations,map[string]string) @protobuf(12,bytes,rep)
+
+	// List of objects depended by this object. If ALL objects in the list have
+	// been deleted, this object will be garbage collected. If this object is managed by a controller,
+	// then an entry in this list will point to this controller, with the controller field set to true.
+	// There cannot be more than one managing controller.
+	// +optional
+	// +patchMergeKey=uid
+	// +patchStrategy=merge
+	ownerReferences?: [...#OwnerReference] @go(OwnerReferences,[]OwnerReference) @protobuf(13,bytes,rep)
 }
 
 // NamespaceDefault means the object is in the default namespace which is applied when not specified by clients
@@ -147,6 +156,20 @@ import "k8s.io/apimachinery/pkg/types"
 
 // NamespacePublic is the namespace where we place public info (ConfigMaps)
 #NamespacePublic: "kube-public"
+
+// OwnerReference contains enough information to let you identify an owning
+// object. An owning object must be in the same namespace as the dependent, or
+// be cluster-scoped, so there is no namespace field.
+// +structType=atomic
+#OwnerReference: {
+	// Kind of the referent.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	kind: string @go(Kind) @protobuf(1,bytes,opt)
+
+	// Name of the referent.
+	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	name: string @go(Name) @protobuf(3,bytes,opt)
+}
 
 // A label selector is a label query over a set of resources. The result of matchLabels and
 // matchExpressions are ANDed. An empty label selector matches all objects. A null

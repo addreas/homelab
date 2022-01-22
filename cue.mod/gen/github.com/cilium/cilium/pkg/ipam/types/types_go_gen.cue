@@ -96,6 +96,11 @@ import "github.com/cilium/cilium/pkg/cidr"
 	"max-above-watermark"?: int @go(MaxAboveWatermark)
 }
 
+// IPReleaseStatus  defines the valid states in IP release handshake
+//
+// +kubebuilder:validation:Enum=marked-for-release;ready-for-release;do-not-release;released
+#IPReleaseStatus: string
+
 // IPAMStatus is the IPAM status of a node
 //
 // This structure is embedded into v2.CiliumNode
@@ -110,6 +115,16 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +optional
 	"operator-status"?: #OperatorStatus @go(OperatorStatus)
+
+	// ReleaseIPs tracks the state for every IP considered for release.
+	// value can be one of the following string :
+	// * marked-for-release : Set by operator as possible candidate for IP
+	// * ready-for-release  : Acknowledged as safe to release by agent
+	// * do-not-release     : IP already in use / not owned by the node. Set by agent
+	// * released           : IP successfully released. Set by operator
+	//
+	// +optional
+	"release-ips"?: {[string]: #IPReleaseStatus} @go(ReleaseIPs,map[string]IPReleaseStatus)
 }
 
 // OperatorStatus is the status used by cilium-operator to report

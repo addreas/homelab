@@ -4,7 +4,8 @@
 
 package api
 
-_#maxPorts: 40
+_#maxPorts:      40
+_#maxICMPFields: 40
 
 _#exists: {
 }

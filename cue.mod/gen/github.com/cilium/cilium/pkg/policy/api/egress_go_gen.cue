@@ -149,6 +149,16 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	toFQDNs?: #FQDNSelectorSlice @go(ToFQDNs)
+
+	// ICMPs is a list of ICMP rule identified by type number
+	// which the endpoint subject to the rule is allowed to connect to.
+	//
+	// Example:
+	// Any endpoint with the label "app=httpd" is allowed to initiate
+	// type 8 ICMP connections.
+	//
+	// +kubebuilder:validation:Optional
+	icmps?: #ICMPRules @go(ICMPs)
 }
 
 // EgressDenyRule contains all rule types which can be applied at egress, i.e.
@@ -179,4 +189,14 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	toPorts?: #PortDenyRules @go(ToPorts)
+
+	// ICMPs is a list of ICMP rule identified by type number
+	// which the endpoint subject to the rule is not allowed to connect to.
+	//
+	// Example:
+	// Any endpoint with the label "app=httpd" is not allowed to initiate
+	// type 8 ICMP connections.
+	//
+	// +kubebuilder:validation:Optional
+	icmps?: #ICMPRules @go(ICMPs)
 }

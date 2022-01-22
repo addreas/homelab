@@ -8,7 +8,7 @@ package api
 // individual identities.  Entities are used to describe "outside of cluster",
 // "host", etc.
 //
-// +kubebuilder:validation:Enum=all;world;cluster;host;init;unmanaged;remote-node;health;none
+// +kubebuilder:validation:Enum=all;world;cluster;host;init;unmanaged;remote-node;health;none;kube-apiserver
 #Entity: string // #enumEntity
 
 #enumEntity:
@@ -20,7 +20,8 @@ package api
 	#EntityUnmanaged |
 	#EntityRemoteNode |
 	#EntityHealth |
-	#EntityNone
+	#EntityNone |
+	#EntityKubeAPIServer
 
 // EntityAll is an entity that represents all traffic
 #EntityAll: #Entity & "all"
@@ -50,6 +51,9 @@ package api
 
 // EntityNone is an entity that can be selected but never exist
 #EntityNone: #Entity & "none"
+
+// EntityNone is an entity that represents the kube-apiserver.
+#EntityKubeAPIServer: #Entity & "kube-apiserver"
 
 // EntitySlice is a slice of entities
 #EntitySlice: [...#Entity]

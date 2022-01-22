@@ -65,6 +65,9 @@ package models
 	// external i ps
 	externalIPs?: null | #KubeProxyReplacementFeaturesExternalIPs @go(ExternalIPs,*KubeProxyReplacementFeaturesExternalIPs)
 
+	// graceful termination
+	gracefulTermination?: null | #KubeProxyReplacementFeaturesGracefulTermination @go(GracefulTermination,*KubeProxyReplacementFeaturesGracefulTermination)
+
 	// host port
 	hostPort?: null | #KubeProxyReplacementFeaturesHostPort @go(HostPort,*KubeProxyReplacementFeaturesHostPort)
 
@@ -84,6 +87,16 @@ package models
 //
 // swagger:model KubeProxyReplacementFeaturesExternalIPs
 #KubeProxyReplacementFeaturesExternalIPs: {
+	// enabled
+	enabled?: bool @go(Enabled)
+}
+
+// KubeProxyReplacementFeaturesGracefulTermination
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesGracefulTermination
+#KubeProxyReplacementFeaturesGracefulTermination: {
 	// enabled
 	enabled?: bool @go(Enabled)
 }

@@ -98,6 +98,17 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	toPorts?: #PortRules @go(ToPorts)
+
+	// ICMPs is a list of ICMP rule identified by type number
+	// which the endpoint subject to the rule is allowed to
+	// receive connections on.
+	//
+	// Example:
+	// Any endpoint with the label "app=httpd" can only accept incoming
+	// type 8 ICMP connections.
+	//
+	// +kubebuilder:validation:Optional
+	icmps?: #ICMPRules @go(ICMPs)
 }
 
 // IngressDenyRule contains all rule types which can be applied at ingress,
@@ -128,4 +139,15 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	toPorts?: #PortDenyRules @go(ToPorts)
+
+	// ICMPs is a list of ICMP rule identified by type number
+	// which the endpoint subject to the rule is not allowed to
+	// receive connections on.
+	//
+	// Example:
+	// Any endpoint with the label "app=httpd" can not accept incoming
+	// type 8 ICMP connections.
+	//
+	// +kubebuilder:validation:Optional
+	icmps?: #ICMPRules @go(ICMPs)
 }

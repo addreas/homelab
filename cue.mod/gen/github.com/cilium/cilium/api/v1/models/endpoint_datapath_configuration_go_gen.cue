@@ -8,6 +8,10 @@ package models
 //
 // swagger:model EndpointDatapathConfiguration
 #EndpointDatapathConfiguration: {
+	// Disable source IP verification for the endpoint.
+	//
+	"disable-sip-verification"?: bool @go(DisableSipVerification)
+
 	// Indicates that IPAM is done external to Cilium. This will prevent the IP from being released and re-allocation of the IP address is skipped on restore.
 	//
 	"external-ipam"?: bool @go(ExternalIpam)

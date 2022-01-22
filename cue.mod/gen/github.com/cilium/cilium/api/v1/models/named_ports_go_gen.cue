@@ -8,6 +8,7 @@ package models
 // Policy specs.
 //
 // +deepequal-gen=true
+// +k8s:deepcopy-gen=true
 //
 // swagger:model NamedPorts
 #NamedPorts: [...null | #Port]

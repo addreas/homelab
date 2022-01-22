@@ -14,6 +14,9 @@ package models
 	// addressing
 	addressing?: null | #NodeAddressing @go(Addressing,*NodeAddressing)
 
+	// Config map which contains all the active daemon configurations
+	daemonConfigurationMap?: {...} @go(DaemonConfigurationMap,map[string]interface{})
+
 	// datapath mode
 	datapathMode?: #DatapathMode @go(DatapathMode)
 

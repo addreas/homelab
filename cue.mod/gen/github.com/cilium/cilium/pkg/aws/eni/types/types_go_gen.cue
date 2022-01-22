@@ -83,6 +83,12 @@ package types
 	// +kubebuilder:validation:Optional
 	"security-group-tags"?: {[string]: string} @go(SecurityGroupTags,map[string]string)
 
+	// SubnetIDs is the list of subnet ids to use when evaluating what AWS
+	// subnets to use for ENI and IP allocation.
+	//
+	// +kubebuilder:validation:Optional
+	"subnet-ids"?: [...string] @go(SubnetIDs,[]string)
+
 	// SubnetTags is the list of tags to use when evaluating what AWS
 	// subnets to use for ENI and IP allocation.
 	//
