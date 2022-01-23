@@ -1,4 +1,4 @@
 package kube
 
-periserveVersion: "52b8af56ae75aaefb878b9f6ac852a845df68873"
+periserveVersion: "bb20c7d230da2af38a057fed982a23e2356eeac1"
 
