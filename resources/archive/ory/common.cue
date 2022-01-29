@@ -2,7 +2,7 @@ package kube
 
 _hostname: "ory.addem.se"
 
-k: Ingress: "ory": {
+_k: Ingress: "ory": {
 	metadata: annotations: "ingress.kubernetes.io/rewrite-target": "/"
 	spec: {
 		tls: [{
@@ -26,17 +26,24 @@ k: Ingress: "ory": {
 					port: name: "http"
 				}
 			}, {
-				path:     "/hydra-consent"
-				pathType: "Prefix"
+				path:     "/hydra/consent"
+				pathType: "Exact"
 				backend: service: {
-					name: "hydra-login-consent-node"
+					name: "lauset"
+					port: name: "http"
+				}
+			}, {
+				path:     "/hydra/login"
+				pathType: "Exact"
+				backend: service: {
+					name: "lauset"
 					port: name: "http"
 				}
 			}, {
 				path:     "/"
 				pathType: "Prefix"
 				backend: service: {
-					name: "kratos-selfservice-ui-node"
+					name: "lauset"
 					port: name: "http"
 				}
 			}]
@@ -57,7 +64,7 @@ _kratos_config: {
 		default_browser_return_url: "https://\(_hostname)/"
 		whitelisted_return_urls: [
 			"https://\(_hostname)/",
-			"https://\(_hostname)/hydra-consent/login",
+			"https://\(_hostname)/hydra/login",
 		]
 
 		methods: password: enabled: true
@@ -147,8 +154,8 @@ _hydra_config: {
 	urls: {
 		self: issuer: "https://\(_hostname)/hydra/"
 		self: public: "https://\(_hostname)/hydra/"
-		consent: "https://\(_hostname)/hydra-consent/consent"
-		login: "https://\(_hostname)/hydra-consent/login"
+		consent: "https://\(_hostname)/hydra/consent"
+		login: "https://\(_hostname)/hydra/login"
 		logout: "https://\(_hostname)/logout"
 	}
 }
