@@ -48,7 +48,7 @@ command: kubeconfig: task: {
 			kind:       "Config"
 			clusters: [{
 				name: "nucles"
-				clusters: {
+				cluster: {
 					"certificate-authority-data": ca
 					server:                       "https://nucles.localdomain:6443"
 				}
@@ -56,8 +56,12 @@ command: kubeconfig: task: {
 			contexts: [{
 				name:      "nucles"
 				namespace: "default"
-				user:      saName
+				context: {
+					cluster: "nucles"
+					user:    saName
+				}
 			}]
+			"current-context": "nucles"
 			users: [{
 				name: saName
 				user: "token": "\(token)"
