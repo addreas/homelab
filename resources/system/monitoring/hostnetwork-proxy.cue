@@ -3,10 +3,6 @@ package kube
 import "strings"
 
 let services = {
-	kubelet: {
-		port: 10250
-		paths: ["/metrics", "/metrics/cadvisor", "/metrics/probes"]
-	}
 	"kube-scheduler": {
 		port: 10259
 		paths: ["/metrics"]
@@ -28,10 +24,14 @@ k: DaemonSet: "control-plane-metrics-rbac-proxy": {
 			args: [
 				"--logtostderr",
 				"--allow-paths=\(strings.Join(p.paths, ","))",
-				"--secure-listen-address=:\(p.port)",
+				"--secure-listen-address=[$(IP)]:\(p.port)",
 				"--upstream=https://127.0.0.1:\(p.port)/",
 				"--upstream-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
 			]
+			env: [{
+				name: "IP"
+				valueFrom: fieldRef: fieldPath: "status.podIP"
+			}]
 		}]
 	}
 }
@@ -85,7 +85,7 @@ k: ClusterRoleBinding: "control-plane-metrics-rbac-proxy": {
 }
 
 k: ClusterRole: "metrics-getter": rules: [{
-	nonResourceURLs: ["/metrics", "/metrics/cadvisor", "/metrics/probes"]
+	nonResourceURLs: ["/metrics"]
 	verbs: ["get"]
 }]
 
