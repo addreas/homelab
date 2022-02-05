@@ -13,7 +13,6 @@ k: GitRepository: "kube-vip-cloud-provider": spec: {
 k: Kustomization: "kube-vip-cloud-provider": spec: {
 	interval: "1h"
 	path:     "./manifest"
-	prune:    true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "kube-vip-cloud-provider"

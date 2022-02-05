@@ -9,7 +9,6 @@ k: GitRepository: homelab: spec: {
 k: Kustomization: kpack: spec: {
 	interval: "1h"
 	path:     "./resources/system/kpack"
-	prune:    true
 	sourceRef: {
 		kind: "GitRepository"
 		name: "homelab"

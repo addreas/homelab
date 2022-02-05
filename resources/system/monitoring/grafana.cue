@@ -79,7 +79,6 @@ k: Kustomization: "grafana-operator": spec: {
 	}]
 	interval:        "30m"
 	path:            "./config/default"
-	prune:           true
 	targetNamespace: "monitoring"
 	patches: [{
 		target: {
