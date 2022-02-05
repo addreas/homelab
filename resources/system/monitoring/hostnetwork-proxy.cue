@@ -1,7 +1,5 @@
 package kube
 
-import "strings"
-
 let services = {
 	"kube-scheduler": {
 		port: 10259
@@ -13,21 +11,14 @@ let services = {
 	}
 }
 
-k: DaemonSet: "control-plane-metrics-rbac-proxy": {
+k: DaemonSet: "control-plane-metrics-proxy": {
 	metadata: namespace: "kube-system"
 	spec: template: spec: {
 		hostNetwork:        true
-		serviceAccountName: "control-plane-metrics-rbac-proxy"
 		containers: [ for n, p in services {
 			name:  n
-			image: "quay.io/brancz/kube-rbac-proxy:v0.11.0"
-			args: [
-				"--logtostderr",
-				"--allow-paths=\(strings.Join(p.paths, ","))",
-				"--secure-listen-address=[$(IP)]:\(p.port)",
-				"--upstream=https://127.0.0.1:\(p.port)/",
-				"--upstream-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
-			]
+			image: "alpine/socat"
+			args: ["tcp-listen:\(p.port),bind=$(IP),fork,reuseaddr", "tcp-connect:127.0.0.1:\(p.port)"]
 			env: [{
 				name: "IP"
 				valueFrom: fieldRef: fieldPath: "status.podIP"
@@ -47,7 +38,7 @@ k: Service: {
 				namespace: "kube-system"
 			}
 			spec: {
-				selector: app: "control-plane-metrics-rbac-proxy"
+				selector: app: "control-plane-metrics-proxy"
 				ports: [{
 					name: "https-metrics"
 					port: p.port
@@ -55,49 +46,4 @@ k: Service: {
 			}
 		}
 	}
-}
-
-k: ServiceAccount: "control-plane-metrics-rbac-proxy": {
-	metadata: namespace: "kube-system"
-}
-
-k: ClusterRole: "control-plane-metrics-rbac-proxy": rules: [{
-	apiGroups: ["authentication.k8s.io"]
-	resources: ["tokenreviews"]
-	verbs: ["create"]
-}, {
-	apiGroups: ["authorization.k8s.io"]
-	resources: ["subjectaccessreviews"]
-	verbs: ["create"]
-}]
-
-k: ClusterRoleBinding: "control-plane-metrics-rbac-proxy": {
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "ClusterRole"
-		name:     "control-plane-metrics-rbac-proxy"
-	}
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "control-plane-metrics-rbac-proxy"
-		namespace: "kube-system"
-	}]
-}
-
-k: ClusterRole: "metrics-getter": rules: [{
-	nonResourceURLs: ["/metrics"]
-	verbs: ["get"]
-}]
-
-k: ClusterRoleBinding: "vmagent-main-metrics-getter": {
-	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "ClusterRole"
-		name:     "metrics-getter"
-	}
-	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "vmagent-main"
-		namespace: "monitoring"
-	}]
 }
