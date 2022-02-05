@@ -16,7 +16,7 @@ k: StatefulSet: "hass-yanzi-to-homeassistant-mqtt": {
 					}, {
 						name:  "CIRRUS_HOST"
 						value: "eu.yanzi.cloud"
-					}, { 	
+					}, {
 						name:  "LOG_LEVEL"
 						value: "debug"
 					}]

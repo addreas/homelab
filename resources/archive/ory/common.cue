@@ -2,7 +2,7 @@ package kube
 
 _hostname: "ory.addem.se"
 
-_k: Ingress: "ory": {
+k: Ingress: "ory": {
 	metadata: annotations: "ingress.kubernetes.io/rewrite-target": "/"
 	spec: {
 		tls: [{
@@ -25,6 +25,26 @@ _k: Ingress: "ory": {
 					name: "hydra-public"
 					port: name: "http"
 				}
+			}]
+		}]
+	}
+}
+
+k: Ingress: "lauset": {
+	spec: {
+		tls: [{
+			hosts: [_hostname]
+			secretName: "ory-cert"
+		}]
+		rules: [{
+			host: _hostname
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "lauset"
+					port: name: "http"
+				}
 			}, {
 				path:     "/hydra/consent"
 				pathType: "Exact"
@@ -35,13 +55,6 @@ _k: Ingress: "ory": {
 			}, {
 				path:     "/hydra/login"
 				pathType: "Exact"
-				backend: service: {
-					name: "lauset"
-					port: name: "http"
-				}
-			}, {
-				path:     "/"
-				pathType: "Prefix"
 				backend: service: {
 					name: "lauset"
 					port: name: "http"
@@ -155,7 +168,7 @@ _hydra_config: {
 		self: issuer: "https://\(_hostname)/hydra/"
 		self: public: "https://\(_hostname)/hydra/"
 		consent: "https://\(_hostname)/hydra/consent"
-		login: "https://\(_hostname)/hydra/login"
-		logout: "https://\(_hostname)/logout"
+		login:   "https://\(_hostname)/hydra/login"
+		logout:  "https://\(_hostname)/logout"
 	}
 }

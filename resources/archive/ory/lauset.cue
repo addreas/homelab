@@ -4,6 +4,10 @@ k: Deployment: "lauset": spec: template: spec: containers: [{
 	name:  "lauset"
 	image: "ghcr.io/addreas/lauset:test"
 	envFrom: [{configMapRef: name: "lauset"}]
+	env: [{
+		name:  "LOG_LEVEL"
+		value: "debug"
+	}]
 	ports: [{
 		name:          "http"
 		containerPort: 3000
@@ -20,6 +24,5 @@ k: ConfigMap: "lauset": data: {
 	KRATOS_BROWSER_URL: "https://\(_hostname)/kratos"
 	KRATOS_ADMIN_URL:   "http://kratos-admin/"
 	KRATOS_PUBLIC_URL:  "http://kratos-public/"
-	HYDRA_ADMIN_URL: "http://hydra-admin/"
+	HYDRA_ADMIN_URL:    "http://hydra-admin/"
 }
-

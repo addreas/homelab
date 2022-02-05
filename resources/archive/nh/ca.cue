@@ -78,16 +78,13 @@ k: Certificate: "nerves-hub-ca": spec: {
 	usages: ["server auth"]
 }
 
-k: Service: "nerves-hub-ca": spec: {
-	selector: app: "nerves-hub-ca"
-	ports: [{
-		port:       8443
-		targetPort: 8443
-	}]
-}
+k: Service: "nerves-hub-ca": spec: ports: [{
+	port:       8443
+	targetPort: 8443
+}]
 
 k: Image: "nerves-hub-ca": spec: {
-	tag:            "ghcr.io/addreas/nerves_hub_ca"
+	tag: "ghcr.io/addreas/nerves_hub_ca"
 	builder: {
 		name: "nh-builder"
 		kind: "Builder"

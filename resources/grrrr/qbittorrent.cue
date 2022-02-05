@@ -144,24 +144,18 @@ k: StatefulSet: qbittorrent: {
 	}
 }
 
-k: Service: qbittorrent: {
-	_selector: app: "qbittorrent"
-	spec: ports: [{
-		name: "http"
-		port: 8080
-	}, {
-		name: "metrics"
-		port: 8000
-	}]
-}
+k: Service: qbittorrent: spec: ports: [{
+	name: "http"
+	port: 8080
+}, {
+	name: "metrics"
+	port: 8000
+}]
 
-k: ServiceMonitor: qbittorrent: {
-	_selector: app: "qbittorrent"
-	spec: endpoints: [{
-		port:     "metrics"
-		interval: "60s"
-	}]
-}
+k: ServiceMonitor: qbittorrent: spec: endpoints: [{
+	port:     "metrics"
+	interval: "60s"
+}]
 
 k: Ingress: qbittorrent: {
 	metadata: annotations: {
@@ -173,28 +167,24 @@ k: Ingress: qbittorrent: {
 	}
 }
 
-k: ConfigMap: "qbittorrent-static-config": {
-	data: {
-		"qBittorrent.conf": #"""
-			[Preferences]
-			Advanced\AnonymousMode=true
-			Advanced\RecheckOnCompletion=true
-			Connection\GlobalDLLimitAlt=10240
-			Connection\GlobalUPLimitAlt=10240
-			Connection\alt_speeds_on=true
-			Connection\Interface=wg0
-			Connection\InterfaceName=wg0
-			Downloads\SavePath=/videos/downloads/
-			General\UseRandomPort=true
-			WebUI\AuthSubnetWhitelist=10.0.0.0/8
-			WebUI\AuthSubnetWhitelistEnabled=true
-			WebUI\LocalHostAuth=false
-			"""#
-	}
-}
+k: ConfigMap: "qbittorrent-static-config": data: "qBittorrent.conf": #"""
+	[Preferences]
+	Advanced\AnonymousMode=true
+	Advanced\RecheckOnCompletion=true
+	Connection\GlobalDLLimitAlt=10240
+	Connection\GlobalUPLimitAlt=10240
+	Connection\alt_speeds_on=true
+	Connection\Interface=wg0
+	Connection\InterfaceName=wg0
+	Downloads\SavePath=/videos/downloads/
+	General\UseRandomPort=true
+	WebUI\AuthSubnetWhitelist=10.0.0.0/8
+	WebUI\AuthSubnetWhitelistEnabled=true
+	WebUI\LocalHostAuth=false
+	"""#
 
 k: Service: "vpn-egress": {
-	_selector: close({"vpn-egress": "gateway"})
+	_selector: "vpn-egress": "gateway"
 	spec: ports: [{
 		name: "socks"
 		port: 1080
@@ -237,26 +227,24 @@ k: CiliumNetworkPolicy: "vpn-egress-gateway": {
 	}
 }
 
-k: CiliumNetworkPolicy: "vpn-egress-clients": {
-	spec: {
-		endpointSelector: matchLabels: "vpn-egress": "client"
-		ingress: [{
-			fromEntities: ["cluster"]
+k: CiliumNetworkPolicy: "vpn-egress-clients": spec: {
+	endpointSelector: matchLabels: "vpn-egress": "client"
+	ingress: [{
+		fromEntities: ["cluster"]
+	}]
+	egress: [{
+		toEntities: ["cluster"]
+	}, {
+		toEndpoints: [{
+			matchLabels: "vpn-egress": "gateway"
 		}]
-		egress: [{
-			toEntities: ["cluster"]
-		}, {
-			toEndpoints: [{
-				matchLabels: "vpn-egress": "gateway"
-			}]
-			toPorts: [{
-				ports: [{
-					port:     "1080"
-					protocol: "TCP"
-				}]
+		toPorts: [{
+			ports: [{
+				port:     "1080"
+				protocol: "TCP"
 			}]
 		}]
-	}
+	}]
 }
 
 k: SealedSecret: "wg0-conf": spec: encryptedData: "wg0.conf": "AgCQaQONrshfUUPifd4VGEaOHmmRvFF0zCeddmod1I5XwHVb9EcikLtlyobQlNVsfHFgy5m2eCUzRq5fXoanOU7hLxodqMjaX7RZBiDxnTM8/Fknt2JIf97ODoLs7wPm6aeH5iVg/J5kdWHEHhexLuLAla79pospV+0bhF5wqdUy0KyvXltfQtfxbAMbJNKSLeY4ajhhjdH61fac+MZnAqIE2llkDxSUJHqUJagtdhhjq+V8sMW9LmXFb6qMOJdQ769YFZrF35vQWFL5zglldi0pleytfYpE4FR0BhLFGi78O+4BRB0CAz2jSYzH7Z9cG5WZ61hOL01LuzVGGJzLwACOQnF8GlDFcvfzKGL1eQ2kssUR4OFSml3C3MJl5oLUFgy8WhzU/wsjgfaBpBKl2xnxaDc9W9RSK98PZ/8nAgpTuBIAKZRuQ4yBrdyi0mSOMCU+kwFQlJkRsrtbl/zL5L4FXb0AWxziPtxH/4Y3ejajGveZ4BGbggLelW+btWkTYKywhDu0669S58u+wJJyLV0/guUxEdsYExrATkw4nSxERKO12kyoQzny5W/ak7Znv/v0wC2/SHB17R56eeT59sS7tiwPi3y6pPVSpmi1448xGSkrxbg3dqdC6xWTtKw42Or7IVMqlMu0bIwTBXRDaIJEs9FfjokDPCjOOCt8pE63eUHtM01cD6s6CLDVhERsD1oaSVyPbyrpNiOMtKKq6tcmxf2LGfDZWZRY/+Hn1W/lgcShueiPWowC0ayLwqGThFzUglfXitBKinf1vSnL9VuybtTXjgwHKphuOVYJB/J8tsjh0vsaUNIpDKXSLkx7GsPSIoTHkoMimsZxyAstgjbkEwiluzGGOcvuJ1oJRWJ7a6sGoEVNJUECT5E0RhOmeRask6761/Chbnylx5z61lAyvrGjayMxQiUhgC6IyTFiCmdDW2Ht1JwLiIA8tb3G5+sL/VwX6IdF4gFBBn8qM1Q8J7uHWApuLmx2a9/JQ15Tn9s/DuNTlNyzPk3SQLwGiJtjRIjsYr4MjMQVBAG/lPSDsSh/gvno1vQBJqaKAOr+5kJxXgWKufSJufGIZ28en5sRfd6zlRk="

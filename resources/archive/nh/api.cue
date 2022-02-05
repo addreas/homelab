@@ -73,13 +73,10 @@ k: Certificate: "nerves-hub-api": spec: {
 	usages: ["server auth"]
 }
 
-k: Service: "nerves-hub-api": spec: {
-	selector: app: "nerves-hub-api"
-	ports: [{
-		name: "https"
-		port: 8443
-	}]
-}
+k: Service: "nerves-hub-api": spec: ports: [{
+	name: "https"
+	port: 8443
+}]
 
 k: Ingress: "nerves-hub-api": {
 	metadata: annotations: close({"ingress.kubernetes.io/ssl-passthrough": "true"})
@@ -92,7 +89,7 @@ k: Ingress: "nerves-hub-api": {
 }
 
 k: Image: "nerves-hub-api": spec: {
-	tag:            "ghcr.io/addreas/nerves_hub_api"
+	tag: "ghcr.io/addreas/nerves_hub_api"
 	builder: {
 		name: "nh-builder"
 		kind: "Builder"

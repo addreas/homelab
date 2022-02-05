@@ -1,7 +1,6 @@
 package kube
 
 k: Deployment: "fogis": {
-	_selector: Labels
 	spec: {
 		replicas: 1
 		template: {

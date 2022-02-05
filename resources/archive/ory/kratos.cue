@@ -51,21 +51,21 @@ k: Deployment: kratos: spec: template: spec: {
 }
 
 k: Service: "kratos-admin": spec: {
+	selector: app: "kratos"
 	ports: [{
 		port:       80
 		targetPort: "http-admin"
 		name:       "http"
 	}]
-	selector: app: "kratos"
 }
 
 k: Service: "kratos-public": spec: {
+	selector: app: "kratos"
 	ports: [{
 		port:       80
 		targetPort: "http-public"
 		name:       "http"
 	}]
-	selector: app: "kratos"
 }
 
 k: Job: "kratos-migrate": spec: template: spec: {

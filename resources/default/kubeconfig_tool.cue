@@ -32,34 +32,33 @@ command: kubeconfig: task: {
 		cmd: ["kubectl", "-n", saNamespace, "get", "sa", saName, "-o", "jsonpath={.secrets[0].name}"]
 		stdout: string
 	}
-	
+
 	secret: exec.Run & {
 		cmd: ["kubectl", "-n", saNamespace, "get", "secret", secretName.stdout, "-o", "yaml"]
-		stdout: string
+		stdout:  string
 		_parsed: yaml.Unmarshal(stdout)
 	}
-	
+
 	let ca = secret._parsed.data["ca.crt"]
 	let token = base64.Decode(null, secret._parsed.data["token"])
-	
+
 	output: cli.Print & {
 		text: yaml.Marshal({
 			apiVersion: "v1"
-			kind: "Config"
+			kind:       "Config"
 			clusters: [{
 				name: "nucles"
 				clusters: {
 					"certificate-authority-data": ca
-					server: "https://nucles.localdomain:6443"
+					server:                       "https://nucles.localdomain:6443"
 				}
 			}]
-			contexts: [{ 
-				name: "nucles"
+			contexts: [{
+				name:      "nucles"
 				namespace: "default"
-				user: saName
-				
+				user:      saName
 			}]
-			users: [{ 
+			users: [{
 				name: saName
 				user: "token": "\(token)"
 			}]

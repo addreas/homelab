@@ -41,14 +41,11 @@ k: StatefulSet: jackett: {
 	}
 }
 
-k: Service: jackett: {
-	_selector: app: "jackett"
-	spec: {
-		ports: [{
-			name: "http"
-			port: 9117
-		}]
-	}
+k: Service: jackett: spec: {
+	ports: [{
+		name: "http"
+		port: 9117
+	}]
 }
 
 k: Ingress: jackett: {

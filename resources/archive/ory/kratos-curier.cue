@@ -33,4 +33,3 @@ k: Service: "kratos-courier": spec: {
 		name:       "http"
 	}]
 }
-

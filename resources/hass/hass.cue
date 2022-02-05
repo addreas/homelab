@@ -71,25 +71,19 @@ k: StatefulSet: hass: {
 	}
 }
 
-k: Service: hass: {
-	_selector: app: "hass"
-	spec: ports: [{
-		name: "http"
-		port: 8123
-	}]
-}
+k: Service: hass: spec: ports: [{
+	name: "http"
+	port: 8123
+}]
 
-k: ServiceMonitor: hass: {
-	_selector: app: "hass"
-	spec: endpoints: [{
-		port:     "http"
-		interval: "60s"
-		path:     "/api/prometheus"
-		bearerTokenSecret: {
-			name: "hass-prometheus-api-key"
-			key:  "key"
-		}
-	}]
-}
+k: ServiceMonitor: hass: spec: endpoints: [{
+	port:     "http"
+	interval: "60s"
+	path:     "/api/prometheus"
+	bearerTokenSecret: {
+		name: "hass-prometheus-api-key"
+		key:  "key"
+	}
+}]
 
 k: Ingress: hass: {}

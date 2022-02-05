@@ -28,10 +28,7 @@ k: StatefulSet: postgres: spec: {
 	}]
 }
 
-k: Service: postgres: {
-	_selector: app: "postgres"
-	spec: ports: [{
-		name: "postgres"
-		port: 5432
-	}]
-}
+k: Service: postgres: spec: ports: [{
+	name: "postgres"
+	port: 5432
+}]

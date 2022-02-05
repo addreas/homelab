@@ -85,24 +85,18 @@ k: StatefulSet: radarr: {
 	}
 }
 
-k: Service: radarr: {
-	_selector: app: "radarr"
-	spec: ports: [{
-		name: "http"
-		port: 7878
-	}, {
-		name: "metrics"
-		port: 9707
-	}]
-}
+k: Service: radarr: spec: ports: [{
+	name: "http"
+	port: 7878
+}, {
+	name: "metrics"
+	port: 9707
+}]
 
-k: ServiceMonitor: radarr: {
-	_selector: app: "radarr"
-	spec: endpoints: [{
-		port:     "metrics"
-		interval: "60s"
-	}]
-}
+k: ServiceMonitor: radarr: spec: endpoints: [{
+	port:     "metrics"
+	interval: "60s"
+}]
 
 k: Ingress: radarr: {
 	metadata: annotations: {

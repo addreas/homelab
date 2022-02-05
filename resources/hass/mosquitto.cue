@@ -5,14 +5,10 @@ import (
 	"encoding/hex"
 )
 
-MosquittoLabels: app: "mosquitto"
-
 k: StatefulSet: mosquitto: {
 	spec: {
 		template: {
-			metadata: {
-				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
-			}
+			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
 			spec: {
 				volumes: [{
 					name: "config"
@@ -42,17 +38,14 @@ k: StatefulSet: mosquitto: {
 	}
 }
 
-k: Service: mosquitto: {
-	_selector: app: "mosquitto"
-	spec: {
-		ports: [{
-			name: "tcp0"
-			port: 1883
-		}, {
-			name: "tcp1"
-			port: 9001
-		}]
-	}
+k: Service: mosquitto: spec: {
+	ports: [{
+		name: "tcp0"
+		port: 1883
+	}, {
+		name: "tcp1"
+		port: 9001
+	}]
 }
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """

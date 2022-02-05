@@ -92,24 +92,18 @@ k: StatefulSet: sonarr: {
 	}
 }
 
-k: Service: sonarr: {
-	_selector: app: "sonarr"
-	spec: ports: [{
-		name: "http"
-		port: 8989
-	}, {
-		name: "metrics"
-		port: 9707
-	}]
-}
+k: Service: sonarr: spec: ports: [{
+	name: "http"
+	port: 8989
+}, {
+	name: "metrics"
+	port: 9707
+}]
 
-k: ServiceMonitor: sonarr: {
-	_selector: app: "sonarr"
-	spec: endpoints: [{
-		port:     "metrics"
-		interval: "60s"
-	}]
-}
+k: ServiceMonitor: sonarr: spec: endpoints: [{
+	port:     "metrics"
+	interval: "60s"
+}]
 
 k: Ingress: sonarr: {
 	metadata: annotations: {

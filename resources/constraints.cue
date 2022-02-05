@@ -35,7 +35,7 @@ k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 k: StatefulSet: [Name=string]: spec: serviceName: Name
 
 k: Service: [Name=string]: {
-	_selector: _ | *{app: Name}
+	_selector: _ | *close({app: Name})
 	metadata: labels: _selector
 	spec: {
 		selector: _selector
@@ -44,7 +44,7 @@ k: Service: [Name=string]: {
 }
 
 k: ServiceMonitor: [Name=string]: {
-	_selector: _ | *{app: Name}
+	_selector: _ | *close({app: Name})
 	metadata: labels: _selector
 	spec: selector: matchLabels: _selector
 }
@@ -63,7 +63,9 @@ k: Ingress: [Name=string]: {
 				pathType: _ | *"Prefix"
 				backend: service: _ | *{
 					name: "\(Name)"
-					port: number: k.Service[Name].spec.ports[0].port
+					port: close({
+						number: k.Service[Name].spec.ports[0].port
+					})
 				}
 			}, ...]
 		}, ...]

@@ -36,10 +36,10 @@ k: StatefulSet: "hass-zwavejs": {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/usr/src/app/store"
-					// }, {
-					// 	name:      "store-settings-json"
-					// 	mountPath: "/usr/src/app/store/settings.json"
-					// 	subPath:   "settings.json"
+						// }, {
+						//  name:      "store-settings-json"
+						//  mountPath: "/usr/src/app/store/settings.json"
+						//  subPath:   "settings.json"
 					}]
 				}]
 				volumes: [{
@@ -48,7 +48,7 @@ k: StatefulSet: "hass-zwavejs": {
 				}]
 			}
 		}
-        volumeClaimTemplates: [{
+		volumeClaimTemplates: [{
 			metadata: name: "config"
 			spec: {
 				accessModes: ["ReadWriteOnce"]
@@ -58,13 +58,10 @@ k: StatefulSet: "hass-zwavejs": {
 	}
 }
 
-k: Service: "hass-zwavejs": {
-	_selector: app: "hass-zwavejs"
-	spec: ports: [{
-		name: "http"
-		port: 8091
-	}, {
-		name: "websocket"
-		port: 3000
-	}]
-}
+k: Service: "hass-zwavejs": spec: ports: [{
+	name: "http"
+	port: 8091
+}, {
+	name: "websocket"
+	port: 3000
+}]

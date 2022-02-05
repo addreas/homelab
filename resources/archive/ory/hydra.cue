@@ -45,23 +45,21 @@ k: Deployment: hydra: spec: template: spec: {
 }
 
 k: Service: "hydra-admin": spec: {
-	type: "ClusterIP"
+	selector: app: "hydra"
 	ports: [{
 		port:       80
 		targetPort: "http-admin"
 		name:       "http"
 	}]
-	selector: app: "hydra"
 }
 
 k: Service: "hydra-public": spec: {
-	type: "ClusterIP"
+	selector: app: "hydra"
 	ports: [{
 		port:       80
 		targetPort: "http-public"
 		name:       "http"
 	}]
-	selector: app: "hydra"
 }
 
 k: Job: "hydra-migrate": spec: template: spec: {

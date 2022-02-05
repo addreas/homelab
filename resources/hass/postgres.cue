@@ -29,10 +29,7 @@ k: StatefulSet: "hass-postgres": {
 	}
 }
 
-k: Service: "hass-postgres": {
-	_selector: app: "hass-postgres"
-	spec: ports: [{
-		name: "postgres"
-		port: 5432
-	}]
-}
+k: Service: "hass-postgres": spec: ports: [{
+	name: "postgres"
+	port: 5432
+}]

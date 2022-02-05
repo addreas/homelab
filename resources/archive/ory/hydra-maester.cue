@@ -69,4 +69,3 @@ k: Deployment: "hydra-maester": spec: template: spec: {
 	serviceAccountName:           "hydra-maester"
 	automountServiceAccountToken: true
 }
-

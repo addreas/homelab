@@ -39,13 +39,10 @@ k: Deployment: "nerves-hub-www": spec: template: spec: containers: [{
 	}]
 }]
 
-k: Service: "nerves-hub-www": spec: {
-	selector: app: "nerves-hub-www"
-	ports: [{
-		name: "http"
-		port: 8080
-	}]
-}
+k: Service: "nerves-hub-www": spec: ports: [{
+	name: "http"
+	port: 8080
+}]
 
 k: Ingress: "nerves-hub-www": spec: {
 	tls: [{
@@ -58,7 +55,7 @@ k: Ingress: "nerves-hub-www": spec: {
 }
 
 k: Image: "nerves-hub-www": spec: {
-	tag:            "ghcr.io/addreas/nerves_hub_www"
+	tag: "ghcr.io/addreas/nerves_hub_www"
 	builder: {
 		name: "nh-builder"
 		kind: "Builder"
