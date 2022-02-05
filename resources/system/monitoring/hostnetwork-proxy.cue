@@ -17,20 +17,23 @@ let services = {
 	}
 }
 
-k: DaemonSet: "control-plane-metrics-rbac-proxy": spec: template: spec: {
-	hostNetwork: true
-	serviceAccountName: "control-plane-metrics-rbac-proxy"
-	containers: [ for n, p in services {
-		name:  n
-		image: "quay.io/brancz/kube-rbac-proxy:v0.11.0"
-		args: [
-			"--logtostderr",
-			"--allow-paths=\(strings.Join(p.paths, ","))",
-			"--secure-listen-address=:\(p.port)",
-			"--upstream=https://127.0.0.1:\(p.port)/",
-			"--upstream-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
-		]
-	}]
+k: DaemonSet: "control-plane-metrics-rbac-proxy": {
+	metadata: namespace: "kube-system"
+	spec: template: spec: {
+		hostNetwork:        true
+		serviceAccountName: "control-plane-metrics-rbac-proxy"
+		containers: [ for n, p in services {
+			name:  n
+			image: "quay.io/brancz/kube-rbac-proxy:v0.11.0"
+			args: [
+				"--logtostderr",
+				"--allow-paths=\(strings.Join(p.paths, ","))",
+				"--secure-listen-address=:\(p.port)",
+				"--upstream=https://127.0.0.1:\(p.port)/",
+				"--upstream-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+			]
+		}]
+	}
 }
 
 k: Service: {
@@ -50,13 +53,13 @@ k: Service: {
 					port: p.port
 				}]
 			}
-
 		}
 	}
 }
 
-
-k: ServiceAccount: "control-plane-metrics-rbac-proxy": {}
+k: ServiceAccount: "control-plane-metrics-rbac-proxy": {
+	metadata: namespace: "kube-system"
+}
 
 k: ClusterRole: "control-plane-metrics-rbac-proxy": rules: [{
 	apiGroups: ["authentication.k8s.io"]
@@ -71,13 +74,13 @@ k: ClusterRole: "control-plane-metrics-rbac-proxy": rules: [{
 k: ClusterRoleBinding: "control-plane-metrics-rbac-proxy": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind: "ClusterRole"
-		name: "control-plane-metrics-rbac-proxy"
+		kind:     "ClusterRole"
+		name:     "control-plane-metrics-rbac-proxy"
 	}
 	subjects: [{
-		kind: "ServiceAccount"
-		name: "control-plane-metrics-rbac-proxy"
-		namespace: "monitoring"
+		kind:      "ServiceAccount"
+		name:      "control-plane-metrics-rbac-proxy"
+		namespace: "kube-system"
 	}]
 }
 
@@ -89,12 +92,12 @@ k: ClusterRole: "metrics-getter": rules: [{
 k: ClusterRoleBinding: "vmagent-main-metrics-getter": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind: "ClusterRole"
-		name: "metrics-getter"
+		kind:     "ClusterRole"
+		name:     "metrics-getter"
 	}
 	subjects: [{
-		kind: "ServiceAccount"
-		name: "vmagent-main"
+		kind:      "ServiceAccount"
+		name:      "vmagent-main"
 		namespace: "monitoring"
 	}]
 }
