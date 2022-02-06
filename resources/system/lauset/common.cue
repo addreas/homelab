@@ -1,6 +1,6 @@
 package kube
 
-_hostname: "ory.addem.se"
+_hostname: "auth.addem.se"
 
 k: Ingress: "ory": {
 	metadata: annotations: "ingress.kubernetes.io/rewrite-target": "/"
@@ -80,7 +80,14 @@ _kratos_config: {
 			"https://\(_hostname)/hydra/login",
 		]
 
-		methods: password: enabled: true
+		methods: {
+			password: enabled: true
+			totp: {
+				enabled: true
+				config: issuer: "Lauset"
+			}
+			lookup_secret: enabled: true
+		}
 
 		flows: {
 			error: ui_url: "https://\(_hostname)/error"
@@ -117,9 +124,9 @@ _kratos_config: {
 	}
 
 	log: {
-		level:                 "debug"
+		level:                 "info"
 		format:                "text"
-		leak_sensitive_values: true
+		leak_sensitive_values: false
 	}
 
 	ciphers: algorithm: "xchacha20-poly1305"
@@ -147,7 +154,10 @@ _person_schema: {
 					"title":     "E-Mail"
 					"minLength": 3
 					"ory.sh/kratos": {
-						"credentials": "password": "identifier": true
+						"credentials": {
+							"password": "identifier": true
+							"totp": "account_name":   true
+						}
 						"recovery": "via":     "email"
 						"verification": "via": "email"
 					}
