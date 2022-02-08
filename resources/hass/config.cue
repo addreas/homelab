@@ -86,18 +86,6 @@ let conf = {
 
 }
 
-k: NetworkAttachmentDefinition: "macvlan-conf": {
-	spec: {
-		config: json.Marshal({
-			cniVersion: "0.3.0"
-			type:       "macvlan"
-			master:     "eno1"
-			mode:       "bridge"
-			ipam: type: "dhcp"
-		})
-	}
-}
-
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({
 	mqtt: disabled:         true
 	gateway: hassDiscovery: true
