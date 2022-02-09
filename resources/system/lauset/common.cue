@@ -119,6 +119,13 @@ _kratos_config: {
 				lifespan: "10m"
 				ui_url:   "https://\(_hostname)/registration"
 				after: password: hooks: [{hook: "session"}]
+				before: hooks: [{
+					hook: "web_hook"
+					config: {
+						url: "http://registrations-are-disabled/"
+						method: "GET"
+					}
+				}]
 			}
 		}
 	}
