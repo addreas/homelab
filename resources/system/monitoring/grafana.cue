@@ -20,7 +20,7 @@ k: Grafana: grafana: spec: {
 		auth: {
 			disable_login_form:   true
 			disable_signout_menu: false
-			signout_redirect_url: "https://ory.addem.se/hydra/oauth2/sessions/logout"
+			signout_redirect_url: "https://auth.addem.se/hydra/oauth2/sessions/logout"
 			oauth_auto_login:     true
 		}
 		"auth.anonymous": enabled: false
@@ -30,9 +30,9 @@ k: Grafana: grafana: spec: {
 			client_id:           "$__file{/etc/grafana-secrets/grafana-oauth2-client-credentials/client_id}"
 			client_secret:       "$__file{/etc/grafana-secrets/grafana-oauth2-client-credentials/client_secret}"
 			scopes:              "openid email"
-			auth_url:            "https://ory.addem.se/hydra/oauth2/auth"
-			token_url:           "https://ory.addem.se/hydra/oauth2/token"
-			api_url:             "https://ory.addem.se/hydra/userinfo"
+			auth_url:            "https://auth.addem.se/hydra/oauth2/auth"
+			token_url:           "https://auth.addem.se/hydra/oauth2/token"
+			api_url:             "https://auth.addem.se/hydra/userinfo"
 			//use_pkce:            true
 		}
 		users: default_theme:                    "light"
