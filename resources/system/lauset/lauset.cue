@@ -2,7 +2,7 @@ package kube
 
 k: Deployment: "lauset": spec: template: spec: containers: [{
 	name:  "lauset"
-	image: "ghcr.io/jonasdahl/lauset:\(lausetVersion)"
+	image: "ghcr.io/jonasdahl/lauset:latest"
 	envFrom: [{configMapRef: name: "lauset"}]
 	env: [{
 		name:  "LOG_LEVEL"
