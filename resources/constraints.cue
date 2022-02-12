@@ -76,6 +76,8 @@ k: GrafanaDashboard: [string]: metadata: labels: grafana: "enabled"
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 
+k: HelmRepository: [string]: spec: interval: _ | *"1h"
+
 k: HelmRelease: [Name=string]: {
 	metadata: namespace: string
 	spec: {
