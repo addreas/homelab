@@ -38,6 +38,7 @@ k: Grafana: grafana: spec: {
 		users: default_theme:                    "light"
 		dashboards: default_home_dashboard_path: "/etc/grafana-configmaps/grafana-home-dashboard/dashboard.json"
 		alerting: enabled:                       false
+		security: allow_embedding:               true
 	}
 	configMaps: ["grafana-home-dashboard"]
 	secrets: ["grafana-oauth2-client-credentials"]

@@ -64,7 +64,7 @@ k: Ingress: "lauset": {
 	}
 }
 
-_kratos_config: {
+_kratos_config: #KratosConfigSchema & {
 	serve: {
 		public: {
 			base_url: "https://\(_hostname)/kratos"
@@ -140,7 +140,7 @@ _kratos_config: {
 
 	hashers: {
 		algorithm: "bcrypt"
-		bcrypt: cost: 8
+		bcrypt: cost: 12
 	}
 
 	identity: default_schema_url: "file:///etc/config/person.schema.json"
@@ -175,11 +175,11 @@ _person_schema: {
 	}
 }
 
-_hydra_config: {
+_hydra_config: #HydraConfigSchema & {
 	serve: {
 		admin: port:  4445
 		public: port: 4444
-		tls: allow_termination_from: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+		tls: allow_termination_from: ["10.0.0.0/8"]
 	}
 	urls: {
 		self: issuer: "https://\(_hostname)/hydra/"

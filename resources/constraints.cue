@@ -40,6 +40,19 @@ k: Service: [Name=string]: {
 	spec: {
 		selector: _selector
 		ports: [...{protocol: *"TCP" | "UDP"}]
+
+		let workload = k.Deployment[Name] | k.StatefulSet[Name]
+
+		if workload != _|_ {
+			ports: _ | *[
+				for container in workload.spec.template.spec.containers for port in container.ports {
+					if port.name != _|_ {
+						name: port.name
+					}
+					"port": port.containerPort
+				}
+			]
+		}
 	}
 }
 
@@ -51,6 +64,14 @@ k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=
 
 k: Ingress: [Name=string]: {
 	metadata: annotations: _ | *{"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"}
+
+	_authproxy: true | *false
+	if _authproxy {
+		metadata: annotations: {
+			"ingress.kubernetes.io/auth-url":    "https://authproxy.addem.se/"
+			"ingress.kubernetes.io/auth-signin": "https://authproxy.addem.se/oauth2/start?rd=https://%[hdr(host)]%[path]"
+		}
+	}
 	spec: {
 		tls: _ | *[{
 			hosts: ["\(Name).addem.se", ...]
@@ -63,8 +84,10 @@ k: Ingress: [Name=string]: {
 				pathType: _ | *"Prefix"
 				backend: service: _ | *{
 					name: "\(Name)"
-					port: close({
+					port: *close({
 						number: k.Service[Name].spec.ports[0].port
+					}) | close({
+						name: k.Service[Name].spec.ports[0].name
 					})
 				}
 			}, ...]

@@ -98,15 +98,7 @@ k: ServiceMonitor: radarr: spec: endpoints: [{
 	interval: "60s"
 }]
 
-k: Ingress: radarr: {
-	metadata: annotations: {
-		"ingress.kubernetes.io/ssl-redirect": "true"
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-}
+k: Ingress: radarr: _authproxy: true
 
 k: GrafanaDashboard: "radarr": spec: {
 	grafanaCom: id: 12896

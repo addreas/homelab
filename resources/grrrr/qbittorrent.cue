@@ -157,15 +157,7 @@ k: ServiceMonitor: qbittorrent: spec: endpoints: [{
 	interval: "60s"
 }]
 
-k: Ingress: qbittorrent: {
-	metadata: annotations: {
-		"ingress.kubernetes.io/ssl-redirect": "true"
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-}
+k: Ingress: qbittorrent: _authproxy: true
 
 k: ConfigMap: "qbittorrent-static-config": data: "qBittorrent.conf": #"""
 	[Preferences]

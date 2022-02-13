@@ -13,6 +13,7 @@ k: StatefulSet: jackett: {
 						exec $APP_DIR/jackett --NoRestart --ListenPublic --NoUpdates --DataFolder="$CONFIG_DIR"
 						"""]
 					ports: [{
+						name: "http"
 						containerPort: 9117
 					}]
 					volumeMounts: [{
@@ -33,27 +34,12 @@ k: StatefulSet: jackett: {
 			metadata: name: "config"
 			spec: {
 				resources: requests: storage: "1Gi"
-				accessModes: [
-					"ReadWriteOnce",
-				]
+				accessModes: ["ReadWriteOnce"]
 			}
 		}]
 	}
 }
 
-k: Service: jackett: spec: {
-	ports: [{
-		name: "http"
-		port: 9117
-	}]
-}
+k: Service: jackett: {}
 
-k: Ingress: jackett: {
-	metadata: annotations: {
-		"ingress.kubernetes.io/ssl-redirect": "true"
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-}
+k: Ingress: jackett: _authproxy: true

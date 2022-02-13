@@ -15,6 +15,7 @@ k: StatefulSet: sonarr: {
 						exec mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
 						"""]
 					ports: [{
+						name: "http"
 						containerPort: 8989
 					}]
 					volumeMounts: [{
@@ -56,6 +57,7 @@ k: StatefulSet: sonarr: {
 						}
 					}]
 					ports: [{
+						name: "metrics"
 						containerPort: 9707
 					}]
 					resources: limits: {
@@ -92,28 +94,14 @@ k: StatefulSet: sonarr: {
 	}
 }
 
-k: Service: sonarr: spec: ports: [{
-	name: "http"
-	port: 8989
-}, {
-	name: "metrics"
-	port: 9707
-}]
+k: Service: sonarr: {}
 
 k: ServiceMonitor: sonarr: spec: endpoints: [{
 	port:     "metrics"
 	interval: "60s"
 }]
 
-k: Ingress: sonarr: {
-	metadata: annotations: {
-		"ingress.kubernetes.io/ssl-redirect": "true"
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
-}
+k: Ingress: sonarr: _authproxy: true
 
 k: GrafanaDashboard: "sonarr": spec: {
 	grafanaCom: id: 12530

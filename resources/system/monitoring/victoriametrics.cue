@@ -125,12 +125,7 @@ k: VMAlertmanager: "main": spec: {
 }
 
 k: Ingress: "alertmanager": {
-	metadata: annotations: {
-		// ingress.kubernetes.io/auth-tls-error-page: getcert.addem.se
-		"ingress.kubernetes.io/auth-tls-secret":        "default/client-auth-root-ca-cert"
-		"ingress.kubernetes.io/auth-tls-strict":        "true"
-		"ingress.kubernetes.io/auth-tls-verify-client": "on"
-	}
+	_authproxy: true
 	spec: {
 		rules: [{
 			http: paths: [{
