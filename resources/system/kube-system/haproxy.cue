@@ -15,8 +15,7 @@ k: HelmRelease: haproxy: {
 			version: "0.13.4"
 			sourceRef: {
 				kind:      "HelmRepository"
-				name:      "haproxy-ingress"
-				namespace: "kube-system"
+				name:      "haproxy-ingress
 			}
 			interval: "1h"
 		}
@@ -28,7 +27,6 @@ k: HelmRelease: haproxy: {
 				interval: "60s"
 			}
 			logs: enabled: true
-			kind: "DaemonSet"
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"

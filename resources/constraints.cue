@@ -43,7 +43,7 @@ k: Service: [Name=string]: {
 	}
 }
 
-k: ServiceMonitor: [Name=string]: {
+k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=string]: {
 	_selector: _ | *close({app: Name})
 	metadata: labels: _selector
 	spec: selector: matchLabels: _selector
