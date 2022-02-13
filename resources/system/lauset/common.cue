@@ -122,7 +122,7 @@ _kratos_config: {
 				before: hooks: [{
 					hook: "web_hook"
 					config: {
-						url: "http://registrations-are-disabled/"
+						url:    "http://registrations-are-disabled/"
 						method: "GET"
 					}
 				}]

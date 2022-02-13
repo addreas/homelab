@@ -14,7 +14,7 @@ let services = {
 k: DaemonSet: "control-plane-metrics-proxy": {
 	metadata: namespace: "kube-system"
 	spec: template: spec: {
-		hostNetwork:        true
+		hostNetwork: true
 		containers: [ for n, p in services {
 			name:  n
 			image: "alpine/socat"

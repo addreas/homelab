@@ -41,4 +41,3 @@ k: ConfigMap: "cloudflared-config": data: "config.yaml": yaml.Marshal({
 		service: "http_status:404"
 	}]
 })
-

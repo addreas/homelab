@@ -9,25 +9,25 @@ k: HelmRepository: "akri": spec: {
 }
 
 let rules = [{
-	SUBSYSTEM: "tty"
-    "ATTRS{idProduct}": "6015"
-    "ATTRS{idVendor}": "0403"
+	SUBSYSTEM:             "tty"
+	"ATTRS{idProduct}":    "6015"
+	"ATTRS{idVendor}":     "0403"
 	"ATTRS{manufacturer}": "FTDI"
-	"ATTRS{product}": "FT230X Basic UART"
+	"ATTRS{product}":      "FT230X Basic UART"
 }, {
-	SUBSYSTEM: "tty"
-	"ATTRS{idProduct}": "16c8"
-	"ATTRS{idVendor}": "0451"
+	SUBSYSTEM:             "tty"
+	"ATTRS{idProduct}":    "16c8"
+	"ATTRS{idVendor}":     "0451"
 	"ATTRS{manufacturer}": "Texas Instruments"
-	"ATTRS{product}":  "Yanzi Serial Radio"
+	"ATTRS{product}":      "Yanzi Serial Radio"
 }, {
-	SUBSYSTEM: "tty"
-    "ATTRS{idProduct}": "0030"
-    "ATTRS{idVendor}": "1cf1"
+	SUBSYSTEM:             "tty"
+	"ATTRS{idProduct}":    "0030"
+	"ATTRS{idVendor}":     "1cf1"
 	"ATTRS{manufacturer}": "dresden elektronik ingenieurtechnik GmbH"
-	"ATTRS{product}":  "ConBee II"
+	"ATTRS{product}":      "ConBee II"
 }, {
-	SUBSYSTEM: "tty"
+	SUBSYSTEM:         "tty"
 	"ATTRS{idVendor}": "0658"
 	"ATTRS{idModel}":  "0200"
 }]
@@ -53,9 +53,9 @@ k: HelmRelease: "akri": {
 					discoveryDetails: udevRules: [
 						for rule in rules {
 							strings.Join([
-								for key, value in rule {"\(key)==\"\(value)\""}
+								for key, value in rule {"\(key)==\"\(value)\""},
 							], ", ")
-						}
+						},
 					]
 				}
 			}

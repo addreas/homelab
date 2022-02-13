@@ -25,4 +25,3 @@ k: ConfigMap: "config-gateway-json": data: {
 
 	})
 }
-
