@@ -1,5 +1,7 @@
 package kube
 
+import "github.com/addreas/homelab/util"
+
 k: StatefulSet: qbittorrent: {
 	spec: {
 		template: {
@@ -29,35 +31,12 @@ k: StatefulSet: qbittorrent: {
 						name:      "wg0-conf"
 						mountPath: "/config"
 					}]
-				}, {
-					name:  "insert-config"
-					image: "busybox:stable"
-					command: ["sh", "-c"]
-					args: ["""
-						CONF_DIR=/config/config
-						OLD="$CONF_DIR/qBittorrent.conf"
-						if [ -f $OLD ]; then
-							if diff $OLD /static/qBittorrent.conf; then
-								echo "$OLD matches /static/qBittorrent.conf, not backing up"
-							else
-								echo "existing config:"
-								cat $OLD
-								NEW="$CONF_DIR/qBittorrent.$(date "+%s").conf"
-								echo "moving existing config to $NEW"
-								cp $OLD $NEW
-							fi
-						else
-							mkdir -p $CONF_DIR
-						fi
-
-						cp /static/qBittorrent.conf $OLD
-
-						"""]
+				}, util.copyStatic & {
 					volumeMounts: [{
-						mountPath: "/static"
-						name:      "static-config"
+						mountPath: "/static/config/qBittorrent/config"
+						name: "static-config"
 					}, {
-						mountPath: "/config"
+						mountPath: "/config/qBittorrent"
 						name:      "config"
 					}]
 				}]
@@ -159,21 +138,51 @@ k: ServiceMonitor: qbittorrent: spec: endpoints: [{
 
 k: Ingress: qbittorrent: _authproxy: true
 
-k: ConfigMap: "qbittorrent-static-config": data: "qBittorrent.conf": #"""
-	[Preferences]
-	Advanced\AnonymousMode=true
-	Advanced\RecheckOnCompletion=true
-	Connection\GlobalDLLimitAlt=10240
-	Connection\GlobalUPLimitAlt=10240
-	Connection\alt_speeds_on=true
-	Connection\Interface=wg0
-	Connection\InterfaceName=wg0
-	Downloads\SavePath=/videos/downloads/
-	General\UseRandomPort=true
-	WebUI\AuthSubnetWhitelist=10.0.0.0/8
-	WebUI\AuthSubnetWhitelistEnabled=true
-	WebUI\LocalHostAuth=false
-	"""#
+k: ConfigMap: "qbittorrent-static-config": data: {
+	"qBittorrent.conf": #"""
+		[BitTorrent]
+		Session\DefaultSavePath=/videos/downloads
+		Session\Interface=wg0
+		Session\InterfaceName=wg0
+
+		[Meta]
+		MigrationVersion=2
+
+		[Preferences]
+		Advanced\AnonymousMode=true
+		Advanced\RecheckOnCompletion=true
+		Advanced\trackerPort=9000
+		Connection\GlobalDLLimitAlt=10240
+		Connection\GlobalUPLimitAlt=10240
+		Connection\Interface=wg0
+		Connection\InterfaceName=wg0
+		Connection\ResolvePeerCountries=true
+		Connection\alt_speeds_on=true
+		Downloads\SavePath=/videos/downloads/
+		General\UseRandomPort=true
+		WebUI\AlternativeUIEnabled=false
+		WebUI\AuthSubnetWhitelist=10.0.0.0/8
+		WebUI\AuthSubnetWhitelistEnabled=true
+		WebUI\CSRFProtection=true
+		WebUI\ClickjackingProtection=true
+		WebUI\HostHeaderValidation=true
+		WebUI\LocalHostAuth=false
+		WebUI\MaxAuthenticationFailCount=5
+		WebUI\Port=8080
+		WebUI\ReverseProxySupportEnabled=true
+		WebUI\SecureCookie=true
+		"""#
+	"categories.json": #"""
+		{
+		    "radarr": {
+		        "save_path": "/videos/downloads"
+		    },
+		    "tv-sonarr": {
+		        "save_path": "/videos/downloads"
+		    }
+		}
+		"""#
+}
 
 k: Service: "vpn-egress": {
 	_selector: "vpn-egress": "gateway"
