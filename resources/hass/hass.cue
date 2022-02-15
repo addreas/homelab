@@ -23,14 +23,6 @@ k: StatefulSet: hass: {
 						mountPath: "/static/config"
 					}]
 				}]
-				volumes: [{
-					name: "hass-config"
-					projected: sources: [{
-						configMap: name: "hass-config"
-					}, {
-						secret: name: "hass-gcp-credential-json"
-					}]
-				}]
 				containers: [{
 					name:  "hass"
 					image: "ghcr.io/home-assistant/home-assistant:2022.2.6"
@@ -57,7 +49,24 @@ k: StatefulSet: hass: {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/config"
+					}, {
+						name:      "nfs-videos"
+						mountPath: "/media/videos"
 					}]
+				}]
+				volumes: [{
+					name: "hass-config"
+					projected: sources: [{
+						configMap: name: "hass-config"
+					}, {
+						secret: name: "hass-gcp-credential-json"
+					}]
+				}, {
+					name: "nfs-videos"
+					nfs: {
+						path:   "/export/videos"
+						server: "sergio.localdomain"
+					}
 				}]
 			}
 		}

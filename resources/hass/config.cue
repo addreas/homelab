@@ -53,6 +53,8 @@ let conf = {
 		}
 	}
 
+	homeassistant: media_dirs: media: "/media/videos"
+
 	light: [{
 		platform: "group"
 		name:     "Fönsterlamporna"
