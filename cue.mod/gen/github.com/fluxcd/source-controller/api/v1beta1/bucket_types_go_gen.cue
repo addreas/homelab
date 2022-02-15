@@ -46,8 +46,8 @@ import (
 	// +required
 	interval: metav1.#Duration @go(Interval)
 
-	// The timeout for download operations, defaults to 20s.
-	// +kubebuilder:default="20s"
+	// The timeout for download operations, defaults to 60s.
+	// +kubebuilder:default="60s"
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 

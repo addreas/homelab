@@ -41,17 +41,17 @@ package v1
 // as a 'next private key' Secret resource.
 #IsNextPrivateKeySecretLabelKey: "cert-manager.io/next-private-key"
 
-// issuerNameAnnotation can be used to override the issuer specified on the
-// created Certificate resource.
+// IngressIssuerNameAnnotationKey holds the issuerNameAnnotation value which can be
+// used to override the issuer specified on the created Certificate resource.
 #IngressIssuerNameAnnotationKey: "cert-manager.io/issuer"
 
-// clusterIssuerNameAnnotation can be used to override the issuer specified on the
-// created Certificate resource. The Certificate will reference the
-// specified *ClusterIssuer* instead of normal issuer.
+// IngressClusterIssuerNameAnnotationKey holds the clusterIssuerNameAnnotation value which
+// can be used to override the issuer specified on the created Certificate resource. The Certificate
+// will reference the specified *ClusterIssuer* instead of normal issuer.
 #IngressClusterIssuerNameAnnotationKey: "cert-manager.io/cluster-issuer"
 
-// acmeIssuerHTTP01IngressClassAnnotation can be used to override the http01 ingressClass
-// if the challenge type is set to http01
+// IngressACMEIssuerHTTP01IngressClassAnnotationKey holds the acmeIssuerHTTP01IngressClassAnnotation value
+// which can be used to override the http01 ingressClass if the challenge type is set to http01
 #IngressACMEIssuerHTTP01IngressClassAnnotationKey: "acme.cert-manager.io/http01-ingress-class"
 
 // IngressClassAnnotationKey picks a specific "class" for the Ingress. The
@@ -86,7 +86,7 @@ package v1
 // as namespace/name.  The certificate is expected to have the is-serving-for annotations.
 #WantInjectAnnotation: "cert-manager.io/inject-ca-from"
 
-// WantInjectAPIServerCAAnnotation, if set to "true", will make the cainjector
+// WantInjectAPIServerCAAnnotation will - if set to "true" - make the cainjector
 // inject the CA certificate for the Kubernetes apiserver into the resource.
 // It discovers the apiserver's CA by inspecting the service account credentials
 // mounted into the cainjector pod.

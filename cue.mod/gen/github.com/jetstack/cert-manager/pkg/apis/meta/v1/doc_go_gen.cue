@@ -2,10 +2,8 @@
 
 //cue:generate cue get go github.com/jetstack/cert-manager/pkg/apis/meta/v1
 
-// Package meta contains meta types for cert-manager APIs
+// Package v1 contains meta types for cert-manager APIs
 // +k8s:deepcopy-gen=package
-// +k8s:openapi-gen=true
-// +k8s:defaulter-gen=TypeMeta
 // +gencrdrefdocs:force
 // +groupName=meta.cert-manager.io
 package v1

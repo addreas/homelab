@@ -17,6 +17,8 @@ import (
 // +genclient
 // +k8s:openapi-gen=true
 // +kubebuilder:resource:categories="prometheus-operator"
+// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The desired replicas number of Thanos Rulers"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 #ThanosRuler: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)

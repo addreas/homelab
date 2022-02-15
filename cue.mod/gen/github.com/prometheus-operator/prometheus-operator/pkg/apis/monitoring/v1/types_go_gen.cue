@@ -924,6 +924,8 @@ import (
 	replacement?: string @go(Replacement)
 
 	// Action to perform based on regex matching. Default is 'replace'
+	//+kubebuilder:validation:Enum=replace;keep;drop;hashmod;labelmap;labeldrop;labelkeep
+	//+kubebuilder:default=replace
 	action?: string @go(Action)
 }
 
