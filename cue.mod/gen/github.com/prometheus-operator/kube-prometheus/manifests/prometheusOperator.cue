@@ -588,6 +588,95 @@ prometheusOperator: CustomResourceDefinition: {
 																	required: ["key"]
 																	type: "object"
 																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
+																	type: "object"
+																}
 																proxyURL: {
 																	description: "Optional proxy URL."
 																	type:        "string"
@@ -915,6 +1004,95 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
 																	type: "object"
 																}
 																proxyURL: {
@@ -1247,6 +1425,95 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
 																	type: "object"
 																}
 																proxyURL: {
@@ -1637,6 +1904,95 @@ prometheusOperator: CustomResourceDefinition: {
 																	required: ["key"]
 																	type: "object"
 																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
+																	type: "object"
+																}
 																proxyURL: {
 																	description: "Optional proxy URL."
 																	type:        "string"
@@ -1896,6 +2252,95 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
 																	type: "object"
 																}
 																proxyURL: {
@@ -2258,6 +2703,95 @@ prometheusOperator: CustomResourceDefinition: {
 																	required: ["key"]
 																	type: "object"
 																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
+																	type: "object"
+																}
 																proxyURL: {
 																	description: "Optional proxy URL."
 																	type:        "string"
@@ -2509,6 +3043,95 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
 																	type: "object"
 																}
 																proxyURL: {
@@ -2803,6 +3426,95 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
 																	type: "object"
 																}
 																proxyURL: {
@@ -7935,6 +8647,10 @@ prometheusOperator: CustomResourceDefinition: {
 												required: ["key"]
 												type: "object"
 											}
+											followRedirects: {
+												description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
+												type:        "boolean"
+											}
 											honorLabels: {
 												description: "HonorLabels chooses the metric's labels on collisions with target labels."
 												type:        "boolean"
@@ -9203,6 +9919,10 @@ prometheusOperator: CustomResourceDefinition: {
 												required: ["key"]
 												type: "object"
 											}
+											followRedirects: {
+												description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
+												type:        "boolean"
+											}
 											honorLabels: {
 												description: "HonorLabels chooses the metric's labels on collisions with target labels."
 												type:        "boolean"
@@ -9642,7 +10362,7 @@ prometheusOperator: CustomResourceDefinition: {
 									type: "object"
 								}
 								targetLabels: {
-									description: "TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics. All labels set in `selector.matchLabels` are automatically transferred."
+									description: "TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics."
 									items: type: "string"
 									type: "array"
 								}

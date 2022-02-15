@@ -78,6 +78,7 @@ nodeExporter: {
 					}
 				}
 				spec: {
+					automountServiceAccountToken: true
 					containers: [{
 						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--no-collector.wifi", "--no-collector.hwmon", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$"]
 						image: "quay.io/prometheus/node-exporter:v1.3.1"
@@ -91,6 +92,14 @@ nodeExporter: {
 								cpu:    "102m"
 								memory: "180Mi"
 							}
+						}
+						securityContext: {
+							allowPrivilegeEscalation: false
+							capabilities: {
+								add: ["CAP_SYS_TIME"]
+								drop: ["ALL"]
+							}
+							readOnlyRootFilesystem: true
 						}
 						volumeMounts: [{
 							mountPath:        "/host/sys"
@@ -127,9 +136,12 @@ nodeExporter: {
 							}
 						}
 						securityContext: {
-							runAsGroup:   65532
-							runAsNonRoot: true
-							runAsUser:    65532
+							allowPrivilegeEscalation: false
+							capabilities: drop: ["ALL"]
+							readOnlyRootFilesystem: true
+							runAsGroup:             65532
+							runAsNonRoot:           true
+							runAsUser:              65532
 						}
 					}]
 					hostNetwork: true
@@ -594,8 +606,9 @@ nodeExporter: {
 		}
 	}
 	ServiceAccount: "node-exporter": {
-		apiVersion: "v1"
-		kind:       "ServiceAccount"
+		apiVersion:                   "v1"
+		automountServiceAccountToken: false
+		kind:                         "ServiceAccount"
 		metadata: {
 			labels: {
 				"app.kubernetes.io/component": "exporter"
