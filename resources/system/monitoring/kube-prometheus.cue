@@ -50,3 +50,21 @@ let serviceEndpointMapping = {
 	"relabelings":       "relabelConfigs"
 	"proxyUrl":          "proxyURL"
 }
+
+let kubeletEndpoints = [ for e in k.VMServiceScrape.kubelet.spec.endpoints {
+	port:           "10250"
+	relabelConfigs: e.relabelConfigs + [{
+		targetLabel: "job"
+		replacement: "kubelet"
+	}]
+
+	for key, value in e if key != "port" && key != "relabelConfigs" {
+		(key): value
+	}
+}]
+
+k: VMNodeScrape: "kubelet-metrics": spec: kubeletEndpoints[0]
+
+k: VMNodeScrape: "kubelet-cadvisor": spec: kubeletEndpoints[1]
+
+k: VMNodeScrape: "kubelet-probes": spec: kubeletEndpoints[2]

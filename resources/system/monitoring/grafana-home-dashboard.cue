@@ -247,12 +247,16 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"mode": "absolute"
 						"steps": [
 							{
-								"color": "green"
+								"color": "red"
 								"value": null
 							},
 							{
-								"color": "red"
-								"value": 80
+								"color": "#EAB839"
+								"value": 30
+							},
+							{
+								"color": "green"
+								"value": 40
 							},
 						]
 					}
@@ -267,7 +271,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 			}
 			"id": 123135
 			"options": {
-				"colorMode":   "none"
+				"colorMode":   "value"
 				"graphMode":   "none"
 				"justifyMode": "auto"
 				"orientation": "horizontal"
@@ -278,7 +282,7 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 					"fields": ""
 					"values": false
 				}
-				"textMode": "name"
+				"textMode": "auto"
 			}
 			"pluginVersion": "8.3.3"
 			"targets": [
@@ -288,13 +292,13 @@ k: ConfigMap: "grafana-home-dashboard": data: "dashboard.json": _json.Marshal({
 						"uid":  "PBFA97CFB590B2093"
 					}
 					"exemplar":     true
-					"expr":         "sum without (pod, instance) (hass_switch_state == 1)"
+					"expr":         "sum(up)"
 					"interval":     ""
-					"legendFormat": "{{ friendly_name }}"
+					"legendFormat": ""
 					"refId":        "A"
 				},
 			]
-			"title": "Switches turned on"
+			"title": "Prometheus targets"
 			"type":  "stat"
 		},
 		{

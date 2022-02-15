@@ -17,6 +17,10 @@ k: Grafana: grafana: spec: {
 	baseImage: "grafana/grafana:8.3.3"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
+		users: {
+			default_theme:        "light"
+			auto_assign_org_role: "Admin"
+		}
 		auth: {
 			disable_login_form:   true
 			disable_signout_menu: false
@@ -26,16 +30,15 @@ k: Grafana: grafana: spec: {
 		"auth.anonymous": enabled: false
 		"auth.generic_oauth": {
 			enabled:             true
-			role_attribute_path: "'Admin'"
 			client_id:           "$__file{/etc/grafana-secrets/grafana-oauth2-client-credentials/client_id}"
 			client_secret:       "$__file{/etc/grafana-secrets/grafana-oauth2-client-credentials/client_secret}"
 			scopes:              "openid email"
 			auth_url:            "https://auth.addem.se/hydra/oauth2/auth"
 			token_url:           "https://auth.addem.se/hydra/oauth2/token"
 			api_url:             "https://auth.addem.se/hydra/userinfo"
-			//use_pkce:            true
+			role_attribute_path: "Admin"
+			// use_pkce:            true
 		}
-		users: default_theme:                    "light"
 		dashboards: default_home_dashboard_path: "/etc/grafana-configmaps/grafana-home-dashboard/dashboard.json"
 		alerting: enabled:                       false
 		security: allow_embedding:               true

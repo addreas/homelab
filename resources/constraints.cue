@@ -50,7 +50,7 @@ k: Service: [Name=string]: {
 						name: port.name
 					}
 					"port": port.containerPort
-				}
+				},
 			]
 		}
 	}
