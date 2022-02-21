@@ -15,5 +15,14 @@ sudo transactional-update --continue shell
 
     exit
 
+cat etc/sysctl.d/10-inotify.conf > /etc/sysctl.d/10-inotify.conf
+sed -i /targetpw/d /etc/sudoers
+cat etc/sudoers/wheel > /etc/sudoers.d/wheel
+
+cue export etc/kubernetes/manifests/kube-vip.cue > /etc/kubernetes/manifests/kube-vip.yaml
+
+groupadd -r wheel
+useradd -m -U -G wheel addem
+
 # activate new next snapshot
 sudo systemctl reboot

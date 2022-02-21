@@ -2,7 +2,7 @@ package kube
 
 import "encoding/yaml"
 
-_hydraTag: "v1.10.7"
+_hydraTag: "v1.11.5"
 
 k: Secret: hydra: stringData: {
 	SECRETS_SYSTEM: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
