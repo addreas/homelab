@@ -22,7 +22,8 @@ k: ConfigMap: "kratos-config": data: {
 k: Deployment: kratos: spec: template: spec: {
 	containers: [_probes & {
 		name:  "kratos"
-		image: "oryd/kratos:\(_kratosTag)"
+		// image: "oryd/kratos:\(_kratosTag)"
+		image: "ghcr.io/addreas/ory-kratos:latest"
 		command: ["kratos"]
 		args: [
 			"serve",

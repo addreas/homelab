@@ -1,26 +1,47 @@
 package kube
 
-import "tool/exec"
+import (
+	"tool/exec"
+	"tool/file"
+)
 
 command: "kratos-config-schema": task: {
 	curl: exec.Run & {
 		cmd: [
 			"curl",
-			"-sSLo",
-			"kratos-config-schema.json",
+			"-sSL",
 			"https://raw.githubusercontent.com/ory/kratos/master/embedx/config.schema.json",
 		]
+		stdout: string
+	}
+	jq: exec.Run & {
+		cmd: [
+			"jq",
+			"""
+			del(.definitions.selfServiceWebHook.properties.config.properties.additionalProperties)
+			| del(.properties.courier.properties.sms.properties.request_config.properties.additionalProperties)
+			| del(.required[] | select(. == "dsn"))
+			""",
+		],
+		stdin: curl.stdout
+		stdout: string
+	}
+	write: file.Create & {
+		filename: "kratos-config-schema.json"
+		contents: jq.stdout
 	}
 	import: exec.Run & {
-		$after: [curl]
+		$after: [write]
 		cmd: [
 			"cue",
 			"import",
 			"-p", "kube",
 			"-l", "#KratosConfigSchema:",
+			"-f",
 			"jsonschema",
 			"kratos-config-schema.json",
 		]
+		stdin: jq.stdout
 	}
 	rm: exec.Run & {
 		$after: [import]
@@ -44,6 +65,7 @@ command: "hydra-config-schema": task: {
 			"import",
 			"-p", "kube",
 			"-l", "#HydraConfigSchema:",
+			"-f",
 			"jsonschema",
 			"hydra-config-schema.json",
 		]

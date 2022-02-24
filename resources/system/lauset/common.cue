@@ -143,7 +143,13 @@ _kratos_config: #KratosConfigSchema & {
 		bcrypt: cost: 12
 	}
 
-	identity: default_schema_url: "file:///etc/config/person.schema.json"
+	identity: {
+		default_schema_id: "person"
+		schemas: [{
+			id: "person"
+			url: "file:///etc/config/person.schema.json"
+		}]
+	}
 }
 
 _person_schema: {

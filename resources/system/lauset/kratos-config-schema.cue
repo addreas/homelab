@@ -257,6 +257,12 @@ import (
 	// The courier is responsible for sending and delivering messages
 	// over email, sms, and other means.
 	courier?: {
+		templates?: {
+			recovery?:     #courierTemplates
+			verification?: #courierTemplates
+			...
+		}
+
 		// Override message templates
 		//
 		// You can override certain or all message templates by pointing
@@ -300,6 +306,45 @@ import (
 			// sending.
 			headers?: {
 				...
+			}
+		}
+
+		// SMS sender configuration
+		//
+		// Configures outgoing sms messages using HTTP protocol with
+		// generic SMS provider
+		sms?: {
+			// Determines if SMS functionality is enabled
+			enabled?: bool | *false
+
+			// SMS Sender Address
+			//
+			// The recipient of a sms will see this as the sender address.
+			from?: string | *"Ory Kratos"
+			request_config?: {
+				// HTTP address of API endpoint
+				//
+				// This URL will be used to connect to the SMS provider.
+				url: =~"^https?:\\/\\/.*"
+
+				// The HTTP method to use (GET, POST, etc).
+				method: string
+
+				// The HTTP headers that must be applied to request
+				header?: {
+					[string]: string
+				}
+
+				// URI pointing to the jsonnet template used for payload
+				// generation. Only used for those HTTP methods, which support
+				// HTTP body payloads
+				body?: =~"^(http|https|file|base64)://"
+
+				// Auth mechanisms
+				//
+				// Define which auth mechanism to use for auth with the SMS
+				// provider
+				auth?: #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
 			}
 		}
 	}
@@ -469,15 +514,15 @@ import (
 		format?: "json" | "text"
 	}
 	identity: {
-		// JSON Schema URL for default identity traits
+		// The default Identity Schema
 		//
-		// URL for JSON Schema which describes a default identity's
-		// traits. Can be a file path, a https URL, or a base64 encoded
-		// string. Will have ID: "default"
-		default_schema_url: string
+		// This Identity Schema will be used as the default for
+		// self-service flows. Its ID needs to exist in the "schemas"
+		// list.
+		default_schema_id?: string | *"default"
 
-		// Additional JSON Schemas for Identity Traits
-		schemas?: [...{
+		// All JSON Schemas for Identity Traits
+		schemas: [_, ...] & [...{
 			// The schema's ID.
 			id: string
 
@@ -739,17 +784,16 @@ import (
 			// Auth mechanisms
 			//
 			// Define which auth mechanism the Web-Hook should use
-			auth?:                 #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
-			additionalProperties?: _
+			auth?: #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
 		}
 	}
 
 	#OIDCClaims: {
 		{[=~"^userinfo$|^id_token$" & !~"^()$"]: {
 			{[=~".*" & !~"^()$"]: null | {
-				// Indicates whether the Claim being requested is an Essential
-				// Claim.
-				essential?: bool
+						// Indicates whether the Claim being requested is an Essential
+						// Claim.
+						essential?: bool
 
 				// Requests that the Claim be returned with a particular value.
 				value?: _
@@ -889,5 +933,32 @@ import (
 
 		// TLS Certificate (PEM)
 		cert?: #tlsxSource
+	}
+
+	#courierTemplates: {
+		invalid?: {
+			email: #emailCourierTemplate
+			...
+		}
+		valid?: {
+			email: #emailCourierTemplate
+			...
+		}
+		...
+	}
+
+	#emailCourierTemplate: {
+		body?: {
+			// The fallback template for email clients that do not support
+			// html.
+			plaintext: string
+
+			// The default template used for sending out emails. The template
+			// can contain HTML
+			html: string
+			...
+		}
+		subject?: string
+		...
 	}
 }
