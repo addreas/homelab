@@ -19,5 +19,14 @@ k: HelmRelease: cilium: spec: {
 		}
 		interval: "1h"
 	}
-	values: cni: exclusive: false
+	values: {
+		cni: exclusive: false
+		hubble: {
+			enabled: true
+			relay: enabled: true
+		}
+		kubeProxyReplacement: "strict"
+		k8sServiceHost: "nucles.localdomain"
+		k8sServicePort: 6443
+	}
 }
