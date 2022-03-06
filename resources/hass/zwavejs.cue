@@ -23,7 +23,7 @@ k: StatefulSet: "hass-zwavejs": {
 				}]
 				containers: [{
 					name:  "zwavejs"
-					image: "zwavejs/zwavejs2mqtt:6.4.0"
+					image: "zwavejs/zwavejs2mqtt:6.5.2"
 					ports: [{containerPort: 3000}, {containerPort: 8091}]
 					env: [{
 						name: "NETWORK_KEY"
