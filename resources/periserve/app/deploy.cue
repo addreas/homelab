@@ -27,9 +27,6 @@ k: Deployment: "periserve": {
 					}, {
 						name:  "DATABASE_URL"
 						value: "postgresql://johndoe:randompasswordright@postgres:5432/mydb?schema=public"
-					}, {
-						name: "SENDGRID_API_KEY"
-						value: "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"
 					}]
 					ports: [{containerPort: 3000}]
 				}]
