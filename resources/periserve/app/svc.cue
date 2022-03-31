@@ -37,5 +37,13 @@ k: Service: periserve: {
 	spec: ports: [{
 		name: "http"
 		port: 3000
+	}, {
+		name: "metrics"
+		port: 4000
 	}]
 }
+
+k: ServiceMonitor: "periserve": spec: endpoints: [{
+	port:     "metrics"
+	interval: "60s"
+}]
