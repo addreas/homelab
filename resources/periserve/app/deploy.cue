@@ -29,7 +29,15 @@ k: Deployment: "periserve": {
 						value: "postgresql://johndoe:randompasswordright@postgres:5432/mydb?schema=public"
 					}]
 					envFrom: [{secretRef: name: "sendgrid"}]
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000}, {containerPort: 4000}]
+					readinessProbe: {
+						initialDelaySeconds: 10
+						periodSeconds:       5
+						httpGet: {
+							path: "/"
+							port: 3000
+						}
+					}
 				}]
 				imagePullSecrets: [{name: "periserve-ghcr"}]
 			}
