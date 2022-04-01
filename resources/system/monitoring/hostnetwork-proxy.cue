@@ -18,6 +18,7 @@ k: DaemonSet: "control-plane-metrics-proxy": {
 		containers: [ for n, p in services {
 			name:  n
 			image: "alpine/socat"
+			imagePullPolicy: "IfNotPresent"
 			args: ["tcp-listen:\(p.port),bind=$(IP),fork,reuseaddr", "tcp-connect:127.0.0.1:\(p.port)"]
 			env: [{
 				name: "IP"
