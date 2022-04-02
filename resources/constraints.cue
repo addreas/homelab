@@ -28,11 +28,27 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 	}
 }
 
-k: Job: [Name=string]: spec: template: podTemplate
+k: Job: [Name=string]: spec: template: podTemplate & {
+	spec: restartPolicy: _ | *"OnFailure"
+}
 
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
-k: StatefulSet: [Name=string]: spec: serviceName: Name
+k: StatefulSet: [Name=string]: spec: serviceName: _ | *Name
+
+k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [Name=string]: spec: template: spec: containers: [{
+	name: _ | *Name
+}, ...]
+
+k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [string]: spec: template: spec: {
+	// only allow explicit "Always", otherwise use tags and/or sha
+	initContainers: [...{
+		imagePullPolicy: _ | *"IfNotPresent"
+	}]
+	containers: [...{
+		imagePullPolicy: _ | *"IfNotPresent"
+	}]
+}
 
 k: Service: [Name=string]: {
 	_selector: _ | *close({app: Name})
@@ -49,7 +65,8 @@ k: Service: [Name=string]: {
 					if port.name != _|_ {
 						name: port.name
 					}
-					"port": port.containerPort
+					"port":   port.containerPort
+					protocol: port.protocol
 				},
 			]
 		}
@@ -124,4 +141,16 @@ k: Kustomization: [Name=string]: spec: {
 		kind: "GitRepository"
 		name: _ | *Name
 	}
+}
+
+k: RoleBinding: [Name=string]: {
+	roleRef: {
+		apiGroup: "rbac.authorization.k8s.io"
+		kind:     _ | *"Role"
+		name:     _ | *Name
+	}
+	subjects: _ | *[{
+		kind: _ | *"ServiceAccount"
+		name: _ | *Name
+	}]
 }

@@ -1,6 +1,5 @@
 package kube
 
-import "encoding/yaml"
 
 k: GitRepository: "multus-cni": spec: {
 	interval: "1h"
@@ -32,31 +31,28 @@ k: Kustomization: "multus-cni": spec: {
 			name:      "kube-multus-ds"
 			namespace: "kube-system"
 		}
-		patch: yaml.Marshal({
-			apiVersion: "apps/v1"
-			kind:       "DaemonSet"
-			metadata: {
-				name:      "kube-multus-ds"
-				namespace: "kube-system"
-			}
-			spec: template: spec: {
-				containers: [{
-					name: "kube-multus"
-					args: [
-						"--multus-conf-file=auto",
-						"--cni-version=0.3.1",
-						"--restart-crio=true",
-					]
-					volumeMounts: [{
-						name:      "run"
-						mountPath: "/run"
-					}]
-				}]
-				volumes: [{
-					name: "run"
-					hostPath: path: "/run"
-				}]
-			}
-		})
+		patch: """
+		  apiVersion: apps/v1
+		  kind: DaemonSet
+		  metadata:
+		    name: kube-multus-ds
+		    namespace: kube-system
+		  spec:
+		    template:
+		      spec:
+		        containers:
+		          - name: kube-multus
+		            args:
+		              - --multus-conf-file=auto
+		              - --cni-version=0.3.1
+		              - --restart-crio=true
+		            volumeMounts:
+		              - name: run
+		                mountPath: /run
+		        volumes:
+		          - name: run
+		            hostPath:
+		              path: /run
+		  """
 	}]
 }
