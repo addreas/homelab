@@ -27,6 +27,8 @@ k: Grafana: grafana: spec: {
 			signout_redirect_url: "https://auth.addem.se/hydra/oauth2/sessions/logout"
 			oauth_auto_login:     true
 		}
+		"log": level: "debug"
+		"log.console": level: "debug"
 		"auth.anonymous": enabled: false
 		"auth.generic_oauth": {
 			enabled:             true
