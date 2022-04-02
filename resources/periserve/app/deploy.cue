@@ -8,7 +8,6 @@ k: Deployment: "periserve": {
 				initContainers: [{
 					name:            "migrations"
 					image:           "ghcr.io/jonasdahl/periserve:\(periserveVersion)"
-					imagePullPolicy: "Always"
 					env: [{
 						name:  "SESSION_SECRET"
 						value: "ABCDEF1234567890"
