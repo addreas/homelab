@@ -30,7 +30,14 @@ k: Deployment: "periserve": {
 					}]
 					envFrom: [{secretRef: name: "sendgrid"}]
 					ports: [{containerPort: 3000}, {containerPort: 4000}]
-					readinessProbe: {
+					livenessProbe: {
+						periodSeconds:       120
+						httpGet: {
+							path: "/"
+							port: 3000
+						}
+					}
+					startupProbe: {
 						initialDelaySeconds: 10
 						periodSeconds:       5
 						httpGet: {
