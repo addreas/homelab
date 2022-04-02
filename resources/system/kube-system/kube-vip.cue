@@ -17,4 +17,17 @@ k: Kustomization: "kube-vip-cloud-provider": spec: {
 		kind: "GitRepository"
 		name: "kube-vip-cloud-provider"
 	}
+	patches: [{
+		target: {
+			group:   "apps"
+			version: "v1"
+			kind:    "StatefulSet"
+			name:    "cloud-provider"
+		}
+		patch: """
+			- op: replace
+			  path: /spec/template/spec/containers/0/imagePullPolicy
+			  value: IfNotPresent
+			"""
+	}]
 }

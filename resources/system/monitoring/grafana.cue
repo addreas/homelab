@@ -98,7 +98,7 @@ k: Kustomization: "grafana-operator": spec: {
 			  - --scan-all
 			- op: replace
 			  path: /spec/template/spec/containers/1/image
-			  value: ghcr.io/addreas/grafana-operator:v4.1.1
+			  value: ghcr.io/addreas/grafana-operator:v4.2.1
 			"""
 	}, {
 		target: {

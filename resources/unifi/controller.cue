@@ -50,8 +50,8 @@ k: StatefulSet: "unifi-controller": {
 						}
 					}
 				}, {
-					image: "busybox:stable"
-					name:  "mongo"
+					image: "ghcr.io/kinvolk/busybox:latest"
+					name:  "mongo-logs"
 					command: ["tail", "-F", "/usr/lib/unifi/logs/mongod.log"]
 					volumeMounts: [{
 						name:      "config"

@@ -2,7 +2,7 @@ package util
 
 copyStatic: {
 	name:  "copy-static"
-	image: "busybox:stable"
+	image: "ghcr.io/kinvolk/busybox:latest"
 	command: [
 		"cp",
 		"-r",
