@@ -22,7 +22,7 @@ cat etc/sysctl.d/10-inotify.conf > /etc/sysctl.d/10-inotify.conf
 sed -i /targetpw/d /etc/sudoers
 cat etc/sudoers/wheel > /etc/sudoers.d/wheel
 
-cue export etc/kubernetes/manifests/kube-vip.cue > /etc/kubernetes/manifests/kube-vip.yaml
+cue export --out yaml etc/kubernetes/manifests/kube-vip.cue > /etc/kubernetes/manifests/kube-vip.yaml
 
 groupadd -r wheel
 useradd -m -U -G wheel addem
