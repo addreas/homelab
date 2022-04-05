@@ -10,7 +10,7 @@ k: StatefulSet: hass: {
 	spec: {
 		template: {
 			metadata: {
-				annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+				// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 				labels: "config-hash":                      hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 			}
 			spec: {
