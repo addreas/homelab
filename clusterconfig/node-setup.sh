@@ -1,6 +1,9 @@
 # longhorn dependency
 sudo transactional-update pkg install open-iscsi
 
+# kube-vip ipvs debug util
+sudo transactional-update --continue pkg install ipvsadm
+
 sudo transactional-update --continue shell
     # kured setup
     ln -s /usr/bin/systemctl /bin/systemctl # hardcoded path in kured
