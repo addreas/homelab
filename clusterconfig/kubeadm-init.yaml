@@ -20,6 +20,8 @@ apiServer:
   - nucle1.localdomain
   - nucle2.localdomain
   - nucle3.localdomain
+  extraArgs:
+    feature-gates: MixedProtocolLBService=true
 controlPlaneEndpoint: nucles.localdomain:6443
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1
