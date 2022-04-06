@@ -15,7 +15,7 @@ k: StatefulSet: qbittorrent: {
 				}
 				initContainers: [{
 					name:  "wg-quick"
-					image: "nixery.dev/shell/iproute/wireguard"
+					image: "nixery.dev/shell/iproute/wireguard-tools"
 					command: ["sh", "-c"]
 					args: ["""
 						wg-quick up /config/wg0.conf
