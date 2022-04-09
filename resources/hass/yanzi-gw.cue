@@ -29,6 +29,18 @@ k: StatefulSet: "yanzi-gateway": {
 					name:      "var-db-yanzi"
 					mountPath: "/var/db/yanzi"
 				}]
+			}, {
+				name: "https"
+                image: "alpine/socat"
+                args: ["tcp-listen:8443,bind=$(IP),fork,reuseaddr", "tcp-connect:127.0.0.1:443"]
+                env: [{
+                        name: "IP"
+                        valueFrom: fieldRef: fieldPath: "status.podIP"
+                }]
+				ports: [{
+					name: "https"
+					containerPort: 8443
+				}]
 			}]
 			volumes: [{
 				name: "border-router-bin"
@@ -53,3 +65,5 @@ k: StatefulSet: "yanzi-gateway": {
 		}]
 	}
 }
+
+k: Service: "yanzi-gateway": {}
