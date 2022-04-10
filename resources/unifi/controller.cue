@@ -49,6 +49,14 @@ k: StatefulSet: "unifi-controller": {
 					}, {
 						name:          "unifi-speedtest"
 						containerPort: 6789
+					}, {
+						name: "ssdp"
+						containerPort: 1900
+						protocol: "UDP"
+					}, {
+						name: "discovery"
+						containerPort: 10001
+						protocol: "UDP"
 					}]
 
 					volumeMounts: [ for dir in ["data", "logs", "run"] {
