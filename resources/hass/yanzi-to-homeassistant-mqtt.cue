@@ -6,7 +6,7 @@ k: StatefulSet: "hass-yanzi-to-homeassistant-mqtt": {
 			spec: {
 				containers: [{
 					name:  "yanzi-to-homeassistant-mqtt"
-					image: "ghcr.io/jonasdahl/yanzi-to-homeassistant-mqtt@sha256:4f0f769567313d35ae92bcb9dee045af0bdd50da464856675f09d37c43a7bbe7"
+					image: "ghcr.io/jonasdahl/yanzi-to-homeassistant-mqtt@sha256:2e3388c6ac530e1960ec54b2e6dd4999fe57987cc0edefa8fd96664fc7c0ec82"
 					env: [{
 						name:  "LOCATION_ID"
 						value: "872855"
