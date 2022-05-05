@@ -14,7 +14,7 @@ k: OAuth2Client: "grafana": spec: {
 }
 
 k: Grafana: grafana: spec: {
-	baseImage: "grafana/grafana:8.3.3"
+	baseImage: "grafana/grafana:8.5.2"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		users: {
@@ -98,9 +98,10 @@ k: Kustomization: "grafana-operator": spec: {
 			  path: /spec/template/spec/containers/1/args
 			  value:
 			  - --scan-all
+			  - --requeue-delay=30
 			- op: replace
 			  path: /spec/template/spec/containers/1/image
-			  value: ghcr.io/addreas/grafana-operator:v4.2.1
+			  value: ghcr.io/addreas/grafana-operator:v4.3.1
 			"""
 	}, {
 		target: {
