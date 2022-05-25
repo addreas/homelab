@@ -22,7 +22,7 @@ k: StatefulSet: "yanzi-gateway": {
 				resources: limits: "addem.se/dev_yanzi_serial_radio": "1"
 			}, {
 				name:  "fiona"
-				image: "ghcr.io/addreas/gw-fiona:4.9.9"
+				image: "ghcr.io/addreas/gw-fiona:4.10.9"
 				command: ["java", "-DexitToReboot", "-jar", "/app/fiona.jar"]
 				securityContext: capabilities: add: ["NET_BIND_SERVICE"]
 				volumeMounts: [{
