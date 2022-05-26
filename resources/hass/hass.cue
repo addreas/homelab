@@ -25,7 +25,7 @@ k: StatefulSet: hass: {
 				}]
 				containers: [{
 					name:  "hass"
-					image: "ghcr.io/home-assistant/home-assistant:2022.3.1"
+					image: "ghcr.io/home-assistant/home-assistant:2022.5.3"
 					command: ["hass", "-c", "/config"]
 					resources: {
 						limits: {
