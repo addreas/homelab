@@ -4,13 +4,10 @@ k: [string]: [string]: metadata: {
 	namespace: *"grrrr" | string
 }
 
-k: CueBuild: "homelab": spec: {
-	interval: "15m0s"
-	sourceRef: {
-		kind: "GitRepository"
-		name: "homelab"
-		namespace: "flux-system"
-	}
+k: CueBuild: "homelab-grrrr": spec: {
+	interval:  "30m"
+	sourceRef: _homelab
 	packages: ["./resources/grrrr"]
-	prune: true
+	prune:   true
+	suspend: false
 }

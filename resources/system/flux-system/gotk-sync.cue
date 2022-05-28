@@ -6,23 +6,15 @@ k: GitRepository: "homelab": spec: {
 	url: "https://github.com/addreas/homelab"
 }
 
-k: CueBuild: "homelab": spec: {
-	interval: "5m0s"
+k: CueBuild: "homelab-system": spec: {
+	interval: "30m"
 	packages: [
-		"./resources/bitwarden",
-		"./resources/default",
-		"./resources/fogis",
-		"./resources/hass",
-		"./resources/unifi",
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
 		"./resources/system/monitoring",
 	]
-	prune: false
-	sourceRef: {
-		kind: "GitRepository"
-		name: "homelab"
-	}
+	prune:     false
+	sourceRef: _homelab
 }

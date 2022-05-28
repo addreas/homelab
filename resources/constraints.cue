@@ -2,6 +2,12 @@ package kube
 
 context: *"nucles" | string
 
+_homelab: {
+	kind:      "GitRepository"
+	name:      "homelab"
+	namespace: "flux-system"
+}
+
 let podTemplate = {
 	metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
 	spec: {
