@@ -12,7 +12,6 @@ k: CueBuild: "homelab": spec: {
 		"./resources/bitwarden",
 		"./resources/default",
 		"./resources/fogis",
-		"./resources/grrrr",
 		"./resources/hass",
 		"./resources/unifi",
 		"./resources/system/cert-manager",
