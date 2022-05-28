@@ -1,24 +1,28 @@
 
 helm repo add cilium https://helm.cilium.io/
+helm repo update
 
-helm install cilium cilium/cilium --version 1.11.3 \
-  --namespace kube-system
+CILIUM_VERSION=1.11.5
 
-helm upgrade cilium cilium/cilium --version 1.11.3 \
+helm install cilium cilium/cilium --version $CILIUM_VERSION \
+   --namespace kube-system \
+   --set cni.exclusive=false \
+   --set hubble.relay.enabled=true \
+   --set hubble.ui.enabled=true \
+
+
+helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
    --namespace kube-system \
    --reuse-values \
    --set cni.exclusive=false \
    --set hubble.relay.enabled=true \
-   --set hubble.ui.enabled=true
+   --set hubble.ui.enabled=true \
 
-helm upgrade cilium cilium/cilium --version 1.11.3 \
-   --namespace kube-system \
-   --reuse-values \
-   --set cni.chainingMode=none \
-   --set cni.customConf=false \
+   # --set cni.chainingMode=none \
+   # --set cni.customConf=false \
+
    # --set cni.chainingMode=generic-veth \
    # --set cni.customConf=true \
-   --set cni.configMap=cni-configuration
 
 kubectl apply -f multus.yaml
 
