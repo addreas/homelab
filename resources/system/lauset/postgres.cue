@@ -49,6 +49,6 @@ k: Secret: "postgres-credentials": stringData: {
 
 k: ConfigMap: "postgres-init": data: "create-hydra.sql": """
 	CREATE USER hydra PASSWORD 'hydra';
-	CREATE DATABASE hydra;
+	CREATE DATABASE hydra OWNER hydra;
 	GRANT ALL PRIVILEGES ON DATABASE hydra TO hydra;
 	"""

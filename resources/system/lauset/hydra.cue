@@ -7,7 +7,7 @@ _hydraTag: "v1.11.5"
 k: Secret: hydra: stringData: {
 	SECRETS_SYSTEM: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
 	SECRETS_COOKIE: "bHZPQUphY1o3WWNyN2RBMUprRnpxWU5HRmZrWmhpRTI="
-	DSN:            "postgres://kratos:kratos@postgres:5432/hydra"
+	DSN:            "postgres://hydra:hydra@postgres:5432/hydra"
 }
 
 k: ConfigMap: hydra: data: "config.yaml": yaml.Marshal(_hydra_config)
