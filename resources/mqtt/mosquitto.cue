@@ -74,7 +74,11 @@ k: StatefulSet: mosquitto: {
 }
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
-	# this will listen for mqtt on tcp
+	persistence false
+	log_dest stdout
+	connection_messages true
+
+	# MQTT over TCP
 	listener 1883
 	protocol mqtt
 	cafile /certs/ca.crt
@@ -84,7 +88,7 @@ k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	allow_anonymous false
 	use_identity_as_username true
 
-	# this will expect websockets connections
+	# MQTT over Websockets
 	listener 9001
 	protocol websockets
 	cafile /certs/ca.crt
@@ -93,7 +97,4 @@ k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	require_certificate true
 	allow_anonymous false
 	use_identity_as_username true
-
-	log_type error
-	log_type warning
 	"""
