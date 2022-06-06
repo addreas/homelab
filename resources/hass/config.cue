@@ -86,6 +86,13 @@ let conf = {
 		}
 	}
 
+	mqtt: {
+	  certificate: "/mqtt-certs/ca.crt"
+	  client_key: "/mqtt-certs/tls.key"
+	  client_cert: "/mqtt-certs/tls.crt"
+	  tls_insecure: true
+	}
+
 }
 
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({

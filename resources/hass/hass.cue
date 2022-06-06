@@ -52,6 +52,9 @@ k: StatefulSet: hass: {
 					}, {
 						name:      "nfs-videos"
 						mountPath: "/media/videos"
+					}, {
+						name:      "mqtt-certs"
+						mountPath: "/mqtt-certs"
 					}]
 				}]
 				volumes: [{
@@ -67,6 +70,9 @@ k: StatefulSet: hass: {
 						path:   "/export/videos"
 						server: "sergio.localdomain"
 					}
+				}, {
+					name: "mqtt-certs"
+					secret: secretName: "mqtt-hass-cert"
 				}]
 			}
 		}
