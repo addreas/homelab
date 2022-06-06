@@ -32,5 +32,6 @@ k: Certificate: "mqtt-switchbot-proxy-cert": spec: {
 	issuerRef: name: "mqtt-root-issuer"
 	secretName: "mqtt-switchbot-proxy-cert"
 	subject: organizations: ["MQTT"]
+	duration:   "\(24*365*20)h"
 	commonName: "switchbot"
 }

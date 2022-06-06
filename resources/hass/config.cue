@@ -10,11 +10,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	script: !include scripts.yaml
 	scene: !include scenes.yaml
 
-	mqtt:
-	  certificate: /mqtt-certs/ca.crt
-	  client_key: /mqtt-certs/tls.key
-	  client_cert: /mqtt-certs/tls.crt
-
 	logger:
 	  default: info
 
@@ -89,6 +84,13 @@ let conf = {
 				}
 			}
 		}
+	}
+
+	mqtt: {
+	  certificate: "/mqtt-certs/ca.crt"
+	  client_key: "/mqtt-certs/tls.key"
+	  client_cert: "/mqtt-certs/tls.crt"
+	  tls_insecure: true
 	}
 
 }
