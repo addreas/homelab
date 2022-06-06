@@ -78,6 +78,11 @@ k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	log_dest stdout
 	connection_messages true
 
+	log_type error
+	log_type warning
+	log_type information
+	log_type notice
+
 	# MQTT over TCP
 	listener 1883
 	protocol mqtt
