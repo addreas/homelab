@@ -2,7 +2,7 @@ package kube
 
 k: HelmRelease: "prometheus-nut-exporter": spec: {
 	chart: spec: {
-		version: "1.0.1"
+		version: "5.3.3"
 		sourceRef: {
 			name:      "k8s-at-home"
 			namespace: "flux-system"
