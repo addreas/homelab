@@ -71,11 +71,12 @@ package io
 // SeekCurrent means relative to the current offset, and
 // SeekEnd means relative to the end.
 // Seek returns the new offset relative to the start of the
-// file and an error, if any.
+// file or an error, if any.
 //
 // Seeking to an offset before the start of the file is an error.
-// Seeking to any positive offset is legal, but the behavior of subsequent
-// I/O operations on the underlying object is implementation-dependent.
+// Seeking to any positive offset may be allowed, but if the new offset exceeds
+// the size of the underlying object the behavior of subsequent I/O operations
+// is implementation-dependent.
 #Seeker: _
 
 // ReadWriter is the interface that groups the basic Read and Write methods.
@@ -180,10 +181,11 @@ package io
 // ByteScanner is the interface that adds the UnreadByte method to the
 // basic ReadByte method.
 //
-// UnreadByte causes the next call to ReadByte to return the same byte
-// as the previous call to ReadByte.
-// It may be an error to call UnreadByte twice without an intervening
-// call to ReadByte.
+// UnreadByte causes the next call to ReadByte to return the last byte read.
+// If the last operation was not a successful call to ReadByte, UnreadByte may
+// return an error, unread the last byte read (or the byte prior to the
+// last-unread byte), or (in implementations that support the Seeker interface)
+// seek to one byte before the current offset.
 #ByteScanner: _
 
 // ByteWriter is the interface that wraps the WriteByte method.
@@ -191,7 +193,7 @@ package io
 
 // RuneReader is the interface that wraps the ReadRune method.
 //
-// ReadRune reads a single UTF-8 encoded Unicode character
+// ReadRune reads a single encoded Unicode character
 // and returns the rune and its size in bytes. If no character is
 // available, err will be set.
 #RuneReader: _
@@ -199,10 +201,11 @@ package io
 // RuneScanner is the interface that adds the UnreadRune method to the
 // basic ReadRune method.
 //
-// UnreadRune causes the next call to ReadRune to return the same rune
-// as the previous call to ReadRune.
-// It may be an error to call UnreadRune twice without an intervening
-// call to ReadRune.
+// UnreadRune causes the next call to ReadRune to return the last rune read.
+// If the last operation was not a successful call to ReadRune, UnreadRune may
+// return an error, unread the last rune read (or the rune prior to the
+// last-unread rune), or (in implementations that support the Seeker interface)
+// seek to the start of the rune before the current offset.
 #RuneScanner: _
 
 // StringWriter is the interface that wraps the WriteString method.

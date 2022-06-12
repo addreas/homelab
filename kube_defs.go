@@ -1,15 +1,16 @@
 package kube
 
 import (
+	_ "github.com/VictoriaMetrics/operator"
 	_ "github.com/VictoriaMetrics/operator/api/v1beta1"
 	_ "github.com/addreas/cuebuild-controller/api/v1alpha1"
 	_ "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
+	_ "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
 	_ "github.com/fluxcd/helm-controller/api/v2beta1"
 	_ "github.com/fluxcd/kustomize-controller/api/v1beta1"
 	_ "github.com/fluxcd/source-controller/api/v1beta1"
 	_ "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
-	_ "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	_ "github.com/ory/hydra-maester/api/v1alpha1"
 	_ "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"

@@ -23,8 +23,11 @@ import (
 // VMClusterSpec defines the desired state of VMCluster
 // +k8s:openapi-gen=true
 #VMClusterSpec: {
-	// RetentionPeriod in months
-	// +kubebuilder:validation:Pattern:="[1-9]+"
+	// RetentionPeriod for the stored metrics
+	// Note VictoriaMetrics has data/ and indexdb/ folders
+	// metrics from data/ removed eventually as soon as partition leaves retention period
+	// reverse index data at indexdb rotates once at the half of configured retention period
+	// https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#retention
 	retentionPeriod: string @go(RetentionPeriod)
 
 	// ReplicationFactor defines how many copies of data make among
@@ -129,7 +132,7 @@ import (
 	configMaps?: [...string] @go(ConfigMaps,[]string)
 
 	// LogFormat for VMSelect to be configured with.
-	//default or json
+	// default or json
 	// +optional
 	// +kubebuilder:validation:Enum=default;json
 	logFormat?: string @go(LogFormat)
@@ -201,6 +204,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -231,7 +240,7 @@ import (
 	// +optional
 	extraArgs?: {[string]: string} @go(ExtraArgs,map[string]string)
 
-	//Port listen port
+	// Port listen port
 	// +optional
 	port?: string @go(Port)
 
@@ -240,13 +249,17 @@ import (
 	schedulerName?: string @go(SchedulerName)
 
 	// RuntimeClassName - defines runtime class for kubernetes pod.
-	//https://kubernetes.io/docs/concepts/containers/runtime-class/
+	// https://kubernetes.io/docs/concepts/containers/runtime-class/
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
 	// ServiceSpec that will be added to vmselect service spec
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
+
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
 
 	// PodDisruptionBudget created by operator
 	// +optional
@@ -258,6 +271,16 @@ import (
 	// NodeSelector Define which Nodes the Pods are scheduled on.
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// RollingUpdateStrategy defines strategy for application updates
+	// Default is OnDelete, in this case operator handles update process
+	// Can be changed for RollingUpdate
+	// +optional
+	rollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(RollingUpdateStrategy)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 #InsertPorts: {
@@ -304,7 +327,7 @@ import (
 	configMaps?: [...string] @go(ConfigMaps,[]string)
 
 	// LogFormat for VMSelect to be configured with.
-	//default or json
+	// default or json
 	// +optional
 	// +kubebuilder:validation:Enum=default;json
 	logFormat?: string @go(LogFormat)
@@ -376,6 +399,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -389,7 +418,7 @@ import (
 	// InsertPorts - additional listen ports for data ingestion.
 	insertPorts?: null | #InsertPorts @go(InsertPorts,*InsertPorts)
 
-	//Port listen port
+	// Port listen port
 	// +optional
 	port?: string @go(Port)
 
@@ -409,6 +438,10 @@ import (
 	// ServiceSpec that will be added to vminsert service spec
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
+
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
 
 	// UpdateStrategy - overrides default update strategy.
 	// +kubebuilder:validation:Enum=Recreate;RollingUpdate
@@ -431,6 +464,10 @@ import (
 	// NodeSelector Define which Nodes the Pods are scheduled on.
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 #VMStorage: {
@@ -459,7 +496,7 @@ import (
 	configMaps?: [...string] @go(ConfigMaps,[]string)
 
 	// LogFormat for VMSelect to be configured with.
-	//default or json
+	// default or json
 	// +optional
 	// +kubebuilder:validation:Enum=default;json
 	logFormat?: string @go(LogFormat)
@@ -531,6 +568,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -547,6 +590,7 @@ import (
 	// +optional
 	storage?: null | #StorageSpec @go(Storage,*StorageSpec)
 
+	// TerminationGracePeriodSeconds period for container graceful termination
 	// +optional
 	terminationGracePeriodSeconds?: int64 @go(TerminationGracePeriodSeconds)
 
@@ -559,7 +603,7 @@ import (
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
-	//Port for health check connetions
+	// Port for health check connetions
 	port?: string @go(Port)
 
 	// VMInsertPort for VMInsert connections
@@ -585,6 +629,10 @@ import (
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
 
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
+
 	// PodDisruptionBudget created by operator
 	// +optional
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
@@ -603,12 +651,18 @@ import (
 	// NodeSelector Define which Nodes the Pods are scheduled on.
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// RollingUpdateStrategy defines strategy for application updates
+	// Default is OnDelete, in this case operator handles update process
+	// Can be changed for RollingUpdate
+	// +optional
+	rollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(RollingUpdateStrategy)
 }
 
 #VMBackup: {
 	// AcceptEULA accepts enterprise feature usage, must be set to true.
 	// otherwise backupmanager cannot be added to single/cluster version.
-	// https://victoriametrics.com/assets/VM_EULA.pdf
+	// https://victoriametrics.com/legal/eula/
 	acceptEULA: bool @go(AcceptEULA)
 
 	// SnapshotCreateURL overwrites url for snapshot create
@@ -661,7 +715,7 @@ import (
 	// +optional
 	image?: #Image @go(Image)
 
-	//Port for health check connections
+	// Port for health check connections
 	port?: string @go(Port)
 
 	// LogFormat for VMSelect to be configured with.
@@ -680,7 +734,7 @@ import (
 	// +optional
 	resources?: v1.#ResourceRequirements @go(Resources)
 
-	//extra args like maxBytesPerSecond default 0
+	// extra args like maxBytesPerSecond default 0
 	// +optional
 	extraArgs?: {[string]: string} @go(ExtraArgs,map[string]string)
 

@@ -16,7 +16,7 @@ import (
 // ThanosRuler defines a ThanosRuler deployment.
 // +genclient
 // +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator"
+// +kubebuilder:resource:categories="prometheus-operator",shortName="ruler"
 // +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The desired replicas number of Thanos Rulers"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 #ThanosRuler: {
@@ -148,15 +148,23 @@ import (
 	// being created.
 	enforcedNamespaceLabel?: string @go(EnforcedNamespaceLabel)
 
+	// List of references to PrometheusRule objects
+	// to be excluded from enforcing a namespace label of origin.
+	// Applies only if enforcedNamespaceLabel set to true.
+	excludedFromEnforcement?: [...#ObjectReference] @go(ExcludedFromEnforcement,[]ObjectReference)
+
 	// PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing
 	// of adding namespace labels. Works only if enforcedNamespaceLabel set to true.
 	// Make sure both ruleNamespace and ruleName are set for each pair
+	// Deprecated: use excludedFromEnforcement instead.
 	prometheusRulesExcludedFromEnforce?: [...#PrometheusRuleExcludeConfig] @go(PrometheusRulesExcludedFromEnforce,[]PrometheusRuleExcludeConfig)
 
 	// Log level for ThanosRuler to be configured with.
+	//+kubebuilder:validation:Enum="";debug;info;warn;error
 	logLevel?: string @go(LogLevel)
 
 	// Log format for ThanosRuler to be configured with.
+	//+kubebuilder:validation:Enum="";logfmt;json
 	logFormat?: string @go(LogFormat)
 
 	// Port name used for the pods and governing service.
@@ -164,11 +172,13 @@ import (
 	portName?: string @go(PortName)
 
 	// Interval between consecutive evaluations.
-	evaluationInterval?: string @go(EvaluationInterval)
+	// +kubebuilder:default:="15s"
+	evaluationInterval?: #Duration @go(EvaluationInterval)
 
 	// Time duration ThanosRuler shall retain data for. Default is '24h',
 	// and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
-	retention?: string @go(Retention)
+	// +kubebuilder:default:="24h"
+	retention?: #Duration @go(Retention)
 
 	// Containers allows injecting additional containers or modifying operator generated
 	// containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or
@@ -234,6 +244,11 @@ import (
 	// AlertRelabelConfigFile specifies the path of the alert relabeling configuration file.
 	// When used alongside with AlertRelabelConfigs, alertRelabelConfigFile takes precedence.
 	alertRelabelConfigFile?: null | string @go(AlertRelabelConfigFile,*string)
+
+	// Pods' hostAliases configuration
+	// +listType=map
+	// +listMapKey=ip
+	hostAliases?: [...#HostAlias] @go(HostAliases,[]HostAlias)
 }
 
 // ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only. Not

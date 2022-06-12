@@ -124,8 +124,9 @@ import (
 // GrafanaHttpProxy provides a means to configure the Grafana deployment
 // to use an HTTP(S) proxy when making requests and resolving plugins.
 #GrafanaHttpProxy: {
-	enabled: bool   @go(Enabled)
-	url?:    string @go(URL)
+	enabled:    bool   @go(Enabled)
+	url?:       string @go(URL)
+	secureUrl?: string @go(SecureURL)
 }
 
 // GrafanaIngress provides a means to configure the ingress created

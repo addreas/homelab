@@ -11,6 +11,9 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
+#ImageKind:   "Image"
+#ImageCRName: "images.kpack.io"
+
 // +k8s:openapi-gen=true
 #Image: {
 	metav1.#TypeMeta

@@ -2,7 +2,10 @@
 
 //cue:generate cue get go github.com/fluxcd/pkg/apis/meta
 
-// Package meta contains the generic metadata APIs for use by
-// toolkit components.
+// Package meta contains the generic metadata APIs for use by GitOps Toolkit components.
+//
+// It is intended only to help adhere to Kubernetes API conventions, utility integrations, and Flux project considered
+// best practices. It may therefore be suitable for usage by Kubernetes resources with no relationship to the GitOps
+// Toolkit.
 // +kubebuilder:object:generate=true
 package meta

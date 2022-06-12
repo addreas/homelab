@@ -68,3 +68,15 @@ package v2beta1
 // GetLastReleaseFailedReason represents the fact that observing the last
 // release failed.
 #GetLastReleaseFailedReason: "GetLastReleaseFailed"
+
+// DependencyNotReadyReason represents the fact that
+// one of the dependencies is not ready.
+#DependencyNotReadyReason: "DependencyNotReady"
+
+// ReconciliationSucceededReason represents the fact that
+// the reconciliation succeeded.
+#ReconciliationSucceededReason: "ReconciliationSucceeded"
+
+// ReconciliationFailedReason represents the fact that
+// the reconciliation failed.
+#ReconciliationFailedReason: "ReconciliationFailed"

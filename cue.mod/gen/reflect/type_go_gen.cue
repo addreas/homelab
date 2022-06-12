@@ -55,11 +55,12 @@ package reflect
 	#Func |
 	#Interface |
 	#Map |
-	#Ptr |
+	#Pointer |
 	#Slice |
 	#String |
 	#Struct |
-	#UnsafePointer
+	#UnsafePointer |
+	#Ptr
 
 #values_Kind: {
 	Invalid:       #Invalid
@@ -84,11 +85,12 @@ package reflect
 	Func:          #Func
 	Interface:     #Interface
 	Map:           #Map
-	Ptr:           #Ptr
+	Pointer:       #Pointer
 	Slice:         #Slice
 	String:        #String
 	Struct:        #Struct
 	UnsafePointer: #UnsafePointer
+	Ptr:           #Ptr
 }
 
 #Invalid:       #Kind & 0
@@ -113,11 +115,13 @@ package reflect
 #Func:          #Kind & 19
 #Interface:     #Kind & 20
 #Map:           #Kind & 21
-#Ptr:           #Kind & 22
+#Pointer:       #Kind & 22
 #Slice:         #Kind & 23
 #String:        #Kind & 24
 #Struct:        #Kind & 25
 #UnsafePointer: #Kind & 26
+
+#Ptr: #Kind & 22
 
 // tflag is used by an rtype to signal what extra type information is
 // available in the memory directly following the rtype value.

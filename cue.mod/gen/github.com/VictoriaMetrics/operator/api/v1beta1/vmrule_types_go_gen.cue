@@ -5,7 +5,6 @@
 package v1beta1
 
 import (
-	"k8s.io/apimachinery/pkg/util/intstr"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -42,6 +41,7 @@ import (
 	// ExtraFilterLabels optional list of label filters applied to every rule's
 	// request withing a group. Is compatible only with VM datasource.
 	// See more details at https://docs.victoriametrics.com#prometheus-querying-api-enhancements
+	// Deprecated, use params instead
 	// +optional
 	extra_filter_labels?: {[string]: string} @go(ExtraFilterLabels,map[string]string)
 
@@ -49,6 +49,14 @@ import (
 	// See more details at https://docs.victoriametrics.com/vmalert.html#multitenancy
 	// +optional
 	tenant?: string @go(Tenant)
+
+	// Params optional HTTP URL parameters added to each rule request
+	// +optional
+
+	// Type defines datasource type for enterprise version of vmalert
+	// possible values - prometheus,graphite
+	// +optional
+	type?: string @go(Type)
 }
 
 // Rule describes an alerting or recording rule.
@@ -64,7 +72,7 @@ import (
 
 	// Expr is query, that will be evaluated at dataSource
 	// +optional
-	expr: intstr.#IntOrString @go(Expr)
+	expr: string @go(Expr)
 
 	// For evaluation interval in time.Duration format
 	// 30s, 1m, 1h  or nanoseconds

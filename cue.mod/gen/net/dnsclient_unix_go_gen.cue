@@ -8,6 +8,10 @@ package net
 _#useTCPOnly:  true
 _#useUDPOrTCP: false
 
+// Maximum DNS packet size.
+// Value taken from https://dnsflagday.net/2020/.
+_#maxDNSPacketSize: 1232
+
 // hostLookupOrder specifies the order of LookupHost lookup strategies.
 // It is basically a simplified representation of nsswitch.conf.
 // "files" means /etc/hosts.

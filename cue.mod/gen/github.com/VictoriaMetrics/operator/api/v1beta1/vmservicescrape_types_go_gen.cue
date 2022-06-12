@@ -325,22 +325,22 @@ _#nsMatcher: _
 	// +optional
 	target_label?: string @go(UnderScoreTargetLabel)
 
-	//The source labels select values from existing labels. Their content is concatenated
-	//using the configured separator and matched against the configured regular expression
-	//for the replace, keep, and drop actions.
+	// The source labels select values from existing labels. Their content is concatenated
+	// using the configured separator and matched against the configured regular expression
+	// for the replace, keep, and drop actions.
 	// +optional
 	sourceLabels?: [...string] @go(SourceLabels,[]string)
 
-	//Separator placed between concatenated source label values. default is ';'.
+	// Separator placed between concatenated source label values. default is ';'.
 	// +optional
 	separator?: string @go(Separator)
 
-	//Label to which the resulting value is written in a replace action.
-	//It is mandatory for replace actions. Regex capture groups are available.
+	// Label to which the resulting value is written in a replace action.
+	// It is mandatory for replace actions. Regex capture groups are available.
 	// +optional
 	targetLabel?: string @go(TargetLabel)
 
-	//Regular expression against which the extracted value is matched. Default is '(.*)'
+	// Regular expression against which the extracted value is matched. Default is '(.*)'
 	// +optional
 	regex?: string @go(Regex)
 
@@ -348,8 +348,8 @@ _#nsMatcher: _
 	// +optional
 	modulus?: uint64 @go(Modulus)
 
-	//Replacement value against which a regex replace is performed if the
-	//regular expression matches. Regex capture groups are available. Default is '$1'
+	// Replacement value against which a regex replace is performed if the
+	// regular expression matches. Regex capture groups are available. Default is '$1'
 	// +optional
 	replacement?: string @go(Replacement)
 

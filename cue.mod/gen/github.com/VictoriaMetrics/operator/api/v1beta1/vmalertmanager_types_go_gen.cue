@@ -7,6 +7,7 @@ package v1beta1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/apps/v1"
 )
 
 // VMAlertmanager represents Victoria-Metrics deployment for Alertmanager.
@@ -56,13 +57,13 @@ import (
 
 	// Secrets is a list of Secrets in the same namespace as the VMAlertmanager
 	// object, which shall be mounted into the VMAlertmanager Pods.
-	// The Secrets are mounted into /etc/alertmanager/secrets/<secret-name>
+	// The Secrets are mounted into /etc/vm/secrets/<secret-name>
 	// +optional
 	secrets?: [...string] @go(Secrets,[]string)
 
 	// ConfigMaps is a list of ConfigMaps in the same namespace as the VMAlertmanager
 	// object, which shall be mounted into the VMAlertmanager Pods.
-	// The ConfigMaps are mounted into /etc/alertmanager/configmaps/<configmap-name>.
+	// The ConfigMaps are mounted into /etc/vm/configs/<configmap-name>.
 	// +optional
 	configMaps?: [...string] @go(ConfigMaps,[]string)
 
@@ -171,7 +172,7 @@ import (
 	schedulerName?: string @go(SchedulerName)
 
 	// RuntimeClassName - defines runtime class for kubernetes pod.
-	//https://kubernetes.io/docs/concepts/containers/runtime-class/
+	// https://kubernetes.io/docs/concepts/containers/runtime-class/
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
@@ -212,6 +213,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -236,6 +243,10 @@ import (
 	// ServiceSpec that will be added to vmalertmanager service spec
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
+
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
 
 	// PodDisruptionBudget created by operator
 	// +optional
@@ -274,6 +285,21 @@ import (
 	// ExtraEnvs that will be added to VMAuth pod
 	// +optional
 	extraEnvs?: [...v1.#EnvVar] @go(ExtraEnvs,[]v1.EnvVar)
+
+	// DisableNamespaceMatcher disables namespace label matcher for VMAlertmanagerConfig
+	// It may be useful if alert doesn't have namespace label for some reason
+	// +optional
+	disableNamespaceMatcher?: bool @go(DisableNamespaceMatcher)
+
+	// RollingUpdateStrategy defines strategy for application updates
+	// Default is OnDelete, in this case operator handles update process
+	// Can be changed for RollingUpdate
+	// +optional
+	rollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(RollingUpdateStrategy)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 // VMAlertmanagerList is a list of Alertmanagers.

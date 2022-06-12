@@ -10,6 +10,8 @@ package v1alpha2
 #BuildReasonAnnotation:  "image.kpack.io/reason"
 #BuildChangesAnnotation: "image.kpack.io/buildChanges"
 #BuildNeededAnnotation:  "image.kpack.io/additionalBuildNeeded"
+#BuilderNameAnnotation:  "image.kpack.io/builderName"
+#BuilderKindAnnotation:  "image.kpack.io/builderKind"
 #BuildReasonConfig:      "CONFIG"
 #BuildReasonCommit:      "COMMIT"
 #BuildReasonBuildpack:   "BUILDPACK"

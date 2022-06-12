@@ -5,9 +5,8 @@
 package v1beta1
 
 import (
-	"github.com/fluxcd/pkg/runtime/dependency"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/fluxcd/pkg/apis/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/fluxcd/pkg/apis/kustomize"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -19,11 +18,11 @@ import (
 
 // KustomizationSpec defines the desired state of a kustomization.
 #KustomizationSpec: {
-	// DependsOn may contain a dependency.CrossNamespaceDependencyReference slice
+	// DependsOn may contain a meta.NamespacedObjectReference slice
 	// with references to Kustomization resources that must be ready before this
 	// Kustomization can be reconciled.
 	// +optional
-	dependsOn?: [...dependency.#CrossNamespaceDependencyReference] @go(DependsOn,[]dependency.CrossNamespaceDependencyReference)
+	dependsOn?: [...meta.#NamespacedObjectReference] @go(DependsOn,[]meta.NamespacedObjectReference)
 
 	// Decrypt Kubernetes secrets before applying them on the cluster.
 	// +optional

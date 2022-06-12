@@ -23,7 +23,7 @@ import (
 
 	grafana_v1alpha1 "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
 
-	certmanager_v1 "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
+	certmanager_v1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 
 	networkattachment_v1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 

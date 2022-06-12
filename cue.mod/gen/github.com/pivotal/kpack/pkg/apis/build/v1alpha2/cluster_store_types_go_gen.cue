@@ -10,7 +10,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-#ClusterStoreKind: "ClusterStore"
+#ClusterStoreKind:   "ClusterStore"
+#ClusterStoreCRName: "clusterstores.kpack.io"
 
 // +k8s:openapi-gen=true
 #ClusterStore: {

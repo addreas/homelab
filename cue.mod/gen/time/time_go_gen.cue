@@ -217,7 +217,6 @@ _#internalToAbsolute: int64 & 9223371966579724800
 _#unixToInternal:     int64 & 62135596800
 _#internalToUnix:     int64 & -62135596800
 _#wallToInternal:     int64 & 59453308800
-_#internalToWall:     int64 & -59453308800
 
 // A Duration represents the elapsed time between two instants
 // as an int64 nanosecond count. The representation limits the
@@ -263,4 +262,5 @@ _#daysPer400Years:  146097
 _#daysPer100Years:  36524
 _#daysPer4Years:    1461
 
-_#timeBinaryVersion: 1
+_#timeBinaryVersionV1: 1
+_#timeBinaryVersionV2: 2

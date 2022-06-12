@@ -11,6 +11,10 @@ import (
 
 // VMUserSpec defines the desired state of VMUser
 #VMUserSpec: {
+	// Name of the VMUser object.
+	// +optional
+	name?: null | string @go(Name,*string)
+
 	// UserName basic auth user name for accessing protected endpoint,
 	// will be replaced with metadata.name of VMUser if omitted.
 	// +optional
@@ -20,9 +24,13 @@ import (
 	// +optional
 	password?: null | string @go(Password,*string)
 
-	// PasswordRef allows to fetch password from user-create secret by its name and key.
+	// PasswordRef allows fetching password from user-create secret by its name and key.
 	// +optional
 	passwordRef?: null | v1.#SecretKeySelector @go(PasswordRef,*v1.SecretKeySelector)
+
+	// TokenRef allows fetching token from user-created secrets by its name and key.
+	// +optional
+	tokenRef?: null | v1.#SecretKeySelector @go(TokenRef,*v1.SecretKeySelector)
 
 	// GeneratePassword instructs operator to generate password for user
 	// if spec.password if empty.

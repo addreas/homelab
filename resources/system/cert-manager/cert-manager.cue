@@ -11,7 +11,7 @@ k: HelmRelease: "cert-manager": spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "cert-manager"
-		version: util.goModVersions["github.com/jetstack/cert-manager"]
+		version: util.goModVersions["github.com/cert-manager/cert-manager"]
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "cert-manager"

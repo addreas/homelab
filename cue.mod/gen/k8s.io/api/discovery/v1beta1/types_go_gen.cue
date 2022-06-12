@@ -66,7 +66,8 @@ import (
 	// according to the corresponding EndpointSlice addressType field. Consumers
 	// must handle different types of addresses in the context of their own
 	// capabilities. This must contain at least one address but no more than
-	// 100.
+	// 100. These are all assumed to be fungible and clients may choose to only
+	// use the first element. Refer to: https://issue.k8s.io/106267
 	// +listType=set
 	addresses: [...string] @go(Addresses,[]string) @protobuf(1,bytes,rep)
 
@@ -180,7 +181,7 @@ import (
 	// The application protocol for this port.
 	// This field follows standard Kubernetes label syntax.
 	// Un-prefixed names are reserved for IANA standard service names (as per
-	// RFC-6335 and http://www.iana.org/assignments/service-names).
+	// RFC-6335 and https://www.iana.org/assignments/service-names).
 	// Non-standard protocols should use prefixed names such as
 	// mycompany.com/my-custom-protocol.
 	// +optional

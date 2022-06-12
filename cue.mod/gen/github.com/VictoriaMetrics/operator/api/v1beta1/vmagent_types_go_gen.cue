@@ -44,7 +44,7 @@ import (
 	configMaps?: [...string] @go(ConfigMaps,[]string)
 
 	// LogLevel for VMAgent to be configured with.
-	//INFO, WARN, ERROR, FATAL, PANIC
+	// INFO, WARN, ERROR, FATAL, PANIC
 	// +optional
 	// +kubebuilder:validation:Enum=INFO;WARN;ERROR;FATAL;PANIC
 	logLevel?: string @go(LogLevel)
@@ -75,7 +75,7 @@ import (
 	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
 
 	// Resources container resource request and limits, https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-	//if not specified - default setting will be used
+	// if not specified - default setting will be used
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Resources",xDescriptors="urn:alm:descriptor:com.tectonic.ui:resourceRequirements"
 	// +optional
 	resources?: v1.#ResourceRequirements @go(Resources)
@@ -104,7 +104,7 @@ import (
 	schedulerName?: string @go(SchedulerName)
 
 	// RuntimeClassName - defines runtime class for kubernetes pod.
-	//https://kubernetes.io/docs/concepts/containers/runtime-class/
+	// https://kubernetes.io/docs/concepts/containers/runtime-class/
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
 	// HostAliases provides mapping between ip and hostnames,
@@ -351,6 +351,10 @@ import (
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
 
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
+
 	// ShardCount - numbers of shards of VMAgent
 	// in this case operator will use 1 deployment/sts per shard with
 	// replicas count according to spec.replicas
@@ -402,6 +406,38 @@ import (
 	// it's useful for adding specific labels to all targets
 	// +optional
 	probeScrapeRelabelTemplate?: [...null | #RelabelConfig] @go(ProbeScrapeRelabelTemplate,[]*RelabelConfig)
+
+	// MinScrapeInterval allows limiting minimal scrape interval for VMServiceScrape, VMPodScrape and other scrapes
+	// If interval is lower than defined limit, `minScrapeInterval` will be used.
+	minScrapeInterval?: null | string @go(MinScrapeInterval,*string)
+
+	// MaxScrapeInterval allows limiting maximum scrape interval for VMServiceScrape, VMPodScrape and other scrapes
+	// If interval is higher than defined limit, `maxScrapeInterval` will be used.
+	maxScrapeInterval?: null | string @go(MaxScrapeInterval,*string)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
+	// StatefulMode enables StatefulSet for `VMAgent` instead of Deployment
+	// it allows using persistent storage for vmagent's persistentQueue
+	// +optional
+	statefulMode?: bool @go(StatefulMode)
+
+	// StatefulStorage configures storage for StatefulSet
+	// +optional
+	statefulStorage?: null | #StorageSpec @go(StatefulStorage,*StorageSpec)
+
+	// StatefulRollingUpdateStrategy allows configuration for strategyType
+	// set it to RollingUpdate for disabling operator statefulSet rollingUpdate
+	// +optional
+	statefulRollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(StatefulRollingUpdateStrategy)
 }
 
 // VMAgentRemoteWriteSettings - defines global settings for all remoteWrite urls.

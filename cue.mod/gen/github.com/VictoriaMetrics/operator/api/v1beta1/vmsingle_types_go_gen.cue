@@ -66,6 +66,10 @@ import (
 	// +optional
 	storage?: null | v1.#PersistentVolumeClaimSpec @go(Storage,*v1.PersistentVolumeClaimSpec)
 
+	// StorageMeta defines annotations and labels attached to PVC for given vmsingle CR
+	// +optional
+	storageMetadata?: #EmbeddedObjectMetadata @go(StorageMetadata)
+
 	// Volumes allows configuration of additional volumes on the output deploy definition.
 	// Volumes specified will be appended to other volumes that are generated as a result of
 	// StorageSpec objects.
@@ -107,7 +111,7 @@ import (
 	schedulerName?: string @go(SchedulerName)
 
 	// RuntimeClassName - defines runtime class for kubernetes pod.
-	//https://kubernetes.io/docs/concepts/containers/runtime-class/
+	// https://kubernetes.io/docs/concepts/containers/runtime-class/
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
@@ -148,6 +152,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -158,7 +168,7 @@ import (
 	// InsertPorts - additional listen ports for data ingestion.
 	insertPorts?: null | #InsertPorts @go(InsertPorts,*InsertPorts)
 
-	//Port listen port
+	// Port listen port
 	// +optional
 	port?: string @go(Port)
 
@@ -168,8 +178,11 @@ import (
 	// +optional
 	removePvcAfterDelete?: bool @go(RemovePvcAfterDelete)
 
-	// RetentionPeriod in months
-	// +kubebuilder:validation:Pattern:="[1-9]+"
+	// RetentionPeriod for the stored metrics
+	// Note VictoriaMetrics has data/ and indexdb/ folders
+	// metrics from data/ removed eventually as soon as partition leaves retention period
+	// reverse index data at indexdb rotates once at the half of configured retention period
+	// https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#retention
 	retentionPeriod: string @go(RetentionPeriod)
 
 	// VMBackup configuration for backup
@@ -189,11 +202,19 @@ import (
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
 
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
+
 	#EmbeddedProbes
 
 	// NodeSelector Define which Nodes the Pods are scheduled on.
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 // VMSingleStatus defines the observed state of VMSingle

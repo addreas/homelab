@@ -5,10 +5,9 @@
 package v2beta1
 
 import (
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"github.com/fluxcd/pkg/apis/kustomize"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/fluxcd/pkg/runtime/dependency"
 	"github.com/fluxcd/pkg/apis/meta"
 )
 
@@ -18,6 +17,11 @@ import (
 
 // Kustomize Helm PostRenderer specification.
 #Kustomize: {
+	// Strategic merge and JSON patches, defined as inline YAML objects,
+	// capable of targeting objects based on kind, label and annotation selectors.
+	// +optional
+	patches?: [...kustomize.#Patch] @go(Patches,[]kustomize.Patch)
+
 	// Strategic merge patches, defined as inline YAML objects.
 	// +optional
 	patchesStrategicMerge?: [...apiextensionsv1.#JSON] @go(PatchesStrategicMerge,[]apiextensionsv1.JSON)
@@ -42,7 +46,7 @@ import (
 
 // HelmReleaseSpec defines the desired state of a Helm release.
 #HelmReleaseSpec: {
-	// Chart defines the template of the v1beta1.HelmChart that should be created
+	// Chart defines the template of the v1beta2.HelmChart that should be created
 	// for this HelmRelease.
 	// +required
 	chart: #HelmChartTemplate @go(Chart)
@@ -52,7 +56,12 @@ import (
 	interval: metav1.#Duration @go(Interval)
 
 	// KubeConfig for reconciling the HelmRelease on a remote cluster.
-	// When specified, KubeConfig takes precedence over ServiceAccountName.
+	// When used in combination with HelmReleaseSpec.ServiceAccountName,
+	// forces the controller to act on behalf of that Service Account at the
+	// target cluster.
+	// If the --default-service-account flag is set, its value will be used as
+	// a controller level fallback for when HelmReleaseSpec.ServiceAccountName
+	// is empty.
 	// +optional
 	kubeConfig?: null | #KubeConfig @go(KubeConfig,*KubeConfig)
 
@@ -85,11 +94,11 @@ import (
 	// +optional
 	storageNamespace?: string @go(StorageNamespace)
 
-	// DependsOn may contain a dependency.CrossNamespaceDependencyReference slice with
+	// DependsOn may contain a meta.NamespacedObjectReference slice with
 	// references to HelmRelease resources that must be ready before this HelmRelease
 	// can be reconciled.
 	// +optional
-	dependsOn?: [...dependency.#CrossNamespaceDependencyReference] @go(DependsOn,[]dependency.CrossNamespaceDependencyReference)
+	dependsOn?: [...meta.#NamespacedObjectReference] @go(DependsOn,[]meta.NamespacedObjectReference)
 
 	// Timeout is the time to wait for any individual Kubernetes operation (like Jobs
 	// for hooks) during the performance of a Helm action. Defaults to '5m0s'.
@@ -142,8 +151,9 @@ import (
 
 // KubeConfig references a Kubernetes secret that contains a kubeconfig file.
 #KubeConfig: {
-	// SecretRef holds the name to a secret that contains a 'value' key with
-	// the kubeconfig file as the value. It must be in the same namespace as
+	// SecretRef holds the name to a secret that contains a key with
+	// the kubeconfig file as the value. If no key is specified the key will
+	// default to 'value'. The secret must be in the same namespace as
 	// the HelmRelease.
 	// It is recommended that the kubeconfig is self-contained, and the secret
 	// is regularly updated if credentials such as a cloud-access-token expire.
@@ -151,36 +161,36 @@ import (
 	// binaries and credentials to the Pod that is responsible for reconciling
 	// the HelmRelease.
 	// +required
-	secretRef?: meta.#LocalObjectReference @go(SecretRef)
+	secretRef?: meta.#SecretKeyReference @go(SecretRef)
 }
 
 // HelmChartTemplate defines the template from which the controller will
-// generate a v1beta1.HelmChart object in the same namespace as the referenced
-// v1beta1.Source.
+// generate a v1beta2.HelmChart object in the same namespace as the referenced
+// v1beta2.Source.
 #HelmChartTemplate: {
-	// Spec holds the template for the v1beta1.HelmChartSpec for this HelmRelease.
+	// Spec holds the template for the v1beta2.HelmChartSpec for this HelmRelease.
 	// +required
 	spec: #HelmChartTemplateSpec @go(Spec)
 }
 
 // HelmChartTemplateSpec defines the template from which the controller will
-// generate a v1beta1.HelmChartSpec object.
+// generate a v1beta2.HelmChartSpec object.
 #HelmChartTemplateSpec: {
 	// The name or path the Helm chart is available at in the SourceRef.
 	// +required
 	chart: string @go(Chart)
 
-	// Version semver expression, ignored for charts from v1beta1.GitRepository and
-	// v1beta1.Bucket sources. Defaults to latest when omitted.
+	// Version semver expression, ignored for charts from v1beta2.GitRepository and
+	// v1beta2.Bucket sources. Defaults to latest when omitted.
 	// +kubebuilder:default:=*
 	// +optional
 	version?: string @go(Version)
 
-	// The name and namespace of the v1beta1.Source the chart is available at.
+	// The name and namespace of the v1beta2.Source the chart is available at.
 	// +required
 	sourceRef: #CrossNamespaceObjectReference @go(SourceRef)
 
-	// Interval at which to check the v1beta1.Source for updates. Defaults to
+	// Interval at which to check the v1beta2.Source for updates. Defaults to
 	// 'HelmReleaseSpec.Interval'.
 	// +optional
 	interval?: null | metav1.#Duration @go(Interval,*metav1.Duration)
@@ -517,6 +527,11 @@ import (
 	// release as deleted, but retain the release history.
 	// +optional
 	keepHistory?: bool @go(KeepHistory)
+
+	// DisableWait disables waiting for all the resources to be deleted after
+	// a Helm uninstall is performed.
+	// +optional
+	disableWait?: bool @go(DisableWait)
 }
 
 // HelmReleaseStatus defines the observed state of a HelmRelease.

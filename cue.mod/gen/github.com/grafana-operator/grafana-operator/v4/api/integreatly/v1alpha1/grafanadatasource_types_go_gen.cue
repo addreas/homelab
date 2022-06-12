@@ -82,9 +82,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	maxIdleConns?:            int    @go(MaxIdleConns)
 	connMaxLifetime?:         int    @go(ConnMaxLifetime)
 
-	//  Useful fields for clickhouse datasource
-	//  See https://github.com/Vertamedia/clickhouse-grafana/tree/master/dist/README.md#configure-the-datasource-with-provisioning
-	//  See https://github.com/Vertamedia/clickhouse-grafana/tree/master/src/datasource.ts#L44
+	// Useful fields for clickhouse datasource
+	// See https://github.com/Vertamedia/clickhouse-grafana/tree/master/dist/README.md#configure-the-datasource-with-provisioning
+	// See https://github.com/Vertamedia/clickhouse-grafana/tree/master/src/datasource.ts#L44
 	addCorsHeader?:               bool   @go(AddCorsHeader)
 	defaultDatabase?:             string @go(DefaultDatabase)
 	usePOST?:                     bool   @go(UsePOST)
@@ -136,9 +136,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Fields for Prometheus data sources
 	customQueryParameters?: string @go(CustomQueryParameters)
 	httpMethod?:            string @go(HTTPMethod)
+	exemplarTraceIdDestinations?: [...#GrafanaDataSourceJsonExemplarTraceIdDestinations] @go(ExemplarTraceIdDestinations,[]GrafanaDataSourceJsonExemplarTraceIdDestinations)
 
 	// Fields for tracing data sources
 	tracesToLogs?: #GrafanaDataSourceJsonTracesToLogs @go(TracesToLogs)
+	serviceMap?:   #GrafanaDataSourceJsonServiceMap   @go(ServiceMap)
+	nodeGraph?:    #GrafanaDatasourceJsonNodeGraph    @go(NodeGraph)
+	search?:       #GrafanaDataSourceJsonSearch       @go(Search)
 
 	// Fields for Github data sources
 	githubUrl?: string @go(GithubUrl)
@@ -153,6 +157,28 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	sigV4AssumeRoleArn?: string @go(SigV4AssumeRoleArn)
 	sigV4Region?:        string @go(SigV4Region)
 	sigV4Profile?:       string @go(SigV4Profile)
+
+	// Fields for Instana data sources
+	// See https://github.com/instana/instana-grafana-datasource/blob/main/provisioning/datasources/datasource.yml
+	url?:               string @go(Url)
+	apiToken?:          string @go(ApiToken)
+	useProxy?:          bool   @go(UseProxy)
+	showOffline?:       bool   @go(ShowOffline)
+	allowInfraExplore?: bool   @go(AllowInfraExplore)
+
+	// Extra field for MySQL data source
+	timezone?: string @go(Timezone)
+
+	// Fields for Grafana Clickhouse data sources
+	server?:   string @go(Server)
+	port?:     int    @go(Port)
+	username?: string @go(Username)
+
+	// ManageAlerts turns on alert management from UI
+	manageAlerts?: bool @go(ManageAlerts)
+
+	// AlertManagerUID if null use the internal grafana alertmanager
+	alertmanagerUid?: string @go(AlertManagerUID)
 }
 
 #GrafanaDataSourceJsonDerivedFields: {
@@ -162,11 +188,33 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	url?:           string @go(Url)
 }
 
+#GrafanaDataSourceJsonExemplarTraceIdDestinations: {
+	datasourceUid?:   string @go(DatasourceUid)
+	name?:            string @go(Name)
+	url?:             string @go(Url)
+	urlDisplayLabel?: string @go(UrlDisplayLabel)
+}
+
 #GrafanaDataSourceJsonTracesToLogs: {
 	datasourceUid?:      string @go(DatasourceUid)
 	spanEndTimeShift?:   string @go(SpanEndTimeShift)
 	spanStartTimeShift?: string @go(SpanStartTimeShift)
 	tags?: [...string] @go(Tags,[]string)
+	filterBySpanID?:  bool @go(FilterBySpanId)
+	filterByTraceID?: bool @go(FilterByTraceID)
+	lokiSearch?:      bool @go(LokiSearch)
+}
+
+#GrafanaDataSourceJsonServiceMap: {
+	datasourceUid?: string @go(DatasourceUid)
+}
+
+#GrafanaDataSourceJsonSearch: {
+	hide?: bool @go(Hide)
+}
+
+#GrafanaDatasourceJsonNodeGraph: {
+	enabled?: bool @go(Enabled)
 }
 
 // GrafanaDataSourceSecureJsonData contains the most common secure json options

@@ -9,7 +9,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-#ClusterBuilderKind: "ClusterBuilder"
+#ClusterBuilderKind:   "ClusterBuilder"
+#ClusterBuilderCRName: "clusterbuilders.kpack.io"
 
 // +k8s:openapi-gen=true
 #ClusterBuilder: {

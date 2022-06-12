@@ -30,6 +30,10 @@ command: godeps: {
 			$after: [getGo]
 			cmd: "sed -i /reflect/d ./cue.mod/gen/github.com/go-openapi/strfmt/format_go_gen.cue"
 		}
+		deleteNetUrl: exec.Run & {
+			$after: [getGo]
+			cmd: "sed -i /url/d ./cue.mod/gen/github.com/VictoriaMetrics/operator/api/v1beta1/vmrule_types_go_gen.cue"
+		}
 	}
 }
 

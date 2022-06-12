@@ -402,6 +402,7 @@ import (
 
 	// conditions is the set of conditions required for this autoscaler to scale its target,
 	// and indicates whether or not those conditions are met.
+	// +optional
 	conditions: [...#HorizontalPodAutoscalerCondition] @go(Conditions,[]HorizontalPodAutoscalerCondition) @protobuf(6,bytes,rep)
 }
 

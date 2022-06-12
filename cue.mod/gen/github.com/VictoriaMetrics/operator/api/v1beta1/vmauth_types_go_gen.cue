@@ -92,7 +92,7 @@ import (
 	schedulerName?: string @go(SchedulerName)
 
 	// RuntimeClassName - defines runtime class for kubernetes pod.
-	//https://kubernetes.io/docs/concepts/containers/runtime-class/
+	// https://kubernetes.io/docs/concepts/containers/runtime-class/
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string)
 
@@ -133,6 +133,12 @@ import (
 	// +optional
 	dnsPolicy?: v1.#DNSPolicy @go(DNSPolicy)
 
+	// Specifies the DNS parameters of a pod.
+	// Parameters specified here will be merged to the generated DNS
+	// configuration based on DNSPolicy.
+	// +optional
+	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
 	// TopologySpreadConstraints embedded kubernetes pod configuration option,
 	// controls how pods are spread across your cluster among failure-domains
 	// such as regions, zones, nodes, and other user-defined topology domains
@@ -140,7 +146,7 @@ import (
 	// +optional
 	topologySpreadConstraints?: [...v1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]v1.TopologySpreadConstraint)
 
-	//Port listen port
+	// Port listen port
 	// +optional
 	port?: string @go(Port)
 
@@ -179,6 +185,10 @@ import (
 	// +optional
 	serviceSpec?: null | #ServiceSpec @go(ServiceSpec,*ServiceSpec)
 
+	// ServiceScrapeSpec that will be added to vmselect VMServiceScrape spec
+	// +optional
+	serviceScrapeSpec?: null | #VMServiceScrapeSpec @go(ServiceScrapeSpec,*VMServiceScrapeSpec)
+
 	// PodDisruptionBudget created by operator
 	// +optional
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
@@ -191,6 +201,10 @@ import (
 	// NodeSelector Define which Nodes the Pods are scheduled on.
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
+
+	// TerminationGracePeriodSeconds period for container graceful termination
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 // EmbeddedIngress describes ingress configuration options.
@@ -218,6 +232,11 @@ import (
 	// must be checked for correctness by user.
 	// +optional
 	extraTls?: [...v12.#IngressTLS] @go(ExtraTLS,[]v12.IngressTLS)
+
+	// Host defines ingress host parameter for default rule
+	// It will be used, only if TlsHosts is empty
+	// +optional
+	host?: string @go(Host)
 }
 
 // VMAuthStatus defines the observed state of VMAuth

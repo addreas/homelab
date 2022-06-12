@@ -203,6 +203,42 @@ import (
 	// WeChatConfigs defines wechat notification configurations.
 	// +optional
 	wechat_configs?: [...#WeChatConfig] @go(WeChatConfigs,[]WeChatConfig)
+	telegram_configs?: [...#TelegramConfig] @go(TelegramConfigs,[]TelegramConfig)
+}
+
+#TelegramConfig: {
+	// SendResolved controls notify about resolved alerts.
+	// +optional
+	send_resolved?: null | bool @go(SendResolved,*bool)
+
+	// APIUrl the Telegram API URL i.e. https://api.telegram.org.
+	// +optional
+	api_url?: string @go(APIUrl)
+
+	// BotToken token for the bot
+	// https://core.telegram.org/bots/api
+	bot_token?: null | v1.#SecretKeySelector @go(BotToken,*v1.SecretKeySelector)
+
+	// ChatID is ID of the chat where to send the messages.
+	chat_id: int @go(ChatID)
+
+	// Message is templated message
+	// +optional
+	message?: string @go(Message)
+
+	// DisableNotifications
+	// +optional
+	disable_notifications?: null | bool @go(DisableNotifications,*bool)
+
+	// ParseMode for telegram message,
+	// supported values are MarkdownV2, Markdown, Markdown and empty string for plain text.
+	// +kubebuilder:validation:Enum=MarkdownV2;Markdown;Markdown;
+	// +optional
+	parse_mode?: string @go(ParseMode)
+
+	// HTTP client configuration.
+	// +optional
+	http_config?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
 }
 
 // WebhookConfig configures notifications via a generic receiver supporting the webhook payload.
@@ -374,13 +410,14 @@ import (
 	// +optional
 	monitoring_tool?: string @go(MonitoringTool)
 
-	// Additional custom fields for notification.
-	// +optional
-	custom_fields?: {[string]: string} @go(CustomFields,map[string]string)
-
 	// The HTTP client's configuration.
 	// +optional
 	http_config?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
+
+	// Adds optional custom fields
+	// https://github.com/prometheus/alertmanager/blob/v0.24.0/config/notifiers.go#L537
+	// +optional
+	custom_fields?: {[string]: string} @go(CustomFields,map[string]string)
 }
 
 // PushoverConfig configures notifications via Pushover.
@@ -631,7 +668,7 @@ import (
 
 	// HTTP client configuration.
 	// +optional
-	httpConfig?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
+	http_config?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
 }
 
 // OpsGenieConfigResponder defines a responder to an incident.
@@ -687,6 +724,14 @@ import (
 	// +optional
 	client_url?: string @go(ClientURL)
 
+	// Images to attach to the incident.
+	// +optional
+	images?: [...#ImageConfig] @go(Images,[]ImageConfig)
+
+	// Links to attach to the incident.
+	// +optional
+	links?: [...#LinkConfig] @go(Links,[]LinkConfig)
+
 	// Description of the incident.
 	// +optional
 	description?: string @go(Description)
@@ -716,9 +761,27 @@ import (
 	http_config?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
 }
 
+// ImageConfig is used to attach images to the incident.
+// See https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgx-send-an-alert-event#the-images-property
+// for more information.
+#ImageConfig: {
+	href?:  string @go(Href)
+	source: string @go(Source)
+	alt?:   string @go(Alt)
+}
+
+// LinkConfig is used to attach text links to the incident.
+// See https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgx-send-an-alert-event#the-links-property
+// for more information.
+#LinkConfig: {
+	href:  string @go(Href)
+	text?: string @go(Text)
+}
+
 // HTTPConfig defines a client HTTP configuration.
 // See https://prometheus.io/docs/alerting/latest/configuration/#http_config
 #HTTPConfig: {
+	// TODO oAuth2 support
 	// BasicAuth for the client.
 	// +optional
 	basic_auth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)

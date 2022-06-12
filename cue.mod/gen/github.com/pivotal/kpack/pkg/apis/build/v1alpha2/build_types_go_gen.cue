@@ -10,6 +10,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
+#BuildKind:   "Build"
+#BuildCRName: "builds.kpack.io"
+
 // +k8s:openapi-gen=true
 #Build: {
 	metav1.#TypeMeta
@@ -45,9 +48,10 @@ import (
 	// +listType
 	tolerations?: [...corev1.#Toleration] @go(Tolerations,[]corev1.Toleration)
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
-	affinity?:         null | corev1.#Affinity @go(Affinity,*corev1.Affinity)
-	runtimeClassName?: null | string           @go(RuntimeClassName,*string)
-	schedulerName?:    string                  @go(SchedulerName)
+	affinity?:          null | corev1.#Affinity @go(Affinity,*corev1.Affinity)
+	runtimeClassName?:  null | string           @go(RuntimeClassName,*string)
+	schedulerName?:     string                  @go(SchedulerName)
+	priorityClassName?: string                  @go(PriorityClassName)
 }
 
 // +k8s:openapi-gen=true
@@ -62,7 +66,6 @@ import (
 }
 
 // +k8s:openapi-gen=true
-// +k8s:deepcopy-gen=true
 #Services: [...corev1.#ObjectReference]
 
 // +k8s:openapi-gen=true

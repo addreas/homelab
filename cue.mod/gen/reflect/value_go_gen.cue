@@ -4,8 +4,6 @@
 
 package reflect
 
-_#ptrSize: 8
-
 _#flag: uintptr
 
 _#flagKindWidth:   5
@@ -27,6 +25,14 @@ _#flagRO:          _#flag & 96
 }
 
 _#debugReflectCall: false
+
+// hiter's structure matches runtime.hiter's structure.
+// Having a clone here allows us to embed a map iterator
+// inside type MapIter so that MapIters can be re-used
+// without doing any allocations.
+_#hiter: {
+	B: uint8
+}
 
 // StringHeader is the runtime representation of a string.
 // It cannot be used safely or portably and its representation may
@@ -55,11 +61,13 @@ _#debugReflectCall: false
 #SelectDir: int // #enumSelectDir
 
 #enumSelectDir:
+	_#_ |
 	#SelectSend |
 	#SelectRecv |
 	#SelectDefault
 
 #values_SelectDir: {
+	"_":           _#_
 	SelectSend:    #SelectSend
 	SelectRecv:    #SelectRecv
 	SelectDefault: #SelectDefault

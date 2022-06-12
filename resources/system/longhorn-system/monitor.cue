@@ -1,11 +1,28 @@
 package kube
 
+let DS_PROMETHEUS = {
+	datasourceName: "Prometheus"
+	inputName:      "DS_PROMETHEUS"
+}
+
 k: GrafanaDashboard: "longhorn": spec: {
 	grafanaCom: id: 13032
-	datasources: [{
-		datasourceName: "Prometheus"
-		inputName:      "DS_PROMETHEUS"
-	}]
+	datasources: [DS_PROMETHEUS]
+}
+
+k: GrafanaDashboard: "kubernetes-persistent-volumes": spec: {
+	grafanaCom: id: 13646
+	datasources: [DS_PROMETHEUS]
+}
+
+k: GrafanaDashboard: "k8s-storage-volumes-cluster": spec: {
+	grafanaCom: id: 11454
+	datasources: [DS_PROMETHEUS]
+}
+
+k: GrafanaDashboard: "k8s-storage-volumes-namespace": spec: {
+	grafanaCom: id: 11455
+	datasources: [DS_PROMETHEUS]
 }
 
 k: ServiceMonitor: "longhorn-prometheus-servicemonitor": {

@@ -10,3 +10,6 @@ package net
 	Port: int
 	Zone: string
 }
+
+// An addrPortUDPAddr is a netip.AddrPort-based UDP address that satisfies the Addr interface.
+_#addrPortUDPAddr: string

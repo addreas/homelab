@@ -29,8 +29,8 @@ import (
 	// The secret name containing the Git credentials.
 	// For HTTPS repositories the secret must contain username and password
 	// fields.
-	// For SSH repositories the secret must contain identity, identity.pub and
-	// known_hosts fields.
+	// For SSH repositories the secret must contain identity and known_hosts
+	// fields.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
 
