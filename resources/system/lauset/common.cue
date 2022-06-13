@@ -75,7 +75,7 @@ _kratos_config: #KratosConfigSchema & {
 
 	selfservice: {
 		default_browser_return_url: "https://\(_hostname)/"
-		whitelisted_return_urls: [
+		allowed_return_urls: [
 			"https://\(_hostname)/",
 			"https://\(_hostname)/hydra/login",
 		]
@@ -146,7 +146,7 @@ _kratos_config: #KratosConfigSchema & {
 	identity: {
 		default_schema_id: "person"
 		schemas: [{
-			id: "person"
+			id:  "person"
 			url: "file:///etc/config/person.schema.json"
 		}]
 	}

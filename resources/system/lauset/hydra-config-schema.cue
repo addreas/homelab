@@ -18,6 +18,11 @@ import (
 		// Logs sensitive values such as cookie and URL parameter.
 		leak_sensitive_values?: bool | *false
 
+		// Sensitive log value redaction text
+		//
+		// Text to use, when redacting sensitive log value.
+		redaction_text?: string
+
 		// Sets the log format.
 		format?: "json" | "json_pretty" | "text" | *"text"
 	}
@@ -107,6 +112,13 @@ import (
 		// slot. In this case first slot, that contains this label is
 		// used.
 		token_label?: string
+
+		// Key set prefix can be used in case of multiple Ory Hydra
+		// instances need to store keys on the same HSM partition. For
+		// example if `hsm.key_set_prefix=app1.` then key set
+		// `hydra.openid.id-token` would be generated/requested/deleted
+		// on HSM with `CKA_LABEL=app1.hydra.openid.id-token`.
+		key_set_prefix?: string | *""
 	}
 
 	// Configures ./well-known/ settings.
@@ -414,6 +426,20 @@ import (
 			auto_max_procs_enabled?: bool | *false
 		}
 	}
+
+	// Disables HTTP/2 over TLS (HTTPS) and serves HTTP instead
+	//
+	// DO NOT USE THIS IN PRODUCTION - Disables HTTP/2 over TLS
+	// (HTTPS) and serves HTTP instead. This is only available as CLI
+	// flag `--dangerous-force-http`.
+	"dangerous-force-http"?: bool
+
+	// Disable HTTPS enforcement for the provided redirect URLs.
+	//
+	// DO NOT USE THIS IN PRODUCTION - Disable HTTPS enforcement for
+	// the provided redirect URLs. This is only available as CLI flag
+	// `--dangerous-allow-insecure-redirect-urls`.
+	"dangerous-allow-insecure-redirect-urls"?: [...string]
 
 	#http_method: "POST" | "GET" | "PUT" | "PATCH" | "DELETE" | "CONNECT" | "HEAD" | "OPTIONS" | "TRACE"
 

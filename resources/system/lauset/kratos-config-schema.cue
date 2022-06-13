@@ -12,12 +12,12 @@ import (
 	selfservice: {
 		default_browser_return_url: #defaultReturnTo
 
-		// Whitelisted Return To URLs
+		// Allowed Return To URLs
 		//
 		// List of URLs that are allowed to be redirected to. A
 		// redirection request is made by appending `?return_to=...` to
 		// Login, Registration, and other self-service flows.
-		whitelisted_return_urls?: list.UniqueItems() & [...string]
+		allowed_return_urls?: list.UniqueItems() & [...string]
 		flows?: {
 			settings?: {
 				// URL of the Settings page.
@@ -205,6 +205,14 @@ import (
 
 				// WebAuthn Configuration
 				config?: {
+					// Use For Passwordless Flows
+					//
+					// If enabled will have the effect that WebAuthn is used for
+					// passwordless flows (as a first factor) and not for
+					// multi-factor set ups. With this set to true, users will see an
+					// option to sign up with WebAuthn on the registration screen.
+					passwordless?: bool
+
 					// Relying Party (RP) Config
 					rp?: {
 						// Relying Party Display Name
@@ -236,6 +244,12 @@ import (
 				// Enables OpenID Connect Method
 				enabled?: bool | *false
 				config?: {
+					// Base URL for OAuth2 Redirect URIs
+					//
+					// Can be used to modify the base URL for OAuth2 Redirect URLs. If
+					// unset, the Public Base URL will be used.
+					base_redirect_uri?: string
+
 					// OpenID Connect and OAuth2 Providers
 					//
 					// A list and configuration of OAuth2 and OpenID Connect providers
@@ -260,7 +274,6 @@ import (
 		templates?: {
 			recovery?:     #courierTemplates
 			verification?: #courierTemplates
-			...
 		}
 
 		// Override message templates
@@ -268,6 +281,11 @@ import (
 		// You can override certain or all message templates by pointing
 		// this key to the path where the templates are located.
 		template_override_path?: string
+
+		// Defines a Time-To-Live for courier messages that could not be
+		// delivered. After the defined TTL has expired for a message
+		// that message is abandoned.
+		message_ttl?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
 
 		// SMTP Configuration
 		//
@@ -289,6 +307,18 @@ import (
 			// sessions.
 			connection_uri: =~"^smtps?:\\/\\/.*"
 
+			// SMTP Client certificate path
+			//
+			// Path of the client X.509 certificate, in case of certificate
+			// based client authentication to the SMTP server.
+			client_cert_path?: string | *""
+
+			// SMTP Client private key path
+			//
+			// Path of the client certificate private key, in case of
+			// certificate based client authentication to the SMTP server
+			client_key_path?: string | *""
+
 			// SMTP Sender Address
 			//
 			// The recipient of an email will see this as the sender address.
@@ -307,6 +337,12 @@ import (
 			headers?: {
 				...
 			}
+
+			// SMTP HELO/EHLO name
+			//
+			// Identifier used in the SMTP HELO/EHLO command. Some SMTP relays
+			// require a unique identifier.
+			local_name?: string | *"localhost"
 		}
 
 		// SMS sender configuration
@@ -438,63 +474,7 @@ import (
 			tls?:    #tlsx
 		}
 	}
-
-	// Ory Kratos supports distributed tracing.
-	tracing?: {
-		// Set this to the tracing backend you wish to use. Supports
-		// Jaeger, Zipkin, DataDog, elastic-apm and instana. If omitted
-		// or empty, tracing will be disabled. Use environment variables
-		// to configure DataDog (see
-		// https://docs.datadoghq.com/tracing/setup/go/#configuration).
-		provider?: "jaeger" | "zipkin" | "datadog" | "elastic-apm" | "instana"
-
-		// Specifies the service name to use on the tracer.
-		service_name?: string
-		providers?: {
-			// Configures the jaeger tracing backend.
-			jaeger?: {
-				// The address of the jaeger-agent where spans should be sent to.
-				local_agent_address?: =~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | string
-
-				// The tracing header format
-				propagation?: string
-				sampling?:    ({
-					// The type of the sampler you want to use.
-					type?: "const"
-
-					// The value passed to the sampler type that has been configured.
-					value?: int & >=0 & <=1
-					...
-				} | {
-					// The type of the sampler you want to use.
-					type?: "rateLimiting"
-
-					// The value passed to the sampler type that has been configured.
-					value?: int & >=0
-					...
-				} | {
-					// The type of the sampler you want to use.
-					type?: "probabilistic"
-
-					// The value passed to the sampler type that has been configured.
-					value?: >=0 & <=1
-					...
-				}) & {
-					// The address of jaeger-agent's HTTP sampling server
-					server_url?: string
-					...
-				} & {
-					["type" | "value" | "server_url"]: _
-				}
-			}
-
-			// Configures the zipkin tracing backend.
-			zipkin?: {
-				// The address of Zipkin server where spans should be sent to.
-				server_url?: string
-			}
-		}
-	}
+	tracing?: #OtelxTracingConfig
 
 	// Log
 	//
@@ -510,6 +490,11 @@ import (
 		// If set will leak sensitive values (e.g. emails) in the logs.
 		leak_sensitive_values?: bool
 
+		// Sensitive log value redaction text
+		//
+		// Text to use, when redacting sensitive log value.
+		redaction_text?: string
+
 		// The log format can either be text or JSON.
 		format?: "json" | "text"
 	}
@@ -522,6 +507,10 @@ import (
 		default_schema_id?: string | *"default"
 
 		// All JSON Schemas for Identity Traits
+		//
+		// Note that identities that used the "default_schema_url" field
+		// in older kratos versions will be corrupted unless you specify
+		// their schema url with the id "default" in this list.
 		schemas: [_, ...] & [...{
 			// The schema's ID.
 			id: string
@@ -672,13 +661,22 @@ import (
 			// `cookies.same_site`.
 			same_site?: "Strict" | "Lax" | "None"
 		}
+
+		// Earliest Possible Session Extension
+		//
+		// Sets when a session can be extended. Settings this value to
+		// `24h` will prevent the session from being extended before
+		// until 24 hours before it expires. This setting prevents
+		// excessive writes to the database. We highly recommend setting
+		// this value.
+		earliest_possible_extend?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"24h"
 	}
 
 	// The kratos version this config is written for.
 	//
 	// SemVer according to https://semver.org/ prefixed with `v` as in
 	// our releases.
-	version?: =~"^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+	version?: =~"^(v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)|$"
 	dev?:     bool
 	help?:    bool
 
@@ -774,6 +772,16 @@ import (
 		//
 		// Define what the hook should do
 		config: {
+			// Response Handling
+			//
+			// How the web hook should handle the response
+			response?: {
+				// Ignore the response from the web hook. If enabled the request
+				// will be made asynchronously which can be useful if you only
+				// wish to notify another system but do not parse the response.
+				ignore?: bool | *false
+			}
+
 			// The URL the Web-Hook should call
 			url: string
 
@@ -814,7 +822,7 @@ import (
 		// Can be one of github, github-app, gitlab, generic, google,
 		// microsoft, discord, slack, facebook, auth0, vk, yandex,
 		// spotify.
-		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify"
+		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify" | "netid"
 
 		// Optional string which will be used when generating labels for
 		// UI buttons.
@@ -835,36 +843,49 @@ import (
 		// Azure AD Tenant
 		//
 		// The Azure AD Tenant to use for authentication.
-		tenant?: string
+		microsoft_tenant?: string
+
+		// Microsoft subject source
+		//
+		// Controls which source the subject identifier is taken from by
+		// microsoft provider. If set to `userinfo` (the default) then
+		// the identifier is taken from the `sub` field of OIDC ID token
+		// or data received from `/userinfo` standard OIDC endpoint. If
+		// set to `me` then the `id` field of data structure received
+		// from `https://graph.microsoft.com/v1.0/me` is taken as an
+		// identifier.
+		subject_source?: "userinfo" | "me" | *"userinfo"
 
 		// Apple Developer Team ID
 		//
 		// Apple Developer Team ID needed for generating a JWT token for
 		// client secret
-		team_id?: string
+		apple_team_id?: string
 
 		// Apple Private Key Identifier
 		//
 		// Sign In with Apple Private Key Identifier needed for generating
 		// a JWT token for client secret
-		private_key_id?: string
+		apple_private_key_id?: string
 
 		// Apple Private Key
 		//
 		// Sign In with Apple Private Key needed for generating a JWT
 		// token for client secret
-		private_key?:      string
-		requested_claims?: #OIDCClaims
+		apple_private_key?: string
+		requested_claims?:  #OIDCClaims
 	}
 
 	#selfServiceHooks: list.UniqueItems() & [...#selfServiceWebHook & _]
+
+	#selfServiceAfterRecoveryHooks: list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook) & _]
 
 	#selfServiceAfterSettingsMethod: {
 		default_browser_return_url?: #defaultReturnTo
 		hooks?:                      list.UniqueItems() & [...#selfServiceWebHook & _]
 	}
 
-	#selfServiceAfterPasswordLoginMethod: {
+	#selfServiceAfterDefaultLoginMethod: {
 		default_browser_return_url?: #defaultReturnTo
 		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook | #selfServiceWebHook) & _]
 	}
@@ -892,7 +913,8 @@ import (
 
 	#selfServiceAfterLogin: {
 		default_browser_return_url?: #defaultReturnTo
-		password?:                   #selfServiceAfterPasswordLoginMethod
+		password?:                   #selfServiceAfterDefaultLoginMethod
+		webauthn?:                   #selfServiceAfterDefaultLoginMethod
 		oidc?:                       #selfServiceAfterOIDCLoginMethod
 		hooks?:                      #selfServiceHooks
 	}
@@ -902,6 +924,7 @@ import (
 	#selfServiceAfterRegistration: {
 		default_browser_return_url?: #defaultReturnTo
 		password?:                   #selfServiceAfterRegistrationMethod
+		webauthn?:                   #selfServiceAfterRegistrationMethod
 		oidc?:                       #selfServiceAfterRegistrationMethod
 		hooks?:                      #selfServiceHooks
 	}
@@ -913,7 +936,7 @@ import (
 
 	#selfServiceAfterRecovery: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      #selfServiceHooks
+		hooks?:                      #selfServiceAfterRecoveryHooks
 	}
 
 	#tlsxSource: {
@@ -936,29 +959,72 @@ import (
 	}
 
 	#courierTemplates: {
-		invalid?: {
-			email: #emailCourierTemplate
-			...
-		}
-		valid?: {
-			email: #emailCourierTemplate
-			...
-		}
-		...
+		invalid?: email: #emailCourierTemplate
+		valid?: email: #emailCourierTemplate
 	}
 
 	#emailCourierTemplate: {
 		body?: {
 			// The fallback template for email clients that do not support
 			// html.
-			plaintext: string
+			plaintext?: string
 
 			// The default template used for sending out emails. The template
 			// can contain HTML
-			html: string
-			...
+			html?: string
 		}
 		subject?: string
-		...
+	}
+
+	#OtelxTracingConfig: {
+		@jsonschema(id="ory://tracing-config")
+
+		// Set this to the tracing backend you wish to use. Supports
+		// Jaeger.
+		provider?: "jaeger" | "zipkin"
+
+		// Specifies the service name to use on the tracer.
+		service_name?: string
+		providers?: {
+			// Configures the jaeger tracing backend.
+			jaeger?: {
+				// The address of the jaeger-agent where spans should be sent to.
+				local_agent_address?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
+				sampling?:            {
+					["server_url"]: _
+				} & {
+					// The address of jaeger-agent's HTTP sampling server
+					server_url?: string
+				}
+			}
+
+			// Configures the zipkin tracing backend.
+			zipkin?: {
+				// The address of the Zipkin server where spans should be sent to.
+				server_url?: string
+				sampling?:   {
+					["sampling_ratio"]: _
+				} & {
+					// Sampling ratio for spans.
+					sampling_ratio?: number
+				}
+			}
+
+			// Configures the OTLP tracing backend.
+			otlp?: {
+				// The endpoint of the OTLP exporter (HTTP) where spans should be
+				// sent to.
+				server_url?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
+
+				// Will use HTTP if set to true; defaults to HTTPS.
+				insecure?: bool
+				sampling?: {
+					["sampling_ratio"]: _
+				} & {
+					// Sampling ratio for spans.
+					sampling_ratio?: number
+				}
+			}
+		}
 	}
 }

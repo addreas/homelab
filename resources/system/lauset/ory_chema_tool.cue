@@ -6,7 +6,7 @@ import (
 )
 
 command: "kratos-config-schema": task: {
-	curl: exec.Run & {
+	kratosSchema: exec.Run & {
 		cmd: [
 			"curl",
 			"-sSL",
@@ -14,24 +14,36 @@ command: "kratos-config-schema": task: {
 		]
 		stdout: string
 	}
-	jq: exec.Run & {
+	otelxSchema: exec.Run & {
+		cmd: [
+			"curl",
+			"-sSL",
+			"https://raw.githubusercontent.com/ory/x/master/otelx/config.schema.json",
+		]
+		stdout: string
+	}
+	kratosSchemaJson: exec.Run & {
 		cmd: [
 			"jq",
 			"""
-			del(.definitions.selfServiceWebHook.properties.config.properties.additionalProperties)
-			| del(.properties.courier.properties.sms.properties.request_config.properties.additionalProperties)
-			| del(.required[] | select(. == "dsn"))
-			""",
-		],
-		stdin: curl.stdout
+				. as [$kratosSchema, $otelxSchema]
+				| .[0]
+				| del(.definitions.selfServiceWebHook.properties.config.properties.additionalProperties)
+				| del(.properties.courier.properties.sms.properties.request_config.properties.additionalProperties)
+				| del(.required[] | select(. == "dsn"))
+				| .definitions.OtelxTracingConfig = $otelxSchema
+				| .properties.tracing["$ref"] = "#/definitions/OtelxTracingConfig"
+				""",
+		]
+		stdin:  "[\(kratosSchema.stdout), \(otelxSchema.stdout)]"
 		stdout: string
 	}
-	write: file.Create & {
+	writeKratosSchemaJson: file.Create & {
 		filename: "kratos-config-schema.json"
-		contents: jq.stdout
+		contents: kratosSchemaJson.stdout
 	}
-	import: exec.Run & {
-		$after: [write]
+	importKratosSchema: exec.Run & {
+		$after: [writeKratosSchemaJson]
 		cmd: [
 			"cue",
 			"import",
@@ -41,10 +53,9 @@ command: "kratos-config-schema": task: {
 			"jsonschema",
 			"kratos-config-schema.json",
 		]
-		stdin: jq.stdout
 	}
 	rm: exec.Run & {
-		$after: [import]
+		$after: [importKratosSchema]
 		cmd: ["rm", "kratos-config-schema.json"]
 	}
 }

@@ -5,7 +5,7 @@ import (
 	"encoding/yaml"
 )
 
-_kratosTag: "v0.8.2"
+_kratosTag: "v0.10.1"
 
 k: Secret: kratos: stringData: {
 	DSN:                         "postgres://kratos:kratos@postgres:5432/kratos"

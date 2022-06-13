@@ -26,3 +26,6 @@ _probes: {
 		port: _port
 	}
 }
+
+#KratosConfigSchema: _
+#HydraConfigSchema:  _
