@@ -252,10 +252,31 @@ prometheusAdapter: {
 					containers: [{
 						args: ["--cert-dir=/var/run/serving-cert", "--config=/etc/adapter/config.yaml", "--logtostderr=true", "--metrics-relist-interval=1m", "--prometheus-url=http://vmsingle-main.monitoring.svc:8429", "--secure-port=6443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA"]
 						image: "k8s.gcr.io/prometheus-adapter/prometheus-adapter:v0.9.1"
-						name:  "prometheus-adapter"
+						livenessProbe: {
+							failureThreshold: 5
+							httpGet: {
+								path:   "/livez"
+								port:   "https"
+								scheme: "HTTPS"
+							}
+							initialDelaySeconds: 30
+							periodSeconds:       5
+						}
+						name: "prometheus-adapter"
 						ports: [{
 							containerPort: 6443
+							name:          "https"
 						}]
+						readinessProbe: {
+							failureThreshold: 5
+							httpGet: {
+								path:   "/readyz"
+								port:   "https"
+								scheme: "HTTPS"
+							}
+							initialDelaySeconds: 30
+							periodSeconds:       5
+						}
 						resources: {
 							limits: {
 								cpu:    "250m"
@@ -299,6 +320,32 @@ prometheusAdapter: {
 					}]
 				}
 			}
+		}
+	}
+	NetworkPolicy: "prometheus-adapter": {
+		apiVersion: "networking.k8s.io/v1"
+		kind:       "NetworkPolicy"
+		metadata: {
+			labels: {
+				"app.kubernetes.io/component": "metrics-adapter"
+				"app.kubernetes.io/name":      "prometheus-adapter"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+				"app.kubernetes.io/version":   "0.9.1"
+			}
+			name:      "prometheus-adapter"
+			namespace: "monitoring"
+		}
+		spec: {
+			egress: [{},
+			]
+			ingress: [{},
+			]
+			podSelector: matchLabels: {
+				"app.kubernetes.io/component": "metrics-adapter"
+				"app.kubernetes.io/name":      "prometheus-adapter"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+			}
+			policyTypes: ["Egress", "Ingress"]
 		}
 	}
 	PodDisruptionBudget: "prometheus-adapter": {

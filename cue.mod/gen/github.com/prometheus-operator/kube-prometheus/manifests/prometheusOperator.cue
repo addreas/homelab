@@ -5,7 +5,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "alertmanagerconfigs.monitoring.coreos.com"
 		}
@@ -16,6 +16,9 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "AlertmanagerConfig"
 				listKind: "AlertmanagerConfigList"
 				plural:   "alertmanagerconfigs"
+				shortNames: [
+					"amcfg",
+				]
 				singular: "alertmanagerconfig"
 			}
 			scope: "Namespaced"
@@ -446,6 +449,10 @@ prometheusOperator: CustomResourceDefinition: {
 												items: {
 													description: "OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config"
 													properties: {
+														actions: {
+															description: "Comma separated list of actions that will be available for the alert."
+															type:        "string"
+														}
 														apiKey: {
 															description: "The secret's key that contains the OpsGenie API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
 															properties: {
@@ -492,6 +499,10 @@ prometheusOperator: CustomResourceDefinition: {
 																type: "object"
 															}
 															type: "array"
+														}
+														entity: {
+															description: "Optional field that can be used to specify which domain alert is related to."
+															type:        "string"
 														}
 														httpConfig: {
 															description: "HTTP client configuration."
@@ -832,8 +843,9 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																	type: {
 																		description: "Type of responder."
-																		minLength:   1
-																		type:        "string"
+																		enum: ["team", "teams", "user", "escalation", "schedule"]
+																		minLength: 1
+																		type:      "string"
 																	}
 																	username: {
 																		description: "Username of the responder."
@@ -856,6 +868,10 @@ prometheusOperator: CustomResourceDefinition: {
 														tags: {
 															description: "Comma separated list of tags attached to the notifications."
 															type:        "string"
+														}
+														updateAlerts: {
+															description: "Whether to update message and description of the alert in OpsGenie if it already exists By default, the alert is never updated in OpsGenie, the new message only appears in activity log."
+															type:        "boolean"
 														}
 													}
 													type: "object"
@@ -2556,6 +2572,373 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 												type: "array"
 											}
+											telegramConfigs: {
+												description: "List of Telegram configurations."
+												items: {
+													description: "TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config"
+													properties: {
+														apiURL: {
+															description: "The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used."
+															type:        "string"
+														}
+														botToken: {
+															description: "Telegram bot token The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type: "object"
+														}
+														chatID: {
+															description: "The Telegram chat ID."
+															format:      "int64"
+															type:        "integer"
+														}
+														disableNotifications: {
+															description: "Disable telegram notifications"
+															type:        "boolean"
+														}
+														httpConfig: {
+															description: "HTTP client configuration."
+															properties: {
+																authorization: {
+																	description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+																	properties: {
+																		credentials: {
+																			description: "The secret's key that contains the credentials of the request"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		type: {
+																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
+																			type:        "string"
+																		}
+																	}
+																	type: "object"
+																}
+																basicAuth: {
+																	description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+																	properties: {
+																		password: {
+																			description: "The secret in the service monitor namespace that contains the password for authentication."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		username: {
+																			description: "The secret in the service monitor namespace that contains the username for authentication."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																	}
+																	type: "object"
+																}
+																bearerTokenSecret: {
+																	description: "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type: "object"
+																}
+																followRedirects: {
+																	description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																	type:        "boolean"
+																}
+																oauth2: {
+																	description: "OAuth2 client credentials used to fetch a token for the targets."
+																	properties: {
+																		clientId: {
+																			description: "The secret or configmap containing the OAuth2 client id"
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		clientSecret: {
+																			description: "The secret containing the OAuth2 client secret"
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		endpointParams: {
+																			additionalProperties: type: "string"
+																			description: "Parameters to append to the token URL"
+																			type:        "object"
+																		}
+																		scopes: {
+																			description: "OAuth2 scopes used for the token request"
+																			items: type: "string"
+																			type: "array"
+																		}
+																		tokenUrl: {
+																			description: "The URL to fetch the token from"
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	required: ["clientId", "clientSecret", "tokenUrl"]
+																	type: "object"
+																}
+																proxyURL: {
+																	description: "Optional proxy URL."
+																	type:        "string"
+																}
+																tlsConfig: {
+																	description: "TLS configuration for the client."
+																	properties: {
+																		ca: {
+																			description: "Struct containing the CA cert to use for the targets."
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		cert: {
+																			description: "Struct containing the client cert file for the targets."
+																			properties: {
+																				configMap: {
+																					description: "ConfigMap containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key to select."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the ConfigMap or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																				secret: {
+																					description: "Secret containing data to use for the targets."
+																					properties: {
+																						key: {
+																							description: "The key of the secret to select from.  Must be a valid secret key."
+																							type:        "string"
+																						}
+																						name: {
+																							description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																							type:        "string"
+																						}
+																						optional: {
+																							description: "Specify whether the Secret or its key must be defined"
+																							type:        "boolean"
+																						}
+																					}
+																					required: ["key"]
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		insecureSkipVerify: {
+																			description: "Disable target certificate validation."
+																			type:        "boolean"
+																		}
+																		keySecret: {
+																			description: "Secret containing the client key file for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type: "object"
+																		}
+																		serverName: {
+																			description: "Used to verify the hostname for the targets."
+																			type:        "string"
+																		}
+																	}
+																	type: "object"
+																}
+															}
+															type: "object"
+														}
+														message: {
+															description: "Message template"
+															type:        "string"
+														}
+														parseMode: {
+															description: "Parse mode for telegram message"
+															enum: ["MarkdownV2", "Markdown", "HTML"]
+															type: "string"
+														}
+														sendResolved: {
+															description: "Whether to notify about resolved alerts."
+															type:        "boolean"
+														}
+													}
+													type: "object"
+												}
+												type: "array"
+											}
 											victoropsConfigs: {
 												description: "List of VictorOps configurations."
 												items: {
@@ -3762,7 +4145,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "alertmanagers.monitoring.coreos.com"
 		}
@@ -3773,6 +4156,9 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "Alertmanager"
 				listKind: "AlertmanagerList"
 				plural:   "alertmanagers"
+				shortNames: [
+					"am",
+				]
 				singular: "alertmanager"
 			}
 			scope: "Namespaced"
@@ -4424,6 +4810,15 @@ prometheusOperator: CustomResourceDefinition: {
 									}
 									type: "object"
 								}
+								alertmanagerConfiguration: {
+									description: "EXPERIMENTAL: alertmanagerConfiguration specifies the global Alertmanager configuration. If defined, it takes precedence over the `configSecret` field. This field may change in future releases."
+									properties: name: {
+										description: "The name of the AlertmanagerConfig resource which is used to generate the global configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules."
+										minLength:   1
+										type:        "string"
+									}
+									type: "object"
+								}
 								baseImage: {
 									description: "Base image that is used to deploy pods, without tag. Deprecated: use 'image' instead"
 									type:        "string"
@@ -4450,8 +4845,12 @@ prometheusOperator: CustomResourceDefinition: {
 									type: "array"
 								}
 								configSecret: {
-									description: "ConfigSecret is the name of a Kubernetes Secret in the same namespace as the Alertmanager object, which contains configuration for this Alertmanager instance. Defaults to 'alertmanager-<alertmanager-name>' The secret is mounted into /etc/alertmanager/config."
-									type:        "string"
+									description: """
+														ConfigSecret is the name of a Kubernetes Secret in the same namespace as the Alertmanager object, which contains the configuration for this Alertmanager instance. If empty, it defaults to 'alertmanager-<alertmanager-name>'. 
+														 The Alertmanager configuration should be available under the `alertmanager.yaml` key. Additional keys from the original secret are copied to the generated secret. 
+														 If either the secret or the `alertmanager.yaml` key is missing, the operator provisions an Alertmanager configuration with one empty receiver (effectively dropping alert notifications).
+														"""
+									type: "string"
 								}
 								containers: {
 									description: "Containers allows injecting additional containers. This is meant to allow adding an authentication proxy to an Alertmanager pod. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `alertmanager` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice."
@@ -5467,6 +5866,28 @@ prometheusOperator: CustomResourceDefinition: {
 								forceEnableClusterMode: {
 									description: "ForceEnableClusterMode ensures Alertmanager does not deactivate the cluster mode when running with a single replica. Use case is e.g. spanning an Alertmanager cluster across Kubernetes clusters with a single replica in each."
 									type:        "boolean"
+								}
+								hostAliases: {
+									description: "Pods' hostAliases configuration"
+									items: {
+										description: "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file."
+										properties: {
+											hostnames: {
+												description: "Hostnames for the above IP address."
+												items: type: "string"
+												type: "array"
+											}
+											ip: {
+												description: "IP address of the host file entry."
+												type:        "string"
+											}
+										}
+										required: ["hostnames", "ip"]
+										type: "object"
+									}
+									type: "array"
+									"x-kubernetes-list-map-keys": ["ip"]
+									"x-kubernetes-list-type": "map"
 								}
 								image: {
 									description: "Image if specified has precedence over baseImage, tag and sha combinations. Specifying the version is still necessary to ensure the Prometheus Operator knows what version of Alertmanager is being configured."
@@ -6497,11 +6918,13 @@ prometheusOperator: CustomResourceDefinition: {
 								}
 								logFormat: {
 									description: "Log format for Alertmanager to be configured with."
-									type:        "string"
+									enum: ["", "logfmt", "json"]
+									type: "string"
 								}
 								logLevel: {
 									description: "Log level for Alertmanager to be configured with."
-									type:        "string"
+									enum: ["", "debug", "info", "warn", "error"]
+									type: "string"
 								}
 								minReadySeconds: {
 									description: "Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate."
@@ -6794,7 +7217,7 @@ prometheusOperator: CustomResourceDefinition: {
 																type: "object"
 															}
 															dataSourceRef: {
-																description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef   allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef   preserves all values, and generates an error if a disallowed value is   specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+																description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 																properties: {
 																	apiGroup: {
 																		description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -6959,7 +7382,7 @@ prometheusOperator: CustomResourceDefinition: {
 															type: "object"
 														}
 														dataSourceRef: {
-															description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef   allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef   preserves all values, and generates an error if a disallowed value is   specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+															description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 															properties: {
 																apiGroup: {
 																	description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -7229,7 +7652,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											whenUnsatisfiable: {
-												description: "WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location,   but giving higher precedence to topologies that would help reduce the   skew. A constraint is considered \"Unsatisfiable\" for an incoming pod if and only if every possible node assignment for that pod would violate \"MaxSkew\" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won't make it *more* imbalanced. It's a required field."
+												description: "WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location, but giving higher precedence to topologies that would help reduce the skew. A constraint is considered \"Unsatisfiable\" for an incoming pod if and only if every possible node assignment for that pod would violate \"MaxSkew\" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won't make it *more* imbalanced. It's a required field."
 												type:        "string"
 											}
 										}
@@ -7588,7 +8011,7 @@ prometheusOperator: CustomResourceDefinition: {
 											ephemeral: {
 												description: """
 																	Ephemeral represents a volume that is handled by a cluster storage driver. The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed. 
-																	 Use this if: a) the volume is only needed while the pod runs, b) features of normal volumes like restoring from snapshot or capacity    tracking are needed, c) the storage driver is specified through a storage class, and d) the storage driver supports dynamic volume provisioning through    a PersistentVolumeClaim (see EphemeralVolumeSource for more    information on the connection between this volume type    and PersistentVolumeClaim). 
+																	 Use this if: a) the volume is only needed while the pod runs, b) features of normal volumes like restoring from snapshot or capacity tracking are needed, c) the storage driver is specified through a storage class, and d) the storage driver supports dynamic volume provisioning through a PersistentVolumeClaim (see EphemeralVolumeSource for more information on the connection between this volume type and PersistentVolumeClaim). 
 																	 Use PersistentVolumeClaim or one of the vendor-specific APIs for volumes that persist for longer than the lifecycle of an individual pod. 
 																	 Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to be used that way - see the documentation of the driver for more information. 
 																	 A pod can use both types of ephemeral volumes and persistent volumes at the same time.
@@ -7633,7 +8056,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "object"
 																}
 																dataSourceRef: {
-																	description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef   allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef   preserves all values, and generates an error if a disallowed value is   specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+																	description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 																	properties: {
 																		apiGroup: {
 																			description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -8485,7 +8908,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "podmonitors.monitoring.coreos.com"
 		}
@@ -8496,6 +8919,9 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "PodMonitor"
 				listKind: "PodMonitorList"
 				plural:   "podmonitors"
+				shortNames: [
+					"pmon",
+				]
 				singular: "podmonitor"
 			}
 			scope: "Namespaced"
@@ -8516,6 +8942,14 @@ prometheusOperator: CustomResourceDefinition: {
 						spec: {
 							description: "Specification of desired Pod selection for target discovery by Prometheus."
 							properties: {
+								attachMetadata: {
+									description: "Attaches node metadata to discovered targets. Only valid for role: pod. Only valid in Prometheus versions 2.35.0 and newer."
+									properties: node: {
+										description: "When set to true, Prometheus must have permissions to get Nodes."
+										type:        "boolean"
+									}
+									type: "object"
+								}
 								jobLabel: {
 									description: "The label to use to retrieve the job name from."
 									type:        "string"
@@ -8543,7 +8977,7 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "boolean"
 										}
 										matchNames: {
-											description: "List of namespace names."
+											description: "List of namespace names to select from."
 											items: type: "string"
 											type: "array"
 										}
@@ -8660,7 +9094,8 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "boolean"
 											}
 											interval: {
-												description: "Interval at which metrics should be scraped"
+												description: "Interval at which metrics should be scraped If not specified Prometheus' global scrape interval is used."
+												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
 											}
 											metricRelabelings: {
@@ -8693,7 +9128,11 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 														sourceLabels: {
 															description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-															items: type: "string"
+															items: {
+																description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																type:        "string"
+															}
 															type: "array"
 														}
 														targetLabel: {
@@ -8811,7 +9250,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											relabelings: {
-												description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields and replaces original scrape job name with __tmp_prometheus_job_name. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+												description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 												items: {
 													description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
 													properties: {
@@ -8840,7 +9279,11 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 														sourceLabels: {
 															description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-															items: type: "string"
+															items: {
+																description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																type:        "string"
+															}
 															type: "array"
 														}
 														targetLabel: {
@@ -8857,7 +9300,8 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											scrapeTimeout: {
-												description: "Timeout after which the scrape is ended"
+												description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape interval is used."
+												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
 											}
 											targetPort: {
@@ -9070,7 +9514,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "probes.monitoring.coreos.com"
 		}
@@ -9081,6 +9525,9 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "Probe"
 				listKind: "ProbeList"
 				plural:   "probes"
+				shortNames: [
+					"prb",
+				]
 				singular: "probe"
 			}
 			scope: "Namespaced"
@@ -9195,6 +9642,7 @@ prometheusOperator: CustomResourceDefinition: {
 								}
 								interval: {
 									description: "Interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used."
+									pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								jobName: {
@@ -9246,7 +9694,11 @@ prometheusOperator: CustomResourceDefinition: {
 											}
 											sourceLabels: {
 												description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-												items: type: "string"
+												items: {
+													description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+													pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+													type:        "string"
+												}
 												type: "array"
 											}
 											targetLabel: {
@@ -9376,7 +9828,8 @@ prometheusOperator: CustomResourceDefinition: {
 									type:        "integer"
 								}
 								scrapeTimeout: {
-									description: "Timeout for scraping metrics from the Prometheus exporter."
+									description: "Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape interval is used."
+									pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								targetLimit: {
@@ -9385,20 +9838,20 @@ prometheusOperator: CustomResourceDefinition: {
 									type:        "integer"
 								}
 								targets: {
-									description: "Targets defines a set of static and/or dynamically discovered targets to be probed using the prober."
+									description: "Targets defines a set of static or dynamically discovered targets to probe."
 									properties: {
 										ingress: {
-											description: "Ingress defines the set of dynamically discovered ingress objects which hosts are considered for probing."
+											description: "ingress defines the Ingress objects to probe and the relabeling configuration. If `staticConfig` is also defined, `staticConfig` takes precedence."
 											properties: {
 												namespaceSelector: {
-													description: "Select Ingress objects by namespace."
+													description: "From which namespaces to select Ingress objects."
 													properties: {
 														any: {
 															description: "Boolean describing whether all namespaces are selected in contrast to a list restricting them."
 															type:        "boolean"
 														}
 														matchNames: {
-															description: "List of namespace names."
+															description: "List of namespace names to select from."
 															items: type: "string"
 															type: "array"
 														}
@@ -9406,7 +9859,7 @@ prometheusOperator: CustomResourceDefinition: {
 													type: "object"
 												}
 												relabelingConfigs: {
-													description: "RelabelConfigs to apply to samples before ingestion. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+													description: "RelabelConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 													items: {
 														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
 														properties: {
@@ -9435,7 +9888,11 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 															sourceLabels: {
 																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-																items: type: "string"
+																items: {
+																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																	type:        "string"
+																}
 																type: "array"
 															}
 															targetLabel: {
@@ -9448,7 +9905,7 @@ prometheusOperator: CustomResourceDefinition: {
 													type: "array"
 												}
 												selector: {
-													description: "Select Ingress objects by labels."
+													description: "Selector to select the Ingress objects."
 													properties: {
 														matchExpressions: {
 															description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -9486,7 +9943,7 @@ prometheusOperator: CustomResourceDefinition: {
 											type: "object"
 										}
 										staticConfig: {
-											description: "StaticConfig defines static targets which are considers for probing. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#static_config."
+											description: "staticConfig defines the static list of targets to probe and the relabeling configuration. If `ingress` is also defined, `staticConfig` takes precedence. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#static_config."
 											properties: {
 												labels: {
 													additionalProperties: type: "string"
@@ -9494,7 +9951,7 @@ prometheusOperator: CustomResourceDefinition: {
 													type:        "object"
 												}
 												relabelingConfigs: {
-													description: "RelabelConfigs to apply to samples before ingestion. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+													description: "RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 													items: {
 														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
 														properties: {
@@ -9523,7 +9980,11 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 															sourceLabels: {
 																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-																items: type: "string"
+																items: {
+																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																	type:        "string"
+																}
 																type: "array"
 															}
 															targetLabel: {
@@ -9536,7 +9997,7 @@ prometheusOperator: CustomResourceDefinition: {
 													type: "array"
 												}
 												static: {
-													description: "Targets is a list of URLs to probe using the configured prober."
+													description: "The list of hosts to probe."
 													items: type: "string"
 													type: "array"
 												}
@@ -9691,7 +10152,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "prometheusrules.monitoring.coreos.com"
 		}
@@ -9702,6 +10163,7 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "PrometheusRule"
 				listKind: "PrometheusRuleList"
 				plural:   "prometheusrules"
+				shortNames: ["promrule"]
 				singular: "prometheusrule"
 			}
 			scope: "Namespaced"
@@ -9787,7 +10249,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.6.2"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
 			creationTimestamp: null
 			name:              "servicemonitors.monitoring.coreos.com"
 		}
@@ -9798,6 +10260,9 @@ prometheusOperator: CustomResourceDefinition: {
 				kind:     "ServiceMonitor"
 				listKind: "ServiceMonitorList"
 				plural:   "servicemonitors"
+				shortNames: [
+					"smon",
+				]
 				singular: "servicemonitor"
 			}
 			scope: "Namespaced"
@@ -9932,7 +10397,8 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "boolean"
 											}
 											interval: {
-												description: "Interval at which metrics should be scraped"
+												description: "Interval at which metrics should be scraped If not specified Prometheus' global scrape interval is used."
+												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
 											}
 											metricRelabelings: {
@@ -9965,7 +10431,11 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 														sourceLabels: {
 															description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-															items: type: "string"
+															items: {
+																description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																type:        "string"
+															}
 															type: "array"
 														}
 														targetLabel: {
@@ -10083,7 +10553,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											relabelings: {
-												description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields and replaces original scrape job name with __tmp_prometheus_job_name. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+												description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 												items: {
 													description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
 													properties: {
@@ -10112,7 +10582,11 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 														sourceLabels: {
 															description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
-															items: type: "string"
+															items: {
+																description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+																pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																type:        "string"
+															}
 															type: "array"
 														}
 														targetLabel: {
@@ -10129,7 +10603,8 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											scrapeTimeout: {
-												description: "Timeout after which the scrape is ended"
+												description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than `Interval` in which the latter is used."
+												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
 											}
 											targetPort: {
@@ -10309,7 +10784,7 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "boolean"
 										}
 										matchNames: {
-											description: "List of namespace names."
+											description: "List of namespace names to select from."
 											items: type: "string"
 											type: "array"
 										}

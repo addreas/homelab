@@ -96,7 +96,7 @@ nodeExporter: {
 						securityContext: {
 							allowPrivilegeEscalation: false
 							capabilities: {
-								add: ["CAP_SYS_TIME"]
+								add: ["SYS_TIME"]
 								drop: ["ALL"]
 							}
 							readOnlyRootFilesystem: true
@@ -118,7 +118,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.11.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.12.0"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100
@@ -147,6 +147,7 @@ nodeExporter: {
 					hostNetwork: true
 					hostPID:     true
 					nodeSelector: "kubernetes.io/os": "linux"
+					priorityClassName: "system-cluster-critical"
 					securityContext: {
 						runAsNonRoot: true
 						runAsUser:    65534
@@ -168,6 +169,39 @@ nodeExporter: {
 				rollingUpdate: maxUnavailable: "10%"
 				type: "RollingUpdate"
 			}
+		}
+	}
+	NetworkPolicy: "node-exporter": {
+		apiVersion: "networking.k8s.io/v1"
+		kind:       "NetworkPolicy"
+		metadata: {
+			labels: {
+				"app.kubernetes.io/component": "exporter"
+				"app.kubernetes.io/name":      "node-exporter"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+				"app.kubernetes.io/version":   "1.3.1"
+			}
+			name:      "node-exporter"
+			namespace: "monitoring"
+		}
+		spec: {
+			egress: [{},
+			]
+			ingress: [{
+				from: [{
+					podSelector: matchLabels: "app.kubernetes.io/name": "prometheus"
+				}]
+				ports: [{
+					port:     9100
+					protocol: "TCP"
+				}]
+			}]
+			podSelector: matchLabels: {
+				"app.kubernetes.io/component": "exporter"
+				"app.kubernetes.io/name":      "node-exporter"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+			}
+			policyTypes: ["Egress", "Ingress"]
 		}
 	}
 	PrometheusRule: "node-exporter-rules": {
@@ -196,7 +230,7 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 20
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 15
 					and
 					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 24*60*60) < 0
 					and
@@ -215,7 +249,7 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 15
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 10
 					and
 					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 4*60*60) < 0
 					and

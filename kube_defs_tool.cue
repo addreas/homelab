@@ -67,10 +67,11 @@ command: jsonnetdeps: task: {
 	"kube-prometheus": exec.Run & {
 		dir: "cue.mod/pkg/github.com/prometheus-operator/kube-prometheus"
 		cmd: ["sh", "-c", """
+			echo $PWD
 			#go install github.com/google/go-jsonnet/cmd/jsonnet@latest
 			#go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
-
-			git pull
+			set -e
+			git pull origin main
 
 			jb install
 

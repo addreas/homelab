@@ -37,11 +37,11 @@ kubernetesControlPlane: {
 					summary:     "Pod has been in a non-ready state for more than 15 minutes."
 				}
 				expr: """
-					sum by (namespace, pod) (
-					  max by(namespace, pod) (
+					sum by (namespace, pod, cluster) (
+					  max by(namespace, pod, cluster) (
 					    kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
-					  ) * on(namespace, pod) group_left(owner_kind) topk by(namespace, pod) (
-					    1, max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})
+					  ) * on(namespace, pod, cluster) group_left(owner_kind) topk by(namespace, pod, cluster) (
+					    1, max by(namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
 					  )
 					) > 0
 
@@ -192,7 +192,7 @@ kubernetesControlPlane: {
 					summary:     "Pod container waiting longer than 1 hour"
 				}
 				expr: """
-					sum by (namespace, pod, container) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+					sum by (namespace, pod, container, cluster) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
 
 					"""
 				for: "1h"
@@ -226,17 +226,18 @@ kubernetesControlPlane: {
 				for: "15m"
 				labels: severity: "warning"
 			}, {
-				alert: "KubeJobCompletion"
+				alert: "KubeJobNotCompleted"
 				annotations: {
-					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than 12 hours to complete."
-					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobcompletion"
+					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ \"43200\" | humanizeDuration }} to complete."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobnotcompleted"
 					summary:     "Job did not complete in time"
 				}
 				expr: """
-					kube_job_spec_completions{job="kube-state-metrics"} - kube_job_status_succeeded{job="kube-state-metrics"}  > 0
+					time() - max by(namespace, job_name, cluster) (kube_job_status_start_time{job="kube-state-metrics"}
+					  and
+					kube_job_status_active{job="kube-state-metrics"} > 0) > 43200
 
 					"""
-				for: "12h"
 				labels: severity: "warning"
 			}, {
 				alert: "KubeJobFailed"
@@ -472,6 +473,54 @@ kubernetesControlPlane: {
 				for: "1h"
 				labels: severity: "warning"
 			}, {
+				alert: "KubePersistentVolumeInodesFillingUp"
+				annotations: {
+					description: "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} only has {{ $value | humanizePercentage }} free inodes."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeinodesfillingup"
+					summary:     "PersistentVolumeInodes are filling up."
+				}
+				expr: """
+					(
+					  kubelet_volume_stats_inodes_free{job="kubelet", metrics_path="/metrics"}
+					    /
+					  kubelet_volume_stats_inodes{job="kubelet", metrics_path="/metrics"}
+					) < 0.03
+					and
+					kubelet_volume_stats_inodes_used{job="kubelet", metrics_path="/metrics"} > 0
+					unless on(namespace, persistentvolumeclaim)
+					kube_persistentvolumeclaim_access_mode{ access_mode="ReadOnlyMany"} == 1
+					unless on(namespace, persistentvolumeclaim)
+					kube_persistentvolumeclaim_labels{label_excluded_from_alerts="true"} == 1
+
+					"""
+				for: "1m"
+				labels: severity: "critical"
+			}, {
+				alert: "KubePersistentVolumeInodesFillingUp"
+				annotations: {
+					description: "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to run out of inodes within four days. Currently {{ $value | humanizePercentage }} of its inodes are free."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeinodesfillingup"
+					summary:     "PersistentVolumeInodes are filling up."
+				}
+				expr: """
+					(
+					  kubelet_volume_stats_inodes_free{job="kubelet", metrics_path="/metrics"}
+					    /
+					  kubelet_volume_stats_inodes{job="kubelet", metrics_path="/metrics"}
+					) < 0.15
+					and
+					kubelet_volume_stats_inodes_used{job="kubelet", metrics_path="/metrics"} > 0
+					and
+					predict_linear(kubelet_volume_stats_inodes_free{job="kubelet", metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
+					unless on(namespace, persistentvolumeclaim)
+					kube_persistentvolumeclaim_access_mode{ access_mode="ReadOnlyMany"} == 1
+					unless on(namespace, persistentvolumeclaim)
+					kube_persistentvolumeclaim_labels{label_excluded_from_alerts="true"} == 1
+
+					"""
+				for: "1h"
+				labels: severity: "warning"
+			}, {
 				alert: "KubePersistentVolumeErrors"
 				annotations: {
 					description: "The persistent volume {{ $labels.persistentvolume }} has status {{ $labels.phase }}."
@@ -495,7 +544,7 @@ kubernetesControlPlane: {
 					summary:     "Different semantic versions of Kubernetes components running."
 				}
 				expr: """
-					count(count by (git_version) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"git_version","$1","git_version","(v[0-9]*.[0-9]*).*"))) > 1
+					count by (cluster) (count by (git_version, cluster) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"git_version","$1","git_version","(v[0-9]*.[0-9]*).*"))) > 1
 
 					"""
 				for: "15m"
@@ -508,9 +557,9 @@ kubernetesControlPlane: {
 					summary:     "Kubernetes API server client is experiencing errors."
 				}
 				expr: """
-					(sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (instance, job, namespace)
+					(sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (cluster, instance, job, namespace)
 					  /
-					sum(rate(rest_client_requests_total[5m])) by (instance, job, namespace))
+					sum(rate(rest_client_requests_total[5m])) by (cluster, instance, job, namespace))
 					> 0.01
 
 					"""
@@ -630,7 +679,7 @@ kubernetesControlPlane: {
 					summary:     "Kubernetes aggregated API has reported errors."
 				}
 				expr: """
-					sum by(name, namespace)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
+					sum by(name, namespace, cluster)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
 
 					"""
 				labels: severity: "warning"
@@ -642,7 +691,7 @@ kubernetesControlPlane: {
 					summary:     "Kubernetes aggregated API is down."
 				}
 				expr: """
-					(1 - max by(name, namespace)(avg_over_time(aggregator_unavailable_apiservice[10m]))) * 100 < 85
+					(1 - max by(name, namespace, cluster)(avg_over_time(aggregator_unavailable_apiservice[10m]))) * 100 < 85
 
 					"""
 				for: "5m"
@@ -710,11 +759,11 @@ kubernetesControlPlane: {
 					summary:     "Kubelet is running at capacity."
 				}
 				expr: """
-					count by(node) (
+					count by(cluster, node) (
 					  (kube_pod_status_phase{job="kube-state-metrics",phase="Running"} == 1) * on(instance,pod,namespace,cluster) group_left(node) topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job="kube-state-metrics"})
 					)
 					/
-					max by(node) (
+					max by(cluster, node) (
 					  kube_node_status_capacity{job="kube-state-metrics",resource="pods"} != 1
 					) > 0.95
 
@@ -729,7 +778,7 @@ kubernetesControlPlane: {
 					summary:     "Node readiness status is flapping."
 				}
 				expr: """
-					sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (node) > 2
+					sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (cluster, node) > 2
 
 					"""
 				for: "15m"
@@ -755,7 +804,7 @@ kubernetesControlPlane: {
 					summary:     "Kubelet Pod startup latency is too high."
 				}
 				expr: """
-					histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
+					histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
 
 					"""
 				for: "15m"
@@ -887,18 +936,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[1d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[1d]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1d]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1d]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1d]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1d]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1d]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1d]))
 					    )
 					  )
 					  +
@@ -916,18 +965,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[1h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[1h]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1h]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1h]))
 					    )
 					  )
 					  +
@@ -945,18 +994,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[2h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[2h]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[2h]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[2h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[2h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[2h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[2h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[2h]))
 					    )
 					  )
 					  +
@@ -974,18 +1023,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[30m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[30m]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[30m]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[30m]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[30m]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[30m]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[30m]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[30m]))
 					    )
 					  )
 					  +
@@ -1003,18 +1052,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[3d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[3d]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[3d]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[3d]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[3d]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[3d]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[3d]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[3d]))
 					    )
 					  )
 					  +
@@ -1032,18 +1081,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[5m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[5m]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[5m]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[5m]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[5m]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[5m]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[5m]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[5m]))
 					    )
 					  )
 					  +
@@ -1061,18 +1110,18 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[6h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[6h]))
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[6h]))
+					        sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[6h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[6h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[6h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[6h]))
+					      sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[6h]))
 					    )
 					  )
 					  +
@@ -1090,9 +1139,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1d]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1d]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[1d]))
@@ -1108,9 +1157,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[1h]))
@@ -1126,9 +1175,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[2h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[2h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[2h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[2h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[2h]))
@@ -1144,9 +1193,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[30m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[30m]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[30m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[30m]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[30m]))
@@ -1162,9 +1211,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[3d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[3d]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[3d]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[3d]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[3d]))
@@ -1180,9 +1229,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[5m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[5m]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[5m]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[5m]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[5m]))
@@ -1198,9 +1247,9 @@ kubernetesControlPlane: {
 					(
 					  (
 					    # too slow
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[6h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[6h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[6h]))
+					    sum by (cluster) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[6h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[6h]))
@@ -1216,24 +1265,24 @@ kubernetesControlPlane: {
 			name: "kube-apiserver-histogram.rules"
 			rules: [{
 				expr: """
-					histogram_quantile(0.99, sum by (cluster, le, resource) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[5m]))) > 0
+					histogram_quantile(0.99, sum by (cluster, le, resource) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward"}[5m]))) > 0
 
 					"""
 				labels: {
 					quantile: "0.99"
 					verb:     "read"
 				}
-				record: "cluster_quantile:apiserver_request_duration_seconds:histogram_quantile"
+				record: "cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile"
 			}, {
 				expr: """
-					histogram_quantile(0.99, sum by (cluster, le, resource) (rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[5m]))) > 0
+					histogram_quantile(0.99, sum by (cluster, le, resource) (rate(apiserver_request_slo_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[5m]))) > 0
 
 					"""
 				labels: {
 					quantile: "0.99"
 					verb:     "write"
 				}
-				record: "cluster_quantile:apiserver_request_duration_seconds:histogram_quantile"
+				record: "cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile"
 			}]
 		}, {
 			interval: "3m"
@@ -1260,51 +1309,51 @@ kubernetesControlPlane: {
 				record: "code:apiserver_request_total:increase30d"
 			}, {
 				expr: """
-					sum by (cluster, verb, scope) (increase(apiserver_request_duration_seconds_count[1h]))
+					sum by (cluster, verb, scope) (increase(apiserver_request_slo_duration_seconds_count[1h]))
 
 					"""
-				record: "cluster_verb_scope:apiserver_request_duration_seconds_count:increase1h"
+				record: "cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase1h"
 			}, {
 				expr: """
-					sum by (cluster, verb, scope) (avg_over_time(cluster_verb_scope:apiserver_request_duration_seconds_count:increase1h[30d]) * 24 * 30)
+					sum by (cluster, verb, scope) (avg_over_time(cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase1h[30d]) * 24 * 30)
 
 					"""
-				record: "cluster_verb_scope:apiserver_request_duration_seconds_count:increase30d"
+				record: "cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase30d"
 			}, {
 				expr: """
-					sum by (cluster, verb, scope, le) (increase(apiserver_request_duration_seconds_bucket[1h]))
+					sum by (cluster, verb, scope, le) (increase(apiserver_request_slo_duration_seconds_bucket[1h]))
 
 					"""
-				record: "cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase1h"
+				record: "cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase1h"
 			}, {
 				expr: """
-					sum by (cluster, verb, scope, le) (avg_over_time(cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase1h[30d]) * 24 * 30)
+					sum by (cluster, verb, scope, le) (avg_over_time(cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase1h[30d]) * 24 * 30)
 
 					"""
-				record: "cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d"
+				record: "cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d"
 			}, {
 				expr: """
 					1 - (
 					  (
 					    # write too slow
-					    sum by (cluster) (cluster_verb_scope:apiserver_request_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
+					    sum by (cluster) (cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
 					  ) +
 					  (
 					    # read too slow
-					    sum by (cluster) (cluster_verb_scope:apiserver_request_duration_seconds_count:increase30d{verb=~"LIST|GET"})
+					    sum by (cluster) (cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase30d{verb=~"LIST|GET"})
 					    -
 					    (
 					      (
-					        sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
+					        sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
 					    )
 					  ) +
 					  # errors
@@ -1319,19 +1368,19 @@ kubernetesControlPlane: {
 			}, {
 				expr: """
 					1 - (
-					  sum by (cluster) (cluster_verb_scope:apiserver_request_duration_seconds_count:increase30d{verb=~"LIST|GET"})
+					  sum by (cluster) (cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase30d{verb=~"LIST|GET"})
 					  -
 					  (
 					    # too slow
 					    (
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
 					      or
 					      vector(0)
 					    )
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
 					  )
 					  +
 					  # errors
@@ -1348,9 +1397,9 @@ kubernetesControlPlane: {
 					1 - (
 					  (
 					    # too slow
-					    sum by (cluster) (cluster_verb_scope:apiserver_request_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
+					    sum by (cluster) (cluster_verb_scope:apiserver_request_slo_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_slo_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
 					  )
 					  +
 					  # errors
@@ -1667,8 +1716,8 @@ kubernetesControlPlane: {
 			name: "node.rules"
 			rules: [{
 				expr: """
-					topk by(namespace, pod) (1,
-					  max by (node, namespace, pod) (
+					topk by(cluster, namespace, pod) (1,
+					  max by (cluster, node, namespace, pod) (
 					    label_replace(kube_pod_info{job="kube-state-metrics",node!=""}, "pod", "$1", "pod", "(.*)")
 					))
 
@@ -1698,6 +1747,13 @@ kubernetesControlPlane: {
 
 					"""
 				record: ":node_memory_MemAvailable_bytes:sum"
+			}, {
+				expr: """
+					sum(rate(node_cpu_seconds_total{job="node-exporter",mode!="idle",mode!="iowait",mode!="steal"}[5m])) /
+					count(sum(node_cpu_seconds_total{job="node-exporter"}) by (cluster, instance, cpu))
+
+					"""
+				record: "cluster:node_cpu:ratio_rate5m"
 			}]
 		}, {
 			name: "kubelet.rules"
