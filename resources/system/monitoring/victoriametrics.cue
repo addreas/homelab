@@ -2,7 +2,6 @@ package kube
 
 import (
 	"encoding/yaml"
-	"github.com/addreas/homelab/util"
 )
 
 k: VMSingle: "main": spec: {
@@ -140,7 +139,7 @@ k: Ingress: "alertmanager": {
 
 k: GitRepository: "victoriametrics-operator": spec: {
 	interval: "1h"
-	ref: tag: util.goModVersions["github.com/VictoriaMetrics/operator"]
+	ref: tag: goModVersions["github.com/VictoriaMetrics/operator"]
 	url: "https://github.com/victoriametrics/operator"
 	ignore: """
 		/*
@@ -154,7 +153,7 @@ k: Kustomization: "victoriametrics-operator": spec: {
 	prune:           false
 	images: [{
 		name:   "victoriametrics/operator"
-		newTag: util.goModVersions["github.com/VictoriaMetrics/operator"]
+		newTag: goModVersions["github.com/VictoriaMetrics/operator"]
 	}]
 	patches: [{
 		target: {

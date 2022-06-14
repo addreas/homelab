@@ -1,5 +1,7 @@
 package kube
 
+import "strings"
+
 k: Namespace: "longhorn-system": {}
 
 k: HelmRepository: longhorn: {
@@ -13,7 +15,7 @@ k: HelmRelease: longhorn: spec: {
 	interval: "1h"
 	chart: spec: {
 		chart:   "longhorn"
-		version: "1.2.3"
+		version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 		sourceRef: {
 			kind:      "HelmRepository"
 			name:      "longhorn"

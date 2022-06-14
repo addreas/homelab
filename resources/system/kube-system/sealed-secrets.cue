@@ -8,7 +8,8 @@ k: HelmRepository: "sealed-secrets": spec: {
 k: HelmRelease: "sealed-secrets-controller": spec: {
 	interval: "1h"
 	chart: spec: {
-		chart:   "sealed-secrets"
+		chart: "sealed-secrets"
+		// TODO: version bump tool
 		version: "2.0.2"
 		sourceRef: {
 			kind:      "HelmRepository"

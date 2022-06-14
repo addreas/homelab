@@ -5,8 +5,6 @@ import (
 	"encoding/yaml"
 )
 
-_kratosTag: "v0.10.1"
-
 k: Secret: kratos: stringData: {
 	DSN:                         "postgres://kratos:kratos@postgres:5432/kratos"
 	COURIER_SMTP_CONNECTION_URI: "smtps://test:test@mailslurper:1025/?skip_ssl_verify=true"
@@ -21,9 +19,8 @@ k: ConfigMap: "kratos-config": data: {
 
 k: Deployment: kratos: spec: template: spec: {
 	containers: [_probes & {
-		name: "kratos"
-		// image: "oryd/kratos:\(_kratosTag)"
-		image: "ghcr.io/addreas/ory-kratos:latest"
+		name:  "kratos"
+		image: "oryd/kratos:\(githubReleases["ory/hydra"])"
 		command: ["kratos"]
 		args: [
 			"serve",
@@ -73,7 +70,7 @@ k: Job: "kratos-migrate": spec: template: spec: {
 	restartPolicy: "OnFailure"
 	containers: [{
 		name:  "migrate"
-		image: "oryd/kratos:\(_kratosTag)"
+		image: "oryd/kratos:\(githubReleases["ory/hydra"])"
 		command: ["kratos"]
 		args: [
 			"migrate",

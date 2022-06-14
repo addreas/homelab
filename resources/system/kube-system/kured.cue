@@ -11,7 +11,8 @@ k: HelmRelease: kured: {
 	spec: {
 		interval: "1h"
 		chart: spec: {
-			chart:   "kured"
+			chart: "kured"
+			// TODO: version bump tool
 			version: "2.11.0"
 			sourceRef: {
 				kind:      "HelmRepository"

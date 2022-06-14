@@ -11,7 +11,7 @@ k: StatefulSet: hass: {
 		template: {
 			metadata: {
 				// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-				labels: "config-hash":                      hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
+				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 			}
 			spec: {
 				initContainers: [util.copyStatic & {
@@ -25,7 +25,7 @@ k: StatefulSet: hass: {
 				}]
 				containers: [{
 					name:  "hass"
-					image: "ghcr.io/home-assistant/home-assistant:2022.5.3"
+					image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
 					command: ["hass", "-c", "/config"]
 					resources: {
 						limits: {

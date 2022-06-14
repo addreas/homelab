@@ -1,5 +1,7 @@
 package kube
 
+import "strings"
+
 k: HelmRepository: "haproxy-ingress": {
 	spec: {
 		interval: "1h"
@@ -12,7 +14,7 @@ k: HelmRelease: haproxy: {
 		interval: "1h"
 		chart: spec: {
 			chart:   "haproxy-ingress"
-			version: "0.13.4"
+			version: strings.TrimPrefix(githubReleases["jcmoraisjr/haproxy-ingress"], "v")
 			sourceRef: {
 				kind: "HelmRepository"
 				name: "haproxy-ingress"

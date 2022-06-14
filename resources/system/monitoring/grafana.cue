@@ -2,7 +2,6 @@ package kube
 
 import (
 	"encoding/yaml"
-	// "github.com/addreas/homelab/util"
 )
 
 k: OAuth2Client: "grafana": spec: {
@@ -14,7 +13,7 @@ k: OAuth2Client: "grafana": spec: {
 }
 
 k: Grafana: grafana: spec: {
-	baseImage: "grafana/grafana:8.5.2"
+	baseImage: "grafana/grafana:\(githubReleases["grafana/grafana"])"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		users: {
@@ -67,7 +66,7 @@ k: Grafana: grafana: spec: {
 
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
-	// ref: tag: util.goModVersions["github.com/grafana-operator/grafana-operator/v4"]
+	// ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	// url: "https://github.com/grafana-operator/grafana-operator.git"
 	ref: branch: "master"
 	url: "https://github.com/addreas/grafana-operator.git"

@@ -2,8 +2,6 @@ package kube
 
 import "encoding/yaml"
 
-_hydraTag: "v1.11.5"
-
 k: Secret: hydra: stringData: {
 	SECRETS_SYSTEM: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
 	SECRETS_COOKIE: "bHZPQUphY1o3WWNyN2RBMUprRnpxWU5HRmZrWmhpRTI="
@@ -19,7 +17,7 @@ k: Deployment: hydra: spec: template: spec: {
 	}]
 	containers: [_probes & {
 		name:  "hydra"
-		image: "oryd/hydra:\(_hydraTag)"
+		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
 		command: ["hydra"]
 		args: [
 			"serve",
@@ -66,7 +64,7 @@ k: Job: "hydra-migrate": spec: template: spec: {
 	restartPolicy: "OnFailure"
 	containers: [{
 		name:  "migrate"
-		image: "oryd/hydra:\(_hydraTag)"
+		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
 		command: ["hydra"]
 		args: [
 			"migrate",
