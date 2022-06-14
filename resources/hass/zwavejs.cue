@@ -1,6 +1,7 @@
 package kube
 
 import (
+	"strings"
 	"crypto/md5"
 	"encoding/hex"
 	"github.com/addreas/homelab/util"
@@ -23,7 +24,7 @@ k: StatefulSet: "hass-zwavejs": {
 				}]
 				containers: [{
 					name:  "zwavejs"
-					image: "ghcr.io/zwave-js/zwavejs2mqtt:\(githubReleases["zwave-js/zwavejs2mqtt"])"
+					image: "ghcr.io/zwave-js/zwavejs2mqtt:\(strings.TrimPrefix(githubReleases["zwave-js/zwavejs2mqtt"], "v"))"
 					ports: [{containerPort: 3000}, {containerPort: 8091}]
 					env: [{
 						name: "NETWORK_KEY"

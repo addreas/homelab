@@ -1,6 +1,7 @@
 package kube
 
 import (
+	"strings"
 	"encoding/yaml"
 )
 
@@ -13,7 +14,7 @@ k: OAuth2Client: "grafana": spec: {
 }
 
 k: Grafana: grafana: spec: {
-	baseImage: "grafana/grafana:\(githubReleases["grafana/grafana"])"
+	baseImage: "grafana/grafana:\(strings.TrimPrefix(githubReleases["grafana/grafana"], "v"))"
 	config: {
 		server: root_url: "https://grafana.addem.se/"
 		users: {
