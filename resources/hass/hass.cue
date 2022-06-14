@@ -24,7 +24,6 @@ k: StatefulSet: hass: {
 					}]
 				}]
 				containers: [{
-					name:  "hass"
 					image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
 					command: ["hass", "-c", "/config"]
 					resources: {
@@ -88,7 +87,6 @@ k: StatefulSet: hass: {
 
 k: Service: hass: spec: ports: [{
 	name: "http"
-	port: 8123
 }]
 
 k: ServiceMonitor: hass: spec: endpoints: [{

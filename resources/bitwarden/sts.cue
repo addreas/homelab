@@ -5,7 +5,6 @@ k: StatefulSet: bitwarden: {
 		template: {
 			spec: containers: [{
 				image: "vaultwarden/server:\(githubReleases["dani-garcia/vaultwarden"])"
-				name:  "bitwarden"
 				envFrom: [{
 					configMapRef: name: "bitwarden"
 				}]

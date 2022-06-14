@@ -4,14 +4,12 @@ import "strings"
 
 k: HelmRepository: "haproxy-ingress": {
 	spec: {
-		interval: "1h"
-		url:      "https://haproxy-ingress.github.io/charts"
+		url: "https://haproxy-ingress.github.io/charts"
 	}
 }
 
 k: HelmRelease: haproxy: {
 	spec: {
-		interval: "1h"
 		chart: spec: {
 			chart:   "haproxy-ingress"
 			version: strings.TrimPrefix(githubReleases["jcmoraisjr/haproxy-ingress"], "v")
@@ -19,7 +17,6 @@ k: HelmRelease: haproxy: {
 				kind: "HelmRepository"
 				name: "haproxy-ingress"
 			}
-			interval: "1h"
 		}
 		values: controller: {
 			stats: enabled:   false

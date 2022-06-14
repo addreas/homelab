@@ -87,10 +87,10 @@ let conf = {
 	}
 
 	mqtt: {
-	  certificate: "/mqtt-certs/ca.crt"
-	  client_key: "/mqtt-certs/tls.key"
-	  client_cert: "/mqtt-certs/tls.crt"
-	  tls_insecure: true
+		certificate:  "/mqtt-certs/ca.crt"
+		client_key:   "/mqtt-certs/tls.key"
+		client_cert:  "/mqtt-certs/tls.crt"
+		tls_insecure: true
 	}
 
 }

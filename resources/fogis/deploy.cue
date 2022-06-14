@@ -2,7 +2,6 @@ package kube
 
 k: Deployment: "fogis": {
 	spec: {
-		replicas: 1
 		template: {
 			spec: {
 				containers: [{

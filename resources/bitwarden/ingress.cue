@@ -21,12 +21,4 @@ k: Ingress: bitwarden: {
 	}
 }
 
-k: Service: bitwarden: spec: {
-	ports: [{
-		name: "http"
-		port: 8080
-	}, {
-		name: "websocket"
-		port: 3012
-	}]
-}
+k: Service: bitwarden: {}

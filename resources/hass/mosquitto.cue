@@ -11,13 +11,10 @@ k: Ingress: mqtt: {
 	}
 	spec: {
 		rules: [{
-			host: "mqtt.addem.se"
 			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
 				backend: service: {
 					name: "mosquitto"
-					port: { name: "ws" }
+					port: {name: "ws"}
 				}
 			}]
 		}]
@@ -27,10 +24,8 @@ k: Ingress: mqtt: {
 k: Service: mosquitto: spec: {
 	ports: [{
 		name: "tcp0"
-		port: 1883
 	}, {
 		name: "ws"
-		port: 9001
 	}]
 }
 
@@ -40,7 +35,6 @@ k: StatefulSet: mosquitto: {
 			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
 			spec: {
 				containers: [{
-					name:  "mosquitto"
 					image: "eclipse-mosquitto:latest"
 					ports: [{containerPort: 1883}, {containerPort: 9001}]
 					volumeMounts: [{
