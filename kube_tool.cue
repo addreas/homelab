@@ -16,8 +16,9 @@ let earlyKinds = ["Namespace", "CustomResourceDefinition"]
 let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds, kind) {r}]
 let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) {r}]
 
-command: ls: task: {
-	printEarly: cli.Print & {
+// List defined Kubernetes resources
+command: ls: {
+	print: cli.Print & {
 		text: tabwriter.Write([
 			for r in earlyResources {
 				"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
@@ -30,11 +31,8 @@ command: ls: task: {
 	}
 }
 
-command: dump: task: print: cli.Print & {
-	text: yaml.MarshalStream(earlyResources + resources)
-}
-
-command: apply: task: {
+// Apply Kubernetes resources. Always starts with Namespace and CustomResourceDefinition.
+command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
 			cmd: ["kubectl", "--context", context, "apply", "-f-"]
@@ -43,42 +41,55 @@ command: apply: task: {
 	}
 	if len(resources) > 0 {
 		apply: exec.Run & {
-			$after: [task.applyEarly]
+			$after: [apply.applyEarly]
 			cmd: ["kubectl", "--context", context, "apply", "-f-"]
 			stdin: json.MarshalStream(resources)
 		}
 	}
 }
 
-command: diff: task: diff: exec.Run & {
-	cmd: ["kubectl", "--context", context, "diff", "-f-"]
-	stdin: json.MarshalStream(resources)
+// Diff Kubernetes resources with the current cluster state
+command: diff: {
+	diff: exec.Run & {
+		cmd: ["kubectl", "--context", context, "diff", "-f-"]
+		stdin: json.MarshalStream(resources)
+	}
 }
 
+// Create SealedSecret resources for any existing Secret resources. The existing secret resource has to be removed manually!
 command: seal: {
-	scope: *"strict" | "cluster-wide" @tag(scope)
-	task: stdinSecret: file.Read & {
+	scope:       *"strict" | "cluster-wide" @tag(scope)
+	stdinSecret: file.Read & {
 		filename: "/dev/stdin"
 		contents: string
 	}
-	let res = task.stdinSecret.contents
-	task: print: cli.Print & {
+	let res = stdinSecret.contents
+	print: cli.Print & {
 		text: res
 	}
-	task: seal: exec.Run & {
+	seal: exec.Run & {
 		cmd: ["kubeseal", "--context", context, "--scope", scope]
 		stdin: res
 	}
 }
 
-command: kubeImport: {
-	task: import: exec.Run & {
+// Dump a yaml stream of Kubernetes resources
+command: "dump-yaml": {
+	print: cli.Print & {
+		text: yaml.MarshalStream(earlyResources + resources)
+	}
+}
+
+// Import all existing yaml files into their cue representation
+command: "import-yaml": {
+	import: exec.Run & {
 		cmd: "cue import -p kube -l '\"k\"' -l 'kind' -l metadata.name -f ./**/*.yaml"
 	}
 }
 
-command: fluxBootstrap: {
-	task: apply: exec.Run & {
+// Bootstrap the initial flux controllers to enable Kustomization and HelmRelease resources.
+command: "flux-bootstrap": {
+	apply: exec.Run & {
 		cmd: "kubectl apply -k https://github.com/fluxcd/flux2/manifests/install"
 	}
 }

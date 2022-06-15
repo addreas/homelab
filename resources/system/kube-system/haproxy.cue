@@ -19,6 +19,7 @@ k: HelmRelease: haproxy: {
 			}
 		}
 		values: controller: {
+			replicaCount: 2
 			stats: enabled:   false
 			metrics: enabled: false
 			serviceMonitor: {

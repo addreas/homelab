@@ -24,6 +24,32 @@ helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
    # --set cni.chainingMode=generic-veth \
    # --set cni.customConf=true \
 
+helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
+   --namespace kube-system \
+   --reuse-values \
+   --set bgp.enabled=true \
+   --set bgp.announce.loadbalancerIP=true \
+   --set bgp.announce.podCIDR=true
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bgp-config
+  namespace: kube-system
+data:
+  config.yaml: |
+    peers:
+      - peer-address: 192.168.1.1
+        peer-asn: 64512
+        my-asn: 64512
+    address-pools:
+      - name: default
+        protocol: bgp
+        addresses:
+          - 192.168.10.0/24
+EOF
+
 kubectl apply -f multus.yaml
 
 # curl -sSL https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset.yml | sed -e '/^.*args:/p' -e 's/args:/- "--restart-crio"/' -e 's/0.3.1/0.4.0/' | kubectl apply -f -

@@ -1,6 +1,5 @@
  let config = {
-	cp_enable:  "true"
-	svc_enable: "true"
+	cp_enable: "true"
 
 	vip_arp:    "false"
 	bgp_enable: "true"
