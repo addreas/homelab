@@ -11,9 +11,10 @@ import (
 )
 
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
-command: "update-github-releases": {
+command: "update-github-tags": {
+	let releaseKeys = list.SortStrings([ for k, v in githubReleases {k}])
 	releases: {
-		for r in list.SortStrings([ for k, v in githubReleases {k}]) {
+		for r in releaseKeys {
 			let split = strings.Split(r, "/")
 			let owner = split[0]
 			let repo = split[1]
@@ -35,8 +36,8 @@ command: "update-github-releases": {
 	writeTags: #WriteTags & {
 		subset: "githubReleases"
 		values: {
-			for key, value in releases {
-				(key): value.res.tag_name
+			for key in releaseKeys {
+				(key): releases[key].res.tag_name
 			}
 		}
 	}
