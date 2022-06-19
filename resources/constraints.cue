@@ -118,6 +118,11 @@ k: Ingress: [Name=string]: {
 	}
 }
 
+k: SealedSecret: [string]: {
+	metadata: _
+	spec: template: "metadata": _ | *metadata
+}
+
 k: GrafanaDashboard: [string]: metadata: labels: grafana: "enabled"
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"

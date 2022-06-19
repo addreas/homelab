@@ -23,3 +23,12 @@ k: Kustomization: "cuebuild-controller": spec: {
 		newTag: "v0.18.2"
 	}]
 }
+
+k: Ingress: "flux-webhook": spec: rules: [{
+	http: paths: [{
+		backend: service: {
+			name: "webhook-receiver"
+			port: name: "http"
+		}
+	}]
+}]

@@ -9,6 +9,7 @@ import (
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
 	_ "github.com/fluxcd/helm-controller/api/v2beta1"
 	_ "github.com/fluxcd/kustomize-controller/api/v1beta1"
+	_ "github.com/fluxcd/notification-controller/api/v1beta1"
 	_ "github.com/fluxcd/source-controller/api/v1beta1"
 	_ "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
 	_ "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"

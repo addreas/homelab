@@ -5,10 +5,11 @@ import (
 	"strings"
 	"regexp"
 	"encoding/json"
-	"tool/exec"
 	"tool/file"
 	"tool/http"
 )
+
+#WriteTags: #WriteGeneratedCue & {filename: "tags.cue"}
 
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
 command: "update-github-tags": {
@@ -34,8 +35,7 @@ command: "update-github-tags": {
 	}
 
 	writeTags: #WriteTags & {
-		subset: "githubReleases"
-		values: {
+		content: githubReleases: {
 			for key in releaseKeys {
 				(key): releases[key].res.tag_name
 			}
@@ -58,38 +58,6 @@ command: "update-gomod-tags": {
 	}
 
 	writeTags: #WriteTags & {
-		subset: "goModVersions"
-		values: packages
-	}
-}
-
-#WriteTags: {
-	subset: string
-	values: _
-
-	eval: exec.Run & {
-		cmd: ["cue", "eval",
-			"--show-attributes",
-			"--show-hidden",
-			"--show-optional",
-			"cue:", "tags.cue",
-			"json:", "-"]
-		stdin:  json.Marshal({(subset): values})
-		stdout: string
-	}
-
-	fmt: exec.Run & {
-		cmd: ["cue", "fmt", "--simplify", "-"]
-		stdin:  eval.stdout
-		stdout: string
-	}
-
-	write: file.Create & {
-		filename: "tags.cue"
-		contents: """
-		package kube
-
-		\(fmt.stdout)
-		"""
+		content: goModVersions: packages
 	}
 }

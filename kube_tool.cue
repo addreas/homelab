@@ -58,18 +58,28 @@ command: diff: {
 
 // Create SealedSecret resources for any existing Secret resources. The existing secret resource has to be removed manually!
 command: seal: {
-	scope:       *"strict" | "cluster-wide" @tag(scope)
-	stdinSecret: file.Read & {
-		filename: "/dev/stdin"
-		contents: string
+	scope: *"strict" | "cluster-wide" @tag(scope)
+
+	secrets: {
+		for key, value in k.Secret {
+			(key): exec.Run & {
+				cmd: ["kubeseal", "--context", context, "--scope", scope]
+				stdin:   json.Marshal(value)
+				stdout:  string
+				content: json.Unmarshal(stdout)
+			}
+		}
 	}
-	let res = stdinSecret.contents
-	print: cli.Print & {
-		text: res
-	}
-	seal: exec.Run & {
-		cmd: ["kubeseal", "--context", context, "--scope", scope]
-		stdin: res
+
+	write: #WriteGeneratedCue & {
+		filename: "sealed-secrets.cue"
+		content: {
+			k: SealedSecret: {
+				for key, value in secrets {
+					(key): value.content
+				}
+			}
+		}
 	}
 }
 
@@ -83,6 +93,12 @@ command: "dump-yaml": {
 // Import all existing yaml files into their cue representation
 command: "import-yaml": {
 	import: exec.Run & {
+		cmd: ["cue", "import", "-p", "kube", "-l", "\"k\"", "-l", "kind", "-l", "metadata.name", "yaml:", "-"]
+	}
+}
+// Import all existing yaml files into their cue representation
+command: "import-all-yaml": {
+	import: exec.Run & {
 		cmd: "cue import -p kube -l '\"k\"' -l 'kind' -l metadata.name -f ./**/*.yaml"
 	}
 }
@@ -91,5 +107,45 @@ command: "import-yaml": {
 command: "flux-bootstrap": {
 	apply: exec.Run & {
 		cmd: "kubectl apply -k https://github.com/fluxcd/flux2/manifests/install"
+	}
+}
+
+#WriteGeneratedCue: {
+	filename: string
+	package:  string | *"kube"
+	content:  _
+
+	filenameGlob: file.Glob & {
+		glob: filename
+		files: [...string]
+	}
+	existing: _ | *[]
+	if len(filenameGlob.files) > 0 {
+		existing: ["cue:", filename]
+	}
+	eval: exec.Run & {
+		cmd: ["cue",
+			"eval",
+			"--all",
+			"--show-attributes",
+			"json:", "-",
+		] + existing
+		stdin:  json.Marshal(content)
+		stdout: string
+	}
+
+	fmt: exec.Run & {
+		cmd: ["cue", "fmt", "--simplify", "-"]
+		stdin:  eval.stdout
+		stdout: string
+	}
+
+	write: file.Create & {
+		"filename": filename
+		contents:   """
+		package \(package)
+
+		\(fmt.stdout)
+		"""
 	}
 }

@@ -18,3 +18,10 @@ k: CueBuild: "homelab-system": spec: {
 	prune:     false
 	sourceRef: _homelab
 }
+
+k: Receiver: "homelab": spec: {
+	type: "github"
+	events: ["ping", "push"]
+	secretRef: name: "homelab-receiver-webhook-token"
+	resources: [_homelab]
+}

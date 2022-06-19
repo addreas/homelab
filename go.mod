@@ -11,6 +11,7 @@ require (
 	github.com/cilium/cilium v1.11.5
 	github.com/fluxcd/helm-controller/api v0.22.1
 	github.com/fluxcd/kustomize-controller/api v0.26.1
+	github.com/fluxcd/notification-controller/api v0.24.0
 	github.com/fluxcd/pkg/runtime v0.12.4 // indirect
 	github.com/fluxcd/source-controller/api v0.25.5
 	github.com/grafana-operator/grafana-operator/v4 v4.4.1
