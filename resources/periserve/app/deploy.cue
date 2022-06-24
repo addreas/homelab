@@ -7,7 +7,7 @@ k: Deployment: "periserve": {
 			spec: {
 				initContainers: [{
 					name:            "migrations"
-					image:           "ghcr.io/jonasdahl/periserve:\(periserveVersion)"
+					image:           "ghcr.io/periserve/periserve:\(periserveVersion)"
 					env: [{
 						name:  "SESSION_SECRET"
 						value: "ABCDEF1234567890"
