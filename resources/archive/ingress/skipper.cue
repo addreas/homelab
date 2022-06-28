@@ -6,7 +6,6 @@ k: Deployment: "skipper-ingress": spec: {
 		priorityClassName:  "system-cluster-critical"
 		serviceAccountName: "skipper-ingress"
 		containers: [{
-			name:  "skipper-ingress"
 			image: "registry.opensource.zalan.do/teapot/skipper:v0.13.179"
 			ports: [{
 				name:          "http"
@@ -61,13 +60,6 @@ k: Deployment: "skipper-ingress": spec: {
 }
 
 k: Service: "skipper-ingress": {
-	spec: ports: [{
-		name: "http"
-		port: 9999
-	}, {
-		name: "metrics"
-		port: 9911
-	}]
 }
 
 k: VMServiceScrape: "skipper-ingress": spec: endpoints: [{
