@@ -15,7 +15,7 @@ k: StatefulSet: sonarr: {
 						exec mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
 						"""]
 					ports: [{
-						name: "http"
+						name:          "http"
 						containerPort: 8989
 					}]
 					volumeMounts: [{
@@ -57,11 +57,11 @@ k: StatefulSet: sonarr: {
 						}
 					}]
 					ports: [{
-						name: "metrics"
+						name:          "metrics"
 						containerPort: 9707
 					}]
 					resources: limits: {
-						cpu:    "100m"
+						cpu:    "200m"
 						memory: "64Mi"
 					}
 					volumeMounts: [{

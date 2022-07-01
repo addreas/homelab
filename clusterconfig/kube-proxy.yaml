@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    deprecated.daemonset.template.generation: "1"
+  creationTimestamp: "2022-04-01T23:10:43Z"
+  generation: 1
+  labels:
+    k8s-app: kube-proxy
+  name: kube-proxy
+  namespace: kube-system
+  resourceVersion: "423550794"
+  uid: dd26e669-f8c6-4ae8-a2ba-a7c8a2f3923c
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: kube-proxy
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: kube-proxy
+    spec:
+      containers:
+      - command:
+        - /usr/local/bin/kube-proxy
+        - --config=/var/lib/kube-proxy/config.conf
+        - --hostname-override=$(NODE_NAME)
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        image: registry.opensuse.org/kubic/kube-proxy:v1.23.4
+        imagePullPolicy: IfNotPresent
+        name: kube-proxy
+        resources: {}
+        securityContext:
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/kube-proxy
+          name: kube-proxy
+        - mountPath: /run/xtables.lock
+          name: xtables-lock
+        - mountPath: /lib/modules
+          name: lib-modules
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-node-critical
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: kube-proxy
+      serviceAccountName: kube-proxy
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - operator: Exists
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: kube-proxy
+        name: kube-proxy
+      - hostPath:
+          path: /run/xtables.lock
+          type: FileOrCreate
+        name: xtables-lock
+      - hostPath:
+          path: /lib/modules
+          type: ""
+        name: lib-modules
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+status:
+  currentNumberScheduled: 3
+  desiredNumberScheduled: 3
+  numberAvailable: 3
+  numberMisscheduled: 0
+  numberReady: 3
+  observedGeneration: 1
+  updatedNumberScheduled: 3

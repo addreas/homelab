@@ -46,6 +46,7 @@ k: ConfigMap: "cloudflared-config": data: "config.yaml": yaml.Marshal({
 	"no-autoupdate":    true
 	ingress: [{
 		// service:  "http://skipper-ingress:9999"
-		service: "http://haproxy-haproxy-ingress.kube-system.svc.cluster.local"
+		service:     "https://haproxy-haproxy-ingress.kube-system.svc.cluster.local"
+		noTLSVerify: true
 	}]
 })

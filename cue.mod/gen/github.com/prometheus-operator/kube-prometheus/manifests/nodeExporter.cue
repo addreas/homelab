@@ -85,7 +85,7 @@ nodeExporter: {
 						name:  "node-exporter"
 						resources: {
 							limits: {
-								cpu:    "250m"
+								cpu:    "350m"
 								memory: "180Mi"
 							}
 							requests: {
@@ -127,7 +127,7 @@ nodeExporter: {
 						}]
 						resources: {
 							limits: {
-								cpu:    "20m"
+								cpu:    "100m"
 								memory: "40Mi"
 							}
 							requests: {

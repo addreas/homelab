@@ -18,7 +18,8 @@ let things = m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & 
 
 for kind, resources in things
 if kind != "ServiceMonitor" &&
-	kind != "PrometheusRule" {
+	kind != "PrometheusRule" &&
+	kind != "NetworkPolicy" {
 	k: "\(kind)": resources
 }
 
@@ -39,6 +40,25 @@ for S in things.ServiceMonitor {
 			endpoints: [ for endpoint in S.spec.endpoints {
 				for key, value in endpoint {
 					"\(*serviceEndpointMapping[key] | key)": value
+				}
+			}]
+		}
+	}
+}
+
+for N in things.NetworkPolicy {
+	k: NetworkPolicy: "\(N.metadata.name)": {
+		metadata: N.metadata
+		spec: {
+			for key, value in N.spec if key != "ingress" {(key): value}
+			ingress: [ for i in N.spec.ingress {
+				if i.from != _|_ {
+					from: i.from + [{
+						podSelector: matchLabels: "app.kubernetes.io/name": "vmagent"
+					}]
+				}
+				if i.ports != _|_ {
+					ports: i.ports
 				}
 			}]
 		}

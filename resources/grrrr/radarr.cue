@@ -55,7 +55,7 @@ k: StatefulSet: radarr: {
 						containerPort: 9707
 					}]
 					resources: limits: {
-						cpu:    "100m"
+						cpu:    "200m"
 						memory: "128Mi"
 					}
 					volumeMounts: [{

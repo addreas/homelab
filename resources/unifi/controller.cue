@@ -106,7 +106,7 @@ k: StatefulSet: "unifi-controller": {
 						mountPath: "/unifi_exporter"
 					}]
 					resources: limits: {
-						cpu:    "150m"
+						cpu:    "200m"
 						memory: "128Mi"
 					}
 				}]
