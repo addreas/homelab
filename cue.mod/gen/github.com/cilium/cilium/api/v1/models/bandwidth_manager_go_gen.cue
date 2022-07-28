@@ -10,9 +10,19 @@ package models
 //
 // swagger:model BandwidthManager
 #BandwidthManager: {
+	// congestion control
+	// Enum: [cubic bbr]
+	congestionControl?: string @go(CongestionControl)
+
 	// devices
 	devices: [...string] @go(Devices,[]string)
 
 	// Is bandwidth manager enabled
 	enabled?: bool @go(Enabled)
 }
+
+// BandwidthManagerCongestionControlCubic captures enum value "cubic"
+#BandwidthManagerCongestionControlCubic: "cubic"
+
+// BandwidthManagerCongestionControlBbr captures enum value "bbr"
+#BandwidthManagerCongestionControlBbr: "bbr"

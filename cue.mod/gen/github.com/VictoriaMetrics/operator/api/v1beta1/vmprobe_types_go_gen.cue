@@ -71,6 +71,10 @@ import (
 	// +optional
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
+	// Authorization with http header Authorization
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
+
 	// TLSConfig configuration to use when scraping the endpoint
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)

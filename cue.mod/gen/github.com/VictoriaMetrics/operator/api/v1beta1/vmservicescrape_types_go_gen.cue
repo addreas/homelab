@@ -145,6 +145,10 @@ _#nsMatcher: _
 	// +optional
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
+	// Authorization with http header Authorization
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
+
 	// TLSConfig configuration to use when scraping the endpoint
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
@@ -219,6 +223,14 @@ _#nsMatcher: _
 	// See feature description https://docs.victoriametrics.com/vmagent.html#scraping-targets-via-a-proxy
 	// +optional
 	proxy_client_config?: null | #ProxyAuth @go(ProxyClientConfig,*ProxyAuth)
+
+	// Headers allows sending custom headers to scrape targets
+	// must be in of semicolon separated header with it's value
+	// eg:
+	// headerName: headerValue
+	// vmagent supports since 1.79.0 version
+	// +optional
+	headers?: [...string] @go(Headers,[]string)
 }
 
 // ProxyAuth represent proxy auth config
@@ -257,6 +269,20 @@ _#nsMatcher: _
 	// Parameters to append to the token URL
 	// +optional
 	endpoint_params?: {[string]: string} @go(EndpointParams,map[string]string)
+}
+
+// Authorization configures generic authorization params
+#Authorization: {
+	// Type of authorization, default to bearer
+	// +optional
+	type?: string @go(Type)
+
+	// Reference to the secret with value for authorization
+	credentials?: null | v1.#SecretKeySelector @go(Credentials,*v1.SecretKeySelector)
+
+	// File with value for authorization
+	// +optional
+	credentialsFile?: string @go(CredentialsFile)
 }
 
 // TLSConfig specifies TLSConfig configuration parameters.
@@ -358,43 +384,6 @@ _#nsMatcher: _
 	action?: string @go(Action)
 }
 
-// QueueConfig allows the tuning of remote_write queue_config parameters. This object
-// is referenced in the RemoteWriteSpec object.
-// +k8s:openapi-gen=true
-#QueueConfig: {
-	// Capacity is the number of samples to buffer per shard before we start dropping them.
-	// +optional
-	capacity?: int @go(Capacity)
-
-	// MinShards is the minimum number of shards, i.e. amount of concurrency.
-	// +optional
-	minShards?: int @go(MinShards)
-
-	// MaxShards is the maximum number of shards, i.e. amount of concurrency.
-	// +optional
-	maxShards?: int @go(MaxShards)
-
-	// MaxSamplesPerSend is the maximum number of samples per send.
-	// +optional
-	maxSamplesPerSend?: int @go(MaxSamplesPerSend)
-
-	// BatchSendDeadline is the maximum time a sample will wait in buffer.
-	// +optional
-	batchSendDeadline?: string @go(BatchSendDeadline)
-
-	// MaxRetries is the maximum number of times to retry a batch on recoverable errors.
-	// +optional
-	maxRetries?: int @go(MaxRetries)
-
-	// MinBackoff is the initial retry delay. Gets doubled for every retry.
-	// +optional
-	minBackoff?: string @go(MinBackoff)
-
-	// MaxBackoff is the maximum retry delay.
-	// +optional
-	maxBackoff?: string @go(MaxBackoff)
-}
-
 // APIServerConfig defines a host and auth methods to access apiserver.
 // More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
 // +k8s:openapi-gen=true
@@ -418,4 +407,7 @@ _#nsMatcher: _
 	// TLSConfig Config to use for accessing apiserver.
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
 }

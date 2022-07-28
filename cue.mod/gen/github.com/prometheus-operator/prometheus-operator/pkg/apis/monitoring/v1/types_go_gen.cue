@@ -190,8 +190,8 @@ import (
 	// that are generated as a result of StorageSpec objects.
 	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
 
-	// WebSpec defines the web command line flags when starting Prometheus.
-	web?: null | #WebSpec @go(Web,*WebSpec)
+	// Defines the web command line flags when starting Prometheus.
+	web?: null | #PrometheusWebSpec @go(Web,*PrometheusWebSpec)
 
 	// Define resources requests and limits for single Pods.
 	resources?: v1.#ResourceRequirements @go(Resources)
@@ -299,8 +299,9 @@ import (
 	overrideHonorTimestamps?: bool @go(OverrideHonorTimestamps)
 
 	// IgnoreNamespaceSelectors if set to true will ignore NamespaceSelector
-	// settings from all PodMonitor, ServiceMonitor and Probe objects. They
-	// will only discover endpoints within their current namespace.
+	// settings from all PodMonitor, ServiceMonitor and Probe objects. They will
+	// only discover endpoints within the namespace of the PodMonitor,
+	// ServiceMonitor and Probe objects.
 	// Defaults to false.
 	ignoreNamespaceSelectors?: bool @go(IgnoreNamespaceSelectors)
 
@@ -373,13 +374,6 @@ import (
 }
 
 // Prometheus defines a Prometheus deployment.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="prom"
-// +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version",description="The version of Prometheus"
-// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The desired replicas number of Prometheuses"
-// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 #Prometheus: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -412,10 +406,17 @@ import (
 // +kubebuilder:validation:Pattern:="(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 #ByteSize: string
 
-// Duration is a valid time unit
-// Supported units: y, w, d, h, m, s, ms Examples: `30s`, `1m`, `1h20m15s`
+// Duration is a valid time duration that can be parsed by Prometheus model.ParseDuration() function.
+// Supported units: y, w, d, h, m, s, ms
+// Examples: `30s`, `1m`, `1h20m15s`, `15d`
 // +kubebuilder:validation:Pattern:="^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 #Duration: string
+
+// GoDuration is a valid time duration that can be parsed by Go's time.ParseDuration() function.
+// Supported units: h, m, s, ms
+// Examples: `45ms`, `30s`, `1m`, `1h20m15s`
+// +kubebuilder:validation:Pattern:="^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+#GoDuration: string
 
 // HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the
 // pod's hosts file.
@@ -533,6 +534,17 @@ import (
 	// AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus.
 	// This is still experimental in Prometheus so it may change in any upcoming release.
 	allowOverlappingBlocks?: bool @go(AllowOverlappingBlocks)
+
+	// Exemplars related settings that are runtime reloadable.
+	// It requires to enable the exemplar storage feature to be effective.
+	exemplars?: null | #Exemplars @go(Exemplars,*Exemplars)
+}
+
+#Exemplars: {
+	// Maximum number of exemplars stored in memory for all series.
+	// If not set, Prometheus uses its default value.
+	// A value of zero or less than zero disables the storage.
+	maxSize?: null | int64 @go(MaxSize,*int64)
 }
 
 // PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces
@@ -779,11 +791,17 @@ import (
 	timeout?: null | #Duration @go(Timeout,*Duration)
 }
 
-// WebSpec defines the query command line flags when starting Prometheus.
+// PrometheusWebSpec defines the query command line flags when starting Prometheus.
 // +k8s:openapi-gen=true
-#WebSpec: {
+#PrometheusWebSpec: {
 	// The prometheus web page title
 	pageTitle?: null | string        @go(PageTitle,*string)
+	tlsConfig?: null | #WebTLSConfig @go(TLSConfig,*WebTLSConfig)
+}
+
+// AlertmanagerWebSpec defines the query command line flags when starting Alertmanager.
+// +k8s:openapi-gen=true
+#AlertmanagerWebSpec: {
 	tlsConfig?: null | #WebTLSConfig @go(TLSConfig,*WebTLSConfig)
 }
 
@@ -1098,8 +1116,9 @@ import (
 	//regular expression matches. Regex capture groups are available. Default is '$1'
 	replacement?: string @go(Replacement)
 
-	// Action to perform based on regex matching. Default is 'replace'
-	//+kubebuilder:validation:Enum=replace;keep;drop;hashmod;labelmap;labeldrop;labelkeep
+	//Action to perform based on regex matching. Default is 'replace'.
+	//uppercase and lowercase actions require Prometheus >= 2.36.
+	//+kubebuilder:validation:Enum=replace;Replace;keep;Keep;drop;Drop;hashmod;HashMod;labelmap;LabelMap;labeldrop;LabelDrop;labelkeep;LabelKeep;lowercase;Lowercase;uppercase;Uppercase
 	//+kubebuilder:default=replace
 	action?: string @go(Action)
 }
@@ -1162,13 +1181,10 @@ import (
 	apiVersion?: string @go(APIVersion)
 
 	// Timeout is a per-target Alertmanager timeout when pushing alerts.
-	timeout?: null | string @go(Timeout,*string)
+	timeout?: null | #Duration @go(Timeout,*Duration)
 }
 
 // ServiceMonitor defines monitoring for a set of services.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="smon"
 #ServiceMonitor: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1181,10 +1197,13 @@ import (
 // ServiceMonitorSpec contains specification parameters for a ServiceMonitor.
 // +k8s:openapi-gen=true
 #ServiceMonitorSpec: {
-	// Chooses the label of the Kubernetes `Endpoints`.
-	// Its value will be used for the `job`-label's value of the created metrics.
+	// JobLabel selects the label from the associated Kubernetes service which will be used as the `job` label for all metrics.
 	//
-	// Default & fallback value: the name of the respective Kubernetes `Endpoint`.
+	// For example:
+	// If in `ServiceMonitor.spec.jobLabel: foo` and in `Service.metadata.labels.foo: bar`,
+	// then the `job="bar"` label is added to all metrics.
+	//
+	// If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the Kubernetes Service.
 	jobLabel?: string @go(JobLabel)
 
 	// TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics.
@@ -1231,6 +1250,7 @@ import (
 	targetPort?: null | intstr.#IntOrString @go(TargetPort,*intstr.IntOrString)
 
 	// HTTP path to scrape for metrics.
+	// If empty, Prometheus uses the default value (e.g. `/metrics`).
 	path?: string @go(Path)
 
 	// HTTP scheme to use for scraping.
@@ -1288,12 +1308,12 @@ import (
 
 	// FollowRedirects configures whether scrape requests follow HTTP 3xx redirects.
 	followRedirects?: null | bool @go(FollowRedirects,*bool)
+
+	// Whether to enable HTTP2.
+	enableHttp2?: null | bool @go(EnableHttp2,*bool)
 }
 
 // PodMonitor defines monitoring for a set of pods.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="pmon"
 #PodMonitor: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1358,6 +1378,7 @@ import (
 	targetPort?: null | intstr.#IntOrString @go(TargetPort,*intstr.IntOrString)
 
 	// HTTP path to scrape for metrics.
+	// If empty, Prometheus uses the default value (e.g. `/metrics`).
 	path?: string @go(Path)
 
 	// HTTP scheme to use for scraping.
@@ -1412,6 +1433,9 @@ import (
 
 	// FollowRedirects configures whether scrape requests follow HTTP 3xx redirects.
 	followRedirects?: null | bool @go(FollowRedirects,*bool)
+
+	// Whether to enable HTTP2.
+	enableHttp2?: null | bool @go(EnableHttp2,*bool)
 }
 
 // PodMetricsEndpointTLSConfig specifies TLS configuration parameters.
@@ -1421,9 +1445,6 @@ import (
 }
 
 // Probe defines monitoring for a set of static targets or ingresses.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="prb"
 #Probe: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1562,6 +1583,7 @@ import (
 
 	// Path to collect metrics from.
 	// Defaults to `/probe`.
+	// +kubebuilder:default:="/probe"
 	path?: string @go(Path)
 
 	// Optional ProxyURL.
@@ -1698,9 +1720,6 @@ import (
 }
 
 // PrometheusRule defines recording and alerting rules for a Prometheus instance
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="promrule"
 #PrometheusRule: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1741,12 +1760,6 @@ import (
 }
 
 // Alertmanager describes an Alertmanager cluster.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="am"
-// +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version",description="The version of Alertmanager"
-// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The desired replicas number of Alertmanagers"
-// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 #Alertmanager: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -1838,7 +1851,8 @@ import (
 
 	// Time duration Alertmanager shall retain data for. Default is '120h',
 	// and must match the regular expression `[0-9]+(ms|s|m|h)` (milliseconds seconds minutes hours).
-	retention?: string @go(Retention)
+	// +kubebuilder:default:="120h"
+	retention?: #GoDuration @go(Retention)
 
 	// Storage is the definition of how storage will be used by the Alertmanager
 	// instances.
@@ -1927,13 +1941,13 @@ import (
 	clusterAdvertiseAddress?: string @go(ClusterAdvertiseAddress)
 
 	// Interval between gossip attempts.
-	clusterGossipInterval?: string @go(ClusterGossipInterval)
+	clusterGossipInterval?: #GoDuration @go(ClusterGossipInterval)
 
 	// Interval between pushpull attempts.
-	clusterPushpullInterval?: string @go(ClusterPushpullInterval)
+	clusterPushpullInterval?: #GoDuration @go(ClusterPushpullInterval)
 
 	// Timeout for cluster peering.
-	clusterPeerTimeout?: string @go(ClusterPeerTimeout)
+	clusterPeerTimeout?: #GoDuration @go(ClusterPeerTimeout)
 
 	// Port name used for the pods and governing service.
 	// This defaults to web
@@ -1961,6 +1975,9 @@ import (
 	// +listType=map
 	// +listMapKey=ip
 	hostAliases?: [...#HostAlias] @go(HostAliases,[]HostAlias)
+
+	// Defines the web command line flags when starting Alertmanager.
+	web?: null | #AlertmanagerWebSpec @go(Web,*AlertmanagerWebSpec)
 
 	// EXPERIMENTAL: alertmanagerConfiguration specifies the global Alertmanager configuration.
 	// If defined, it takes precedence over the `configSecret` field.

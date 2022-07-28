@@ -11,14 +11,30 @@ import (
 
 // GrafanaDashboardSpec defines the desired state of GrafanaDashboard
 #GrafanaDashboardSpec: {
-	json?:         string                              @go(Json)
-	jsonnet?:      string                              @go(Jsonnet)
-	plugins?:      #PluginList                         @go(Plugins)
-	url?:          string                              @go(Url)
+	// Json is the dashboard's JSON
+	json?: string @go(Json)
+
+	// GzipJson the dashboard's JSON compressed with Gzip. Base64-encoded when in YAML.
+	gzipJson?: bytes       @go(GzipJson,[]byte)
+	jsonnet?:  string      @go(Jsonnet)
+	plugins?:  #PluginList @go(Plugins)
+	url?:      string      @go(Url)
+
+	// ConfigMapRef is a reference to a ConfigMap data field containing the dashboard's JSON
 	configMapRef?: null | corev1.#ConfigMapKeySelector @go(ConfigMapRef,*corev1.ConfigMapKeySelector)
+
+	// GzipConfigMapRef is a reference to a ConfigMap binaryData field containing
+	// the dashboard's JSON, compressed with Gzip.
+	gzipConfigMapRef?: null | corev1.#ConfigMapKeySelector @go(GzipConfigMapRef,*corev1.ConfigMapKeySelector)
 	datasources?: [...#GrafanaDashboardDatasource] @go(Datasources,[]GrafanaDashboardDatasource)
 	customFolderName?: string                                   @go(CustomFolderName)
 	grafanaCom?:       null | #GrafanaDashboardGrafanaComSource @go(GrafanaCom,*GrafanaDashboardGrafanaComSource)
+
+	// ContentCacheDuration sets how often the operator should resync with the external source when using
+	// the `grafanaCom.id` or `url` field to specify the source of the dashboard. The default value is
+	// decided by the `dashboardContentCacheDuration` field in the `Grafana` resource. The default is 0 which
+	// is interpreted as never refetching.
+	contentCacheDuration?: null | metav1.#Duration @go(ContentCacheDuration,*metav1.Duration)
 }
 
 #GrafanaDashboardDatasource: {
@@ -43,6 +59,16 @@ import (
 }
 
 #GrafanaDashboardStatus: {
+	contentCache?:     bytes                         @go(ContentCache,[]byte)
+	contentTimestamp?: null | metav1.#Time           @go(ContentTimestamp,*metav1.Time)
+	contentUrl?:       string                        @go(ContentUrl)
+	error?:            null | #GrafanaDashboardError @go(Error,*GrafanaDashboardError)
+}
+
+#GrafanaDashboardError: {
+	code:     int    @go(Code)
+	error:    string @go(Message)
+	retries?: int    @go(Retries)
 }
 
 // GrafanaDashboard is the Schema for the grafanadashboards API

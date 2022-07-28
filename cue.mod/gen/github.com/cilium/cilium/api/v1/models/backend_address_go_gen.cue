@@ -17,4 +17,24 @@ package models
 
 	// Layer 4 port number
 	port?: uint16 @go(Port)
+
+	// Indicator if this backend is preferred in the context of clustermesh service affinity. The value is set based
+	// on related annotation of global service. Applicable for active state only.
+	preferred?: bool @go(Preferred)
+
+	// State of the backend for load-balancing service traffic
+	// Enum: [active terminating quarantined maintenance]
+	state?: string @go(State)
 }
+
+// BackendAddressStateActive captures enum value "active"
+#BackendAddressStateActive: "active"
+
+// BackendAddressStateTerminating captures enum value "terminating"
+#BackendAddressStateTerminating: "terminating"
+
+// BackendAddressStateQuarantined captures enum value "quarantined"
+#BackendAddressStateQuarantined: "quarantined"
+
+// BackendAddressStateMaintenance captures enum value "maintenance"
+#BackendAddressStateMaintenance: "maintenance"

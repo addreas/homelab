@@ -4,7 +4,7 @@
 
 package reflect
 
-_#flag: uintptr
+_#flag: uint64
 
 _#flagKindWidth:   5
 _#flagKindMask:    _#flag & 31
@@ -41,7 +41,7 @@ _#hiter: {
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
 #StringHeader: {
-	Data: uintptr
+	Data: uint64 @go(,uintptr)
 	Len:  int
 }
 
@@ -52,7 +52,7 @@ _#hiter: {
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
 #SliceHeader: {
-	Data: uintptr
+	Data: uint64 @go(,uintptr)
 	Len:  int
 	Cap:  int
 }
@@ -61,13 +61,11 @@ _#hiter: {
 #SelectDir: int // #enumSelectDir
 
 #enumSelectDir:
-	_#_ |
 	#SelectSend |
 	#SelectRecv |
 	#SelectDefault
 
 #values_SelectDir: {
-	"_":           _#_
 	SelectSend:    #SelectSend
 	SelectRecv:    #SelectRecv
 	SelectDefault: #SelectDefault

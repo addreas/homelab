@@ -8,7 +8,7 @@ package api
 // individual identities.  Entities are used to describe "outside of cluster",
 // "host", etc.
 //
-// +kubebuilder:validation:Enum=all;world;cluster;host;init;unmanaged;remote-node;health;none;kube-apiserver
+// +kubebuilder:validation:Enum=all;world;cluster;host;init;ingress;unmanaged;remote-node;health;none;kube-apiserver
 #Entity: string // #enumEntity
 
 #enumEntity:
@@ -17,6 +17,7 @@ package api
 	#EntityCluster |
 	#EntityHost |
 	#EntityInit |
+	#EntityIngress |
 	#EntityUnmanaged |
 	#EntityRemoteNode |
 	#EntityHealth |
@@ -39,6 +40,9 @@ package api
 
 // EntityInit is an entity that represents an initializing endpoint
 #EntityInit: #Entity & "init"
+
+// EntityIngress is an entity that represents envoy proxy
+#EntityIngress: #Entity & "ingress"
 
 // EntityUnmanaged is an entity that represents unamanaged endpoints.
 #EntityUnmanaged: #Entity & "unmanaged"

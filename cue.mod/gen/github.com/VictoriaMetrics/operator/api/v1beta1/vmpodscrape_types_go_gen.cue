@@ -156,6 +156,10 @@ import (
 	// +optional
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
+	// Authorization with http header Authorization
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
+
 	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
 	// +optional
 	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)

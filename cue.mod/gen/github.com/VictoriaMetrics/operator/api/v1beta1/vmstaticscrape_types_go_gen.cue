@@ -92,6 +92,10 @@ import (
 	// +optional
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
+	// Authorization with http header Authorization
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
+
 	// MetricRelabelConfigs to apply to samples before ingestion.
 	// +optional
 	metricRelabelConfigs?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)

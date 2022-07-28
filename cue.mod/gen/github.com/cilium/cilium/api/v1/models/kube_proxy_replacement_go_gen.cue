@@ -74,11 +74,17 @@ package models
 	// host reachable services
 	hostReachableServices?: null | #KubeProxyReplacementFeaturesHostReachableServices @go(HostReachableServices,*KubeProxyReplacementFeaturesHostReachableServices)
 
+	// nat46 x64
+	nat46X64?: null | #KubeProxyReplacementFeaturesNat46X64 @go(Nat46X64,*KubeProxyReplacementFeaturesNat46X64)
+
 	// node port
 	nodePort?: null | #KubeProxyReplacementFeaturesNodePort @go(NodePort,*KubeProxyReplacementFeaturesNodePort)
 
 	// session affinity
 	sessionAffinity?: null | #KubeProxyReplacementFeaturesSessionAffinity @go(SessionAffinity,*KubeProxyReplacementFeaturesSessionAffinity)
+
+	// socket l b
+	socketLB?: null | #KubeProxyReplacementFeaturesSocketLB @go(SocketLB,*KubeProxyReplacementFeaturesSocketLB)
 }
 
 // KubeProxyReplacementFeaturesExternalIPs
@@ -122,6 +128,16 @@ package models
 
 	// protocols
 	protocols: [...string] @go(Protocols,[]string)
+}
+
+// KubeProxyReplacementFeaturesNat46X64
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesNat46X64
+#KubeProxyReplacementFeaturesNat46X64: {
+	// enabled
+	enabled?: bool @go(Enabled)
 }
 
 // KubeProxyReplacementFeaturesNodePort
@@ -185,6 +201,16 @@ package models
 //
 // swagger:model KubeProxyReplacementFeaturesSessionAffinity
 #KubeProxyReplacementFeaturesSessionAffinity: {
+	// enabled
+	enabled?: bool @go(Enabled)
+}
+
+// KubeProxyReplacementFeaturesSocketLB
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesSocketLB
+#KubeProxyReplacementFeaturesSocketLB: {
 	// enabled
 	enabled?: bool @go(Enabled)
 }

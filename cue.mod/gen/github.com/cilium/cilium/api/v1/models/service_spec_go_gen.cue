@@ -20,6 +20,11 @@ package models
 
 	// Unique identification
 	id?: int64 @go(ID)
+
+	// Update all services selecting the backends with their given states
+	// (id and frontend are ignored)
+	//
+	updateServices?: bool @go(UpdateServices)
 }
 
 // ServiceSpecFlags Optional service configuration flags
@@ -35,6 +40,10 @@ package models
 	// Service namespace  (e.g. Kubernetes namespace)
 	namespace?: string @go(Namespace)
 
+	// Service protocol NAT policy
+	// Enum: [None Nat46 Nat64]
+	natPolicy?: string @go(NatPolicy)
+
 	// Service traffic policy
 	// Enum: [Cluster Local]
 	trafficPolicy?: string @go(TrafficPolicy)
@@ -43,6 +52,15 @@ package models
 	// Enum: [ClusterIP NodePort ExternalIPs HostPort LoadBalancer LocalRedirect]
 	type?: string @go(Type)
 }
+
+// ServiceSpecFlagsNatPolicyNone captures enum value "None"
+#ServiceSpecFlagsNatPolicyNone: "None"
+
+// ServiceSpecFlagsNatPolicyNat46 captures enum value "Nat46"
+#ServiceSpecFlagsNatPolicyNat46: "Nat46"
+
+// ServiceSpecFlagsNatPolicyNat64 captures enum value "Nat64"
+#ServiceSpecFlagsNatPolicyNat64: "Nat64"
 
 // ServiceSpecFlagsTrafficPolicyCluster captures enum value "Cluster"
 #ServiceSpecFlagsTrafficPolicyCluster: "Cluster"

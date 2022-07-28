@@ -34,24 +34,32 @@ import (
 	initImage?:                  string                          @go(InitImage)
 	livenessProbeSpec?:          null | #LivenessProbeSpec       @go(LivenessProbeSpec,*LivenessProbeSpec)
 	readinessProbeSpec?:         null | #ReadinessProbeSpec      @go(ReadinessProbeSpec,*ReadinessProbeSpec)
+
+	// DashboardContentCacheDuration sets a default for when a `GrafanaDashboard` resource doesn't specify a `contentCacheDuration`.
+	// If left unset or 0 the default behavior is to cache indefinitely.
+	dashboardContentCacheDuration?: null | metav1.#Duration @go(DashboardContentCacheDuration,*metav1.Duration)
 }
 
 #ReadinessProbeSpec: {
-	initialDelaySeconds?: null | int32  @go(InitialDelaySeconds,*int32)
-	timeoutSeconds?:      null | int32  @go(TimeOutSeconds,*int32)
-	periodSeconds?:       null | int32  @go(PeriodSeconds,*int32)
-	successThreshold?:    null | int32  @go(SuccessThreshold,*int32)
-	failureThreshold?:    null | int32  @go(FailureThreshold,*int32)
-	scheme?:              v1.#URIScheme @go(Scheme)
+	initialDelaySeconds?: null | int32 @go(InitialDelaySeconds,*int32)
+	timeoutSeconds?:      null | int32 @go(TimeOutSeconds,*int32)
+	periodSeconds?:       null | int32 @go(PeriodSeconds,*int32)
+	successThreshold?:    null | int32 @go(SuccessThreshold,*int32)
+	failureThreshold?:    null | int32 @go(FailureThreshold,*int32)
+
+	// URIScheme identifies the scheme used for connection to a host for Get actions. Deprecated in favor of config.server.protocol.
+	scheme?: v1.#URIScheme @go(Scheme)
 }
 
 #LivenessProbeSpec: {
-	initialDelaySeconds?: null | int32  @go(InitialDelaySeconds,*int32)
-	timeoutSeconds?:      null | int32  @go(TimeOutSeconds,*int32)
-	periodSeconds?:       null | int32  @go(PeriodSeconds,*int32)
-	successThreshold?:    null | int32  @go(SuccessThreshold,*int32)
-	failureThreshold?:    null | int32  @go(FailureThreshold,*int32)
-	scheme?:              v1.#URIScheme @go(Scheme)
+	initialDelaySeconds?: null | int32 @go(InitialDelaySeconds,*int32)
+	timeoutSeconds?:      null | int32 @go(TimeOutSeconds,*int32)
+	periodSeconds?:       null | int32 @go(PeriodSeconds,*int32)
+	successThreshold?:    null | int32 @go(SuccessThreshold,*int32)
+	failureThreshold?:    null | int32 @go(FailureThreshold,*int32)
+
+	// URIScheme identifies the scheme used for connection to a host for Get actions. Deprecated in favor of config.server.protocol.
+	scheme?: v1.#URIScheme @go(Scheme)
 }
 
 #JsonnetConfig: {
@@ -127,6 +135,7 @@ import (
 	enabled:    bool   @go(Enabled)
 	url?:       string @go(URL)
 	secureUrl?: string @go(SecureURL)
+	noProxy?:   string @go(NoProxy)
 }
 
 // GrafanaIngress provides a means to configure the ingress created
@@ -195,9 +204,11 @@ import (
 #GrafanaConfigServer: {
 	http_addr?: string @go(HttpAddr)
 	http_port?: string @go(HttpPort)
-	protocol?:  string @go(Protocol)
-	socket?:    string @go(Socket)
-	domain?:    string @go(Domain)
+
+	// +kubebuilder:validation:Enum=http;https
+	protocol?: string @go(Protocol)
+	socket?:   string @go(Socket)
+	domain?:   string @go(Domain)
 
 	// +nullable
 	enforce_domain?: null | bool @go(EnforceDomain,*bool)
@@ -441,15 +452,18 @@ import (
 	enabled?: null | bool @go(Enabled,*bool)
 
 	// +nullable
-	allow_sign_up?:       null | bool @go(AllowSignUp,*bool)
-	client_id?:           string      @go(ClientId)
-	client_secret?:       string      @go(ClientSecret)
-	scopes?:              string      @go(Scopes)
-	auth_url?:            string      @go(AuthUrl)
-	token_url?:           string      @go(TokenUrl)
-	api_url?:             string      @go(ApiUrl)
-	allowed_domains?:     string      @go(AllowedDomains)
-	role_attribute_path?: string      @go(RoleAttributePath)
+	allow_sign_up?:           null | bool @go(AllowSignUp,*bool)
+	client_id?:               string      @go(ClientId)
+	client_secret?:           string      @go(ClientSecret)
+	scopes?:                  string      @go(Scopes)
+	auth_url?:                string      @go(AuthUrl)
+	token_url?:               string      @go(TokenUrl)
+	api_url?:                 string      @go(ApiUrl)
+	teams_url?:               string      @go(TeamsURL)
+	team_ids?:                string      @go(TeamIds)
+	team_ids_attribute_path?: string      @go(TeamIdsAttributePath)
+	allowed_domains?:         string      @go(AllowedDomains)
+	role_attribute_path?:     string      @go(RoleAttributePath)
 
 	// +nullable
 	role_attribute_strict?: null | bool @go(RoleAttributeStrict,*bool)

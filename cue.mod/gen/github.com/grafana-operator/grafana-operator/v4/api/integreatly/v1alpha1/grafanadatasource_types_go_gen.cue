@@ -57,6 +57,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // GrafanaDataSourceJsonData contains the most common json options
 // See https://grafana.com/docs/administration/provisioning/#datasources
 #GrafanaDataSourceJsonData: {
+	queryTimeout?:            string @go(QueryTimeout)
 	oauthPassThru?:           bool   @go(OauthPassThru)
 	tlsAuth?:                 bool   @go(TlsAuth)
 	tlsAuthWithCACert?:       bool   @go(TlsAuthWithCACert)

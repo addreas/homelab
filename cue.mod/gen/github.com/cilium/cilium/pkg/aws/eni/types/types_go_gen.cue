@@ -106,12 +106,31 @@ package types
 	// +kubebuilder:validation:Optional
 	"availability-zone"?: string @go(AvailabilityZone)
 
+	// ExcludeInterfaceTags is the list of tags to use when excluding ENIs for
+	// Cilium IP allocation. Any interface matching this set of tags will not
+	// be managed by Cilium.
+	//
+	// +kubebuilder:validation:Optional
+	"exclude-interface-tags"?: {[string]: string} @go(ExcludeInterfaceTags,map[string]string)
+
 	// DeleteOnTermination defines that the ENI should be deleted when the
 	// associated instance is terminated. If the parameter is not set the
 	// default behavior is to delete the ENI on instance termination.
 	//
 	// +kubebuilder:validation:Optional
 	"delete-on-termination"?: null | bool @go(DeleteOnTermination,*bool)
+
+	// UsePrimaryAddress determines whether an ENI's primary address
+	// should be available for allocations on the node
+	//
+	// +kubebuilder:validation:Optional
+	"use-primary-address"?: null | bool @go(UsePrimaryAddress,*bool)
+
+	// DisablePrefixDelegation determines whether ENI prefix delegation should be
+	// disabled on this node.
+	//
+	// +kubebuilder:validation:Optional
+	"disable-prefix-delegation"?: null | bool @go(DisablePrefixDelegation,*bool)
 }
 
 // ENI represents an AWS Elastic Network Interface
@@ -165,8 +184,19 @@ package types
 	// +optional
 	addresses?: [...string] @go(Addresses,[]string)
 
+	// Prefixes is the list of all /28 prefixes associated with the ENI
+	//
+	// +optional
+	prefixes?: [...string] @go(Prefixes,[]string)
+
 	// SecurityGroups are the security groups associated with the ENI
 	"security-groups"?: [...string] @go(SecurityGroups,[]string)
+
+	// Tags is the set of tags of the ENI. Used to detect ENIs which should
+	// not be managed by Cilium
+	//
+	// +optional
+	tags?: {[string]: string} @go(Tags,map[string]string)
 }
 
 // ENIStatus is the status of ENI addressing of the node

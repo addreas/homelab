@@ -34,6 +34,9 @@ package models
 	// Status of ClusterMesh
 	"cluster-mesh"?: null | #ClusterMeshStatus @go(ClusterMesh,*ClusterMeshStatus)
 
+	// Status of CNI chaining
+	"cni-chaining"?: null | #CNIChainingStatus @go(CniChaining,*CNIChainingStatus)
+
 	// Status of local container runtime
 	"container-runtime"?: null | #Status @go(ContainerRuntime,*Status)
 
@@ -51,6 +54,9 @@ package models
 
 	// Status of Hubble server
 	hubble?: null | #HubbleStatus @go(Hubble,*HubbleStatus)
+
+	// Status of identity range of the cluster
+	"identity-range"?: null | #IdentityRange @go(IdentityRange,*IdentityRange)
 
 	// Status of IP address management
 	ipam?: null | #IPAMStatus @go(Ipam,*IPAMStatus)

@@ -266,6 +266,10 @@ import (
 	podDisruptionBudget?: null | #EmbeddedPodDisruptionBudgetSpec @go(PodDisruptionBudget,*EmbeddedPodDisruptionBudgetSpec)
 
 	#EmbeddedProbes
+
+	// Configures horizontal pod autoscaling.
+	// Note, enabling this option disables vmselect to vmselect communication. In most cases it's not an issue.
+	// +optional
 	hpa?: null | #EmbeddedHPA @go(HPA,*EmbeddedHPA)
 
 	// NodeSelector Define which Nodes the Pods are scheduled on.

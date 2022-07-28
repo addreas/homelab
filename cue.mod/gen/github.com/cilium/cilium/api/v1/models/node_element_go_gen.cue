@@ -13,6 +13,9 @@ package models
 	// Address used for probing cluster connectivity
 	"health-endpoint-address"?: null | #NodeAddressing @go(HealthEndpointAddress,*NodeAddressing)
 
+	// Source address for Ingress listener
+	"ingress-address"?: null | #NodeAddressing @go(IngressAddress,*NodeAddressing)
+
 	// Name of the node including the cluster association. This is typically
 	// <clustername>/<hostname>.
 	//

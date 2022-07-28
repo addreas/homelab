@@ -256,6 +256,11 @@ import (
 	// +kubebuilder:validation:Optional
 	health?: #HealthAddressingSpec @go(HealthAddressing)
 
+	// IngressAddressing is the addressing information for Ingress listener.
+	//
+	// +kubebuilder:validation:Optional
+	ingress?: #AddressPair @go(IngressAddressing)
+
 	// Encryption is the encryption configuration of the node.
 	//
 	// +kubebuilder:validation:Optional

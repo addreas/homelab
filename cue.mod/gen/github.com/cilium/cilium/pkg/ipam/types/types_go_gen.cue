@@ -17,6 +17,10 @@ import "github.com/cilium/cilium/pkg/cidr"
 
 	// IPv6 is the maximum number of IPv6 addresses per adapter/interface
 	IPv6: int
+
+	// HypervisorType tracks the instance's hypervisor type if available. Used to determine if features like prefix
+	// delegation are supported on an instance. Bare metal instances would have empty string.
+	HypervisorType: string
 }
 
 // AllocationIP is an IP which is available for allocation, or already
@@ -94,6 +98,25 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +kubebuilder:validation:Minimum=0
 	"max-above-watermark"?: int @go(MaxAboveWatermark)
+
+	// PodCIDRAllocationThreshold defines the minimum number of free IPs which
+	// must be available to this node via its pod CIDR pool. If the total number
+	// of IP addresses in the pod CIDR pool is less than this value, the pod
+	// CIDRs currently in-use by this node will be marked as depleted and
+	// cilium-operator will allocate a new pod CIDR to this node.
+	// This value effectively defines the buffer of IP addresses available
+	// immediately without requiring cilium-operator to get involved.
+	//
+	// +kubebuilder:validation:Minimum=0
+	"pod-cidr-allocation-threshold"?: int @go(PodCIDRAllocationThreshold)
+
+	// PodCIDRReleaseThreshold defines the maximum number of free IPs which may
+	// be available to this node via its pod CIDR pool. While the total number
+	// of free IP addresses in the pod CIDR pool is larger than this value,
+	// cilium-agent will attempt to release currently unused pod CIDRs.
+	//
+	// +kubebuilder:validation:Minimum=0
+	"pod-cidr-release-threshold"?: int @go(PodCIDRReleaseThreshold)
 }
 
 // IPReleaseStatus  defines the valid states in IP release handshake
@@ -111,6 +134,11 @@ import "github.com/cilium/cilium/pkg/cidr"
 	// +optional
 	used?: #AllocationMap @go(Used)
 
+	// PodCIDRs lists the status of each pod CIDR allocated to this node.
+	//
+	// +optional
+	"pod-cidrs"?: #PodCIDRMap @go(PodCIDRs)
+
 	// Operator is the Operator status of the node
 	//
 	// +optional
@@ -125,6 +153,27 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +optional
 	"release-ips"?: {[string]: #IPReleaseStatus} @go(ReleaseIPs,map[string]IPReleaseStatus)
+}
+
+#PodCIDRMap: [string]: #PodCIDRMapEntry
+
+// +kubebuilder:validation:Enum=released;depleted;in-use
+#PodCIDRStatus: string // #enumPodCIDRStatus
+
+#enumPodCIDRStatus:
+	#PodCIDRStatusReleased |
+	#PodCIDRStatusDepleted |
+	#PodCIDRStatusInUse
+
+#PodCIDRStatusReleased: #PodCIDRStatus & "released"
+#PodCIDRStatusDepleted: #PodCIDRStatus & "depleted"
+#PodCIDRStatusInUse:    #PodCIDRStatus & "in-use"
+
+#PodCIDRMapEntry: {
+	// Status describes the status of a pod CIDR
+	//
+	// +optional
+	status?: #PodCIDRStatus @go(Status)
 }
 
 // OperatorStatus is the status used by cilium-operator to report

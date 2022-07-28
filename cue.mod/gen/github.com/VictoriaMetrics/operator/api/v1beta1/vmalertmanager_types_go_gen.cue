@@ -277,12 +277,12 @@ import (
 	// +optional
 	configNamespaceSelector?: null | metav1.#LabelSelector @go(ConfigNamespaceSelector,*metav1.LabelSelector)
 
-	// ExtraArgs that will be passed to  VMAuth pod
-	// for example remoteWrite.tmpDataPath: /tmp
+	// ExtraArgs that will be passed to  VMAlertmanager pod
+	// for example log.level: debug
 	// +optional
 	extraArgs?: {[string]: string} @go(ExtraArgs,map[string]string)
 
-	// ExtraEnvs that will be added to VMAuth pod
+	// ExtraEnvs that will be added to VMAlertmanager pod
 	// +optional
 	extraEnvs?: [...v1.#EnvVar] @go(ExtraEnvs,[]v1.EnvVar)
 

@@ -15,7 +15,7 @@ package v2
 //
 // Maintainers: Run ./Documentation/check-crd-compat-table.sh for each release
 // Developers: Bump patch for each change in the CRD schema.
-#CustomResourceDefinitionSchemaVersion: "1.24.3"
+#CustomResourceDefinitionSchemaVersion: "1.25.4"
 
 // CustomResourceDefinitionSchemaVersionKey is key to label which holds the CRD schema version
 #CustomResourceDefinitionSchemaVersionKey: "io.cilium.k8s.crd.schema.version"
@@ -43,6 +43,18 @@ package v2
 
 // CCNPName is the full name of Cilium Cluster wide Network Policy
 #CCNPName: "ciliumclusterwidenetworkpolicies.cilium.io"
+
+// CEGPSingularName is the singular name of Cilium Egress Gateway Policy
+#CEGPSingularName: "ciliumegressgatewaypolicy"
+
+// CEGPPluralName is the plural name of Cilium Egress Gateway Policy
+#CEGPPluralName: "ciliumegressgatewaypolicies"
+
+// CEGPKindDefinition is the kind name of Cilium Egress Gateway Policy
+#CEGPKindDefinition: "CiliumEgressGatewayPolicy"
+
+// CEGPName is the full name of Cilium Egress Gateway Policy
+#CEGPName: "ciliumegressgatewaypolicies.cilium.io"
 
 // CESingularName is the singular name of Cilium Endpoint
 #CEPSingularName: "ciliumendpoint"
@@ -103,3 +115,27 @@ package v2
 
 // CEWName is the full name of Cilium External Workload
 #CEWName: "ciliumexternalworkloads.cilium.io"
+
+// CCECSingularName is the singular name of Cilium Clusterwide Envoy Config
+#CCECSingularName: "ciliumclusterwideenvoyconfig"
+
+// CCECPluralName is the plural name of Cilium Clusterwide Envoy Config
+#CCECPluralName: "ciliumclusterwideenvoyconfigs"
+
+// CCECKindDefinition is the kind name of Cilium Clusterwide Envoy Config
+#CCECKindDefinition: "CiliumClusterwideEnvoyConfig"
+
+// CCECName is the full name of Cilium Clusterwide Envoy Config
+#CCECName: "ciliumclusterwideenvoyconfigs.cilium.io"
+
+// CECSingularName is the singular name of Cilium Envoy Config
+#CECSingularName: "ciliumenvoyconfig"
+
+// CECPluralName is the plural name of Cilium Envoy Config
+#CECPluralName: "ciliumenvoyconfigs"
+
+// CECKindDefinition is the kind name of Cilium Envoy Config
+#CECKindDefinition: "CiliumEnvoyConfig"
+
+// CECName is the full name of Cilium Envoy Config
+#CECName: "ciliumenvoyconfigs.cilium.io"
