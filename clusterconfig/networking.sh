@@ -2,7 +2,7 @@
 helm repo add cilium https://helm.cilium.io/
 helm repo update
 
-CILIUM_VERSION=1.11.5
+CILIUM_VERSION=1.12.0
 
 helm install cilium cilium/cilium --version $CILIUM_VERSION \
    --namespace kube-system \
