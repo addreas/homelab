@@ -9,6 +9,4 @@ k: GitRepository: "kube-vip-cloud-provider": spec: {
 		"""
 }
 
-k: Kustomization: "kube-vip-cloud-provider": spec: {
-	path: "./manifest"
-}
+k: Kustomization: "kube-vip-cloud-provider": spec: path: "./manifest"

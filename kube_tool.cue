@@ -18,7 +18,7 @@ let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds
 let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) {r}]
 
 // List defined Kubernetes resources
-command: ls: print: cli.Print & {
+command: ls: cli.Print & {
 	text: tabwriter.Write([
 		for r in earlyResources {
 			"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
@@ -48,7 +48,7 @@ command: apply: {
 }
 
 // Diff Kubernetes resources with the current cluster state
-command: diff: diff: exec.Run & {
+command: diff: exec.Run & {
 	cmd: ["kubectl", "--context", context, "diff", "-f-"]
 	stdin: json.MarshalStream(resources)
 }
@@ -84,22 +84,22 @@ command: seal: {
 }
 
 // Dump a yaml stream of Kubernetes resources
-command: "dump-yaml": print: cli.Print & {
+command: "dump-yaml": cli.Print & {
 	text: yaml.MarshalStream(earlyResources + resources)
 }
 
 // Import all yaml from stdin
-command: "import-yaml": import: exec.Run & {
+command: "import-yaml": exec.Run & {
 	cmd: ["cue", "import", "-p", "kube", "-l", "\"k\"", "-l", "kind", "-l", "metadata.name", "yaml:", "-", "-o", "-"]
 }
 
 // Import all existing yaml files into their cue representation
-command: "import-all-yaml": import: exec.Run & {
+command: "import-all-yaml": exec.Run & {
 	cmd: "cue import -p kube -l '\"k\"' -l 'kind' -l metadata.name -f ./**/*.yaml"
 }
 
 // Bootstrap the initial flux controllers to enable Kustomization and HelmRelease resources.
-command: "flux-bootstrap": apply: exec.Run & {
+command: "flux-bootstrap": exec.Run & {
 	cmd: "kubectl apply -k https://github.com/fluxcd/flux2/manifests/install"
 }
 
