@@ -112,19 +112,35 @@ command: "flux-bootstrap": exec.Run & {
 		glob: filename
 		files: [...string]
 	}
-	existing: _ | *[]
-	if len(filenameGlob.files) > 0 {
-		existing: ["cue:", filename]
-	}
+	let hasExisting = len(filenameGlob.files) > 0
+
 	eval: exec.Run & {
-		cmd: ["cue",
+		stdin:  json.Marshal(content)
+		stdout: string
+	}
+	if !hasExisting {
+		eval: cmd: ["cue",
 			"eval",
 			"--all",
 			"--show-attributes",
-			"json:", "-",
-		] + existing
-		stdin:  json.Marshal(content)
-		stdout: string
+			"json:", "-"]
+	}
+
+	if hasExisting {
+		makeOptionals: exec.Run & {
+			cmd: ["sed", "-i", #"s/ "/_ \| \*"/"#, filename]
+			success: true
+		}
+		eval: {
+			$after: [hasExisting, makeOptionals]
+			cmd: ["cue",
+				"eval",
+				"--all",
+				"--show-attributes",
+				"json:", "-",
+				"cue:", filename,
+			]
+		}
 	}
 
 	write: file.Create & {

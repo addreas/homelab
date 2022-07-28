@@ -67,10 +67,8 @@ k: Grafana: grafana: spec: {
 
 k: GitRepository: "grafana-operator": spec: {
 	interval: "1h"
-	// ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
-	// url: "https://github.com/grafana-operator/grafana-operator.git"
-	ref: branch: "master"
-	url: "https://github.com/addreas/grafana-operator.git"
+	ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
+	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """
 		/*
 		!/config
@@ -86,6 +84,11 @@ k: Kustomization: "grafana-operator": spec: {
 	interval:        "30m"
 	path:            "./config/default"
 	targetNamespace: "monitoring"
+	// images: [{
+	// 	name:    "quay.io/grafana-operator/grafana-operator"
+	// 	newName: "quay.io/addreas/grafana-operator"
+	// 	newTag:  "test"
+	// }]
 	patches: [{
 		target: {
 			group:   "apps"
@@ -99,11 +102,7 @@ k: Kustomization: "grafana-operator": spec: {
 			  value:
 			  - --scan-all
 			  - --requeue-delay=30
-			- op: replace
-			  path: /spec/template/spec/containers/1/image
-			  value: ghcr.io/addreas/grafana-operator:v4.5.0-gzip
 			"""
-			  // value: quay.io/grafana-operator/grafana-operator:v4.5.0
 	}, {
 		target: {
 			group:   ""
