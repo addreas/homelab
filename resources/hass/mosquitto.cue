@@ -5,22 +5,6 @@ import (
 	"encoding/hex"
 )
 
-k: Ingress: mqtt: {
-	metadata: annotations: {
-		"ingress.kubernetes.io/ssl-passthrough": "true"
-	}
-	spec: {
-		rules: [{
-			http: paths: [{
-				backend: service: {
-					name: "mosquitto"
-					port: {name: "ws"}
-				}
-			}]
-		}]
-	}
-}
-
 k: Service: mosquitto: spec: {
 	ports: [{
 		name: "tcp0"

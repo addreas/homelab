@@ -11,7 +11,7 @@ k: StatefulSet: "hass-yanzi-to-homeassistant-mqtt": {
 					image: "ghcr.io/jonasdahl/yanzi-to-homeassistant-mqtt@\(version)"
 					env: [
 						{name: "LOCATION_ID", value:                  "872855"},
-						{name: "MQTT_URL", value:                     "wss://mqtt.addem.se/mqtt"},
+						{name: "MQTT_URL", value:                     "wss://mosquitto:9001/mqtt"},
 						{name: "CIRRUS_HOST", value:                  "eu.yanzi.cloud"},
 						{name: "LOG_LEVEL", value:                    "debug"},
 						{name: "MQTT_CA_PATH", value:                 "/certs/ca.crt"},
