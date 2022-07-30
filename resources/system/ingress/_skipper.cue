@@ -1,5 +1,7 @@
 package kube
 
+// TODO: perhaps this is nicer if we can figure out the auth proxy stuff
+
 k: Deployment: "skipper-ingress": spec: {
 	replicas: 2
 	template: spec: {

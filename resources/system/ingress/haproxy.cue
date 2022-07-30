@@ -27,6 +27,11 @@ k: HelmRelease: haproxy: {
 				interval: "60s"
 			}
 			logs: enabled: true
+			config: {
+				"ssl-redirect":        "false"
+				"forwardfor":          "ifmissing"
+				"fronting-proxy-port": "80"
+			}
 			extraArgs: {
 				"watch-ingress-without-class": "true"
 				"allow-cross-namespace":       "true"

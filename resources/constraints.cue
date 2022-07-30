@@ -86,7 +86,8 @@ k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=
 }
 
 k: Ingress: [Name=string]: {
-	metadata: annotations: _ | *{"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"}
+	// redundant since we use cloudflare as a fronting proxy
+	// metadata: annotations: _ | *{"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"}
 
 	_authproxy: true | *false
 	if _authproxy {
@@ -96,10 +97,11 @@ k: Ingress: [Name=string]: {
 		}
 	}
 	spec: {
-		tls: _ | *[{
-			hosts: ["\(Name).addem.se", ...]
-			secretName: "\(Name)-cert"
-		}, ...]
+		// redundant since we use cloudflare as a fronting proxy
+		// tls: _ | *[{
+		// 	hosts: ["\(Name).addem.se", ...]
+		// 	secretName: "\(Name)-cert"
+		// }, ...]
 		rules: _ | *[{
 			host: _ | *"\(Name).addem.se"
 			http: paths: _ | *[{
