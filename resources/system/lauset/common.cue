@@ -12,8 +12,7 @@ k: Ingress: "ory": {
 		rules: [{
 			host: _hostname
 			http: paths: [{
-				path:     "/kratos"
-				pathType: "Prefix"
+				path: "/kratos"
 				backend: service: {
 					name: "kratos-public"
 					port: name: "http"
@@ -39,12 +38,6 @@ k: Ingress: "lauset": {
 		rules: [{
 			host: _hostname
 			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "lauset"
-					port: name: "http"
-				}
 			}, {
 				path:     "/hydra/consent"
 				pathType: "Exact"
@@ -120,7 +113,6 @@ _kratos_config: #KratosConfigSchema & {
 				ui_url:   "https://\(_hostname)/registration"
 				after: password: hooks: [{hook: "session"}]
 				before: hooks: [{
-					hook: "web_hook"
 					config: {
 						url:    "http://registrations-are-disabled/"
 						method: "GET"
@@ -140,7 +132,7 @@ _kratos_config: #KratosConfigSchema & {
 
 	hashers: {
 		algorithm: "bcrypt"
-		bcrypt: cost: 12
+		bcrypt: {}
 	}
 
 	identity: {

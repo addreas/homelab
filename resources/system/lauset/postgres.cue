@@ -4,7 +4,6 @@ k: StatefulSet: postgres: spec: {
 	template: spec: {
 		securityContext: fsGroupChangePolicy: "Always"
 		containers: [{
-			name:  "postgres"
 			image: "postgres:13"
 			envFrom: [
 				{secretRef: name:    "postgres-credentials"},
@@ -37,7 +36,6 @@ k: StatefulSet: postgres: spec: {
 
 k: Service: postgres: spec: ports: [{
 	name: "postgres"
-	port: 5432
 }]
 
 k: ConfigMap: "postgres-config": data: POSTGRES_DB: "kratos"

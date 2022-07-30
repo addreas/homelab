@@ -9,7 +9,6 @@ k: OAuth2Client: "authproxy": spec: {
 }
 
 k: Deployment: "authproxy": spec: template: spec: containers: [{
-	name:  "authproxy"
 	image: "quay.io/oauth2-proxy/oauth2-proxy:latest"
 	ports: [{
 		name:          "http"
@@ -46,9 +45,6 @@ k: Deployment: "authproxy": spec: template: spec: containers: [{
 	]
 }]
 
-k: Service: "authproxy": spec: ports: [{
-	name: "http"
-	port: 4180
-}]
+k: Service: "authproxy": {}
 
 k: Ingress: "authproxy": {}

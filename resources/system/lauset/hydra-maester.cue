@@ -43,22 +43,16 @@ k: Role: "hydra-maester-secrets": rules: [{
 
 k: RoleBinding: "hydra-maester": {
 	subjects: [{
-		kind:      "ServiceAccount"
-		name:      "hydra-maester"
 		namespace: "ory"
 	}]
 	roleRef: {
-		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "Role"
-		name:     "hydra-maester-secrets"
+		name: "hydra-maester-secrets"
 	}
 }
 
 k: Deployment: "hydra-maester": spec: template: spec: {
 	containers: [{
-		name:            "hydra-maester"
-		image:           "oryd/hydra-maester:v0.0.24"
-		imagePullPolicy: "IfNotPresent"
+		image: "oryd/hydra-maester:v0.0.24"
 		command: ["/manager"]
 		args: [
 			"--metrics-addr=127.0.0.1:8080",

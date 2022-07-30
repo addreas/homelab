@@ -16,7 +16,6 @@ k: Deployment: hydra: spec: template: spec: {
 		configMap: name: "hydra"
 	}]
 	containers: [_probes & {
-		name:  "hydra"
 		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
 		command: ["hydra"]
 		args: [
@@ -61,7 +60,6 @@ k: Service: "hydra-public": spec: {
 }
 
 k: Job: "hydra-migrate": spec: template: spec: {
-	restartPolicy: "OnFailure"
 	containers: [{
 		name:  "migrate"
 		image: "oryd/hydra:\(githubReleases["ory/hydra"])"

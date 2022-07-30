@@ -1,7 +1,6 @@
 package kube
 
 k: Deployment: "lauset": spec: template: spec: containers: [{
-	name:  "lauset"
 	image: "ghcr.io/jonasdahl/lauset:latest"
 	envFrom: [{configMapRef: name: "lauset"}, {secretRef: name: "lauset"}]
 	env: [{
