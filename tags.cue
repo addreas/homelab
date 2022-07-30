@@ -21,6 +21,7 @@ goModVersions: {
 	"k8s.io/kube-aggregator":                                                 "v0.24.3"
 }
 githubReleases: {
+	"cloudflare/cloudflared":     "2022.7.1"
 	"dani-garcia/vaultwarden":    "1.25.2"
 	"grafana/grafana":            "v9.0.5"
 	"home-assistant/core":        "2022.7.7"
