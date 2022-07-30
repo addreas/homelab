@@ -2,7 +2,7 @@ package kube
 
 k: [string]: [string]: metadata: {
 	namespace: *"default" | string
-	labels: "app": "bitwarden"
+	labels: app: "bitwarden"
 }
 
 k: CueBuild: "homelab-bitwarden": spec: {
