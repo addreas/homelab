@@ -99,8 +99,8 @@ k: Ingress: [Name=string]: {
 	spec: {
 		// redundant since we use cloudflare as a fronting proxy
 		// tls: _ | *[{
-		// 	hosts: ["\(Name).addem.se", ...]
-		// 	secretName: "\(Name)-cert"
+		//  hosts: ["\(Name).addem.se", ...]
+		//  secretName: "\(Name)-cert"
 		// }, ...]
 		rules: _ | *[{
 			host: _ | *"\(Name).addem.se"
