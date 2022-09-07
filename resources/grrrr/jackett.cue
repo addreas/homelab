@@ -6,14 +6,15 @@ k: StatefulSet: jackett: {
 			metadata: labels: "vpn-egress": "client"
 			spec: {
 				containers: [{
-					name:  "jackett"
-					image: "ghcr.io/hotio/jackett"
+					name:            "jackett"
+					image:           "ghcr.io/hotio/jackett"
+					imagePullPolicy: "Always"
 					command: ["sh", "-c"]
 					args: ["""
 						exec $APP_DIR/jackett --NoRestart --ListenPublic --NoUpdates --DataFolder="$CONFIG_DIR"
 						"""]
 					ports: [{
-						name: "http"
+						name:          "http"
 						containerPort: 9117
 					}]
 					volumeMounts: [{

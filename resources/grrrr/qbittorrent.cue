@@ -34,15 +34,16 @@ k: StatefulSet: qbittorrent: {
 				}, util.copyStatic & {
 					volumeMounts: [{
 						mountPath: "/static/config/qBittorrent/config"
-						name: "static-config"
+						name:      "static-config"
 					}, {
 						mountPath: "/config/qBittorrent"
 						name:      "config"
 					}]
 				}]
 				containers: [{
-					name:  "qbittorrent"
-					image: "ghcr.io/hotio/qbittorrent"
+					name:            "qbittorrent"
+					image:           "ghcr.io/hotio/qbittorrent"
+					imagePullPolicy: "Always"
 					command: ["sh", "-c"]
 					args: ["""
 						exec /$APP_DIR/qbittorrent-nox --profile="$CONFIG_DIR" --webui-port=8080
