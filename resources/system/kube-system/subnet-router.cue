@@ -5,7 +5,8 @@ k: StatefulSet: "tailscale-subnet-router": spec: template: spec: {
 	containers: [{
 		name:            "tailscale"
 		imagePullPolicy: "Always"
-		image:           "ghcr.io/tailscale/tailscale:latest"
+		image:           "ghcr.io/tailscale/tailscale:stable"
+		tty:             true
 		env: [{
 			name:  "TS_KUBE_SECRET"
 			value: "tailscale-state"
@@ -31,4 +32,3 @@ k: Role: tailscale: rules: [{
 	resources: ["secrets"]
 	verbs: ["get", "update"]
 }]
-
