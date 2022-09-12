@@ -7,6 +7,7 @@ k: Service: "plausible-smtp": spec: ports: [{
 k: Deployment: "plausible-smtp": spec: template: spec: containers: [{
 	image: "bytemark/smtp:latest"
 	ports: [{containerPort: 25}]
+	securityContext: runAsUser: 0
 	readinessProbe: {
 		tcpSocket: port: 25
 		initialDelaySeconds: 20
