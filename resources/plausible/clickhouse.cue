@@ -91,8 +91,7 @@ k: StatefulSet: "plausible-events-db": spec: {
 		spec: {
 			accessModes: ["ReadWriteOnce"]
 			resources: {
-				requests: storage: "128Mi"
-				limits: storage:   "20Gi"
+				requests: storage: "5Gi"
 			}
 		}
 	}]
