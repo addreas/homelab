@@ -1,6 +1,8 @@
 package kube
 
-k: Ingress: plausible: {}
+k: Ingress: plausible: {
+	metadata: annotations: "ingress.kubernetes.io/forwardfor": "ignore"
+}
 
 k: Service: plausible: spec: ports: [{name: "plausible"}]
 
