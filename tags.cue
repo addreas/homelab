@@ -21,15 +21,15 @@ goModVersions: {
 	"k8s.io/kube-aggregator":                                                 "v0.24.3"
 }
 githubReleases: {
-	"cloudflare/cloudflared":     "2022.9.0"
+	"cloudflare/cloudflared":     "2022.10.0"
 	"dani-garcia/vaultwarden":    "1.25.2"
-	"grafana/grafana":            "v9.1.3"
-	"home-assistant/core":        "2022.9.7"
+	"grafana/grafana":            "v9.1.7"
+	"home-assistant/core":        "2022.10.0"
 	"jcmoraisjr/haproxy-ingress": "v0.13.9"
 	"longhorn/longhorn":          "v1.2.5"
 	"ory/hydra":                  "v1.11.10"
 	"ory/kratos":                 "v0.10.1"
-	"zwave-js/zwavejs2mqtt":      "v7.1.0"
+	"zwave-js/zwavejs2mqtt":      "v8.1.0"
 }
 some: {
 	custom: tag: "1.2.3"
