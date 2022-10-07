@@ -9,7 +9,6 @@ import (
 
 k: StatefulSet: "hass-zwavejs": {
 	spec: {
-		replicas: 0
 		template: {
 			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 			spec: {
