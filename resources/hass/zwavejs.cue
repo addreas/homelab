@@ -24,7 +24,7 @@ k: StatefulSet: "hass-zwavejs": {
 				}]
 				containers: [{
 					name:  "zwavejs"
-					image: "zwave-js/zwavejs2mqtt:\(strings.TrimPrefix(githubReleases["zwave-js/zwavejs2mqtt"], "v"))"
+					image: "zwavejs/zwavejs2mqtt:\(strings.TrimPrefix(githubReleases["zwavejs/zwavejs2mqtt"], "v"))"
 					ports: [{containerPort: 3000}, {containerPort: 8091}]
 					env: [{
 						name: "NETWORK_KEY"
