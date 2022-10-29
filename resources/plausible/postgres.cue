@@ -7,7 +7,7 @@ k: StatefulSet: "plausible-db": spec: {
 		securityContext: fsGroupChangePolicy: "Always"
 		containers: [{
 			name:  "postgres"
-			image: "postgres:latest"
+			image: "postgres:14"
 			envFrom: [
 				{secretRef: name:    "postgres-credentials-plausible"},
 				{configMapRef: name: "postgres-config"},
