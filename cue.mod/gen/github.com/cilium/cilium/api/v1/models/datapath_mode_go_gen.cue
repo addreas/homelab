@@ -10,11 +10,7 @@ package models
 #DatapathMode: string // #enumDatapathMode
 
 #enumDatapathMode:
-	#DatapathModeVeth |
-	#DatapathModeIpvlan
+	#DatapathModeVeth
 
 // DatapathModeVeth captures enum value "veth"
 #DatapathModeVeth: #DatapathMode & "veth"
-
-// DatapathModeIpvlan captures enum value "ipvlan"
-#DatapathModeIpvlan: #DatapathMode & "ipvlan"

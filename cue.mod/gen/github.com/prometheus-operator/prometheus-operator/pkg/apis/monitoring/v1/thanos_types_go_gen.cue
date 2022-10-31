@@ -14,11 +14,6 @@ import (
 #ThanosRulerKindKey: "thanosrulers"
 
 // ThanosRuler defines a ThanosRuler deployment.
-// +genclient
-// +k8s:openapi-gen=true
-// +kubebuilder:resource:categories="prometheus-operator",shortName="ruler"
-// +kubebuilder:printcolumn:name="Replicas",type="integer",JSONPath=".spec.replicas",description="The desired replicas number of Thanos Rulers"
-// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 #ThanosRuler: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -200,6 +195,10 @@ import (
 
 	// TracingConfig configures tracing in Thanos. This is an experimental feature, it may change in any upcoming release in a breaking way.
 	tracingConfig?: null | v1.#SecretKeySelector @go(TracingConfig,*v1.SecretKeySelector)
+
+	// TracingConfig specifies the path of the tracing configuration file.
+	// When used alongside with TracingConfig, TracingConfigFile takes precedence.
+	tracingConfigFile?: string @go(TracingConfigFile)
 
 	// Labels configure the external label pairs to ThanosRuler. A default replica label
 	// `thanos_ruler_replica` will be always added  as a label with the value of the pod's name and it will be dropped in the alerts.

@@ -6,6 +6,7 @@ package v1beta1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/api/core/v1"
 )
 
@@ -86,12 +87,7 @@ import (
 }
 
 // VMAlertmanagerConfig is the Schema for the vmalertmanagerconfigs API
-#VMAlertmanagerConfig: {
-	metav1.#TypeMeta
-	metadata?: metav1.#ObjectMeta          @go(ObjectMeta)
-	spec?:     #VMAlertmanagerConfigSpec   @go(Spec)
-	status?:   #VMAlertmanagerConfigStatus @go(Status)
-}
+#VMAlertmanagerConfig: _
 
 // VMAlertmanagerConfigList contains a list of VMAlertmanagerConfig
 #VMAlertmanagerConfigList: {
@@ -136,8 +132,9 @@ import (
 	// +optional
 	continue?: bool @go(Continue)
 
-	// Child routes.
-	routes?: [...null | #Route] @go(Routes,[]*Route)
+	// RawRoutes alertmanager nested routes
+	// https://prometheus.io/docs/alerting/latest/configuration/#route
+	routes?: [...apiextensionsv1.#JSON] @go(RawRoutes,[]apiextensionsv1.JSON)
 
 	// MuteTimeIntervals for alerts
 	// +optional
@@ -232,7 +229,6 @@ import (
 
 	// ParseMode for telegram message,
 	// supported values are MarkdownV2, Markdown, Markdown and empty string for plain text.
-	// +kubebuilder:validation:Enum=MarkdownV2;Markdown;Markdown;
 	// +optional
 	parse_mode?: string @go(ParseMode)
 
@@ -754,12 +750,15 @@ import (
 
 	// Arbitrary key/value pairs that provide further detail about the incident.
 	// +optional
-	details?: {[string]: string} @go(Details,map[string]string)
+	details?: #PagerDutyDetails @go(Details)
 
 	// HTTP client configuration.
 	// +optional
 	http_config?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
 }
+
+// PagerDutyDetails details for config
+#PagerDutyDetails: _
 
 // ImageConfig is used to attach images to the incident.
 // See https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgx-send-an-alert-event#the-images-property

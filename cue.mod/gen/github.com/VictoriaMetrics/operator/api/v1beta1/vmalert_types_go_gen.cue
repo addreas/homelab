@@ -185,11 +185,20 @@ import (
 
 	// Notifier prometheus alertmanager endpoint spec. Required at least one of  notifier or notifiers. e.g. http://127.0.0.1:9093
 	// If specified both notifier and notifiers, notifier will be added as last element to notifiers.
+	// only one of notifier options could be chosen: notifierConfigRef or notifiers +  notifier
+	// +optional
 	notifier?: null | #VMAlertNotifierSpec @go(Notifier,*VMAlertNotifierSpec)
 
 	// Notifiers prometheus alertmanager endpoints. Required at least one of  notifier or notifiers. e.g. http://127.0.0.1:9093
 	// If specified both notifier and notifiers, notifier will be added as last element to notifiers.
+	// only one of notifier options could be chosen: notifierConfigRef or notifiers +  notifier
+	// +optional
 	notifiers?: [...#VMAlertNotifierSpec] @go(Notifiers,[]VMAlertNotifierSpec)
+
+	// NotifierConfigRef reference for secret with notifier configuration for vmalert
+	// only one of notifier options could be chosen: notifierConfigRef or notifiers +  notifier
+	// +optional
+	notifierConfigRef?: null | v1.#SecretKeySelector @go(NotifierConfigRef,*v1.SecretKeySelector)
 
 	// RemoteWrite Optional URL to remote-write compatible storage to persist
 	// vmalert state and rule results to.
@@ -270,6 +279,9 @@ import (
 	// configuration based on DNSPolicy.
 	// +optional
 	dnsConfig?: null | v1.#PodDNSConfig @go(DNSConfig,*v1.PodDNSConfig)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
 }
 
 // VMAgentRemoteReadSpec defines the remote storage configuration for VmAlert to read alerts from
@@ -278,12 +290,7 @@ import (
 	// Victoria Metrics or VMSelect url. Required parameter. E.g. http://127.0.0.1:8428
 	url: string @go(URL)
 
-	// BasicAuth allow datasource to authenticate over basic authentication
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
-
-	// TLSConfig describes tls configuration for datasource target
-	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+	#HTTPAuth
 }
 
 // VMAlertNotifierSpec defines the notifier url for sending information about alerts
@@ -299,12 +306,7 @@ import (
 	// +optional
 	selector?: null | #DiscoverySelector @go(Selector,*DiscoverySelector)
 
-	// BasicAuth allow notifier to authenticate over basic authentication
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
-
-	// TLSConfig describes tls configuration for notifier
-	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+	#HTTPAuth
 }
 
 // VMAgentRemoteReadSpec defines the remote storage configuration for VmAlert to read alerts from
@@ -313,17 +315,12 @@ import (
 	// URL of the endpoint to send samples to.
 	url: string @go(URL)
 
-	// BasicAuth allow an endpoint to authenticate over basic authentication
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
-
 	// Lookback defines how far to look into past for alerts timeseries. For example, if lookback=1h then range from now() to now()-1h will be scanned. (default 1h0m0s)
 	// Applied only to RemoteReadSpec
 	// +optional
 	lookback?: null | string @go(Lookback,*string)
 
-	// TLSConfig describes tls configuration for remote read target
-	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+	#HTTPAuth
 }
 
 // VMAgentRemoteWriteSpec defines the remote storage configuration for VmAlert
@@ -331,10 +328,6 @@ import (
 #VMAlertRemoteWriteSpec: {
 	// URL of the endpoint to send samples to.
 	url: string @go(URL)
-
-	// BasicAuth allow an endpoint to authenticate over basic authentication
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
 	// Defines number of readers that concurrently write into remote storage (default 1)
 	// +optional
@@ -353,8 +346,7 @@ import (
 	// +optional
 	maxQueueSize?: null | int32 @go(MaxQueueSize,*int32)
 
-	// TLSConfig describes tls configuration for remote write target
-	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+	#HTTPAuth
 }
 
 // VmAlertStatus defines the observed state of VmAlert

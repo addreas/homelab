@@ -46,6 +46,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// connections, then 80% of connections must be rejected instead.
 	//
 	// Support: Core for Kubernetes Service
+	//
 	// Support: Custom for any other resource
 	//
 	// Support for weight: Extended

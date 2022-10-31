@@ -109,7 +109,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// it assigns to the Gateway and add a corresponding entry in
 	// GatewayStatus.Addresses.
 	//
-	// Support: Core
+	// Support: Extended
 	//
 	// +optional
 	// +kubebuilder:validation:MaxItems=16
@@ -119,7 +119,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Listener embodies the concept of a logical endpoint where a Gateway accepts
 // network connections.
 #Listener: {
-	// Name is the name of the Listener.
+	// Name is the name of the Listener. This name MUST be unique within a
+	// Gateway.
 	//
 	// Support: Core
 	name: #SectionName @go(Name)
@@ -144,6 +145,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// there MUST be an intersection between the values for a Route to be
 	// accepted. For more information, refer to the Route specific Hostnames
 	// documentation.
+	//
+	// Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
+	// as a suffix match. That means that a match for `*.example.com` would match
+	// both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
 	//
 	// Support: Core
 	//
@@ -288,8 +293,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// a Listener, but this behavior is implementation-specific.
 	//
 	// References to a resource in different namespace are invalid UNLESS there
-	// is a ReferencePolicy in the target namespace that allows the certificate
-	// to be attached. If a ReferencePolicy does not allow this reference, the
+	// is a ReferenceGrant in the target namespace that allows the certificate
+	// to be attached. If a ReferenceGrant does not allow this reference, the
 	// "ResolvedRefs" condition MUST be set to False for this listener with the
 	// "InvalidCertificateRef" reason.
 	//
@@ -299,13 +304,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// CertificateRefs can reference to standard Kubernetes resources, i.e.
 	// Secret, or implementation-specific custom resources.
 	//
-	// Support: Core - A single reference to a Kubernetes Secret
+	// Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls
 	//
 	// Support: Implementation-specific (More than one reference or other resource types)
 	//
 	// +optional
 	// +kubebuilder:validation:MaxItems=64
-	certificateRefs?: [...null | #SecretObjectReference] @go(CertificateRefs,[]*SecretObjectReference)
+	certificateRefs?: [...#SecretObjectReference] @go(CertificateRefs,[]SecretObjectReference)
 
 	// Options are a list of key/value pairs to enable extended TLS
 	// configuration for each implementation. For example, configuring the
@@ -324,6 +329,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // TLSModeType type defines how a Gateway handles TLS sessions.
+//
+// Note that values may be added to this enum, implementations
+// must ensure that unknown values will not cause a crash.
+//
+// Unknown values here must result in the implementation setting the
+// Ready Condition for the Listener to `status: False`, with a
+// Reason of `Invalid`.
 //
 // +kubebuilder:validation:Enum=Terminate;Passthrough
 #TLSModeType: string // #enumTLSModeType
@@ -362,7 +374,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// with the application protocol specified in the Listener's Protocol field.
 	// If an implementation does not support or recognize this resource type, it
 	// MUST set the "ResolvedRefs" condition to False for this Listener with the
-	// "InvalidRoutesRef" reason.
+	// "InvalidRouteKinds" reason.
 	//
 	// Support: Core
 	//
@@ -373,6 +385,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // FromNamespaces specifies namespace from which Routes may be attached to a
 // Gateway.
+//
+// Note that values may be added to this enum, implementations
+// must ensure that unknown values will not cause a crash.
+//
+// Unknown values here must result in the implementation setting the
+// Ready Condition for the Listener to `status: False`, with a
+// Reason of `Invalid`.
 //
 // +kubebuilder:validation:Enum=All;Selector;Same
 #FromNamespaces: string // #enumFromNamespaces
@@ -447,43 +466,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:MaxLength=253
 	value: string @go(Value)
 }
-
-// AddressType defines how a network address is represented as a text string.
-//
-// If the requested address is unsupported, the controller
-// should raise the "Detached" listener status condition on
-// the Gateway with the "UnsupportedAddress" reason.
-//
-// +kubebuilder:validation:Enum=IPAddress;Hostname;NamedAddress
-#AddressType: string // #enumAddressType
-
-#enumAddressType:
-	#IPAddressType |
-	#HostnameAddressType |
-	#NamedAddressType
-
-// A textual representation of a numeric IP address. IPv4
-// addresses must be in dotted-decimal form. IPv6 addresses
-// must be in a standard IPv6 text representation
-// (see [RFC 5952](https://tools.ietf.org/html/rfc5952)).
-//
-// Support: Extended
-#IPAddressType: #AddressType & "IPAddress"
-
-// A Hostname represents a DNS based ingress point. This is similar to the
-// corresponding hostname field in Kubernetes load balancer status. For
-// example, this concept may be used for cloud load balancers where a DNS
-// name is used to expose a load balancer.
-//
-// Support: Extended
-#HostnameAddressType: #AddressType & "Hostname"
-
-// A NamedAddress provides a way to reference a specific IP address by name.
-// For example, this may be a name or other unique identifier that refers
-// to a resource on a cloud provider such as a static IP.
-//
-// Support: Implementation-Specific
-#NamedAddressType: #AddressType & "NamedAddress"
 
 // GatewayStatus defines the observed state of Gateway.
 #GatewayStatus: {
@@ -670,10 +652,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #enumListenerConditionReason:
 	#ListenerReasonHostnameConflict |
 	#ListenerReasonProtocolConflict |
-	#ListenerReasonRouteConflict |
 	#ListenerReasonNoConflicts |
 	#ListenerReasonPortUnavailable |
-	#ListenerReasonUnsupportedExtension |
 	#ListenerReasonUnsupportedProtocol |
 	#ListenerReasonUnsupportedAddress |
 	#ListenerReasonAttached |
@@ -694,7 +674,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // * "HostnameConflict"
 // * "ProtocolConflict"
-// * "RouteConflict"
 //
 // Possible reasons for this condition to be False are:
 //
@@ -716,13 +695,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // number, but have conflicting protocol specifications.
 #ListenerReasonProtocolConflict: #ListenerConditionReason & "ProtocolConflict"
 
-// This reason is used with the "Conflicted" condition when the route
-// resources selected for this Listener conflict with other
-// specified properties of the Listener (e.g. Protocol).
-// For example, a Listener that specifies "UDP" as the protocol
-// but a route selector that resolves "TCPRoute" objects.
-#ListenerReasonRouteConflict: #ListenerConditionReason & "RouteConflict"
-
 // This reason is used with the "Conflicted" condition when the condition
 // is False.
 #ListenerReasonNoConflicts: #ListenerConditionReason & "NoConflicts"
@@ -740,7 +712,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Possible reasons for this condition to be true are:
 //
 // * "PortUnavailable"
-// * "UnsupportedExtension"
 // * "UnsupportedProtocol"
 // * "UnsupportedAddress"
 //
@@ -760,12 +731,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // * The port is already in use.
 // * The port is not supported by the implementation.
 #ListenerReasonPortUnavailable: #ListenerConditionReason & "PortUnavailable"
-
-// This reason is used with the "Detached" condition when the
-// controller detects that an implementation-specific Listener
-// extension is being requested, but is not able to support
-// the extension.
-#ListenerReasonUnsupportedExtension: #ListenerConditionReason & "UnsupportedExtension"
 
 // This reason is used with the "Detached" condition when the
 // Listener could not be attached to be Gateway because its
@@ -818,7 +783,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // This reason is used with the "ResolvedRefs" condition when
 // one of the Listener's Routes has a BackendRef to an object in
 // another namespace, where the object in the other namespace does
-// not have a ReferencePolicy explicitly allowing the reference.
+// not have a ReferenceGrant explicitly allowing the reference.
 #ListenerReasonRefNotPermitted: #ListenerConditionReason & "RefNotPermitted"
 
 // This condition indicates whether the Listener has been

@@ -27,7 +27,8 @@ import corev1 "k8s.io/api/core/v1"
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
 #Blob: {
-	url: string @go(URL)
+	url:              string @go(URL)
+	stripComponents?: int64  @go(StripComponents)
 }
 
 // +k8s:openapi-gen=true
@@ -76,8 +77,9 @@ import corev1 "k8s.io/api/core/v1"
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
 #ResolvedBlobSource: {
-	url:      string @go(URL)
-	subPath?: string @go(SubPath)
+	url:              string @go(URL)
+	subPath?:         string @go(SubPath)
+	stripComponents?: int64  @go(StripComponents)
 }
 
 // +k8s:openapi-gen=true

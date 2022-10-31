@@ -84,12 +84,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// a Service with no endpoints), the rule performs no forwarding; if no
 	// filters are specified that would result in a response being sent, the
 	// underlying implementation must actively reject request attempts to this
-	// backend, by rejecting the connection or returning a 503 status code.
+	// backend, by rejecting the connection or returning a 500 status code.
 	// Request rejections must respect weight; if an invalid backend is
 	// requested to have 80% of requests, then 80% of requests must be rejected
 	// instead.
 	//
 	// Support: Core for Kubernetes Service
+	//
 	// Support: Custom for any other resource
 	//
 	// Support for weight: Extended

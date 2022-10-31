@@ -52,6 +52,7 @@ _#encodeFragment:       _#encoding & 7
 	Host:        string
 	Path:        string
 	RawPath:     string
+	OmitHost:    bool
 	ForceQuery:  bool
 	RawQuery:    string
 	Fragment:    string

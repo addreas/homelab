@@ -438,6 +438,12 @@ import (
 	// set it to RollingUpdate for disabling operator statefulSet rollingUpdate
 	// +optional
 	statefulRollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(StatefulRollingUpdateStrategy)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
+
+	// ClaimTemplates allows adding additional VolumeClaimTemplates for VMAgent in StatefulMode
+	claimTemplates?: [...v1.#PersistentVolumeClaim] @go(ClaimTemplates,[]v1.PersistentVolumeClaim)
 }
 
 // VMAgentRemoteWriteSettings - defines global settings for all remoteWrite urls.
@@ -448,7 +454,7 @@ import (
 
 	// The maximum file-based buffer size in bytes at -remoteWrite.tmpDataPath
 	// +optional
-	maxDiskUsagePerURL?: null | int32 @go(MaxDiskUsagePerURL,*int32)
+	maxDiskUsagePerURL?: null | int64 @go(MaxDiskUsagePerURL,*int64)
 
 	// The number of concurrent queues
 	// +optional

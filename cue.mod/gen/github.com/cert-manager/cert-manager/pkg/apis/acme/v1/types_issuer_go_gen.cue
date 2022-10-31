@@ -254,7 +254,7 @@ import (
 	// cert-manager needs to know which parentRefs should be used when creating
 	// the HTTPRoute. Usually, the parentRef references a Gateway. See:
 	// https://gateway-api.sigs.k8s.io/v1alpha2/api-types/httproute/#attaching-to-gateways
-	parentRefs?: [...gwapi.#ParentRef] @go(ParentRefs,[]gwapi.ParentRef)
+	parentRefs?: [...gwapi.#ParentReference] @go(ParentRefs,[]gwapi.ParentReference)
 }
 
 #ACMEChallengeSolverHTTP01IngressPodTemplate: {

@@ -60,6 +60,7 @@ import (
 	affinity?:         null | corev1.#Affinity @go(Affinity,*corev1.Affinity)
 	runtimeClassName?: null | string           @go(RuntimeClassName,*string)
 	schedulerName?:    string                  @go(SchedulerName)
+	buildTimeout?:     null | int64            @go(BuildTimeout,*int64)
 }
 
 // +k8s:openapi-gen=true

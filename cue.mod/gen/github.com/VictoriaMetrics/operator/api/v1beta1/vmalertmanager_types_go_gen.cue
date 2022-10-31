@@ -300,6 +300,12 @@ import (
 	// TerminationGracePeriodSeconds period for container graceful termination
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
+
+	// ClaimTemplates allows adding additional VolumeClaimTemplates for StatefulSet
+	claimTemplates?: [...v1.#PersistentVolumeClaim] @go(ClaimTemplates,[]v1.PersistentVolumeClaim)
 }
 
 // VMAlertmanagerList is a list of Alertmanagers.

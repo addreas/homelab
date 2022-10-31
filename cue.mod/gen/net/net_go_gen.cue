@@ -35,7 +35,7 @@
 // 		go handleConnection(conn)
 // 	}
 //
-// Name Resolution
+// # Name Resolution
 //
 // The method for resolving domain names, whether indirectly with functions like Dial
 // or directly with functions like LookupHost and LookupAddr, varies by operating system.
@@ -60,7 +60,7 @@
 // GODEBUG environment variable (see package runtime) to go or cgo, as in:
 //
 // 	export GODEBUG=netdns=go    # force pure Go resolver
-// 	export GODEBUG=netdns=cgo   # force cgo resolver
+// 	export GODEBUG=netdns=cgo   # force native resolver (cgo, win32)
 //
 // The decision can also be forced while building the Go source tree
 // by setting the netgo or netcgo build tag.
@@ -72,8 +72,8 @@
 //
 // On Plan 9, the resolver always accesses /net/cs and /net/dns.
 //
-// On Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.
-//
+// On Windows, in Go 1.18.x and earlier, the resolver always used C
+// library functions, such as GetAddrInfo and DnsQuery.
 //
 package net
 
@@ -103,6 +103,11 @@ import "io"
 
 // An Error represents a network error.
 #Error: _
+
+// canceledError lets us return the same error string we have always
+// returned, while still being Is context.Canceled.
+_#canceledError: {
+}
 
 // OpError is the error type usually returned by functions in the net
 // package. It describes the operation, network type, and address of

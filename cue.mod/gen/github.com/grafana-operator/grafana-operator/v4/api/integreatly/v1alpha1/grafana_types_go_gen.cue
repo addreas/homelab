@@ -90,8 +90,9 @@ import (
 	annotations?: {[string]: string} @go(Annotations,map[string]string)
 	labels?: {[string]: string} @go(Labels,map[string]string)
 	accessModes?: [...v1.#PersistentVolumeAccessMode] @go(AccessModes,[]v1.PersistentVolumeAccessMode)
-	size?:  resource.#Quantity @go(Size)
-	class?: string             @go(Class)
+	size?:       resource.#Quantity @go(Size)
+	class?:      string             @go(Class)
+	volumeName?: string             @go(VolumeName)
 }
 
 #GrafanaServiceAccount: {
@@ -690,7 +691,23 @@ import (
 
 #GrafanaConfigPlugins: {
 	// +nullable
+	// Set to true if you want to test alpha plugins that are not yet ready for general usage. Default is false.
 	enable_alpha?: null | bool @go(EnableAlpha,*bool)
+
+	// Enter a comma-separated list of plugin identifiers to identify plugins to load even if they are unsigned. Plugins with modified signatures are never loaded.
+	// We do not recommend using this option. For more information, refer to https://grafana.com/docs/grafana/next/administration/plugin-management/#plugin-signatures
+	allow_loading_unsigned_plugins?: string @go(AllowLoadingUnsignedPlugins)
+
+	// +nullable
+	// Available to Grafana administrators only, enables installing / uninstalling / updating plugins directly from the Grafana UI. Set to true by default. Setting it to false will hide the install / uninstall / update controls.
+	// For more information, refer to https://grafana.com/docs/grafana/next/administration/plugin-management/#plugin-catalog
+	plugin_admin_enabled?: null | bool @go(PluginAdminEnabled,*bool)
+
+	// Custom install/learn more URL for enterprise plugins. Defaults to https://grafana.com/grafana/plugins/.
+	plugin_catalog_url?: string @go(PluginCatalogURL)
+
+	// Enter a comma-separated list of plugin identifiers to hide in the plugin catalog.
+	plugin_catalog_hidden_plugins?: string @go(PluginCatalogHiddenPlugins)
 }
 
 #GrafanaConfigRendering: {

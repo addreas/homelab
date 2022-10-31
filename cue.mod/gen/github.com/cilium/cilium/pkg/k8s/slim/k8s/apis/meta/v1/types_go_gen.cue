@@ -83,6 +83,21 @@ import "k8s.io/apimachinery/pkg/types"
 	// +optional
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 
+	// GenerateName is an optional prefix, used by the server, to generate a unique
+	// name ONLY IF the Name field has not been provided.
+	// If this field is used, the name returned to the client will be different
+	// than the name passed. This value will also be combined with a unique suffix.
+	// The provided value has the same validation rules as the Name field,
+	// and may be truncated by the length of the suffix required to make the value
+	// unique on the server.
+	//
+	// If this field is specified and the generated name exists, the server will return a 409.
+	//
+	// Applied only if Name is not specified.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#idempotency
+	// +optional
+	generateName?: string @go(GenerateName) @protobuf(2,bytes,opt)
+
 	// Namespace defines the space within which each name must be unique. An empty namespace is
 	// equivalent to the "default" namespace, but "default" is the canonical representation.
 	// Not all objects are required to be scoped to a namespace - the value of this field for
@@ -190,6 +205,10 @@ import "k8s.io/apimachinery/pkg/types"
 	// Name of the referent.
 	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
 	name: string @go(Name) @protobuf(3,bytes,opt)
+
+	// If true, this reference points to the managing controller.
+	// +optional
+	controller?: null | bool @go(Controller,*bool) @protobuf(6,varint,opt)
 }
 
 // A label selector is a label query over a set of resources. The result of matchLabels and

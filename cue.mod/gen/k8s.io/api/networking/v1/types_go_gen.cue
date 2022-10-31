@@ -147,8 +147,6 @@ import (
 	// should be allowed by the policy. This field cannot be defined if the port field
 	// is not defined or if the port field is defined as a named (string) port.
 	// The endPort must be equal or greater than port.
-	// This feature is in Beta state and is enabled by default.
-	// It can be disabled using the Feature Gate "NetworkPolicyEndPort".
 	// +optional
 	endPort?: null | int32 @go(EndPort,*int32) @protobuf(3,bytes,opt)
 }
@@ -292,16 +290,16 @@ import (
 
 // IngressSpec describes the Ingress the user wishes to exist.
 #IngressSpec: {
-	// IngressClassName is the name of the IngressClass cluster resource. The
-	// associated IngressClass defines which controller will implement the
-	// resource. This replaces the deprecated `kubernetes.io/ingress.class`
-	// annotation. For backwards compatibility, when that annotation is set, it
-	// must be given precedence over this field. The controller may emit a
-	// warning if the field and annotation have different values.
-	// Implementations of this API should ignore Ingresses without a class
-	// specified. An IngressClass resource may be marked as default, which can
-	// be used to set a default value for this field. For more information,
-	// refer to the IngressClass documentation.
+	// IngressClassName is the name of an IngressClass cluster resource. Ingress
+	// controller implementations use this field to know whether they should be
+	// serving this Ingress resource, by a transitive connection
+	// (controller -> IngressClass -> Ingress resource). Although the
+	// `kubernetes.io/ingress.class` annotation (simple constant name) was never
+	// formally defined, it was widely supported by Ingress controllers to create
+	// a direct binding between Ingress controller and Ingress resources. Newly
+	// created Ingress resources should prefer using the field. However, even
+	// though the annotation is officially deprecated, for backwards compatibility
+	// reasons, ingress controllers should still honor that annotation if present.
 	// +optional
 	ingressClassName?: null | string @go(IngressClassName,*string) @protobuf(4,bytes,opt)
 
@@ -550,7 +548,7 @@ import (
 // referenced Parameters resource is namespace-scoped.
 #IngressClassParametersReferenceScopeNamespace: "Namespace"
 
-// IngressClassParametersReferenceScopeNamespace indicates that the
+// IngressClassParametersReferenceScopeCluster indicates that the
 // referenced Parameters resource is cluster-scoped.
 #IngressClassParametersReferenceScopeCluster: "Cluster"
 

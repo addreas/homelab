@@ -285,6 +285,12 @@ import (
 	// TerminationGracePeriodSeconds period for container graceful termination
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
+
+	// ClaimTemplates allows adding additional VolumeClaimTemplates for StatefulSet
+	claimTemplates?: [...v1.#PersistentVolumeClaim] @go(ClaimTemplates,[]v1.PersistentVolumeClaim)
 }
 
 #InsertPorts: {
@@ -472,6 +478,9 @@ import (
 	// TerminationGracePeriodSeconds period for container graceful termination
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
 }
 
 #VMStorage: {
@@ -661,6 +670,12 @@ import (
 	// Can be changed for RollingUpdate
 	// +optional
 	rollingUpdateStrategy?: appsv1.#StatefulSetUpdateStrategyType @go(RollingUpdateStrategy)
+
+	// ReadinessGates defines pod readiness gates
+	readinessGates?: [...v1.#PodReadinessGate] @go(ReadinessGates,[]v1.PodReadinessGate)
+
+	// ClaimTemplates allows adding additional VolumeClaimTemplates for StatefulSet
+	claimTemplates?: [...v1.#PersistentVolumeClaim] @go(ClaimTemplates,[]v1.PersistentVolumeClaim)
 }
 
 #VMBackup: {

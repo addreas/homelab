@@ -4,7 +4,10 @@
 
 package v1alpha1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+)
 
 // GrafanaDataSourceSpec defines the desired state of GrafanaDataSource
 #GrafanaDataSourceSpec: {
@@ -52,36 +55,52 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	secureJsonData?:    #GrafanaDataSourceSecureJsonData @go(SecureJsonData)
 	version?:           int                              @go(Version)
 	editable?:          bool                             @go(Editable)
+
+	// +kubebuilder:validation:Schemaless
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	// +optional
+	// CustomJsonData will be used in place of jsonData, if present, and supports arbitrary JSON, not just those of official datasources
+	customJsonData?: _ @go(CustomJsonData,json.RawMessage)
+
+	// +kubebuilder:validation:Schemaless
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	// +optional
+	// SecureCustomJsonData will be used in place of secureJsonData, if present, and supports arbitrary JSON, not just those of official datasources
+	customSecureJsonData?: _ @go(CustomSecureJsonData,json.RawMessage)
 }
 
 // GrafanaDataSourceJsonData contains the most common json options
 // See https://grafana.com/docs/administration/provisioning/#datasources
 #GrafanaDataSourceJsonData: {
-	queryTimeout?:            string @go(QueryTimeout)
-	oauthPassThru?:           bool   @go(OauthPassThru)
-	tlsAuth?:                 bool   @go(TlsAuth)
-	tlsAuthWithCACert?:       bool   @go(TlsAuthWithCACert)
-	tlsSkipVerify?:           bool   @go(TlsSkipVerify)
-	graphiteVersion?:         string @go(GraphiteVersion)
-	timeInterval?:            string @go(TimeInterval)
-	esVersion?:               string @go(EsVersion)
-	timeField?:               string @go(TimeField)
-	interval?:                string @go(Interval)
-	logMessageField?:         string @go(LogMessageField)
-	logLevelField?:           string @go(LogLevelField)
-	authType?:                string @go(AuthType)
-	assumeRoleArn?:           string @go(AssumeRoleArn)
-	defaultRegion?:           string @go(DefaultRegion)
-	customMetricsNamespaces?: string @go(CustomMetricsNamespaces)
-	tsdbVersion?:             string @go(TsdbVersion)
-	tsdbResolution?:          string @go(TsdbResolution)
-	sslmode?:                 string @go(Sslmode)
-	encrypt?:                 string @go(Encrypt)
-	postgresVersion?:         int    @go(PostgresVersion)
-	timescaledb?:             bool   @go(Timescaledb)
-	maxOpenConns?:            int    @go(MaxOpenConns)
-	maxIdleConns?:            int    @go(MaxIdleConns)
-	connMaxLifetime?:         int    @go(ConnMaxLifetime)
+	// HTTP Request timeout in seconds. Overrides dataproxy.timeout option
+	timeout?:                 int                 @go(Timeout)
+	queryTimeout?:            string              @go(QueryTimeout)
+	oauthPassThru?:           bool                @go(OauthPassThru)
+	tlsAuth?:                 bool                @go(TlsAuth)
+	tlsAuthWithCACert?:       bool                @go(TlsAuthWithCACert)
+	tlsSkipVerify?:           bool                @go(TlsSkipVerify)
+	graphiteVersion?:         string              @go(GraphiteVersion)
+	timeInterval?:            string              @go(TimeInterval)
+	esVersion?:               intstr.#IntOrString @go(EsVersion)
+	timeField?:               string              @go(TimeField)
+	interval?:                string              @go(Interval)
+	logMessageField?:         string              @go(LogMessageField)
+	logLevelField?:           string              @go(LogLevelField)
+	authType?:                string              @go(AuthType)
+	assumeRoleArn?:           string              @go(AssumeRoleArn)
+	defaultRegion?:           string              @go(DefaultRegion)
+	customMetricsNamespaces?: string              @go(CustomMetricsNamespaces)
+	tsdbVersion?:             string              @go(TsdbVersion)
+	tsdbResolution?:          string              @go(TsdbResolution)
+	sslmode?:                 string              @go(Sslmode)
+	encrypt?:                 string              @go(Encrypt)
+	postgresVersion?:         int                 @go(PostgresVersion)
+	timescaledb?:             bool                @go(Timescaledb)
+	maxOpenConns?:            int                 @go(MaxOpenConns)
+	maxIdleConns?:            int                 @go(MaxIdleConns)
+	connMaxLifetime?:         int                 @go(ConnMaxLifetime)
 
 	// Useful fields for clickhouse datasource
 	// See https://github.com/Vertamedia/clickhouse-grafana/tree/master/dist/README.md#configure-the-datasource-with-provisioning

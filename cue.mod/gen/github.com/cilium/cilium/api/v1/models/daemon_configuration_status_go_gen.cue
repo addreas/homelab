@@ -32,9 +32,6 @@ package models
 	// Configured IPAM mode
 	"ipam-mode"?: string @go(IpamMode)
 
-	// ipvlan configuration
-	ipvlanConfiguration?: null | #IpvlanConfiguration @go(IpvlanConfiguration,*IpvlanConfiguration)
-
 	// k8s configuration
 	"k8s-configuration"?: string @go(K8sConfiguration)
 

@@ -25,10 +25,12 @@ import (
 #BuildSpec: {
 	// +listType
 	tags?: [...string] @go(Tags,[]string)
-	builder?:            corev1alpha1.#BuildBuilderSpec @go(Builder)
-	serviceAccountName?: string                         @go(ServiceAccountName)
-	source:              corev1alpha1.#SourceConfig     @go(Source)
-	cache?:              null | #BuildCacheConfig       @go(Cache,*BuildCacheConfig)
+	builder?:               corev1alpha1.#BuildBuilderSpec @go(Builder)
+	serviceAccountName?:    string                         @go(ServiceAccountName)
+	source:                 corev1alpha1.#SourceConfig     @go(Source)
+	cache?:                 null | #BuildCacheConfig       @go(Cache,*BuildCacheConfig)
+	runImage?:              #BuildSpecImage                @go(RunImage)
+	activeDeadlineSeconds?: null | int64                   @go(ActiveDeadlineSeconds,*int64)
 
 	// +listType
 	services?: #Services @go(Services)
@@ -110,4 +112,9 @@ import (
 
 	// +k8s:listType=atomic
 	items: [...#Build] @go(Items,[]Build)
+}
+
+// +k8s:openapi-gen=true
+#BuildSpecImage: {
+	image?: string @go(Image)
 }

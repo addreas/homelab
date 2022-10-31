@@ -104,8 +104,7 @@ import (
 	topology?: {[string]: string} @go(Topology,map[string]string) @protobuf(5,bytes,opt)
 
 	// nodeName represents the name of the Node hosting this endpoint. This can
-	// be used to determine endpoints local to a Node. This field can be enabled
-	// with the EndpointSliceNodeName feature gate.
+	// be used to determine endpoints local to a Node.
 	// +optional
 	nodeName?: null | string @go(NodeName,*string) @protobuf(6,bytes,opt)
 

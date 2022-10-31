@@ -25,6 +25,9 @@ import (
 	status: #EndpointStatus @go(Status)
 }
 
+// EndpointPolicyState defines the state of the Policy mode: "enforcing", "non-enforcing", "disabled"
+#EndpointPolicyState: string
+
 // EndpointStatus is the status of a Cilium endpoint.
 #EndpointStatus: {
 	// ID is the cilium-agent-local ID of the endpoint.
@@ -113,6 +116,7 @@ import (
 
 	// Deprecated
 	adding?: #AllowedIdentityList @go(Adding)
+	state?:  #EndpointPolicyState @go(State)
 }
 
 // IdentityTuple specifies a peer by identity, destination port and protocol.
