@@ -80,9 +80,11 @@ k: Service: [Name=string]: {
 }
 
 k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=string]: {
-	_selector: _ | *close({app: Name})
+	_selector: _ | *{app: Name}
 	metadata: labels: _selector
-	spec: selector: matchLabels: _selector
+	spec: selector:   _ | *close({
+		matchLabels: _selector
+	})
 }
 
 k: Ingress: [Name=string]: {
