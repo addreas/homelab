@@ -19,7 +19,7 @@ k: ConfigMap: "kratos-config": data: {
 
 k: Deployment: kratos: spec: template: spec: {
 	containers: [_probes & {
-		image: "oryd/kratos:\(githubReleases["ory/hydra"])"
+		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
 		command: ["kratos"]
 		args: [
 			"serve",
@@ -68,7 +68,7 @@ k: Service: "kratos-public": spec: {
 k: Job: "kratos-migrate": spec: template: spec: {
 	containers: [{
 		name:  "migrate"
-		image: "oryd/kratos:\(githubReleases["ory/hydra"])"
+		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
 		command: ["kratos"]
 		args: [
 			"migrate",

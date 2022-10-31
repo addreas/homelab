@@ -2,7 +2,7 @@ package kube
 
 k: StatefulSet: "kratos-courier": spec: template: spec: {
 	containers: [{
-		image: "oryd/kratos:\(githubReleases["ory/hydra"])"
+		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
 		args: ["courier", "watch", "--config", "/etc/config/kratos.yaml"]
 		envFrom: [{secretRef: name: "kratos"}]
 		env: [{

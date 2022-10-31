@@ -14,6 +14,7 @@ k: CueBuild: "homelab-system": spec: {
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
 		"./resources/system/monitoring",
+		"./resources/system/lauset",
 	]
 	prune:     false
 	sourceRef: _homelab
