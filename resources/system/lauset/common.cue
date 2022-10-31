@@ -61,7 +61,8 @@ _kratos_config: #KratosConfigSchema & {
 	serve: {
 		public: {
 			base_url: "https://\(_hostname)/kratos"
-			cors: enabled: false
+			cors: enabled:                   false
+			request_log: disable_for_health: true
 		}
 		admin: base_url: "http://kratos:4434/"
 	}
@@ -175,13 +176,17 @@ _person_schema: {
 
 _hydra_config: #HydraConfigSchema & {
 	serve: {
-		admin: port:  4445
-		public: port: 4444
+		admin: port: 4445
+		public: {
+			port: 4444
+			request_log: disable_for_health: true
+		}
 		tls: allow_termination_from: ["10.0.0.0/8"]
 	}
 	urls: {
 		self: issuer: "https://\(_hostname)/hydra/"
 		self: public: "https://\(_hostname)/hydra/"
+		self: admin:  "http://hydra-admin.ory.svc.cluster.local"
 		consent: "https://\(_hostname)/hydra/consent"
 		login:   "https://\(_hostname)/hydra/login"
 		logout:  "https://\(_hostname)/logout"

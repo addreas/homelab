@@ -23,7 +23,6 @@ k: Deployment: hydra: spec: template: spec: {
 			"all",
 			"--config",
 			"/etc/config/config.yaml",
-			"--dangerous-force-http",
 		]
 		envFrom: [{secretRef: name: "hydra"}]
 		ports: [{

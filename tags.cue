@@ -27,7 +27,7 @@ githubReleases: {
 	"home-assistant/core":        "2022.10.5"
 	"jcmoraisjr/haproxy-ingress": "v0.13.9"
 	"longhorn/longhorn":          "v1.3.2"
-	"ory/hydra":                  "v1.11.10"
+	"ory/hydra":                  "v2.0.1"
 	"ory/kratos":                 "v0.10.1"
 	"zwave-js/zwave-js-ui":       "v8.2.2"
 }

@@ -20,7 +20,7 @@ import (
 	cuebuild_controller_v1alpha2 "github.com/addreas/cuebuild-controller/api/v1alpha2"
 	helm_controller_v2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
 
-	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealed-secrets/v1alpha1"
+	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 
 	grafana_v1alpha1 "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
 
