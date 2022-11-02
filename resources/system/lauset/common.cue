@@ -98,7 +98,7 @@ _kratos_config: #KratosConfigSchema & {
 
 			verification: {
 				enabled: true
-				ui_url:  "https://\(_hostname)/verification"
+				ui_url:  "https://\(_hostname)/settings/verification"
 				after: default_browser_return_url: "https://\(_hostname)/"
 			}
 
@@ -113,12 +113,6 @@ _kratos_config: #KratosConfigSchema & {
 				lifespan: "10m"
 				ui_url:   "https://\(_hostname)/registration"
 				after: password: hooks: [{hook: "session"}]
-				before: hooks: [{
-					config: {
-						url:    "http://registrations-are-disabled/"
-						method: "GET"
-					}
-				}]
 			}
 		}
 	}
@@ -137,9 +131,9 @@ _kratos_config: #KratosConfigSchema & {
 	}
 
 	identity: {
-		default_schema_id: "person"
+		default_schema_id: "default"
 		schemas: [{
-			id:  "person"
+			id:  "default"
 			url: "file:///etc/config/person.schema.json"
 		}]
 	}
