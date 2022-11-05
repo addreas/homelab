@@ -16,45 +16,24 @@ k: GrafanaDashboard: {
 
 let things = m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter
 
-for kind, resources in things
-if kind != "ServiceMonitor" &&
-	kind != "PrometheusRule" &&
-	kind != "NetworkPolicy" {
+for kind, resources in things if kind != "NetworkPolicy" {
 	k: "\(kind)": resources
-}
-
-for R in things.PrometheusRule {
-	k: VMRule: "\(R.metadata.name)": {
-		metadata: R.metadata
-		spec:     R.spec
-	}
-}
-
-for S in things.ServiceMonitor {
-	k: VMServiceScrape: "\(S.metadata.name)": {
-		metadata: S.metadata
-		spec: {
-			for key, value in S.spec if key != "endpoints" {
-				"\(key)": value
-			}
-			endpoints: [ for endpoint in S.spec.endpoints {
-				for key, value in endpoint {
-					"\(*serviceEndpointMapping[key] | key)": value
-				}
-			}]
-		}
-	}
 }
 
 for N in things.NetworkPolicy {
 	k: NetworkPolicy: "\(N.metadata.name)": {
 		metadata: N.metadata
 		spec: {
-			for key, value in N.spec if key != "ingress" {(key): value}
+			for key, value in N.spec if key != "ingress" {
+				(key): value
+			}
+
 			ingress: [ for i in N.spec.ingress {
 				if i.from != _|_ {
 					from: i.from + [{
 						podSelector: matchLabels: "app.kubernetes.io/name": "vmagent"
+					}, {
+						podSelector: matchLabels: "app.kubernetes.io/name": "grafana-agent"
 					}]
 				}
 				if i.ports != _|_ {
@@ -65,26 +44,20 @@ for N in things.NetworkPolicy {
 	}
 }
 
-let serviceEndpointMapping = {
-	"metricRelabelings": "metricRelabelConfigs"
-	"relabelings":       "relabelConfigs"
-	"proxyUrl":          "proxyURL"
-}
+// let kubeletEndpoints = [ for e in k.ServiceMonitor.kubelet.spec.endpoints {
+// 	port:           "10250"
+// 	relabelConfigs: e.relabelConfigs + [{
+// 		targetLabel: "job"
+// 		replacement: "kubelet"
+// 	}]
 
-let kubeletEndpoints = [ for e in k.VMServiceScrape.kubelet.spec.endpoints {
-	port:           "10250"
-	relabelConfigs: e.relabelConfigs + [{
-		targetLabel: "job"
-		replacement: "kubelet"
-	}]
+// 	for key, value in e if key != "port" && key != "relabelConfigs" {
+// 		(key): value
+// 	}
+// }]
 
-	for key, value in e if key != "port" && key != "relabelConfigs" {
-		(key): value
-	}
-}]
+// k: VMNodeScrape: "kubelet-metrics": spec: kubeletEndpoints[0]
 
-k: VMNodeScrape: "kubelet-metrics": spec: kubeletEndpoints[0]
+// k: VMNodeScrape: "kubelet-cadvisor": spec: kubeletEndpoints[1]
 
-k: VMNodeScrape: "kubelet-cadvisor": spec: kubeletEndpoints[1]
-
-k: VMNodeScrape: "kubelet-probes": spec: kubeletEndpoints[2]
+// k: VMNodeScrape: "kubelet-probes": spec: kubeletEndpoints[2]

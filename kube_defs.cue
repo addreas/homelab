@@ -37,6 +37,8 @@ import (
 	kpack_v1alpha2 "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
 
 	hydra_v1alpha1 "github.com/ory/hydra-maester/api/v1alpha1"
+
+	grafana_agent_v1alpha1 "github.com/grafana/agent/pkg/operator/apis/monitoring/v1alpha1"
 )
 
 k: close({
@@ -173,4 +175,12 @@ _kubernetesAPIs: {
 	}
 
 	"hydra.ory.sh/v1alpha1": OAuth2Client: hydra_v1alpha1.#OAuth2Client
+
+	"monitoring.grafana.com/v1alpha1": {
+		GrafanaAgent:    grafana_agent_v1alpha1.#GrafanaAgent
+		MetricsInstance: grafana_agent_v1alpha1.#MetricsInstance
+		LogsInstances:   grafana_agent_v1alpha1.#LogsInstances
+		LogsInstance:    grafana_agent_v1alpha1.#LogsInstance
+		PodLogs:         grafana_agent_v1alpha1.#PodLogs
+	}
 }

@@ -66,7 +66,6 @@ k: Grafana: grafana: spec: {
 }
 
 k: GitRepository: "grafana-operator": spec: {
-	interval: "1h"
 	ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """

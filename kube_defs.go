@@ -12,6 +12,7 @@ import (
 	_ "github.com/fluxcd/notification-controller/api/v1beta1"
 	_ "github.com/fluxcd/source-controller/api/v1beta1"
 	_ "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
+	_ "github.com/grafana/agent/pkg/operator/apis/monitoring/v1alpha1"
 	_ "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	_ "github.com/ory/hydra-maester/api/v1alpha1"
 	_ "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
