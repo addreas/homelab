@@ -158,7 +158,7 @@ kubeStateMetrics: {
 						}]
 						resources: {
 							limits: {
-								cpu:    "40m"
+								cpu:    "140m"
 								memory: "40Mi"
 							}
 							requests: {

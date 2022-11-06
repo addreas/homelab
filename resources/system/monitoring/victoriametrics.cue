@@ -92,17 +92,36 @@ k: VMAlertmanager: "main": spec: {
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
 	replicaCount:  1
 	configRawYaml: yaml.Marshal({
+		// cue import yaml: - < https://github.com/prometheus-operator/kube-prometheus/blob/main/manifests/alertmanager-secret.yaml
 		global: resolve_timeout: "5m"
 		inhibit_rules: [{
-			equal: ["namespace", "alertname"]
-			source_match: severity:    "critical"
-			target_match_re: severity: "warning|info"
+			equal: [
+				"namespace",
+				"alertname",
+			]
+			source_matchers: ["severity = critical"]
+			target_matchers: ["severity =~ warning|info"]
 		}, {
-			equal: ["namespace", "alertname"]
-			source_match: severity:    "warning"
-			target_match_re: severity: "info"
+			equal: [
+				"namespace",
+				"alertname",
+			]
+			source_matchers: ["severity = warning"]
+			target_matchers: ["severity = info"]
+		}, {
+			equal: ["namespace"]
+			source_matchers: ["alertname = InfoInhibitor"]
+			target_matchers: ["severity = info"]
 		}]
-		receivers: [{name: "Default"}, {name: "Watchdog"}, {name: "Critical"}]
+		receivers: [{
+			name: "Default"
+		}, {
+			name: "Watchdog"
+		}, {
+			name: "Critical"
+		}, {
+			name: "null"
+		}]
 		route: {
 			group_by: ["namespace"]
 			group_interval:  "5m"
@@ -110,15 +129,14 @@ k: VMAlertmanager: "main": spec: {
 			receiver:        "Default"
 			repeat_interval: "12h"
 			routes: [{
-				match: {
-					alertname: "Watchdog"
-					receiver:  "Watchdog"
-				}
+				matchers: ["alertname = Watchdog"]
+				receiver: "Watchdog"
 			}, {
-				match: {
-					severity: "critical"
-					receiver: "Critical"
-				}
+				matchers: ["alertname = InfoInhibitor"]
+				receiver: "null"
+			}, {
+				matchers: ["severity = critical"]
+				receiver: "Critical"
 			}]
 		}
 	})

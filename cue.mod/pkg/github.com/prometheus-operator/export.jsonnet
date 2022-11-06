@@ -13,6 +13,29 @@ local kp =
       kubernetesControlPlane+: {
         kubeProxy: false,
       },
+
+      kubeStateMetrics+: {
+        kubeRbacProxyMain+: {
+          resources+: {
+            limits+: { cpu: '140m' },
+          }
+        },
+      },
+    },
+
+    nodeExporter+: {
+      daemonset+: {
+        spec+: {
+          template+: {
+            spec+: {
+              containers: [
+                super.containers[0],
+                super.containers[1] + { resources+: { limits+: { cpu: '140m' } } },
+              ],
+            },
+          },
+        },
+      },
     },
   };
 
@@ -29,7 +52,7 @@ local resources(name, filter = function(r) true) = std.foldr(
  "kubernetesControlPlane.json": resources("kubernetesControlPlane", function(r) std.member(["ServiceMonitor", "PrometheusRule"], r.kind)),
  "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
  "grafanaDashboards.json": { grafanaDashboards:
-    kp.nodeExporter.mixin.grafanaDashboards + 
+    kp.nodeExporter.mixin.grafanaDashboards +
     kp.kubernetesControlPlane.mixin.grafanaDashboards
   }
 }
