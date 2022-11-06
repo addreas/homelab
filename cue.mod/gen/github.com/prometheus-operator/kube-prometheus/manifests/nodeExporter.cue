@@ -9,7 +9,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -32,7 +32,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -56,7 +56,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -74,18 +74,18 @@ nodeExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "node-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "1.3.1"
+						"app.kubernetes.io/version":   "1.4.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--no-collector.wifi", "--no-collector.hwmon", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$"]
-						image: "quay.io/prometheus/node-exporter:v1.3.1"
+						image: "quay.io/prometheus/node-exporter:v1.4.0"
 						name:  "node-exporter"
 						resources: {
 							limits: {
-								cpu:    "350m"
+								cpu:    "250m"
 								memory: "180Mi"
 							}
 							requests: {
@@ -118,7 +118,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.12.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.13.1"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100
@@ -127,7 +127,7 @@ nodeExporter: {
 						}]
 						resources: {
 							limits: {
-								cpu:    "100m"
+								cpu:    "20m"
 								memory: "40Mi"
 							}
 							requests: {
@@ -179,7 +179,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -212,7 +212,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -424,15 +424,15 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_timex_offset_seconds > 0.05
+					  node_timex_offset_seconds{job="node-exporter"} > 0.05
 					and
-					  deriv(node_timex_offset_seconds[5m]) >= 0
+					  deriv(node_timex_offset_seconds{job="node-exporter"}[5m]) >= 0
 					)
 					or
 					(
-					  node_timex_offset_seconds < -0.05
+					  node_timex_offset_seconds{job="node-exporter"} < -0.05
 					and
-					  deriv(node_timex_offset_seconds[5m]) <= 0
+					  deriv(node_timex_offset_seconds{job="node-exporter"}[5m]) <= 0
 					)
 
 					"""
@@ -446,9 +446,9 @@ nodeExporter: {
 					summary:     "Clock not synchronising."
 				}
 				expr: """
-					min_over_time(node_timex_sync_status[5m]) == 0
+					min_over_time(node_timex_sync_status{job="node-exporter"}[5m]) == 0
 					and
-					node_timex_maxerror_seconds >= 16
+					node_timex_maxerror_seconds{job="node-exporter"} >= 16
 
 					"""
 				for: "10m"
@@ -461,7 +461,7 @@ nodeExporter: {
 					summary:     "RAID Array is degraded"
 				}
 				expr: """
-					node_md_disks_required - ignoring (state) (node_md_disks{state="active"}) > 0
+					node_md_disks_required{job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"} - ignoring (state) (node_md_disks{state="active",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}) > 0
 
 					"""
 				for: "15m"
@@ -474,7 +474,7 @@ nodeExporter: {
 					summary:     "Failed device in RAID array"
 				}
 				expr: """
-					node_md_disks{state="failed"} > 0
+					node_md_disks{state="failed",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"} > 0
 
 					"""
 				labels: severity: "warning"
@@ -567,13 +567,13 @@ nodeExporter: {
 				record: "instance:node_vmstat_pgmajfault:rate5m"
 			}, {
 				expr: """
-					rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[5m])
+					rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}[5m])
 
 					"""
 				record: "instance_device:node_disk_io_time_seconds:rate5m"
 			}, {
 				expr: """
-					rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[5m])
+					rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}[5m])
 
 					"""
 				record: "instance_device:node_disk_io_time_weighted_seconds:rate5m"
@@ -620,7 +620,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -648,7 +648,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -662,7 +662,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.3.1"
+				"app.kubernetes.io/version":   "1.4.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"

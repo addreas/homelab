@@ -39,7 +39,7 @@ kubernetesControlPlane: {
 				expr: """
 					sum by (namespace, pod, cluster) (
 					  max by(namespace, pod, cluster) (
-					    kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
+					    kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown|Failed"}
 					  ) * on(namespace, pod, cluster) group_left(owner_kind) topk by(namespace, pod, cluster) (
 					    1, max by(namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
 					  )
@@ -257,7 +257,7 @@ kubernetesControlPlane: {
 				annotations: {
 					description: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has not matched the desired number of replicas for longer than 15 minutes."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpareplicasmismatch"
-					summary:     "HPA has not matched descired number of replicas."
+					summary:     "HPA has not matched desired number of replicas."
 				}
 				expr: """
 					(kube_horizontalpodautoscaler_status_desired_replicas{job="kube-state-metrics"}
@@ -658,6 +658,7 @@ kubernetesControlPlane: {
 					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
 
 					"""
+				for: "5m"
 				labels: severity: "warning"
 			}, {
 				alert: "KubeClientCertificateExpiration"
@@ -670,6 +671,7 @@ kubernetesControlPlane: {
 					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
 
 					"""
+				for: "5m"
 				labels: severity: "critical"
 			}, {
 				alert: "KubeAggregatedAPIErrors"

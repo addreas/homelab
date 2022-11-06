@@ -5,7 +5,7 @@ prometheusOperator: CustomResourceDefinition: {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "alertmanagerconfigs.monitoring.coreos.com"
 		}
@@ -40,7 +40,7 @@ prometheusOperator: CustomResourceDefinition: {
 							description: "AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource."
 							properties: {
 								inhibitRules: {
-									description: "List of inhibition rules. The rules will only apply to alerts matching the resource’s namespace."
+									description: "List of inhibition rules. The rules will only apply to alerts matching the resource's namespace."
 									items: {
 										description: "InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule"
 										properties: {
@@ -50,7 +50,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "array"
 											}
 											sourceMatch: {
-												description: "Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource’s namespace."
+												description: "Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace."
 												items: {
 													description: "Matcher defines how to match on alert's labels."
 													properties: {
@@ -79,7 +79,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "array"
 											}
 											targetMatch: {
-												description: "Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource’s namespace."
+												description: "Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace."
 												items: {
 													description: "Matcher defines how to match on alert's labels."
 													properties: {
@@ -332,7 +332,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		secret: {
 																			description: "Secret containing data to use for the targets."
@@ -351,7 +352,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -376,7 +378,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		secret: {
 																			description: "Secret containing data to use for the targets."
@@ -395,7 +398,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -421,7 +425,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																serverName: {
 																	description: "Used to verify the hostname for the targets."
@@ -527,7 +532,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -556,7 +562,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -575,7 +582,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -626,7 +634,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -645,7 +654,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -667,7 +677,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -715,7 +726,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -734,7 +746,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -759,7 +772,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -778,7 +792,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -804,7 +819,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -950,7 +966,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -979,7 +996,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -998,7 +1016,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -1049,7 +1068,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1068,7 +1088,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1090,7 +1111,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -1138,7 +1160,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1157,7 +1180,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1182,7 +1206,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1201,7 +1226,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1227,7 +1253,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -1371,7 +1398,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -1400,7 +1428,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -1419,7 +1448,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -1470,7 +1500,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1489,7 +1520,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1511,7 +1543,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -1559,7 +1592,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1578,7 +1612,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1603,7 +1638,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1622,7 +1658,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1648,7 +1685,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -1686,7 +1724,7 @@ prometheusOperator: CustomResourceDefinition: {
 															type:        "string"
 														}
 														token: {
-															description: "The secret's key that contains the registered application’s API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+															description: "The secret's key that contains the registered application's API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1713,7 +1751,7 @@ prometheusOperator: CustomResourceDefinition: {
 															type:        "string"
 														}
 														userKey: {
-															description: "The secret's key that contains the recipient user’s user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+															description: "The secret's key that contains the recipient user's user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1848,7 +1886,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -1877,7 +1916,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -1896,7 +1936,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -1947,7 +1988,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -1966,7 +2008,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -1988,7 +2031,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -2036,7 +2080,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2055,7 +2100,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2080,7 +2126,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2099,7 +2146,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2125,7 +2173,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -2198,7 +2247,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -2227,7 +2277,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -2246,7 +2297,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -2297,7 +2349,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2316,7 +2369,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2338,7 +2392,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -2386,7 +2441,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2405,7 +2461,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2430,7 +2487,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2449,7 +2507,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2475,7 +2534,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -2519,7 +2579,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																profile: {
 																	description: "Profile is the named AWS profile used to authenticate."
@@ -2550,7 +2611,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 															}
 															type: "object"
@@ -2632,7 +2694,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -2661,7 +2724,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -2680,7 +2744,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -2731,7 +2796,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2750,7 +2816,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2772,7 +2839,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -2820,7 +2888,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2839,7 +2908,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2864,7 +2934,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -2883,7 +2954,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -2909,7 +2981,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -3014,7 +3087,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -3043,7 +3117,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -3062,7 +3137,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -3113,7 +3189,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3132,7 +3209,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3154,7 +3232,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -3202,7 +3281,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3221,7 +3301,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3246,7 +3327,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3265,7 +3347,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3291,7 +3374,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -3356,7 +3440,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -3385,7 +3470,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -3404,7 +3490,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -3455,7 +3542,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3474,7 +3562,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3496,7 +3585,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -3544,7 +3634,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3563,7 +3654,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3588,7 +3680,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3607,7 +3700,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3633,7 +3727,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -3739,7 +3834,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		type: {
 																			description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -3768,7 +3864,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		username: {
 																			description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -3787,7 +3884,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																	}
 																	type: "object"
@@ -3838,7 +3936,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3857,7 +3956,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3879,7 +3979,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		endpointParams: {
 																			additionalProperties: type: "string"
@@ -3927,7 +4028,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3946,7 +4048,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -3971,7 +4074,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				secret: {
 																					description: "Secret containing data to use for the targets."
@@ -3990,7 +4094,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["key"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			type: "object"
@@ -4016,7 +4121,8 @@ prometheusOperator: CustomResourceDefinition: {
 																				}
 																			}
 																			required: ["key"]
-																			type: "object"
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
 																		}
 																		serverName: {
 																			description: "Used to verify the hostname for the targets."
@@ -4052,7 +4158,7 @@ prometheusOperator: CustomResourceDefinition: {
 									type: "array"
 								}
 								route: {
-									description: "The Alertmanager route definition for alerts matching the resource’s namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route."
+									description: "The Alertmanager route definition for alerts matching the resource's namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route."
 									properties: {
 										continue: {
 											description: "Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator."
@@ -4072,7 +4178,7 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "string"
 										}
 										matchers: {
-											description: "List of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher."
+											description: "List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher."
 											items: {
 												description: "Matcher defines how to match on alert's labels."
 												properties: {
@@ -4132,20 +4238,12 @@ prometheusOperator: CustomResourceDefinition: {
 				storage: true
 			}]
 		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
-		}
 	}
 	"alertmanagers.monitoring.coreos.com": {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "alertmanagers.monitoring.coreos.com"
 		}
@@ -4169,7 +4267,7 @@ prometheusOperator: CustomResourceDefinition: {
 					name:        "Version"
 					type:        "string"
 				}, {
-					description: "The desired replicas number of Alertmanagers"
+					description: "The number of desired replicas"
 					jsonPath:    ".spec.replicas"
 					name:        "Replicas"
 					type:        "integer"
@@ -4177,6 +4275,12 @@ prometheusOperator: CustomResourceDefinition: {
 					jsonPath: ".metadata.creationTimestamp"
 					name:     "Age"
 					type:     "date"
+				}, {
+					description: "Whether the resource reconciliation is paused or not"
+					jsonPath:    ".status.paused"
+					name:        "Paused"
+					priority:    1
+					type:        "boolean"
 				}]
 				name: "v1"
 				schema: openAPIV3Schema: {
@@ -4262,7 +4366,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		type: "array"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															weight: {
 																description: "Weight associated with matching the corresponding nodeSelectorTerm, in the range 1-100."
@@ -4331,12 +4436,14 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "array"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														type: "array"
 													}
 													required: ["nodeSelectorTerms"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -4385,10 +4492,11 @@ prometheusOperator: CustomResourceDefinition: {
 																				type:        "object"
 																			}
 																		}
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	namespaceSelector: {
-																		description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled."
+																		description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
 																		properties: {
 																			matchExpressions: {
 																				description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -4420,10 +4528,11 @@ prometheusOperator: CustomResourceDefinition: {
 																				type:        "object"
 																			}
 																		}
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	namespaces: {
-																		description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\""
+																		description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
 																		items: type: "string"
 																		type: "array"
 																	}
@@ -4484,10 +4593,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		type:        "object"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															namespaceSelector: {
-																description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled."
+																description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
 																properties: {
 																	matchExpressions: {
 																		description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -4519,10 +4629,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		type:        "object"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															namespaces: {
-																description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\""
+																description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
 																items: type: "string"
 																type: "array"
 															}
@@ -4583,10 +4694,11 @@ prometheusOperator: CustomResourceDefinition: {
 																				type:        "object"
 																			}
 																		}
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	namespaceSelector: {
-																		description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled."
+																		description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
 																		properties: {
 																			matchExpressions: {
 																				description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -4618,10 +4730,11 @@ prometheusOperator: CustomResourceDefinition: {
 																				type:        "object"
 																			}
 																		}
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	namespaces: {
-																		description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\""
+																		description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
 																		items: type: "string"
 																		type: "array"
 																	}
@@ -4682,10 +4795,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		type:        "object"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															namespaceSelector: {
-																description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces. This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled."
+																description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
 																properties: {
 																	matchExpressions: {
 																		description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -4717,10 +4831,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		type:        "object"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															namespaces: {
-																description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\""
+																description: "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
 																items: type: "string"
 																type: "array"
 															}
@@ -4773,7 +4888,8 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "object"
 										}
 									}
-									type: "object"
+									type:                    "object"
+									"x-kubernetes-map-type": "atomic"
 								}
 								alertmanagerConfigSelector: {
 									description: "AlertmanagerConfigs to be selected for to merge and configure Alertmanager with."
@@ -4808,14 +4924,402 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "object"
 										}
 									}
-									type: "object"
+									type:                    "object"
+									"x-kubernetes-map-type": "atomic"
 								}
 								alertmanagerConfiguration: {
-									description: "EXPERIMENTAL: alertmanagerConfiguration specifies the global Alertmanager configuration. If defined, it takes precedence over the `configSecret` field. This field may change in future releases."
-									properties: name: {
-										description: "The name of the AlertmanagerConfig resource which is used to generate the global configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules."
-										minLength:   1
-										type:        "string"
+									description: "EXPERIMENTAL: alertmanagerConfiguration specifies the configuration of Alertmanager. If defined, it takes precedence over the `configSecret` field. This field may change in future releases."
+									properties: {
+										global: {
+											description: "Defines the global parameters of the Alertmanager configuration."
+											properties: {
+												httpConfig: {
+													description: "HTTP client configuration."
+													properties: {
+														authorization: {
+															description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+															properties: {
+																credentials: {
+																	description: "The secret's key that contains the credentials of the request"
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																type: {
+																	description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
+																	type:        "string"
+																}
+															}
+															type: "object"
+														}
+														basicAuth: {
+															description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+															properties: {
+																password: {
+																	description: "The secret in the service monitor namespace that contains the password for authentication."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																username: {
+																	description: "The secret in the service monitor namespace that contains the username for authentication."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														bearerTokenSecret: {
+															description: "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the Alertmanager object and accessible by the Prometheus Operator."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														followRedirects: {
+															description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+															type:        "boolean"
+														}
+														oauth2: {
+															description: "OAuth2 client credentials used to fetch a token for the targets."
+															properties: {
+																clientId: {
+																	description: "The secret or configmap containing the OAuth2 client id"
+																	properties: {
+																		configMap: {
+																			description: "ConfigMap containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key to select."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the ConfigMap or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																		secret: {
+																			description: "Secret containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																	}
+																	type: "object"
+																}
+																clientSecret: {
+																	description: "The secret containing the OAuth2 client secret"
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																endpointParams: {
+																	additionalProperties: type: "string"
+																	description: "Parameters to append to the token URL"
+																	type:        "object"
+																}
+																scopes: {
+																	description: "OAuth2 scopes used for the token request"
+																	items: type: "string"
+																	type: "array"
+																}
+																tokenUrl: {
+																	description: "The URL to fetch the token from"
+																	minLength:   1
+																	type:        "string"
+																}
+															}
+															required: ["clientId", "clientSecret", "tokenUrl"]
+															type: "object"
+														}
+														proxyURL: {
+															description: "Optional proxy URL."
+															type:        "string"
+														}
+														tlsConfig: {
+															description: "TLS configuration for the client."
+															properties: {
+																ca: {
+																	description: "Struct containing the CA cert to use for the targets."
+																	properties: {
+																		configMap: {
+																			description: "ConfigMap containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key to select."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the ConfigMap or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																		secret: {
+																			description: "Secret containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																	}
+																	type: "object"
+																}
+																cert: {
+																	description: "Struct containing the client cert file for the targets."
+																	properties: {
+																		configMap: {
+																			description: "ConfigMap containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key to select."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the ConfigMap or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																		secret: {
+																			description: "Secret containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																					type:        "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																	}
+																	type: "object"
+																}
+																insecureSkipVerify: {
+																	description: "Disable target certificate validation."
+																	type:        "boolean"
+																}
+																keySecret: {
+																	description: "Secret containing the client key file for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																serverName: {
+																	description: "Used to verify the hostname for the targets."
+																	type:        "string"
+																}
+															}
+															type: "object"
+														}
+													}
+													type: "object"
+												}
+												resolveTimeout: {
+													description: "ResolveTimeout is the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+											}
+											type: "object"
+										}
+										name: {
+											description: "The name of the AlertmanagerConfig resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules."
+											minLength:   1
+											type:        "string"
+										}
+										templates: {
+											description: "Custom notification templates."
+											items: {
+												description: "SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive."
+												properties: {
+													configMap: {
+														description: "ConfigMap containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key to select."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the ConfigMap or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													secret: {
+														description: "Secret containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+												}
+												type: "object"
+											}
+											type: "array"
+										}
 									}
 									type: "object"
 								}
@@ -4829,24 +5333,27 @@ prometheusOperator: CustomResourceDefinition: {
 								}
 								clusterGossipInterval: {
 									description: "Interval between gossip attempts."
+									pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								clusterPeerTimeout: {
 									description: "Timeout for cluster peering."
+									pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								clusterPushpullInterval: {
 									description: "Interval between pushpull attempts."
+									pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								configMaps: {
-									description: "ConfigMaps is a list of ConfigMaps in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. The ConfigMaps are mounted into /etc/alertmanager/configmaps/<configmap-name>."
+									description: "ConfigMaps is a list of ConfigMaps in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`. The ConfigMaps are mounted into `/etc/alertmanager/configmaps/<configmap-name>` in the 'alertmanager' container."
 									items: type: "string"
 									type: "array"
 								}
 								configSecret: {
 									description: """
-														ConfigSecret is the name of a Kubernetes Secret in the same namespace as the Alertmanager object, which contains the configuration for this Alertmanager instance. If empty, it defaults to 'alertmanager-<alertmanager-name>'. 
+														ConfigSecret is the name of a Kubernetes Secret in the same namespace as the Alertmanager object, which contains the configuration for this Alertmanager instance. If empty, it defaults to `alertmanager-<alertmanager-name>`. 
 														 The Alertmanager configuration should be available under the `alertmanager.yaml` key. Additional keys from the original secret are copied to the generated secret. 
 														 If either the secret or the `alertmanager.yaml` key is missing, the operator provisions an Alertmanager configuration with one empty receiver (effectively dropping alert notifications).
 														"""
@@ -4858,12 +5365,12 @@ prometheusOperator: CustomResourceDefinition: {
 										description: "A single application container that you want to run within a pod."
 										properties: {
 											args: {
-												description: "Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+												description: "Arguments to the entrypoint. The container image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
 												items: type: "string"
 												type: "array"
 											}
 											command: {
-												description: "Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+												description: "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
 												items: type: "string"
 												type: "array"
 											}
@@ -4900,7 +5407,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																fieldRef: {
 																	description: "Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
@@ -4915,7 +5423,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["fieldPath"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																resourceFieldRef: {
 																	description: "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported."
@@ -4940,7 +5449,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["resource"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																secretKeyRef: {
 																	description: "Selects a key of a secret in the pod's namespace"
@@ -4959,7 +5469,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 															}
 															type: "object"
@@ -4987,7 +5498,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "boolean"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														prefix: {
 															description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
@@ -5005,7 +5517,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "boolean"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 													}
 													type: "object"
@@ -5013,7 +5526,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "array"
 											}
 											image: {
-												description: "Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
+												description: "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
 												type:        "string"
 											}
 											imagePullPolicy: {
@@ -5208,7 +5721,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -5326,7 +5839,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											ports: {
-												description: "List of ports to expose from the container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated."
+												description: "List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated."
 												items: {
 													description: "ContainerPort represents a network port in a single container."
 													properties: {
@@ -5379,7 +5892,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -5662,7 +6175,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -5901,7 +6414,8 @@ prometheusOperator: CustomResourceDefinition: {
 											description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 											type:        "string"
 										}
-										type: "object"
+										type:                    "object"
+										"x-kubernetes-map-type": "atomic"
 									}
 									type: "array"
 								}
@@ -5911,12 +6425,12 @@ prometheusOperator: CustomResourceDefinition: {
 										description: "A single application container that you want to run within a pod."
 										properties: {
 											args: {
-												description: "Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+												description: "Arguments to the entrypoint. The container image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
 												items: type: "string"
 												type: "array"
 											}
 											command: {
-												description: "Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+												description: "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
 												items: type: "string"
 												type: "array"
 											}
@@ -5953,7 +6467,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																fieldRef: {
 																	description: "Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
@@ -5968,7 +6483,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["fieldPath"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																resourceFieldRef: {
 																	description: "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported."
@@ -5993,7 +6509,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["resource"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																secretKeyRef: {
 																	description: "Selects a key of a secret in the pod's namespace"
@@ -6012,7 +6529,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["key"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 															}
 															type: "object"
@@ -6040,7 +6558,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "boolean"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														prefix: {
 															description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
@@ -6058,7 +6577,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "boolean"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 													}
 													type: "object"
@@ -6066,7 +6586,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "array"
 											}
 											image: {
-												description: "Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
+												description: "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
 												type:        "string"
 											}
 											imagePullPolicy: {
@@ -6261,7 +6781,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -6379,7 +6899,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "string"
 											}
 											ports: {
-												description: "List of ports to expose from the container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated."
+												description: "List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated."
 												items: {
 													description: "ContainerPort represents a network port in a single container."
 													properties: {
@@ -6432,7 +6952,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -6715,7 +7235,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "integer"
 													}
 													grpc: {
-														description: "GRPC specifies an action involving a GRPC port. This is an alpha field and requires enabling GRPCContainerProbe feature gate."
+														description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
 														properties: {
 															port: {
 																description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -7006,7 +7526,9 @@ prometheusOperator: CustomResourceDefinition: {
 									type: "object"
 								}
 								retention: {
+									default:     "120h"
 									description: "Time duration Alertmanager shall retain data for. Default is '120h', and must match the regular expression `[0-9]+(ms|s|m|h)` (milliseconds seconds minutes hours)."
+									pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 									type:        "string"
 								}
 								routePrefix: {
@@ -7014,7 +7536,7 @@ prometheusOperator: CustomResourceDefinition: {
 									type:        "string"
 								}
 								secrets: {
-									description: "Secrets is a list of Secrets in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. The Secrets are mounted into /etc/alertmanager/secrets/<secret-name>."
+									description: "Secrets is a list of Secrets in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-<secret-name>`. The Secrets are mounted into `/etc/alertmanager/secrets/<secret-name>` in the 'alertmanager' container."
 									items: type: "string"
 									type: "array"
 								}
@@ -7159,7 +7681,7 @@ prometheusOperator: CustomResourceDefinition: {
 											description: "EmptyDirVolumeSource to be used by the Prometheus StatefulSets. If specified, used in place of any volumeClaimTemplate. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir"
 											properties: {
 												medium: {
-													description: "What type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+													description: "medium represents what type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 													type:        "string"
 												}
 												sizeLimit: {
@@ -7168,7 +7690,7 @@ prometheusOperator: CustomResourceDefinition: {
 													}, {
 														type: "string"
 													}]
-													description:                  "Total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+													description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
 													pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 													"x-kubernetes-int-or-string": true
 												}
@@ -7193,12 +7715,12 @@ prometheusOperator: CustomResourceDefinition: {
 														description: "The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here."
 														properties: {
 															accessModes: {
-																description: "AccessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+																description: "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
 																items: type: "string"
 																type: "array"
 															}
 															dataSource: {
-																description: "This field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
+																description: "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
 																properties: {
 																	apiGroup: {
 																		description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -7214,10 +7736,11 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["kind", "name"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															dataSourceRef: {
-																description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+																description: "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 																properties: {
 																	apiGroup: {
 																		description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -7233,10 +7756,11 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["kind", "name"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															resources: {
-																description: "Resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+																description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																properties: {
 																	limits: {
 																		additionalProperties: {
@@ -7268,7 +7792,7 @@ prometheusOperator: CustomResourceDefinition: {
 																type: "object"
 															}
 															selector: {
-																description: "A label query over volumes to consider for binding."
+																description: "selector is a label query over volumes to consider for binding."
 																properties: {
 																	matchExpressions: {
 																		description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -7300,10 +7824,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		type:        "object"
 																	}
 																}
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															storageClassName: {
-																description: "Name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
 																type:        "string"
 															}
 															volumeMode: {
@@ -7311,7 +7836,7 @@ prometheusOperator: CustomResourceDefinition: {
 																type:        "string"
 															}
 															volumeName: {
-																description: "VolumeName is the binding reference to the PersistentVolume backing this claim."
+																description: "volumeName is the binding reference to the PersistentVolume backing this claim."
 																type:        "string"
 															}
 														}
@@ -7358,12 +7883,12 @@ prometheusOperator: CustomResourceDefinition: {
 													description: "Spec defines the desired characteristics of a volume requested by a pod author. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
 													properties: {
 														accessModes: {
-															description: "AccessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+															description: "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
 															items: type: "string"
 															type: "array"
 														}
 														dataSource: {
-															description: "This field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
+															description: "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
 															properties: {
 																apiGroup: {
 																	description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -7379,10 +7904,11 @@ prometheusOperator: CustomResourceDefinition: {
 																}
 															}
 															required: ["kind", "name"]
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														dataSourceRef: {
-															description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+															description: "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 															properties: {
 																apiGroup: {
 																	description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -7398,10 +7924,11 @@ prometheusOperator: CustomResourceDefinition: {
 																}
 															}
 															required: ["kind", "name"]
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														resources: {
-															description: "Resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+															description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 															properties: {
 																limits: {
 																	additionalProperties: {
@@ -7433,7 +7960,7 @@ prometheusOperator: CustomResourceDefinition: {
 															type: "object"
 														}
 														selector: {
-															description: "A label query over volumes to consider for binding."
+															description: "selector is a label query over volumes to consider for binding."
 															properties: {
 																matchExpressions: {
 																	description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -7465,10 +7992,11 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "object"
 																}
 															}
-															type: "object"
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
 														}
 														storageClassName: {
-															description: "Name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+															description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
 															type:        "string"
 														}
 														volumeMode: {
@@ -7476,7 +8004,7 @@ prometheusOperator: CustomResourceDefinition: {
 															type:        "string"
 														}
 														volumeName: {
-															description: "VolumeName is the binding reference to the PersistentVolume backing this claim."
+															description: "volumeName is the binding reference to the PersistentVolume backing this claim."
 															type:        "string"
 														}
 													}
@@ -7486,7 +8014,7 @@ prometheusOperator: CustomResourceDefinition: {
 													description: "Status represents the current information/status of a persistent volume claim. Read-only. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
 													properties: {
 														accessModes: {
-															description: "AccessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+															description: "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
 															items: type: "string"
 															type: "array"
 														}
@@ -7500,7 +8028,7 @@ prometheusOperator: CustomResourceDefinition: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "The storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
+															description: "allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 															type:        "object"
 														}
 														capacity: {
@@ -7513,30 +8041,30 @@ prometheusOperator: CustomResourceDefinition: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Represents the actual resources of the underlying volume."
+															description: "capacity represents the actual resources of the underlying volume."
 															type:        "object"
 														}
 														conditions: {
-															description: "Current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
+															description: "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
 															items: {
 																description: "PersistentVolumeClaimCondition contails details about state of pvc"
 																properties: {
 																	lastProbeTime: {
-																		description: "Last time we probed the condition."
+																		description: "lastProbeTime is the time we probed the condition."
 																		format:      "date-time"
 																		type:        "string"
 																	}
 																	lastTransitionTime: {
-																		description: "Last time the condition transitioned from one status to another."
+																		description: "lastTransitionTime is the time the condition transitioned from one status to another."
 																		format:      "date-time"
 																		type:        "string"
 																	}
 																	message: {
-																		description: "Human-readable message indicating details about last transition."
+																		description: "message is the human-readable message indicating details about last transition."
 																		type:        "string"
 																	}
 																	reason: {
-																		description: "Unique, this should be a short, machine understandable string that gives the reason for condition's last transition. If it reports \"ResizeStarted\" that means the underlying persistent volume is being resized."
+																		description: "reason is a unique, this should be a short, machine understandable string that gives the reason for condition's last transition. If it reports \"ResizeStarted\" that means the underlying persistent volume is being resized."
 																		type:        "string"
 																	}
 																	status: type: "string"
@@ -7551,11 +8079,11 @@ prometheusOperator: CustomResourceDefinition: {
 															type: "array"
 														}
 														phase: {
-															description: "Phase represents the current phase of PersistentVolumeClaim."
+															description: "phase represents the current phase of PersistentVolumeClaim."
 															type:        "string"
 														}
 														resizeStatus: {
-															description: "ResizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
+															description: "resizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 															type:        "string"
 														}
 													}
@@ -7640,15 +8168,45 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "object"
 													}
 												}
-												type: "object"
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											matchLabelKeys: {
+												description: "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector."
+												items: type: "string"
+												type:                     "array"
+												"x-kubernetes-list-type": "atomic"
 											}
 											maxSkew: {
-												description: "MaxSkew describes the degree to which pods may be unevenly distributed. When `whenUnsatisfiable=DoNotSchedule`, it is the maximum permitted difference between the number of matching pods in the target topology and the global minimum. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |       | - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 1/1/1; scheduling it onto zone1(zone2) would make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1). - if MaxSkew is 2, incoming pod can be scheduled onto any zone. When `whenUnsatisfiable=ScheduleAnyway`, it is used to give higher precedence to topologies that satisfy it. It's a required field. Default value is 1 and 0 is not allowed."
+												description: "MaxSkew describes the degree to which pods may be unevenly distributed. When `whenUnsatisfiable=DoNotSchedule`, it is the maximum permitted difference between the number of matching pods in the target topology and the global minimum. The global minimum is the minimum number of matching pods in an eligible domain or zero if the number of eligible domains is less than MinDomains. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 2/2/1: In this case, the global minimum is 1. | zone1 | zone2 | zone3 | |  P P  |  P P  |   P   | - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2; scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2) violate MaxSkew(1). - if MaxSkew is 2, incoming pod can be scheduled onto any zone. When `whenUnsatisfiable=ScheduleAnyway`, it is used to give higher precedence to topologies that satisfy it. It's a required field. Default value is 1 and 0 is not allowed."
 												format:      "int32"
 												type:        "integer"
 											}
+											minDomains: {
+												description: """
+																	MinDomains indicates a minimum number of eligible domains. When the number of eligible domains with matching topology keys is less than minDomains, Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed. And when the number of eligible domains with matching topology keys equals or greater than minDomains, this value has no effect on scheduling. As a result, when the number of eligible domains is less than minDomains, scheduler won't schedule more than maxSkew Pods to those domains. If value is nil, the constraint behaves as if MinDomains is equal to 1. Valid values are integers greater than 0. When value is not nil, WhenUnsatisfiable must be DoNotSchedule. 
+																	 For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same labelSelector spread as 2/2/2: | zone1 | zone2 | zone3 | |  P P  |  P P  |  P P  | The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0. In this situation, new pod with the same labelSelector cannot be scheduled, because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones, it will violate MaxSkew. 
+																	 This is a beta field and requires the MinDomainsInPodTopologySpread feature gate to be enabled (enabled by default).
+																	"""
+												format: "int32"
+												type:   "integer"
+											}
+											nodeAffinityPolicy: {
+												description: """
+																	NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations. 
+																	 If this value is nil, the behavior is equivalent to the Honor policy. This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+																	"""
+												type: "string"
+											}
+											nodeTaintsPolicy: {
+												description: """
+																	NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included. 
+																	 If this value is nil, the behavior is equivalent to the Ignore policy. This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+																	"""
+												type: "string"
+											}
 											topologyKey: {
-												description: "TopologyKey is the key of node labels. Nodes that have a label with this key and identical values are considered to be in the same topology. We consider each <key, value> as a \"bucket\", and try to put balanced number of pods into each bucket. It's a required field."
+												description: "TopologyKey is the key of node labels. Nodes that have a label with this key and identical values are considered to be in the same topology. We consider each <key, value> as a \"bucket\", and try to put balanced number of pods into each bucket. We define a domain as a particular instance of a topology. Also, we define an eligible domain as a domain whose nodes meet the requirements of nodeAffinityPolicy and nodeTaintsPolicy. e.g. If TopologyKey is \"kubernetes.io/hostname\", each Node is a domain of that topology. And, if TopologyKey is \"topology.kubernetes.io/zone\", each zone is a domain of that topology. It's a required field."
 												type:        "string"
 											}
 											whenUnsatisfiable: {
@@ -7706,23 +8264,23 @@ prometheusOperator: CustomResourceDefinition: {
 										description: "Volume represents a named volume in a pod that may be accessed by any container in the pod."
 										properties: {
 											awsElasticBlockStore: {
-												description: "AWSElasticBlockStore represents an AWS Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+												description: "awsElasticBlockStore represents an AWS Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
 												properties: {
 													fsType: {
-														description: "Filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore TODO: how do we prevent errors in the filesystem from compromising the machine"
+														description: "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore TODO: how do we prevent errors in the filesystem from compromising the machine"
 														type:        "string"
 													}
 													partition: {
-														description: "The partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty)."
+														description: "partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty)."
 														format:      "int32"
 														type:        "integer"
 													}
 													readOnly: {
-														description: "Specify \"true\" to force and set the ReadOnly property in VolumeMounts to \"true\". If omitted, the default is \"false\". More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+														description: "readOnly value true will force the readOnly setting in VolumeMounts. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
 														type:        "boolean"
 													}
 													volumeID: {
-														description: "Unique ID of the persistent disk resource in AWS (Amazon EBS volume). More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+														description: "volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume). More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
 														type:        "string"
 													}
 												}
@@ -7730,30 +8288,30 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											azureDisk: {
-												description: "AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
+												description: "azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
 												properties: {
 													cachingMode: {
-														description: "Host Caching mode: None, Read Only, Read Write."
+														description: "cachingMode is the Host Caching mode: None, Read Only, Read Write."
 														type:        "string"
 													}
 													diskName: {
-														description: "The Name of the data disk in the blob storage"
+														description: "diskName is the Name of the data disk in the blob storage"
 														type:        "string"
 													}
 													diskURI: {
-														description: "The URI the data disk in the blob storage"
+														description: "diskURI is the URI of data disk in the blob storage"
 														type:        "string"
 													}
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+														description: "fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
 														type:        "string"
 													}
 													kind: {
-														description: "Expected values Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared"
+														description: "kind expected values are Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared"
 														type:        "string"
 													}
 													readOnly: {
-														description: "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 												}
@@ -7761,18 +8319,18 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											azureFile: {
-												description: "AzureFile represents an Azure File Service mount on the host and bind mount to the pod."
+												description: "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
 												properties: {
 													readOnly: {
-														description: "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													secretName: {
-														description: "the name of secret that contains Azure Storage Account Name and Key"
+														description: "secretName is the  name of secret that contains Azure Storage Account Name and Key"
 														type:        "string"
 													}
 													shareName: {
-														description: "Share Name"
+														description: "shareName is the azure share Name"
 														type:        "string"
 													}
 												}
@@ -7780,35 +8338,36 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											cephfs: {
-												description: "CephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
+												description: "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
 												properties: {
 													monitors: {
-														description: "Required: Monitors is a collection of Ceph monitors More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+														description: "monitors is Required: Monitors is a collection of Ceph monitors More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
 														items: type: "string"
 														type: "array"
 													}
 													path: {
-														description: "Optional: Used as the mounted root, rather than the full Ceph tree, default is /"
+														description: "path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /"
 														type:        "string"
 													}
 													readOnly: {
-														description: "Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+														description: "readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
 														type:        "boolean"
 													}
 													secretFile: {
-														description: "Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+														description: "secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
 														type:        "string"
 													}
 													secretRef: {
-														description: "Optional: SecretRef is reference to the authentication secret for User, default is empty. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+														description: "secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													user: {
-														description: "Optional: User is the rados user name, default is admin More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+														description: "user is optional: User is the rados user name, default is admin More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
 														type:        "string"
 													}
 												}
@@ -7816,26 +8375,27 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											cinder: {
-												description: "Cinder represents a cinder volume attached and mounted on kubelets host machine. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+												description: "cinder represents a cinder volume attached and mounted on kubelets host machine. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
 														type:        "string"
 													}
 													readOnly: {
-														description: "Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+														description: "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "Optional: points to a secret object containing parameters used to connect to OpenStack."
+														description: "secretRef is optional: points to a secret object containing parameters used to connect to OpenStack."
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													volumeID: {
-														description: "volume id used to identify the volume in cinder. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+														description: "volumeID used to identify the volume in cinder. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
 														type:        "string"
 													}
 												}
@@ -7843,29 +8403,29 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											configMap: {
-												description: "ConfigMap represents a configMap that should populate this volume"
+												description: "configMap represents a configMap that should populate this volume"
 												properties: {
 													defaultMode: {
-														description: "Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+														description: "defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 														format:      "int32"
 														type:        "integer"
 													}
 													items: {
-														description: "If unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+														description: "items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
 														items: {
 															description: "Maps a string key to a path within a volume."
 															properties: {
 																key: {
-																	description: "The key to project."
+																	description: "key is the key to project."
 																	type:        "string"
 																}
 																mode: {
-																	description: "Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+																	description: "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 																	format:      "int32"
 																	type:        "integer"
 																}
 																path: {
-																	description: "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+																	description: "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
 																	type:        "string"
 																}
 															}
@@ -7879,38 +8439,40 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "string"
 													}
 													optional: {
-														description: "Specify whether the ConfigMap or its keys must be defined"
+														description: "optional specify whether the ConfigMap or its keys must be defined"
 														type:        "boolean"
 													}
 												}
-												type: "object"
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
 											}
 											csi: {
-												description: "CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
+												description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
 												properties: {
 													driver: {
-														description: "Driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster."
+														description: "driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster."
 														type:        "string"
 													}
 													fsType: {
-														description: "Filesystem type to mount. Ex. \"ext4\", \"xfs\", \"ntfs\". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply."
+														description: "fsType to mount. Ex. \"ext4\", \"xfs\", \"ntfs\". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply."
 														type:        "string"
 													}
 													nodePublishSecretRef: {
-														description: "NodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and  may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed."
+														description: "nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and  may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed."
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													readOnly: {
-														description: "Specifies a read-only configuration for the volume. Defaults to false (read/write)."
+														description: "readOnly specifies a read-only configuration for the volume. Defaults to false (read/write)."
 														type:        "boolean"
 													}
 													volumeAttributes: {
 														additionalProperties: type: "string"
-														description: "VolumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver's documentation for supported values."
+														description: "volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver's documentation for supported values."
 														type:        "object"
 													}
 												}
@@ -7918,7 +8480,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											downwardAPI: {
-												description: "DownwardAPI represents downward API about the pod that should populate this volume"
+												description: "downwardAPI represents downward API about the pod that should populate this volume"
 												properties: {
 													defaultMode: {
 														description: "Optional: mode bits to use on created files by default. Must be a Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
@@ -7943,7 +8505,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["fieldPath"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																mode: {
 																	description: "Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
@@ -7977,7 +8540,8 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["resource"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 															}
 															required: ["path"]
@@ -7989,10 +8553,10 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											emptyDir: {
-												description: "EmptyDir represents a temporary directory that shares a pod's lifetime. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+												description: "emptyDir represents a temporary directory that shares a pod's lifetime. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 												properties: {
 													medium: {
-														description: "What type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+														description: "medium represents what type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 														type:        "string"
 													}
 													sizeLimit: {
@@ -8001,7 +8565,7 @@ prometheusOperator: CustomResourceDefinition: {
 														}, {
 															type: "string"
 														}]
-														description:                  "Total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
 														pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 														"x-kubernetes-int-or-string": true
 													}
@@ -8010,7 +8574,7 @@ prometheusOperator: CustomResourceDefinition: {
 											}
 											ephemeral: {
 												description: """
-																	Ephemeral represents a volume that is handled by a cluster storage driver. The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed. 
+																	ephemeral represents a volume that is handled by a cluster storage driver. The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed. 
 																	 Use this if: a) the volume is only needed while the pod runs, b) features of normal volumes like restoring from snapshot or capacity tracking are needed, c) the storage driver is specified through a storage class, and d) the storage driver supports dynamic volume provisioning through a PersistentVolumeClaim (see EphemeralVolumeSource for more information on the connection between this volume type and PersistentVolumeClaim). 
 																	 Use PersistentVolumeClaim or one of the vendor-specific APIs for volumes that persist for longer than the lifecycle of an individual pod. 
 																	 Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to be used that way - see the documentation of the driver for more information. 
@@ -8032,12 +8596,12 @@ prometheusOperator: CustomResourceDefinition: {
 															description: "The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here."
 															properties: {
 																accessModes: {
-																	description: "AccessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+																	description: "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
 																	items: type: "string"
 																	type: "array"
 																}
 																dataSource: {
-																	description: "This field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
+																	description: "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the same contents as the DataSourceRef field."
 																	properties: {
 																		apiGroup: {
 																			description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -8053,10 +8617,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["kind", "name"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																dataSourceRef: {
-																	description: "Specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
+																	description: "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any local object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the DataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, both fields (DataSource and DataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. There are two important differences between DataSource and DataSourceRef: * While DataSource only allows two specific types of objects, DataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While DataSource ignores disallowed values (dropping them), DataSourceRef preserves all values, and generates an error if a disallowed value is specified. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled."
 																	properties: {
 																		apiGroup: {
 																			description: "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
@@ -8072,10 +8637,11 @@ prometheusOperator: CustomResourceDefinition: {
 																		}
 																	}
 																	required: ["kind", "name"]
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																resources: {
-																	description: "Resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+																	description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																	properties: {
 																		limits: {
 																			additionalProperties: {
@@ -8107,7 +8673,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "object"
 																}
 																selector: {
-																	description: "A label query over volumes to consider for binding."
+																	description: "selector is a label query over volumes to consider for binding."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -8139,10 +8705,11 @@ prometheusOperator: CustomResourceDefinition: {
 																			type:        "object"
 																		}
 																	}
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																storageClassName: {
-																	description: "Name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																	description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
 																	type:        "string"
 																}
 																volumeMode: {
@@ -8150,7 +8717,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	type:        "string"
 																}
 																volumeName: {
-																	description: "VolumeName is the binding reference to the PersistentVolume backing this claim."
+																	description: "volumeName is the binding reference to the PersistentVolume backing this claim."
 																	type:        "string"
 																}
 															}
@@ -8163,28 +8730,28 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											fc: {
-												description: "FC represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod."
+												description: "fc represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod."
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. TODO: how do we prevent errors in the filesystem from compromising the machine"
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. TODO: how do we prevent errors in the filesystem from compromising the machine"
 														type:        "string"
 													}
 													lun: {
-														description: "Optional: FC target lun number"
+														description: "lun is Optional: FC target lun number"
 														format:      "int32"
 														type:        "integer"
 													}
 													readOnly: {
-														description: "Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													targetWWNs: {
-														description: "Optional: FC target worldwide names (WWNs)"
+														description: "targetWWNs is Optional: FC target worldwide names (WWNs)"
 														items: type: "string"
 														type: "array"
 													}
 													wwids: {
-														description: "Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously."
+														description: "wwids Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously."
 														items: type: "string"
 														type: "array"
 													}
@@ -8192,69 +8759,70 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											flexVolume: {
-												description: "FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin."
+												description: "flexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin."
 												properties: {
 													driver: {
-														description: "Driver is the name of the driver to use for this volume."
+														description: "driver is the name of the driver to use for this volume."
 														type:        "string"
 													}
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". The default filesystem depends on FlexVolume script."
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". The default filesystem depends on FlexVolume script."
 														type:        "string"
 													}
 													options: {
 														additionalProperties: type: "string"
-														description: "Optional: Extra command options if any."
+														description: "options is Optional: this field holds extra command options if any."
 														type:        "object"
 													}
 													readOnly: {
-														description: "Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "Optional: SecretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts."
+														description: "secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts."
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 												}
 												required: ["driver"]
 												type: "object"
 											}
 											flocker: {
-												description: "Flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
+												description: "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
 												properties: {
 													datasetName: {
-														description: "Name of the dataset stored as metadata -> name on the dataset for Flocker should be considered as deprecated"
+														description: "datasetName is Name of the dataset stored as metadata -> name on the dataset for Flocker should be considered as deprecated"
 														type:        "string"
 													}
 													datasetUUID: {
-														description: "UUID of the dataset. This is unique identifier of a Flocker dataset"
+														description: "datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset"
 														type:        "string"
 													}
 												}
 												type: "object"
 											}
 											gcePersistentDisk: {
-												description: "GCEPersistentDisk represents a GCE Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+												description: "gcePersistentDisk represents a GCE Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
 												properties: {
 													fsType: {
-														description: "Filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk TODO: how do we prevent errors in the filesystem from compromising the machine"
+														description: "fsType is filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk TODO: how do we prevent errors in the filesystem from compromising the machine"
 														type:        "string"
 													}
 													partition: {
-														description: "The partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty). More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+														description: "partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty). More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
 														format:      "int32"
 														type:        "integer"
 													}
 													pdName: {
-														description: "Unique name of the PD resource in GCE. Used to identify the disk in GCE. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+														description: "pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
 														type:        "string"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+														description: "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
 														type:        "boolean"
 													}
 												}
@@ -8262,18 +8830,18 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											gitRepo: {
-												description: "GitRepo represents a git repository at a particular revision. DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir into the Pod's container."
+												description: "gitRepo represents a git repository at a particular revision. DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir into the Pod's container."
 												properties: {
 													directory: {
-														description: "Target directory name. Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the git repository.  Otherwise, if specified, the volume will contain the git repository in the subdirectory with the given name."
+														description: "directory is the target directory name. Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the git repository.  Otherwise, if specified, the volume will contain the git repository in the subdirectory with the given name."
 														type:        "string"
 													}
 													repository: {
-														description: "Repository URL"
+														description: "repository is the URL"
 														type:        "string"
 													}
 													revision: {
-														description: "Commit hash for the specified revision."
+														description: "revision is the commit hash for the specified revision."
 														type:        "string"
 													}
 												}
@@ -8281,18 +8849,18 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											glusterfs: {
-												description: "Glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/glusterfs/README.md"
+												description: "glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/glusterfs/README.md"
 												properties: {
 													endpoints: {
-														description: "EndpointsName is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+														description: "endpoints is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
 														type:        "string"
 													}
 													path: {
-														description: "Path is the Glusterfs volume path. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+														description: "path is the Glusterfs volume path. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
 														type:        "string"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+														description: "readOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
 														type:        "boolean"
 													}
 												}
@@ -8300,14 +8868,14 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											hostPath: {
-												description: "HostPath represents a pre-existing file or directory on the host machine that is directly exposed to the container. This is generally used for system agents or other privileged things that are allowed to see the host machine. Most containers will NOT need this. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath --- TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not mount host directories as read/write."
+												description: "hostPath represents a pre-existing file or directory on the host machine that is directly exposed to the container. This is generally used for system agents or other privileged things that are allowed to see the host machine. Most containers will NOT need this. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath --- TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not mount host directories as read/write."
 												properties: {
 													path: {
-														description: "Path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
+														description: "path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
 														type:        "string"
 													}
 													type: {
-														description: "Type for HostPath Volume Defaults to \"\" More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
+														description: "type for HostPath Volume Defaults to \"\" More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
 														type:        "string"
 													}
 												}
@@ -8315,56 +8883,57 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											iscsi: {
-												description: "ISCSI represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://examples.k8s.io/volumes/iscsi/README.md"
+												description: "iscsi represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://examples.k8s.io/volumes/iscsi/README.md"
 												properties: {
 													chapAuthDiscovery: {
-														description: "whether support iSCSI Discovery CHAP authentication"
+														description: "chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication"
 														type:        "boolean"
 													}
 													chapAuthSession: {
-														description: "whether support iSCSI Session CHAP authentication"
+														description: "chapAuthSession defines whether support iSCSI Session CHAP authentication"
 														type:        "boolean"
 													}
 													fsType: {
-														description: "Filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi TODO: how do we prevent errors in the filesystem from compromising the machine"
+														description: "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi TODO: how do we prevent errors in the filesystem from compromising the machine"
 														type:        "string"
 													}
 													initiatorName: {
-														description: "Custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface <target portal>:<volume name> will be created for the connection."
+														description: "initiatorName is the custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface <target portal>:<volume name> will be created for the connection."
 														type:        "string"
 													}
 													iqn: {
-														description: "Target iSCSI Qualified Name."
+														description: "iqn is the target iSCSI Qualified Name."
 														type:        "string"
 													}
 													iscsiInterface: {
-														description: "iSCSI Interface Name that uses an iSCSI transport. Defaults to 'default' (tcp)."
+														description: "iscsiInterface is the interface Name that uses an iSCSI transport. Defaults to 'default' (tcp)."
 														type:        "string"
 													}
 													lun: {
-														description: "iSCSI Target Lun number."
+														description: "lun represents iSCSI Target Lun number."
 														format:      "int32"
 														type:        "integer"
 													}
 													portals: {
-														description: "iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
+														description: "portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
 														items: type: "string"
 														type: "array"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false."
+														description: "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false."
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "CHAP Secret for iSCSI target and initiator authentication"
+														description: "secretRef is the CHAP Secret for iSCSI target and initiator authentication"
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													targetPortal: {
-														description: "iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
+														description: "targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
 														type:        "string"
 													}
 												}
@@ -8372,22 +8941,22 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											name: {
-												description: "Volume's name. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names"
+												description: "name of the volume. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names"
 												type:        "string"
 											}
 											nfs: {
-												description: "NFS represents an NFS mount on the host that shares a pod's lifetime More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+												description: "nfs represents an NFS mount on the host that shares a pod's lifetime More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
 												properties: {
 													path: {
-														description: "Path that is exported by the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+														description: "path that is exported by the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
 														type:        "string"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the NFS export to be mounted with read-only permissions. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+														description: "readOnly here will force the NFS export to be mounted with read-only permissions. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
 														type:        "boolean"
 													}
 													server: {
-														description: "Server is the hostname or IP address of the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+														description: "server is the hostname or IP address of the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
 														type:        "string"
 													}
 												}
@@ -8395,14 +8964,14 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											persistentVolumeClaim: {
-												description: "PersistentVolumeClaimVolumeSource represents a reference to a PersistentVolumeClaim in the same namespace. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
+												description: "persistentVolumeClaimVolumeSource represents a reference to a PersistentVolumeClaim in the same namespace. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
 												properties: {
 													claimName: {
-														description: "ClaimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
+														description: "claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
 														type:        "string"
 													}
 													readOnly: {
-														description: "Will force the ReadOnly setting in VolumeMounts. Default false."
+														description: "readOnly Will force the ReadOnly setting in VolumeMounts. Default false."
 														type:        "boolean"
 													}
 												}
@@ -8410,14 +8979,14 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											photonPersistentDisk: {
-												description: "PhotonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
+												description: "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
 														type:        "string"
 													}
 													pdID: {
-														description: "ID that identifies Photon Controller persistent disk"
+														description: "pdID is the ID that identifies Photon Controller persistent disk"
 														type:        "string"
 													}
 												}
@@ -8425,18 +8994,18 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											portworxVolume: {
-												description: "PortworxVolume represents a portworx volume attached and mounted on kubelets host machine"
+												description: "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
 												properties: {
 													fsType: {
-														description: "FSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\". Implicitly inferred to be \"ext4\" if unspecified."
+														description: "fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\". Implicitly inferred to be \"ext4\" if unspecified."
 														type:        "string"
 													}
 													readOnly: {
-														description: "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													volumeID: {
-														description: "VolumeID uniquely identifies a Portworx volume"
+														description: "volumeID uniquely identifies a Portworx volume"
 														type:        "string"
 													}
 												}
@@ -8444,37 +9013,37 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											projected: {
-												description: "Items for all in one resources secrets, configmaps, and downward API"
+												description: "projected items for all in one resources secrets, configmaps, and downward API"
 												properties: {
 													defaultMode: {
-														description: "Mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+														description: "defaultMode are the mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 														format:      "int32"
 														type:        "integer"
 													}
 													sources: {
-														description: "list of volume projections"
+														description: "sources is the list of volume projections"
 														items: {
 															description: "Projection that may be projected along with other supported volume types"
 															properties: {
 																configMap: {
-																	description: "information about the configMap data to project"
+																	description: "configMap information about the configMap data to project"
 																	properties: {
 																		items: {
-																			description: "If unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+																			description: "items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
 																			items: {
 																				description: "Maps a string key to a path within a volume."
 																				properties: {
 																					key: {
-																						description: "The key to project."
+																						description: "key is the key to project."
 																						type:        "string"
 																					}
 																					mode: {
-																						description: "Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+																						description: "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 																						format:      "int32"
 																						type:        "integer"
 																					}
 																					path: {
-																						description: "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+																						description: "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
 																						type:        "string"
 																					}
 																				}
@@ -8488,14 +9057,15 @@ prometheusOperator: CustomResourceDefinition: {
 																			type:        "string"
 																		}
 																		optional: {
-																			description: "Specify whether the ConfigMap or its keys must be defined"
+																			description: "optional specify whether the ConfigMap or its keys must be defined"
 																			type:        "boolean"
 																		}
 																	}
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																downwardAPI: {
-																	description: "information about the downwardAPI data to project"
+																	description: "downwardAPI information about the downwardAPI data to project"
 																	properties: items: {
 																		description: "Items is a list of DownwardAPIVolume file"
 																		items: {
@@ -8514,7 +9084,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["fieldPath"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																				mode: {
 																					description: "Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
@@ -8548,7 +9119,8 @@ prometheusOperator: CustomResourceDefinition: {
 																						}
 																					}
 																					required: ["resource"]
-																					type: "object"
+																					type:                    "object"
+																					"x-kubernetes-map-type": "atomic"
 																				}
 																			}
 																			required: ["path"]
@@ -8559,24 +9131,24 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "object"
 																}
 																secret: {
-																	description: "information about the secret data to project"
+																	description: "secret information about the secret data to project"
 																	properties: {
 																		items: {
-																			description: "If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+																			description: "items if unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
 																			items: {
 																				description: "Maps a string key to a path within a volume."
 																				properties: {
 																					key: {
-																						description: "The key to project."
+																						description: "key is the key to project."
 																						type:        "string"
 																					}
 																					mode: {
-																						description: "Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+																						description: "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 																						format:      "int32"
 																						type:        "integer"
 																					}
 																					path: {
-																						description: "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+																						description: "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
 																						type:        "string"
 																					}
 																				}
@@ -8590,26 +9162,27 @@ prometheusOperator: CustomResourceDefinition: {
 																			type:        "string"
 																		}
 																		optional: {
-																			description: "Specify whether the Secret or its key must be defined"
+																			description: "optional field specify whether the Secret or its key must be defined"
 																			type:        "boolean"
 																		}
 																	}
-																	type: "object"
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
 																}
 																serviceAccountToken: {
-																	description: "information about the serviceAccountToken data to project"
+																	description: "serviceAccountToken is information about the serviceAccountToken data to project"
 																	properties: {
 																		audience: {
-																			description: "Audience is the intended audience of the token. A recipient of a token must identify itself with an identifier specified in the audience of the token, and otherwise should reject the token. The audience defaults to the identifier of the apiserver."
+																			description: "audience is the intended audience of the token. A recipient of a token must identify itself with an identifier specified in the audience of the token, and otherwise should reject the token. The audience defaults to the identifier of the apiserver."
 																			type:        "string"
 																		}
 																		expirationSeconds: {
-																			description: "ExpirationSeconds is the requested duration of validity of the service account token. As the token approaches expiration, the kubelet volume plugin will proactively rotate the service account token. The kubelet will start trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours.Defaults to 1 hour and must be at least 10 minutes."
+																			description: "expirationSeconds is the requested duration of validity of the service account token. As the token approaches expiration, the kubelet volume plugin will proactively rotate the service account token. The kubelet will start trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours.Defaults to 1 hour and must be at least 10 minutes."
 																			format:      "int64"
 																			type:        "integer"
 																		}
 																		path: {
-																			description: "Path is the path relative to the mount point of the file to project the token into."
+																			description: "path is the path relative to the mount point of the file to project the token into."
 																			type:        "string"
 																		}
 																	}
@@ -8625,30 +9198,30 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											quobyte: {
-												description: "Quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
+												description: "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
 												properties: {
 													group: {
-														description: "Group to map volume access to Default is no group"
+														description: "group to map volume access to Default is no group"
 														type:        "string"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false."
+														description: "readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false."
 														type:        "boolean"
 													}
 													registry: {
-														description: "Registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes"
+														description: "registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes"
 														type:        "string"
 													}
 													tenant: {
-														description: "Tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin"
+														description: "tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin"
 														type:        "string"
 													}
 													user: {
-														description: "User to map volume access to Defaults to serivceaccount user"
+														description: "user to map volume access to Defaults to serivceaccount user"
 														type:        "string"
 													}
 													volume: {
-														description: "Volume is a string that references an already created Quobyte volume by name."
+														description: "volume is a string that references an already created Quobyte volume by name."
 														type:        "string"
 													}
 												}
@@ -8656,43 +9229,44 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											rbd: {
-												description: "RBD represents a Rados Block Device mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/rbd/README.md"
+												description: "rbd represents a Rados Block Device mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/rbd/README.md"
 												properties: {
 													fsType: {
-														description: "Filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd TODO: how do we prevent errors in the filesystem from compromising the machine"
+														description: "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd TODO: how do we prevent errors in the filesystem from compromising the machine"
 														type:        "string"
 													}
 													image: {
-														description: "The rados image name. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "image is the rados image name. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														type:        "string"
 													}
 													keyring: {
-														description: "Keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														type:        "string"
 													}
 													monitors: {
-														description: "A collection of Ceph monitors. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "monitors is a collection of Ceph monitors. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														items: type: "string"
 														type: "array"
 													}
 													pool: {
-														description: "The rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "pool is the rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														type:        "string"
 													}
 													readOnly: {
-														description: "ReadOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "SecretRef is name of the authentication secret for RBDUser. If provided overrides keyring. Default is nil. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "secretRef is name of the authentication secret for RBDUser. If provided overrides keyring. Default is nil. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													user: {
-														description: "The rados user name. Default is admin. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+														description: "user is the rados user name. Default is admin. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
 														type:        "string"
 													}
 												}
@@ -8700,50 +9274,51 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											scaleIO: {
-												description: "ScaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
+												description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Default is \"xfs\"."
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Default is \"xfs\"."
 														type:        "string"
 													}
 													gateway: {
-														description: "The host address of the ScaleIO API Gateway."
+														description: "gateway is the host address of the ScaleIO API Gateway."
 														type:        "string"
 													}
 													protectionDomain: {
-														description: "The name of the ScaleIO Protection Domain for the configured storage."
+														description: "protectionDomain is the name of the ScaleIO Protection Domain for the configured storage."
 														type:        "string"
 													}
 													readOnly: {
-														description: "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "SecretRef references to the secret for ScaleIO user and other sensitive information. If this is not provided, Login operation will fail."
+														description: "secretRef references to the secret for ScaleIO user and other sensitive information. If this is not provided, Login operation will fail."
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													sslEnabled: {
-														description: "Flag to enable/disable SSL communication with Gateway, default false"
+														description: "sslEnabled Flag enable/disable SSL communication with Gateway, default false"
 														type:        "boolean"
 													}
 													storageMode: {
-														description: "Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned."
+														description: "storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned."
 														type:        "string"
 													}
 													storagePool: {
-														description: "The ScaleIO Storage Pool associated with the protection domain."
+														description: "storagePool is the ScaleIO Storage Pool associated with the protection domain."
 														type:        "string"
 													}
 													system: {
-														description: "The name of the storage system as configured in ScaleIO."
+														description: "system is the name of the storage system as configured in ScaleIO."
 														type:        "string"
 													}
 													volumeName: {
-														description: "The name of a volume already created in the ScaleIO system that is associated with this volume source."
+														description: "volumeName is the name of a volume already created in the ScaleIO system that is associated with this volume source."
 														type:        "string"
 													}
 												}
@@ -8751,29 +9326,29 @@ prometheusOperator: CustomResourceDefinition: {
 												type: "object"
 											}
 											secret: {
-												description: "Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
+												description: "secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
 												properties: {
 													defaultMode: {
-														description: "Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+														description: "defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 														format:      "int32"
 														type:        "integer"
 													}
 													items: {
-														description: "If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+														description: "items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
 														items: {
 															description: "Maps a string key to a path within a volume."
 															properties: {
 																key: {
-																	description: "The key to project."
+																	description: "key is the key to project."
 																	type:        "string"
 																}
 																mode: {
-																	description: "Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+																	description: "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
 																	format:      "int32"
 																	type:        "integer"
 																}
 																path: {
-																	description: "The relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+																	description: "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
 																	type:        "string"
 																}
 															}
@@ -8783,63 +9358,64 @@ prometheusOperator: CustomResourceDefinition: {
 														type: "array"
 													}
 													optional: {
-														description: "Specify whether the Secret or its keys must be defined"
+														description: "optional field specify whether the Secret or its keys must be defined"
 														type:        "boolean"
 													}
 													secretName: {
-														description: "Name of the secret in the pod's namespace to use. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
+														description: "secretName is the name of the secret in the pod's namespace to use. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
 														type:        "string"
 													}
 												}
 												type: "object"
 											}
 											storageos: {
-												description: "StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
+												description: "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+														description: "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
 														type:        "string"
 													}
 													readOnly: {
-														description: "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+														description: "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
 														type:        "boolean"
 													}
 													secretRef: {
-														description: "SecretRef specifies the secret to use for obtaining the StorageOS API credentials.  If not specified, default values will be attempted."
+														description: "secretRef specifies the secret to use for obtaining the StorageOS API credentials.  If not specified, default values will be attempted."
 														properties: name: {
 															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
 															type:        "string"
 														}
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													volumeName: {
-														description: "VolumeName is the human-readable name of the StorageOS volume.  Volume names are only unique within a namespace."
+														description: "volumeName is the human-readable name of the StorageOS volume.  Volume names are only unique within a namespace."
 														type:        "string"
 													}
 													volumeNamespace: {
-														description: "VolumeNamespace specifies the scope of the volume within StorageOS.  If no namespace is specified then the Pod's namespace will be used.  This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to \"default\" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created."
+														description: "volumeNamespace specifies the scope of the volume within StorageOS.  If no namespace is specified then the Pod's namespace will be used.  This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to \"default\" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created."
 														type:        "string"
 													}
 												}
 												type: "object"
 											}
 											vsphereVolume: {
-												description: "VsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+												description: "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
 												properties: {
 													fsType: {
-														description: "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+														description: "fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
 														type:        "string"
 													}
 													storagePolicyID: {
-														description: "Storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName."
+														description: "storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName."
 														type:        "string"
 													}
 													storagePolicyName: {
-														description: "Storage Policy Based Management (SPBM) profile name."
+														description: "storagePolicyName is the storage Policy Based Management (SPBM) profile name."
 														type:        "string"
 													}
 													volumePath: {
-														description: "Path that identifies vSphere volume vmdk"
+														description: "volumePath is the path that identifies vSphere volume vmdk"
 														type:        "string"
 													}
 												}
@@ -8851,6 +9427,195 @@ prometheusOperator: CustomResourceDefinition: {
 										type: "object"
 									}
 									type: "array"
+								}
+								web: {
+									description: "Defines the web command line flags when starting Alertmanager."
+									properties: {
+										httpConfig: {
+											description: "Defines HTTP parameters for web server."
+											properties: {
+												headers: {
+													description: "List of headers that can be added to HTTP responses."
+													properties: {
+														contentSecurityPolicy: {
+															description: "Set the Content-Security-Policy header to HTTP responses. Unset if blank."
+															type:        "string"
+														}
+														strictTransportSecurity: {
+															description: "Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"
+															type:        "string"
+														}
+														xContentTypeOptions: {
+															description: "Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
+															enum: ["", "NoSniff"]
+															type: "string"
+														}
+														xFrameOptions: {
+															description: "Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options"
+															enum: ["", "Deny", "SameOrigin"]
+															type: "string"
+														}
+														xXSSProtection: {
+															description: "Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection"
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												http2: {
+													description: "Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered."
+													type:        "boolean"
+												}
+											}
+											type: "object"
+										}
+										tlsConfig: {
+											description: "Defines the TLS parameters for HTTPS."
+											properties: {
+												cert: {
+													description: "Contains the TLS certificate for the server."
+													properties: {
+														configMap: {
+															description: "ConfigMap containing data to use for the targets."
+															properties: {
+																key: {
+																	description: "The key to select."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the ConfigMap or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														secret: {
+															description: "Secret containing data to use for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												cipherSuites: {
+													description: "List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants"
+													items: type: "string"
+													type: "array"
+												}
+												clientAuthType: {
+													description: "Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType"
+													type:        "string"
+												}
+												client_ca: {
+													description: "Contains the CA certificate for client certificate authentication to the server."
+													properties: {
+														configMap: {
+															description: "ConfigMap containing data to use for the targets."
+															properties: {
+																key: {
+																	description: "The key to select."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the ConfigMap or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														secret: {
+															description: "Secret containing data to use for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												curvePreferences: {
+													description: "Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID"
+													items: type: "string"
+													type: "array"
+												}
+												keySecret: {
+													description: "Secret containing the TLS key for the server."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												maxVersion: {
+													description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+													type:        "string"
+												}
+												minVersion: {
+													description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+													type:        "string"
+												}
+												preferServerCipherSuites: {
+													description: "Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used."
+													type:        "boolean"
+												}
+											}
+											required: ["cert", "keySecret"]
+											type: "object"
+										}
+									}
+									type: "object"
 								}
 							}
 							type: "object"
@@ -8895,20 +9660,12 @@ prometheusOperator: CustomResourceDefinition: {
 				subresources: {}
 			}]
 		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
-		}
 	}
 	"podmonitors.monitoring.coreos.com": {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "podmonitors.monitoring.coreos.com"
 		}
@@ -9009,7 +9766,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													type: {
 														description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -9038,7 +9796,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													username: {
 														description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -9057,7 +9816,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 												}
 												type: "object"
@@ -9079,7 +9839,16 @@ prometheusOperator: CustomResourceDefinition: {
 													}
 												}
 												required: ["key"]
-												type: "object"
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											enableHttp2: {
+												description: "Whether to enable HTTP2."
+												type:        "boolean"
+											}
+											filterRunning: {
+												description: "Drop pods that are not running. (Failed, Succeeded). Enabled by default. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase"
+												type:        "boolean"
 											}
 											followRedirects: {
 												description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
@@ -9105,8 +9874,8 @@ prometheusOperator: CustomResourceDefinition: {
 													properties: {
 														action: {
 															default:     "replace"
-															description: "Action to perform based on regex matching. Default is 'replace'"
-															enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+															description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+															enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 															type: "string"
 														}
 														modulus: {
@@ -9167,7 +9936,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -9186,7 +9956,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -9208,7 +9979,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													endpointParams: {
 														additionalProperties: type: "string"
@@ -9238,7 +10010,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "object"
 											}
 											path: {
-												description: "HTTP path to scrape for metrics."
+												description: "HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. `/metrics`)."
 												type:        "string"
 											}
 											port: {
@@ -9256,8 +10028,8 @@ prometheusOperator: CustomResourceDefinition: {
 													properties: {
 														action: {
 															default:     "replace"
-															description: "Action to perform based on regex matching. Default is 'replace'"
-															enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+															description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+															enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 															type: "string"
 														}
 														modulus: {
@@ -9336,7 +10108,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -9355,7 +10128,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -9380,7 +10154,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -9399,7 +10174,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -9425,7 +10201,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													serverName: {
 														description: "Used to verify the hostname for the targets."
@@ -9482,7 +10259,8 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "object"
 										}
 									}
-									type: "object"
+									type:                    "object"
+									"x-kubernetes-map-type": "atomic"
 								}
 								targetLimit: {
 									description: "TargetLimit defines a limit on the number of scraped targets that will be accepted."
@@ -9501,20 +10279,12 @@ prometheusOperator: CustomResourceDefinition: {
 				storage: true
 			}]
 		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
-		}
 	}
 	"probes.monitoring.coreos.com": {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "probes.monitoring.coreos.com"
 		}
@@ -9568,7 +10338,8 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 											}
 											required: ["key"]
-											type: "object"
+											type:                    "object"
+											"x-kubernetes-map-type": "atomic"
 										}
 										type: {
 											description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -9597,7 +10368,8 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 											}
 											required: ["key"]
-											type: "object"
+											type:                    "object"
+											"x-kubernetes-map-type": "atomic"
 										}
 										username: {
 											description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -9616,7 +10388,8 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 											}
 											required: ["key"]
-											type: "object"
+											type:                    "object"
+											"x-kubernetes-map-type": "atomic"
 										}
 									}
 									type: "object"
@@ -9638,7 +10411,8 @@ prometheusOperator: CustomResourceDefinition: {
 										}
 									}
 									required: ["key"]
-									type: "object"
+									type:                    "object"
+									"x-kubernetes-map-type": "atomic"
 								}
 								interval: {
 									description: "Interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used."
@@ -9671,8 +10445,8 @@ prometheusOperator: CustomResourceDefinition: {
 										properties: {
 											action: {
 												default:     "replace"
-												description: "Action to perform based on regex matching. Default is 'replace'"
-												enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+												description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+												enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 												type: "string"
 											}
 											modulus: {
@@ -9737,7 +10511,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 												secret: {
 													description: "Secret containing data to use for the targets."
@@ -9756,7 +10531,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -9778,7 +10554,8 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 											}
 											required: ["key"]
-											type: "object"
+											type:                    "object"
+											"x-kubernetes-map-type": "atomic"
 										}
 										endpointParams: {
 											additionalProperties: type: "string"
@@ -9803,6 +10580,7 @@ prometheusOperator: CustomResourceDefinition: {
 									description: "Specification for the prober to use for probing targets. The prober.URL parameter is required. Targets cannot be probed if left empty."
 									properties: {
 										path: {
+											default:     "/probe"
 											description: "Path to collect metrics from. Defaults to `/probe`."
 											type:        "string"
 										}
@@ -9865,8 +10643,8 @@ prometheusOperator: CustomResourceDefinition: {
 														properties: {
 															action: {
 																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'"
-																enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 																type: "string"
 															}
 															modulus: {
@@ -9937,7 +10715,8 @@ prometheusOperator: CustomResourceDefinition: {
 															type:        "object"
 														}
 													}
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -9957,8 +10736,8 @@ prometheusOperator: CustomResourceDefinition: {
 														properties: {
 															action: {
 																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'"
-																enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 																type: "string"
 															}
 															modulus: {
@@ -10030,7 +10809,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 												secret: {
 													description: "Secret containing data to use for the targets."
@@ -10049,7 +10829,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -10074,7 +10855,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 												secret: {
 													description: "Secret containing data to use for the targets."
@@ -10093,7 +10875,8 @@ prometheusOperator: CustomResourceDefinition: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -10119,7 +10902,8 @@ prometheusOperator: CustomResourceDefinition: {
 												}
 											}
 											required: ["key"]
-											type: "object"
+											type:                    "object"
+											"x-kubernetes-map-type": "atomic"
 										}
 										serverName: {
 											description: "Used to verify the hostname for the targets."
@@ -10139,20 +10923,12 @@ prometheusOperator: CustomResourceDefinition: {
 				storage: true
 			}]
 		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
-		}
 	}
 	"prometheusrules.monitoring.coreos.com": {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "prometheusrules.monitoring.coreos.com"
 		}
@@ -10236,20 +11012,12 @@ prometheusOperator: CustomResourceDefinition: {
 				storage: true
 			}]
 		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
-		}
 	}
 	"servicemonitors.monitoring.coreos.com": {
 		apiVersion: "apiextensions.k8s.io/v1"
 		kind:       "CustomResourceDefinition"
 		metadata: {
-			annotations: "controller-gen.kubebuilder.io/version": "v0.8.0"
+			annotations: "controller-gen.kubebuilder.io/version": "v0.9.2"
 			creationTimestamp: null
 			name:              "servicemonitors.monitoring.coreos.com"
 		}
@@ -10308,7 +11076,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													type: {
 														description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
@@ -10337,7 +11106,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													username: {
 														description: "The secret in the service monitor namespace that contains the username for authentication."
@@ -10356,7 +11126,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 												}
 												type: "object"
@@ -10382,7 +11153,12 @@ prometheusOperator: CustomResourceDefinition: {
 													}
 												}
 												required: ["key"]
-												type: "object"
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											enableHttp2: {
+												description: "Whether to enable HTTP2."
+												type:        "boolean"
 											}
 											followRedirects: {
 												description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
@@ -10408,8 +11184,8 @@ prometheusOperator: CustomResourceDefinition: {
 													properties: {
 														action: {
 															default:     "replace"
-															description: "Action to perform based on regex matching. Default is 'replace'"
-															enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+															description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+															enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 															type: "string"
 														}
 														modulus: {
@@ -10470,7 +11246,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -10489,7 +11266,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -10511,7 +11289,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													endpointParams: {
 														additionalProperties: type: "string"
@@ -10541,7 +11320,7 @@ prometheusOperator: CustomResourceDefinition: {
 												type:        "object"
 											}
 											path: {
-												description: "HTTP path to scrape for metrics."
+												description: "HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. `/metrics`)."
 												type:        "string"
 											}
 											port: {
@@ -10559,8 +11338,8 @@ prometheusOperator: CustomResourceDefinition: {
 													properties: {
 														action: {
 															default:     "replace"
-															description: "Action to perform based on regex matching. Default is 'replace'"
-															enum: ["replace", "keep", "drop", "hashmod", "labelmap", "labeldrop", "labelkeep"]
+															description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+															enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase"]
 															type: "string"
 														}
 														modulus: {
@@ -10639,7 +11418,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -10658,7 +11438,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -10687,7 +11468,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															secret: {
 																description: "Secret containing data to use for the targets."
@@ -10706,7 +11488,8 @@ prometheusOperator: CustomResourceDefinition: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -10740,7 +11523,8 @@ prometheusOperator: CustomResourceDefinition: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													serverName: {
 														description: "Used to verify the hostname for the targets."
@@ -10756,8 +11540,9 @@ prometheusOperator: CustomResourceDefinition: {
 								}
 								jobLabel: {
 									description: """
-														Chooses the label of the Kubernetes `Endpoints`. Its value will be used for the `job`-label's value of the created metrics. 
-														 Default & fallback value: the name of the respective Kubernetes `Endpoint`.
+														JobLabel selects the label from the associated Kubernetes service which will be used as the `job` label for all metrics. 
+														 For example: If in `ServiceMonitor.spec.jobLabel: foo` and in `Service.metadata.labels.foo: bar`, then the `job="bar"` label is added to all metrics. 
+														 If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the Kubernetes Service.
 														"""
 									type: "string"
 								}
@@ -10834,7 +11619,8 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "object"
 										}
 									}
-									type: "object"
+									type:                    "object"
+									"x-kubernetes-map-type": "atomic"
 								}
 								targetLabels: {
 									description: "TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics."
@@ -10857,14 +11643,6 @@ prometheusOperator: CustomResourceDefinition: {
 				served:  true
 				storage: true
 			}]
-		}
-		status: {
-			acceptedNames: {
-				kind:   ""
-				plural: ""
-			}
-			conditions: []
-			storedVersions: []
 		}
 	}
 }
