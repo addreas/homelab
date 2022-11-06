@@ -40,6 +40,7 @@ k: VMAgent: "main": spec: {
 		"\(type)Selector": {}
 		"\(type)NamespaceSelector": {}
 	}
+	selectAllByDefault: true
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "vmagent"
 	replicaCount: 1
 	resources: {

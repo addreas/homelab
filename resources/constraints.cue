@@ -80,7 +80,7 @@ k: Service: [Name=string]: {
 }
 
 k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=string]: {
-	_selector: _ | *{app: Name}
+	_selector: _ | *close({app: Name})
 	metadata: labels: _selector
 	spec: selector:   _ | *close({
 		matchLabels: _selector
