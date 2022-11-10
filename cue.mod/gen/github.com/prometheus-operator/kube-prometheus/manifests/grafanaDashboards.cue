@@ -20147,12 +20147,12 @@ grafanaDashboards: {
 					expr: """
 						sum without (device) (
 						  max without (fstype, mountpoint) ((
-						    node_filesystem_size_bytes{job="node-exporter", fstype!="", cluster="$cluster"}
+						    node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
 						    -
-						    node_filesystem_avail_bytes{job="node-exporter", fstype!="", cluster="$cluster"}
+						    node_filesystem_avail_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
 						  ) != 0)
 						)
-						/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job="node-exporter", fstype!="", cluster="$cluster"})))
+						/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"})))
 
 						"""
 					format:         "time_series"
@@ -21644,7 +21644,7 @@ grafanaDashboards: {
 				span: 6
 				targets: [{
 					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!=""})
+						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -21653,7 +21653,7 @@ grafanaDashboards: {
 					legendFormat:   ""
 				}, {
 					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!=""})
+						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -22478,7 +22478,7 @@ grafanaDashboards: {
 				span: 6
 				targets: [{
 					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!=""})
+						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -22487,7 +22487,7 @@ grafanaDashboards: {
 					legendFormat:   ""
 				}, {
 					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!=""})
+						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"

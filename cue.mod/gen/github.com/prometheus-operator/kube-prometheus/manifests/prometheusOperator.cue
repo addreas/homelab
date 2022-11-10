@@ -313,7 +313,7 @@ prometheusOperator: CustomResourceDefinition: {
 															description: "TLS configuration"
 															properties: {
 																ca: {
-																	description: "Struct containing the CA cert to use for the targets."
+																	description: "Certificate authority used when verifying server certificates."
 																	properties: {
 																		configMap: {
 																			description: "ConfigMap containing data to use for the targets."
@@ -359,7 +359,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "object"
 																}
 																cert: {
-																	description: "Struct containing the client cert file for the targets."
+																	description: "Client certificate to present when doing client-authentication."
 																	properties: {
 																		configMap: {
 																			description: "ConfigMap containing data to use for the targets."
@@ -707,7 +707,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -753,7 +753,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -1141,7 +1141,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -1187,7 +1187,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -1573,7 +1573,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -1619,7 +1619,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2061,7 +2061,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2107,7 +2107,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2422,7 +2422,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2468,7 +2468,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2869,7 +2869,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -2915,7 +2915,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -3262,7 +3262,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -3308,7 +3308,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -3615,7 +3615,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -3661,7 +3661,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -4009,7 +4009,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	description: "TLS configuration for the client."
 																	properties: {
 																		ca: {
-																			description: "Struct containing the CA cert to use for the targets."
+																			description: "Certificate authority used when verifying server certificates."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -4055,7 +4055,7 @@ prometheusOperator: CustomResourceDefinition: {
 																			type: "object"
 																		}
 																		cert: {
-																			description: "Struct containing the client cert file for the targets."
+																			description: "Client certificate to present when doing client-authentication."
 																			properties: {
 																				configMap: {
 																					description: "ConfigMap containing data to use for the targets."
@@ -5132,7 +5132,7 @@ prometheusOperator: CustomResourceDefinition: {
 															description: "TLS configuration for the client."
 															properties: {
 																ca: {
-																	description: "Struct containing the CA cert to use for the targets."
+																	description: "Certificate authority used when verifying server certificates."
 																	properties: {
 																		configMap: {
 																			description: "ConfigMap containing data to use for the targets."
@@ -5178,7 +5178,7 @@ prometheusOperator: CustomResourceDefinition: {
 																	type: "object"
 																}
 																cert: {
-																	description: "Struct containing the client cert file for the targets."
+																	description: "Client certificate to present when doing client-authentication."
 																	properties: {
 																		configMap: {
 																			description: "ConfigMap containing data to use for the targets."
@@ -5354,8 +5354,8 @@ prometheusOperator: CustomResourceDefinition: {
 								configSecret: {
 									description: """
 														ConfigSecret is the name of a Kubernetes Secret in the same namespace as the Alertmanager object, which contains the configuration for this Alertmanager instance. If empty, it defaults to `alertmanager-<alertmanager-name>`. 
-														 The Alertmanager configuration should be available under the `alertmanager.yaml` key. Additional keys from the original secret are copied to the generated secret. 
-														 If either the secret or the `alertmanager.yaml` key is missing, the operator provisions an Alertmanager configuration with one empty receiver (effectively dropping alert notifications).
+														 The Alertmanager configuration should be available under the `alertmanager.yaml` key. Additional keys from the original secret are copied to the generated secret and mounted into the `/etc/alertmanager/config` directory in the `alertmanager` container. 
+														 If either the secret or the `alertmanager.yaml` key is missing, the operator provisions a minimal Alertmanager configuration with one empty receiver (effectively dropping alert notifications).
 														"""
 									type: "string"
 								}
@@ -10089,7 +10089,7 @@ prometheusOperator: CustomResourceDefinition: {
 												description: "TLS configuration to use when scraping the endpoint."
 												properties: {
 													ca: {
-														description: "Struct containing the CA cert to use for the targets."
+														description: "Certificate authority used when verifying server certificates."
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -10135,7 +10135,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type: "object"
 													}
 													cert: {
-														description: "Struct containing the client cert file for the targets."
+														description: "Client certificate to present when doing client-authentication."
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -10790,7 +10790,7 @@ prometheusOperator: CustomResourceDefinition: {
 									description: "TLS configuration to use when scraping the endpoint."
 									properties: {
 										ca: {
-											description: "Struct containing the CA cert to use for the targets."
+											description: "Certificate authority used when verifying server certificates."
 											properties: {
 												configMap: {
 													description: "ConfigMap containing data to use for the targets."
@@ -10836,7 +10836,7 @@ prometheusOperator: CustomResourceDefinition: {
 											type: "object"
 										}
 										cert: {
-											description: "Struct containing the client cert file for the targets."
+											description: "Client certificate to present when doing client-authentication."
 											properties: {
 												configMap: {
 													description: "ConfigMap containing data to use for the targets."
@@ -10962,19 +10962,37 @@ prometheusOperator: CustomResourceDefinition: {
 							properties: groups: {
 								description: "Content of Prometheus rule file"
 								items: {
-									description: "RuleGroup is a list of sequentially evaluated recording and alerting rules. Note: PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances.  Valid values for this field are 'warn' or 'abort'.  More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response"
+									description: "RuleGroup is a list of sequentially evaluated recording and alerting rules."
 									properties: {
-										interval: type: "string"
-										name: type: "string"
-										partial_response_strategy: type: "string"
+										interval: {
+											description: "Interval determines how often rules in the group are evaluated."
+											pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+											type:        "string"
+										}
+										name: {
+											description: "Name of the rule group."
+											minLength:   1
+											type:        "string"
+										}
+										partial_response_strategy: {
+											default:     ""
+											description: "PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response"
+											pattern:     "^(?i)(abort|warn)?$"
+											type:        "string"
+										}
 										rules: {
+											description: "List of alerting and recording rules."
 											items: {
 												description: "Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule"
 												properties: {
-													alert: type: "string"
+													alert: {
+														description: "Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set."
+														type:        "string"
+													}
 													annotations: {
 														additionalProperties: type: "string"
-														type: "object"
+														description: "Annotations to add to each alert. Only valid for alerting rules."
+														type:        "object"
 													}
 													expr: {
 														anyOf: [{
@@ -10982,14 +11000,23 @@ prometheusOperator: CustomResourceDefinition: {
 														}, {
 															type: "string"
 														}]
+														description:                  "PromQL expression to evaluate."
 														"x-kubernetes-int-or-string": true
 													}
-													for: type: "string"
+													for: {
+														description: "Alerts are considered firing once they have been returned for this long."
+														pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+														type:        "string"
+													}
 													labels: {
 														additionalProperties: type: "string"
-														type: "object"
+														description: "Labels to add or overwrite."
+														type:        "object"
 													}
-													record: type: "string"
+													record: {
+														description: "Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set."
+														type:        "string"
+													}
 												}
 												required: ["expr"]
 												type: "object"
@@ -11001,6 +11028,8 @@ prometheusOperator: CustomResourceDefinition: {
 									type: "object"
 								}
 								type: "array"
+								"x-kubernetes-list-map-keys": ["name"]
+								"x-kubernetes-list-type": "map"
 							}
 							type: "object"
 						}
@@ -11399,7 +11428,7 @@ prometheusOperator: CustomResourceDefinition: {
 												description: "TLS configuration to use when scraping the endpoint"
 												properties: {
 													ca: {
-														description: "Struct containing the CA cert to use for the targets."
+														description: "Certificate authority used when verifying server certificates."
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -11449,7 +11478,7 @@ prometheusOperator: CustomResourceDefinition: {
 														type:        "string"
 													}
 													cert: {
-														description: "Struct containing the client cert file for the targets."
+														description: "Client certificate to present when doing client-authentication."
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."

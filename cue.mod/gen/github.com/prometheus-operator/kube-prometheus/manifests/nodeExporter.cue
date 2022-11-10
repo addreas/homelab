@@ -230,11 +230,11 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 15
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 15
 					and
-					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 24*60*60) < 0
+					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""}[6h], 24*60*60) < 0
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -249,11 +249,11 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 10
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 10
 					and
-					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 4*60*60) < 0
+					  predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""}[6h], 4*60*60) < 0
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -268,9 +268,9 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 5
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 5
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -285,9 +285,9 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 3
+					  node_filesystem_avail_bytes{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 3
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -302,11 +302,11 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 40
+					  node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_files{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 40
 					and
-					  predict_linear(node_filesystem_files_free{job="node-exporter",fstype!=""}[6h], 24*60*60) < 0
+					  predict_linear(node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""}[6h], 24*60*60) < 0
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -321,11 +321,11 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 20
+					  node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_files{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 20
 					and
-					  predict_linear(node_filesystem_files_free{job="node-exporter",fstype!=""}[6h], 4*60*60) < 0
+					  predict_linear(node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""}[6h], 4*60*60) < 0
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -340,9 +340,9 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 5
+					  node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_files{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 5
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""
@@ -357,9 +357,9 @@ nodeExporter: {
 				}
 				expr: """
 					(
-					  node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 3
+					  node_filesystem_files_free{job="node-exporter",fstype!="",mountpoint!=""} / node_filesystem_files{job="node-exporter",fstype!="",mountpoint!=""} * 100 < 3
 					and
-					  node_filesystem_readonly{job="node-exporter",fstype!=""} == 0
+					  node_filesystem_readonly{job="node-exporter",fstype!="",mountpoint!=""} == 0
 					)
 
 					"""

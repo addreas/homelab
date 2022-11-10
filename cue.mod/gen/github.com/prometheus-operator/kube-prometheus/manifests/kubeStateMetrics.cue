@@ -130,7 +130,7 @@ kubeStateMetrics: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--host=127.0.0.1", "--port=8081", "--telemetry-host=127.0.0.1", "--telemetry-port=8082"]
-						image: "k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.6.0"
+						image: "registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.6.0"
 						name:  "kube-state-metrics"
 						resources: {
 							limits: {
