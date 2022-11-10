@@ -128,6 +128,7 @@ command: "flux-bootstrap": exec.Run & {
 
 	if hasExisting {
 		makeOptionals: exec.Run & {
+			$after: [content]
 			cmd: ["sed", "-i", #"s/ "/_ \| \*"/"#, filename]
 			success: true
 		}

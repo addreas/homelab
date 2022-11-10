@@ -11,6 +11,8 @@ import (
 
 #WriteTags: #WriteGeneratedCue & {filename: "tags.cue"}
 
+githubBearerToken: string @tag(githubToken)
+
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
 command: "update-github-tags": {
 	let releaseKeys = list.SortStrings([ for k, v in githubReleases {k}])
@@ -21,6 +23,9 @@ command: "update-github-tags": {
 
 				req: http.Get & {
 					url: "https://api.github.com/repos/\(r)/releases"
+					if githubBearerToken != _|_ {
+						request: header: Authorization: "Bearer \(githubBearerToken)"
+					}
 					response: {
 						statusCode: 200
 						body:       string & =~".*tag_name.*"
