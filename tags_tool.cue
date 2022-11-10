@@ -4,9 +4,9 @@ import (
 	"list"
 	"strings"
 	"regexp"
-	"encoding/json"
 	"tool/file"
 	"tool/http"
+	"tool/exec"
 )
 
 #WriteTags: #WriteGeneratedCue & {filename: "tags.cue"}
@@ -14,30 +14,34 @@ import (
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
 command: "update-github-tags": {
 	let releaseKeys = list.SortStrings([ for k, v in githubReleases {k}])
+
 	releases: {
 		for r in releaseKeys {
-			let split = strings.Split(r, "/")
-			let owner = split[0]
-			let repo = split[1]
+			(r): {
 
-			(r): http.Get & {
-				url: "https://api.github.com/repos/\(owner)/\(repo)/releases/latest"
-				response: {
-					statusCode: 200
-					body:       string & =~".*tag_name.*"
+				req: http.Get & {
+					url: "https://api.github.com/repos/\(r)/releases"
+					response: {
+						statusCode: 200
+						body:       string & =~".*tag_name.*"
+					}
 				}
-				res: json.Unmarshal(response.body) & {
-					tag_name: string
+
+				jq: exec.Run & {
+					cmd: ["jq", "-r", "map(select(.prerelease == false)) | sort_by(.tag_name) | last | .tag_name"]
+					stdin: req.response.body
+					stdout: string
 				}
+
+				tag_name: strings.TrimSpace(jq.stdout)
 			}
-
 		}
 	}
 
 	writeTags: #WriteTags & {
 		content: githubReleases: {
 			for key in releaseKeys {
-				(key): releases[key].res.tag_name
+				(key): releases[key].tag_name
 			}
 		}
 	}
