@@ -33,8 +33,17 @@ command: "update-github-tags": {
 				}
 
 				jq: exec.Run & {
-					cmd: ["jq", "-r", "map(select(.prerelease == false)) | sort_by(.tag_name) | last | .tag_name"]
-					stdin: req.response.body
+					cmd: ["jq", "-r", """
+						map(select(.prerelease == false))
+							| sort_by(
+								.tag_name
+								| split(".")
+								| map(ltrimstr("v"))
+								| map(tonumber))
+							| last
+							| .tag_name
+						"""]
+					stdin:  req.response.body
 					stdout: string
 				}
 

@@ -23,13 +23,13 @@ goModVersions: {
 githubReleases: {
 	"cloudflare/cloudflared":     "2022.10.3"
 	"dani-garcia/vaultwarden":    "1.26.0"
-	"grafana/grafana":            "v9.2.3"
-	"home-assistant/core":        "2022.11.1"
+	"grafana/grafana":            "v9.2.4"
+	"home-assistant/core":        "2022.11.2"
 	"jcmoraisjr/haproxy-ingress": "v0.13.9"
 	"longhorn/longhorn":          "v1.3.2"
-	"ory/hydra":                  "v2.0.1"
+	"ory/hydra":                  "v2.0.2"
 	"ory/kratos":                 "v0.10.1"
-	"zwave-js/zwave-js-ui":       "v8.3.0"
+	"zwave-js/zwave-js-ui":       "v8.4.1"
 }
 some: {
 	custom: tag: "1.2.3"
