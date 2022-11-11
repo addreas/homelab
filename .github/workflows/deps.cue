@@ -8,7 +8,7 @@ on: schedule: [{
 jobs: {
 	[string]: {
 		"runs-on": "ubuntu-latest"
-		container: "nixery.dev/shell/cue/jq/git"
+		container: "nixery.dev/shell/cue/jq/git/node"
 		_run: [...string]
 		_commit_message: string
 		steps:           list.FlattenN([

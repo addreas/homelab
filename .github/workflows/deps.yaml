@@ -1,11 +1,11 @@
 name: Homelab Dependency Check
 "on":
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: "*/10 * * * *"
 jobs:
   update-go-deps:
     runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git
+    container: nixery.dev/shell/cue/jq/git/node
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
