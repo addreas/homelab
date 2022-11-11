@@ -1,7 +1,7 @@
 name: Homelab Dependency Check
 "on":
   schedule:
-    - cron: 37 13 * * *
+    - cron: 9 * * * *
 jobs:
   update go deps:
     runs-on: ubuntu-latest
