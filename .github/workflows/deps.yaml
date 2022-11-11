@@ -5,7 +5,7 @@ name: Homelab Dependency Check
 jobs:
   update-go-deps:
     runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git/node
+    container: nixery.dev/shell/cue/jq/git/nodejs
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -16,25 +16,25 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Automatically update go dependencies/definitions
-  update-jsonnet-deps:
-    runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: cue cmd update-jsonnet-defs
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: Automatically update jsonnet dependencies/definitions
-  update-github-release-tags:
-    runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: cue cmd update-github-tags
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: Automatically update github release tags
+#  update-jsonnet-deps:
+#    runs-on: ubuntu-latest
+#    container: nixery.dev/shell/cue/jq/git
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v3
+#      - run: cue cmd update-jsonnet-defs
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v4
+#        with:
+#          commit-message: Automatically update jsonnet dependencies/definitions
+#  update-github-release-tags:
+#    runs-on: ubuntu-latest
+#    container: nixery.dev/shell/cue/jq/git
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v3
+#      - run: cue cmd update-github-tags
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v4
+#        with:
+#          commit-message: Automatically update github release tags
