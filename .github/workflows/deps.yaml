@@ -1,7 +1,5 @@
 name: Homelab Dependency Check
-"on":
-  schedule:
-    - cron: "*/10 * * * *"
+"on": [workflow_dispatch]
 jobs:
   update-go-deps:
     runs-on: ubuntu-latest
