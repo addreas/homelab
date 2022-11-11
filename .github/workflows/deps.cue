@@ -2,7 +2,7 @@ import "list"
 
 name: "Homelab Dependency Check"
 on: schedule: [{
-	cron: "5 * * * *"
+	cron: "20 * * * *"
 }]
 
 jobs: {
@@ -25,7 +25,7 @@ jobs: {
 		], 1)
 	}
 
-	"update go deps": {
+	"update-go-deps": {
 		_commit_message: "Automatically update go dependencies/definitions"
 		_run: [
 			"cue cmd update-gomod-defs",
@@ -34,12 +34,12 @@ jobs: {
 		]
 	}
 
-	"update jsonnet deps": {
+	"update-jsonnet-deps": {
 		_commit_message: "Automatically update jsonnet dependencies/definitions"
 		_run: ["cue cmd update-jsonnet-defs"]
 	}
 
-	"update github release tags": {
+	"update-github-release-tags": {
 		_commit_message: "Automatically update github release tags"
 		_run: ["cue cmd update-github-tags"]
 	}

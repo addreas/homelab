@@ -1,9 +1,9 @@
 name: Homelab Dependency Check
 "on":
   schedule:
-    - cron: 9 * * * *
+    - cron: 20 * * * *
 jobs:
-  update go deps:
+  update-go-deps:
     runs-on: ubuntu-latest
     container: nixery.dev/shell/cue/jq/git
     steps:
@@ -16,7 +16,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Automatically update go dependencies/definitions
-  update jsonnet deps:
+  update-jsonnet-deps:
     runs-on: ubuntu-latest
     container: nixery.dev/shell/cue/jq/git
     steps:
@@ -27,7 +27,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Automatically update jsonnet dependencies/definitions
-  update github release tags:
+  update-github-release-tags:
     runs-on: ubuntu-latest
     container: nixery.dev/shell/cue/jq/git
     steps:
