@@ -2,7 +2,7 @@ import "list"
 
 name: "Homelab Dependency Check"
 on: schedule: [{
-	cron: "37 13 * * *"
+	cron: "5 * * * *"
 }]
 
 jobs: {
