@@ -40,7 +40,7 @@ command: "update-github-tags": {
 								| split(".")
 								| map(ltrimstr("v"))
 								| map(tonumber))
-							| last()
+							| last
 							| .tag_name
 						"""]
 					stdin:  req.response.body
