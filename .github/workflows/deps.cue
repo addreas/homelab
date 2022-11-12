@@ -31,7 +31,6 @@ let createPullRequest = {
 jobs: {
 	[string]: {
 		"runs-on": "ubuntu-latest"
-		_run: [...string]
 	}
 
 	"update-go-deps": {
@@ -55,7 +54,7 @@ jobs: {
 
 	"update-jsonnet-deps": {
 		steps: setup + [
-			{run: ["cue cmd update-jsonnet-defs"]},
+			{run: "cue cmd update-jsonnet-defs"},
 			createPullRequest & {
 				with: {
 					title: "Updated jsonnet dependencies"

@@ -41,8 +41,7 @@ jobs:
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
-      - run:
-          - cue cmd update-jsonnet-defs
+      - run: cue cmd update-jsonnet-defs
       - name: Create Pull Request
         with:
           title: Updated jsonnet dependencies
