@@ -3,10 +3,14 @@ name: Homelab Dependency Check
 jobs:
   update-go-deps:
     runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git/nodejs
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - uses: cue-lang/setup-cue@v1
+      - run: |
+          JQ=/usr/bin/jq
+          curl -sLo $JQ https://stedolan.github.io/jq/download/linux64/jq
+          
       - run: cue cmd update-gomod-defs
       - run: cue cmd update-gomod-tags
       - run: cue vet -c ./resources/...
