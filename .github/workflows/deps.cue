@@ -8,15 +8,17 @@ on: ["workflow_dispatch"]
 //  cron: "*/10 * * * *"
 // }]
 let setup = [{
-	name: "Check out repository code"
 	uses: "actions/checkout@v3"
 }, {
-	name: "Setup CUE environment"
-	uses: "cue-lang/setup-cue@v1.0.0-alpha.2"
-	with: version: "v0.4.3"
+	uses: "actions/setup-go@v3"
+	with: "go-version": "^1.19"
 }, {
-	name: "Install JQ"
+	name: "Install `cue`, `jsonnet`, `jb`, `jq`"
 	run: """
+		go install cuelang.org/go/cmd/cue@v0.4.3
+		go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+		go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+
 		JQ=/usr/bin/jq
 		sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 		sudo chmod +x $JQ
@@ -31,6 +33,9 @@ let createPullRequest = {
 jobs: {
 	[string]: {
 		"runs-on": "ubuntu-latest"
+		steps: [...{
+			run?: string
+		}]
 	}
 
 	"update-go-deps": {

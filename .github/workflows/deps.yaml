@@ -3,15 +3,18 @@ name: Homelab Dependency Check
   - workflow_dispatch
 jobs:
   update-go-deps:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Setup CUE environment
-        uses: cue-lang/setup-cue@v1.0.0-alpha.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          version: v0.4.3
-      - name: Install JQ
+          go-version: ^1.19
+      - name: Install `cue`, `jsonnet`, `jb`, `jq`
         run: |-
+          go install cuelang.org/go/cmd/cue@v0.4.3
+          go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
@@ -27,17 +30,19 @@ jobs:
           commit-message: Automatically update go dependencies/definitions
           branch: automatically-update-go-deps-defs
         uses: peter-evans/create-pull-request@v4
-    runs-on: ubuntu-latest
   update-jsonnet-deps:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Setup CUE environment
-        uses: cue-lang/setup-cue@v1.0.0-alpha.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          version: v0.4.3
-      - name: Install JQ
+          go-version: ^1.19
+      - name: Install `cue`, `jsonnet`, `jb`, `jq`
         run: |-
+          go install cuelang.org/go/cmd/cue@v0.4.3
+          go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
@@ -49,17 +54,19 @@ jobs:
           commit-message: Automatically update jsonnet dependencies/definitions
           branch: automatically-update-jsonnet-defs
         uses: peter-evans/create-pull-request@v4
-    runs-on: ubuntu-latest
   update-github-release-tags:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Setup CUE environment
-        uses: cue-lang/setup-cue@v1.0.0-alpha.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          version: v0.4.3
-      - name: Install JQ
+          go-version: ^1.19
+      - name: Install `cue`, `jsonnet`, `jb`, `jq`
         run: |-
+          go install cuelang.org/go/cmd/cue@v0.4.3
+          go install github.com/google/go-jsonnet/cmd/jsonnet@latest
+          go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
+
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
@@ -71,4 +78,3 @@ jobs:
           commit-message: Automatically update github release tags
           branch: automatically-update-github-release-tags
         uses: peter-evans/create-pull-request@v4
-    runs-on: ubuntu-latest
