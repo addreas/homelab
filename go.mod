@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/VictoriaMetrics/operator v0.29.0
-	github.com/VictoriaMetrics/operator/api v0.0.0-20221024162246-3b7806b8ef7d
+	github.com/VictoriaMetrics/operator/api v0.0.0-20221111132849-fc4abe6da99d
 	github.com/addreas/cuebuild-controller/api v0.18.2-cue
 	github.com/bitnami-labs/sealed-secrets v0.19.1
 	github.com/cert-manager/cert-manager v1.10.0
@@ -18,9 +18,9 @@ require (
 	github.com/ory/hydra-maester v0.0.26
 	github.com/pivotal/kpack v0.7.2
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.60.1
-	k8s.io/api v0.25.3
-	k8s.io/apimachinery v0.25.3
-	k8s.io/kube-aggregator v0.25.3
+	k8s.io/api v0.25.4
+	k8s.io/apimachinery v0.25.4
+	k8s.io/kube-aggregator v0.25.4
 )
 
 require (
@@ -140,7 +140,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apiextensions-apiserver v0.25.3 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
-	k8s.io/component-base v0.25.3 // indirect
+	k8s.io/component-base v0.25.4 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20220803164354-a70c9af30aea // indirect
 	k8s.io/utils v0.0.0-20220922133306-665eaaec4324 // indirect

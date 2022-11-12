@@ -5,8 +5,8 @@
 package v1beta1
 
 import (
-	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/api/core/v1"
 	appsv1 "k8s.io/api/apps/v1"
 )
 
@@ -22,48 +22,7 @@ import (
 
 // VMClusterSpec defines the desired state of VMCluster
 // +k8s:openapi-gen=true
-#VMClusterSpec: {
-	// RetentionPeriod for the stored metrics
-	// Note VictoriaMetrics has data/ and indexdb/ folders
-	// metrics from data/ removed eventually as soon as partition leaves retention period
-	// reverse index data at indexdb rotates once at the half of configured retention period
-	// https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#retention
-	retentionPeriod: string @go(RetentionPeriod)
-
-	// ReplicationFactor defines how many copies of data make among
-	// distinct storage nodes
-	// +optional
-	replicationFactor?: null | int32 @go(ReplicationFactor,*int32)
-
-	// PodSecurityPolicyName - defines name for podSecurityPolicy
-	// in case of empty value, prefixedName will be used.
-	// +optional
-	podSecurityPolicyName?: string @go(PodSecurityPolicyName)
-
-	// ServiceAccountName is the name of the ServiceAccount to use to run the
-	// VMSelect Pods.
-	// +optional
-	serviceAccountName?: string @go(ServiceAccountName)
-
-	// ClusterVersion defines default images tag for all components.
-	// it can be overwritten with component specific image.tag value.
-	clusterVersion?: string @go(ClusterVersion)
-
-	// ImagePullSecrets An optional list of references to secrets in the same namespace
-	// to use for pulling images from registries
-	// see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
-	// +optional
-	imagePullSecrets?: [...v1.#LocalObjectReference] @go(ImagePullSecrets,[]v1.LocalObjectReference)
-
-	// +optional
-	vmselect?: null | #VMSelect @go(VMSelect,*VMSelect)
-
-	// +optional
-	vminsert?: null | #VMInsert @go(VMInsert,*VMInsert)
-
-	// +optional
-	vmstorage?: null | #VMStorage @go(VMStorage,*VMStorage)
-}
+#VMClusterSpec: _
 
 // VMCluster is fast, cost-effective and scalable time-series database.
 // Cluster version with
@@ -765,6 +724,23 @@ import (
 	// that are generated as a result of StorageSpec objects.
 	// +optional
 	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
+
+	// Restore Allows to enable restore options for pod
+	// Read more: https://docs.victoriametrics.com/vmbackupmanager.html#restore-commands
+	// +optional
+	restore?: null | #VMRestore @go(Restore,*VMRestore)
+}
+
+#VMRestore: {
+	// OnStart defines configuration for restore on pod start
+	// +optional
+	onStart?: null | #VMRestoreOnStartConfig @go(OnStart,*VMRestoreOnStartConfig)
+}
+
+#VMRestoreOnStartConfig: {
+	// Enabled defines if restore on start enabled
+	// +optional
+	enabled?: bool @go(Enabled)
 }
 
 // Image defines docker image settings

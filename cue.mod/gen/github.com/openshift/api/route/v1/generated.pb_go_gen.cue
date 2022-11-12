@@ -5,17 +5,17 @@
 // Package v1 is a generated protocol buffer package.
 //
 // It is generated from these files:
-// 	github.com/openshift/api/route/v1/generated.proto
+//  github.com/openshift/api/route/v1/generated.proto
 //
 // It has these top-level messages:
-// 	Route
-// 	RouteIngress
-// 	RouteIngressCondition
-// 	RouteList
-// 	RoutePort
-// 	RouteSpec
-// 	RouteStatus
-// 	RouteTargetReference
-// 	RouterShard
-// 	TLSConfig
+//  Route
+//  RouteIngress
+//  RouteIngressCondition
+//  RouteList
+//  RoutePort
+//  RouteSpec
+//  RouteStatus
+//  RouteTargetReference
+//  RouterShard
+//  TLSConfig
 package v1
