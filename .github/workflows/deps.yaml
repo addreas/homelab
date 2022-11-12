@@ -11,7 +11,8 @@ jobs:
       - name: Install JQ
         run: |
           JQ=/usr/bin/jq
-          curl -sLo $JQ https://stedolan.github.io/jq/download/linux64/jq
+          sudo curl -sLo $JQ https://stedolan.github.io/jq/download/linux64/jq
+          sudo chmod +x $JQ
           
       - run: cue cmd update-gomod-defs
       - run: cue cmd update-gomod-tags
