@@ -3,8 +3,6 @@ name: Homelab Dependency Check
   - workflow_dispatch
 jobs:
   update-go-deps:
-    runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git/node
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -21,12 +19,16 @@ jobs:
       - run: cue cmd update-gomod-tags
       - run: cue vet -c ./resources/...
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
         with:
+          title: Updated go dependencies
+          body: |-
+            Automatically updated go dependencies using the `update-gomod-defs`
+            and `update-gomod-tags` tools. The changes have passed a `cue vet -c ./resources/...`.
           commit-message: Automatically update go dependencies/definitions
+          branch: automatically-update-go-deps-defs
+        uses: peter-evans/create-pull-request@v4
+    runs-on: ubuntu-latest
   update-jsonnet-deps:
-    runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git/node
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -39,14 +41,17 @@ jobs:
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
-      - run: cue cmd update-jsonnet-defs
+      - run:
+          - cue cmd update-jsonnet-defs
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
         with:
+          title: Updated jsonnet dependencies
+          body: Automatically updated jsonnet dependencies (kube-promethues).
           commit-message: Automatically update jsonnet dependencies/definitions
-  update-github-release-tags:
+          branch: automatically-update-jsonnet-defs
+        uses: peter-evans/create-pull-request@v4
     runs-on: ubuntu-latest
-    container: nixery.dev/shell/cue/jq/git/node
+  update-github-release-tags:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -59,8 +64,12 @@ jobs:
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
-      - run: cue cmd update-github-tags
+      - run: cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
         with:
+          title: Updated github release tags
+          body: Automatically updated github release tags.
           commit-message: Automatically update github release tags
+          branch: automatically-update-github-release-tags
+        uses: peter-evans/create-pull-request@v4
+    runs-on: ubuntu-latest
