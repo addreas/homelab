@@ -9,6 +9,7 @@ on: ["workflow_dispatch"]
 // }]
 let setup = [{
 	uses: "actions/checkout@v3"
+	with: submodules: true
 }, {
 	uses: "actions/setup-go@v3"
 	with: "go-version": "^1.19"

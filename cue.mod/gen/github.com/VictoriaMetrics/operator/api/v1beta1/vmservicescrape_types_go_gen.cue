@@ -193,6 +193,18 @@ _#nsMatcher: _
 	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
 	// +optional
 	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
+
+	// AttachMetadata configures metadata attaching from service discovery
+	// +optional
+	attach_metadata?: #AttachMetadata @go(AttachMetadata)
+}
+
+// AttachMetadata configures metadata attachment
+#AttachMetadata: {
+	// Node instructs vmagent to add node specific metadata from service discovery
+	// Valid for roles: pod, endpoints, endpointslice.
+	// +optional
+	node?: null | bool @go(Node,*bool)
 }
 
 // VMScrapeParams defines scrape target configuration that compatible only with VictoriaMetrics scrapers
@@ -209,6 +221,9 @@ _#nsMatcher: _
 
 	// +optional
 	disable_keep_alive?: null | bool @go(DisableKeepAlive,*bool)
+
+	// +optional
+	no_stale_markers?: null | bool @go(DisableStaleMarkers,*bool)
 
 	// +optional
 	stream_parse?: null | bool @go(StreamParse,*bool)

@@ -163,6 +163,10 @@ import (
 	// VMScrapeParams defines VictoriaMetrics specific scrape parametrs
 	// +optional
 	vm_scrape_params?: null | #VMScrapeParams @go(VMScrapeParams,*VMScrapeParams)
+
+	// AttachMetadata configures metadata attaching from service discovery
+	// +optional
+	attach_metadata?: #AttachMetadata @go(AttachMetadata)
 }
 
 // ArbitraryFSAccessThroughSMsConfig enables users to configure, whether
