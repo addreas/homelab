@@ -16,9 +16,10 @@ jobs:
           sudo curl -sLo $JQ https://stedolan.github.io/jq/download/linux64/jq
           sudo chmod +x $JQ
           
-      - run: cue cmd update-gomod-defs
-      - run: cue cmd update-gomod-tags
-      - run: cue vet -c ./resources/...
+      #- run: cue cmd update-gomod-defs
+      #- run: cue cmd update-gomod-tags
+      #- run: cue vet -c ./resources/...
+      - run: cue cmd update-github-tags
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
