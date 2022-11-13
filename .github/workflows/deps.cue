@@ -3,10 +3,9 @@
 import "list"
 
 name: "Homelab Dependency Check"
-on: ["workflow_dispatch"]
-// on: schedule: [{
-//  cron: "*/10 * * * *"
-// }]
+
+on: schedule: [{ cron: "37 13 * * *" }]
+
 let setup = [{
 	uses: "actions/checkout@v3"
 	with: submodules: true
