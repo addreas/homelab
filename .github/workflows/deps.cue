@@ -42,6 +42,7 @@ jobs: {
 		steps: setup + [
 			{run: "cue cmd update-gomod-defs"},
 			{run: "cue cmd update-gomod-tags"},
+			{run: "git diff"},
 			{run: "cue vet -c ./resources/..."},
 			createPullRequest & {
 				with: {

@@ -42,7 +42,7 @@ command: "update-jsonnet-defs": "kube-prometheus": exec.Run & {
 		#go install github.com/google/go-jsonnet/cmd/jsonnet@latest
 		#go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
 		set -e
-		git pull origin main
+		git pull origin main --rebase
 
 		jb install
 
@@ -54,5 +54,6 @@ command: "update-jsonnet-defs": "kube-prometheus": exec.Run & {
 		mv manifests/*.cue ../../../../gen/github.com/prometheus-operator/kube-prometheus/manifests
 
 		git clean -fd
+		git restore .
 		"""]
 }
