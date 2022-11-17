@@ -94,10 +94,14 @@ github.com/VictoriaMetrics/operator v0.29.0 h1:MBjo6Tn5PZpun5mijzt2qWhGPPx8sHeLC
 github.com/VictoriaMetrics/operator v0.29.0/go.mod h1:Fijloss9p5Ym6el3ol/TZGx/kOACLpmuBh2naNWyWdA=
 github.com/VictoriaMetrics/operator v0.29.1 h1:ngLHpIhCVoArpSpF7AtSuQMEP4a1rc+VkOzETBdQbrc=
 github.com/VictoriaMetrics/operator v0.29.1/go.mod h1:Fijloss9p5Ym6el3ol/TZGx/kOACLpmuBh2naNWyWdA=
+github.com/VictoriaMetrics/operator v0.29.2 h1:l8Z+BHRbOO25zzuUQsGZrGB+o2XlmbXrBRNYdaKZFS0=
+github.com/VictoriaMetrics/operator v0.29.2/go.mod h1:Fijloss9p5Ym6el3ol/TZGx/kOACLpmuBh2naNWyWdA=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221024162246-3b7806b8ef7d h1:XtzyF7VQ6tdUUASMUJP0QUu4/j1XmTujAYYR219MR90=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221024162246-3b7806b8ef7d/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221111132849-fc4abe6da99d h1:idZwWS1fuiR9OdEeipUR1KpIocWXq17spjunyKHkCto=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221111132849-fc4abe6da99d/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
+github.com/VictoriaMetrics/operator/api v0.0.0-20221117004532-6757af6cc7d7 h1:+F9yxplJEtxCfz/0SxKvFrQUZrwPGv2OgQ/o4pzVm34=
+github.com/VictoriaMetrics/operator/api v0.0.0-20221117004532-6757af6cc7d7/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue h1:2dHgsFqXXWpSLe1rm41wbODEurQERknjeA54jB/sxhc=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue/go.mod h1:EvAI0FSq9Ry6pF5jWt35sp8k50K7ua0LeFcLMTegQ84=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
