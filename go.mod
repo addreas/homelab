@@ -3,8 +3,8 @@ module github.com/addreas/cuebernetes
 go 1.19
 
 require (
-	github.com/VictoriaMetrics/operator v0.29.1
-	github.com/VictoriaMetrics/operator/api v0.0.0-20221111132849-fc4abe6da99d
+	github.com/VictoriaMetrics/operator v0.29.2
+	github.com/VictoriaMetrics/operator/api v0.0.0-20221117004532-6757af6cc7d7
 	github.com/addreas/cuebuild-controller/api v0.18.2-cue
 	github.com/bitnami-labs/sealed-secrets v0.19.1
 	github.com/cert-manager/cert-manager v1.10.0
