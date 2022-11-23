@@ -61,6 +61,7 @@ import (
 	runtimeClassName?: null | string           @go(RuntimeClassName,*string)
 	schedulerName?:    string                  @go(SchedulerName)
 	buildTimeout?:     null | int64            @go(BuildTimeout,*int64)
+	creationTime?:     string                  @go(CreationTime)
 }
 
 // +k8s:openapi-gen=true
@@ -71,7 +72,8 @@ import (
 
 // +k8s:openapi-gen=true
 #ImagePersistentVolumeCache: {
-	size?: null | resource.#Quantity @go(Size,*resource.Quantity)
+	size?:             null | resource.#Quantity @go(Size,*resource.Quantity)
+	storageClassName?: string                    @go(StorageClassName)
 }
 
 // +k8s:openapi-gen=true

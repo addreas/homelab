@@ -1206,6 +1206,10 @@ import (
 
 	// Optional ProxyURL.
 	proxyUrl?: string @go(ProxyURL)
+
+	// Whether to use the external labels as selectors for the remote read endpoint.
+	// Requires Prometheus v2.34.0 and above.
+	filterExternalLabels?: null | bool @go(FilterExternalLabels,*bool)
 }
 
 // LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores.
@@ -1305,6 +1309,9 @@ import (
 
 	// Timeout is a per-target Alertmanager timeout when pushing alerts.
 	timeout?: null | #Duration @go(Timeout,*Duration)
+
+	// Whether to enable HTTP2.
+	enableHttp2?: null | bool @go(EnableHttp2,*bool)
 }
 
 // ServiceMonitor defines monitoring for a set of services.
@@ -1361,6 +1368,10 @@ import (
 	// Per-scrape limit on length of labels value that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
+
+	// Attaches node metadata to discovered targets.
+	// Requires Prometheus v2.37.0 and above.
+	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
 }
 
 // Endpoint defines a scrapeable endpoint serving Prometheus metrics.
@@ -1434,6 +1445,10 @@ import (
 
 	// Whether to enable HTTP2.
 	enableHttp2?: null | bool @go(EnableHttp2,*bool)
+
+	// Drop pods that are not running. (Failed, Succeeded). Enabled by default.
+	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+	filterRunning?: null | bool @go(FilterRunning,*bool)
 }
 
 // PodMonitor defines monitoring for a set of pods.
@@ -1481,8 +1496,8 @@ import (
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
 
-	// Attaches node metadata to discovered targets. Only valid for role: pod.
-	// Only valid in Prometheus versions 2.35.0 and newer.
+	// Attaches node metadata to discovered targets.
+	// Requires Prometheus v2.35.0 and above.
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
 }
 
@@ -1763,10 +1778,10 @@ import (
 // SafeTLSConfig specifies safe TLS configuration parameters.
 // +k8s:openapi-gen=true
 #SafeTLSConfig: {
-	// Struct containing the CA cert to use for the targets.
+	// Certificate authority used when verifying server certificates.
 	ca?: #SecretOrConfigMap @go(CA)
 
-	// Struct containing the client cert file for the targets.
+	// Client certificate to present when doing client-authentication.
 	cert?: #SecretOrConfigMap @go(Cert)
 
 	// Secret containing the client key file for the targets.
@@ -1859,18 +1874,29 @@ import (
 // +k8s:openapi-gen=true
 #PrometheusRuleSpec: {
 	// Content of Prometheus rule file
+	// +listType=map
+	// +listMapKey=name
 	groups?: [...#RuleGroup] @go(Groups,[]RuleGroup)
 }
 
 // RuleGroup is a list of sequentially evaluated recording and alerting rules.
-// Note: PartialResponseStrategy is only used by ThanosRuler and will
-// be ignored by Prometheus instances.  Valid values for this field are 'warn'
-// or 'abort'.  More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 // +k8s:openapi-gen=true
 #RuleGroup: {
-	name:      string @go(Name)
-	interval?: string @go(Interval)
+	// Name of the rule group.
+	// +kubebuilder:validation:MinLength=1
+	name: string @go(Name)
+
+	// Interval determines how often rules in the group are evaluated.
+	interval?: #Duration @go(Interval)
+
+	// List of alerting and recording rules.
 	rules: [...#Rule] @go(Rules,[]Rule)
+
+	// PartialResponseStrategy is only used by ThanosRuler and will
+	// be ignored by Prometheus instances.
+	// More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
+	// +kubebuilder:validation:Pattern="^(?i)(abort|warn)?$"
+	// +kubebuilder:default:=""
 	partial_response_strategy?: string @go(PartialResponseStrategy)
 }
 
@@ -1878,11 +1904,25 @@ import (
 // See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
 // +k8s:openapi-gen=true
 #Rule: {
-	record?: string              @go(Record)
-	alert?:  string              @go(Alert)
-	expr:    intstr.#IntOrString @go(Expr)
-	for?:    string              @go(For)
+	// Name of the time series to output to. Must be a valid metric name.
+	// Only one of `record` and `alert` must be set.
+	record?: string @go(Record)
+
+	// Name of the alert. Must be a valid label value.
+	// Only one of `record` and `alert` must be set.
+	alert?: string @go(Alert)
+
+	// PromQL expression to evaluate.
+	expr: intstr.#IntOrString @go(Expr)
+
+	// Alerts are considered firing once they have been returned for this long.
+	for?: #Duration @go(For)
+
+	// Labels to add or overwrite.
 	labels?: {[string]: string} @go(Labels,map[string]string)
+
+	// Annotations to add to each alert.
+	// Only valid for alerting rules.
 	annotations?: {[string]: string} @go(Annotations,map[string]string)
 }
 
@@ -1958,10 +1998,11 @@ import (
 	//
 	// The Alertmanager configuration should be available under the
 	// `alertmanager.yaml` key. Additional keys from the original secret are
-	// copied to the generated secret.
+	// copied to the generated secret and mounted into the
+	// `/etc/alertmanager/config` directory in the `alertmanager` container.
 	//
 	// If either the secret or the `alertmanager.yaml` key is missing, the
-	// operator provisions an Alertmanager configuration with one empty
+	// operator provisions a minimal Alertmanager configuration with one empty
 	// receiver (effectively dropping alert notifications).
 	configSecret?: string @go(ConfigSecret)
 
@@ -2089,6 +2130,10 @@ import (
 	// AlertmanagerConfigs to be selected for to merge and configure Alertmanager with.
 	alertmanagerConfigSelector?: null | metav1.#LabelSelector @go(AlertmanagerConfigSelector,*metav1.LabelSelector)
 
+	// The AlertmanagerConfigMatcherStrategy defines how AlertmanagerConfig objects match the alerts.
+	// In the future more options may be added.
+	alertmanagerConfigMatcherStrategy?: #AlertmanagerConfigMatcherStrategy @go(AlertmanagerConfigMatcherStrategy)
+
 	// Namespaces to be selected for AlertmanagerConfig discovery. If nil, only
 	// check own namespace.
 	alertmanagerConfigNamespaceSelector?: null | metav1.#LabelSelector @go(AlertmanagerConfigNamespaceSelector,*metav1.LabelSelector)
@@ -2112,6 +2157,16 @@ import (
 	// If defined, it takes precedence over the `configSecret` field.
 	// This field may change in future releases.
 	alertmanagerConfiguration?: null | #AlertmanagerConfiguration @go(AlertmanagerConfiguration,*AlertmanagerConfiguration)
+}
+
+// AlertmanagerConfigMatcherStrategy defines the strategy used by AlertmanagerConfig objects to match alerts.
+#AlertmanagerConfigMatcherStrategy: {
+	// If set to `OnNamespace`, the operator injects a label matcher matching the namespace of the AlertmanagerConfig object for all its routes and inhibition rules.
+	// `None` will not add any additional matchers other than the ones specified in the AlertmanagerConfig.
+	// Default is `OnNamespace`.
+	// +kubebuilder:validation:Enum="OnNamespace";"None"
+	// +kubebuilder:default:="OnNamespace"
+	type?: string @go(Type)
 }
 
 // AlertmanagerConfiguration defines the Alertmanager configuration.
@@ -2265,7 +2320,7 @@ import (
 	resendDelay?: string @go(ResendDelay)
 }
 
-// ProbeTLSConfig specifies TLS configuration parameters.
+// ProbeTLSConfig specifies TLS configuration parameters for the prober.
 // +k8s:openapi-gen=true
 #ProbeTLSConfig: {
 	#SafeTLSConfig

@@ -27,11 +27,14 @@ _#cosignRespositoryAnnotationPrefix:      "kpack.io/cosign.repository"
 #DOCKERSecretAnnotationPrefix:            "kpack.io/docker"
 #GITSecretAnnotationPrefix:               "kpack.io/git"
 #IstioInject:                             "sidecar.istio.io/inject"
+#BuildReadyAnnotation:                    "build.kpack.io/ready"
 _#cosignSecretDataCosignKey:              "cosign.key"
 _#cacheVolumeName:                        "cache-dir"
 _#homeVolumeName:                         "home-dir"
 _#layersVolumeName:                       "layers-dir"
 _#networkWaitLauncherVolumeName:          "network-wait-launcher-dir"
+_#buildWaitVolumeName:                    "build-wait-dir"
+_#downwardVolumeName:                     "downward-api-dir"
 _#notaryVolumeName:                       "notary-dir"
 _#platformVolumeName:                     "platform-dir"
 _#registrySourcePullSecretsVolumeName:    "registry-source-pull-secrets-dir"
@@ -48,6 +51,7 @@ _#serviceBindingRootEnvVar:               "SERVICE_BINDING_ROOT"
 
 #BuildPodImages: {
 	BuildInitImage:         string
+	BuildWaiterImage:       string
 	CompletionImage:        string
 	RebaseImage:            string
 	BuildInitWindowsImage:  string
@@ -60,6 +64,7 @@ _#serviceBindingRootEnvVar:               "SERVICE_BINDING_ROOT"
 	Secrets: [...corev1.#Secret] @go(,[]corev1.Secret)
 	Bindings: [...#ServiceBinding] @go(,[]ServiceBinding)
 	ImagePullSecrets: [...corev1.#LocalObjectReference] @go(,[]corev1.LocalObjectReference)
+	InjectedSidecarSupport: bool
 }
 
 #BuildPodBuilderConfig: {
