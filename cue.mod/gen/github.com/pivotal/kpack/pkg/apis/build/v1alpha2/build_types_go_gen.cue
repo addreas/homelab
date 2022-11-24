@@ -54,6 +54,7 @@ import (
 	runtimeClassName?:  null | string           @go(RuntimeClassName,*string)
 	schedulerName?:     string                  @go(SchedulerName)
 	priorityClassName?: string                  @go(PriorityClassName)
+	creationTime?:      string                  @go(CreationTime)
 }
 
 // +k8s:openapi-gen=true
