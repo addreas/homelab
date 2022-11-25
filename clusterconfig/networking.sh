@@ -2,35 +2,18 @@
 helm repo add cilium https://helm.cilium.io/
 helm repo update
 
-CILIUM_VERSION=1.12.0
+CILIUM_VERSION=1.12.3
 
 helm install cilium cilium/cilium --version $CILIUM_VERSION \
    --namespace kube-system \
-   --set cni.exclusive=false \
-   --set hubble.relay.enabled=true \
-   --set hubble.ui.enabled=true \
-
+   -f cilium-values.yaml
 
 helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
    --namespace kube-system \
-   --reuse-values \
-   --set cni.exclusive=false \
-   --set hubble.relay.enabled=true \
-   --set hubble.ui.enabled=true \
+   -f cilium-values.yaml
 
-   # --set cni.chainingMode=none \
-   # --set cni.customConf=false \
-
-   # --set cni.chainingMode=generic-veth \
-   # --set cni.customConf=true \
-
-helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
-   --namespace kube-system \
-   --reuse-values \
-   --set bgp.enabled=true \
-   --set bgp.announce.loadbalancerIP=true \
-   --set bgp.announce.podCIDR=true
-
+# https://docs.cilium.io/en/v1.12/gettingstarted/bgp/
+# probably conflicts with kube-vip?
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ConfigMap

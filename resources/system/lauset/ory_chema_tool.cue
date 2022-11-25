@@ -10,7 +10,7 @@ command: "kratos-config-schema": task: {
 		cmd: [
 			"curl",
 			"-sSL",
-			"https://raw.githubusercontent.com/ory/kratos/master/embedx/config.schema.json",
+			"https://raw.githubusercontent.com/ory/kratos/\(githubReleases["ory/kratos"])/embedx/config.schema.json",
 		]
 		stdout: string
 	}

@@ -1,0 +1,13 @@
+bgp:
+  announce:
+    loadbalancerIP: false
+    podCIDR: false
+  enabled: false
+cni:
+  exclusive: false
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+upgradeCompatibility: "1.11"
