@@ -2,9 +2,9 @@ package kube
 
 import "encoding/yaml"
 
-k: HelmRepolisoty: "vector": spec: url: "https://helm.vector.dev"
+k: HelmRepository: "vector": spec: url: "https://helm.vector.dev"
 
-k: Kustomization: "vector-agent": spec: {
+k: HelmRelease: "vector-agent": spec: {
 	chart: spec: {
 		chart:   "vector"
 		version: "0.17.0"
