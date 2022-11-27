@@ -45,15 +45,15 @@ for N in things.NetworkPolicy {
 }
 
 // let kubeletEndpoints = [ for e in k.ServiceMonitor.kubelet.spec.endpoints {
-// 	port:           "10250"
-// 	relabelConfigs: e.relabelConfigs + [{
-// 		targetLabel: "job"
-// 		replacement: "kubelet"
-// 	}]
+//  port:           "10250"
+//  relabelConfigs: e.relabelConfigs + [{
+//   targetLabel: "job"
+//   replacement: "kubelet"
+//  }]
 
-// 	for key, value in e if key != "port" && key != "relabelConfigs" {
-// 		(key): value
-// 	}
+//  for key, value in e if key != "port" && key != "relabelConfigs" {
+//   (key): value
+//  }
 // }]
 
 // k: VMNodeScrape: "kubelet-metrics": spec: kubeletEndpoints[0]

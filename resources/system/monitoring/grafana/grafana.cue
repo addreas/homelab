@@ -84,9 +84,9 @@ k: Kustomization: "grafana-operator": spec: {
 	path:            "./config/default"
 	targetNamespace: "monitoring"
 	// images: [{
-	// 	name:    "quay.io/grafana-operator/grafana-operator"
-	// 	newName: "quay.io/addreas/grafana-operator"
-	// 	newTag:  "test"
+	//  name:    "quay.io/grafana-operator/grafana-operator"
+	//  newName: "quay.io/addreas/grafana-operator"
+	//  newTag:  "test"
 	// }]
 	patches: [{
 		target: {
