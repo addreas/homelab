@@ -4855,6 +4855,16 @@ prometheusOperator: CustomResourceDefinition: {
 									}
 									type: "object"
 								}
+								alertmanagerConfigMatcherStrategy: {
+									description: "The AlertmanagerConfigMatcherStrategy defines how AlertmanagerConfig objects match the alerts. In the future more options may be added."
+									properties: type: {
+										default:     "OnNamespace"
+										description: "If set to `OnNamespace`, the operator injects a label matcher matching the namespace of the AlertmanagerConfig object for all its routes and inhibition rules. `None` will not add any additional matchers other than the ones specified in the AlertmanagerConfig. Default is `OnNamespace`."
+										enum: ["OnNamespace", "None"]
+										type: "string"
+									}
+									type: "object"
+								}
 								alertmanagerConfigNamespaceSelector: {
 									description: "Namespaces to be selected for AlertmanagerConfig discovery. If nil, only check own namespace."
 									properties: {
@@ -9700,7 +9710,7 @@ prometheusOperator: CustomResourceDefinition: {
 							description: "Specification of desired Pod selection for target discovery by Prometheus."
 							properties: {
 								attachMetadata: {
-									description: "Attaches node metadata to discovered targets. Only valid for role: pod. Only valid in Prometheus versions 2.35.0 and newer."
+									description: "Attaches node metadata to discovered targets. Requires Prometheus v2.35.0 and above."
 									properties: node: {
 										description: "When set to true, Prometheus must have permissions to get Nodes."
 										type:        "boolean"
@@ -11080,6 +11090,14 @@ prometheusOperator: CustomResourceDefinition: {
 						spec: {
 							description: "Specification of desired Service selection for target discovery by Prometheus."
 							properties: {
+								attachMetadata: {
+									description: "Attaches node metadata to discovered targets. Requires Prometheus v2.37.0 and above."
+									properties: node: {
+										description: "When set to true, Prometheus must have permissions to get Nodes."
+										type:        "boolean"
+									}
+									type: "object"
+								}
 								endpoints: {
 									description: "A list of endpoints allowed as part of this ServiceMonitor."
 									items: {
@@ -11187,6 +11205,10 @@ prometheusOperator: CustomResourceDefinition: {
 											}
 											enableHttp2: {
 												description: "Whether to enable HTTP2."
+												type:        "boolean"
+											}
+											filterRunning: {
+												description: "Drop pods that are not running. (Failed, Succeeded). Enabled by default. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase"
 												type:        "boolean"
 											}
 											followRedirects: {
