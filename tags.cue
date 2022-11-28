@@ -2,7 +2,7 @@ package kube
 
 goModVersions: {
 	"github.com/VictoriaMetrics/operator":                                    "v0.29.2"
-	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20221117004532-6757af6cc7d7"
+	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20221128120053-ed672af04a4e"
 	"github.com/addreas/cuebuild-controller/api":                             "v0.18.2-cue"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.19.2"
 	"github.com/cert-manager/cert-manager":                                   "v1.10.1"
@@ -15,7 +15,7 @@ goModVersions: {
 	"github.com/k8snetworkplumbingwg/network-attachment-definition-client":   "v1.3.0"
 	"github.com/ory/hydra-maester":                                           "v0.0.26"
 	"github.com/pivotal/kpack":                                               "v0.8.1"
-	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.61.0"
+	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.61.1"
 	"k8s.io/api":                                                             "v0.25.4"
 	"k8s.io/apimachinery":                                                    "v0.25.4"
 	"k8s.io/kube-aggregator":                                                 "v0.25.4"
