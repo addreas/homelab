@@ -29,7 +29,7 @@ githubReleases: {
 	"longhorn/longhorn":          "v1.3.2"
 	"ory/hydra":                  "v2.0.2"
 	"ory/kratos":                 "v0.10.1"
-	"zwave-js/zwave-js-ui":       "v8.5.0"
+	"zwave-js/zwave-js-ui":       "v8.5.1"
 }
 some: {
 	custom: tag: "1.2.3"
