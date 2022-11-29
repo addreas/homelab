@@ -9,7 +9,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name: "kube-state-metrics"
 		}
@@ -61,7 +61,7 @@ kubeStateMetrics: {
 			verbs: ["list", "watch"]
 		}, {
 			apiGroups: ["networking.k8s.io"]
-			resources: ["networkpolicies", "ingresses"]
+			resources: ["networkpolicies", "ingressclasses", "ingresses"]
 			verbs: ["list", "watch"]
 		}, {
 			apiGroups: ["coordination.k8s.io"]
@@ -81,7 +81,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name: "kube-state-metrics"
 		}
@@ -104,7 +104,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name:      "kube-state-metrics"
 			namespace: "monitoring"
@@ -123,14 +123,14 @@ kubeStateMetrics: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "kube-state-metrics"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "2.6.0"
+						"app.kubernetes.io/version":   "2.7.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--host=127.0.0.1", "--port=8081", "--telemetry-host=127.0.0.1", "--telemetry-port=8082"]
-						image: "registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.6.0"
+						image: "registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.7.0"
 						name:  "kube-state-metrics"
 						resources: {
 							limits: {
@@ -215,7 +215,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name:      "kube-state-metrics"
 			namespace: "monitoring"
@@ -251,7 +251,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -332,7 +332,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name:      "kube-state-metrics"
 			namespace: "monitoring"
@@ -364,7 +364,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name:      "kube-state-metrics"
 			namespace: "monitoring"
@@ -378,7 +378,7 @@ kubeStateMetrics: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "kube-state-metrics"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.6.0"
+				"app.kubernetes.io/version":   "2.7.0"
 			}
 			name:      "kube-state-metrics"
 			namespace: "monitoring"
