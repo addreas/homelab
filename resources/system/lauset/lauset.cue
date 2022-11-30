@@ -8,6 +8,9 @@ k: Deployment: "lauset": spec: template: spec: {
 		env: [{
 			name:  "LOG_LEVEL"
 			value: "debug"
+		}, {
+			name: "COOKIE_DOMAIN"
+			value: "addem.se"
 		}]
 		ports: [{
 			name:          "http"
