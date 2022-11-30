@@ -27,6 +27,11 @@ import (
 	// Rules list of alert rules
 	rules: [...#Rule] @go(Rules,[]Rule)
 
+	// Limit the number of alerts an alerting rule and series a recording
+	// rule can produce
+	// +optional
+	limit?: int @go(Limit)
+
 	// Concurrency defines how many rules execute at once.
 	// +optional
 	concurrency?: int @go(Concurrency)
@@ -57,6 +62,15 @@ import (
 	// possible values - prometheus,graphite
 	// +optional
 	type?: string @go(Type)
+
+	// Headers contains optional HTTP headers added to each rule request
+	// Must be in form `header-name: value`
+	// For example:
+	//  headers:
+	//    - "CustomHeader: foo"
+	//    - "CustomHeader2: bar"
+	// +optional
+	headers?: [...string] @go(Headers,[]string)
 }
 
 // Rule describes an alerting or recording rule.
@@ -73,6 +87,11 @@ import (
 	// Expr is query, that will be evaluated at dataSource
 	// +optional
 	expr: string @go(Expr)
+
+	// Debug enables logging for rule
+	// it useful for tracking
+	// +optional
+	debug?: null | bool @go(Debug,*bool)
 
 	// For evaluation interval in time.Duration format
 	// 30s, 1m, 1h  or nanoseconds
