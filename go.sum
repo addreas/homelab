@@ -106,6 +106,8 @@ github.com/VictoriaMetrics/operator/api v0.0.0-20221117004532-6757af6cc7d7 h1:+F
 github.com/VictoriaMetrics/operator/api v0.0.0-20221117004532-6757af6cc7d7/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221128120053-ed672af04a4e h1:y4EAJCpktRD7k5Qju9fyGablYEBnTJ+Inds5lQvnfQA=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221128120053-ed672af04a4e/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
+github.com/VictoriaMetrics/operator/api v0.0.0-20221130090029-365a26f79d0b h1:MotyuGaxtvS3ZjWxQzQSPfgAp7B3NhGKK5xo0qSLf2c=
+github.com/VictoriaMetrics/operator/api v0.0.0-20221130090029-365a26f79d0b/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue h1:2dHgsFqXXWpSLe1rm41wbODEurQERknjeA54jB/sxhc=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue/go.mod h1:EvAI0FSq9Ry6pF5jWt35sp8k50K7ua0LeFcLMTegQ84=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
@@ -754,6 +756,8 @@ github.com/pivotal/kpack v0.7.2 h1:HxlgA6WR3LyUW+uS+hwZHgDFG9rjVYsTe0usCbrUW/k=
 github.com/pivotal/kpack v0.7.2/go.mod h1:IfF7WPlvsAVFsbB5EcgELxUcGRPaaybSjY2rkFY70xM=
 github.com/pivotal/kpack v0.8.1 h1:ezvypjTFjFgmwD7NPdUDCxv/69YY0vekn6mayTHrFuA=
 github.com/pivotal/kpack v0.8.1/go.mod h1:56yBeMr/lHtIDTfbBuMWQc32B1AVBbD3f5VcpwkZNSA=
+github.com/pivotal/kpack v0.8.2 h1:BRsrRDXUE6Z+3778kP6nXV25ZNUsVZ/eFce0DyZLeao=
+github.com/pivotal/kpack v0.8.2/go.mod h1:56yBeMr/lHtIDTfbBuMWQc32B1AVBbD3f5VcpwkZNSA=
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
