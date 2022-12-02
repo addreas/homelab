@@ -23,7 +23,7 @@ goModVersions: {
 githubReleases: {
 	"cloudflare/cloudflared":     "2022.11.1"
 	"dani-garcia/vaultwarden":    "1.26.0"
-	"grafana/grafana":            "v9.3.0"
+	"grafana/grafana":            "v9.3.1"
 	"home-assistant/core":        "2022.11.5"
 	"jcmoraisjr/haproxy-ingress": "v0.13.9"
 	"longhorn/longhorn":          "v1.3.2"
