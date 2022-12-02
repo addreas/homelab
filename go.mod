@@ -11,9 +11,9 @@ require (
 	github.com/cilium/cilium v1.12.4
 	github.com/fluxcd/helm-controller/api v0.27.0
 	github.com/fluxcd/kustomize-controller/api v0.31.0
-	github.com/fluxcd/notification-controller/api v0.29.0
+	github.com/fluxcd/notification-controller/api v0.29.1
 	github.com/fluxcd/source-controller/api v0.32.1
-	github.com/grafana-operator/grafana-operator/v4 v4.7.1
+	github.com/grafana-operator/grafana-operator/v4 v4.8.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.3.0
 	github.com/ory/hydra-maester v0.0.26
 	github.com/pivotal/kpack v0.8.2
