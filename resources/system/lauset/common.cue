@@ -117,6 +117,8 @@ _kratos_config: #KratosConfigSchema & {
 		}
 	}
 
+	oauth2_provider: url: "https://\(_hostname)/hydra/"
+
 	log: {
 		level:                 "info"
 		format:                "text"

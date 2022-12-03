@@ -29,6 +29,7 @@ import (
 				privileged_session_max_age?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
 				required_aal?:               #featureRequiredAal
 				after?:                      #selfServiceAfterSettings
+				before?:                     #selfServiceBeforeSettings
 			}
 			logout?: after?: default_browser_return_url?: #defaultReturnTo
 			registration?: {
@@ -82,6 +83,12 @@ import (
 				// Sets how long the verification request (for the UI interaction)
 				// is valid.
 				lifespan?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
+				before?:   #selfServiceBeforeVerification
+
+				// Verification Strategy
+				//
+				// The strategy to use for verification requests
+				use?: "link" | "code" | *"code"
 			}
 
 			// Account Recovery Configuration
@@ -106,6 +113,12 @@ import (
 				// Sets how long the recovery request is valid. If expired, the
 				// user has to redo the flow.
 				lifespan?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
+				before?:   #selfServiceBeforeRecovery
+
+				// Recovery Strategy
+				//
+				// The strategy to use for recovery requests
+				use?: "link" | "code" | *"code"
 			}
 			error?: {
 				// Ory Kratos Error UI URL
@@ -123,7 +136,7 @@ import (
 			}
 			link?: {
 				// Enables Link Method
-				enabled?: bool | *true
+				enabled?: bool | *false
 
 				// Link Configuration
 				//
@@ -134,6 +147,19 @@ import (
 					base_url?: string
 
 					// How long a link is valid for
+					lifespan?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
+					...
+				}
+			}
+			code?: {
+				// Enables Code Method
+				enabled?: bool | *true
+
+				// Code Configuration
+				//
+				// Additional configuration for the code strategy.
+				config?: {
+					// How long a code is valid for
 					lifespan?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
 					...
 				}
@@ -260,6 +286,44 @@ import (
 		}
 	}
 
+	// Database related configuration
+	//
+	// Miscellaneous settings used in database related tasks (cleanup,
+	// etc.)
+	database?: {
+		// Database cleanup settings
+		//
+		// Settings that controls how the database cleanup process is
+		// configured (delays, batch size, etc.)
+		cleanup?: {
+			// Number of records to clean in one iteration
+			//
+			// Controls how many records should be purged from one table
+			// during database cleanup task
+			batch_size?: int & >=1 | *100
+
+			// Delays between various database cleanup phases
+			//
+			// Configures delays between each step of the cleanup process. It
+			// is useful to tune the process so it will be efficient and
+			// performant.
+			sleep?: {
+				// Delay between each table cleanups
+				//
+				// Controls the delay time between cleaning each table in one
+				// cleanup iteration
+				tables?: =~"^[0-9]+(ns|us|ms|s|m|h)$" | *"1m"
+				...
+			}
+
+			// Remove records older than
+			//
+			// Controls how old records do we want to leave
+			older_than?: =~"^[0-9]+(ns|us|ms|s|m|h)$" | *"0s"
+			...
+		}
+	}
+
 	// Data Source Name
 	//
 	// DSN is used to specify the database credentials as a connection
@@ -272,8 +336,10 @@ import (
 	// over email, sms, and other means.
 	courier?: {
 		templates?: {
-			recovery?:     #courierTemplates
-			verification?: #courierTemplates
+			recovery?:          #courierTemplates
+			recovery_code?:     #courierTemplates
+			verification?:      #courierTemplates
+			verification_code?: #courierTemplates
 		}
 
 		// Override message templates
@@ -282,10 +348,9 @@ import (
 		// this key to the path where the templates are located.
 		template_override_path?: string
 
-		// Defines a Time-To-Live for courier messages that could not be
-		// delivered. After the defined TTL has expired for a message
-		// that message is abandoned.
-		message_ttl?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1h"
+		// Defines the maximum number of times the sending of a message is
+		// retried after it failed before it is marked as abandoned
+		message_retries?: int | *5
 
 		// SMTP Configuration
 		//
@@ -335,7 +400,7 @@ import (
 			// when using the AWS SES SMTP interface for cross-account
 			// sending.
 			headers?: {
-				...
+				[string]: string
 			}
 
 			// SMTP HELO/EHLO name
@@ -367,7 +432,7 @@ import (
 				method: string
 
 				// The HTTP headers that must be applied to request
-				header?: {
+				headers?: {
 					[string]: string
 				}
 
@@ -382,6 +447,26 @@ import (
 				// provider
 				auth?: #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
 			}
+		}
+	}
+
+	// OAuth2 Provider Configuration
+	oauth2_provider?: {
+		// OAuth 2.0 Provider URL.
+		//
+		// If set, the login and registration flows will handle the Ory
+		// OAuth 2.0 & OpenID `login_challenge` query parameter to serve
+		// as an OpenID Connect Provider. This URL should point to Ory
+		// Hydra when you are not running on the Ory Network and be left
+		// untouched otherwise.
+		url?: string
+
+		// HTTP Request Headers
+		//
+		// These headers will be passed in HTTP request to the OAuth2
+		// Provider.
+		headers?: {
+			[string]: string
 		}
 	}
 	serve?: {
@@ -646,7 +731,9 @@ import (
 			// If set to true will persist the cookie in the end-user's
 			// browser using the `max-age` parameter which is set to the
 			// `session.lifespan` value. Persistent cookies are not deleted
-			// when the browser is closed (e.g. on reboot or alt+f4).
+			// when the browser is closed (e.g. on reboot or alt+f4). This
+			// option affects the Ory OAuth2 and OpenID Provider's remember
+			// feature as well.
 			persistent?: bool | *true
 
 			// Session Cookie Path
@@ -712,9 +799,25 @@ import (
 			// Disallow all outgoing HTTP calls to private IP ranges. This
 			// feature can help protect against SSRF attacks.
 			disallow_private_ip_ranges?: bool | *false
+
+			// Add exempt URLs to private IP ranges
+			//
+			// Allows the given URLs to be called despite them being in the
+			// private IP range. URLs need to have an exact and
+			// case-sensitive match to be excempt.
+			private_ip_exception_urls?: [...string]
 			...
 		}
 		...
+	}
+
+	// Feature flags
+	feature_flags?: null | bool | number | string | [...] | {
+		// Enable Ory Sessions caching
+		//
+		// If enabled allows Ory Sessions to be cached. Only effective in
+		// the Ory Network.
+		cacheable_sessions?: bool | *false
 	}
 
 	#baseUrl: string
@@ -771,7 +874,12 @@ import (
 		// Web-Hook Configuration
 		//
 		// Define what the hook should do
-		config: {
+		config: ({
+			...
+		} | {
+			can_interrupt?: false
+			...
+		}) & {
 			// Response Handling
 			//
 			// How the web hook should handle the response
@@ -788,6 +896,12 @@ import (
 			// The HTTP method to use (GET, POST, etc).
 			method: string
 			body?:  =~"^(http|https|file|base64)://" | string
+
+			// If enabled allows the web hook to interrupt / abort the
+			// self-service flow. It only applies to certain flows
+			// (registration/verification/login/settings) and requires a
+			// valid response format.
+			can_interrupt?: bool | *false
 
 			// Auth mechanisms
 			//
@@ -821,8 +935,8 @@ import (
 		//
 		// Can be one of github, github-app, gitlab, generic, google,
 		// microsoft, discord, slack, facebook, auth0, vk, yandex,
-		// spotify.
-		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify" | "netid"
+		// spotify, dingtalk.
+		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify" | "netid" | "dingtalk"
 
 		// Optional string which will be used when generating labels for
 		// UI buttons.
@@ -920,6 +1034,12 @@ import (
 	}
 
 	#selfServiceBeforeRegistration: hooks?: #selfServiceHooks
+
+	#selfServiceBeforeSettings: hooks?: #selfServiceHooks
+
+	#selfServiceBeforeRecovery: hooks?: #selfServiceHooks
+
+	#selfServiceBeforeVerification: hooks?: #selfServiceHooks
 
 	#selfServiceAfterRegistration: {
 		default_browser_return_url?: #defaultReturnTo
