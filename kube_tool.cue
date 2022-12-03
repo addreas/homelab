@@ -34,14 +34,14 @@ command: ls: cli.Print & {
 command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
-			cmd: ["kubectl", "--context", context, "apply", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "--server-side", "-f-"]
 			stdin: yaml.MarshalStream(earlyResources)
 		}
 	}
 	if len(resources) > 0 {
 		apply: exec.Run & {
 			$after: [apply.applyEarly]
-			cmd: ["kubectl", "--context", context, "apply", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "--server-side", "-f-"]
 			stdin: yaml.MarshalStream(resources)
 		}
 	}
@@ -49,7 +49,7 @@ command: apply: {
 
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
-	cmd: ["kubectl", "--context", context, "diff", "-f-"]
+	cmd: ["kubectl", "--context", context, "diff", "--server-side", "--force-conflicts", "-f-"]
 	stdin: json.MarshalStream(resources)
 }
 
