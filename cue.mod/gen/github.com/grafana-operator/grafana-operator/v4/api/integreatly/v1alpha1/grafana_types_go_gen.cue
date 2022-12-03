@@ -37,7 +37,7 @@ import (
 
 	// DashboardContentCacheDuration sets a default for when a `GrafanaDashboard` resource doesn't specify a `contentCacheDuration`.
 	// If left unset or 0 the default behavior is to cache indefinitely.
-	dashboardContentCacheDuration?: null | metav1.#Duration @go(DashboardContentCacheDuration,*metav1.Duration)
+	dashboardContentCacheDuration?: metav1.#Duration @go(DashboardContentCacheDuration)
 }
 
 #ReadinessProbeSpec: {
@@ -111,7 +111,8 @@ import (
 	replicas?: null | int32 @go(Replicas,*int32)
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 	tolerations?: [...v1.#Toleration] @go(Tolerations,[]v1.Toleration)
-	affinity?:                      null | v1.#Affinity           @go(Affinity,*v1.Affinity)
+	affinity?: null | v1.#Affinity @go(Affinity,*v1.Affinity)
+	topologySpreadConstraints?: [...v1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]v1.TopologySpreadConstraint)
 	securityContext?:               null | v1.#PodSecurityContext @go(SecurityContext,*v1.PodSecurityContext)
 	containerSecurityContext?:      null | v1.#SecurityContext    @go(ContainerSecurityContext,*v1.SecurityContext)
 	terminationGracePeriodSeconds?: null | int64                  @go(TerminationGracePeriodSeconds,*int64)

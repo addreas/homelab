@@ -247,6 +247,8 @@ github.com/fluxcd/notification-controller/api v0.28.0 h1:7dRUoKgVatGB235iOl0Z2PX
 github.com/fluxcd/notification-controller/api v0.28.0/go.mod h1:USY8Mz7K9uoIn0cNBqq2WTix2cbzpFi9kbs4CMBjB+w=
 github.com/fluxcd/notification-controller/api v0.29.0 h1:aLl2HCtaiOpglaGb2iomKz2IJ77VdRW1gSB3VYjYxmM=
 github.com/fluxcd/notification-controller/api v0.29.0/go.mod h1:Ve4SE6jeiGlyItvHa7/UpTPOVC6ac5K76Frv1P7hqLw=
+github.com/fluxcd/notification-controller/api v0.29.1 h1:gNLbJ18TprLPFVYNXpDRNOX42nzLBi/UYj/HPH19nAk=
+github.com/fluxcd/notification-controller/api v0.29.1/go.mod h1:Ve4SE6jeiGlyItvHa7/UpTPOVC6ac5K76Frv1P7hqLw=
 github.com/fluxcd/pkg/apis/acl v0.1.0 h1:EoAl377hDQYL3WqanWCdifauXqXbMyFuK82NnX6pH4Q=
 github.com/fluxcd/pkg/apis/acl v0.1.0/go.mod h1:zfEZzz169Oap034EsDhmCAGgnWlcWmIObZjYMusoXS8=
 github.com/fluxcd/pkg/apis/kustomize v0.6.0 h1:Afxv3Uv+xiuettzqm3sP0ceWikDZTfHdHtLv6u2nFM8=
@@ -548,6 +550,8 @@ github.com/gorilla/websocket v0.0.0-20170926233335-4201258b820c/go.mod h1:E7qHFY
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/grafana-operator/grafana-operator/v4 v4.7.1 h1:FuWipys5zEx20RZss0W7GwPYxqqFqODOViUQclInjbM=
 github.com/grafana-operator/grafana-operator/v4 v4.7.1/go.mod h1:B74z8SZj57E4CxfC+JtaP2gNUze/rcvKAFDL3iDHeqI=
+github.com/grafana-operator/grafana-operator/v4 v4.8.0 h1:7j85pLTPBsz4sxQN351F9WK6gIOOVEIvapmUUq2JZfc=
+github.com/grafana-operator/grafana-operator/v4 v4.8.0/go.mod h1:seGyZL0FvEtETwMc88APlbW9G4hVY687aEQmlOC4/V8=
 github.com/gregjones/httpcache v0.0.0-20180305231024-9cad4c3443a7/go.mod h1:FecbI9+v66THATjSRHfNgh1IVFe/9kFxbXtjV0ctIMA=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.1-0.20190118093823-f849b5445de4/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=

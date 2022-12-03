@@ -60,7 +60,7 @@ import (
 
 #GrafanaDashboardStatus: {
 	contentCache?:     bytes                         @go(ContentCache,[]byte)
-	contentTimestamp?: null | metav1.#Time           @go(ContentTimestamp,*metav1.Time)
+	contentTimestamp?: metav1.#Time                  @go(ContentTimestamp)
 	contentUrl?:       string                        @go(ContentUrl)
 	error?:            null | #GrafanaDashboardError @go(Error,*GrafanaDashboardError)
 }
