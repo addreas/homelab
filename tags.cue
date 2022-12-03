@@ -28,7 +28,7 @@ githubReleases: {
 	"jcmoraisjr/haproxy-ingress": "v0.13.9"
 	"longhorn/longhorn":          "v1.3.2"
 	"ory/hydra":                  "v2.0.2"
-	"ory/kratos":                 "v0.10.1"
+	"ory/kratos":                 "v0.11.0"
 	"zwave-js/zwave-js-ui":       "v8.5.1"
 }
 some: {
