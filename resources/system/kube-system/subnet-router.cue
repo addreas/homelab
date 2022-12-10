@@ -30,5 +30,5 @@ k: Role: tailscale: rules: [{
 	apiGroups: [""]
 	resourceNames: ["tailscale-state"]
 	resources: ["secrets"]
-	verbs: ["get", "update"]
+	verbs: ["get", "patch", "update"]
 }]
