@@ -36,7 +36,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #DeviceInfoTypeVHostUser: "vhost-user"
 #DeviceInfoTypeMemif:     "memif"
 #DeviceInfoTypeVDPA:      "vdpa"
-#DeviceInfoVersion:       "1.0.0"
+#DeviceInfoVersion:       "1.1.0"
 
 // DeviceInfo contains the information of the device associated
 // with this network (if any)
@@ -50,18 +50,20 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 #PciDevice: {
-	"pci-address"?:    string @go(PciAddress)
-	"vhost-net"?:      string @go(Vhostnet)
-	"rdma-device"?:    string @go(RdmaDevice)
-	"pf-pci-address"?: string @go(PfPciAddress)
+	"pci-address"?:        string @go(PciAddress)
+	"vhost-net"?:          string @go(Vhostnet)
+	"rdma-device"?:        string @go(RdmaDevice)
+	"pf-pci-address"?:     string @go(PfPciAddress)
+	"representor-device"?: string @go(RepresentorDevice)
 }
 
 #VdpaDevice: {
-	"parent-device"?:  string @go(ParentDevice)
-	driver?:           string @go(Driver)
-	path?:             string @go(Path)
-	"pci-address"?:    string @go(PciAddress)
-	"pf-pci-address"?: string @go(PfPciAddress)
+	"parent-device"?:      string @go(ParentDevice)
+	driver?:               string @go(Driver)
+	path?:                 string @go(Path)
+	"pci-address"?:        string @go(PciAddress)
+	"pf-pci-address"?:     string @go(PfPciAddress)
+	"representor-device"?: string @go(RepresentorDevice)
 }
 
 #VhostDeviceModeClient: "client"
@@ -94,6 +96,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	default?:       bool               @go(Default)
 	dns?:           #DNS               @go(DNS)
 	"device-info"?: null | #DeviceInfo @go(DeviceInfo,*DeviceInfo)
+	gateway?: [...string] @go(Gateway,[]string)
 }
 
 // PortMapEntry for CNI PortMapEntry
