@@ -4160,6 +4160,11 @@ prometheusOperator: CustomResourceDefinition: {
 								route: {
 									description: "The Alertmanager route definition for alerts matching the resource's namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route."
 									properties: {
+										activeTimeIntervals: {
+											description: "ActiveTimeIntervals is a list of MuteTimeInterval names when this route should be active."
+											items: type: "string"
+											type: "array"
+										}
 										continue: {
 											description: "Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator."
 											type:        "boolean"
@@ -6415,6 +6420,11 @@ prometheusOperator: CustomResourceDefinition: {
 								image: {
 									description: "Image if specified has precedence over baseImage, tag and sha combinations. Specifying the version is still necessary to ensure the Prometheus Operator knows what version of Alertmanager is being configured."
 									type:        "string"
+								}
+								imagePullPolicy: {
+									description: "Image pull policy for the 'alertmanager', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details."
+									enum: ["", "Always", "Never", "IfNotPresent"]
+									type: "string"
 								}
 								imagePullSecrets: {
 									description: "An optional list of references to secrets in the same namespace to use for pulling prometheus and alertmanager images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod"
@@ -10985,7 +10995,6 @@ prometheusOperator: CustomResourceDefinition: {
 											type:        "string"
 										}
 										partial_response_strategy: {
-											default:     ""
 											description: "PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response"
 											pattern:     "^(?i)(abort|warn)?$"
 											type:        "string"
