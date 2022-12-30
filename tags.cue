@@ -1,16 +1,16 @@
 package kube
 
 goModVersions: {
-	"github.com/VictoriaMetrics/operator":                                    "v0.29.2"
-	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20221213183437-4b8b9a392e9e"
+	"github.com/VictoriaMetrics/operator":                                    "v0.30.0"
+	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20221229214359-857910e9bb1b"
 	"github.com/addreas/cuebuild-controller/api":                             "v0.18.2-cue"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.19.3"
 	"github.com/cert-manager/cert-manager":                                   "v1.10.1"
-	"github.com/cilium/cilium":                                               "v1.12.4"
-	"github.com/fluxcd/helm-controller/api":                                  "v0.27.0"
-	"github.com/fluxcd/kustomize-controller/api":                             "v0.31.0"
-	"github.com/fluxcd/notification-controller/api":                          "v0.29.1"
-	"github.com/fluxcd/source-controller/api":                                "v0.32.1"
+	"github.com/cilium/cilium":                                               "v1.12.5"
+	"github.com/fluxcd/helm-controller/api":                                  "v0.28.1"
+	"github.com/fluxcd/kustomize-controller/api":                             "v0.32.0"
+	"github.com/fluxcd/notification-controller/api":                          "v0.30.2"
+	"github.com/fluxcd/source-controller/api":                                "v0.33.0"
 	"github.com/grafana-operator/grafana-operator/v4":                        "v4.8.0"
 	"github.com/k8snetworkplumbingwg/network-attachment-definition-client":   "v1.4.0"
 	"github.com/ory/hydra-maester":                                           "v0.0.26"
