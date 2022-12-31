@@ -102,11 +102,16 @@ import (
 // VmAgentStatus defines the observed state of VmAgent
 // +k8s:openapi-gen=true
 #VMAgentStatus: {
-	// ReplicaCount Total number of non-terminated pods targeted by this VMAlert
-	// cluster (their labels match the selector).
+	// Shards represents total number of vmagent deployments with uniq scrape targets
+	shards: int32 @go(Shards)
+
+	// Selector string form of label value set for autoscaling
+	selector: string @go(Selector)
+
+	// ReplicaCount Total number of pods targeted by this VMAgent
 	replicas: int32 @go(Replicas)
 
-	// UpdatedReplicas Total number of non-terminated pods targeted by this VMAlert
+	// UpdatedReplicas Total number of non-terminated pods targeted by this VMAgent
 	// cluster that have the desired version spec.
 	updatedReplicas: int32 @go(UpdatedReplicas)
 
@@ -114,7 +119,7 @@ import (
 	// targeted by this VMAlert cluster.
 	availableReplicas: int32 @go(AvailableReplicas)
 
-	// UnavailableReplicas Total number of unavailable pods targeted by this VMAlert cluster.
+	// UnavailableReplicas Total number of unavailable pods targeted by this VMAgent cluster.
 	unavailableReplicas: int32 @go(UnavailableReplicas)
 }
 
@@ -129,6 +134,9 @@ import (
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=vmagents,scope=Namespaced
+// +kubebuilder:subresource:scale:specpath=.spec.shardCount,statuspath=.status.shards,selectorpath=.status.selector
+// +kubebuilder:printcolumn:name="Shards Count",type="integer",JSONPath=".status.shards",description="current number of shards"
+// +kubebuilder:printcolumn:name="Replica Count",type="integer",JSONPath=".status.replicas",description="current number of replicas"
 #VMAgent: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
