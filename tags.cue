@@ -26,6 +26,7 @@ githubReleases: {
 	"grafana/grafana":            "v9.3.2"
 	"home-assistant/core":        "2022.12.8"
 	"jcmoraisjr/haproxy-ingress": "v0.14.0"
+	"kubereboot/charts":          "kured-4.2.0"
 	"longhorn/longhorn":          "v1.4.0"
 	"ory/hydra":                  "v2.0.3"
 	"ory/kratos":                 "v0.11.0"

@@ -37,8 +37,8 @@ command: "update-github-tags": {
 						map(select(.prerelease == false))
 							| sort_by(
 								.tag_name
+								| sub("[a-z]+-?"; "")
 								| split(".")
-								| map(ltrimstr("v"))
 								| map(tonumber))
 							| last
 							| .tag_name

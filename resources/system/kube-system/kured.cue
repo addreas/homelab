@@ -1,11 +1,12 @@
 package kube
 
-k: HelmRepository: kured: spec: url: "https://weaveworks.github.io/kured"
+import "strings"
+
+k: HelmRepository: kured: spec: url: "https://kubereboot.github.io/charts"
 
 k: HelmRelease: kured: spec: {
 	chart: spec: {
-		// TODO: version bump tool
-		version: "2.11.0"
+		version: strings.TrimPrefix(githubReleases["kubereboot/charts"], "kured-")
 	}
 	values: {
 		metrics: create: true
@@ -13,6 +14,8 @@ k: HelmRelease: kured: spec: {
 			rebootDays: ["sa"]
 			startTime: "08:00"
 			endTime:   "22:00"
+			// notifyUrl: "http://user:pass@ntfy.default.svc:8080/kured"
+			// rebootSentinelCommand: #"sh -c '[[ "$(readlink /nix/var/nix/profiles/system/{initrd,kernel,kernel-modules})" != "$(readlink /run/booted-system/{initrd,kernel,kernel-modules})" ]]'"#
 		}
 	}
 }
