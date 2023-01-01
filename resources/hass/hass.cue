@@ -43,7 +43,16 @@ k: StatefulSet: hass: {
 						value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
 					}]
 					ports: [{
+						name: "http"
 						containerPort: 8123
+					}, {
+						name:          "ssdp"
+						containerPort: 1900
+						protocol:      "UDP"
+					}, {
+						name:          "mdns"
+						containerPort: 5353
+						protocol:      "UDP"
 					}]
 					volumeMounts: [{
 						name:      "config"
@@ -85,9 +94,9 @@ k: StatefulSet: hass: {
 	}
 }
 
-k: Service: hass: spec: ports: [{
-	name: "http"
-}]
+k: Service: hass: spec: type: "LoadBalancer"
+
+k: Ingress: hass: {}
 
 k: ServiceMonitor: hass: spec: endpoints: [{
 	port:     "http"
@@ -99,4 +108,3 @@ k: ServiceMonitor: hass: spec: endpoints: [{
 	}
 }]
 
-k: Ingress: hass: {}
