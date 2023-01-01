@@ -42,15 +42,6 @@ let conf = {
 	http: {
 		use_x_forwarded_for: true
 		trusted_proxies: ["10.0.0.0/8"]
-
-	}
-
-	webostv: {
-		host: "192.168.1.245"
-		turn_on_action: {
-			service: "media_player.turn_on"
-			target: entity_id: "media_player.vardagsrummet_tv"
-		}
 	}
 
 	homeassistant: media_dirs: media: "/media/videos"
