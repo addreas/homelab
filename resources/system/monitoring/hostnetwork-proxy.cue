@@ -15,6 +15,7 @@ k: DaemonSet: "control-plane-metrics-proxy": {
 	metadata: namespace: "kube-system"
 	spec: template: spec: {
 		hostNetwork: true
+		nodeSelector: "node-role.kubernetes.io/control-plane": ""
 		containers: [ for n, p in services {
 			name:  n
 			image: "alpine/socat"
