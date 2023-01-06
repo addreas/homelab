@@ -78,9 +78,6 @@ k: StatefulSet: hass: {
 						path:   "/export/videos"
 						server: "sergio.localdomain"
 					}
-				}, {
-					name: "mqtt-certs"
-					secret: secretName: "mqtt-hass-cert"
 				}]
 			}
 		}
