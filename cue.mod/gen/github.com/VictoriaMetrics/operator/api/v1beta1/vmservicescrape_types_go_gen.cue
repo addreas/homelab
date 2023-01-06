@@ -397,6 +397,18 @@ _#nsMatcher: _
 	// Action to perform based on regex matching. Default is 'replace'
 	// +optional
 	action?: string @go(Action)
+
+	// If represents metricsQL match expression: '{__name__=~"foo_.*"}'
+	// +optional
+	if?: string @go(If)
+
+	// Match is used together with Labels for `action: graphite`
+	// +optional
+	match?: string @go(Match)
+
+	// Labels is used together with Match for `action: graphite`
+	// +optional
+	labels?: {[string]: string} @go(Labels,map[string]string)
 }
 
 // APIServerConfig defines a host and auth methods to access apiserver.
