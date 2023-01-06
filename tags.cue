@@ -24,7 +24,7 @@ githubReleases: {
 	"cloudflare/cloudflared":     "2022.12.1"
 	"dani-garcia/vaultwarden":    "1.27.0"
 	"grafana/grafana":            "v9.3.2"
-	"home-assistant/core":        "2022.12.8"
+	"home-assistant/core":        "2023.1.1"
 	"jcmoraisjr/haproxy-ingress": "v0.14.0"
 	"kubereboot/charts":          "kured-4.2.0"
 	"longhorn/longhorn":          "v1.4.0"
