@@ -73,6 +73,11 @@ import (
 	// configured.
 	image?: null | string @go(Image,*string)
 
+	// Image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers.
+	// See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.
+	// +kubebuilder:validation:Enum="";Always;Never;IfNotPresent
+	imagePullPolicy?: v1.#PullPolicy @go(ImagePullPolicy)
+
 	// An optional list of references to secrets in the same namespace
 	// to use for pulling prometheus and alertmanager images from registries
 	// see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
@@ -336,7 +341,7 @@ import (
 	// Minimum number of seconds for which a newly created pod should be ready
 	// without any of its container crashing for it to be considered available.
 	// Defaults to 0 (pod will be considered available as soon as it is ready)
-	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+	// This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
 	// +optional
 	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 
@@ -368,6 +373,9 @@ import (
 	// Make sure to understand the security implications if you want to enable it.
 	// When hostNetwork is enabled, this will set dnsPolicy to ClusterFirstWithHostNet automatically.
 	hostNetwork?: bool @go(HostNetwork)
+
+	// PodTargetLabels are added to all Pod/ServiceMonitors' podTargetLabels
+	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 }
 
 // Prometheus defines a Prometheus deployment.
@@ -762,16 +770,17 @@ import (
 	// DisableMountSubPath allows to remove any subPath usage in volume mounts.
 	disableMountSubPath?: bool @go(DisableMountSubPath)
 
-	// EmptyDirVolumeSource to be used by the Prometheus StatefulSets. If specified, used in place of any volumeClaimTemplate. More
+	// EmptyDirVolumeSource to be used by the StatefulSet. If specified, used in place of any volumeClaimTemplate. More
 	// info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
 	emptyDir?: null | v1.#EmptyDirVolumeSource @go(EmptyDir,*v1.EmptyDirVolumeSource)
 
-	// EphemeralVolumeSource to be used by the Prometheus StatefulSets.
+	// EphemeralVolumeSource to be used by the StatefulSet.
 	// This is a beta field in k8s 1.21, for lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate.
 	// More info: https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes
 	ephemeral?: null | v1.#EphemeralVolumeSource @go(Ephemeral,*v1.EphemeralVolumeSource)
 
-	// A PVC spec to be used by the Prometheus StatefulSets.
+	// A PVC spec to be used by the StatefulSet. The easiest way to use a volume that cannot be automatically provisioned
+	// (for whatever reason) is to use a label selector alongside manually created PersistentVolumes.
 	volumeClaimTemplate?: #EmbeddedPersistentVolumeClaim @go(VolumeClaimTemplate)
 }
 
@@ -1221,26 +1230,26 @@ import (
 // More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
 // +k8s:openapi-gen=true
 #RelabelConfig: {
-	//The source labels select values from existing labels. Their content is concatenated
-	//using the configured separator and matched against the configured regular expression
-	//for the replace, keep, and drop actions.
+	// The source labels select values from existing labels. Their content is concatenated
+	// using the configured separator and matched against the configured regular expression
+	// for the replace, keep, and drop actions.
 	sourceLabels?: [...#LabelName] @go(SourceLabels,[]LabelName)
 
-	//Separator placed between concatenated source label values. default is ';'.
+	// Separator placed between concatenated source label values. default is ';'.
 	separator?: string @go(Separator)
 
-	//Label to which the resulting value is written in a replace action.
-	//It is mandatory for replace actions. Regex capture groups are available.
+	// Label to which the resulting value is written in a replace action.
+	// It is mandatory for replace actions. Regex capture groups are available.
 	targetLabel?: string @go(TargetLabel)
 
-	//Regular expression against which the extracted value is matched. Default is '(.*)'
+	// Regular expression against which the extracted value is matched. Default is '(.*)'
 	regex?: string @go(Regex)
 
 	// Modulus to take of the hash of the source label values.
 	modulus?: uint64 @go(Modulus)
 
-	//Replacement value against which a regex replace is performed if the
-	//regular expression matches. Regex capture groups are available. Default is '$1'
+	// Replacement value against which a regex replace is performed if the
+	// regular expression matches. Regex capture groups are available. Default is '$1'
 	replacement?: string @go(Replacement)
 
 	//Action to perform based on regex matching. Default is 'replace'.
@@ -1295,6 +1304,9 @@ import (
 
 	// TLS Config to use for alertmanager connection.
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// BasicAuth allow an endpoint to authenticate over basic authentication
+	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
 	// BearerTokenFile to read from filesystem to use when authenticating to
 	// Alertmanager.
@@ -1896,7 +1908,6 @@ import (
 	// be ignored by Prometheus instances.
 	// More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 	// +kubebuilder:validation:Pattern="^(?i)(abort|warn)?$"
-	// +kubebuilder:default:=""
 	partial_response_strategy?: string @go(PartialResponseStrategy)
 }
 
@@ -1954,6 +1965,11 @@ import (
 	// Prometheus Operator knows what version of Alertmanager is being
 	// configured.
 	image?: null | string @go(Image,*string)
+
+	// Image pull policy for the 'alertmanager', 'init-config-reloader' and 'config-reloader' containers.
+	// See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.
+	// +kubebuilder:validation:Enum="";Always;Never;IfNotPresent
+	imagePullPolicy?: v1.#PullPolicy @go(ImagePullPolicy)
 
 	// Version the cluster should be on.
 	version?: string @go(Version)
@@ -2141,7 +2157,7 @@ import (
 	// Minimum number of seconds for which a newly created pod should be ready
 	// without any of its container crashing for it to be considered available.
 	// Defaults to 0 (pod will be considered available as soon as it is ready)
-	// This is an alpha field and requires enabling StatefulSetMinReadySeconds feature gate.
+	// This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
 	// +optional
 	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 
