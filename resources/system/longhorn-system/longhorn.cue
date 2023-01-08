@@ -26,7 +26,10 @@ k: HelmRelease: longhorn: spec: {
 		kustomize: patchesStrategicMerge: [{
 			apiVersion: "apps/v1"
 			kind: "DaemonSet"
-			metadata: name: "longhorn-manager"
+			metadata: {
+				name: "longhorn-manager"
+				namespace: "longhorn-system"
+			}
 			spec: template: spec: containers: [{
 				name: "longhorn-manager"
 				env: [{
