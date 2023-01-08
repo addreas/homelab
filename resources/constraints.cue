@@ -34,14 +34,10 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 	}
 }
 
-k: Job: [Name=string]: {
-	_selector: _ | *{"job-name": Name}
-	metadata: labels: _selector
+k: Job: [string]: {
 	spec: {
-		selector: matchLabels: _selector
 		ttlSecondsAfterFinished: 60 * 60
 		template: podTemplate & {
-			metadata: labels: _selector
 			spec: restartPolicy: _ | *"OnFailure"
 		}
 	}
