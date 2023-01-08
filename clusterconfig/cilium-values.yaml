@@ -1,13 +1,23 @@
+image:
+  repository: ghcr.io/addreas/cilium-agent
+  tag: 1.13.0-rc4-iptables-1.8.8
+  digest: sha256:4514beb960105e6a1256e8521fd7a5db10b9a6e56e11b9f7ee0207a234eca858
+
+cni:
+  exclusive: false
+
+kubeProxyReplacement: strict
+k8sServiceHost: nucles.localdomain
+k8sServicePort: 6443
+
 bgp:
+  enabled: false
   announce:
     loadbalancerIP: false
     podCIDR: false
-  enabled: false
-cni:
-  exclusive: false
+
 hubble:
   relay:
     enabled: true
   ui:
     enabled: true
-upgradeCompatibility: "1.11"
