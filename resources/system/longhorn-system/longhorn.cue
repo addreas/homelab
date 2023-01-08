@@ -22,6 +22,20 @@ k: HelmRelease: longhorn: spec: {
 		}
 		persistence: defaultClassReplicaCount: 2
 	}
+	postRenderers: [{
+		kustomize: patchesStrategicMerge: [{
+			apiVersion: "apps/v1"
+			kind: "DaemonSet"
+			metadata: name: "longhorn-manager"
+			spec: template: spec: containers: [{
+				name: "longhorn-manager"
+				env: [{
+					name: "PATH"
+					value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+				}]
+			}]
+		}]
+	}]
 }
 
 k: GitRepository: "external-snapshotter": spec: {
