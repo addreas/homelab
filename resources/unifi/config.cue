@@ -9,6 +9,10 @@ k: ConfigMap: "config-gateway-json": data: {
 				alias: ["setup"]
 				inet: ["192.168.1.1"]
 			}
+			"unifi.localdomain": {
+				alias: ["unifi"]
+				inet: ["192.168.10.185"]
+			}
 			"nucles.localdomain": {
 				alias: ["nucles"]
 				inet: ["192.168.1.2"]
