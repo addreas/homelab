@@ -3,7 +3,7 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"encoding/json"
+	// "encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
