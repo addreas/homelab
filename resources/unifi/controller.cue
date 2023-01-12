@@ -3,6 +3,7 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
@@ -11,7 +12,10 @@ k: StatefulSet: "unifi-controller": {
 		template: {
 			metadata: {
 				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."config-gateway-json".data."config.gateway.json"))
-				annotations: "k8s.v1.cni.cncf.io/networks": "cilium"
+				annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+					"name": "cilium",
+					"default-route": []
+				}])
 				annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 			}
 			spec: {
