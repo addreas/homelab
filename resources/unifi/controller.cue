@@ -11,7 +11,7 @@ k: StatefulSet: "unifi-controller": {
 		template: {
 			metadata: {
 				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."config-gateway-json".data."config.gateway.json"))
-				// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+				annotations: "k8s.v1.cni.cncf.io/networks": "cilium"
 				annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 			}
 			spec: {
