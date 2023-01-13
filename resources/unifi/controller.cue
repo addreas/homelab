@@ -31,6 +31,11 @@ k: StatefulSet: "unifi-controller": {
 				containers: [{
 					image: "ghcr.io/linuxserver/unifi-controller:7.3.76-ls173"
 					name:  "controller"
+					command: ["sh", "-c"]
+					args: ["""
+						java -Xmx1024M -Dlog4j2.formatMsgNoLookups=true -jar /usr/lib/unifi/lib/ace.jar start &
+						exec tail -f --retry --pid=$! /usr/lib/unifi/logs/server.log
+						"""]
 					ports: [{
 						name:          "https"
 						containerPort: 8443
@@ -79,21 +84,6 @@ k: StatefulSet: "unifi-controller": {
 					image: "ghcr.io/kinvolk/busybox:latest"
 					name:  "mongo-logs"
 					command: ["tail", "-F", "/usr/lib/unifi/logs/mongod.log"]
-					volumeMounts: [{
-						name:      "config"
-						mountPath: "/usr/lib/unifi/logs"
-						subPath:   "logs"
-					}]
-					resources: {
-						requests: {
-							cpu:    "10m"
-							memory: "64Mi"
-						}
-					}
-				}, {
-					image: "ghcr.io/kinvolk/busybox:latest"
-					name:  "controller-logs"
-					command: ["tail", "-F", "/usr/lib/unifi/logs/server.log"]
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/usr/lib/unifi/logs"
