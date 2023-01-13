@@ -29,7 +29,7 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:6.5.55-ls138"
+					image: "ghcr.io/linuxserver/unifi-controller:7.3.76-ls173"
 					name:  "controller"
 					command: ["sh", "-c"]
 					args: ["""
