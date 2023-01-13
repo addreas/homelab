@@ -29,14 +29,12 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "ghcr.io/linuxserver/unifi-controller:7.3.76-ls173"
+					image: "jacobalberty/unifi:v7.3.76"
 					name:  "controller"
-					command: ["sh", "-c"]
-					args: ["""
-						source /etc/cont-init.d/15-install
-						java -Xmx1024M -Dlog4j2.formatMsgNoLookups=true -jar /usr/lib/unifi/lib/ace.jar start &
-						exec tail -f --retry --pid=$! /usr/lib/unifi/logs/server.log
-						"""]
+					env: [{
+						name: "UNIFI_STDOUT"
+						value: "true"
+					}]
 					ports: [{
 						name:          "https"
 						containerPort: 8443
@@ -68,7 +66,7 @@ k: StatefulSet: "unifi-controller": {
 
 					volumeMounts: [ for dir in ["data", "logs", "run"] {
 						name:      "config"
-						mountPath: "/usr/lib/unifi/\(dir)"
+						mountPath: "/unifi/\(dir)"
 						subPath:   dir
 					}]
 					resources: {
