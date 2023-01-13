@@ -33,6 +33,7 @@ k: StatefulSet: "unifi-controller": {
 					name:  "controller"
 					command: ["sh", "-c"]
 					args: ["""
+						source /etc/cont-init.d/15-install
 						java -Xmx1024M -Dlog4j2.formatMsgNoLookups=true -jar /usr/lib/unifi/lib/ace.jar start &
 						exec tail -f --retry --pid=$! /usr/lib/unifi/logs/server.log
 						"""]
