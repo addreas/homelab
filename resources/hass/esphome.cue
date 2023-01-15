@@ -1,6 +1,9 @@
 package kube
 
-k: GitRepository: homelab: spec: url: "https://github.com/addreas/homelab"
+k: GitRepository: homelab: spec: {
+	url: "https://github.com/addreas/homelab"
+	ref: branch: "main"
+}
 
 k: GitRepository: "esphome-configs": spec: {
 	url: "https://github.com/jonasdahl/esphome.git"
