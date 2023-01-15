@@ -30,10 +30,6 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "esphome-configs"
 			mountPath: "/config"
 		}, {
-			name:      "esphome-secrets"
-			mountPath: "/config/secrets.yaml"
-			subPath:   "secrets.yaml"
-		}, {
 			name:      "platformio-cache"
 			mountPath: "/config/.esphome/platformio"
 			subPath:   "esphome-platformio-cache"
@@ -41,10 +37,11 @@ k: Deployment: esphome: spec: template: spec: {
 	}]
 	volumes: [{
 		name: "esphome-configs"
-		configMap: name: "esphome-configs"
-	}, {
-		name: "esphome-secrets"
-		secret: secretName: "esphome-secrets"
+		projected: sources: [{
+			secret: name: "esphome-secrets"
+		}, {
+			configMap: name: "esphome-configs"
+		}]
 	}, {
 		name: "platformio-cache"
 		nfs: {
