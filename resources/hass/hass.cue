@@ -57,9 +57,9 @@ k: StatefulSet: hass: {
 					volumeMounts: [{
 						name:      "config"
 						mountPath: "/config"
-					}, {
-						name:      "nfs-videos"
-						mountPath: "/media/videos"
+					// }, {
+					// 	name:      "nfs-videos"
+					// 	mountPath: "/media/videos"
 					}]
 				}]
 				volumes: [{
@@ -69,12 +69,12 @@ k: StatefulSet: hass: {
 					}, {
 						secret: name: "hass-gcp-credential-json"
 					}]
-				}, {
-					name: "nfs-videos"
-					nfs: {
-						path:   "/export/videos"
-						server: "sergio.localdomain"
-					}
+				// }, {
+				// 	name: "nfs-videos"
+				// 	nfs: {
+				// 		path:   "/export/videos"
+				// 		server: "sergio.localdomain"
+				// 	}
 				}]
 			}
 		}
