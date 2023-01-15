@@ -9,8 +9,8 @@ k: GitRepository: "esphome-configs": spec: {
 	url: "https://github.com/jonasdahl/esphome.git"
 	include: [{
 		repository: name: "homelab"
-		fromPath: "resources/hass/esphome"
-		toPath:   "/"
+		fromPath: "/resources/hass/esphome/kustomization.yaml"
+		toPath:   "/kustomization.yaml"
 	}]
 }
 k: Kustomization: "esphome-configs": spec: sourceRef: name: "esphome-configs"

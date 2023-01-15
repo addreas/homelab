@@ -10,6 +10,11 @@ k: StatefulSet: hass: spec: {
 	template: {
 		metadata: {
 			// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+			// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+			//  "name": "cilium",
+			//  "default-route": []
+			// }])
+			// annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 			labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		}
 		spec: {

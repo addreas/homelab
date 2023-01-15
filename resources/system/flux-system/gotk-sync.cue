@@ -1,9 +1,8 @@
 package kube
 
 k: GitRepository: "homelab": spec: {
-	interval: "1m0s"
-	ref: branch: "main"
 	url: "https://github.com/addreas/homelab"
+	ref: branch: "main"
 }
 
 k: CueBuild: "homelab-system": spec: {
