@@ -13,7 +13,14 @@ k: GitRepository: "esphome-configs": spec: {
 		toPath:   "/kustomization.yaml"
 	}]
 }
-k: Kustomization: "esphome-configs": spec: sourceRef: name: "esphome-configs"
+
+k: Kustomization: "esphome-configs": {
+	metadata: namespace: string
+	spec: {
+		sourceRef: name: "esphome-configs"
+		targetNamespace: metadata.namespace
+	}
+}
 
 k: Deployment: esphome: spec: template: spec: {
 	containers: [{
