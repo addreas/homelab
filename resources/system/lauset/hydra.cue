@@ -15,6 +15,18 @@ k: Deployment: hydra: spec: template: spec: {
 		name: "hydra-config-volume"
 		configMap: name: "hydra"
 	}]
+	initContainers: [{
+		name:  "migrate"
+		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+		command: ["hydra"]
+		args: [
+			"migrate",
+			"sql",
+			"-e",
+			"-y",
+		]
+		envFrom: [{secretRef: name: "hydra"}]
+	}]
 	containers: [_probes & {
 		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
 		command: ["hydra"]
@@ -55,20 +67,5 @@ k: Service: "hydra-public": spec: {
 		port:       80
 		targetPort: "http-public"
 		name:       "http"
-	}]
-}
-
-k: Job: "hydra-migrate": spec: template: spec: {
-	containers: [{
-		name:  "migrate"
-		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
-		command: ["hydra"]
-		args: [
-			"migrate",
-			"sql",
-			"-e",
-			"-y",
-		]
-		envFrom: [{secretRef: name: "hydra"}]
 	}]
 }

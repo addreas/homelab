@@ -18,6 +18,18 @@ k: ConfigMap: "kratos-config": data: {
 }
 
 k: Deployment: kratos: spec: template: spec: {
+	initContainers: [{
+		name:  "migrate"
+		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
+		command: ["kratos"]
+		args: [
+			"migrate",
+			"sql",
+			"-e",
+			"-y",
+		]
+		envFrom: [{secretRef: name: "kratos"}]
+	}]
 	containers: [_probes & {
 		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
 		command: ["kratos"]
@@ -65,17 +77,3 @@ k: Service: "kratos-public": spec: {
 	}]
 }
 
-k: Job: "kratos-migrate": spec: template: spec: {
-	containers: [{
-		name:  "migrate"
-		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
-		command: ["kratos"]
-		args: [
-			"migrate",
-			"sql",
-			"-e",
-			"-y",
-		]
-		envFrom: [{secretRef: name: "kratos"}]
-	}]
-}
