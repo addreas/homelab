@@ -34,14 +34,14 @@ command: ls: cli.Print & {
 command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
-			cmd: ["kubectl", "--context", context, "apply", "--server-side", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
 			stdin: yaml.MarshalStream(earlyResources)
 		}
 	}
 	if len(resources) > 0 {
 		apply: exec.Run & {
 			$after: [apply.applyEarly]
-			cmd: ["kubectl", "--context", context, "apply", "--server-side", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
 			stdin: yaml.MarshalStream(resources)
 		}
 	}

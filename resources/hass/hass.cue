@@ -60,9 +60,6 @@ k: StatefulSet: hass: {
 					}, {
 						name:      "nfs-videos"
 						mountPath: "/media/videos"
-					}, {
-						name:      "mqtt-certs"
-						mountPath: "/mqtt-certs"
 					}]
 				}]
 				volumes: [{
