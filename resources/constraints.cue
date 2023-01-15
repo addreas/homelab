@@ -34,12 +34,10 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 	}
 }
 
-k: Job: [string]: {
-	spec: {
-		ttlSecondsAfterFinished: 60 * 60
-		template: podTemplate & {
-			spec: restartPolicy: _ | *"OnFailure"
-		}
+k: Job: [string]: spec: {
+	ttlSecondsAfterFinished: 60 * 60
+	template:                podTemplate & {
+		spec: restartPolicy: _ | *"OnFailure"
 	}
 }
 

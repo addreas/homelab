@@ -5,50 +5,46 @@ import (
 	"encoding/hex"
 )
 
-k: Service: mosquitto: spec: {
-	ports: [{
-		name: "tcp0"
-	}, {
-		name: "ws"
-	}]
-}
+k: Service: mosquitto: spec: ports: [{
+	name: "tcp0"
+}, {
+	name: "ws"
+}]
 
-k: StatefulSet: mosquitto: {
-	spec: {
-		template: {
-			metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
-			spec: {
-				containers: [{
-					image: "eclipse-mosquitto:latest"
-					ports: [{containerPort: 1883}, {containerPort: 9001}]
-					volumeMounts: [{
-						name:      "data"
-						mountPath: "/mosquitto/data"
-					}, {
-						mountPath: "/mosquitto/config"
-						name:      "config"
-					}, {
-						mountPath: "/certs"
-						name:      "certs"
-					}]
-				}]
-				volumes: [{
-					name: "config"
-					configMap: name: "mosquitto-config"
+k: StatefulSet: mosquitto: spec: {
+	template: {
+		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
+		spec: {
+			containers: [{
+				image: "eclipse-mosquitto:latest"
+				ports: [{containerPort: 1883}, {containerPort: 9001}]
+				volumeMounts: [{
+					name:      "data"
+					mountPath: "/mosquitto/data"
 				}, {
-					name: "certs"
-					secret: secretName: "mqtt-mosquitto-cert"
+					mountPath: "/mosquitto/config"
+					name:      "config"
+				}, {
+					mountPath: "/certs"
+					name:      "certs"
 				}]
-			}
+			}]
+			volumes: [{
+				name: "config"
+				configMap: name: "mosquitto-config"
+			}, {
+				name: "certs"
+				secret: secretName: "mqtt-mosquitto-cert"
+			}]
 		}
-		volumeClaimTemplates: [{
-			metadata: name: "data"
-			spec: {
-				accessModes: ["ReadWriteOnce"]
-				resources: requests: storage: "1Gi"
-			}
-		}]
 	}
+	volumeClaimTemplates: [{
+		metadata: name: "data"
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "1Gi"
+		}
+	}]
 }
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """

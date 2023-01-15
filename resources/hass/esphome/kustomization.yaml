@@ -1,0 +1,9 @@
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- name: esphome-configs
+  files:
+  - energy_meter.yaml
+  - flora_gw.yaml
+  - kitchen_lights.yaml
+  - watering.yaml

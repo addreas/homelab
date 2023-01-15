@@ -6,86 +6,84 @@ import (
 	"github.com/addreas/homelab/util"
 )
 
-k: StatefulSet: hass: {
-	spec: {
-		template: {
-			metadata: {
-				// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
-			}
-			spec: {
-				initContainers: [util.copyStatic & {
-					volumeMounts: [{
-						name:      "config"
-						mountPath: "/config"
-					}, {
-						name:      "hass-config"
-						mountPath: "/static/config"
-					}]
-				}]
-				containers: [{
-					image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
-					command: ["hass", "-c", "/config"]
-					resources: {
-						limits: {
-							cpu:                             "500m"
-							memory:                          "2Gi"
-							"addem.se/dev_deconz_conbee_ii": "1"
-						}
-						requests: {
-							cpu:    "100m"
-							memory: "256Mi"
-						}
-					}
-					envFrom: [{secretRef: name: "hass-postgres-credentials"}]
-					env: [{
-						name:  "DB_URL"
-						value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
-					}]
-					ports: [{
-						name: "http"
-						containerPort: 8123
-					}, {
-						name:          "ssdp"
-						containerPort: 1900
-						protocol:      "UDP"
-					}, {
-						name:          "mdns"
-						containerPort: 5353
-						protocol:      "UDP"
-					}]
-					volumeMounts: [{
-						name:      "config"
-						mountPath: "/config"
-					// }, {
-					// 	name:      "nfs-videos"
-					// 	mountPath: "/media/videos"
-					}]
-				}]
-				volumes: [{
-					name: "hass-config"
-					projected: sources: [{
-						configMap: name: "hass-config"
-					}, {
-						secret: name: "hass-gcp-credential-json"
-					}]
-				// }, {
-				// 	name: "nfs-videos"
-				// 	nfs: {
-				// 		path:   "/export/videos"
-				// 		server: "sergio.localdomain"
-				// 	}
-				}]
-			}
+k: StatefulSet: hass: spec: {
+	template: {
+		metadata: {
+			// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+			labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		}
-		volumeClaimTemplates: [{
-			metadata: name: "config"
-			spec: {
-				accessModes: ["ReadWriteOnce"]
-				resources: requests: storage: "5Gi"
-			}
-		}]
+		spec: {
+			initContainers: [util.copyStatic & {
+				volumeMounts: [{
+					name:      "config"
+					mountPath: "/config"
+				}, {
+					name:      "hass-config"
+					mountPath: "/static/config"
+				}]
+			}]
+			containers: [{
+				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
+				command: ["hass", "-c", "/config"]
+				resources: {
+					limits: {
+						cpu:                             "500m"
+						memory:                          "2Gi"
+						"addem.se/dev_deconz_conbee_ii": "1"
+					}
+					requests: {
+						cpu:    "100m"
+						memory: "256Mi"
+					}
+				}
+				envFrom: [{secretRef: name: "hass-postgres-credentials"}]
+				env: [{
+					name:  "DB_URL"
+					value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
+				}]
+				ports: [{
+					name:          "http"
+					containerPort: 8123
+				}, {
+					name:          "ssdp"
+					containerPort: 1900
+					protocol:      "UDP"
+				}, {
+					name:          "mdns"
+					containerPort: 5353
+					protocol:      "UDP"
+				}]
+				volumeMounts: [{
+					name:      "config"
+					mountPath: "/config"
+					// }, {
+					//  name:      "nfs-videos"
+					//  mountPath: "/media/videos"
+				}]
+			}]
+			volumes: [{
+				name: "hass-config"
+				projected: sources: [{
+					configMap: name: "hass-config"
+				}, {
+					secret: name: "hass-gcp-credential-json"
+				}]
+				// }, {
+				//  name: "nfs-videos"
+				//  nfs: {
+				//   path:   "/export/videos"
+				//   server: "sergio.localdomain"
+				//  }
+			}]
+		}
 	}
+	volumeClaimTemplates: [{
+		metadata: name: "config"
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "5Gi"
+		}
+	}]
 }
 
 k: Service: hass: spec: type: "LoadBalancer"
@@ -101,4 +99,3 @@ k: ServiceMonitor: hass: spec: endpoints: [{
 		key:  "key"
 	}
 }]
-
