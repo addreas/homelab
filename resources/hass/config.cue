@@ -76,6 +76,14 @@ let conf = {
 			}
 		}
 	}
+
+	template: [{
+		binary_sensor: [{
+			name:      "Any motion last 3h"
+			delay_off: "3:00:00"
+			state:     "states.binary_sensor.any_motion"
+		}]
+	}]
 }
 
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({
