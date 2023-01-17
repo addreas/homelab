@@ -24,9 +24,9 @@ k: Kustomization: "esphome-configs": {
 
 k: Deployment: esphome: spec: template: metadata: {
 	// annotations: "v1.multus-cni.io/default-network": "macvlan-conf"
-	annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+	// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 	// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-	//  "name": "cilium",
+	//  "name": "cilium"
 	//  "default-route": []
 	// }])
 }
