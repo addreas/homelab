@@ -13,11 +13,11 @@ import (
 
 context: string
 
-sub: string | *"" @tag(applyContext)
+applyContext: string | *"" @tag(sub)
 
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
-let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds, kind) && strings.Contains(sub, r.metadata.name) {r}]
-let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) && strings.Contains(sub, r.metadata.name) {r}]
+let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds, kind) && strings.Contains(applyContext, r.metadata.name) {r}]
+let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) && strings.Contains(applyContext, r.metadata.name) {r}]
 
 // List defined Kubernetes resources
 command: ls: cli.Print & {
