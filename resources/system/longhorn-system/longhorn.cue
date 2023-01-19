@@ -20,20 +20,27 @@ k: HelmRelease: longhorn: spec: {
 			autoSalvage:                          true
 			allowNodeDrainWithLastHealthyReplica: true
 		}
+
 		persistence: defaultClassReplicaCount: 2
+		image: longhorn: instanceManager: {
+			repository: "ghcr.io/addreas/longhorn-instance-manager"
+			tag:        "v1.4.0-nix"
+		}
+
+		defaultSettings: backupTarget: "nfs://sergio.localdomain:/export/longhorn-backup"
 	}
 	postRenderers: [{
 		kustomize: patchesStrategicMerge: [{
 			apiVersion: "apps/v1"
-			kind: "DaemonSet"
+			kind:       "DaemonSet"
 			metadata: {
-				name: "longhorn-manager"
+				name:      "longhorn-manager"
 				namespace: "longhorn-system"
 			}
 			spec: template: spec: containers: [{
 				name: "longhorn-manager"
 				env: [{
-					name: "PATH"
+					name:  "PATH"
 					value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
 				}]
 			}]
