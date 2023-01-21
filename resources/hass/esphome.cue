@@ -1,7 +1,8 @@
 package kube
 
 import (
-        "github.com/addreas/homelab/util"
+	"encoding/json"
+	"github.com/addreas/homelab/util"
 )
 
 k: GitRepository: homelab: spec: {
@@ -30,8 +31,8 @@ k: Deployment: esphome: spec: template: metadata: {
 	annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 	// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-	 "name": "cilium"
-	 // "default-route": []
+		"name": "cilium"
+		// "default-route": []
 	}])
 }
 
@@ -49,10 +50,10 @@ k: Deployment: esphome: spec: template: spec: {
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
 		ports: [{containerPort: 6052}]
 		volumeMounts: [{
-			name: "config"
+			name:      "config"
 			mountPath: "/config"
 		}, {
-			name: "root-pio"
+			name:      "root-pio"
 			mountPath: "/.platformio"
 		}]
 	}]
