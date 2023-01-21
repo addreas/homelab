@@ -1,7 +1,7 @@
 package kube
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
@@ -30,10 +30,10 @@ k: Kustomization: "esphome-configs": {
 k: Deployment: esphome: spec: template: metadata: {
 	annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 	// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-		"name": "cilium"
-		"default-route": []
-	}])
+	// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+	//  "name": "cilium"
+	//  "default-route": []
+	// }])
 }
 
 k: Deployment: esphome: spec: template: spec: {
@@ -46,6 +46,11 @@ k: Deployment: esphome: spec: template: spec: {
 			mountPath: "/static/config"
 		}]
 	}]
+	dnsPolicy: "None"
+	dnsConfig: {
+		nameservers: ["192.168.1.1"]
+		searches: ["localdomain"]
+	}
 	containers: [{
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
 		ports: [{containerPort: 6052}]
@@ -53,16 +58,21 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "config"
 			mountPath: "/config"
 		}, {
-			name:      "root-pio"
+			name:      "root"
 			mountPath: "/.platformio"
+			subPath:   ".platformio"
+		}, {
+			name:      "root"
+			mountPath: "/piolibs"
+			subPath:   "piolibs"
 		}]
 	}]
 	volumes: [{
 		name: "config"
 		emptyDir: {}
 	}, {
-		name: "root-pio"
-		emptyDir: {}
+		name: "root"
+		persistentVolumeClaim: claimName: "esphome-build-cache"
 	}, {
 		name: "esphome-configs"
 		projected: sources: [{
@@ -76,3 +86,8 @@ k: Deployment: esphome: spec: template: spec: {
 k: Service: esphome: {}
 
 k: Ingress: esphome: _authproxy: true
+
+k: PersistentVolumeClaim: "esphome-build-cache": spec: {
+	accessModes: ["ReadWriteMany"]
+	resources: requests: storage: "10Gi"
+}

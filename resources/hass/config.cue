@@ -41,7 +41,7 @@ let conf = {
 
 	http: {
 		use_x_forwarded_for: true
-		trusted_proxies: ["10.0.0.0/8"]
+		trusted_proxies: ["10.0.0.0/8", "192.168.1.0/24"]
 	}
 
 	homeassistant: media_dirs: media: "/media/videos"

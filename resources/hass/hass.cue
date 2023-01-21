@@ -3,18 +3,18 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
 k: StatefulSet: hass: spec: {
 	template: {
 		metadata: {
-			// annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-			// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-			//  "name": "cilium",
-			//  "default-route": []
-			// }])
-			// annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
+			annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
+			annotations: "k8s.v1.cni.cncf.io/networks":      json.Marshal([{
+				"name": "cilium"
+				"default-route": []
+			}])
 			labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		}
 		spec: {
@@ -49,14 +49,6 @@ k: StatefulSet: hass: spec: {
 				ports: [{
 					name:          "http"
 					containerPort: 8123
-				}, {
-					name:          "ssdp"
-					containerPort: 1900
-					protocol:      "UDP"
-				}, {
-					name:          "mdns"
-					containerPort: 5353
-					protocol:      "UDP"
 				}]
 				volumeMounts: [{
 					name:      "config"
@@ -91,7 +83,7 @@ k: StatefulSet: hass: spec: {
 	}]
 }
 
-k: Service: hass: spec: type: "LoadBalancer"
+k: Service: hass: {}
 
 k: Ingress: hass: {}
 
