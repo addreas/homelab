@@ -1,5 +1,9 @@
 package kube
 
+import (
+        "github.com/addreas/homelab/util"
+)
+
 k: GitRepository: homelab: spec: {
 	url: "https://github.com/addreas/homelab"
 	ref: branch: "main"
@@ -32,11 +36,20 @@ k: Deployment: esphome: spec: template: metadata: {
 }
 
 k: Deployment: esphome: spec: template: spec: {
+	initContainers: [util.copyStatic & {
+		volumeMounts: [{
+			name:      "config"
+			mountPath: "/config"
+		}, {
+			name:      "esphome-configs"
+			mountPath: "/static/config"
+		}]
+	}]
 	containers: [{
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
 		ports: [{containerPort: 6052}]
 		volumeMounts: [{
-			name:      "esphome-configs"
+			name: "config"
 			mountPath: "/config"
 		}, {
 			name:      "build"
@@ -48,15 +61,15 @@ k: Deployment: esphome: spec: template: spec: {
 		}]
 	}]
 	volumes: [{
+		name: "config"
+		emptyDir: {}
+	}, {
 		name: "esphome-configs"
 		projected: sources: [{
 			secret: name: "esphome-secrets"
 		}, {
 			configMap: name: "esphome-configs"
 		}]
-	}, {
-		name: "build"
-		emptyDir: {}
 	}, {
 		name: "platformio-cache"
 		nfs: {
