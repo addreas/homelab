@@ -51,10 +51,16 @@ k: Deployment: esphome: spec: template: spec: {
 		volumeMounts: [{
 			name: "config"
 			mountPath: "/config"
+		}, {
+			name: "root-pio"
+			mountPath: "/.platformio"
 		}]
 	}]
 	volumes: [{
 		name: "config"
+		emptyDir: {}
+	}, {
+		name: "root-pio"
 		emptyDir: {}
 	}, {
 		name: "esphome-configs"
