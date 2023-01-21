@@ -77,6 +77,8 @@ let conf = {
 		}
 	}
 
+	tts: [{platform: "google_translate"}]
+
 	template: [{
 		binary_sensor: [{
 			name:      "Any motion last 3h"
