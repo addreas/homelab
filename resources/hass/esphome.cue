@@ -51,10 +51,6 @@ k: Deployment: esphome: spec: template: spec: {
 		volumeMounts: [{
 			name: "config"
 			mountPath: "/config"
-		}, {
-			name:      "platformio-cache"
-			mountPath: "/config/.esphome/platformio"
-			subPath:   "esphome-platformio-cache"
 		}]
 	}]
 	volumes: [{
@@ -67,12 +63,6 @@ k: Deployment: esphome: spec: template: spec: {
 		}, {
 			configMap: name: "esphome-configs"
 		}]
-	}, {
-		name: "platformio-cache"
-		nfs: {
-			server: "sergio.localdomain"
-			path:   "/export/backups"
-		}
 	}]
 }
 
