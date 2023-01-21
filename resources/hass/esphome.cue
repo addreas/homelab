@@ -52,9 +52,6 @@ k: Deployment: esphome: spec: template: spec: {
 			name: "config"
 			mountPath: "/config"
 		}, {
-			name:      "build"
-			mountPath: "/config/.esphome/build"
-		}, {
 			name:      "platformio-cache"
 			mountPath: "/config/.esphome/platformio"
 			subPath:   "esphome-platformio-cache"
