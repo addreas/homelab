@@ -22,9 +22,16 @@ k: HelmRelease: longhorn: spec: {
 		}
 
 		persistence: defaultClassReplicaCount: 2
-		image: longhorn: instanceManager: {
-			repository: "ghcr.io/addreas/longhorn-instance-manager"
-			tag:        "v1.4.0-nix"
+		image: longhorn: {
+			manager: {
+				repository: "ghcr.io/addreas/longhorn-manager"
+				tag:        "v1.4.0-nix"
+				
+			}
+			instanceManager: {
+				repository: "ghcr.io/addreas/longhorn-instance-manager"
+				tag:        "v1.4.0-nix"
+			}
 		}
 
 		defaultSettings: backupTarget: "nfs://sergio.localdomain:/export/longhorn-backup"
