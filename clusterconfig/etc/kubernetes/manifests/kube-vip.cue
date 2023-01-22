@@ -1,17 +1,22 @@
  let config = {
 	cp_enable: "true"
-	svc_enable: "true"
+	// svc_enable: "true"
 
-	vip_arp:    "false"
-	bgp_enable: "true"
+	vip_arp:    "true"
+	// vip_arp:    "true"
+	// bgp_enable: "enable"
 	address:    "192.168.1.2"
 	lb_enable:  "true"
 	lb_port:    "6443"
 
-	bgp_routerinterface: "eno1"
-	bgp_as:              "64512"
-	bgp_peeras:          "64512"
-	bgp_peeraddress:     "192.168.1.1"
+	// bgp_routerinterface: "eno1"
+	// bgp_as:              "64512"
+	// bgp_peeras:          "64512"
+	// bgp_peeraddress:     "192.168.1.1"
+
+	vip_interface: "eno1"
+	vip_leaderelection: "true"
+	cp_namespace: "kube-system"
 }
 
 apiVersion: "v1"
