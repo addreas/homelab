@@ -3,11 +3,11 @@ module github.com/addreas/cuebernetes
 go 1.19
 
 require (
-	github.com/VictoriaMetrics/operator v0.30.0
-	github.com/VictoriaMetrics/operator/api v0.0.0-20230104165638-93c9e780981c
+	github.com/VictoriaMetrics/operator v0.30.3
+	github.com/VictoriaMetrics/operator/api v0.0.0-20230124212905-66ee8e544f48
 	github.com/addreas/cuebuild-controller/api v0.18.2-cue
-	github.com/bitnami-labs/sealed-secrets v0.19.3
-	github.com/cert-manager/cert-manager v1.10.1
+	github.com/bitnami-labs/sealed-secrets v0.19.4
+	github.com/cert-manager/cert-manager v1.11.0
 	github.com/cilium/cilium v1.12.5
 	github.com/fluxcd/helm-controller/api v0.28.1
 	github.com/fluxcd/kustomize-controller/api v0.32.0
@@ -16,11 +16,11 @@ require (
 	github.com/grafana-operator/grafana-operator/v4 v4.8.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.26
-	github.com/pivotal/kpack v0.9.1
+	github.com/pivotal/kpack v0.9.2
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.62.0
-	k8s.io/api v0.26.0
-	k8s.io/apimachinery v0.26.0
-	k8s.io/kube-aggregator v0.26.0
+	k8s.io/api v0.26.1
+	k8s.io/apimachinery v0.26.1
+	k8s.io/kube-aggregator v0.26.1
 )
 
 require (
@@ -76,7 +76,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.13 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
@@ -102,13 +102,13 @@ require (
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.38.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
-	github.com/rogpeppe/go-internal v1.8.1 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/shirou/gopsutil/v3 v3.22.5 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
-	github.com/spf13/cobra v1.6.0 // indirect
+	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.13.0 // indirect
@@ -124,14 +124,14 @@ require (
 	go.mongodb.org/mongo-driver v1.10.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	go.uber.org/zap v1.23.0 // indirect
-	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/net v0.4.0 // indirect
-	golang.org/x/oauth2 v0.3.0 // indirect
+	go.uber.org/zap v1.24.0 // indirect
+	golang.org/x/crypto v0.5.0 // indirect
+	golang.org/x/net v0.5.0 // indirect
+	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.3.0 // indirect
-	golang.org/x/term v0.3.0 // indirect
-	golang.org/x/text v0.5.0 // indirect
+	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/term v0.4.0 // indirect
+	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
@@ -140,15 +140,15 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.25.4 // indirect
+	k8s.io/apiextensions-apiserver v0.26.0 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
-	k8s.io/component-base v0.26.0 // indirect
+	k8s.io/component-base v0.26.1 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
-	k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280 // indirect
-	k8s.io/utils v0.0.0-20221108210102-8e77b1f39fe2 // indirect
+	k8s.io/kube-openapi v0.0.0-20221207184640-f3cff1453715 // indirect
+	k8s.io/utils v0.0.0-20221128185143-99ec85e7a448 // indirect
 	knative.dev/pkg v0.0.0-20221005141429-8cacac2ea6d7 // indirect
-	sigs.k8s.io/controller-runtime v0.13.1 // indirect
-	sigs.k8s.io/gateway-api v0.5.0 // indirect
+	sigs.k8s.io/controller-runtime v0.14.1 // indirect
+	sigs.k8s.io/gateway-api v0.6.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect

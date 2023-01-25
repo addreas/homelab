@@ -2627,7 +2627,8 @@ import (
 	//
 	// This field is immutable.
 	//
-	// +listType=set
+	// +listType=map
+	// +listMapKey=name
 	// +featureGate=DynamicResourceAllocation
 	// +optional
 	claims?: [...#ResourceClaim] @go(Claims,[]ResourceClaim) @protobuf(3,bytes,opt)
