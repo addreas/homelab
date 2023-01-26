@@ -4,6 +4,9 @@
 
 package v1
 
+// Label key that indicates that a resource is of interest to cert-manager controller
+#PartOfCertManagerControllerLabelKey: "controller.cert-manager.io/fao"
+
 // Annotation key for DNS subjectAltNames.
 #AltNamesAnnotationKey: "cert-manager.io/alt-names"
 
@@ -227,3 +230,17 @@ package v1
 #UsageOCSPSigning:       #KeyUsage & "ocsp signing"
 #UsageMicrosoftSGC:      #KeyUsage & "microsoft sgc"
 #UsageNetscapeSGC:       #KeyUsage & "netscape sgc"
+
+// PKCS12SecretKey is the name of the data entry in the Secret resource
+// used to store the p12 file.
+#PKCS12SecretKey: "keystore.p12"
+
+// Data Entry Name in the Secret resource for PKCS12 containing Certificate Authority
+#PKCS12TruststoreKey: "truststore.p12"
+
+// JKSSecretKey is the name of the data entry in the Secret resource
+// used to store the jks file.
+#JKSSecretKey: "keystore.jks"
+
+// Data Entry Name in the Secret resource for JKS containing Certificate Authority
+#JKSTruststoreKey: "truststore.jks"

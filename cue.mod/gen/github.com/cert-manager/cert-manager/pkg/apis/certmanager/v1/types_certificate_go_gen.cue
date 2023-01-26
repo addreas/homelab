@@ -338,7 +338,7 @@ import (
 	// If true, a file named `keystore.jks` will be created in the target
 	// Secret resource, encrypted using the password stored in
 	// `passwordSecretRef`.
-	// The keystore file will only be updated upon re-issuance.
+	// The keystore file will be updated immediately.
 	// A file named `truststore.jks` will also be created in the target
 	// Secret resource, encrypted using the password stored in
 	// `passwordSecretRef` containing the issuing Certificate Authority
@@ -356,7 +356,7 @@ import (
 	// If true, a file named `keystore.p12` will be created in the target
 	// Secret resource, encrypted using the password stored in
 	// `passwordSecretRef`.
-	// The keystore file will only be updated upon re-issuance.
+	// The keystore file will be updated immediately.
 	// A file named `truststore.p12` will also be created in the target
 	// Secret resource, encrypted using the password stored in
 	// `passwordSecretRef` containing the issuing Certificate Authority

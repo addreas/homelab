@@ -30,6 +30,16 @@ import (
 	// See https://prometheus.io/docs/alerting/latest/configuration/#mute_time_interval
 	// +optional
 	mute_time_intervals?: [...#MuteTimeInterval] @go(MutTimeIntervals,[]MuteTimeInterval)
+
+	// ParsingError contents error with context if operator was failed to parse json object from kubernetes api server
+	// TimeIntervals modern config option, use it instead of  mute_time_intervals
+	// +optional
+	time_intervals?: [...#MuteTimeInterval] @go(TimeIntervals,[]MuteTimeInterval)
+
+	// Templates file path for templates
+	// it must be mounted to the VMAlertmanager
+	// +optional
+	templates?: [...string] @go(Templates,[]string)
 }
 
 // MuteTimeInterval for alerts
@@ -67,6 +77,10 @@ import (
 	// For example, ['2020:2022', '2030']
 	// +optional
 	years?: [...string] @go(Years,[]string)
+
+	// Location in golang time location form, e.g. UTC
+	// +optional
+	location?: string @go(Location)
 }
 
 // TimeRange  ranges inclusive of the starting time and exclusive of the end time
@@ -139,6 +153,11 @@ import (
 	// MuteTimeIntervals for alerts
 	// +optional
 	mute_time_intervals?: [...string] @go(MuteTimeIntervals,[]string)
+
+	// ActiveTimeIntervals Times when the route should be active
+	// These must match the name at time_intervals
+	// +optional
+	active_time_intervals?: [...string] @go(ActiveTimeIntervals,[]string)
 }
 
 // InhibitRule defines an inhibition rule that allows to mute alerts when other

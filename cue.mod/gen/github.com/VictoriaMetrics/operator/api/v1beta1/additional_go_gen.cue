@@ -22,6 +22,7 @@ _#snapshotDelete:       "/snapshot/delete"
 #FinalizerName:            "apps.victoriametrics.com/finalizer"
 #SkipValidationAnnotation: "operator.victoriametrics.com/skip-validation"
 #SkipValidationValue:      "true"
+#AdditionalServiceLabel:   "operator.victoriametrics.com/additional-service"
 
 // EmbeddedObjectMetadata contains a subset of the fields included in k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta
 // Only fields which are relevant to embedded resources are included.
