@@ -3,12 +3,12 @@ module github.com/addreas/cuebernetes
 go 1.19
 
 require (
-	github.com/VictoriaMetrics/operator v0.30.3
-	github.com/VictoriaMetrics/operator/api v0.0.0-20230124212905-66ee8e544f48
+	github.com/VictoriaMetrics/operator v0.30.4
+	github.com/VictoriaMetrics/operator/api v0.0.0-20230127011203-f0a634174e3d
 	github.com/addreas/cuebuild-controller/api v0.18.2-cue
 	github.com/bitnami-labs/sealed-secrets v0.19.4
 	github.com/cert-manager/cert-manager v1.11.0
-	github.com/cilium/cilium v1.12.5
+	github.com/cilium/cilium v1.12.6
 	github.com/fluxcd/helm-controller/api v0.28.1
 	github.com/fluxcd/kustomize-controller/api v0.32.0
 	github.com/fluxcd/notification-controller/api v0.30.2
@@ -37,7 +37,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/emicklei/go-restful/v3 v3.9.0 // indirect
+	github.com/emicklei/go-restful/v3 v3.10.0 // indirect
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
@@ -90,14 +90,14 @@ require (
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openshift/api v3.9.0+incompatible // indirect
-	github.com/opentracing/opentracing-go v1.2.0 // indirect
+	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
-	github.com/prometheus-operator/prometheus-operator/pkg/client v0.58.0 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/client v0.62.0 // indirect
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.38.0 // indirect

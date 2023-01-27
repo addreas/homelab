@@ -1,12 +1,12 @@
 package kube
 
 goModVersions: {
-	"github.com/VictoriaMetrics/operator":                                    "v0.30.3"
-	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20230124212905-66ee8e544f48"
+	"github.com/VictoriaMetrics/operator":                                    "v0.30.4"
+	"github.com/VictoriaMetrics/operator/api":                                "v0.0.0-20230127011203-f0a634174e3d"
 	"github.com/addreas/cuebuild-controller/api":                             "v0.18.2-cue"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.19.4"
 	"github.com/cert-manager/cert-manager":                                   "v1.11.0"
-	"github.com/cilium/cilium":                                               "v1.12.5"
+	"github.com/cilium/cilium":                                               "v1.12.6"
 	"github.com/fluxcd/helm-controller/api":                                  "v0.28.1"
 	"github.com/fluxcd/kustomize-controller/api":                             "v0.32.0"
 	"github.com/fluxcd/notification-controller/api":                          "v0.30.2"
