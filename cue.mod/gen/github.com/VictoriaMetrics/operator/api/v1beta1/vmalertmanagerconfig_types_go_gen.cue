@@ -35,11 +35,6 @@ import (
 	// TimeIntervals modern config option, use it instead of  mute_time_intervals
 	// +optional
 	time_intervals?: [...#MuteTimeInterval] @go(TimeIntervals,[]MuteTimeInterval)
-
-	// Templates file path for templates
-	// it must be mounted to the VMAlertmanager
-	// +optional
-	templates?: [...string] @go(Templates,[]string)
 }
 
 // MuteTimeInterval for alerts

@@ -113,6 +113,8 @@ github.com/VictoriaMetrics/operator v0.30.0 h1:D60/A8MOAZ4pTOyZneyj9n1Q9Z+d3dg4H
 github.com/VictoriaMetrics/operator v0.30.0/go.mod h1:UybBIM7elJpSJwV2SLIhVUUsR506BAwdwbBIp5yJNhU=
 github.com/VictoriaMetrics/operator v0.30.3 h1:ZQ6fb++2qJEVFYnSG9QFdHz0LgGSmSXByA/PMOIHetk=
 github.com/VictoriaMetrics/operator v0.30.3/go.mod h1:CLVdBmL//Z4VxEdf4NUaTZzsiGWBbl8tP0RAjMGiapg=
+github.com/VictoriaMetrics/operator v0.30.4 h1:z/2yJA98/0oM44Gr0pS/O7+X/SDeI01eME4qiUPtlp8=
+github.com/VictoriaMetrics/operator v0.30.4/go.mod h1:4+QZ0MgsyKExQ1MXkffm5RgzhS8CqXer62mse+6e/BY=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221024162246-3b7806b8ef7d h1:XtzyF7VQ6tdUUASMUJP0QUu4/j1XmTujAYYR219MR90=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221024162246-3b7806b8ef7d/go.mod h1:SqJ6WzjIFaCU0HUgM/lHXgulCh+xCIcp4bd/uT1zaTk=
 github.com/VictoriaMetrics/operator/api v0.0.0-20221111132849-fc4abe6da99d h1:idZwWS1fuiR9OdEeipUR1KpIocWXq17spjunyKHkCto=
@@ -133,6 +135,8 @@ github.com/VictoriaMetrics/operator/api v0.0.0-20230104165638-93c9e780981c h1:WL
 github.com/VictoriaMetrics/operator/api v0.0.0-20230104165638-93c9e780981c/go.mod h1:IYRy5qwsH7Cm83ZdxVWTz4vbTbsrHkFlGQomGNHIN/c=
 github.com/VictoriaMetrics/operator/api v0.0.0-20230124212905-66ee8e544f48 h1:nq32KjKQa6LxOeScCS7A8yROP4Qkax2aNIXo6O5MBx4=
 github.com/VictoriaMetrics/operator/api v0.0.0-20230124212905-66ee8e544f48/go.mod h1:CyDbj0l2u3Oz2CbCiFddx/g82Iwi1MrZsn3Oy6nhIyQ=
+github.com/VictoriaMetrics/operator/api v0.0.0-20230127011203-f0a634174e3d h1:kTdTrEpdB3PmEW4f5SwyJvHm4ESB5AtEIVxqXxeh0Lk=
+github.com/VictoriaMetrics/operator/api v0.0.0-20230127011203-f0a634174e3d/go.mod h1:CyDbj0l2u3Oz2CbCiFddx/g82Iwi1MrZsn3Oy6nhIyQ=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue h1:2dHgsFqXXWpSLe1rm41wbODEurQERknjeA54jB/sxhc=
 github.com/addreas/cuebuild-controller/api v0.18.2-cue/go.mod h1:EvAI0FSq9Ry6pF5jWt35sp8k50K7ua0LeFcLMTegQ84=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
@@ -199,6 +203,8 @@ github.com/cilium/cilium v1.12.4 h1:Hk0kr8zOkaIkLo0oKF57clTlCSLbwaO4leb68RcgckM=
 github.com/cilium/cilium v1.12.4/go.mod h1:Qixxk1uhBX51bbrTE3maL9jnj2Ld2HGNyyBiJGDFM+w=
 github.com/cilium/cilium v1.12.5 h1:J1teoDVCSlkJHSqNAQvNDRQBSUzvPMAZMHtM0jVueOQ=
 github.com/cilium/cilium v1.12.5/go.mod h1:XAYyhdPuI2lhSIefQIOij3mxq2JtGR3qwt+UGZY5Rwk=
+github.com/cilium/cilium v1.12.6 h1:rfO1gULoLnTc1kHhUBqL4o5N4Fk2kxvN5CV2yZPXtEc=
+github.com/cilium/cilium v1.12.6/go.mod h1:UL8zXacLwrwmsAN/LNYgQH0471TxGvxon2/pPdPQgTs=
 github.com/cilium/proxy v0.0.0-20220803100640-5739e4be8ae7 h1:9bXF7c9aYzu1U0SthXXTBa5dLqGVmsnQ3iiNfvp6Kms=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
@@ -247,6 +253,8 @@ github.com/emicklei/go-restful v2.9.5+incompatible/go.mod h1:otzb+WCGbkyDHkqmQmT
 github.com/emicklei/go-restful/v3 v3.8.0/go.mod h1:6n3XBCmQQb25CM2LCACGz8ukIrRry+4bhvbpWn3mrbc=
 github.com/emicklei/go-restful/v3 v3.9.0 h1:XwGDlfxEnQZzuopoqxwSEllNcCOM9DhhFyhFIIGKwxE=
 github.com/emicklei/go-restful/v3 v3.9.0/go.mod h1:6n3XBCmQQb25CM2LCACGz8ukIrRry+4bhvbpWn3mrbc=
+github.com/emicklei/go-restful/v3 v3.10.0 h1:X4gma4HM7hFm6WMeAsTfqA0GOfdNoCzBIkHGoRLGXuM=
+github.com/emicklei/go-restful/v3 v3.10.0/go.mod h1:6n3XBCmQQb25CM2LCACGz8ukIrRry+4bhvbpWn3mrbc=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
@@ -800,6 +808,8 @@ github.com/openshift/api v3.9.0+incompatible/go.mod h1:dh9o4Fs58gpFXGSYfnVxGR9Pn
 github.com/opentracing/opentracing-go v1.1.0/go.mod h1:UkNAQd3GIcIGf0SeVgPpRdFStlNbqXla1AfSYxPUl2o=
 github.com/opentracing/opentracing-go v1.2.0 h1:uEJPy/1a5RIPAJ0Ov+OIO8OxWu77jEv+1B0VhjKrZUs=
 github.com/opentracing/opentracing-go v1.2.0/go.mod h1:GxEUsuufX4nBwe+T+Wl9TAgYrxe9dPLANfrWvHYVTgc=
+github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b h1:FfH+VrHHk6Lxt9HdVS0PXzSXFyS2NbZKXv33FYPol0A=
+github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b/go.mod h1:AC62GU6hc0BrNm+9RK9VSiwa/EUe1bkIeFORAMcHvJU=
 github.com/ory/hydra-maester v0.0.26 h1:asULoPpxk9CAVGrySlaeCtzmvHFYmSzGzL8x8Yz7cRo=
 github.com/ory/hydra-maester v0.0.26/go.mod h1:FVBofG0xLGU7wuGtdJTbNam8n1EjmdHaPXQLEBrtnU8=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
@@ -848,6 +858,8 @@ github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.62.0 h
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.62.0/go.mod h1:j51242bf6LQwvJ1JPKWApzTnifmCwcQq0i1p29ylWiM=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.58.0 h1:9nN/gceGNpz+bmKP+BaY/0cLsXjRp59ahHf4ytWMZZs=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.58.0/go.mod h1:6CPNnzJFosir6yH6MFZ81wv16R7IxhVtFXUuwppfPnY=
+github.com/prometheus-operator/prometheus-operator/pkg/client v0.62.0 h1:tNWmKX9k28He3KJA11G9ZOMi+r4skXpRTF77QYcFCpw=
+github.com/prometheus-operator/prometheus-operator/pkg/client v0.62.0/go.mod h1:kdFJdjS89OMThpveC32gAtO31JLqyZSwYL7vCUshloY=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
 github.com/prometheus/client_golang v0.9.3/go.mod h1:/TN21ttK/J9q6uSwhBd54HahCDft0ttaMvbicHlPoso=
 github.com/prometheus/client_golang v1.0.0/go.mod h1:db9x61etRT2tGnBNRi70OPL5FsnadC4Ky3P0J6CfImo=
