@@ -28,8 +28,9 @@ local kp =
         spec+: {
           template+: {
             spec+: {
+              local args = super.containers[0].args,
               containers: [
-                super.containers[0],
+                super.containers[0] + { args: std.filter(function(x) x != "--no-collector.hwmon", args) },
                 super.containers[1] + { resources+: { limits+: { cpu: '140m' } } },
               ],
             },
