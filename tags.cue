@@ -23,15 +23,15 @@ goModVersions: {
 githubReleases: {
 	"cloudflare/cloudflared":     "2023.1.0"
 	"dani-garcia/vaultwarden":    "1.27.0"
-	"esphome/esphome":            "2022.12.6"
-	"grafana/grafana":            "v9.3.4"
+	"esphome/esphome":            "2022.12.8"
+	"grafana/grafana":            "v9.3.6"
 	"home-assistant/core":        "2023.1.7"
 	"jcmoraisjr/haproxy-ingress": "v0.14.0"
 	"kubereboot/charts":          "kured-4.2.0"
 	"longhorn/longhorn":          "v1.4.0"
 	"ory/hydra":                  "v2.0.3"
 	"ory/kratos":                 "v0.11.1"
-	"zwave-js/zwave-js-ui":       "v8.8.0"
+	"zwave-js/zwave-js-ui":       "v8.8.2"
 }
 some: {
 	custom: tag: "1.2.3"
