@@ -5,39 +5,14 @@ import (
 	"encoding/yaml"
 )
 
-k: ConfigMap: "hass-config": data: "configuration.yaml": """
-	automation: !include automations.yaml
-	script: !include scripts.yaml
-	scene: !include scenes.yaml
-
-	logger:
-	  default: info
-
-	frontend:
-	  themes: !include_dir_merge_named themes
-
-	discovery:
-
-	default_config:
-
-	recorder:
-	  db_url: !env_var DB_URL
-
-	google_assistant:
-	  project_id: hass-dke
-	  service_account: !include hass-dke-8e86dc9cd8ce.json
-	  report_state: true
-	  exposed_domains:
-	  - switch
-	  - light
-
-	\(yaml.Marshal(conf))
-	"""
-
 // yaml.Marshal cannot do the !include statements, so that's why it's split up
-// Prefer adding stuff below and not above
+// Prefer adding stuff here instead of in the configmap below
 let conf = {
-	prometheus: namespace: "hass"
+	logger: default: "info"
+	discovery: {}
+	default_config: {}
+
+	homeassistant: media_dirs: media: "/media/videos"
 
 	http: {
 		use_x_forwarded_for: true
@@ -45,6 +20,14 @@ let conf = {
 	}
 
 	// homeassistant: media_dirs: media: "/media/videos"
+	sensor: {}
+
+	binary_sensor: [{
+		platform: "workday"
+		country:  "SE"
+	}]
+
+	prometheus: namespace: "hass"
 
 	light: [{
 		platform: "group"
@@ -56,21 +39,14 @@ let conf = {
 		]
 	}]
 
-	sensor: {}
-
-	binary_sensor: [{
-		platform: "workday"
-		country:  "SE"
-	}]
-
 	plant: {
-		for i in ["xiaomi_hhccjcy01_48_63", "xiaomi_hhccjcy01_48_a6"] {
-			"plant_\(i)": {
+		for i in ["plant_sensor_6b4863", "plant_sensor_6b48a6"] {
+			(i): {
 				min_moisture: 20
 				sensors: {
 					moisture:     "sensor.\(i)_moisture"
 					temperature:  "sensor.\(i)_temperature"
-					conductivity: "sensor.\(i)_soil_conductivity"
+					conductivity: "sensor.\(i)_conductivity"
 					brightness:   "sensor.\(i)_illuminance"
 				}
 			}
@@ -87,6 +63,29 @@ let conf = {
 		}]
 	}]
 }
+
+k: ConfigMap: "hass-config": data: "configuration.yaml": """
+	automation: !include automations.yaml
+	script: !include scripts.yaml
+	scene: !include scenes.yaml
+
+	frontend:
+	  themes: !include_dir_merge_named themes
+
+	recorder:
+	  db_url: !env_var DB_URL
+
+	google_assistant:
+	  project_id: hass-dke
+	  service_account: !include hass-dke-8e86dc9cd8ce.json
+	  report_state: true
+	  exposed_domains:
+	  - switch
+	  - light
+
+	\(yaml.Marshal(conf))
+	"""
+
 
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({
 	mqtt: disabled:         true
