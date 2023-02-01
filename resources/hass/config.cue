@@ -12,14 +12,22 @@ let conf = {
 	discovery: {}
 	default_config: {}
 
-	homeassistant: media_dirs: media: "/media/videos"
-
 	http: {
 		use_x_forwarded_for: true
 		trusted_proxies: ["10.0.0.0/8", "192.168.1.0/24"]
 	}
 
 	// homeassistant: media_dirs: media: "/media/videos"
+
+	sensor: {}
+
+	binary_sensor: [{
+		platform: "workday"
+		country:  "SE"
+	}]
+
+	prometheus: namespace: "hass"
+
 	sensor: {}
 
 	binary_sensor: [{
