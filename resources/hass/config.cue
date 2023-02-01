@@ -44,7 +44,7 @@ let conf = {
 		trusted_proxies: ["10.0.0.0/8", "192.168.1.0/24"]
 	}
 
-	homeassistant: media_dirs: media: "/media/videos"
+	// homeassistant: media_dirs: media: "/media/videos"
 
 	light: [{
 		platform: "group"
