@@ -15,6 +15,7 @@ k: HelmRelease: kured: spec: {
 			startTime: "08:00"
 			endTime:   "22:00"
 			// notifyUrl: "http://user:pass@ntfy.default.svc:8080/kured"
+			rebootCommand: "systemctl reboot"
 		}
 		extraEnvVars: [{
 			name: "PATH"
