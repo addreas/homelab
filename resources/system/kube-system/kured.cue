@@ -15,7 +15,10 @@ k: HelmRelease: kured: spec: {
 			startTime: "08:00"
 			endTime:   "22:00"
 			// notifyUrl: "http://user:pass@ntfy.default.svc:8080/kured"
-			// rebootSentinelCommand: #"sh -c '[[ "$(readlink /nix/var/nix/profiles/system/{initrd,kernel,kernel-modules})" != "$(readlink /run/booted-system/{initrd,kernel,kernel-modules})" ]]'"#
 		}
+		extraEnvVars: [{
+			name: PATH
+			value: "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+		}]
 	}
 }
