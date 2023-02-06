@@ -9,10 +9,10 @@ require (
 	github.com/bitnami-labs/sealed-secrets v0.19.4
 	github.com/cert-manager/cert-manager v1.11.0
 	github.com/cilium/cilium v1.12.6
-	github.com/fluxcd/helm-controller/api v0.28.1
-	github.com/fluxcd/kustomize-controller/api v0.32.0
-	github.com/fluxcd/notification-controller/api v0.30.2
-	github.com/fluxcd/source-controller/api v0.33.0
+	github.com/fluxcd/helm-controller/api v0.29.0
+	github.com/fluxcd/kustomize-controller/api v0.33.0
+	github.com/fluxcd/notification-controller/api v0.31.0
+	github.com/fluxcd/source-controller/api v0.34.0
 	github.com/grafana-operator/grafana-operator/v4 v4.8.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.26
@@ -41,8 +41,8 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v0.7.0 // indirect
-	github.com/fluxcd/pkg/apis/meta v0.18.0 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v0.8.0 // indirect
+	github.com/fluxcd/pkg/apis/meta v0.19.0 // indirect
 	github.com/fluxcd/pkg/runtime v0.12.4 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
@@ -140,14 +140,14 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.26.0 // indirect
+	k8s.io/apiextensions-apiserver v0.26.1 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
 	k8s.io/component-base v0.26.1 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221207184640-f3cff1453715 // indirect
 	k8s.io/utils v0.0.0-20221128185143-99ec85e7a448 // indirect
 	knative.dev/pkg v0.0.0-20221005141429-8cacac2ea6d7 // indirect
-	sigs.k8s.io/controller-runtime v0.14.1 // indirect
+	sigs.k8s.io/controller-runtime v0.14.2 // indirect
 	sigs.k8s.io/gateway-api v0.6.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
