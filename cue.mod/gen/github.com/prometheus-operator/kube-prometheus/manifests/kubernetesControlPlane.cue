@@ -1467,8 +1467,8 @@ kubernetesControlPlane: {
 			}, {
 				expr: """
 					container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-					* on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-					  max by(namespace, pod, node) (kube_pod_info{node!=""})
+					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
+					  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
 					)
 
 					"""
@@ -1476,8 +1476,8 @@ kubernetesControlPlane: {
 			}, {
 				expr: """
 					container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-					* on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-					  max by(namespace, pod, node) (kube_pod_info{node!=""})
+					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
+					  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
 					)
 
 					"""
@@ -1485,8 +1485,8 @@ kubernetesControlPlane: {
 			}, {
 				expr: """
 					container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-					* on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-					  max by(namespace, pod, node) (kube_pod_info{node!=""})
+					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
+					  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
 					)
 
 					"""
@@ -1494,8 +1494,8 @@ kubernetesControlPlane: {
 			}, {
 				expr: """
 					container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-					* on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-					  max by(namespace, pod, node) (kube_pod_info{node!=""})
+					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
+					  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
 					)
 
 					"""
