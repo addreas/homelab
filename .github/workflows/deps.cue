@@ -38,55 +38,76 @@ jobs: {
 		}]
 	}
 
-	"update-go-deps": {
+	"update-deps": {
 		steps: setup + [
+			{run: "cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags"},
+			{run: "cue cmd update-jsonnet-defs"},
 			{run: "cue cmd update-gomod-defs"},
 			{run: "cue cmd update-gomod-tags"},
 			{run: "git diff"},
 			{run: "cue vet -c ./resources/..."},
 			createPullRequest & {
 				with: {
-					title: "Updated go dependencies"
+					title: "Updated dependencies"
 					body: """
-						Automatically updated go dependencies using the `update-gomod-defs`
-						and `update-gomod-tags` tools. The changes have passed a `cue vet -c ./resources/...`.
+						Automatically updated dependencies. The changes have passed a `cue vet -c ./resources/...`.
 						"""
-					"commit-message": "Automatically update go dependencies/definitions"
-					branch:           "automatically-update-go-deps-defs"
+					"commit-message": "Automatically update dependencies/definitions"
+					branch:           "automatically-update-deps"
 				}
 			},
 		]
 	}
 
-	"update-jsonnet-deps": {
-		steps: setup + [
-			{run: "cue cmd update-jsonnet-defs"},
-			createPullRequest & {
-				with: {
-					title: "Updated jsonnet dependencies"
-					body: """
-						Automatically updated jsonnet dependencies (kube-promethues).
-						"""
-					"commit-message": "Automatically update jsonnet dependencies/definitions"
-					branch:           "automatically-update-jsonnet-defs"
-				}
-			},
-		]
-	}
+	// "update-go-deps": {
+	// 	steps: setup + [
+	// 		{run: "cue cmd update-gomod-defs"},
+	// 		{run: "cue cmd update-gomod-tags"},
+	// 		{run: "git diff"},
+	// 		{run: "cue vet -c ./resources/..."},
+	// 		createPullRequest & {
+	// 			with: {
+	// 				title: "Updated go dependencies"
+	// 				body: """
+	// 					Automatically updated go dependencies using the `update-gomod-defs`
+	// 					and `update-gomod-tags` tools. The changes have passed a `cue vet -c ./resources/...`.
+	// 					"""
+	// 				"commit-message": "Automatically update go dependencies/definitions"
+	// 				branch:           "automatically-update-go-deps-defs"
+	// 			}
+	// 		},
+	// 	]
+	// }
 
-	"update-github-release-tags": {
-		steps: setup + [
-			{run: "cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags"},
-			createPullRequest & {
-				with: {
-					title: "Updated github release tags"
-					body: """
-						Automatically updated github release tags.
-						"""
-					"commit-message": "Automatically update github release tags"
-					branch:           "automatically-update-github-release-tags"
-				}
-			},
-		]
-	}
+	// "update-jsonnet-deps": {
+	// 	steps: setup + [
+	// 		{run: "cue cmd update-jsonnet-defs"},
+	// 		createPullRequest & {
+	// 			with: {
+	// 				title: "Updated jsonnet dependencies"
+	// 				body: """
+	// 					Automatically updated jsonnet dependencies (kube-promethues).
+	// 					"""
+	// 				"commit-message": "Automatically update jsonnet dependencies/definitions"
+	// 				branch:           "automatically-update-jsonnet-defs"
+	// 			}
+	// 		},
+	// 	]
+	// }
+
+	// "update-github-release-tags": {
+	// 	steps: setup + [
+	// 		{run: "cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags"},
+	// 		createPullRequest & {
+	// 			with: {
+	// 				title: "Updated github release tags"
+	// 				body: """
+	// 					Automatically updated github release tags.
+	// 					"""
+	// 				"commit-message": "Automatically update github release tags"
+	// 				branch:           "automatically-update-github-release-tags"
+	// 			}
+	// 		},
+	// 	]
+	// }
 }
