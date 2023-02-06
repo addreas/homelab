@@ -18,7 +18,7 @@ k: HelmRelease: kured: spec: {
 		}
 		extraEnvVars: [{
 			name: "PATH"
-			value: "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+			value: "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 		}]
 	}
 }
