@@ -17,7 +17,7 @@ k: HelmRelease: kured: spec: {
 			// notifyUrl: "http://user:pass@ntfy.default.svc:8080/kured"
 		}
 		extraEnvVars: [{
-			name: PATH
+			name: "PATH"
 			value: "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
 		}]
 	}
