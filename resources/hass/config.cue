@@ -94,7 +94,6 @@ k: ConfigMap: "hass-config": data: "configuration.yaml": """
 	\(yaml.Marshal(conf))
 	"""
 
-
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({
 	mqtt: disabled:         true
 	gateway: hassDiscovery: true

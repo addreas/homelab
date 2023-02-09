@@ -12,8 +12,8 @@ k: StatefulSet: hass: spec: {
 		metadata: {
 			// annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 			// annotations: "k8s.v1.cni.cncf.io/networks":      json.Marshal([{
-			// 	"name": "cilium"
-			// 	"default-route": []
+			//  "name": "cilium"
+			//  "default-route": []
 			// }])
 			labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		}
@@ -53,9 +53,9 @@ k: StatefulSet: hass: spec: {
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/config"
-				// }, {
-				// 	name:      "nfs-videos"
-				// 	mountPath: "/media/videos"
+					// }, {
+					//  name:      "nfs-videos"
+					//  mountPath: "/media/videos"
 				}]
 			}]
 			volumes: [{
@@ -65,12 +65,12 @@ k: StatefulSet: hass: spec: {
 				}, {
 					secret: name: "hass-gcp-credential-json"
 				}]
-			// }, {
-			// 	name: "nfs-videos"
-			// 	nfs: {
-			// 		path:   "/export/videos"
-			// 		server: "sergio.localdomain"
-			// 	}
+				// }, {
+				//  name: "nfs-videos"
+				//  nfs: {
+				//   path:   "/export/videos"
+				//   server: "sergio.localdomain"
+				//  }
 			}]
 		}
 	}

@@ -7,24 +7,11 @@ k: StatefulSet: "hass-yanzi-to-homeassistant-mqtt": spec: template: spec: {
 		name:  "yanzi-to-homeassistant-mqtt"
 		image: "ghcr.io/jonasdahl/yanzi-to-homeassistant-mqtt@\(version)"
 		env: [
-			{name: "LOCATION_ID", value:                  "872855"},
-			{name: "MQTT_URL", value:                     "wss://mosquitto:9001/mqtt"},
-			{name: "CIRRUS_HOST", value:                  "eu.yanzi.cloud"},
-			{name: "LOG_LEVEL", value:                    "debug"},
-			{name: "MQTT_CA_PATH", value:                 "/certs/ca.crt"},
-			{name: "MQTT_CERT_PATH", value:               "/certs/tls.crt"},
-			{name: "MQTT_KEY_PATH", value:                "/certs/tls.key"},
-			{name: "MQTT_PROTOCOL", value:                "wss"},
-			{name: "NODE_TLS_REJECT_UNAUTHORIZED", value: "0"},
+			{name: "LOCATION_ID", value: "872855"},
+			{name: "MQTT_URL", value:    "tcp://mosquitto:1883"},
+			{name: "CIRRUS_HOST", value: "eu.yanzi.cloud"},
+			{name: "LOG_LEVEL", value:   "debug"},
 		]
 		envFrom: [{secretRef: name: "yanzi-credentials"}]
-		volumeMounts: [{
-			mountPath: "/certs"
-			name:      "certs"
-		}]
-	}]
-	volumes: [{
-		name: "certs"
-		secret: secretName: "mqtt-switchbot-proxy-cert"
 	}]
 }
