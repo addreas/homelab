@@ -5,47 +5,30 @@ import (
 	"encoding/hex"
 )
 
-k: Service: mosquitto: spec: ports: [{
-	name: "tcp0"
-}, {
-	name: "ws"
-}]
-
-k: StatefulSet: mosquitto: spec: {
+k: Deployment: mosquitto: spec: {
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
 		spec: {
 			containers: [{
 				image: "eclipse-mosquitto:latest"
-				ports: [{containerPort: 1883}, {containerPort: 9001}]
+				ports: [{
+					name: "tcp0"
+					containerPort: 1883
+				}]
 				volumeMounts: [{
-					name:      "data"
-					mountPath: "/mosquitto/data"
-				}, {
 					mountPath: "/mosquitto/config"
 					name:      "config"
-				}, {
-					mountPath: "/certs"
-					name:      "certs"
 				}]
 			}]
 			volumes: [{
 				name: "config"
 				configMap: name: "mosquitto-config"
-			}, {
-				name: "certs"
-				secret: secretName: "mqtt-mosquitto-cert"
 			}]
 		}
 	}
-	volumeClaimTemplates: [{
-		metadata: name: "data"
-		spec: {
-			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "1Gi"
-		}
-	}]
 }
+
+k: Service: mosquitto: {}
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	persistence false
@@ -57,20 +40,5 @@ k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	# MQTT over TCP
 	listener 1883
 	protocol mqtt
-	cafile /certs/ca.crt
-	certfile /certs/tls.crt
-	keyfile /certs/tls.key
-	require_certificate true
-	allow_anonymous false
-	use_identity_as_username true
-
-	# MQTT over Websockets
-	listener 9001
-	protocol websockets
-	cafile /certs/ca.crt
-	certfile /certs/tls.crt
-	keyfile /certs/tls.key
-	require_certificate true
-	allow_anonymous false
-	use_identity_as_username true
+	allow_anonymous true
 	"""
