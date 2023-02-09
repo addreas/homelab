@@ -72,7 +72,7 @@ k: Deployment: esphome: spec: template: spec: {
 		emptyDir: {}
 	}, {
 		name: "root"
-		persistentVolumeClaim: claimName: "esphome-build-cache"
+		emptyDir: {}
 	}, {
 		name: "esphome-configs"
 		projected: sources: [{
@@ -87,7 +87,3 @@ k: Service: esphome: {}
 
 k: Ingress: esphome: _authproxy: true
 
-k: PersistentVolumeClaim: "esphome-build-cache": spec: {
-	accessModes: ["ReadWriteMany"]
-	resources: requests: storage: "10Gi"
-}
