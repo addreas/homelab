@@ -868,6 +868,8 @@ github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.61.1 h
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.61.1/go.mod h1:j51242bf6LQwvJ1JPKWApzTnifmCwcQq0i1p29ylWiM=
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.62.0 h1:55138zTXw/yRYizPxZ672I/aDD7Yte3uYRAfUjWUu2M=
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.62.0/go.mod h1:j51242bf6LQwvJ1JPKWApzTnifmCwcQq0i1p29ylWiM=
+github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.63.0 h1:efsW3CfymG5bZUpeIsYfdihB33YItCn7uHBOEbnHQG8=
+github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.63.0/go.mod h1:/UtstAaWVaS3Z9GK9jo8+4SN9T+RMSq7VlOcQMmiEsc=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.58.0 h1:9nN/gceGNpz+bmKP+BaY/0cLsXjRp59ahHf4ytWMZZs=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.58.0/go.mod h1:6CPNnzJFosir6yH6MFZ81wv16R7IxhVtFXUuwppfPnY=
 github.com/prometheus-operator/prometheus-operator/pkg/client v0.62.0 h1:tNWmKX9k28He3KJA11G9ZOMi+r4skXpRTF77QYcFCpw=
@@ -1826,6 +1828,8 @@ k8s.io/klog/v2 v2.9.0/go.mod h1:hy9LJ/NvuK+iVyP4Ehqva4HxZG/oXyIS3n3Jmire4Ec=
 k8s.io/klog/v2 v2.70.1/go.mod h1:y1WjHnz7Dj687irZUWR/WLkLc5N1YHtjLdmgWjndZn0=
 k8s.io/klog/v2 v2.80.1 h1:atnLQ121W371wYYFawwYx1aEY2eUfs4l3J72wtgAwV4=
 k8s.io/klog/v2 v2.80.1/go.mod h1:y1WjHnz7Dj687irZUWR/WLkLc5N1YHtjLdmgWjndZn0=
+k8s.io/klog/v2 v2.90.0 h1:VkTxIV/FjRXn1fgNNcKGM8cfmL1Z33ZjXRTVxKCoF5M=
+k8s.io/klog/v2 v2.90.0/go.mod h1:y1WjHnz7Dj687irZUWR/WLkLc5N1YHtjLdmgWjndZn0=
 k8s.io/kube-aggregator v0.25.3 h1:eOG9S4GPICAXWIFeQDHjnhqYaYPpgLIC1NunJu9pZCs=
 k8s.io/kube-aggregator v0.25.3/go.mod h1:w87nqmzJMf7S73FRYcnexqfYW0AFiLJiCkvVCwM3feE=
 k8s.io/kube-aggregator v0.25.4 h1:QIeTa29I2a0VOFwZtpquz/bkNPk+dnUiDPbI/Vq7MbI=
@@ -1856,6 +1860,8 @@ k8s.io/utils v0.0.0-20221108210102-8e77b1f39fe2 h1:GfD9OzL11kvZN5iArC6oTS7RTj7oJ
 k8s.io/utils v0.0.0-20221108210102-8e77b1f39fe2/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
 k8s.io/utils v0.0.0-20221128185143-99ec85e7a448 h1:KTgPnR10d5zhztWptI952TNtt/4u5h3IzDXkdIMuo2Y=
 k8s.io/utils v0.0.0-20221128185143-99ec85e7a448/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
+k8s.io/utils v0.0.0-20230202215443-34013725500c h1:YVqDar2X7YiQa/DVAXFMDIfGF8uGrHQemlrwRU5NlVI=
+k8s.io/utils v0.0.0-20230202215443-34013725500c/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
 knative.dev/pkg v0.0.0-20220816153547-f78a00694307 h1:CNf+DsnFydG4cr/PW+ucP7/9dZtdGOfzvgRZPJfL/Xc=
 knative.dev/pkg v0.0.0-20220816153547-f78a00694307/go.mod h1:YLjXbkQLlGHok+u0FLfMbBHFzY9WGu3GHhnrptoAy8I=
 knative.dev/pkg v0.0.0-20221005141429-8cacac2ea6d7 h1:HJwBicHmX0/ObW7QV6Uhx5FXeT/qMeuGNXItvv6GAw4=
@@ -1875,6 +1881,8 @@ sigs.k8s.io/controller-runtime v0.14.1 h1:vThDes9pzg0Y+UbCPY3Wj34CGIYPgdmspPm2GI
 sigs.k8s.io/controller-runtime v0.14.1/go.mod h1:GaRkrY8a7UZF0kqFFbUKG7n9ICiTY5T55P1RiE3UZlU=
 sigs.k8s.io/controller-runtime v0.14.2 h1:P6IwDhbsRWsBClt/8/h8Zy36bCuGuW5Op7MHpFrN/60=
 sigs.k8s.io/controller-runtime v0.14.2/go.mod h1:WqIdsAY6JBsjfc/CqO0CORmNtoCtE4S6qbPc9s68h+0=
+sigs.k8s.io/controller-runtime v0.14.4 h1:Kd/Qgx5pd2XUL08eOV2vwIq3L9GhIbJ5Nxengbd4/0M=
+sigs.k8s.io/controller-runtime v0.14.4/go.mod h1:WqIdsAY6JBsjfc/CqO0CORmNtoCtE4S6qbPc9s68h+0=
 sigs.k8s.io/gateway-api v0.5.0 h1:ze+k9fJqvmL8s1t3e4q1ST8RnN+f09dEv+gfacahlAE=
 sigs.k8s.io/gateway-api v0.5.0/go.mod h1:x0AP6gugkFV8fC/oTlnOMU0pnmuzIR8LfIPRVUjxSqA=
 sigs.k8s.io/gateway-api v0.6.0 h1:v2FqrN2ROWZLrSnI2o91taHR8Sj3s+Eh3QU7gLNWIqA=
