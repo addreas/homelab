@@ -7,6 +7,9 @@ k: StatefulSet: qbittorrent: {
 		template: {
 			metadata: labels: "vpn-egress": "gateway"
 			spec: {
+				nodeSelector: {
+					"kubernetes.io/hostname": "sergio"
+				}
 				securityContext: {
 					sysctls: [{
 						name:  "net.ipv4.conf.all.src_valid_mark"
