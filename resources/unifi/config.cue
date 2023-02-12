@@ -4,20 +4,23 @@ import "encoding/json"
 
 k: ConfigMap: "config-gateway-json": data: {
 	"config.gateway.json": json.Marshal({
-		system: "static-host-mapping": "host-name": {
-			"setup.ubnt.com": {
-				alias: ["setup"]
-				inet: ["192.168.1.1"]
-			}
-			"unifi.localdomain": {
-				alias: ["unifi"]
-				inet: ["192.168.10.185"]
-			}
-			"nucles.localdomain": {
-				alias: ["nucles"]
-				inet: ["192.168.1.2"]
-			}
+		service: "dns": "forwarding": {
+			"options": [
+				"ptr-record=1.1.168.192.in-addr.arpa,USG",
+				"all-servers",
+				"cname=unifi.localdomain,unifi",
+				"resolv-file=/etc/resolv.conf.dhclient-new-eth0",
+				"server=1.1.1.1",
+				"host-record=unifi,192.168.10.185",
+				"cname=nucles.localdomain,sergio.localdomain",
+			]
 		}
+		// system: "static-host-mapping": "host-name": {
+		//  "nucles.localdomain": {
+		//   alias: ["nucles"]
+		//   inet: ["192.168.1.2"]
+		//  }
+		// }
 		protocols: bgp: "64512": {
 			"parameters": "router-id": "192.168.1.1"
 			"neighbor": {
@@ -26,6 +29,5 @@ k: ConfigMap: "config-gateway-json": data: {
 				"192.168.1.13": "remote-as": "64512"
 			}
 		}
-
 	})
 }

@@ -13,8 +13,8 @@ k: StatefulSet: "unifi-controller": {
 			metadata: {
 				labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."config-gateway-json".data."config.gateway.json"))
 				// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-				// 	"name": "cilium",
-				// 	"default-route": []
+				//  "name": "cilium",
+				//  "default-route": []
 				// }])
 				// annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 			}
@@ -32,7 +32,7 @@ k: StatefulSet: "unifi-controller": {
 					image: "jacobalberty/unifi:v7.3.76"
 					name:  "controller"
 					env: [{
-						name: "UNIFI_STDOUT"
+						name:  "UNIFI_STDOUT"
 						value: "true"
 					}]
 					ports: [{
