@@ -3,6 +3,7 @@ package kube
 import "encoding/json"
 
 k: ConfigMap: "config-gateway-json": data: {
+	// mca-ctrl -t dump-cfg
 	"config.gateway.json": json.Marshal({
 		service: "dns": "forwarding": {
 			"options": [
