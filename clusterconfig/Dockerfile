@@ -1,4 +1,4 @@
-FROM quay.io/cilium/cilium:v1.13.0-rc4
+FROM quay.io/cilium/cilium:v1.13.0
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
         build-essential \
