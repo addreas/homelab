@@ -85,6 +85,9 @@ package models
 
 	// socket l b
 	socketLB?: null | #KubeProxyReplacementFeaturesSocketLB @go(SocketLB,*KubeProxyReplacementFeaturesSocketLB)
+
+	// socket l b tracing
+	socketLBTracing?: null | #KubeProxyReplacementFeaturesSocketLBTracing @go(SocketLBTracing,*KubeProxyReplacementFeaturesSocketLBTracing)
 }
 
 // KubeProxyReplacementFeaturesExternalIPs
@@ -136,6 +139,35 @@ package models
 //
 // swagger:model KubeProxyReplacementFeaturesNat46X64
 #KubeProxyReplacementFeaturesNat46X64: {
+	// enabled
+	enabled?: bool @go(Enabled)
+
+	// gateway
+	gateway?: null | #KubeProxyReplacementFeaturesNat46X64Gateway @go(Gateway,*KubeProxyReplacementFeaturesNat46X64Gateway)
+
+	// service
+	service?: null | #KubeProxyReplacementFeaturesNat46X64Service @go(Service,*KubeProxyReplacementFeaturesNat46X64Service)
+}
+
+// KubeProxyReplacementFeaturesNat46X64Gateway
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesNat46X64Gateway
+#KubeProxyReplacementFeaturesNat46X64Gateway: {
+	// enabled
+	enabled?: bool @go(Enabled)
+
+	// prefixes
+	prefixes: [...string] @go(Prefixes,[]string)
+}
+
+// KubeProxyReplacementFeaturesNat46X64Service
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesNat46X64Service
+#KubeProxyReplacementFeaturesNat46X64Service: {
 	// enabled
 	enabled?: bool @go(Enabled)
 }
@@ -211,6 +243,16 @@ package models
 //
 // swagger:model KubeProxyReplacementFeaturesSocketLB
 #KubeProxyReplacementFeaturesSocketLB: {
+	// enabled
+	enabled?: bool @go(Enabled)
+}
+
+// KubeProxyReplacementFeaturesSocketLBTracing
+//
+// +k8s:deepcopy-gen=true
+//
+// swagger:model KubeProxyReplacementFeaturesSocketLBTracing
+#KubeProxyReplacementFeaturesSocketLBTracing: {
 	// enabled
 	enabled?: bool @go(Enabled)
 }

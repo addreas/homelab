@@ -12,12 +12,14 @@ import "github.com/cilium/cilium/pkg/policy/api/kafka"
 #enumL4Proto:
 	#ProtoTCP |
 	#ProtoUDP |
+	#ProtoSCTP |
 	#ProtoICMP |
 	#ProtoICMPv6 |
 	#ProtoAny
 
 #ProtoTCP:        #L4Proto & "TCP"
 #ProtoUDP:        #L4Proto & "UDP"
+#ProtoSCTP:       #L4Proto & "SCTP"
 #ProtoICMP:       #L4Proto & "ICMP"
 #ProtoICMPv6:     #L4Proto & "ICMPV6"
 #ProtoAny:        #L4Proto & "ANY"
@@ -36,14 +38,14 @@ import "github.com/cilium/cilium/pkg/policy/api/kafka"
 	port: string @go(Port)
 
 	// Protocol is the L4 protocol. If omitted or empty, any protocol
-	// matches. Accepted values: "TCP", "UDP", ""/"ANY"
+	// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
 	//
 	// Matching on ICMP is not supported.
 	//
 	// Named port specified for a container may narrow this down, but may not
 	// contradict this.
 	//
-	// +kubebuilder:validation:Enum=TCP;UDP;ANY
+	// +kubebuilder:validation:Enum=TCP;UDP;SCTP;ANY
 	// +kubebuilder:validation:Optional
 	protocol?: #L4Proto @go(Protocol)
 }
@@ -99,6 +101,41 @@ import "github.com/cilium/cilium/pkg/policy/api/kafka"
 	privateKey?: string @go(PrivateKey)
 }
 
+// EnvoyConfig defines a reference to a CiliumEnvoyConfig or CiliumClusterwideEnvoyConfig
+#EnvoyConfig: {
+	// Kind is the resource type being referred to. Defaults to CiliumEnvoyConfig or
+	// CiliumClusterwideEnvoyConfig for CiliumNetworkPolicy and CiliumClusterwideNetworkPolicy,
+	// respectively. The only case this is currently explicitly needed is when referring to a
+	// CiliumClusterwideEnvoyConfig from CiliumNetworkPolicy, as using a namespaced listener
+	// from a cluster scoped policy is not allowed.
+	//
+	// +kubebuilder:validation:Enum=CiliumEnvoyConfig;CiliumClusterwideEnvoyConfig
+	// +kubebuilder:validation:Optional
+	kind: string @go(Kind)
+
+	// Name is the resource name of the CiliumEnvoyConfig or CiliumClusterwideEnvoyConfig where
+	// the listener is defined in.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Required
+	name: string @go(Name)
+}
+
+// Listener defines a reference to an Envoy listener specified in a CEC or CCEC resource.
+#Listener: {
+	// EnvoyConfig is a reference to the CEC or CCNP resource in which
+	// the listener is defined.
+	//
+	// +kubebuilder:validation:Required
+	envoyConfig?: null | #EnvoyConfig @go(EnvoyConfig,*EnvoyConfig)
+
+	// Name is the name of the listener.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Required
+	name: string @go(Name)
+}
+
 // PortRule is a list of ports/protocol combinations with optional Layer 7
 // rules which must be met.
 #PortRule: {
@@ -126,6 +163,19 @@ import "github.com/cilium/cilium/pkg/policy/api/kafka"
 	//
 	// +kubebuilder:validation:Optional
 	originatingTLS?: null | #TLSContext @go(OriginatingTLS,*TLSContext)
+
+	// ServerNames is a list of allowed TLS SNI values. If not empty, then
+	// TLS must be present and one of the provided SNIs must be indicated in the
+	// TLS handshake.
+	//
+	// +kubebuilder:validation:Optional
+	serverNames?: [...string] @go(ServerNames,[]string)
+
+	// listener specifies the name of a custom Envoy listener to which this traffic should be
+	// redirected to.
+	//
+	// +kubebuilder:validation:Optional
+	listener?: null | #Listener @go(Listener,*Listener)
 
 	// Rules is a list of additional port level rules which must be met in
 	// order for the PortRule to allow the traffic. If omitted or empty,

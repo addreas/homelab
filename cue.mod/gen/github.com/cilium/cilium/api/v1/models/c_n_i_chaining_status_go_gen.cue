@@ -18,14 +18,14 @@ package models
 // CNIChainingStatusModeNone captures enum value "none"
 #CNIChainingStatusModeNone: "none"
 
-// CNIChainingStatusModeAwsCni captures enum value "aws-cni"
-#CNIChainingStatusModeAwsCni: "aws-cni"
+// CNIChainingStatusModeAwsDashCni captures enum value "aws-cni"
+#CNIChainingStatusModeAwsDashCni: "aws-cni"
 
 // CNIChainingStatusModeFlannel captures enum value "flannel"
 #CNIChainingStatusModeFlannel: "flannel"
 
-// CNIChainingStatusModeGenericVeth captures enum value "generic-veth"
-#CNIChainingStatusModeGenericVeth: "generic-veth"
+// CNIChainingStatusModeGenericDashVeth captures enum value "generic-veth"
+#CNIChainingStatusModeGenericDashVeth: "generic-veth"
 
 // CNIChainingStatusModePortmap captures enum value "portmap"
 #CNIChainingStatusModePortmap: "portmap"

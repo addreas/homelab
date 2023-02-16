@@ -14,9 +14,9 @@ package models
 	#EndpointPolicyEnabledIngress |
 	#EndpointPolicyEnabledEgress |
 	#EndpointPolicyEnabledBoth |
-	#EndpointPolicyEnabledAuditIngress |
-	#EndpointPolicyEnabledAuditEgress |
-	#EndpointPolicyEnabledAuditBoth
+	#EndpointPolicyEnabledAuditDashIngress |
+	#EndpointPolicyEnabledAuditDashEgress |
+	#EndpointPolicyEnabledAuditDashBoth
 
 // EndpointPolicyEnabledNone captures enum value "none"
 #EndpointPolicyEnabledNone: #EndpointPolicyEnabled & "none"
@@ -30,11 +30,11 @@ package models
 // EndpointPolicyEnabledBoth captures enum value "both"
 #EndpointPolicyEnabledBoth: #EndpointPolicyEnabled & "both"
 
-// EndpointPolicyEnabledAuditIngress captures enum value "audit-ingress"
-#EndpointPolicyEnabledAuditIngress: #EndpointPolicyEnabled & "audit-ingress"
+// EndpointPolicyEnabledAuditDashIngress captures enum value "audit-ingress"
+#EndpointPolicyEnabledAuditDashIngress: #EndpointPolicyEnabled & "audit-ingress"
 
-// EndpointPolicyEnabledAuditEgress captures enum value "audit-egress"
-#EndpointPolicyEnabledAuditEgress: #EndpointPolicyEnabled & "audit-egress"
+// EndpointPolicyEnabledAuditDashEgress captures enum value "audit-egress"
+#EndpointPolicyEnabledAuditDashEgress: #EndpointPolicyEnabled & "audit-egress"
 
-// EndpointPolicyEnabledAuditBoth captures enum value "audit-both"
-#EndpointPolicyEnabledAuditBoth: #EndpointPolicyEnabled & "audit-both"
+// EndpointPolicyEnabledAuditDashBoth captures enum value "audit-both"
+#EndpointPolicyEnabledAuditDashBoth: #EndpointPolicyEnabled & "audit-both"

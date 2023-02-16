@@ -25,6 +25,9 @@ package models
 	// State of the backend for load-balancing service traffic
 	// Enum: [active terminating quarantined maintenance]
 	state?: string @go(State)
+
+	// Backend weight
+	weight?: null | uint16 @go(Weight,*uint16)
 }
 
 // BackendAddressStateActive captures enum value "active"

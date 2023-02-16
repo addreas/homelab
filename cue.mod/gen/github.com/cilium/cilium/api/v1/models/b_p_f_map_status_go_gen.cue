@@ -8,7 +8,6 @@ package models
 //
 // +k8s:deepcopy-gen=true
 //
-//
 // swagger:model BPFMapStatus
 #BPFMapStatus: {
 	// Ratio of total system memory to use for dynamic sizing of BPF maps

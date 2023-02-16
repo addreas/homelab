@@ -15,5 +15,6 @@ package models
 	namespace?: string @go(Namespace)
 
 	// Source of the IP entry and its metadata
+	// Example: k8s
 	source?: string @go(Source)
 }

@@ -31,6 +31,7 @@ import (
 	monitoring_v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 
 	cilium_v2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
+	cilium_v2alpha1 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1"
 
 	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
 
@@ -145,7 +146,22 @@ _kubernetesAPIs: {
 		PrometheusRule: monitoring_v1.#PrometheusRule
 	}
 
-	"cilium.io/v2": CiliumNetworkPolicy: cilium_v2.#CiliumNetworkPolicy
+	"cilium.io/v2": {
+		CiliumClusterwideNetworkPolicy: cilium_v2.#CiliumClusterwideNetworkPolicy
+		CiliumEndpoint:                 cilium_v2.#CiliumEndpoint
+		CiliumExternalWorkload:         cilium_v2.#CiliumExternalWorkload
+		CiliumIdentity:                 cilium_v2.#CiliumIdentity
+		CiliumLocalRedirectPolicy:      cilium_v2.#CiliumLocalRedirectPolicy
+		CiliumNetworkPolicy:            cilium_v2.#CiliumNetworkPolicy
+		CiliumNode:                     cilium_v2.#CiliumNode
+	}
+
+	"cilium.io/v2alpha1": {
+		CiliumEgressNATPolicy:    cilium_v2alpha1.#CiliumEgressNATPolicy
+		CiliumBGPPeeringPolicy:   cilium_v2alpha1.#CiliumBGPPeeringPolicy
+		CiliumLoadBalancerIPPool: cilium_v2alpha1.#CiliumLoadBalancerIPPool
+		CiliumNodeConfig:         cilium_v2alpha1.#CiliumNodeConfig
+	}
 
 	"operator.victoriametrics.com/v1beta1": {
 		VMAgent:         victoriametrics_v1beta1.#VMAgent

@@ -6,6 +6,5 @@ package models
 
 // ConfigurationMap Map of configuration key/value pairs.
 //
-//
 // swagger:model ConfigurationMap
 #ConfigurationMap: {[string]: string}

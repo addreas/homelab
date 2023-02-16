@@ -99,17 +99,17 @@ package api
 // network traffic that originates inside the endpoint and exits the endpoint
 // selected by the endpointSelector.
 //
-// - All members of this structure are optional. If omitted or empty, the
-//   member will have no effect on the rule.
+//   - All members of this structure are optional. If omitted or empty, the
+//     member will have no effect on the rule.
 //
-// - If multiple members of the structure are specified, then all members
-//   must match in order for the rule to take effect. The exception to this
-//   rule is the ToRequires member; the effects of any Requires field in any
-//   rule will apply to all other rules as well.
+//   - If multiple members of the structure are specified, then all members
+//     must match in order for the rule to take effect. The exception to this
+//     rule is the ToRequires member; the effects of any Requires field in any
+//     rule will apply to all other rules as well.
 //
-// - ToEndpoints, ToCIDR, ToCIDRSet, ToEntities, ToServices and ToGroups are
-//   mutually exclusive. Only one of these members may be present within an
-//   individual rule.
+//   - ToEndpoints, ToCIDR, ToCIDRSet, ToEntities, ToServices and ToGroups are
+//     mutually exclusive. Only one of these members may be present within an
+//     individual rule.
 #EgressRule: {
 	#EgressCommonRule
 
@@ -159,23 +159,28 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	icmps?: #ICMPRules @go(ICMPs)
+
+	// Auth is the required authentication type for the allowed traffic, if any.
+	//
+	// +kubebuilder:validation:Optional
+	auth?: null | #Auth @go(Auth,*Auth)
 }
 
 // EgressDenyRule contains all rule types which can be applied at egress, i.e.
 // network traffic that originates inside the endpoint and exits the endpoint
 // selected by the endpointSelector.
 //
-// - All members of this structure are optional. If omitted or empty, the
-//   member will have no effect on the rule.
+//   - All members of this structure are optional. If omitted or empty, the
+//     member will have no effect on the rule.
 //
-// - If multiple members of the structure are specified, then all members
-//   must match in order for the rule to take effect. The exception to this
-//   rule is the ToRequires member; the effects of any Requires field in any
-//   rule will apply to all other rules as well.
+//   - If multiple members of the structure are specified, then all members
+//     must match in order for the rule to take effect. The exception to this
+//     rule is the ToRequires member; the effects of any Requires field in any
+//     rule will apply to all other rules as well.
 //
-// - ToEndpoints, ToCIDR, ToCIDRSet, ToEntities, ToServices and ToGroups are
-//   mutually exclusive. Only one of these members may be present within an
-//   individual rule.
+//   - ToEndpoints, ToCIDR, ToCIDRSet, ToEntities, ToServices and ToGroups are
+//     mutually exclusive. Only one of these members may be present within an
+//     individual rule.
 #EgressDenyRule: {
 	#EgressCommonRule
 

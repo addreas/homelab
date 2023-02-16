@@ -74,17 +74,17 @@ package api
 // i.e. network traffic that originates outside of the endpoint and
 // is entering the endpoint selected by the endpointSelector.
 //
-// - All members of this structure are optional. If omitted or empty, the
-//   member will have no effect on the rule.
+//   - All members of this structure are optional. If omitted or empty, the
+//     member will have no effect on the rule.
 //
-// - If multiple members are set, all of them need to match in order for
-//   the rule to take effect. The exception to this rule is FromRequires field;
-//   the effects of any Requires field in any rule will apply to all other
-//   rules as well.
+//   - If multiple members are set, all of them need to match in order for
+//     the rule to take effect. The exception to this rule is FromRequires field;
+//     the effects of any Requires field in any rule will apply to all other
+//     rules as well.
 //
-// - FromEndpoints, FromCIDR, FromCIDRSet and FromEntities are mutually
-//   exclusive. Only one of these members may be present within an individual
-//   rule.
+//   - FromEndpoints, FromCIDR, FromCIDRSet and FromEntities are mutually
+//     exclusive. Only one of these members may be present within an individual
+//     rule.
 #IngressRule: {
 	#IngressCommonRule
 
@@ -109,23 +109,28 @@ package api
 	//
 	// +kubebuilder:validation:Optional
 	icmps?: #ICMPRules @go(ICMPs)
+
+	// Auth is the required authentication type for the allowed traffic, if any.
+	//
+	// +kubebuilder:validation:Optional
+	auth?: null | #Auth @go(Auth,*Auth)
 }
 
 // IngressDenyRule contains all rule types which can be applied at ingress,
 // i.e. network traffic that originates outside of the endpoint and
 // is entering the endpoint selected by the endpointSelector.
 //
-// - All members of this structure are optional. If omitted or empty, the
-//   member will have no effect on the rule.
+//   - All members of this structure are optional. If omitted or empty, the
+//     member will have no effect on the rule.
 //
-// - If multiple members are set, all of them need to match in order for
-//   the rule to take effect. The exception to this rule is FromRequires field;
-//   the effects of any Requires field in any rule will apply to all other
-//   rules as well.
+//   - If multiple members are set, all of them need to match in order for
+//     the rule to take effect. The exception to this rule is FromRequires field;
+//     the effects of any Requires field in any rule will apply to all other
+//     rules as well.
 //
-// - FromEndpoints, FromCIDR, FromCIDRSet and FromEntities are mutually
-//   exclusive. Only one of these members may be present within an individual
-//   rule.
+//   - FromEndpoints, FromCIDR, FromCIDRSet and FromEntities are mutually
+//     exclusive. Only one of these members may be present within an individual
+//     rule.
 #IngressDenyRule: {
 	#IngressCommonRule
 

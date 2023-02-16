@@ -7,6 +7,7 @@ import (
 	_ "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 	_ "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
+	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1"
 	_ "github.com/fluxcd/helm-controller/api/v2beta1"
 	_ "github.com/fluxcd/kustomize-controller/api/v1beta1"
 	_ "github.com/fluxcd/notification-controller/api/v1beta1"

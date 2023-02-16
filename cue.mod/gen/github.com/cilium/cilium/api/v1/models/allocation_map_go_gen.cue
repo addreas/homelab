@@ -6,6 +6,5 @@ package models
 
 // AllocationMap Map of allocated IPs
 //
-//
 // swagger:model AllocationMap
 #AllocationMap: {[string]: string}

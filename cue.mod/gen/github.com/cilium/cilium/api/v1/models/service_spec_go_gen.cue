@@ -31,8 +31,16 @@ package models
 //
 // swagger:model ServiceSpecFlags
 #ServiceSpecFlags: {
+	// Service external traffic policy
+	// Enum: [Cluster Local]
+	extTrafficPolicy?: string @go(ExtTrafficPolicy)
+
 	// Service health check node port
 	healthCheckNodePort?: uint16 @go(HealthCheckNodePort)
+
+	// Service internal traffic policy
+	// Enum: [Cluster Local]
+	intTrafficPolicy?: string @go(IntTrafficPolicy)
 
 	// Service name  (e.g. Kubernetes service name)
 	name?: string @go(Name)
@@ -44,7 +52,7 @@ package models
 	// Enum: [None Nat46 Nat64]
 	natPolicy?: string @go(NatPolicy)
 
-	// Service traffic policy
+	// Service external traffic policy (deprecated in favor of extTrafficPolicy)
 	// Enum: [Cluster Local]
 	trafficPolicy?: string @go(TrafficPolicy)
 
@@ -52,6 +60,18 @@ package models
 	// Enum: [ClusterIP NodePort ExternalIPs HostPort LoadBalancer LocalRedirect]
 	type?: string @go(Type)
 }
+
+// ServiceSpecFlagsExtTrafficPolicyCluster captures enum value "Cluster"
+#ServiceSpecFlagsExtTrafficPolicyCluster: "Cluster"
+
+// ServiceSpecFlagsExtTrafficPolicyLocal captures enum value "Local"
+#ServiceSpecFlagsExtTrafficPolicyLocal: "Local"
+
+// ServiceSpecFlagsIntTrafficPolicyCluster captures enum value "Cluster"
+#ServiceSpecFlagsIntTrafficPolicyCluster: "Cluster"
+
+// ServiceSpecFlagsIntTrafficPolicyLocal captures enum value "Local"
+#ServiceSpecFlagsIntTrafficPolicyLocal: "Local"
 
 // ServiceSpecFlagsNatPolicyNone captures enum value "None"
 #ServiceSpecFlagsNatPolicyNone: "None"

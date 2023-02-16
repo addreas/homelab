@@ -5,10 +5,11 @@
 // Package v1 contains API types that are common to all versions.
 //
 // The package contains two categories of types:
-// - external (serialized) types that lack their own version (e.g TypeMeta)
-// - internal (never-serialized) types that are needed by several different
-//   api groups, and so live here, to avoid duplication and/or import loops
-//   (e.g. LabelSelector).
+//   - external (serialized) types that lack their own version (e.g TypeMeta)
+//   - internal (never-serialized) types that are needed by several different
+//     api groups, and so live here, to avoid duplication and/or import loops
+//     (e.g. LabelSelector).
+//
 // In the future, we will probably move these categories of objects into
 // separate packages.
 package v1
@@ -132,6 +133,11 @@ import "k8s.io/apimachinery/pkg/types"
 	// +optional
 	// +deepequal-gen=false
 	resourceVersion?: string @go(ResourceVersion) @protobuf(6,bytes,opt)
+
+	// A sequence number representing a specific generation of the desired state.
+	// Populated by the system. Read-only.
+	// +optional
+	generation?: int64 @go(Generation) @protobuf(7,varint,opt)
 
 	// DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This
 	// field is set by the server when a graceful deletion is requested by the user, and is not
@@ -295,4 +301,83 @@ import "k8s.io/apimachinery/pkg/types"
 
 	// items contains each of the included items.
 	items: [...#PartialObjectMetadata] @go(Items,[]PartialObjectMetadata) @protobuf(2,bytes,rep)
+}
+
+#ConditionStatus: string // #enumConditionStatus
+
+#enumConditionStatus:
+	#ConditionTrue |
+	#ConditionFalse |
+	#ConditionUnknown
+
+#ConditionTrue:    #ConditionStatus & "True"
+#ConditionFalse:   #ConditionStatus & "False"
+#ConditionUnknown: #ConditionStatus & "Unknown"
+
+// Condition contains details for one aspect of the current state of this API Resource.
+// ---
+// This struct is intended for direct use as an array at the field path .status.conditions.  For example,
+//
+// type FooStatus struct{
+//     // Represents the observations of a foo's current state.
+//     // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
+//     // +patchMergeKey=type
+//     // +patchStrategy=merge
+//     // +listType=map
+//     // +listMapKey=type
+//     Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
+//
+//     // other fields
+// }
+#Condition: {
+	// type of condition in CamelCase or in foo.example.com/CamelCase.
+	// ---
+	// Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
+	// useful (see .node.status.conditions), the ability to deconflict is important.
+	// The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+	// +required
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Pattern=`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$`
+	// +kubebuilder:validation:MaxLength=316
+	type: string @go(Type) @protobuf(1,bytes,opt)
+
+	// status of the condition, one of True, False, Unknown.
+	// +required
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Enum=True;False;Unknown
+	status: #ConditionStatus @go(Status) @protobuf(2,bytes,opt)
+
+	// observedGeneration represents the .metadata.generation that the condition was set based upon.
+	// For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+	// with respect to the current state of the instance.
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	observedGeneration?: int64 @go(ObservedGeneration) @protobuf(3,varint,opt)
+
+	// lastTransitionTime is the last time the condition transitioned from one status to another.
+	// This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+	// +required
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Type=string
+	// +kubebuilder:validation:Format=date-time
+	lastTransitionTime: #Time @go(LastTransitionTime) @protobuf(4,bytes,opt)
+
+	// reason contains a programmatic identifier indicating the reason for the condition's last transition.
+	// Producers of specific condition types may define expected values and meanings for this field,
+	// and whether the values are considered a guaranteed API.
+	// The value should be a CamelCase string.
+	// This field may not be empty.
+	// +required
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MaxLength=1024
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern=`^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$`
+	reason: string @go(Reason) @protobuf(5,bytes,opt)
+
+	// message is a human readable message indicating details about the transition.
+	// This may be an empty string.
+	// +required
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MaxLength=32768
+	message: string @go(Message) @protobuf(6,bytes,opt)
 }

@@ -171,6 +171,7 @@ import (
 	"auth.github"?:                       null | #GrafanaConfigAuthGithub                    @go(AuthGithub,*GrafanaConfigAuthGithub)
 	"auth.gitlab"?:                       null | #GrafanaConfigAuthGitlab                    @go(AuthGitlab,*GrafanaConfigAuthGitlab)
 	"auth.generic_oauth"?:                null | #GrafanaConfigAuthGenericOauth              @go(AuthGenericOauth,*GrafanaConfigAuthGenericOauth)
+	"auth.jwt"?:                          null | #GrafanaConfigAuthJwt                       @go(AuthJwt,*GrafanaConfigAuthJwt)
 	"auth.okta"?:                         null | #GrafanaConfigAuthOkta                      @go(AuthOkta,*GrafanaConfigAuthOkta)
 	"auth.ldap"?:                         null | #GrafanaConfigAuthLdap                      @go(AuthLdap,*GrafanaConfigAuthLdap)
 	"auth.proxy"?:                        null | #GrafanaConfigAuthProxy                     @go(AuthProxy,*GrafanaConfigAuthProxy)
@@ -439,14 +440,21 @@ import (
 	enabled?: null | bool @go(Enabled,*bool)
 
 	// +nullable
-	allow_sign_up?:  null | bool @go(AllowSignUp,*bool)
-	client_id?:      string      @go(ClientId)
-	client_secret?:  string      @go(ClientSecret)
-	scopes?:         string      @go(Scopes)
-	auth_url?:       string      @go(AuthUrl)
-	token_url?:      string      @go(TokenUrl)
-	api_url?:        string      @go(ApiUrl)
-	allowed_groups?: string      @go(AllowedGroups)
+	allow_sign_up?:       null | bool @go(AllowSignUp,*bool)
+	client_id?:           string      @go(ClientId)
+	client_secret?:       string      @go(ClientSecret)
+	scopes?:              string      @go(Scopes)
+	auth_url?:            string      @go(AuthUrl)
+	token_url?:           string      @go(TokenUrl)
+	api_url?:             string      @go(ApiUrl)
+	allowed_groups?:      string      @go(AllowedGroups)
+	role_attribute_path?: string      @go(RoleAttributePath)
+
+	// +nullable
+	role_attribute_strict?: null | bool @go(RoleAttributeStrict,*bool)
+
+	// +nullable
+	allow_assign_grafana_admin?: null | bool @go(AllowAssignGrafanaAdmin,*bool)
 }
 
 #GrafanaConfigAuthGenericOauth: {
@@ -454,12 +462,14 @@ import (
 	enabled?: null | bool @go(Enabled,*bool)
 
 	// +nullable
+	name?:                    string      @go(Name)
 	allow_sign_up?:           null | bool @go(AllowSignUp,*bool)
 	client_id?:               string      @go(ClientId)
 	client_secret?:           string      @go(ClientSecret)
 	scopes?:                  string      @go(Scopes)
 	auth_url?:                string      @go(AuthUrl)
 	token_url?:               string      @go(TokenUrl)
+	use_pkce?:                null | bool @go(UsePkce,*bool)
 	api_url?:                 string      @go(ApiUrl)
 	teams_url?:               string      @go(TeamsURL)
 	team_ids?:                string      @go(TeamIds)
@@ -476,6 +486,25 @@ import (
 	tls_client_cert?:          string      @go(TLSClientCert)
 	tls_client_key?:           string      @go(TLSClientKey)
 	tls_client_ca?:            string      @go(TLSClientCa)
+}
+
+#GrafanaConfigAuthJwt: {
+	enabled?:                    null | bool @go(Enabled,*bool)
+	enable_login_token?:         null | bool @go(EnableLoginToken,*bool)
+	header_name?:                string      @go(HeaderName)
+	email_claim?:                string      @go(EmailClaim)
+	expect_claims?:              string      @go(ExpectClaims)
+	username_claim?:             string      @go(UsernameClaim)
+	jwk_set_url?:                string      @go(JwkSetUrl)
+	jwk_set_file?:               string      @go(JwkSetFile)
+	key_file?:                   string      @go(KeyFile)
+	role_attribute_path?:        string      @go(RoleAttributePath)
+	role_attribute_strict?:      null | bool @go(RoleAttributeStrict,*bool)
+	auto_sign_up?:               null | bool @go(AutoSignUp,*bool)
+	cache_ttl?:                  string      @go(CacheTtl)
+	url_login?:                  null | bool @go(UrlLogin,*bool)
+	allow_assign_grafana_admin?: null | bool @go(AllowAssignGrafanaAdmin,*bool)
+	skip_org_role_sync?:         null | bool @go(SkipOrgRoleSync,*bool)
 }
 
 #GrafanaConfigAuthOkta: {
@@ -525,14 +554,24 @@ import (
 }
 
 #GrafanaConfigDataProxy: {
-	// +nullable
-	logging?: null | bool @go(Logging,*bool)
+	dialTimeout?:                     null | int @go(DialTimeout,*int)
+	expect_continue_timeout_seconds?: null | int @go(ExpectContinueTimeoutSeconds,*int)
+	idle_conn_timeout_seconds?:       null | int @go(IdleConnTimeoutSeconds,*int)
+	keep_alive_seconds?:              null | int @go(KeepAliveSeconds,*int)
 
 	// +nullable
-	timeout?: null | int @go(Timeout,*int)
+	logging?:              null | bool @go(Logging,*bool)
+	max_idle_connections?: null | int  @go(MaxIdleConnections,*int)
+	max_conns_per_host?:   null | int  @go(MaxConnsPerHost,*int)
+	response_limit?:       null | int  @go(ResponseLimit,*int)
+	row_limit?:            null | int  @go(RowLimit,*int)
 
 	// +nullable
 	send_user_header?: null | bool @go(SendUserHeader,*bool)
+
+	// +nullable
+	timeout?:                       null | int @go(Timeout,*int)
+	tls_handshake_timeout_seconds?: null | int @go(TlsHandshakeTimeoutSeconds,*int)
 }
 
 #GrafanaConfigAnalytics: {
@@ -548,6 +587,9 @@ import (
 	// +nullable
 	versions_to_keep?:            null | int @go(VersionsToKeep,*int)
 	default_home_dashboard_path?: string     @go(DefaultHomeDashboardPath)
+
+	// Prevents users from setting the dashboard refresh interval to a lower value than a given interval value
+	min_refresh_interval?: string @go(MinRefreshInterval)
 }
 
 #GrafanaConfigSmtp: {

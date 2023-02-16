@@ -17,7 +17,7 @@ package models
 	port?: uint16 @go(Port)
 
 	// Layer 4 protocol
-	// Enum: [TCP UDP ICMP ICMPV6 ANY]
+	// Enum: [TCP UDP SCTP ICMP ICMPV6 ANY]
 	protocol?: string @go(Protocol)
 }
 
@@ -26,6 +26,9 @@ package models
 
 // PortProtocolUDP captures enum value "UDP"
 #PortProtocolUDP: "UDP"
+
+// PortProtocolSCTP captures enum value "SCTP"
+#PortProtocolSCTP: "SCTP"
 
 // PortProtocolICMP captures enum value "ICMP"
 #PortProtocolICMP: "ICMP"

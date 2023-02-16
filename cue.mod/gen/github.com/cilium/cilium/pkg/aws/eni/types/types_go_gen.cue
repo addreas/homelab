@@ -95,6 +95,12 @@ package types
 	// +kubebuilder:validation:Optional
 	"subnet-tags"?: {[string]: string} @go(SubnetTags,map[string]string)
 
+	// NodeSubnetID is the subnet of the primary ENI the instance was brought up
+	// with. It is used as a sensible default subnet to create ENIs in.
+	//
+	// +kubebuilder:validation:Optional
+	"node-subnet-id"?: string @go(NodeSubnetID)
+
 	// VpcID is the VPC ID to use when allocating ENIs.
 	//
 	// +kubebuilder:validation:Optional

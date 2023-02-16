@@ -37,6 +37,9 @@ package models
 	// Status of CNI chaining
 	"cni-chaining"?: null | #CNIChainingStatus @go(CniChaining,*CNIChainingStatus)
 
+	// Status of the CNI configuration file
+	"cni-file"?: null | #Status @go(CniFile,*Status)
+
 	// Status of local container runtime
 	"container-runtime"?: null | #Status @go(ContainerRuntime,*Status)
 
@@ -60,6 +63,9 @@ package models
 
 	// Status of IP address management
 	ipam?: null | #IPAMStatus @go(Ipam,*IPAMStatus)
+
+	// Status of IPv6 BIG TCP
+	"ipv6-big-tcp"?: null | #IPV6BigTCP @go(IPV6BigTCP,*IPV6BigTCP)
 
 	// Status of kube-proxy replacement
 	"kube-proxy-replacement"?: null | #KubeProxyReplacement @go(KubeProxyReplacement,*KubeProxyReplacement)

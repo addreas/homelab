@@ -8,9 +8,14 @@ package models
 // information, k8s, node monitor and immutable and mutable configuration
 // settings.
 //
-//
 // swagger:model DaemonConfigurationStatus
 #DaemonConfigurationStatus: {
+	// Maximum GRO size on workload facing devices
+	GROMaxSize?: int64
+
+	// Maximum GSO size on workload facing devices
+	GSOMaxSize?: int64
+
 	// addressing
 	addressing?: null | #NodeAddressing @go(Addressing,*NodeAddressing)
 

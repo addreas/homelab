@@ -6,7 +6,6 @@ package models
 
 // DaemonConfiguration Response to a daemon configuration request.
 //
-//
 // swagger:model DaemonConfiguration
 #DaemonConfiguration: {
 	// Changeable configuration

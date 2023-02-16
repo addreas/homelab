@@ -40,5 +40,5 @@ package models
 
 	// Current state of endpoint
 	// Required: true
-	state: #EndpointState @go(State)
+	state?: null | #EndpointState @go(State,*EndpointState)
 }

@@ -8,7 +8,6 @@ package models
 // behave as if protocol any is specified. To restrict to a particular
 // protocol, use policy.
 //
-//
 // swagger:model FrontendAddress
 #FrontendAddress: {
 	// Layer 3 address

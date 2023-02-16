@@ -10,9 +10,9 @@ package models
 #EndpointState: string // #enumEndpointState
 
 #enumEndpointState:
-	#EndpointStateWaitingForIdentity |
-	#EndpointStateNotReady |
-	#EndpointStateWaitingToRegenerate |
+	#EndpointStateWaitingDashForDashIdentity |
+	#EndpointStateNotDashReady |
+	#EndpointStateWaitingDashToDashRegenerate |
 	#EndpointStateRegenerating |
 	#EndpointStateRestoring |
 	#EndpointStateReady |
@@ -20,14 +20,14 @@ package models
 	#EndpointStateDisconnected |
 	#EndpointStateInvalid
 
-// EndpointStateWaitingForIdentity captures enum value "waiting-for-identity"
-#EndpointStateWaitingForIdentity: #EndpointState & "waiting-for-identity"
+// EndpointStateWaitingDashForDashIdentity captures enum value "waiting-for-identity"
+#EndpointStateWaitingDashForDashIdentity: #EndpointState & "waiting-for-identity"
 
-// EndpointStateNotReady captures enum value "not-ready"
-#EndpointStateNotReady: #EndpointState & "not-ready"
+// EndpointStateNotDashReady captures enum value "not-ready"
+#EndpointStateNotDashReady: #EndpointState & "not-ready"
 
-// EndpointStateWaitingToRegenerate captures enum value "waiting-to-regenerate"
-#EndpointStateWaitingToRegenerate: #EndpointState & "waiting-to-regenerate"
+// EndpointStateWaitingDashToDashRegenerate captures enum value "waiting-to-regenerate"
+#EndpointStateWaitingDashToDashRegenerate: #EndpointState & "waiting-to-regenerate"
 
 // EndpointStateRegenerating captures enum value "regenerating"
 #EndpointStateRegenerating: #EndpointState & "regenerating"

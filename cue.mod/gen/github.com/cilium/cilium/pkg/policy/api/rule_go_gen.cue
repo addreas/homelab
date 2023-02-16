@@ -4,6 +4,24 @@
 
 package api
 
+// AuthType is a string identifying a supported authentication type
+#AuthType: string // #enumAuthType
+
+#enumAuthType:
+	#AuthTypeNull
+
+#AuthTypeNull: #AuthType & "null"
+
+// Auth specifies the kind of cryptographic authentication required for the traffic to
+// be allowed.
+#Auth: {
+	// Type is the required authentication type for the allowed traffic, if any.
+	//
+	// +kubebuilder:validation:Enum=null
+	// +kubebuilder:validation:Required
+	type: #AuthType @go(Type)
+}
+
 // Rule is a policy rule which must be applied to all endpoints which match the
 // labels contained in the endpointSelector
 //

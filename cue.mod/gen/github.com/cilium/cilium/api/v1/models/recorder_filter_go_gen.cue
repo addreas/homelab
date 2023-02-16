@@ -15,7 +15,7 @@ package models
 	"dst-prefix"?: string @go(DstPrefix)
 
 	// Layer 4 protocol
-	// Enum: [TCP UDP ANY]
+	// Enum: [TCP UDP SCTP ANY]
 	protocol?: string @go(Protocol)
 
 	// Layer 4 source port, zero (or in future range)
@@ -30,6 +30,9 @@ package models
 
 // RecorderFilterProtocolUDP captures enum value "UDP"
 #RecorderFilterProtocolUDP: "UDP"
+
+// RecorderFilterProtocolSCTP captures enum value "SCTP"
+#RecorderFilterProtocolSCTP: "SCTP"
 
 // RecorderFilterProtocolANY captures enum value "ANY"
 #RecorderFilterProtocolANY: "ANY"

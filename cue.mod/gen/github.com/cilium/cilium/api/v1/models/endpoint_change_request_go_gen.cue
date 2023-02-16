@@ -6,7 +6,6 @@ package models
 
 // EndpointChangeRequest Structure which contains the mutable elements of an Endpoint.
 //
-//
 // swagger:model EndpointChangeRequest
 #EndpointChangeRequest: {
 	// addressing
@@ -62,7 +61,7 @@ package models
 
 	// Current state of endpoint
 	// Required: true
-	state: #EndpointState @go(State)
+	state?: null | #EndpointState @go(State,*EndpointState)
 
 	// Whether to build an endpoint synchronously
 	//
