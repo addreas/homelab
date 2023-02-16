@@ -20,6 +20,10 @@ ingressController:
 gatewayAPI:
   enabled: true
 
+loadBalancer:
+  l7:
+    backend: envoy
+
 externalIPs:
   enabled: true
 

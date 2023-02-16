@@ -17,7 +17,7 @@ k: CiliumBGPPeeringPolicy: "main": spec: {
 	virtualRouters: [{
 		localASN: 64512
 		neighbors: [{
-			peerAddress: "192.168.1.1"
+			peerAddress: "192.168.1.1/32"
 			peerASN: 64512
 		}]
 		exportPodCIDR: false
