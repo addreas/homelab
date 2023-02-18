@@ -9,6 +9,7 @@ k: HelmRelease: kured: spec: {
 		version: strings.TrimPrefix(githubReleases["kubereboot/charts"], "kured-")
 	}
 	values: {
+		hostNetwork: false
 		metrics: create: true
 		configuration: {
 			rebootDays: ["sa"]
