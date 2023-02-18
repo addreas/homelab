@@ -17,8 +17,8 @@ ingressController:
   enabled: true
   loadbalancerMode: shared
 
-gatewayAPI:
-  enabled: true
+# gatewayAPI:
+#   enabled: true
 
 loadBalancer:
   l7:
