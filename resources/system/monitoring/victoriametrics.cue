@@ -5,7 +5,7 @@ import (
 )
 
 k: VMSingle: "main": spec: {
-	retentionPeriod:      "2w"
+	retentionPeriod:      "4w"
 	removePvcAfterDelete: true
 	resources: {
 		requests: {
