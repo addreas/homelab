@@ -20,7 +20,7 @@ k: CiliumBGPPeeringPolicy: "main": spec: {
 			peerAddress: "192.168.1.1/32"
 			peerASN: 64512
 		}]
-		exportPodCIDR: true
+		exportPodCIDR: false
 		serviceSelector: dummyMatch
 	}]
 }
