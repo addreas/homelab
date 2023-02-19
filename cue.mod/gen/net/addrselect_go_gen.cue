@@ -11,11 +11,16 @@ _#ipAttr: {
 }
 
 _#policyTableEntry: {
+	Prefix?:    null | #IPNet @go(,*IPNet)
 	Precedence: uint8
 	Label:      uint8
 }
 
 _#policyTable: [..._#policyTableEntry]
+
+// byMaskLength sorts policyTableEntry by the size of their Prefix.Mask.Size,
+// from smallest mask, to largest.
+_#byMaskLength: [..._#policyTableEntry]
 
 // RFC 6724 section 3.1.
 _#scope: uint8
