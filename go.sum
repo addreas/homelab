@@ -210,10 +210,16 @@ github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSw
 github.com/flowstack/go-jsonschema v0.1.1/go.mod h1:yL7fNggx1o8rm9RlgXv7hTBWxdBM0rVwpMwimd3F3N0=
 github.com/fluxcd/helm-controller/api v0.29.0 h1:aoyI2fQNR/8rmUCz6l4kqQzgS3oAvP3/K6qP/uKk2C0=
 github.com/fluxcd/helm-controller/api v0.29.0/go.mod h1:BXivPOvBtSKRmcs2HdAtlR5hlC0UGU5Zg847KmtXvkQ=
+github.com/fluxcd/helm-controller/api v0.30.0 h1:zunzaHGak5IThITRncqOsWqyvdoO6lDd5sP98ryTIcs=
+github.com/fluxcd/helm-controller/api v0.30.0/go.mod h1:EfT8NQAybkDbfmqQlb1JoMtwEKudaQcHSsWQpWRdhGE=
 github.com/fluxcd/kustomize-controller/api v0.33.0 h1:ELTDIBC9dYaQjwIOtQxXAX2S4ydD6VQbmgf9p8wxIpE=
 github.com/fluxcd/kustomize-controller/api v0.33.0/go.mod h1:6dVUIhT3Dge4Fyljv/qILYygwUTpAXl5IDjoOFLebfE=
+github.com/fluxcd/kustomize-controller/api v0.34.0 h1:azw0y8AUfNSc1r3ZJkpbf8JKfpEs1Po980NqxuaJ8Iw=
+github.com/fluxcd/kustomize-controller/api v0.34.0/go.mod h1:3KgYtDR0oSVU/CL4nokdQEGKOWSq/jXvmRh9AQ8sRF8=
 github.com/fluxcd/notification-controller/api v0.31.0 h1:KcxsVwL1DU1BGro0raAt5+FwHCgGJwNsa915DdrAehs=
 github.com/fluxcd/notification-controller/api v0.31.0/go.mod h1:K+Jxxbj8NRI9L2+NjV7T0TqUtq5NspZaH2fidHbguZ0=
+github.com/fluxcd/notification-controller/api v0.32.0 h1:PAWyqUEksEt/lY+0+MyW4jtWlu1k4rrmoYo7RvKcrGI=
+github.com/fluxcd/notification-controller/api v0.32.0/go.mod h1:0yUeBG8O6R5O9L3NS7TnLxZdni6auheTxM9gPMlgxMY=
 github.com/fluxcd/pkg/apis/acl v0.1.0 h1:EoAl377hDQYL3WqanWCdifauXqXbMyFuK82NnX6pH4Q=
 github.com/fluxcd/pkg/apis/acl v0.1.0/go.mod h1:zfEZzz169Oap034EsDhmCAGgnWlcWmIObZjYMusoXS8=
 github.com/fluxcd/pkg/apis/kustomize v0.8.0 h1:A6aLolxPV2Sll44SOHiX96lbXXmRZmS5BoEerkRHrfM=
@@ -228,6 +234,8 @@ github.com/fluxcd/source-controller/api v0.34.0 h1:M2kD95IdpmHcDNy78K6T6p7niC38L
 github.com/fluxcd/source-controller/api v0.34.0/go.mod h1:w3PDdR+FZyq3zyyUDxz6vY3CKByZfYAjkzJUxuUXCuc=
 github.com/fluxcd/source-controller/api v0.35.0 h1:vVjUv4vxV3uS8AvdXe6J55TU88NwbpabPxlM72c7HwY=
 github.com/fluxcd/source-controller/api v0.35.0/go.mod h1:TImPMy/MEwNpDu6qHsw9LlCznXaB8bSO8mnxBSFsX4Q=
+github.com/fluxcd/source-controller/api v0.35.1 h1:IHlbN7giz5kY4z9oWZ9QLNKtHAaxHdk9RbIurUPS1aI=
+github.com/fluxcd/source-controller/api v0.35.1/go.mod h1:TImPMy/MEwNpDu6qHsw9LlCznXaB8bSO8mnxBSFsX4Q=
 github.com/form3tech-oss/jwt-go v3.2.3+incompatible/go.mod h1:pbq4aXjuKjdthFRnoDwaVPLA+WlJuPGy+QneDUgJi2k=
 github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3ZUKE=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=

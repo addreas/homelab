@@ -9,10 +9,10 @@ require (
 	github.com/bitnami-labs/sealed-secrets v0.19.5
 	github.com/cert-manager/cert-manager v1.11.0
 	github.com/cilium/cilium v1.13.0
-	github.com/fluxcd/helm-controller/api v0.29.0
-	github.com/fluxcd/kustomize-controller/api v0.33.0
-	github.com/fluxcd/notification-controller/api v0.31.0
-	github.com/fluxcd/source-controller/api v0.35.0
+	github.com/fluxcd/helm-controller/api v0.30.0
+	github.com/fluxcd/kustomize-controller/api v0.34.0
+	github.com/fluxcd/notification-controller/api v0.32.0
+	github.com/fluxcd/source-controller/api v0.35.1
 	github.com/grafana-operator/grafana-operator/v4 v4.9.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.26

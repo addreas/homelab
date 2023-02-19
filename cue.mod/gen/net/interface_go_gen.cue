@@ -22,8 +22,7 @@ package net
 	#FlagBroadcast |
 	#FlagLoopback |
 	#FlagPointToPoint |
-	#FlagMulticast |
-	#FlagRunning
+	#FlagMulticast
 
 #values_Flags: {
 	FlagUp:           #FlagUp
@@ -31,7 +30,6 @@ package net
 	FlagLoopback:     #FlagLoopback
 	FlagPointToPoint: #FlagPointToPoint
 	FlagMulticast:    #FlagMulticast
-	FlagRunning:      #FlagRunning
 }
 
 #FlagUp:           #Flags & 1
@@ -39,4 +37,3 @@ package net
 #FlagLoopback:     #Flags & 4
 #FlagPointToPoint: #Flags & 8
 #FlagMulticast:    #Flags & 16
-#FlagRunning:      #Flags & 32
