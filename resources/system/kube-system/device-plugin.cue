@@ -1,51 +1,48 @@
 package kube
 
-import json656e63 "encoding/json"
+import "encoding/json"
 
-k: ConfigMap: "hostdevice-plugin-config": data: {
-	"config.json": json656e63.Marshal(_cue_config_json)
-	let _cue_config_json = {
-		socketPrefix: "hostdevice-plugin"
-		devices: {
-			"addem.se/dev_yanzi_serial_radio": {
-				containerPath: "/dev/yanzi-serial-radio"
-				permissions:   "rw"
-				matchProperties: {
-					SUBSYSTEM: "tty"
-					ID_VENDOR: "Texas_Instruments"
-					ID_MODEL:  "Yanzi_Serial_Radio"
-				}
+k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
+	socketPrefix: "hostdevice-plugin"
+	devices: {
+		"addem.se/dev_yanzi_serial_radio": {
+			containerPath: "/dev/yanzi-serial-radio"
+			permissions:   "rw"
+			matchProperties: {
+				SUBSYSTEM: "tty"
+				ID_VENDOR: "Texas_Instruments"
+				ID_MODEL:  "Yanzi_Serial_Radio"
 			}
-			"addem.se/dev_deconz_conbee": {
-				containerPath: "/dev/deconz-conbee"
-				permissions:   "rw"
-				matchProperties: {
-					SUBSYSTEM: "tty"
-					ID_VENDOR: "FTDI"
-					ID_MODEL:  "FT230X_Basic_UART"
-				}
+		}
+		"addem.se/dev_deconz_conbee": {
+			containerPath: "/dev/deconz-conbee"
+			permissions:   "rw"
+			matchProperties: {
+				SUBSYSTEM: "tty"
+				ID_VENDOR: "FTDI"
+				ID_MODEL:  "FT230X_Basic_UART"
 			}
-			"addem.se/dev_deconz_conbee_ii": {
-				containerPath: "/dev/deconz-conbee-ii"
-				permissions:   "rw"
-				matchProperties: {
-					SUBSYSTEM: "tty"
-					ID_VENDOR: "dresden_elektronik_ingenieurtechnik_GmbH"
-					ID_MODEL:  "ConBee_II"
-				}
+		}
+		"addem.se/dev_deconz_conbee_ii": {
+			containerPath: "/dev/deconz-conbee-ii"
+			permissions:   "rw"
+			matchProperties: {
+				SUBSYSTEM: "tty"
+				ID_VENDOR: "dresden_elektronik_ingenieurtechnik_GmbH"
+				ID_MODEL:  "ConBee_II"
 			}
-			"addem.se/dev_aeotec_zstick": {
-				containerPath: "/dev/aeotec-z-stick"
-				permissions:   "rw"
-				matchProperties: {
-					SUBSYSTEM: "tty"
-					ID_VENDOR: "0658"
-					ID_MODEL:  "0200"
-				}
+		}
+		"addem.se/dev_aeotec_zstick": {
+			containerPath: "/dev/aeotec-z-stick"
+			permissions:   "rw"
+			matchProperties: {
+				SUBSYSTEM: "tty"
+				ID_VENDOR: "0658"
+				ID_MODEL:  "0200"
 			}
 		}
 	}
-}
+})
 
 k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 	selector: matchLabels: app: "hostdevice-plugin"
@@ -64,10 +61,9 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 			}]
 			securityContext: fsGroup: 0
 			containers: [{
-				image: "ghcr.io/addreas/k8s-hostdevice-plugin:187ff128a5d4ab5794fe13d96afd61398d59a4d9"
+				image: "ghcr.io/addreas/k8s-hostdevice-plugin:b20d28afb4659efbc9346f76dc3748d37c9ad0d0"
 				name:  "plugin"
 				securityContext: {
-					capabilities: drop: ["ALL"]
 					runAsUser:  0
 					runAsGroup: 0
 				}

@@ -19,7 +19,7 @@ k: HelmRelease: kured: spec: {
 			rebootCommand: "systemctl reboot"
 		}
 		extraEnvVars: [{
-			name: "PATH"
+			name:  "PATH"
 			value: "/run/current-system/sw/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 		}]
 	}
