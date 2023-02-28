@@ -61,7 +61,7 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 			}]
 			securityContext: fsGroup: 0
 			containers: [{
-				image: "ghcr.io/addreas/k8s-hostdevice-plugin:314601007b4604bfe2a6ef03bb7de960bda1f3b2"
+				image: "ghcr.io/addreas/k8s-hostdevice-plugin:94855f87b22c11df1086e86f6bf40c518658ffeb"
 				name:  "plugin"
 				securityContext: {
 					runAsUser:  0
