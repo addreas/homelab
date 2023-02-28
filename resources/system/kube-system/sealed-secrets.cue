@@ -4,6 +4,6 @@ k: HelmRepository: "sealed-secrets": spec: url: "https://bitnami-labs.github.io/
 
 k: HelmRelease: "sealed-secrets-controller": spec: chart: spec: {
 	chart:   "sealed-secrets"
-	version: "2.0.2"
+	version: "2.7.4"
 	sourceRef: name: "sealed-secrets"
 }
