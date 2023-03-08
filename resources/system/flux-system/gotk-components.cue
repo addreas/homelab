@@ -33,7 +33,7 @@ k: Kustomization: "cue-flux-controller": spec: {
 	path:  "./config/default"
 	prune: false // dont prune this either
 	images: [{
-		name:    "phoban01/cue-controller"
+		name:    "ghcr.io/phoban01/cue-controller"
 		newName: "ghcr.io/addreas/cue-flux-controller"
 		newTag:  "latest"
 	}]
