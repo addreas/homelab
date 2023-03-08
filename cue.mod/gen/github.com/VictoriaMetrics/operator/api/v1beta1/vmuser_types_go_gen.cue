@@ -103,6 +103,9 @@ import (
 #VMUserStatus: {
 }
 
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +genclient
 // VMUser is the Schema for the vmusers API
 #VMUser: {
 	metav1.#TypeMeta

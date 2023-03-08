@@ -22,6 +22,12 @@
 // fires. The go vet tool checks that CancelFuncs are used on all
 // control-flow paths.
 //
+// The WithCancelCause function returns a CancelCauseFunc, which
+// takes an error and records it as the cancellation cause. Calling
+// Cause on the canceled context or any of its children retrieves
+// the cause. If no cause is specified, Cause(ctx) returns the same
+// value as ctx.Err().
+//
 // Programs that use Contexts should follow these rules to keep interfaces
 // consistent across packages and enable static analysis tools to check context
 // propagation:

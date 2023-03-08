@@ -40,6 +40,8 @@ _#hiter: {
 // Moreover, the Data field is not sufficient to guarantee the data
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
+//
+// In new code, use unsafe.String or unsafe.StringData instead.
 #StringHeader: {
 	Data: uint64 @go(,uintptr)
 	Len:  int
@@ -51,6 +53,8 @@ _#hiter: {
 // Moreover, the Data field is not sufficient to guarantee the data
 // it references will not be garbage collected, so programs must keep
 // a separate, correctly typed pointer to the underlying data.
+//
+// In new code, use unsafe.Slice or unsafe.SliceData instead.
 #SliceHeader: {
 	Data: uint64 @go(,uintptr)
 	Len:  int

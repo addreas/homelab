@@ -126,6 +126,9 @@ import (
 #VMStaticScrapeStatus: {
 }
 
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +genclient
 // VMStaticScrape  defines static targets configuration for scraping.
 #VMStaticScrape: {
 	metav1.#TypeMeta
