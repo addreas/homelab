@@ -95,6 +95,10 @@ import (
 	reason?: string @go(ErrorReason)
 }
 
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +genclient
+// +k8s:openapi-gen=true
 // VMAlertmanagerConfig is the Schema for the vmalertmanagerconfigs API
 #VMAlertmanagerConfig: _
 

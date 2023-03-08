@@ -206,3 +206,11 @@ _#snapshotDelete:       "/snapshot/delete"
 	namespaceSelector?: null | #NamespaceSelector    @go(Namespace,*NamespaceSelector)
 	labelSelector?:     null | metav1.#LabelSelector @go(Labels,*metav1.LabelSelector)
 }
+
+// ConfigMapKeyReference refers to a key in a ConfigMap.
+#ConfigMapKeyReference: {
+	v1.#LocalObjectReference
+
+	// The ConfigMap key to refer to.
+	key: string @go(Key)
+}

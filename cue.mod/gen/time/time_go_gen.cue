@@ -46,7 +46,7 @@
 // The canonical way to strip a monotonic clock reading is to use t = t.Round(0).
 //
 // If Times t and u both contain monotonic clock readings, the operations
-// t.After(u), t.Before(u), t.Equal(u), and t.Sub(u) are carried out
+// t.After(u), t.Before(u), t.Equal(u), t.Compare(u), and t.Sub(u) are carried out
 // using the monotonic clock readings alone, ignoring the wall clock
 // readings. If either t or u contains no monotonic clock reading, these
 // operations fall back to using the wall clock readings.
