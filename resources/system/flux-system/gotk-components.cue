@@ -12,7 +12,7 @@ k: Kustomization: "flux-components": spec: {
 
 k: GitRepository: "cuebuild-controller": spec: {
 	ref: tag: "v0.18.2-cue"
-	url: "https://github.com/addreas/cuebuild-controller"
+	url: "https://github.com/addreas/cue-controller"
 }
 
 k: Kustomization: "cuebuild-controller": spec: {
@@ -25,7 +25,7 @@ k: Kustomization: "cuebuild-controller": spec: {
 }
 
 k: GitRepository: "cue-controller": spec: {
-	ref: tag: "v0.35.0-cue"
+	ref: tag: "v0.35.0-cue-1"
 	url: "https://github.com/addreas/cue-controller"
 }
 
