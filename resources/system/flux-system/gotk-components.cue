@@ -25,7 +25,7 @@ k: Kustomization: "cuebuild-controller": spec: {
 }
 
 k: GitRepository: "cue-controller": spec: {
-	ref: tag: "v0.35.0-cue-1"
+	ref: tag: "v0.35.0-cue-2"
 	url: "https://github.com/addreas/cue-controller"
 }
 
