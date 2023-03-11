@@ -11,7 +11,7 @@ k: Kustomization: "flux-components": spec: {
 }
 
 k: GitRepository: "cue-controller": spec: {
-	ref: tag: "v0.35.0-cue-2"
+	ref: tag: "v0.35.0-cue-3"
 	url: "https://github.com/addreas/cue-controller"
 }
 
@@ -20,7 +20,25 @@ k: Kustomization: "cue-controller": spec: {
 	prune: false // dont prune this either
 	images: [{
 		name:   "ghcr.io/addreas/cue-controller"
-		newTag: "v0.35.0"
+		newTag: "v0.35.0-cue-3"
+	}]
+	patchesStrategicMerge: [{
+		apiVersion: "apps/v1"
+		kind:       "Deployment"
+		metadata: {
+		    name:      "cue-controller"
+		}
+		spec: template: spec: containers: [{
+		    name: "manager"
+			// imagePullPolicy: "Always"
+			args: [
+				"--concurrent=1",
+				"--log-level=info",
+				// "--log-encoding=console",
+				"--watch-all-namespaces",
+				"--enable-leader-election"
+			]
+		}]
 	}]
 }
 
