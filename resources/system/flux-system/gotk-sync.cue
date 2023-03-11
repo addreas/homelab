@@ -5,9 +5,9 @@ k: GitRepository: "homelab": spec: {
 	ref: branch: "main"
 }
 
-k: CueBuild: "homelab-system": spec: {
+k: CueExport: "homelab-system": spec: {
 	interval: "30m"
-	packages: [
+	paths: [
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
 		"./resources/system/kube-system",

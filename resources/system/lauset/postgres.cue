@@ -38,13 +38,6 @@ k: Service: postgres: spec: ports: [{
 	name: "postgres"
 }]
 
-k: ConfigMap: "postgres-config": data: POSTGRES_DB: "kratos"
-
-k: Secret: "postgres-credentials": stringData: {
-	POSTGRES_PASSWORD: "kratos"
-	POSTGRES_USER:     "kratos"
-}
-
 k: ConfigMap: "postgres-init": data: "create-hydra.sql": """
 	CREATE USER hydra PASSWORD 'hydra';
 	CREATE DATABASE hydra OWNER hydra;

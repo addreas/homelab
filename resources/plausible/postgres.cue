@@ -1,7 +1,5 @@
 package kube
 
-k: ConfigMap: "postgres-config": data: POSTGRES_DB: "plausible"
-
 k: StatefulSet: "plausible-db": spec: {
 	template: spec: {
 		securityContext: fsGroupChangePolicy: "Always"
@@ -10,8 +8,11 @@ k: StatefulSet: "plausible-db": spec: {
 			image: "postgres:14"
 			envFrom: [
 				{secretRef: name:    "postgres-credentials-plausible"},
-				{configMapRef: name: "postgres-config"},
 			]
+			env: [{
+				name: "POSTGRES_DB"
+				value: "plausible"
+			}]
 			ports: [{containerPort: 5432}]
 			volumeMounts: [{
 				name:      "data"

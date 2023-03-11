@@ -13,17 +13,21 @@ import (
 
 context: string
 
+kindfilter: string | *".*"  @tag(kind)
+namefilter: string | *".*"  @tag(name)
+
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
-let earlyResources = [ for kind, rs in k for r in rs if list.Contains(earlyKinds, kind) {r}]
-let resources = [ for kind, rs in k for r in rs if !list.Contains(earlyKinds, kind) {r}]
+let res = [ for kind, rs in k for r in rs  if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
+let earlyResources = [ for r in res if list.Contains(earlyKinds, r.kind) {r}]
+let resources = [ for r in res if !list.Contains(earlyKinds, r.kind) {r}]
 
 // List defined Kubernetes resources
 command: ls: cli.Print & {
 	text: tabwriter.Write([
+		"Kind\tNamesspace\tName",
 		for r in earlyResources {
 			"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
 		},
-	]) + "\n" + tabwriter.Write([
 		for r in resources {
 			"\(r.kind) \t\(*r.metadata.namespace | "") \t\(r.metadata.name)"
 		},
@@ -49,7 +53,7 @@ command: apply: {
 
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
-	cmd: ["kubectl", "--context", context, "diff", "--server-side", "--force-conflicts", "-f-"]
+	cmd: ["kubectl", "--context", context, "diff", "-f-"]
 	stdin: json.MarshalStream(resources)
 }
 
