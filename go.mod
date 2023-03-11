@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/VictoriaMetrics/operator v0.31.0
 	github.com/VictoriaMetrics/operator/api v0.0.0-20230302211747-d2c5ddb33966
-	github.com/addreas/cuebuild-controller/api v0.18.2-cue
+	github.com/addreas/cue-controller/api v0.35.0-cue
 	github.com/bitnami-labs/sealed-secrets v0.19.5
 	github.com/cert-manager/cert-manager v1.11.0
 	github.com/cilium/cilium v1.13.0
@@ -43,7 +43,6 @@ require (
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
 	github.com/fluxcd/pkg/apis/kustomize v0.8.0 // indirect
 	github.com/fluxcd/pkg/apis/meta v0.19.1 // indirect
-	github.com/fluxcd/pkg/runtime v0.12.4 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect

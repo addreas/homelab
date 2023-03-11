@@ -2,10 +2,10 @@ package kube
 
 k: [string]: [string]: metadata: namespace: *"default" | string
 
-k: CueBuild: "homelab-unifi": spec: {
+k: CueExport: "homelab-unifi": spec: {
 	interval:  "30m"
 	sourceRef: _homelab
-	packages: ["./resources/unifi"]
+	paths: ["./resources/unifi"]
 	prune:   false
 	suspend: false
 }

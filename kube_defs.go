@@ -3,7 +3,7 @@ package kube
 import (
 	_ "github.com/VictoriaMetrics/operator"
 	_ "github.com/VictoriaMetrics/operator/api/v1beta1"
-	_ "github.com/addreas/cuebuild-controller/api/v1alpha1"
+	_ "github.com/addreas/cue-controller/api/v1beta2"
 	_ "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 	_ "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"

@@ -18,6 +18,7 @@ import (
 	notification_controller_v1beta1 "github.com/fluxcd/notification-controller/api/v1beta1"
 	kustomize_controller_v1beta2 "github.com/fluxcd/kustomize-controller/api/v1beta2"
 	cuebuild_controller_v1alpha2 "github.com/addreas/cuebuild-controller/api/v1alpha2"
+	cue_controller_v1beta2 "github.com/addreas/cue-controller/api/v1beta2"
 	helm_controller_v2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
@@ -121,6 +122,8 @@ _kubernetesAPIs: {
 	"kustomize.toolkit.fluxcd.io/v1beta2": Kustomization: kustomize_controller_v1beta2.#Kustomization
 
 	"cuebuild.toolkit.fluxcd.io/v1alpha1": CueBuild: cuebuild_controller_v1alpha2.#CueBuild
+
+	"cue.toolkit.fluxcd.io/v1beta2": CueExport: cue_controller_v1beta2.#CueExport
 
 	"helm.toolkit.fluxcd.io/v2beta1": HelmRelease: helm_controller_v2beta1.#HelmRelease
 

@@ -5,10 +5,10 @@ k: [string]: [string]: metadata: {
 	labels: app: "bitwarden"
 }
 
-k: CueBuild: "homelab-bitwarden": spec: {
+k: CueExport: "homelab-bitwarden": spec: {
 	interval:  "30m"
 	sourceRef: _homelab
-	packages: ["./resources/bitwarden"]
+	paths: ["./resources/bitwarden"]
 	prune:   false
 	suspend: false
 }
