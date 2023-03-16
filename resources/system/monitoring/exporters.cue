@@ -1,5 +1,7 @@
 package kube
 
+import "strings"
+
 k: HelmRelease: "smartctl-exporter": spec: {
 	chart: spec: {
 		chart:   "prometheus-smartctl-exporter"
@@ -36,7 +38,16 @@ k: DaemonSet: "systemd-exporter": {
 					}
 					args: [
 						"--log.level=info",
-						// "--collector.unit-whitelist=kubelet.service|crio.service",
+						"--systemd.collector.unit-exclude=" + strings.Join([
+							"crio-.+\\.scope",
+							"kubepods-.+\\.slice",
+							"run-containers-storage-btrfs.+\\.mount",
+							"run-ipcns-.+\\.mount",
+							"run-netns-.+\\.mount",
+							"run-utsns-.+\\.mount",
+							"var-lib-kubelet-.+\\.mount",
+							".+\\.device",
+						], "|"),
 					]
 					ports: [{
 						name:          "metrics"
