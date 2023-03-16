@@ -6,6 +6,10 @@ k: HelmRelease: "smartctl-exporter": spec: {
 		version: "0.3.1"
 		sourceRef: name: "prometheus-community"
 	}
+	values: {
+		serviceMonitor: enabled:  true
+		prometheusRules: enabled: true
+	}
 }
 
 k: DaemonSet: "systemd-exporter": {
@@ -31,6 +35,7 @@ k: DaemonSet: "systemd-exporter": {
 					}
 					args: [
 						"--log.level=info",
+						"--systemd.collector.private",
 						// "--path.procfs=/host/proc",
 						// "--collector.unit-whitelist=kubelet.service|crio.service",
 					]
