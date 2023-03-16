@@ -24,7 +24,7 @@ k: DaemonSet: "systemd-exporter": {
 				securityContext: runAsUser: 0
 				hostPID: true
 				containers: [{
-					image: "quay.io/prometheuscommunity/systemd-exporter:master"
+					image: "quay.io/prometheuscommunity/systemd-exporter:main"
 					securityContext: {
 						privileged:               true
 						allowPrivilegeEscalation: true
