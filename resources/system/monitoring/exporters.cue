@@ -25,18 +25,17 @@ k: DaemonSet: "systemd-exporter": {
 				}
 			}
 			spec: {
-				securityContext: runAsUser: 0
 				hostPID: true
 				containers: [{
 					image: "quay.io/prometheuscommunity/systemd-exporter:main"
 					securityContext: {
+						runAsUser:                0
+						runAsGroup:               0
 						privileged:               true
 						allowPrivilegeEscalation: true
 					}
 					args: [
 						"--log.level=info",
-						"--systemd.collector.private",
-						// "--path.procfs=/host/proc",
 						// "--collector.unit-whitelist=kubelet.service|crio.service",
 					]
 					ports: [{
