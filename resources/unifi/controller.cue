@@ -63,11 +63,9 @@ k: StatefulSet: "unifi-controller": {
 						containerPort: 10001
 						protocol:      "UDP"
 					}]
-
-					volumeMounts: [ for dir in ["data", "logs", "run"] {
+					volumeMounts: [{
 						name:      "config"
-						mountPath: "/unifi/\(dir)"
-						subPath:   dir
+						mountPath: "/unifi"
 					}]
 					resources: {
 						limits: {
