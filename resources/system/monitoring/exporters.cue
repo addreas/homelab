@@ -31,7 +31,7 @@ k: DaemonSet: "systemd-exporter": {
 					}
 					args: [
 						"--log.level=info",
-						"--path.procfs=/host/proc",
+						// "--path.procfs=/host/proc",
 						// "--collector.unit-whitelist=kubelet.service|crio.service",
 					]
 					ports: [{
