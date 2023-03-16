@@ -5,7 +5,7 @@ import (
 )
 
 k: VMSingle: "main": spec: {
-	retentionPeriod:      "4w"
+	retentionPeriod:      "20w"
 	removePvcAfterDelete: true
 	resources: {
 		requests: {
@@ -157,7 +157,6 @@ k: Ingress: "alertmanager": {
 }
 
 k: GitRepository: "victoriametrics-operator": spec: {
-	interval: "1h"
 	ref: tag: goModVersions["github.com/VictoriaMetrics/operator"]
 	url: "https://github.com/victoriametrics/operator"
 	ignore: """

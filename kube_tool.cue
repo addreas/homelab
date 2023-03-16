@@ -9,15 +9,16 @@ import (
 	"tool/cli"
 	"tool/file"
 	"tool/exec"
+	"tool/os"
 )
 
 context: string
 
-kindfilter: string | *".*"  @tag(kind)
-namefilter: string | *".*"  @tag(name)
+kindfilter: string | *".*" @tag(kind)
+namefilter: string | *".*" @tag(name)
 
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
-let res = [ for kind, rs in k for r in rs  if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
+let res = [ for kind, rs in k for r in rs if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
 let earlyResources = [ for r in res if list.Contains(earlyKinds, r.kind) {r}]
 let resources = [ for r in res if !list.Contains(earlyKinds, r.kind) {r}]
 
@@ -51,9 +52,11 @@ command: apply: {
 	}
 }
 
+osenv: os.Environ
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
 	cmd: ["kubectl", "--context", context, "diff", "-f-"]
+	env:   {for key, value in osenv if key != "$id" {(key): value}} & {KUBECTL_EXTERNAL_DIFF: "kubectl-neat-diff"}
 	stdin: json.MarshalStream(resources)
 }
 

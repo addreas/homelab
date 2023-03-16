@@ -1,0 +1,77 @@
+package kube
+
+k: HelmRelease: "smartctl-exporter": spec: {
+	chart: spec: {
+		chart:   "prometheus-smartctl-exporter"
+		version: "0.3.1"
+		sourceRef: name: "prometheus-community"
+	}
+}
+
+k: DaemonSet: "systemd-exporter": {
+	spec: {
+		selector: matchLabels: "k8s-app": "systemd-exporter"
+		template: {
+			metadata: {
+				labels: "k8s-app": "systemd-exporter"
+				annotations: {
+					"prometheus.io/scrape": "true"
+					"prometheus.io/path":   "/metrics"
+					"prometheus.io/port":   "9558"
+				}
+			}
+			spec: {
+				securityContext: runAsUser: 0
+				hostPID: true
+				containers: [{
+					image: "quay.io/prometheuscommunity/systemd-exporter:master"
+					securityContext: {
+						privileged:               true
+						allowPrivilegeEscalation: true
+					}
+					args: [
+						"--log.level=info",
+						"--path.procfs=/host/proc",
+						// "--collector.unit-whitelist=kubelet.service|crio.service",
+					]
+					ports: [{
+						name:          "metrics"
+						containerPort: 9558
+						hostPort:      9558
+					}]
+					volumeMounts: [{
+						name:      "proc"
+						mountPath: "/host/proc"
+						readOnly:  true
+					}, {
+						name:      "systemd"
+						mountPath: "/run/systemd"
+						readOnly:  true
+					}]
+					resources: {
+						limits: memory: "100Mi"
+						requests: {
+							cpu:    "10m"
+							memory: "100Mi"
+						}
+					}
+				}]
+				volumes: [{
+					name: "proc"
+					hostPath: path: "/proc"
+				}, {
+					name: "systemd"
+					hostPath: path: "/run/systemd"
+				}]
+			}
+		}
+	}
+}
+
+k: PodMonitor: "systemd-exporter": spec: {
+	podMetricsEndpoints: [{
+		port:     "metrics"
+		interval: "60s"
+	}]
+	selector: matchLabels: "k8s-app": "systemd-exporter"
+}

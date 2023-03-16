@@ -66,7 +66,6 @@ k: Grafana: grafana: spec: {
 }
 
 k: GitRepository: "grafana-operator": spec: {
-	interval: "1h"
 	ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	url: "https://github.com/grafana-operator/grafana-operator.git"
 	ignore: """
@@ -85,9 +84,9 @@ k: Kustomization: "grafana-operator": spec: {
 	path:            "./config/default"
 	targetNamespace: "monitoring"
 	// images: [{
-	// 	name:    "quay.io/grafana-operator/grafana-operator"
-	// 	newName: "quay.io/addreas/grafana-operator"
-	// 	newTag:  "test"
+	//  name:    "quay.io/grafana-operator/grafana-operator"
+	//  newName: "quay.io/addreas/grafana-operator"
+	//  newTag:  "test"
 	// }]
 	patches: [{
 		target: {
