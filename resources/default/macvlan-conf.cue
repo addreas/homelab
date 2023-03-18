@@ -10,7 +10,6 @@ k: NetworkAttachmentDefinition: "macvlan-conf": spec: config: json.Marshal({
 	ipam: {
 		type: "dhcp"
 		provide: [{
-			// requires cni-plugins > 1.0.1 (unreleased)
 			option:  "host-name"
 			fromArg: "K8S_POD_NAME"
 		}]
