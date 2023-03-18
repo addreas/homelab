@@ -259,8 +259,7 @@ prometheusAdapter: {
 								port:   "https"
 								scheme: "HTTPS"
 							}
-							initialDelaySeconds: 30
-							periodSeconds:       5
+							periodSeconds: 5
 						}
 						name: "prometheus-adapter"
 						ports: [{
@@ -274,8 +273,7 @@ prometheusAdapter: {
 								port:   "https"
 								scheme: "HTTPS"
 							}
-							initialDelaySeconds: 30
-							periodSeconds:       5
+							periodSeconds: 5
 						}
 						resources: {
 							limits: {
@@ -291,6 +289,15 @@ prometheusAdapter: {
 							allowPrivilegeEscalation: false
 							capabilities: drop: ["ALL"]
 							readOnlyRootFilesystem: true
+						}
+						startupProbe: {
+							failureThreshold: 18
+							httpGet: {
+								path:   "/livez"
+								port:   "https"
+								scheme: "HTTPS"
+							}
+							periodSeconds: 10
 						}
 						volumeMounts: [{
 							mountPath: "/tmp"

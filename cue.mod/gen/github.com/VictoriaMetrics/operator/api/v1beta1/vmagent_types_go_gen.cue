@@ -97,6 +97,10 @@ import (
 	// vmagent supports since 1.79.0 version
 	// +optional
 	headers?: [...string] @go(Headers,[]string)
+
+	// StreamAggrConfig defines stream aggregation configuration for VMAgent for -remoteWrite.url
+	// +optional
+	streamAggrConfig?: null | #StreamAggrConfig @go(StreamAggrConfig,*StreamAggrConfig)
 }
 
 // VmAgentStatus defines the observed state of VmAgent
