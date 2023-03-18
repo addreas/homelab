@@ -557,9 +557,9 @@ kubernetesControlPlane: {
 					summary:     "Kubernetes API server client is experiencing errors."
 				}
 				expr: """
-					(sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (cluster, instance, job, namespace)
+					(sum(rate(rest_client_requests_total{job="apiserver",code=~"5.."}[5m])) by (cluster, instance, job, namespace)
 					  /
-					sum(rate(rest_client_requests_total[5m])) by (cluster, instance, job, namespace))
+					sum(rate(rest_client_requests_total{job="apiserver"}[5m])) by (cluster, instance, job, namespace))
 					> 0.01
 
 					"""
@@ -780,7 +780,7 @@ kubernetesControlPlane: {
 					summary:     "Node readiness status is flapping."
 				}
 				expr: """
-					sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (cluster, node) > 2
+					sum(changes(kube_node_status_condition{job="kube-state-metrics",status="true",condition="Ready"}[15m])) by (cluster, node) > 2
 
 					"""
 				for: "15m"
@@ -1772,21 +1772,21 @@ kubernetesControlPlane: {
 			name: "kubelet.rules"
 			rules: [{
 				expr: """
-					histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
 
 					"""
 				labels: quantile: "0.99"
 				record: "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
 			}, {
 				expr: """
-					histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
 
 					"""
 				labels: quantile: "0.9"
 				record: "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
 			}, {
 				expr: """
-					histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
 
 					"""
 				labels: quantile: "0.5"

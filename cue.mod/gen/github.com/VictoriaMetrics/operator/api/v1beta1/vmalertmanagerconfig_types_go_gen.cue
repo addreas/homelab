@@ -368,7 +368,7 @@ import (
 
 	// Further headers email header key/value pairs. Overrides any headers
 	// previously set by the notification implementation.
-	headers?: {[string]: string} @go(Headers,map[string]string)
+	headers?: #EmailConfigHeaders @go(Headers)
 
 	// The HTML body of the email notification.
 	// +optional
@@ -387,6 +387,9 @@ import (
 	// +optional
 	tls_config?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 }
+
+// EmailConfigHeaders is a map of email headers.
+#EmailConfigHeaders: _
 
 // VictorOpsConfig configures notifications via VictorOps.
 // See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config

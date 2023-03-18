@@ -15,6 +15,7 @@ _#vmPathPrefixFlagName: "http.pathPrefix"
 _#healthPath:           "/health"
 _#metricPath:           "/metrics"
 _#reloadPath:           "/-/reload"
+_#reloadAuthKey:        "reloadAuthKey"
 _#snapshotCreate:       "/snapshot/create"
 _#snapshotDelete:       "/snapshot/delete"
 
@@ -213,4 +214,96 @@ _#snapshotDelete:       "/snapshot/delete"
 
 	// The ConfigMap key to refer to.
 	key: string @go(Key)
+}
+
+// StreamAggrConfig defines the stream aggregation config
+// +k8s:openapi-gen=true
+#StreamAggrConfig: {
+	// Stream aggregation rules
+	rules: [...#StreamAggrRule] @go(Rules,[]StreamAggrRule)
+
+	// Allows writing both raw and aggregate data
+	// +optional
+	keepInput?: bool @go(KeepInput)
+
+	// Allows setting different de-duplication intervals per each configured remote storage
+	// +optional
+	dedupInterval?: string @go(DedupInterval)
+}
+
+// StreamAggrRule defines the rule in stream aggregation config
+// +k8s:openapi-gen=true
+#StreamAggrRule: {
+	// Match is a label selector for filtering time series for the given selector.
+	//
+	// If the match isn't set, then all the input time series are processed.
+	// +optional
+	match?: string @go(Match)
+
+	// Interval is the interval between aggregations.
+	interval: string @go(Interval)
+
+	// Outputs is a list of output aggregate functions to produce.
+	//
+	// The following names are allowed:
+	//
+	// - total - aggregates input counters
+	// - increase - counts the increase over input counters
+	// - count_series - counts the input series
+	// - count_samples - counts the input samples
+	// - sum_samples - sums the input samples
+	// - last - the last biggest sample value
+	// - min - the minimum sample value
+	// - max - the maximum sample value
+	// - avg - the average value across all the samples
+	// - stddev - standard deviation across all the samples
+	// - stdvar - standard variance across all the samples
+	// - histogram_bucket - creates VictoriaMetrics histogram for input samples
+	// - quantiles(phi1, ..., phiN) - quantiles' estimation for phi in the range [0..1]
+	//
+	// The output time series will have the following names:
+	//
+	//   input_name:aggr_<interval>_<output>
+	//
+	outputs: [...string] @go(Outputs,[]string)
+
+	// By is an optional list of labels for grouping input series.
+	//
+	// See also Without.
+	//
+	// If neither By nor Without are set, then the Outputs are calculated
+	// individually per each input time series.
+	// +optional
+	by?: [...string] @go(By,[]string)
+
+	// Without is an optional list of labels, which must be excluded when grouping input series.
+	//
+	// See also By.
+	//
+	// If neither By nor Without are set, then the Outputs are calculated
+	// individually per each input time series.
+	// +optional
+	without?: [...string] @go(Without,[]string)
+
+	// InputRelabelConfigs is an optional relabeling rules, which are applied on the input
+	// before aggregation.
+	// +optional
+	input_relabel_configs?: [...#RelabelConfig] @go(InputRelabelConfigs,[]RelabelConfig)
+
+	// OutputRelabelConfigs is an optional relabeling rules, which are applied
+	// on the aggregated output before being sent to remote storage.
+	// +optional
+	output_relabel_configs?: [...#RelabelConfig] @go(OutputRelabelConfigs,[]RelabelConfig)
+}
+
+// KeyValue defines a (key, value) tuple.
+// +kubebuilder:object:generate=false
+// +k8s:openapi-gen=false
+#KeyValue: {
+	// Key of the tuple.
+	// +kubebuilder:validation:MinLength=1
+	key: string @go(Key)
+
+	// Value of the tuple.
+	value: string @go(Value)
 }

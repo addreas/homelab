@@ -3,24 +3,24 @@ module github.com/addreas/cuebernetes
 go 1.19
 
 require (
-	github.com/VictoriaMetrics/operator v0.31.0
-	github.com/VictoriaMetrics/operator/api v0.0.0-20230302211747-d2c5ddb33966
+	github.com/VictoriaMetrics/operator v0.32.1
+	github.com/VictoriaMetrics/operator/api v0.0.0-20230317154527-2d9c7c5fd84e
 	github.com/addreas/cue-controller/api v0.35.0-cue
-	github.com/bitnami-labs/sealed-secrets v0.19.5
+	github.com/bitnami-labs/sealed-secrets v0.20.1
 	github.com/cert-manager/cert-manager v1.11.0
-	github.com/cilium/cilium v1.13.0
-	github.com/fluxcd/helm-controller/api v0.30.0
-	github.com/fluxcd/kustomize-controller/api v0.34.0
+	github.com/cilium/cilium v1.13.1
+	github.com/fluxcd/helm-controller/api v0.31.1
+	github.com/fluxcd/kustomize-controller/api v0.35.0
 	github.com/fluxcd/notification-controller/api v0.33.0
 	github.com/fluxcd/source-controller/api v0.36.0
-	github.com/grafana-operator/grafana-operator/v4 v4.9.0
+	github.com/grafana-operator/grafana-operator/v4 v4.10.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.26
-	github.com/pivotal/kpack v0.10.0
+	github.com/pivotal/kpack v0.10.1
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.63.0
-	k8s.io/api v0.26.2
-	k8s.io/apimachinery v0.26.2
-	k8s.io/kube-aggregator v0.26.2
+	k8s.io/api v0.26.3
+	k8s.io/apimachinery v0.26.3
+	k8s.io/kube-aggregator v0.26.3
 )
 
 require (
@@ -41,7 +41,7 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v0.8.0 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v0.8.1 // indirect
 	github.com/fluxcd/pkg/apis/meta v0.19.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
@@ -62,7 +62,7 @@ require (
 	github.com/go-test/deep v1.0.7 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-containerregistry v0.12.1 // indirect
@@ -127,14 +127,14 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
-	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/exp v0.0.0-20221208152030-732eee02a75a // indirect
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/term v0.5.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/term v0.6.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
@@ -143,10 +143,10 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.26.1 // indirect
+	k8s.io/apiextensions-apiserver v0.26.2 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
-	k8s.io/component-base v0.26.2 // indirect
-	k8s.io/klog/v2 v2.90.0 // indirect
+	k8s.io/component-base v0.26.3 // indirect
+	k8s.io/klog/v2 v2.90.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221207184640-f3cff1453715 // indirect
 	k8s.io/utils v0.0.0-20230202215443-34013725500c // indirect
 	knative.dev/pkg v0.0.0-20221005141429-8cacac2ea6d7 // indirect

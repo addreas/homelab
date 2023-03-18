@@ -80,7 +80,8 @@ import (
 	name?: string @go(Name)
 	annotations?: {[string]: string} @go(Annotations,map[string]string)
 	labels?: {[string]: string} @go(Labels,map[string]string)
-	type?: v1.#ServiceType @go(Type)
+	type?:        v1.#ServiceType @go(Type)
+	appProtocol?: string          @go(AppProtocol)
 	ports?: [...v1.#ServicePort] @go(Ports,[]v1.ServicePort)
 	clusterIP?: string @go(ClusterIP)
 }
