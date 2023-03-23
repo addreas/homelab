@@ -2,6 +2,8 @@ package kube
 
 import "strings"
 
+// TODO: add rules like these: https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-smartctl-exporter/rules/rules.txt
+
 k: HelmRelease: "smartctl-exporter": spec: {
 	chart: spec: {
 		chart:   "prometheus-smartctl-exporter"
