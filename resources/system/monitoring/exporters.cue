@@ -12,6 +12,17 @@ k: HelmRelease: "smartctl-exporter": spec: {
 		serviceMonitor: enabled:  true
 		prometheusRules: enabled: true
 	}
+
+	postRenderers: [{
+		kustomize: patchesStrategicMerge: [{
+			apiVersion: "apps/v1"
+			kind:       "DaemonSet"
+			spec: template: spec: containers: [{
+				name:        "main"
+				hostNetwork: false
+			}]
+		}]
+	}]
 }
 
 k: DaemonSet: "systemd-exporter": {
