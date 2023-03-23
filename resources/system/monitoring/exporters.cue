@@ -46,6 +46,7 @@ k: DaemonSet: "systemd-exporter": {
 							"run-netns-.+\\.mount",
 							"run-utsns-.+\\.mount",
 							"var-lib-kubelet-.+\\.mount",
+							"var-lib-containers-storage-.+\\.mount",
 							".+\\.device",
 						], "|"),
 					]
