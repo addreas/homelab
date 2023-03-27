@@ -37,7 +37,7 @@ k: StatefulSet: radarr: {
 					name:            "exportarr"
 					image:           "ghcr.io/onedr0p/exportarr:master"
 					imagePullPolicy: "IfNotPresent"
-					command: ["exportarr", "radarr"]
+					args: ["radarr"]
 					env: [{
 						name:  "PORT"
 						value: "9707"
