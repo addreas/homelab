@@ -23,7 +23,7 @@ k: StatefulSet: sonarr: {
 						name:      "config"
 					}, {
 						mountPath: "/videos"
-						name:      "nfs-videos"
+						name:      "sergio-videos"
 					}, {
 						mountPath: "/usr/share/.mono"
 						name:      "mono-dir"
@@ -70,11 +70,8 @@ k: StatefulSet: sonarr: {
 					}]
 				}]
 				volumes: [{
-					name: "nfs-videos"
-					nfs: {
-						path:   "/export/videos"
-						server: "sergio.localdomain"
-					}
+					name: "sergio-videos"
+					persistentVolumeClaim: claimName: "sergio-videos"
 				}, {
 					name: "home-nonroot"
 					emptyDir: {}

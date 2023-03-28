@@ -59,7 +59,7 @@ k: StatefulSet: qbittorrent: {
 						name:      "config"
 					}, {
 						mountPath: "/videos"
-						name:      "nfs-videos"
+						name:      "sergio-videos"
 					}]
 					resources: {
 						limits: {
@@ -109,11 +109,8 @@ k: StatefulSet: qbittorrent: {
 					name: "static-config"
 					configMap: name: "qbittorrent-static-config"
 				}, {
-					name: "nfs-videos"
-					nfs: {
-						path:   "/export/videos"
-						server: "sergio.localdomain"
-					}
+					name: "sergio-videos"
+					persistentVolumeClaim: claimName: "sergio-videos"
 				}]
 			}
 		}

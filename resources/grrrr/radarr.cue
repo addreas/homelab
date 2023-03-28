@@ -21,7 +21,7 @@ k: StatefulSet: radarr: {
 						name:      "config"
 					}, {
 						mountPath: "/videos"
-						name:      "nfs-videos"
+						name:      "sergio-videos"
 					}]
 					resources: {
 						limits: {
@@ -64,11 +64,8 @@ k: StatefulSet: radarr: {
 					}]
 				}]
 				volumes: [{
-					name: "nfs-videos"
-					nfs: {
-						path:   "/export/videos"
-						server: "sergio.localdomain"
-					}
+					name: "sergio-videos"
+					persistentVolumeClaim: claimName: "sergio-videos"
 				}, {
 					name: "home-nonroot"
 					emptyDir: {}
