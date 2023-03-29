@@ -1,6 +1,6 @@
 package kube
 
-k: Deployment: plex: spec: template: spec: {
+k: StatefulSet: "sergio-plex": spec: template: spec: {
 	containers: [{
 		image: "plexinc/pms-docker"
 		command: ["/usr/lib/plexmediaserver/Plex Media Server"]
