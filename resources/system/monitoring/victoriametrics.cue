@@ -23,16 +23,13 @@ k: VMSingle: "main": spec: {
 	}
 }
 
-k: GrafanaDataSource: "prometheus": spec: {
-	name: "prometheus.yaml"
-	datasources: [{
-		name:      "Prometheus"
-		type:      "prometheus"
-		url:       "http://vmsingle-main.monitoring.svc:8429"
-		access:    "proxy"
-		isDefault: true
-		editable:  false
-	}]
+k: GrafanaDatasource: "prometheus": spec: datasource: {
+	name:      "Prometheus"
+	type:      "prometheus"
+	url:       "http://vmsingle-main.monitoring.svc:8429"
+	access:    "proxy"
+	isDefault: true
+	editable:  false
 }
 
 k: VMAgent: "main": spec: {

@@ -13,7 +13,7 @@ require (
 	github.com/fluxcd/kustomize-controller/api v0.35.0
 	github.com/fluxcd/notification-controller/api v0.33.0
 	github.com/fluxcd/source-controller/api v0.36.0
-	github.com/grafana-operator/grafana-operator/v4 v4.10.0
+	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.26
 	github.com/pivotal/kpack v0.10.1
@@ -158,6 +158,8 @@ require (
 )
 
 replace (
+	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc0 => github.com/addreas/grafana-operator/v5 v5.0.0-20230401144419-a2428e13761e
+
 	github.com/optiopay/kafka => github.com/cilium/kafka v0.0.0-20180809090225-01ce283b732b
 	go.universe.tf/metallb => github.com/cilium/metallb v0.1.1-0.20220829170633-5d7dfb1129f7
 

@@ -130,7 +130,19 @@ k: SealedSecret: [string]: {
 	spec: template: "metadata": _ | *metadata
 }
 
-k: GrafanaDashboard: [string]: metadata: labels: grafana: "enabled"
+k: GrafanaDashboard: [string]: spec: instanceSelector: _ | *close({
+	matchExpressions: [{
+		key: "global-ignore"
+		operator: "DoesNotExist"
+	}]
+})
+
+k: GrafanaDatasource: [string]: spec: instanceSelector: _ | *close({
+	matchExpressions: [{
+		key: "global-ignore"
+		operator: "DoesNotExist"
+	}]
+})
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 

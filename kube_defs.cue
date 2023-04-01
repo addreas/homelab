@@ -23,7 +23,7 @@ import (
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 
-	grafana_v1alpha1 "github.com/grafana-operator/grafana-operator/v4/api/integreatly/v1alpha1"
+	grafana_v1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
 
 	certmanager_v1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 
@@ -129,10 +129,11 @@ _kubernetesAPIs: {
 
 	"bitnami.com/v1alpha1": SealedSecret: sealed_secrets_v1alpha1.#SealedSecret
 
-	"integreatly.org/v1alpha1": {
-		Grafana:           grafana_v1alpha1.#Grafana
-		GrafanaDashboard:  grafana_v1alpha1.#GrafanaDashboard
-		GrafanaDataSource: grafana_v1alpha1.#GrafanaDataSource
+	"grafana.integreatly.org/v1beta1": {
+		Grafana:           grafana_v1beta1.#Grafana
+		GrafanaDashboard:  grafana_v1beta1.#GrafanaDashboard
+		GrafanaDatasource: grafana_v1beta1.#GrafanaDatasource
+		GrafanaFolder:     grafana_v1beta1.#GrafanaFolder
 	}
 
 	"cert-manager.io/v1": {
