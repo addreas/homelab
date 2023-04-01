@@ -131,16 +131,16 @@ k: SealedSecret: [string]: {
 }
 
 k: GrafanaDashboard: [string]: spec: allowCrossNamespaceImport: true
-k: GrafanaDashboard: [string]: spec: instanceSelector: _ | *close({
+k: GrafanaDashboard: [string]: spec: instanceSelector:          _ | *close({
 	matchExpressions: [{
-		key: "global-ignore"
+		key:      "global-ignore"
 		operator: "DoesNotExist"
 	}]
 })
 
 k: GrafanaDatasource: [string]: spec: instanceSelector: _ | *close({
 	matchExpressions: [{
-		key: "global-ignore"
+		key:      "global-ignore"
 		operator: "DoesNotExist"
 	}]
 })

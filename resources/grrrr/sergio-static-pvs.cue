@@ -23,14 +23,14 @@ k: PersistentVolumeClaim: [claimName=string]: spec: {
 
 k: PersistentVolume: "sergio-plex-config": spec: {
 	capacity: storage: "100Gi"
-	local: path: "/mnt/plex-config"
+	local: path:       "/mnt/plex-config"
 }
 
 k: PersistentVolumeClaim: "sergio-plex-config": spec: resources: requests: storage: "20Gi"
 
 k: PersistentVolume: "sergio-videos": spec: {
 	capacity: storage: "3Ti"
-	local: path: "/mnt/videos"
+	local: path:       "/mnt/videos"
 }
 
 k: PersistentVolumeClaim: "sergio-videos": spec: resources: requests: storage: "2Ti"

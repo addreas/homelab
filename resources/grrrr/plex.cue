@@ -5,16 +5,16 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 		image: "plexinc/pms-docker"
 		command: ["/usr/lib/plexmediaserver/Plex Media Server"]
 		env: [{
-			name: "PLEX_UID"
+			name:  "PLEX_UID"
 			value: "1000"
 		}, {
-			name: "PLEX_GID"
+			name:  "PLEX_GID"
 			value: "1000"
 		}, {
-			name: "TZ"
+			name:  "TZ"
 			value: "Europe/Stockholm"
 		}, {
-			name: "ADVERTISE_IP"
+			name:  "ADVERTISE_IP"
 			value: "http://192.168.10.83:32400"
 		}]
 		ports: [{
@@ -31,19 +31,19 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 			containerPort: 1900
 			protocol:      "UDP"
 		}, {
-			name: "discovery-0"
+			name:          "discovery-0"
 			containerPort: 32410
 			protocol:      "UDP"
 		}, {
-			name: "discovery-2"
+			name:          "discovery-2"
 			containerPort: 32412
 			protocol:      "UDP"
 		}, {
-			name: "discovery-3"
+			name:          "discovery-3"
 			containerPort: 32413
 			protocol:      "UDP"
 		}, {
-			name: "discovery-4"
+			name:          "discovery-4"
 			containerPort: 32414
 			protocol:      "UDP"
 		}]
@@ -54,7 +54,7 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 			name:      "data"
 			mountPath: "/data"
 		}, {
-			name: "transcode"
+			name:      "transcode"
 			mountPath: "/transcode"
 		}]
 	}]
@@ -70,7 +70,7 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 	}]
 }
 
-k: Service: "plex": {
+k: Service: "sergio-plex": {
 	metadata: annotations: "io.cilium/lb-ipam-ips": "192.168.10.83"
 	spec: type: "LoadBalancer"
 }
