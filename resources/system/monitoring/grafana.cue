@@ -78,7 +78,7 @@ k: Grafana: grafana: spec: {
 k: GitRepository: "grafana-operator": spec: {
 	// ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
 	// url: "https://github.com/grafana-operator/grafana-operator.git"
-	ref: branch: "main"
+	ref: branch: "master"
 	url: "https://github.com/addreas/grafana-operator.git"
 	ignore: """
 		/*
