@@ -36,7 +36,7 @@ k: Grafana: grafana: spec: {
 			role_attribute_path: "Admin"
 			// use_pkce:            true
 		}
-		dashboards: default_home_dashboard_path: "/etc/grafana/home-dash/dashboard.json"
+		// dashboards: default_home_dashboard_path: "/etc/grafana/home-dash/dashboard.json"
 		alerting: enabled:                       "false"
 		security: allow_embedding:               "true"
 	}
