@@ -1,5 +1,6 @@
 package kube
 
+import "strings"
 
 k: OAuth2Client: "grafana": spec: {
 	clientName: "grafana"
@@ -43,6 +44,7 @@ k: Grafana: grafana: spec: {
 	deployment: spec: template: spec: {
 		containers: [{
 			name: "grafana"
+			image: "grafana/grafana:\(strings.TrimPrefix(githubReleases["grafana/grafana"], "v"))"
 			volumeMounts: [{
 				name: "oauth-creds"
 				mountPath: "/etc/grafana/oauth-creds/"
