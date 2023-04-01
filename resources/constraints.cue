@@ -1,5 +1,7 @@
 package kube
 
+import "strings"
+
 context: *"nucles" | string
 
 _homelab: {
@@ -130,7 +132,13 @@ k: SealedSecret: [string]: {
 	spec: template: "metadata": _ | *metadata
 }
 
+k: GrafanaDashboard: [string]: {
+	metadata: namespace: string
+	spec: folder: _ | *strings.ToTitle(metadata.namespace)
+}
+
 k: GrafanaDashboard: [string]: spec: allowCrossNamespaceImport: true
+
 k: GrafanaDashboard: [string]: spec: instanceSelector:          _ | *close({
 	matchExpressions: [{
 		key:      "global-ignore"
