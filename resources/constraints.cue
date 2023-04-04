@@ -134,12 +134,12 @@ k: SealedSecret: [string]: {
 
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
-	spec: folder: _ | *strings.ToTitle(metadata.namespace)
+	spec: folder:        _ | *strings.ToTitle(metadata.namespace)
 }
 
 k: GrafanaDashboard: [string]: spec: allowCrossNamespaceImport: true
 
-k: GrafanaDashboard: [string]: spec: instanceSelector:          _ | *close({
+k: GrafanaDashboard: [string]: spec: instanceSelector: _ | *close({
 	matchExpressions: [{
 		key:      "global-ignore"
 		operator: "DoesNotExist"

@@ -33,6 +33,7 @@ githubReleases: {
 	"ory/hydra":                  "v2.0.3"
 	"ory/kratos":                 "v0.11.1"
 	"zwave-js/zwave-js-ui":       "v8.11.0"
+	"jonasdahl/logger":           "sha-8b0ced1"
 }
 some: {
 	custom: tag: "1.2.3"
