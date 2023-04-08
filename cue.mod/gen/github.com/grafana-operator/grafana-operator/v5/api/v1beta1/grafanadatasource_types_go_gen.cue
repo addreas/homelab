@@ -6,19 +6,19 @@ package v1beta1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-#GrafanaDatasourceInternal: {
-	uid?:           string       @go(UID)
-	name?:          string       @go(Name)
-	type?:          string       @go(Type)
-	url?:           string       @go(URL)
-	access?:        string       @go(Access)
-	database?:      string       @go(Database)
-	user?:          string       @go(User)
-	orgId?:         null | int64 @go(OrgID,*int64)
-	isDefault?:     null | bool  @go(IsDefault,*bool)
-	basicAuth?:     null | bool  @go(BasicAuth,*bool)
-	basicAuthUser?: string       @go(BasicAuthUser)
-	editable?:      null | bool  @go(Editable,*bool)
+#GrafanaDatasourceDataSource: {
+	id?:            int64  @go(ID)
+	uid?:           string @go(UID)
+	name:           string @go(Name)
+	type:           string @go(Type)
+	url:            string @go(URL)
+	access:         string @go(Access)
+	database?:      string @go(Database)
+	user?:          string @go(User)
+	orgId?:         int64  @go(OrgID)
+	isDefault:      bool   @go(IsDefault)
+	basicAuth:      bool   @go(BasicAuth)
+	basicAuthUser?: string @go(BasicAuthUser)
 
 	// +kubebuilder:validation:Schemaless
 	// +kubebuilder:pruning:PreserveUnknownFields
@@ -35,9 +35,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // GrafanaDatasourceSpec defines the desired state of GrafanaDatasource
 #GrafanaDatasourceSpec: {
-	datasource?: null | #GrafanaDatasourceInternal @go(Datasource,*GrafanaDatasourceInternal)
+	datasource?: #GrafanaDatasourceDataSource @go(DataSource)
 
-	// selects Grafana instances for import
+	// selects Grafana instances
 	instanceSelector?: null | metav1.#LabelSelector @go(InstanceSelector,*metav1.LabelSelector)
 
 	// plugins
@@ -48,22 +48,26 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	secrets?: [...string] @go(Secrets,[]string)
 
-	// how often the datasource is refreshed, defaults to 24h if not set
-	// +optional
-	resyncPeriod?: string @go(ResyncPeriod)
+	// how often the datasource is refreshed
+	interval: metav1.#Duration @go(Interval)
 
 	// allow to import this resources from an operator in a different namespace
 	// +optional
-	allowCrossNamespaceImport?: null | bool @go(AllowCrossNamespaceImport,*bool)
+	allowCrossNamespaceImport?: null | bool @go(AllowCrossNamespaceReferences,*bool)
 }
 
 // GrafanaDatasourceStatus defines the observed state of GrafanaDatasource
 #GrafanaDatasourceStatus: {
-	hash?:        string @go(Hash)
-	lastMessage?: string @go(LastMessage)
+	conditions?: [...metav1.#Condition] @go(Conditions,[]metav1.Condition)
 
-	// The datasource instanceSelector can't find matching grafana instances
-	NoMatchingInstances?: bool
+	// Instances stores UID, version, and folder info for each instance the datasource has been created in
+	// +optional
+	instances?: {[string]: #GrafanaDatasourceInstanceStatus} @go(Instances,map[string]GrafanaDatasourceInstanceStatus)
+}
+
+#GrafanaDatasourceInstanceStatus: {
+	ID?:  int64
+	UID?: string
 }
 
 // GrafanaDatasource is the Schema for the grafanadatasources API

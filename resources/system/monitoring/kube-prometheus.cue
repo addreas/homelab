@@ -10,7 +10,7 @@ k: CustomResourceDefinition: m.prometheusOperator.CustomResourceDefinition
 
 k: GrafanaDashboard: {
 	for name, content in m.grafanaDashboards {
-		"grafana-dashboard-\(strings.TrimSuffix(name, ".json"))": spec: json: encodingJson.Marshal(content)
+		"grafana-dashboard-\(strings.TrimSuffix(name, ".json"))": spec: source: inline: json: encodingJson.Marshal(content)
 	}
 }
 

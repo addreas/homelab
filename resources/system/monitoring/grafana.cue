@@ -38,18 +38,18 @@ k: Grafana: grafana: spec: {
 			// use_pkce:            true
 		}
 		// dashboards: default_home_dashboard_path: "/etc/grafana/home-dash/dashboard.json"
-		alerting: enabled:                       "false"
-		security: allow_embedding:               "true"
+		alerting: enabled:         "false"
+		security: allow_embedding: "true"
 	}
 	deployment: spec: template: spec: {
 		containers: [{
-			name: "grafana"
+			name:  "grafana"
 			image: "grafana/grafana:\(strings.TrimPrefix(githubReleases["grafana/grafana"], "v"))"
 			volumeMounts: [{
-				name: "oauth-creds"
+				name:      "oauth-creds"
 				mountPath: "/etc/grafana/oauth-creds/"
 			}, {
-				name: "home-dash"
+				name:      "home-dash"
 				mountPath: "/etc/grafana/home-dash"
 			}]
 		}]
@@ -62,10 +62,10 @@ k: Grafana: grafana: spec: {
 		}]
 	}
 	ingress: {
-		metadata:  annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
+		metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
 		spec: {
 			rules: [{
-				host:      "grafana.addem.se"
+				host: "grafana.addem.se"
 			}]
 			tls: [{
 				hosts: ["grafana.addem.se"]
@@ -96,8 +96,8 @@ k: Kustomization: "grafana-operator": spec: {
 	path:            "./config/default"
 	targetNamespace: "monitoring"
 	images: [{
-	 name:    "ghcr.io/grafana-operator/grafana-operator"
-	 newName: "ghcr.io/addreas/grafana-operator"
-	 newTag:  "v5test"
+		name:    "ghcr.io/grafana-operator/grafana-operator"
+		newName: "ghcr.io/addreas/grafana-operator"
+		newTag:  "v5test"
 	}]
 }

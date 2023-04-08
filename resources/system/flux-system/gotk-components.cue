@@ -26,17 +26,17 @@ k: Kustomization: "cue-controller": spec: {
 		apiVersion: "apps/v1"
 		kind:       "Deployment"
 		metadata: {
-		    name:      "cue-controller"
+			name: "cue-controller"
 		}
 		spec: template: spec: containers: [{
-		    name: "manager"
+			name: "manager"
 			// imagePullPolicy: "Always"
 			args: [
 				"--concurrent=1",
 				"--log-level=info",
 				// "--log-encoding=console",
 				"--watch-all-namespaces",
-				"--enable-leader-election"
+				"--enable-leader-election",
 			]
 		}]
 	}]

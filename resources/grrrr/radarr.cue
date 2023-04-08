@@ -98,7 +98,7 @@ k: ServiceMonitor: radarr: spec: endpoints: [{
 k: Ingress: radarr: _authproxy: true
 
 k: GrafanaDashboard: "radarr": spec: {
-	grafanaCom: id: 12896
+	source: remote: grafanaCom: id: 12896
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_RANCHER_MONITORING"

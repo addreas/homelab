@@ -26,7 +26,6 @@ k: HelmRelease: longhorn: spec: {
 			manager: {
 				repository: "ghcr.io/addreas/longhorn-manager"
 				tag:        "v1.4.0-nix"
-				
 			}
 			instanceManager: {
 				repository: "ghcr.io/addreas/longhorn-instance-manager"

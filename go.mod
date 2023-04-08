@@ -68,6 +68,8 @@ require (
 	github.com/google/go-containerregistry v0.12.1 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/grafana/grafana-api-golang-client v0.9.2 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-version v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
@@ -158,7 +160,7 @@ require (
 )
 
 replace (
-	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc0 => github.com/addreas/grafana-operator/v5 v5.0.0-20230401144419-a2428e13761e
+	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc0 => github.com/addreas/grafana-operator/v5 v5.0.0-20230407014903-70bf05bff509
 
 	github.com/optiopay/kafka => github.com/cilium/kafka v0.0.0-20180809090225-01ce283b732b
 	go.universe.tf/metallb => github.com/cilium/metallb v0.1.1-0.20220829170633-5d7dfb1129f7

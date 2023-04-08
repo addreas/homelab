@@ -16,7 +16,7 @@ let grafanaComDsPrometheus = {
 
 for name, grafanaComId in grafanaComDsPrometheus {
 	k: GrafanaDashboard: (name): spec: {
-		grafanaCom: id: grafanaComId
+		source: remote: grafanaCom: id: grafanaComId
 		datasources: [DS_PROMETHEUS]
 	}
 }

@@ -101,7 +101,7 @@ k: ServiceMonitor: sonarr: spec: endpoints: [{
 k: Ingress: sonarr: _authproxy: true
 
 k: GrafanaDashboard: "sonarr": spec: {
-	grafanaCom: id: 12530
+	source: remote: grafanaCom: id: 12530
 	datasources: [{
 		datasourceName: "Prometheus"
 		inputName:      "DS_PROMETHEUS"

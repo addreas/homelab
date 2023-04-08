@@ -134,24 +134,15 @@ k: SealedSecret: [string]: {
 
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
-	spec: folder:        _ | *strings.ToTitle(metadata.namespace)
+	spec: {
+		interval:                      _ | *"1h"
+		allowCrossNamespaceReferences: _ | *true
+		folder:                        _ | *strings.ToTitle(metadata.namespace)
+		source:                        _ | *{remote: contentCacheDuration: "24h"}
+	}
 }
 
-k: GrafanaDashboard: [string]: spec: allowCrossNamespaceImport: true
-
-k: GrafanaDashboard: [string]: spec: instanceSelector: _ | *close({
-	matchExpressions: [{
-		key:      "global-ignore"
-		operator: "DoesNotExist"
-	}]
-})
-
-k: GrafanaDatasource: [string]: spec: instanceSelector: _ | *close({
-	matchExpressions: [{
-		key:      "global-ignore"
-		operator: "DoesNotExist"
-	}]
-})
+k: GrafanaDatasource: [string]: spec: interval: _ | *"1h"
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 

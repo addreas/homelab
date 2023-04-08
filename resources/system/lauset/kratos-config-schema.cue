@@ -913,9 +913,9 @@ import (
 	#OIDCClaims: {
 		{[=~"^userinfo$|^id_token$" & !~"^()$"]: {
 			{[=~".*" & !~"^()$"]: null | {
-						// Indicates whether the Claim being requested is an Essential
-						// Claim.
-						essential?: bool
+				// Indicates whether the Claim being requested is an Essential
+				// Claim.
+				essential?: bool
 
 				// Requests that the Claim be returned with a particular value.
 				value?: _
@@ -1080,7 +1080,7 @@ import (
 
 	#courierTemplates: {
 		invalid?: email: #emailCourierTemplate
-		valid?: email: #emailCourierTemplate
+		valid?: email:   #emailCourierTemplate
 	}
 
 	#emailCourierTemplate: {

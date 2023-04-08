@@ -4,23 +4,10 @@
 
 package v1beta1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-#DashboardSourceType: string // #enumDashboardSourceType
-
-#enumDashboardSourceType:
-	#DashboardSourceTypeRawJson |
-	#DashboardSourceTypeGzipJson |
-	#DashboardSourceTypeUrl |
-	#DashboardSourceTypeJsonnet |
-	#DashboardSourceTypeGrafanaCom
-
-#DashboardSourceTypeRawJson:    #DashboardSourceType & "json"
-#DashboardSourceTypeGzipJson:   #DashboardSourceType & "gzipJson"
-#DashboardSourceTypeUrl:        #DashboardSourceType & "url"
-#DashboardSourceTypeJsonnet:    #DashboardSourceType & "jsonnet"
-#DashboardSourceTypeGrafanaCom: #DashboardSourceType & "grafana"
-#DefaultResyncPeriod:           "5m"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/api/core/v1"
+)
 
 #GrafanaDashboardDatasource: {
 	inputName:      string @go(InputName)
@@ -29,25 +16,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // GrafanaDashboardSpec defines the desired state of GrafanaDashboard
 #GrafanaDashboardSpec: {
-	// dashboard json
-	// +optional
-	json?: string @go(Json)
-
-	// GzipJson the dashboard's JSON compressed with Gzip. Base64-encoded when in YAML.
-	// +optional
-	gzipJson?: bytes @go(GzipJson,[]byte)
-
-	// dashboard url
-	// +optional
-	url?: string @go(Url)
-
-	// Jsonnet
-	// +optional
-	jsonnet?: string @go(Jsonnet)
-
-	// grafana.com/dashboards
-	// +optional
-	grafanaCom?: null | #GrafanaComDashboardReference @go(GrafanaCom,*GrafanaComDashboardReference)
+	source: #GrafanaDashboardSource @go(Source)
 
 	// selects Grafanas for import
 	instanceSelector?: null | metav1.#LabelSelector @go(InstanceSelector,*metav1.LabelSelector)
@@ -60,13 +29,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	plugins?: #PluginList @go(Plugins)
 
-	// Cache duration for dashboards fetched from URLs
-	// +optional
-	contentCacheDuration?: metav1.#Duration @go(ContentCacheDuration)
-
-	// how often the dashboard is refreshed, defaults to 24h if not set
-	// +optional
-	resyncPeriod?: string @go(ResyncPeriod)
+	// how often the dashboard is endured to exist on the selected instances, defaults to 24h if not set
+	interval: metav1.#Duration @go(Interval)
 
 	// maps required data sources to existing ones
 	// +optional
@@ -74,24 +38,79 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// allow to import this resources from an operator in a different namespace
 	// +optional
-	allowCrossNamespaceImport?: null | bool @go(AllowCrossNamespaceImport,*bool)
+	allowCrossNamespaceReferences?: null | bool @go(AllowCrossNamespaceReferences,*bool)
+}
+
+// +kubebuilder:validation:MinProperties:=1
+// +kubebuilder:validation:MaxProperties:=1
+#GrafanaDashboardSource: {
+	inline?:    null | #GrafanaDashboardInlineSource @go(Inline,*GrafanaDashboardInlineSource)
+	remote?:    null | #GrafanaDashboardRemoteSource @go(Remote,*GrafanaDashboardRemoteSource)
+	configMap?: null | v1.#ConfigMapKeySelector      @go(ConfigMap,*v1.ConfigMapKeySelector)
+}
+
+// +kubebuilder:validation:MinProperties:=1
+// +kubebuilder:validation:MaxProperties:=1
+#GrafanaDashboardInlineSource: {
+	// dashboard json
+	// +optional
+	json?: null | string @go(Json,*string)
+
+	// GzipJson the dashboard's JSON compressed with Gzip. Base64-encoded when in YAML.
+	// +optional
+	gzipJson?: bytes @go(GzipJson,[]byte)
+
+	// Jsonnet
+	// +optional
+	jsonnet?: null | string @go(Jsonnet,*string)
+}
+
+// +kubebuilder:validation:MinProperties:=2
+// +kubebuilder:validation:MaxProperties:=2
+#GrafanaDashboardRemoteSource: {
+	// Cache duration for dashboards fetched from URLs
+	contentCacheDuration: metav1.#Duration @go(ContentCacheDuration)
+
+	// dashboard url
+	// +optional
+	url?: null | string @go(Url,*string)
+
+	// grafana.com/dashboards
+	// +optional
+	grafanaCom?: null | #GrafanaComDashboardReference @go(GrafanaCom,*GrafanaComDashboardReference)
 }
 
 // GrafanaComDashbooardReference is a reference to a dashboard on grafana.com/dashboards
 #GrafanaComDashboardReference: {
-	id:        int        @go(Id)
+	id: int @go(Id)
+
+	// +optional
 	revision?: null | int @go(Revision,*int)
 }
 
 // GrafanaDashboardStatus defines the observed state of GrafanaDashboard
 #GrafanaDashboardStatus: {
-	contentCache?:     bytes        @go(ContentCache,[]byte)
-	contentTimestamp?: metav1.#Time @go(ContentTimestamp)
-	contentUrl?:       string       @go(ContentUrl)
-	hash?:             string       @go(Hash)
+	// Content contains information about fetched remote content
+	// +optional
+	content?: null | #GrafanaDashboardStatusContent @go(Content,*GrafanaDashboardStatusContent)
 
-	// The dashboard instanceSelector can't find matching grafana instances
-	NoMatchingInstances?: bool
+	// Instances stores UID, version, and folder info for each instance the dashboard has been created in
+	// +optional
+	instances?: {[string]: #GrafanaDashboardInstanceStatus} @go(Instances,map[string]GrafanaDashboardInstanceStatus)
+
+	// +optional
+	conditions?: [...metav1.#Condition] @go(Conditions,[]metav1.Condition)
+}
+
+#GrafanaDashboardStatusContent: {
+	contentCache?:     bytes        @go(Cache,[]byte)
+	contentTimestamp?: metav1.#Time @go(Timestamp)
+	contentUrl?:       string       @go(Url)
+}
+
+#GrafanaDashboardInstanceStatus: {
+	Version?: int64
+	UID?:     string
 }
 
 // GrafanaDashboard is the Schema for the grafanadashboards API

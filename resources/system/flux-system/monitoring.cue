@@ -1,7 +1,7 @@
 package kube
 
-k: GrafanaDashboard: "flux-cluster": spec: url:       "https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json"
-k: GrafanaDashboard: "flux-control-plane": spec: url: "https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json"
+k: GrafanaDashboard: "flux-cluster": spec: source: remote: url:       "https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json"
+k: GrafanaDashboard: "flux-control-plane": spec: source: remote: url: "https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json"
 
 k: PodMonitor: "gotk-monitor": spec: {
 	podMetricsEndpoints: [{

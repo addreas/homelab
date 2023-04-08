@@ -22,13 +22,6 @@ import (
 	#OperatorStageDeployment |
 	#OperatorStageComplete
 
-#OperatorStageStatus: string // #enumOperatorStageStatus
-
-#enumOperatorStageStatus:
-	#OperatorStageResultSuccess |
-	#OperatorStageResultFailed |
-	#OperatorStageResultInProgress
-
 #OperatorStageGrafanaConfig:  #OperatorStageName & "config"
 #OperatorStageAdminUser:      #OperatorStageName & "admin user"
 #OperatorStagePvc:            #OperatorStageName & "pvc"
@@ -38,10 +31,6 @@ import (
 #OperatorStagePlugins:        #OperatorStageName & "plugins"
 #OperatorStageDeployment:     #OperatorStageName & "deployment"
 #OperatorStageComplete:       #OperatorStageName & "complete"
-
-#OperatorStageResultSuccess:    #OperatorStageStatus & "success"
-#OperatorStageResultFailed:     #OperatorStageStatus & "failed"
-#OperatorStageResultInProgress: #OperatorStageStatus & "in progress"
 
 // temporary values passed between reconciler stages
 #OperatorReconcileVars: {
@@ -114,13 +103,9 @@ import (
 
 // GrafanaStatus defines the observed state of Grafana
 #GrafanaStatus: {
-	stage?:       #OperatorStageName      @go(Stage)
-	stageStatus?: #OperatorStageStatus    @go(StageStatus)
-	lastMessage?: string                  @go(LastMessage)
-	adminUrl?:    string                  @go(AdminUrl)
-	dashboards?:  #NamespacedResourceList @go(Dashboards)
-	datasources?: #NamespacedResourceList @go(Datasources)
-	folders?:     #NamespacedResourceList @go(Folders)
+	conditions?: [...metav1.#Condition] @go(Conditions,[]metav1.Condition)
+	adminUrl?: string      @go(AdminUrl)
+	plugins?:  #PluginList @go(Plugins)
 }
 
 // Grafana is the Schema for the grafanas API

@@ -76,4 +76,3 @@ k: Service: "kratos-public": spec: {
 		name:       "http"
 	}]
 }
-

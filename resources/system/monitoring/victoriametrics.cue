@@ -29,7 +29,7 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 	url:       "http://vmsingle-main.monitoring.svc:8429"
 	access:    "proxy"
 	isDefault: true
-	editable:  false
+	basicAuth: false
 }
 
 k: VMAgent: "main": spec: {

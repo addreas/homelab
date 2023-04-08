@@ -9,7 +9,7 @@ k: Deployment: "lauset": spec: template: spec: {
 			name:  "LOG_LEVEL"
 			value: "debug"
 		}, {
-			name: "COOKIE_DOMAIN"
+			name:  "COOKIE_DOMAIN"
 			value: "addem.se"
 		}]
 		ports: [{

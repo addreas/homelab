@@ -12,7 +12,7 @@ k: Deployment: mosquitto: spec: {
 			containers: [{
 				image: "eclipse-mosquitto:latest"
 				ports: [{
-					name: "tcp0"
+					name:          "tcp0"
 					containerPort: 1883
 				}]
 				volumeMounts: [{

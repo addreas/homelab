@@ -7,10 +7,10 @@ k: StatefulSet: "plausible-db": spec: {
 			name:  "postgres"
 			image: "postgres:14"
 			envFrom: [
-				{secretRef: name:    "postgres-credentials-plausible"},
+				{secretRef: name: "postgres-credentials-plausible"},
 			]
 			env: [{
-				name: "POSTGRES_DB"
+				name:  "POSTGRES_DB"
 				value: "plausible"
 			}]
 			ports: [{containerPort: 5432}]
