@@ -1,9 +1,11 @@
 package kube
 
+let hostNames = ["soltidtabellen.se", "www.soltidtabellen.se"]
+
 k: Ingress: soltidtabellen: {
-    spec: {
-		rules: [{
-			host: "soltidtabellen.se"
+	spec: {
+		rules: [ for h in hostNames {
+			host: h
 			http: paths: [{
 				path:     "/"
 				pathType: "Prefix"
