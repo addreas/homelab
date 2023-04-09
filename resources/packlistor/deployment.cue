@@ -7,7 +7,7 @@ k: Deployment: "packlistor": {
 				imagePullSecrets: [{name: "regcred"}]
 				initContainers: [{
 					name: "migrations"
-					image: "ghcr.io/jonasdahl/packlistor.se:\(githubReleases."jonasdahl/packlistor.se")"
+					image: "ghcr.io/jonasdahl/packlistor.se:\(otherTags."jonasdahl/packlistor.se")"
 					envFrom: [{secretRef: name: "logger-postgres-credentials"}]
 					env: [{
 						name:  "DATABASE_URL"
@@ -17,7 +17,7 @@ k: Deployment: "packlistor": {
 				}]
 				containers: [{
 					name:  "packlistor"
-					image: "ghcr.io/jonasdahl/packlistor.se:\(githubReleases."jonasdahl/packlistor.se")"
+					image: "ghcr.io/jonasdahl/packlistor.se:\(otherTags."jonasdahl/packlistor.se")"
 					ports: [{containerPort: 3000}]
 					
 					envFrom: [

@@ -7,7 +7,7 @@ k: Deployment: "soltidtabellen": {
 				imagePullSecrets: [{name: "regcred"}]
 				containers: [{
 					name:  "soltidtabellen"
-					image: "ghcr.io/jonasdahl/soltidtabellen.se:\(githubReleases."jonasdahl/soltidtabellen.se")"
+					image: "ghcr.io/jonasdahl/soltidtabellen.se:\(otherTags."jonasdahl/soltidtabellen.se")"
 					ports: [{containerPort: 3000}]
 				}]
 			}
