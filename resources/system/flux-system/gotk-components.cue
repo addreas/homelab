@@ -1,5 +1,7 @@
 package kube
 
+import "encoding/yaml"
+
 k: GitRepository: "flux-components": spec: {
 	ref: tag: githubReleases["fluxcd/flux2"]
 	url: "https://github.com/fluxcd/flux2"
@@ -22,23 +24,25 @@ k: Kustomization: "cue-controller": spec: {
 		name:   "ghcr.io/addreas/cue-controller"
 		newTag: "v1.0.0-rc.cue1"
 	}]
-	patchesStrategicMerge: [{
-		apiVersion: "apps/v1"
-		kind:       "Deployment"
-		metadata: {
-			name: "cue-controller"
-		}
-		spec: template: spec: containers: [{
-			name: "manager"
-			// imagePullPolicy: "Always"
-			args: [
-				"--concurrent=1",
-				"--log-level=info",
-				// "--log-encoding=console",
-				"--watch-all-namespaces",
-				"--enable-leader-election",
-			]
-		}]
+	patches: [{
+		patch: yaml.Marshal({
+			apiVersion: "apps/v1"
+			kind:       "Deployment"
+			metadata: {
+				name: "cue-controller"
+			}
+			spec: template: spec: containers: [{
+				name: "manager"
+				// imagePullPolicy: "Always"
+				args: [
+					"--concurrent=1",
+					"--log-level=info",
+					// "--log-encoding=console",
+					"--watch-all-namespaces",
+					"--enable-leader-election",
+				]
+			}]
+		})
 	}]
 }
 
