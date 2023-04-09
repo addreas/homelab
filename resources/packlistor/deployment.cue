@@ -11,7 +11,7 @@ k: Deployment: "packlistor": {
 				// 	envFrom: [{secretRef: name: "packlistor-postgres-credentials"}]
 				// 	env: [{
 				// 		name:  "DATABASE_URL"
-				// 		value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@packlistordb:5432/packlistor"
+				// 		value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@packlistordb:5432/packlistor"
 				// 	}]
 				// 	command: ["sh", "-c", "echo Database URL is $DATABASE_URL && pnpm run prisma migrate deploy"]
 				// }]
@@ -26,7 +26,7 @@ k: Deployment: "packlistor": {
 					command: ["sh", "-c", "echo Database URL is $DATABASE_URL && pnpm run start"]
 					env: [{
 						name:  "DATABASE_URL"
-						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@packlistordb:5432/packlistor"
+						value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@packlistordb:5432/packlistor"
 					}, {
 						name:  "SESSION_SECRET"
 						value: "c70f69d6-8843-4441-80fb-5da374469ea4" // TODO

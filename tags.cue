@@ -39,7 +39,7 @@ githubReleases: {
 otherTags: {
 	"jonasdahl/logger":            "sha-8b0ced1"
 	"jonasdahl/soltidtabellen.se": "sha-dcbe383"
-	"jonasdahl/packlistor.se":     "sha-e53cd04"
+	"jonasdahl/packlistor.se":     "sha-e1cb2f3"
 }
 some: {
 	custom: tag: "1.2.3"
