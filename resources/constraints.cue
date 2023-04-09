@@ -1,6 +1,9 @@
 package kube
 
-import "strings"
+import (
+	"struct"
+	"strings"
+)
 
 context: *"nucles" | string
 
@@ -139,6 +142,7 @@ k: GrafanaDashboard: [string]: {
 		allowCrossNamespaceReferences: _ | *true
 		folder:                        _ | *strings.ToTitle(metadata.namespace)
 		source:                        _ | *{remote: contentCacheDuration: "24h"}
+		source: struct.MaxFields(1)
 	}
 }
 

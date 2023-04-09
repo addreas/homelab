@@ -213,7 +213,7 @@ _#textOff: int32
 	PkgPath: string
 	Type:    #Type
 	Tag:     #StructTag
-	Offset:  uint64 @go(,uintptr)
+	Offset:  uintptr
 	Index: [...int] @go(,[]int)
 	Anonymous: bool
 }
@@ -228,8 +228,8 @@ _#textOff: int32
 // characters and Go string literal syntax.
 #StructTag: string
 
-_#bucketSize: uint64 & 8
-_#maxKeySize: uint64 & 128
-_#maxValSize: uint64 & 128
+_#bucketSize: uintptr & 8
+_#maxKeySize: uintptr & 128
+_#maxValSize: uintptr & 128
 
 _#maxPtrmaskBytes: 2048

@@ -139,6 +139,7 @@ import (
 	// ObservedGeneration represents the most recent generation observed by the daemon set controller.
 	observedGeneration?:  int64                @go(ObservedGeneration)
 	reconciliationError?: #ReconciliationError @go(ReconciliationError)
+	conditions?: [...#OAuth2ClientCondition] @go(Conditions,[]OAuth2ClientCondition)
 }
 
 // ReconciliationError represents an error that occurred during the reconciliation process
@@ -149,6 +150,28 @@ import (
 	// Description is the description of the reconciliation error
 	description?: string @go(Description)
 }
+
+// OAuth2ClientCondition contains condition information for an OAuth2Client
+#OAuth2ClientCondition: {
+	type:   #OAuth2ClientConditionType @go(Type)
+	status: #ConditionStatus           @go(Status)
+}
+
+#OAuth2ClientConditionType: string
+
+#OAuth2ClientConditionReady: "Ready"
+
+// +kubebuilder:validation:Enum=True;False;Unknown
+#ConditionStatus: string // #enumConditionStatus
+
+#enumConditionStatus:
+	#ConditionTrue |
+	#ConditionFalse |
+	#ConditionUnknown
+
+#ConditionTrue:    #ConditionStatus & "True"
+#ConditionFalse:   #ConditionStatus & "False"
+#ConditionUnknown: #ConditionStatus & "Unknown"
 
 // OAuth2Client is the Schema for the oauth2clients API
 #OAuth2Client: {

@@ -4,20 +4,20 @@ go 1.19
 
 require (
 	github.com/VictoriaMetrics/operator v0.32.1
-	github.com/VictoriaMetrics/operator/api v0.0.0-20230317154527-2d9c7c5fd84e
+	github.com/VictoriaMetrics/operator/api v0.0.0-20230406132615-b729cc6ff58e
 	github.com/addreas/cue-controller/api v0.35.0-cue
-	github.com/bitnami-labs/sealed-secrets v0.20.1
-	github.com/cert-manager/cert-manager v1.11.0
+	github.com/bitnami-labs/sealed-secrets v0.20.2
+	github.com/cert-manager/cert-manager v1.11.1
 	github.com/cilium/cilium v1.13.1
-	github.com/fluxcd/helm-controller/api v0.31.1
-	github.com/fluxcd/kustomize-controller/api v0.35.0
+	github.com/fluxcd/helm-controller/api v0.32.1
+	github.com/fluxcd/kustomize-controller/api v1.0.0-rc.1
 	github.com/fluxcd/notification-controller/api v0.33.0
-	github.com/fluxcd/source-controller/api v0.36.0
+	github.com/fluxcd/source-controller/api v1.0.0-rc.1
 	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
-	github.com/ory/hydra-maester v0.0.26
+	github.com/ory/hydra-maester v0.0.27
 	github.com/pivotal/kpack v0.10.1
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.63.0
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.64.0
 	k8s.io/api v0.26.3
 	k8s.io/apimachinery v0.26.3
 	k8s.io/kube-aggregator v0.26.3
@@ -25,8 +25,8 @@ require (
 
 require (
 	cloud.google.com/go/compute v1.14.0 // indirect
-	cloud.google.com/go/compute/metadata v0.2.2 // indirect
-	github.com/Masterminds/semver/v3 v3.1.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	github.com/Masterminds/semver/v3 v3.2.0 // indirect
 	github.com/VictoriaMetrics/VictoriaMetrics v1.85.0 // indirect
 	github.com/VictoriaMetrics/fasthttp v1.1.0 // indirect
 	github.com/VictoriaMetrics/metrics v1.23.0 // indirect
@@ -41,8 +41,8 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v0.8.1 // indirect
-	github.com/fluxcd/pkg/apis/meta v0.19.1 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v1.0.0 // indirect
+	github.com/fluxcd/pkg/apis/meta v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
@@ -77,7 +77,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
-	github.com/klauspost/compress v1.15.13 // indirect
+	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
@@ -145,14 +145,14 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.26.2 // indirect
+	k8s.io/apiextensions-apiserver v0.26.3 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
 	k8s.io/component-base v0.26.3 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221207184640-f3cff1453715 // indirect
 	k8s.io/utils v0.0.0-20230202215443-34013725500c // indirect
 	knative.dev/pkg v0.0.0-20221005141429-8cacac2ea6d7 // indirect
-	sigs.k8s.io/controller-runtime v0.14.5 // indirect
+	sigs.k8s.io/controller-runtime v0.14.6 // indirect
 	sigs.k8s.io/gateway-api v0.6.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect

@@ -171,7 +171,8 @@ import (
 	logFormat?: string @go(LogFormat)
 
 	// Port name used for the pods and governing service.
-	// This defaults to web
+	// Defaults to `web`.
+	// +kubebuilder:default:="web"
 	portName?: string @go(PortName)
 
 	// Interval between consecutive evaluations.

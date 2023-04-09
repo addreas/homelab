@@ -14,6 +14,10 @@ import (
 #PrometheusName:    "prometheuses"
 #PrometheusKindKey: "prometheus"
 
+// PrometheusInterface is used by Prometheus and PrometheusAgent to share common methods, e.g. config generation.
+// +k8s:deepcopy-gen=false
+#PrometheusInterface: _
+
 // CommonPrometheusFields are the options available to both the Prometheus server and agent.
 // +k8s:deepcopy-gen=true
 #CommonPrometheusFields: {
@@ -264,7 +268,8 @@ import (
 	priorityClassName?: string @go(PriorityClassName)
 
 	// Port name used for the pods and governing service.
-	// This defaults to web
+	// Defaults to `web`.
+	// +kubebuilder:default:="web"
 	portName?: string @go(PortName)
 
 	// ArbitraryFSAccessThroughSMs configures whether configuration
@@ -507,9 +512,6 @@ import (
 	//
 	// This section is experimental, it may change significantly without
 	// deprecation notice in any release.
-	//
-	// This is experimental and may change significantly without backward
-	// compatibility in any release.
 	thanos?: null | #ThanosSpec @go(Thanos,*ThanosSpec)
 
 	// QueryLogFile specifies the file to which PromQL queries are logged.
@@ -726,8 +728,19 @@ import (
 	// MinTime for Thanos sidecar to be configured with. Option can be a constant time in RFC3339 format or time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
 	minTime?: string @go(MinTime)
 
+	// BlockDuration controls the size of TSDB blocks produced by Prometheus. Default is 2h to match the upstream Prometheus defaults.
+	// WARNING: Changing the block duration can impact the performance and efficiency of the entire Prometheus/Thanos stack due to how it interacts with memory and Thanos compactors. It is recommended to keep this value set to a multiple of 120 times your longest scrape or rule interval. For example, 30s * 120 = 1h.
+	// +kubebuilder:default:="2h"
+	blockSize?: #Duration @go(BlockDuration)
+
 	// ReadyTimeout is the maximum time Thanos sidecar will wait for Prometheus to start. Eg 10m
 	readyTimeout?: #Duration @go(ReadyTimeout)
+
+	// How often to retrieve the Prometheus configuration.
+	getConfigInterval?: #Duration @go(GetConfigInterval)
+
+	// Maximum time to wait when retrieving the Prometheus configuration.
+	getConfigTimeout?: #Duration @go(GetConfigTimeout)
 
 	// VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition.
 	// VolumeMounts specified will be appended to other VolumeMounts in the thanos-sidecar container.
@@ -938,7 +951,7 @@ import (
 
 	//Action to perform based on regex matching. Default is 'replace'.
 	//uppercase and lowercase actions require Prometheus >= 2.36.
-	//+kubebuilder:validation:Enum=replace;Replace;keep;Keep;drop;Drop;hashmod;HashMod;labelmap;LabelMap;labeldrop;LabelDrop;labelkeep;LabelKeep;lowercase;Lowercase;uppercase;Uppercase
+	//+kubebuilder:validation:Enum=replace;Replace;keep;Keep;drop;Drop;hashmod;HashMod;labelmap;LabelMap;labeldrop;LabelDrop;labelkeep;LabelKeep;lowercase;Lowercase;uppercase;Uppercase;keepequal;KeepEqual;dropequal;DropEqual
 	//+kubebuilder:default=replace
 	action?: string @go(Action)
 }

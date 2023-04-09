@@ -75,11 +75,11 @@ import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	// Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with
 	// an array of operation objects.
 	// +required
-	patch?: string @go(Patch)
+	patch: string @go(Patch)
 
 	// Target points to the resources that the patch document should be applied to.
 	// +optional
-	target?: #Selector @go(Target)
+	target?: null | #Selector @go(Target,*Selector)
 }
 
 // JSON6902 is a JSON6902 operation object.

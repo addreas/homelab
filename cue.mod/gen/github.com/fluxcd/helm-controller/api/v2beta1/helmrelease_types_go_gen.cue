@@ -119,6 +119,21 @@ import (
 	// +optional
 	serviceAccountName?: string @go(ServiceAccountName)
 
+	// PersistentClient tells the controller to use a persistent Kubernetes
+	// client for this release. When enabled, the client will be reused for the
+	// duration of the reconciliation, instead of being created and destroyed
+	// for each (step of a) Helm action.
+	//
+	// This can improve performance, but may cause issues with some Helm charts
+	// that for example do create Custom Resource Definitions during installation
+	// outside Helm's CRD lifecycle hooks, which are then not observed to be
+	// available by e.g. post-install hooks.
+	//
+	// If not set, it defaults to true.
+	//
+	// +optional
+	persistentClient?: null | bool @go(PersistentClient,*bool)
+
 	// Install holds the configuration for Helm install actions for this HelmRelease.
 	// +optional
 	install?: null | #Install @go(Install,*Install)
@@ -157,9 +172,30 @@ import (
 // generate a v1beta2.HelmChart object in the same namespace as the referenced
 // v1beta2.Source.
 #HelmChartTemplate: {
+	// ObjectMeta holds the template for metadata like labels and annotations.
+	// +optional
+	metadata?: null | #HelmChartTemplateObjectMeta @go(ObjectMeta,*HelmChartTemplateObjectMeta)
+
 	// Spec holds the template for the v1beta2.HelmChartSpec for this HelmRelease.
 	// +required
 	spec: #HelmChartTemplateSpec @go(Spec)
+}
+
+// HelmChartTemplateObjectMeta defines the template for the ObjectMeta of a
+// v1beta2.HelmChart.
+#HelmChartTemplateObjectMeta: {
+	// Map of string keys and values that can be used to organize and categorize
+	// (scope and select) objects.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+	// +optional
+	labels?: {[string]: string} @go(Labels,map[string]string)
+
+	// Annotations is an unstructured key value map stored with a resource that may be
+	// set by external tools to store and retrieve arbitrary metadata. They are not
+	// queryable and should be preserved when modifying objects.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+	// +optional
+	annotations?: {[string]: string} @go(Annotations,map[string]string)
 }
 
 // HelmChartTemplateSpec defines the template from which the controller will

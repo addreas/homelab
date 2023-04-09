@@ -1,7 +1,7 @@
 package kube
 
 k: GitRepository: "flux-components": spec: {
-	ref: branch: "main"
+	ref: tag: githubReleases["fluxcd/flux2"]
 	url: "https://github.com/fluxcd/flux2"
 }
 

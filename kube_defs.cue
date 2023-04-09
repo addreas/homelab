@@ -14,9 +14,10 @@ import (
 	apiextensions_v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiregistration_v1 "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 
-	source_controller_v1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
+	source_controller_v1 "github.com/fluxcd/source-controller/api/v1"
+	source_controller_v1beta2 "github.com/fluxcd/source-controller/api/v1beta2"
 	notification_controller_v1beta1 "github.com/fluxcd/notification-controller/api/v1beta1"
-	kustomize_controller_v1beta2 "github.com/fluxcd/kustomize-controller/api/v1beta2"
+	kustomize_controller_v1 "github.com/fluxcd/kustomize-controller/api/v1"
 	cuebuild_controller_v1alpha2 "github.com/addreas/cuebuild-controller/api/v1alpha2"
 	cue_controller_v1beta2 "github.com/addreas/cue-controller/api/v1beta2"
 	helm_controller_v2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
@@ -108,10 +109,8 @@ _kubernetesAPIs: {
 
 	"apiregistration.k8s.io/v1": APIService: apiregistration_v1.#APIService
 
-	"source.toolkit.fluxcd.io/v1beta1": {
-		GitRepository:  source_controller_v1beta1.#GitRepository
-		HelmRepository: source_controller_v1beta1.#HelmRepository
-	}
+	"source.toolkit.fluxcd.io/v1": GitRepository:       source_controller_v1.#GitRepository
+	"source.toolkit.fluxcd.io/v1beta1": HelmRepository: source_controller_v1beta2.#HelmRepository
 
 	"notification.toolkit.fluxcd.io/v1beta1": {
 		Alert:    notification_controller_v1beta1.#Alert
@@ -119,7 +118,7 @@ _kubernetesAPIs: {
 		Receiver: notification_controller_v1beta1.#Receiver
 	}
 
-	"kustomize.toolkit.fluxcd.io/v1beta2": Kustomization: kustomize_controller_v1beta2.#Kustomization
+	"kustomize.toolkit.fluxcd.io/v1": Kustomization: kustomize_controller_v1.#Kustomization
 
 	"cuebuild.toolkit.fluxcd.io/v1alpha1": CueBuild: cuebuild_controller_v1alpha2.#CueBuild
 

@@ -185,9 +185,12 @@ import (
 	// InitContainers allows adding initContainers to the pod definition. Those can be used to e.g.
 	// fetch secrets for injection into the Alertmanager configuration from external sources. Any
 	// errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-	// Using initContainers for any use case other then secret fetching is entirely outside the scope
-	// of what the maintainers will support and by doing so, you accept that this behaviour may break
-	// at any time without notice.
+	// InitContainers described here modify an operator
+	// generated init containers if they share the same name and modifications are
+	// done via a strategic merge patch. The current init container name is:
+	// `init-config-reloader`. Overriding init containers is entirely outside the
+	// scope of what the maintainers will support and by doing so, you accept that
+	// this behaviour may break at any time without notice.
 	initContainers?: [...v1.#Container] @go(InitContainers,[]v1.Container)
 
 	// Priority class assigned to the Pods
@@ -211,7 +214,8 @@ import (
 	clusterPeerTimeout?: #GoDuration @go(ClusterPeerTimeout)
 
 	// Port name used for the pods and governing service.
-	// This defaults to web
+	// Defaults to `web`.
+	// +kubebuilder:default:="web"
 	portName?: string @go(PortName)
 
 	// ForceEnableClusterMode ensures Alertmanager does not deactivate the cluster mode when running with a single replica.
@@ -288,6 +292,15 @@ import (
 
 	// HTTP client configuration.
 	httpConfig?: null | #HTTPConfig @go(HTTPConfig,*HTTPConfig)
+
+	// The default Slack API URL.
+	slackApiUrl?: null | v1.#SecretKeySelector @go(SlackAPIURL,*v1.SecretKeySelector)
+
+	// The default OpsGenie API URL.
+	opsGenieApiUrl?: null | v1.#SecretKeySelector @go(OpsGenieAPIURL,*v1.SecretKeySelector)
+
+	// The default OpsGenie API Key.
+	opsGenieApiKey?: null | v1.#SecretKeySelector @go(OpsGenieAPIKey,*v1.SecretKeySelector)
 }
 
 // AlertmanagerStatus is the most recent observed status of the Alertmanager cluster. Read-only.

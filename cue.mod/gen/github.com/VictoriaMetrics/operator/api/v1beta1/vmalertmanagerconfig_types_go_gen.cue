@@ -141,7 +141,7 @@ import (
 	matchers?: [...string] @go(Matchers,[]string)
 
 	// Continue indicating whether an alert should continue matching subsequent
-	// sibling nodes. It will always be true for the first-level route.
+	// sibling nodes. It will always be true for the first-level route if disableRouteContinueEnforce for vmalertmanager not set.
 	// +optional
 	continue?: bool @go(Continue)
 
