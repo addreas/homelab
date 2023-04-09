@@ -37,6 +37,7 @@ githubReleases: {
 
 	"jonasdahl/logger":            "sha-8b0ced1"
 	"jonasdahl/soltidtabellen.se": "sha-dcbe383"
+	"jonasdahl/packlistor.se":     "sha-f351cb4"
 	"fluxcd/flux2":                "v2.0.0-rc.1"
 }
 some: {
