@@ -5,6 +5,16 @@ k: Deployment: "packlistor": {
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
+				initContainers: [{
+					name: "migrations"
+					image: "ghcr.io/jonasdahl/packlistor.se:\(githubReleases."jonasdahl/packlistor.se")"
+					envFrom: [{secretRef: name: "logger-postgres-credentials"}]
+					env: [{
+						name:  "DATABASE_URL"
+						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@logger-db:5432/logger"
+					}]
+					command: ["sh", "-c", "echo Database URL is $DATABASE_URL && pnpm run prisma migrate deploy"]
+				}]
 				containers: [{
 					name:  "packlistor"
 					image: "ghcr.io/jonasdahl/packlistor.se:\(githubReleases."jonasdahl/packlistor.se")"
