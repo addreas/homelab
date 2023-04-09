@@ -4,6 +4,16 @@ k: Deployment: "logger": {
 	spec: {
 		template: {
 			spec: {
+				initContainers: [{
+					name: "migrations"
+					image: "ghcr.io/jonasdahl/logger:\(githubReleases."jonasdahl/logger")"
+					envFrom: [{secretRef: name: "logger-postgres-credentials"}]
+					env: [{
+						name:  "DATABASE_URL"
+						value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@logger-db:5432/logger"
+					}]
+					command: ["pnpm", "run", "prisma", "migrate", "deploy"]
+				}]
 				containers: [{
 					name:  "logger"
 					image: "ghcr.io/jonasdahl/logger:\(githubReleases."jonasdahl/logger")"
