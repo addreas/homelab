@@ -1,6 +1,6 @@
 package kube
 
-let hostNames = ["packlistor.se", "*.packlistor.se"]
+let hostNames = ["packlistor.se", "www.packlistor.se"]
 
 k: Ingress: packlistor: {
 	spec: {

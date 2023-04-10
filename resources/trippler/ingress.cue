@@ -1,6 +1,6 @@
 package kube
 
-let hostNames = ["trippler.se", "*.trippler.se", "trip.jdahl.se"]
+let hostNames = ["trippler.se", "www.trippler.se", "trip.jdahl.se"]
 
 k: Ingress: trippler: {
 	spec: {
