@@ -22,6 +22,7 @@ k: Service: trippler: {}
 
 let baseContainer = {
 	image: "ghcr.io/jonasdahl/trippler.se:main"
+	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "trippler-secrets"}]
 	env: [{
 		name:  "DATABASE_URL"

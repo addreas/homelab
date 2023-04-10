@@ -28,6 +28,7 @@ k: Deployment: "soltidtabellen": {
 				containers: [{
 					name:  "soltidtabellen"
 					image: "ghcr.io/jonasdahl/soltidtabellen.se:main"
+					imagePullPolicy: "Always"
 					ports: [{containerPort: 3000, name:"http"}]
 				}]
 			}
