@@ -21,7 +21,7 @@ k: Ingress: trippler: {
 k: Service: trippler: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/trippler.se:latest"
+	image: "ghcr.io/jonasdahl/trippler.se:main"
 	envFrom: [{secretRef: name: "trippler-secrets"}]
 	env: [{
 		name:  "DATABASE_URL"

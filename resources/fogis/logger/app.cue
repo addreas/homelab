@@ -5,7 +5,7 @@ k: Ingress: logger: {}
 k: Service: logger: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/logger:latest"
+	image: "ghcr.io/jonasdahl/logger:main"
 	envFrom: [{secretRef: name: "postgres-secrets"}, {secretRef: name: "app-secrets"}]
 	env: [{
 		name:  "DATABASE_URL"
