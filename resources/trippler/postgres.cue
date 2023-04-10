@@ -1,16 +1,14 @@
 package kube
 
-k: StatefulSet: "trippler-db": spec: {
+postgresHost: "trippler-db"
+
+k: StatefulSet: "\(postgresHost)": spec: {
 	template: spec: {
 		securityContext: fsGroupChangePolicy: "Always"
 		containers: [{
 			name:  "postgres"
 			image: "postgres:14"
-			envFrom: [
-				{secretRef: name: "trippler-secrets"},
-				{configMapRef: name: "trippler-env"},
-			]
-			env: [{name: "POSTGRES_DB", value: "trippler"}]
+			envFrom: [{secretRef: name: "trippler-secrets"}]
 			ports: [{containerPort: 5432}]
 			volumeMounts: [{
 				name:      "data"
@@ -40,6 +38,6 @@ k: StatefulSet: "trippler-db": spec: {
 	}]
 }
 
-k: Service: "trippler-db": spec: ports: [{
-	name: "trippler-db"
+k: Service: "\(postgresHost)": spec: ports: [{
+	name: "\(postgresHost)"
 }]
