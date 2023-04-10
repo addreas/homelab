@@ -18,9 +18,7 @@ k: Ingress: trippler: {
 	}
 }
 
-k: Service: trippler: spec: ports: [{
-	name: "http"
-}]
+k: Service: trippler: {}
 
 let baseContainer = {
 	image: "ghcr.io/jonasdahl/trippler.se:\(otherTags."jonasdahl/trippler.se")"
@@ -42,7 +40,7 @@ k: Deployment: "trippler": {
 				}]
 				containers: [baseContainer & {
 					name:  "trippler"
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000, name:"http"}]
 				}]
 			}
 		}

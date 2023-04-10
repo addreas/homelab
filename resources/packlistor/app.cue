@@ -18,9 +18,7 @@ k: Ingress: packlistor: {
 	}
 }
 
-k: Service: packlistor: spec: ports: [{
-	name: "http"
-}]
+k: Service: packlistor: {}
 
 let baseContainer = {
 	image: "ghcr.io/jonasdahl/packlistor.se:\(otherTags."jonasdahl/packlistor.se")"
@@ -42,7 +40,7 @@ k: Deployment: "packlistor": {
 				}]
 				containers: [baseContainer & {
 					name: "packlistor"
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000, name:"http"}]
 				}]
 			}
 		}
