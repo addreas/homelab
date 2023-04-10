@@ -21,3 +21,18 @@ k: Ingress: soltidtabellen: {
 k: Service: soltidtabellen: spec: ports: [{
 	name: "http"
 }]
+
+k: Deployment: "soltidtabellen": {
+	spec: {
+		template: {
+			spec: {
+				imagePullSecrets: [{name: "regcred"}]
+				containers: [{
+					name:  "soltidtabellen"
+					image: "ghcr.io/jonasdahl/soltidtabellen.se:\(otherTags."jonasdahl/soltidtabellen.se")"
+					ports: [{containerPort: 3000}]
+				}]
+			}
+		}
+	}
+}
