@@ -1,15 +1,16 @@
 package kube
 
+k: Service: "logger-db": spec: ports: [{
+	name: "logger-db"
+}]
+
 k: StatefulSet: "logger-db": spec: {
 	template: spec: {
 		securityContext: fsGroupChangePolicy: "Always"
 		containers: [{
 			name:  "postgres"
 			image: "postgres:14"
-			envFrom: [
-				{secretRef: name: "logger-postgres-credentials"},
-			]
-			env: [{name: "POSTGRES_DB", value: "logger"}]
+			envFrom: [{secretRef: name: "postgres-secrets"}]
 			ports: [{containerPort: 5432}]
 			volumeMounts: [{
 				name:      "data"
@@ -34,11 +35,7 @@ k: StatefulSet: "logger-db": spec: {
 		metadata: name: "data"
 		spec: {
 			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "4Gi"
+			resources: requests: storage: "1Gi"
 		}
 	}]
 }
-
-k: Service: "logger-db": spec: ports: [{
-	name: "logger-db"
-}]
