@@ -2,9 +2,7 @@ package kube
 
 k: Ingress: fogis: {}
 
-k: Service: fogis: spec: ports: [{
-	name: "http"
-}]
+k: Service: fogis: {}
 
 k: Deployment: "fogis": {
 	spec: {
@@ -29,7 +27,7 @@ k: Deployment: "fogis": {
 						name:  "VERSION"
 						value: "2"
 					}]
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}

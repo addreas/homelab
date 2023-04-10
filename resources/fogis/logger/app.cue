@@ -2,9 +2,7 @@ package kube
 
 k: Ingress: logger: {}
 
-k: Service: logger: spec: ports: [{
-	name: "http"
-}]
+k: Service: logger: {}
 
 let baseContainer = {
 	image: "ghcr.io/jonasdahl/logger:\(otherTags."jonasdahl/logger")"
@@ -25,7 +23,7 @@ k: Deployment: "logger": {
 				}]
 				containers: [baseContainer & {
 					name: "logger"
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}
