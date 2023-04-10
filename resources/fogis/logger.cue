@@ -6,7 +6,7 @@ k: Deployment: "logger": {
 			spec: {
 				initContainers: [{
 					name: "migrations"
-					image: "ghcr.io/jonasdahl/logger:\(githubReleases."jonasdahl/logger")"
+					image: "ghcr.io/jonasdahl/logger:\(otherTags."jonasdahl/logger")"
 					envFrom: [{secretRef: name: "logger-postgres-credentials"}]
 					env: [{
 						name:  "DATABASE_URL"
@@ -16,7 +16,7 @@ k: Deployment: "logger": {
 				}]
 				containers: [{
 					name:  "logger"
-					image: "ghcr.io/jonasdahl/logger:\(githubReleases."jonasdahl/logger")"
+					image: "ghcr.io/jonasdahl/logger:\(otherTags."jonasdahl/logger")"
 					envFrom: [
 						{secretRef: name: "logger-postgres-credentials"},
 					]
