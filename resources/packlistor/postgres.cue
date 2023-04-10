@@ -1,15 +1,14 @@
 package kube
 
-k: StatefulSet: "packlistordb": spec: {
+postgresHost: "packlistordb"
+
+k: StatefulSet: "\(postgresHost)": spec: {
 	template: spec: {
 		securityContext: fsGroupChangePolicy: "Always"
 		containers: [{
 			name:  "postgres"
 			image: "postgres:14"
-			envFrom: [
-				{secretRef: name: "packlistor-postgres-credentials"},
-			]
-			env: [{name: "POSTGRES_DB", value: "packlistor"}]
+			envFrom: [{secretRef: name: "packlistor-secrets"}]
 			ports: [{containerPort: 5432}]
 			volumeMounts: [{
 				name:      "data"
@@ -39,6 +38,6 @@ k: StatefulSet: "packlistordb": spec: {
 	}]
 }	
 
-k: Service: "packlistordb": spec: ports: [{
-	name: "packlistordb"
+k: Service: "\(postgresHost)": spec: ports: [{
+	name: "\(postgresHost)"
 }]
