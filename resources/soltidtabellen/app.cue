@@ -18,9 +18,7 @@ k: Ingress: soltidtabellen: {
 	}
 }
 
-k: Service: soltidtabellen: spec: ports: [{
-	name: "http"
-}]
+k: Service: soltidtabellen: {}
 
 k: Deployment: "soltidtabellen": {
 	spec: {
@@ -30,7 +28,7 @@ k: Deployment: "soltidtabellen": {
 				containers: [{
 					name:  "soltidtabellen"
 					image: "ghcr.io/jonasdahl/soltidtabellen.se:\(otherTags."jonasdahl/soltidtabellen.se")"
-					ports: [{containerPort: 3000}]
+					ports: [{containerPort: 3000, name:"http"}]
 				}]
 			}
 		}
