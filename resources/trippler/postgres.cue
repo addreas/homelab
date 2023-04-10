@@ -7,7 +7,8 @@ k: StatefulSet: "trippler-db": spec: {
 			name:  "postgres"
 			image: "postgres:14"
 			envFrom: [
-				{secretRef: name: "trippler-postgres-credentials"},
+				{secretRef: name: "trippler-secrets"},
+				{configMapRef: name: "trippler-env"},
 			]
 			env: [{name: "POSTGRES_DB", value: "trippler"}]
 			ports: [{containerPort: 5432}]
