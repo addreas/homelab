@@ -6,6 +6,7 @@ k: Service: logger: {}
 
 let baseContainer = {
 	image: "ghcr.io/jonasdahl/logger:main"
+	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "postgres-secrets"}, {secretRef: name: "app-secrets"}]
 	env: [{
 		name:  "DATABASE_URL"
