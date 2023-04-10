@@ -21,7 +21,7 @@ k: Ingress: packlistor: {
 k: Service: packlistor: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/packlistor.se:\(otherTags."jonasdahl/packlistor.se")"
+	image: "ghcr.io/jonasdahl/packlistor.se:latest"
 	envFrom: [{secretRef: name: "packlistor-secrets"}]
 	env: [{
 		name:  "DATABASE_URL"
