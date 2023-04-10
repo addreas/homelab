@@ -41,7 +41,7 @@ k: Deployment: "packlistor": {
 					command: ["pnpm", "run", "prisma", "migrate", "deploy"]
 				}]
 				containers: [baseContainer & {
-					name:  "packlistor"
+					name: "packlistor"
 					ports: [{containerPort: 3000}]
 				}]
 			}

@@ -36,7 +36,7 @@ k: StatefulSet: "\(postgresHost)": spec: {
 			resources: requests: storage: "4Gi"
 		}
 	}]
-}	
+}
 
 k: Service: "\(postgresHost)": spec: ports: [{
 	name: "\(postgresHost)"
