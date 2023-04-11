@@ -15,9 +15,9 @@ let baseContainer = {
 }
 
 k: Deployment: "logger": {
+	metadata: annotations: "homelab.addem.se/autodeploy": "true"
 	spec: {
 		template: {
-			metadata: annotations: "homelab.addem.se/autodeploy": "true"
 			spec: {
 				initContainers: [baseContainer & {
 					name: "migrations"
