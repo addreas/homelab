@@ -21,6 +21,7 @@ k: Ingress: soltidtabellen: {
 k: Service: soltidtabellen: {}
 
 k: Deployment: "soltidtabellen": {
+	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
 		template: {
 			spec: {

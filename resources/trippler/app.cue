@@ -31,6 +31,7 @@ let baseContainer = {
 }
 
 k: Deployment: "trippler": {
+	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
 		template: {
 			spec: {
