@@ -1,8 +1,11 @@
 package kube
 
 let DS_PROMETHEUS = {
-	datasourceName: "Prometheus"
-	inputName:      "DS_PROMETHEUS"
+	datasourceRef: {
+		namespace: "monitoring"
+		name:      "prometheus"
+	}
+	inputName: "DS_PROMETHEUS"
 }
 
 k: GrafanaDashboard: "longhorn": spec: {

@@ -4,7 +4,10 @@
 
 package v1beta1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/api/core/v1"
+)
 
 #GrafanaDatasourceDataSource: {
 	id?:            int64  @go(ID)
@@ -38,15 +41,15 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	datasource?: #GrafanaDatasourceDataSource @go(DataSource)
 
 	// selects Grafana instances
+	// +optional
 	instanceSelector?: null | metav1.#LabelSelector @go(InstanceSelector,*metav1.LabelSelector)
 
 	// plugins
 	// +optional
 	plugins?: #PluginList @go(Plugins)
 
-	// secrets used for variable expansion
 	// +optional
-	secrets?: [...string] @go(Secrets,[]string)
+	valuesFrom?: [...#GrafanaDatasourceValueFrom] @go(ValuesFrom,[]GrafanaDatasourceValueFrom)
 
 	// how often the datasource is refreshed
 	interval: metav1.#Duration @go(Interval)
@@ -54,6 +57,21 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// allow to import this resources from an operator in a different namespace
 	// +optional
 	allowCrossNamespaceImport?: null | bool @go(AllowCrossNamespaceReferences,*bool)
+}
+
+#GrafanaDatasourceValueFrom: {
+	targetPath: string                            @go(TargetPath)
+	valueFrom:  #GrafanaDatasourceValueFromSource @go(ValueFrom)
+}
+
+#GrafanaDatasourceValueFromSource: {
+	// Selects a key of a ConfigMap.
+	// +optional
+	configMapKeyRef?: null | v1.#ConfigMapKeySelector @go(ConfigMapKeyRef,*v1.ConfigMapKeySelector)
+
+	// Selects a key of a Secret.
+	// +optional
+	secretKeyRef?: null | v1.#SecretKeySelector @go(SecretKeyRef,*v1.SecretKeySelector)
 }
 
 // GrafanaDatasourceStatus defines the observed state of GrafanaDatasource

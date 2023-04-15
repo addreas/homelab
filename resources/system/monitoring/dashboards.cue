@@ -1,8 +1,8 @@
 package kube
 
 let DS_PROMETHEUS = {
-	datasourceName: "Prometheus"
-	inputName:      "DS_PROMETHEUS"
+	datasourceRef: name: "prometheus"
+	inputName: "DS_PROMETHEUS"
 }
 
 let grafanaComDsPrometheus = {

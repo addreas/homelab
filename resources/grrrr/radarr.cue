@@ -100,8 +100,9 @@ k: Ingress: radarr: _authproxy: true
 k: GrafanaDashboard: "radarr": spec: {
 	source: remote: grafanaCom: id: 12896
 	datasources: [{
-		datasourceName: "Prometheus"
-		inputName:      "DS_RANCHER_MONITORING"
+		datasourceRef: name:      "prometheus"
+		datasourceRef: namespace: "monitoring"
+		inputName: "DS_RANCHER_MONITORING"
 	}]
 	plugins: [{
 		name:    "grafana-piechart-panel"

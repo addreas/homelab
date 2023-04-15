@@ -6,6 +6,8 @@ package v1beta1
 
 #NoMatchingInstancesReason:   "NoMatchingInstances"
 #ContentUnavailableReason:    "ContentUnavailable"
+#ContentAvailableReason:      "ContentAvailable"
+#ErrorBackoffReason:          "ErrorBackoff"
 #GrafanaApiErrorReason:       "GrafanaApiErrorFailed"
 #GrafanaApiUnavailableReason: "GrafanaApiUnavailableFailed"
 #DashboardSyncedReason:       "DashboardSynced"

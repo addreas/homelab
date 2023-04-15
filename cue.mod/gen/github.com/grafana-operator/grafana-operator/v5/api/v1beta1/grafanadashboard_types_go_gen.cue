@@ -5,13 +5,13 @@
 package v1beta1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 #GrafanaDashboardDatasource: {
-	inputName:      string @go(InputName)
-	datasourceName: string @go(DatasourceName)
+	inputName:     string              @go(InputName)
+	datasourceRef: v1.#ObjectReference @go(DatasourceRef)
 }
 
 // GrafanaDashboardSpec defines the desired state of GrafanaDashboard
@@ -19,6 +19,7 @@ import (
 	source: #GrafanaDashboardSource @go(Source)
 
 	// selects Grafanas for import
+	// +optional
 	instanceSelector?: null | metav1.#LabelSelector @go(InstanceSelector,*metav1.LabelSelector)
 
 	// folder assignment for dashboard
@@ -92,7 +93,8 @@ import (
 #GrafanaDashboardStatus: {
 	// Content contains information about fetched remote content
 	// +optional
-	content?: null | #GrafanaDashboardStatusContent @go(Content,*GrafanaDashboardStatusContent)
+	content?:      null | #GrafanaDashboardStatusContent      @go(Content,*GrafanaDashboardStatusContent)
+	contentError?: null | #GrafanaDashboardStatusContentError @go(ContentError,*GrafanaDashboardStatusContentError)
 
 	// Instances stores UID, version, and folder info for each instance the dashboard has been created in
 	// +optional
@@ -103,9 +105,15 @@ import (
 }
 
 #GrafanaDashboardStatusContent: {
-	contentCache?:     bytes        @go(Cache,[]byte)
-	contentTimestamp?: metav1.#Time @go(Timestamp)
-	contentUrl?:       string       @go(Url)
+	cache?:     bytes        @go(Cache,[]byte)
+	timestamp?: metav1.#Time @go(Timestamp)
+	url:        string       @go(Url)
+}
+
+#GrafanaDashboardStatusContentError: {
+	message:   string       @go(Message)
+	timestamp: metav1.#Time @go(Timestamp)
+	attempts:  int          @go(Attempts)
 }
 
 #GrafanaDashboardInstanceStatus: {

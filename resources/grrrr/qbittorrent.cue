@@ -252,8 +252,9 @@ k: CiliumNetworkPolicy: "vpn-egress-clients": spec: {
 k: GrafanaDashboard: "qbittorrent": spec: {
 	source: remote: url: "https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json"
 	datasources: [{
-		datasourceName: "Prometheus"
-		inputName:      "DS_PROMETHEUS"
+		datasourceRef: name:      "prometheus"
+		datasourceRef: namespace: "monitoring"
+		inputName: "DS_PROMETHEUS"
 	}]
 	plugins: [{
 		name:    "grafana-piechart-panel"
