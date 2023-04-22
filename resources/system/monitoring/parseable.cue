@@ -38,17 +38,16 @@ k: Service: parseable: {}
 
 k: GrafanaDatasource: "parseable": spec: {
 	datasource: {
-		name:      "Parseable logs"
-		type:      "parseable"
-		url:       "http://parseable:8000"
-		access:    "proxy"
-		isDefault: false
-		basicAuth: true
-		jsonData: {
-			username: "parseable"
-		}
+		name:          "Parseable logs"
+		uid:           "05nf5sP4k"
+		type:          "parseable-parseable-datasource"
+		url:           "http://parseable:8000"
+		access:        "proxy"
+		isDefault:     false
+		basicAuth:     true
+		basicAuthUser: "parseable"
 		secureJsonData: {
-			password: "parseable"
+			basicAuthPassword: "parseable"
 		}
 	}
 	plugins: [{
