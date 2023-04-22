@@ -97,7 +97,7 @@ command: "dump-yaml": cli.Print & {
 
 // Import all yaml from stdin
 command: "import-yaml": exec.Run & {
-	cmd: ["cue", "import", "-p", "kube", "-l", "\"k\"", "-l", "kind", "-l", "metadata.name", "yaml:", "-", "-o", "-"]
+	cmd: ["cue", "import", "-R", "-p", "kube", "-l", "\"k\"", "-l", "kind", "-l", "metadata.name", "yaml:", "-", "-o", "-"]
 }
 
 // Import all existing yaml files into their cue representation

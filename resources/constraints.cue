@@ -71,7 +71,7 @@ k: Service: [Name=string]: {
 		selector: _selector
 		ports: [...{protocol: *"TCP" | "UDP"}]
 
-		let workload = k.Deployment[Name] | k.StatefulSet[Name]
+		let workload = k.Deployment[Name] | k.StatefulSet[Name] | k.DaemonSet[Name]
 
 		if workload != _|_ {
 			ports: _ | *[
