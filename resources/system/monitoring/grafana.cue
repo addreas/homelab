@@ -98,6 +98,6 @@ k: Kustomization: "grafana-operator": spec: {
 	images: [{
 		name:    "ghcr.io/grafana-operator/grafana-operator"
 		newName: "ghcr.io/addreas/grafana-operator"
-		newTag:  "v5.1.0-pre-alpha.0"
+		newTag:  "v5.1.0-pre-alpha.1"
 	}]
 }

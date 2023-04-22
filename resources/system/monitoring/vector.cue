@@ -47,9 +47,6 @@ let _cue_agent_yaml = {
 	sources: {
 		kubernetes_logs: {
 			type: "kubernetes_logs"
-			container_annotation_fields: {
-
-			}
 			namespace_annotation_fields: namespace_labels: ""
 			node_annotation_fields: node_labels:           ""
 			pod_annotation_fields: {

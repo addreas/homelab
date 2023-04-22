@@ -35,3 +35,24 @@ k: Deployment: parseable: spec: template: spec: {
 }
 
 k: Service: parseable: {}
+
+k: GrafanaDatasource: "parseable": spec: {
+	datasource: {
+		name:      "Parseable logs"
+		type:      "parseable"
+		url:       "http://parseable:8000"
+		access:    "proxy"
+		isDefault: false
+		basicAuth: true
+		jsonData: {
+			username: "parseable"
+		}
+		secureJsonData: {
+			password: "parseable"
+		}
+	}
+	plugins: [{
+		name:    "parseable-parseable-datasource"
+		version: "1.0.0"
+	}]
+}
