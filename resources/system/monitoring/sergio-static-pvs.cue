@@ -21,9 +21,9 @@ k: PersistentVolumeClaim: [claimName=string]: spec: {
 	volumeName:       claimName
 }
 
-k: PersistentVolume: "sergio-parseable-logs": spec: {
+k: PersistentVolume: "sergio-loki": spec: {
 	capacity: storage: "100Gi"
-	local: path:       "/mnt/solid-data/parseable-logs"
+	local: path:       "/mnt/solid-data/loki"
 }
 
-k: PersistentVolumeClaim: "sergio-parseable-logs": spec: resources: requests: storage: "100Gi"
+k: PersistentVolumeClaim: "sergio-loki": spec: resources: requests: storage: "100Gi"
