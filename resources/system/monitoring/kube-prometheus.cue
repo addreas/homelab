@@ -26,6 +26,16 @@ k: Prometheus: "k8s": spec: {
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
 }
+k: ClusterRole: "prometheus-k8s-namespaced": rules: k.Role."monitoring/prometheus-k8s".rules
+
+k: ClusterRoleBinding: "prometheus-k8s-namespaced": {
+	roleRef: {
+		apiGroup: "rbac.authorization.k8s.io"
+		kind:     "ClusterRole"
+		name:     "pod-getter"
+	}
+	subjects: k.RoleBinding."monitoring/prometheus-k8s".subjects
+}
 
 k: GrafanaDatasource: "prometheus": spec: datasource: {
 	name:      "Prometheus"
@@ -38,9 +48,6 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 
 k: Ingress: "prometheus-k8s": _authproxy: true
 
-k: Alertmanager: "main": spec: {
-	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
-	replicas: 1
-}
+k: Alertmanager: "main": spec: podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
 
 k: Ingress: "alertmanager-main": _authproxy: true
