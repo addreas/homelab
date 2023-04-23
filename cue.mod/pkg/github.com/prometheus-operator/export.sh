@@ -5,6 +5,7 @@
 
 cd kube-prometheus
 
+git checkout main
 git pull
 
 jb install

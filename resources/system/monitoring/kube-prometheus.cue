@@ -6,23 +6,38 @@ import (
 	m "github.com/prometheus-operator/kube-prometheus/manifests"
 )
 
-k: CustomResourceDefinition: m.prometheusOperator.CustomResourceDefinition
-
 k: GrafanaDashboard: {
 	for name, content in m.grafanaDashboards {
 		"grafana-dashboard-\(strings.TrimSuffix(name, ".json"))": spec: source: inline: json: encodingJson.Marshal(content)
 	}
 }
 
-k: {
-	for kind, resources in m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter if kind != "NetworkPolicy" {
-		(kind): resources
-	}
+for kind, resources in m.alertmanager & m.blackboxExporter & m.kubePrometheus & m.kubeStateMetrics & m.kubernetesControlPlane & m.nodeExporter & m.prometheus & m.prometheusAdapter & m.prometheusOperator {
+	k: (kind): resources
 }
 
-for R in k.PrometheusRule {
-	k: VMRule: "\(R.metadata.name)": {
-		metadata: R.metadata
-		spec:     R.spec
-	}
+k: Prometheus: "k8s": spec: {
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "prometheus"
+	[=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
+
+	storage: emptyDir: {}
+
+	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429"}]
+	remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429"}]
+
 }
+
+k: GrafanaDatasource: "prometheus": spec: datasource: {
+	name:      "Prometheus"
+	type:      "prometheus"
+	url:       "http://prometheus-k8s.monitoring.svc:9090"
+	access:    "proxy"
+	isDefault: true
+	basicAuth: false
+}
+
+k: Ingress: "prometheus-k8s": _authproxy: true
+
+k: Alertmanager: "main": spec: podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
+
+k: Ingress: "alertmanager-main": _authproxy: true

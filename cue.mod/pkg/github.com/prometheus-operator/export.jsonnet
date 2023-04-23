@@ -6,10 +6,6 @@ local kp =
         namespace: 'monitoring',
       },
 
-      prometheusAdapter+: {
-        prometheusURL: "http://vmsingle-main.monitoring.svc:8429"
-      },
-
       kubernetesControlPlane+: {
         kubeProxy: false,
       },
@@ -41,12 +37,25 @@ local kp =
   };
 
 local resources(name, filter = function(r) true) = std.foldr(
-  function(r, acc) acc + { [name]+: { [r.kind]+: { [r.metadata.name]: r } } },
+  function(r, acc) acc + {
+    [name]+: if !std.endsWith(r.kind, "List") then {
+      [r.kind]+: {
+        [r.metadata.name]: r
+      }
+    } else {
+      [std.strReplace(r.kind, "List", "")]+: {
+        [rr.metadata.namespace + "/" + rr.metadata.name]+: rr for rr in r.items
+      }
+    }
+  },
   [r for r in std.objectValues(kp[name]) if filter(r)],
   {});
 
 {
- "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind == "CustomResourceDefinition" && !std.member(["prometheuses.monitoring.coreos.com", "thanosrulers.monitoring.coreos.com"], r.metadata.name)),
+ "alertmanager.json": resources("alertmanager"),
+ "blackboxExporter.json": resources("blackboxExporter"),
+ "prometheus.json": resources("prometheus"),
+ "prometheusOperator.json": resources("prometheusOperator"),
  "prometheusAdapter.json": resources("prometheusAdapter"),
  "kubeStateMetrics.json": resources("kubeStateMetrics"),
  "nodeExporter.json": resources("nodeExporter"),

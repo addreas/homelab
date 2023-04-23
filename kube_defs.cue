@@ -1,6 +1,8 @@
 package kube
 
 import (
+	"strings"
+
 	apps_v1 "k8s.io/api/apps/v1"
 	batch_v1 "k8s.io/api/batch/v1"
 	batch_v1beta1 "k8s.io/api/batch/v1beta1"
@@ -50,7 +52,15 @@ k: close({
 				apiVersion: ApiVersion
 				kind:       Kind
 				metadata:   metav1.#ObjectMeta & {
-					name: Name
+					name: _ | *Name
+				}
+
+				if strings.Contains(Name, "/") {
+					let splitName = strings.Split(Name, "/")
+					metadata: {
+						namespace: splitName[0]
+						name:      splitName[1]
+					}
 				}
 			}
 		}
@@ -152,9 +162,12 @@ _kubernetesAPIs: {
 	"k8s.cni.cncf.io/v1": NetworkAttachmentDefinition: networkattachment_v1.#NetworkAttachmentDefinition
 
 	"monitoring.coreos.com/v1": {
-		PodMonitor:     monitoring_v1.#PodMonitor
-		ServiceMonitor: monitoring_v1.#ServiceMonitor
-		PrometheusRule: monitoring_v1.#PrometheusRule
+		Alertmanager:       monitoring_v1.#Alertmanager
+		AlertmanagerConfig: monitoring_v1.#AlertmanagerConfig
+		PodMonitor:         monitoring_v1.#PodMonitor
+		ServiceMonitor:     monitoring_v1.#ServiceMonitor
+		Prometheus:         monitoring_v1.#Prometheus
+		PrometheusRule:     monitoring_v1.#PrometheusRule
 	}
 
 	"cilium.io/v2": {
