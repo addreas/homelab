@@ -1,0 +1,83 @@
+package kube
+
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"encoding/yaml"
+)
+
+k: ConfigMap: "loki": data: "config.yaml": yaml.Marshal({
+	auth_enabled: false
+
+	server: {
+		http_listen_port: 3100
+		grpc_listen_port: 9096
+	}
+
+	common: {
+		instance_addr: "127.0.0.1"
+		path_prefix:   "/data"
+		storage: filesystem: {
+			chunks_directory: "/data/chunks"
+			rules_directory:  "/data/rules"
+		}
+		replication_factor: 1
+		ring: kvstore: store: "inmemory"
+	}
+
+	query_range: results_cache: cache: embedded_cache: {
+		enabled:     true
+		max_size_mb: 100
+	}
+
+	schema_config: configs: [{
+		from:         "2020-10-24"
+		store:        "boltdb-shipper"
+		object_store: "filesystem"
+		schema:       "v11"
+		index: {
+			prefix: "index_"
+			period: "24h"
+		}
+	}]
+
+	ruler: alertmanager_url: "http://vmalertmanager-main:9093"
+})
+
+k: Deployment: loki: spec: template: {
+	metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap.loki.data["config.yaml"]))
+	spec: {
+		containers: [{
+			image: "grafana/loki:2.8.0"
+			args: ["--config.file=/etc/loki/config.yaml"]
+			ports: [{name: "http", containerPort: 3100}, {name: "grcp", containerPort: 9096}]
+			volumeMounts: [{
+				name:      "config"
+				mountPath: "/etc/loki"
+			}, {
+				name:      "data"
+				mountPath: "/data"
+			}]
+		}]
+		volumes: [{
+			name: "config"
+			configMap: name: "loki"
+		}, {
+			name: "data"
+			persistentVolumeClaim: claimName: "sergio-loki"
+		}]
+	}
+}
+
+k: Service: loki: {}
+
+k: GrafanaDatasource: "loki": spec: {
+	datasource: {
+		name:      "Loki"
+		type:      "loki"
+		url:       "http://loki:3100"
+		access:    "proxy"
+		isDefault: false
+		basicAuth: false
+	}
+}
