@@ -17,14 +17,16 @@ for kind, resources in m.alertmanager & m.blackboxExporter & m.kubePrometheus & 
 }
 
 k: Prometheus: "k8s": spec: {
+	externalUrl: "https://prometheus-k8s.addem.se"
+
+	prometheusExternalLabelName: ""
+	replicaExternalLabelName:    ""
+
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "prometheus"
 
 	storage: emptyDir: {}
 
 	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
-
-	prometheusExternalLabelName: ""
-	replicaExternalLabelName:    ""
 
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
@@ -51,6 +53,10 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 
 k: Ingress: "prometheus-k8s": _authproxy: true
 
-k: Alertmanager: "main": spec: podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
+k: Alertmanager: "main": spec: {
+	externalUrl: "https://alertmanager-main.addem.se"
+
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
+}
 
 k: Ingress: "alertmanager-main": _authproxy: true
