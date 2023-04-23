@@ -17,7 +17,7 @@ k: MetricsInstance: primary: spec: {
 
 k: LogsInstance: primary: spec: {
 	clients: [{
-		url: "http://loki.monitoring.svc:3100"
+		url: "http://loki.monitoring.svc:3100/api/v1/push"
 	}]
 
 	podLogsNamespaceSelector: {}
