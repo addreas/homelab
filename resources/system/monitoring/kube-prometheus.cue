@@ -49,6 +49,10 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 	access:    "proxy"
 	isDefault: true
 	basicAuth: false
+	jsonData: {
+		manageAlerts:   true
+		prometheusType: "Prometheus"
+	}
 }
 
 k: Ingress: "prometheus-k8s": _authproxy: true
