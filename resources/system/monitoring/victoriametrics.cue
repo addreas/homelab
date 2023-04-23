@@ -23,6 +23,15 @@ k: VMSingle: "main": spec: {
 	}
 }
 
+k: GrafanaDatasource: "vmsingle-main": spec: datasource: {
+	name:      "VictoriaMetrics"
+	type:      "prometheus"
+	url:       "http://vmsingle-main.monitoring.svc:8429"
+	access:    "proxy"
+	isDefault: false
+	basicAuth: false
+}
+
 k: GitRepository: "victoriametrics-operator": spec: {
 	ref: tag: goModVersions["github.com/VictoriaMetrics/operator"]
 	url: "https://github.com/victoriametrics/operator"

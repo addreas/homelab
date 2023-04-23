@@ -1,19 +1,21 @@
 package kube
 
-k: MetricsInstance: primary: spec: {
-	remoteWrite: [{
-		url: "http://vmsingle-main.monitoring.svc.cluster.local:8429/api/v1/write"
-	}]
+// k: MetricsInstance: primary: spec: {
+// 	remoteWrite: [{
+// 		url: "http://vmsingle-main.monitoring.svc.cluster.local:8429/api/v1/write"
+// 	}, {
+// 		url: "http://prometheus-k8s.monitoring.svc.cluster.local:9090/api/v1/write"
+// 	}]
 
-	serviceMonitorNamespaceSelector: {}
-	serviceMonitorSelector: {}
+// 	serviceMonitorNamespaceSelector: {}
+// 	serviceMonitorSelector: {}
 
-	podMonitorNamespaceSelector: {}
-	podMonitorSelector: {}
+// 	podMonitorNamespaceSelector: {}
+// 	podMonitorSelector: {}
 
-	probeNamespaceSelector: {}
-	probeSelector: {}
-}
+// 	probeNamespaceSelector: {}
+// 	probeSelector: {}
+// }
 
 k: LogsInstance: primary: spec: {
 	clients: [{

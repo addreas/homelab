@@ -18,13 +18,13 @@ for kind, resources in m.alertmanager & m.blackboxExporter & m.kubePrometheus & 
 
 k: Prometheus: "k8s": spec: {
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "prometheus"
-	[=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 
 	storage: emptyDir: {}
 
 	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
-	remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
 
+	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
+	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
 }
 
 k: GrafanaDatasource: "prometheus": spec: datasource: {
