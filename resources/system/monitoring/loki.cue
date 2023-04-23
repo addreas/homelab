@@ -41,7 +41,7 @@ k: ConfigMap: "loki": data: "config.yaml": yaml.Marshal({
 		}
 	}]
 
-	ruler: alertmanager_url: "http://vmalertmanager-main:9093"
+	ruler: alertmanager_url: "http://vmalertmanager-main.monitoring.svc.cluster.local:9093"
 })
 
 k: Deployment: loki: spec: template: {
@@ -75,7 +75,7 @@ k: GrafanaDatasource: "loki": spec: {
 	datasource: {
 		name:      "Loki"
 		type:      "loki"
-		url:       "http://loki:3100"
+		url:       "http://loki.monitoring.svc.cluster.local:3100"
 		access:    "proxy"
 		isDefault: false
 		basicAuth: false

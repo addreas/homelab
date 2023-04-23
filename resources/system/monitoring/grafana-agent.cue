@@ -2,7 +2,7 @@ package kube
 
 k: MetricsInstance: primary: spec: {
 	remoteWrite: [{
-		url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"
+		url: "http://vmsingle-main.monitoring.svc.cluster.local:8429/api/v1/write"
 	}]
 
 	serviceMonitorNamespaceSelector: {}
@@ -17,7 +17,7 @@ k: MetricsInstance: primary: spec: {
 
 k: LogsInstance: primary: spec: {
 	clients: [{
-		url: "http://loki.monitoring.svc:3100/api/v1/push"
+		url: "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
 	}]
 
 	podLogsNamespaceSelector: {}
