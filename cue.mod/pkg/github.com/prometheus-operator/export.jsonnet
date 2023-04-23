@@ -52,14 +52,15 @@ local resources(name, filter = function(r) true) = std.foldr(
   {});
 
 {
- "alertmanager.json": resources("alertmanager"),
- "blackboxExporter.json": resources("blackboxExporter"),
- "prometheus.json": resources("prometheus"),
- "prometheusOperator.json": resources("prometheusOperator"),
- "prometheusAdapter.json": resources("prometheusAdapter"),
- "kubeStateMetrics.json": resources("kubeStateMetrics"),
- "nodeExporter.json": resources("nodeExporter"),
- "kubernetesControlPlane.json": resources("kubernetesControlPlane", function(r) std.member(["ServiceMonitor", "PrometheusRule"], r.kind)),
+ "alertmanager.json": resources("alertmanager", function(r) r.kind != "NetworkPolicy"),
+ "blackboxExporter.json": resources("blackboxExporter", function(r) r.kind != "NetworkPolicy"),
+ "prometheus.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
+ "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
+ "prometheusAdapter.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
+ "kubeStateMetrics.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
+ "nodeExporter.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
+
+ "kubernetesControlPlane.json": resources("kubernetesControlPlane"),
  "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
  "grafanaDashboards.json": { grafanaDashboards:
     kp.nodeExporter.mixin.grafanaDashboards +

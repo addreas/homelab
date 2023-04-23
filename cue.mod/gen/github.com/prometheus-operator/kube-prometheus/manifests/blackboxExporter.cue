@@ -221,42 +221,6 @@ blackboxExporter: {
 			}
 		}
 	}
-	NetworkPolicy: "blackbox-exporter": {
-		apiVersion: "networking.k8s.io/v1"
-		kind:       "NetworkPolicy"
-		metadata: {
-			labels: {
-				"app.kubernetes.io/component": "exporter"
-				"app.kubernetes.io/name":      "blackbox-exporter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
-			}
-			name:      "blackbox-exporter"
-			namespace: "monitoring"
-		}
-		spec: {
-			egress: [{},
-			]
-			ingress: [{
-				from: [{
-					podSelector: matchLabels: "app.kubernetes.io/name": "prometheus"
-				}]
-				ports: [{
-					port:     9115
-					protocol: "TCP"
-				}, {
-					port:     19115
-					protocol: "TCP"
-				}]
-			}]
-			podSelector: matchLabels: {
-				"app.kubernetes.io/component": "exporter"
-				"app.kubernetes.io/name":      "blackbox-exporter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-			}
-			policyTypes: ["Egress", "Ingress"]
-		}
-	}
 	Service: "blackbox-exporter": {
 		apiVersion: "v1"
 		kind:       "Service"

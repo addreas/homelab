@@ -329,32 +329,6 @@ prometheusAdapter: {
 			}
 		}
 	}
-	NetworkPolicy: "prometheus-adapter": {
-		apiVersion: "networking.k8s.io/v1"
-		kind:       "NetworkPolicy"
-		metadata: {
-			labels: {
-				"app.kubernetes.io/component": "metrics-adapter"
-				"app.kubernetes.io/name":      "prometheus-adapter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.10.0"
-			}
-			name:      "prometheus-adapter"
-			namespace: "monitoring"
-		}
-		spec: {
-			egress: [{},
-			]
-			ingress: [{},
-			]
-			podSelector: matchLabels: {
-				"app.kubernetes.io/component": "metrics-adapter"
-				"app.kubernetes.io/name":      "prometheus-adapter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-			}
-			policyTypes: ["Egress", "Ingress"]
-		}
-	}
 	PodDisruptionBudget: "prometheus-adapter": {
 		apiVersion: "policy/v1"
 		kind:       "PodDisruptionBudget"

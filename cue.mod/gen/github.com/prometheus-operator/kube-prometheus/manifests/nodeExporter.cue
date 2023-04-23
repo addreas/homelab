@@ -171,39 +171,6 @@ nodeExporter: {
 			}
 		}
 	}
-	NetworkPolicy: "node-exporter": {
-		apiVersion: "networking.k8s.io/v1"
-		kind:       "NetworkPolicy"
-		metadata: {
-			labels: {
-				"app.kubernetes.io/component": "exporter"
-				"app.kubernetes.io/name":      "node-exporter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.5.0"
-			}
-			name:      "node-exporter"
-			namespace: "monitoring"
-		}
-		spec: {
-			egress: [{},
-			]
-			ingress: [{
-				from: [{
-					podSelector: matchLabels: "app.kubernetes.io/name": "prometheus"
-				}]
-				ports: [{
-					port:     9100
-					protocol: "TCP"
-				}]
-			}]
-			podSelector: matchLabels: {
-				"app.kubernetes.io/component": "exporter"
-				"app.kubernetes.io/name":      "node-exporter"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-			}
-			policyTypes: ["Egress", "Ingress"]
-		}
-	}
 	PrometheusRule: "node-exporter-rules": {
 		apiVersion: "monitoring.coreos.com/v1"
 		kind:       "PrometheusRule"

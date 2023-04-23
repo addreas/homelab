@@ -31152,39 +31152,6 @@ prometheusOperator: {
 			}
 		}
 	}
-	NetworkPolicy: "prometheus-operator": {
-		apiVersion: "networking.k8s.io/v1"
-		kind:       "NetworkPolicy"
-		metadata: {
-			labels: {
-				"app.kubernetes.io/component": "controller"
-				"app.kubernetes.io/name":      "prometheus-operator"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
-			}
-			name:      "prometheus-operator"
-			namespace: "monitoring"
-		}
-		spec: {
-			egress: [{},
-			]
-			ingress: [{
-				from: [{
-					podSelector: matchLabels: "app.kubernetes.io/name": "prometheus"
-				}]
-				ports: [{
-					port:     8443
-					protocol: "TCP"
-				}]
-			}]
-			podSelector: matchLabels: {
-				"app.kubernetes.io/component": "controller"
-				"app.kubernetes.io/name":      "prometheus-operator"
-				"app.kubernetes.io/part-of":   "kube-prometheus"
-			}
-			policyTypes: ["Egress", "Ingress"]
-		}
-	}
 	PrometheusRule: "prometheus-operator-rules": {
 		apiVersion: "monitoring.coreos.com/v1"
 		kind:       "PrometheusRule"
