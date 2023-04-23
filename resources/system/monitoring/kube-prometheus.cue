@@ -22,8 +22,8 @@ k: Prometheus: "k8s": spec: {
 
 	storage: emptyDir: {}
 
-	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429"}]
-	remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429"}]
+	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
+	remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/query"}]
 
 }
 
