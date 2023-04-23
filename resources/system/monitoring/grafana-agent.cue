@@ -30,7 +30,7 @@ k: PodLogs: "kubernetes-pods": spec: {
 	pipelineStages: [{
 		docker: {}
 	}]
-	namespaceSelector: matchNames: ["default"]
+	namespaceSelector: any: true
 	selector: matchLabels: {}
 }
 
