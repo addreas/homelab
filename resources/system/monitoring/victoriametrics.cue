@@ -32,28 +32,6 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 	basicAuth: false
 }
 
-k: VMAgent: "main": spec: {
-	for type in ["serviceScrape", "podScrape", "probe", "nodeScrape", "staticScrape"] {
-		"\(type)Selector": {}
-		"\(type)NamespaceSelector": {}
-	}
-	selectAllByDefault: true
-	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "vmagent"
-	replicaCount: 1
-	resources: {
-		requests: {
-			cpu:    "250m"
-			memory: "350Mi"
-		}
-		limits: {
-			cpu:    "500m"
-			memory: "850Mi"
-		}
-	}
-	extraArgs: "memory.allowedPercent": "40"
-	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
-}
-
 k: VMAlert: "main": spec: {
 	replicaCount: 1
 	datasource: url: "http://vmsingle-main.monitoring.svc:8429"
