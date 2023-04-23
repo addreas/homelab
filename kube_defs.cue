@@ -24,7 +24,8 @@ import (
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 
-	grafana_v1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
+	grafana_operator_v1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
+	grafana_agent_v1alpha1 "github.com/grafana/agent/pkg/operator/apis/monitoring/v1alpha1"
 
 	certmanager_v1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 
@@ -129,10 +130,17 @@ _kubernetesAPIs: {
 	"bitnami.com/v1alpha1": SealedSecret: sealed_secrets_v1alpha1.#SealedSecret
 
 	"grafana.integreatly.org/v1beta1": {
-		Grafana:           grafana_v1beta1.#Grafana
-		GrafanaDashboard:  grafana_v1beta1.#GrafanaDashboard
-		GrafanaDatasource: grafana_v1beta1.#GrafanaDatasource
-		GrafanaFolder:     grafana_v1beta1.#GrafanaFolder
+		Grafana:           grafana_operator_v1beta1.#Grafana
+		GrafanaDashboard:  grafana_operator_v1beta1.#GrafanaDashboard
+		GrafanaDatasource: grafana_operator_v1beta1.#GrafanaDatasource
+	}
+
+	"monitoring.grafana.com/v1alpha1": {
+		GrafanaAgent:    grafana_agent_v1alpha1.#GrafanaAgent
+		MetricsInstance: grafana_agent_v1alpha1.#MetricsInstance
+		LogsInstance:    grafana_agent_v1alpha1.#LogsInstance
+		PodLogs:         grafana_agent_v1alpha1.#PodLogs
+		Integration:     grafana_agent_v1alpha1.#Integration
 	}
 
 	"cert-manager.io/v1": {

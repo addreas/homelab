@@ -4,7 +4,7 @@
 
 package reflect
 
-_#flag: uintptr
+_#flag: uint64
 
 _#flagKindWidth:   5
 _#flagKindMask:    _#flag & 31
@@ -43,7 +43,7 @@ _#hiter: {
 //
 // In new code, use unsafe.String or unsafe.StringData instead.
 #StringHeader: {
-	Data: uintptr
+	Data: uint64 @go(,uintptr)
 	Len:  int
 }
 
@@ -56,7 +56,7 @@ _#hiter: {
 //
 // In new code, use unsafe.Slice or unsafe.SliceData instead.
 #SliceHeader: {
-	Data: uintptr
+	Data: uint64 @go(,uintptr)
 	Len:  int
 	Cap:  int
 }

@@ -37,7 +37,7 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
 	// +optional
 	// +nullable
-	// +kubebuilder:validation:XPreserveUnknownFields
+	// +kubebuilder:pruning:PreserveUnknownFields
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta) @protobuf(1,bytes,opt)
 
 	// Used to facilitate programmatic handling of secret data.
@@ -62,7 +62,7 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	encryptedData: #SealedSecretEncryptedData @go(EncryptedData)
 }
 
-// +kubebuilder:validation:XPreserveUnknownFields
+// +kubebuilder:pruning:PreserveUnknownFields
 #SealedSecretEncryptedData: _
 
 // SealedSecretConditionType describes the type of SealedSecret condition

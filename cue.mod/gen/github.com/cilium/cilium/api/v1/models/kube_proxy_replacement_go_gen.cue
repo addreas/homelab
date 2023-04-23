@@ -62,6 +62,9 @@ package models
 //
 // swagger:model KubeProxyReplacementFeatures
 #KubeProxyReplacementFeatures: {
+	// flag bpf-lb-sock-hostns-only
+	bpfSocketLBHostnsOnly?: bool @go(BpfSocketLBHostnsOnly)
+
 	// external i ps
 	externalIPs?: null | #KubeProxyReplacementFeaturesExternalIPs @go(ExternalIPs,*KubeProxyReplacementFeaturesExternalIPs)
 

@@ -32,6 +32,14 @@ command: "update-gomod-defs": {
 		$after: [getGo]
 		cmd: "sed -i /url/d ./cue.mod/gen/github.com/VictoriaMetrics/operator/api/v1beta1/vmrule_types_go_gen.cue"
 	}
+	deleteNetHttp: exec.Run & {
+		$after: [getGo]
+		cmd: "sed -i /http/d ./cue.mod/gen/k8s.io/client-go/rest/config_go_gen.cue ./cue.mod/gen/k8s.io/client-go/rest/client_go_gen.cue"
+	}
+	deleteBorkedColorStrings: exec.Run & {
+		$after: [getGo]
+		cmd: "sed -i /_#.*Color/d ./cue.mod/gen/k8s.io/client-go/rest/warnings_go_gen.cue"
+	}
 }
 
 // Extracts jsonnet config and generates cue definitions.

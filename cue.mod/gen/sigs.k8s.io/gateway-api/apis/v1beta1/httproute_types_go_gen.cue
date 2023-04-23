@@ -489,11 +489,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // ```
 // match:
 //
-// path:
-//   value: "/foo"
-// headers:
-// - name: "version"
-//   value "v1"
+//	path:
+//	  value: "/foo"
+//	headers:
+//	- name: "version"
+//	  value "v1"
 //
 // ```
 #HTTPRouteMatch: {

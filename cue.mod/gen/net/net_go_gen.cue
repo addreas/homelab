@@ -13,27 +13,27 @@
 //
 // The Dial function connects to a server:
 //
-//  conn, err := net.Dial("tcp", "golang.org:80")
-//  if err != nil {
-//   // handle error
-//  }
-//  fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
-//  status, err := bufio.NewReader(conn).ReadString('\n')
-//  // ...
+// 	conn, err := net.Dial("tcp", "golang.org:80")
+// 	if err != nil {
+// 		// handle error
+// 	}
+// 	fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
+// 	status, err := bufio.NewReader(conn).ReadString('\n')
+// 	// ...
 //
 // The Listen function creates servers:
 //
-//  ln, err := net.Listen("tcp", ":8080")
-//  if err != nil {
-//   // handle error
-//  }
-//  for {
-//   conn, err := ln.Accept()
-//   if err != nil {
-//    // handle error
-//   }
-//   go handleConnection(conn)
-//  }
+// 	ln, err := net.Listen("tcp", ":8080")
+// 	if err != nil {
+// 		// handle error
+// 	}
+// 	for {
+// 		conn, err := ln.Accept()
+// 		if err != nil {
+// 			// handle error
+// 		}
+// 		go handleConnection(conn)
+// 	}
 //
 // # Name Resolution
 //
@@ -59,8 +59,8 @@
 // The resolver decision can be overridden by setting the netdns value of the
 // GODEBUG environment variable (see package runtime) to go or cgo, as in:
 //
-//  export GODEBUG=netdns=go    # force pure Go resolver
-//  export GODEBUG=netdns=cgo   # force native resolver (cgo, win32)
+// 	export GODEBUG=netdns=go    # force pure Go resolver
+// 	export GODEBUG=netdns=cgo   # force native resolver (cgo, win32)
 //
 // The decision can also be forced while building the Go source tree
 // by setting the netgo or netcgo build tag.

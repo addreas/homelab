@@ -35,4 +35,8 @@ githubReleases: {
 	"ory/kratos":                 "v0.13.0"
 	"zwave-js/zwave-js-ui":       "v8.14.1"
 }
-otherTags: "fluxcd/flux2": "v2.0.0-rc.1"
+
+otherTags: {
+	"grafana/helm-charts/agent-operator": "0.2.15"
+	"fluxcd/flux2":                       "v2.0.0-rc.1"
+}

@@ -145,7 +145,7 @@ import (
 	// +optional
 	continue?: bool @go(Continue)
 
-	// RawRoutes alertmanager nested routes
+	// Child routes.
 	// https://prometheus.io/docs/alerting/latest/configuration/#route
 	routes?: [...apiextensionsv1.#JSON] @go(RawRoutes,[]apiextensionsv1.JSON)
 
