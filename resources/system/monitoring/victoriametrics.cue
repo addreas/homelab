@@ -23,6 +23,14 @@ k: VMSingle: "main": spec: {
 	}
 }
 
+k: ServiceMonitor: "vmsingle-main": spec: {
+	endpoints: [{
+		path: "/metrics"
+		port: "http"
+	}]
+	selector: matchLabels: "app.kubernetes.io/name": "vmsingle"
+}
+
 k: GrafanaDatasource: "vmsingle-main": spec: datasource: {
 	name:      "VictoriaMetrics"
 	type:      "prometheus"
