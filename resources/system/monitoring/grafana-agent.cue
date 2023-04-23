@@ -47,7 +47,7 @@ k: HelmRelease: "grafana-agent-operator": spec: {
 		chart:   "grafana-agent-operator"
 		sourceRef: name: "grafana"
 	}
-	values: kubeletService: null
+	values: kubeletService: namespace: "kube-system"
 }
 
 k: ServiceAccount: "grafana-agent": {}
