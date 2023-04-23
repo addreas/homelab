@@ -22,6 +22,8 @@ k: Prometheus: "k8s": spec: {
 	prometheusExternalLabelName: ""
 	replicaExternalLabelName:    ""
 
+	externalLabels: cluster: "nucles"
+
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "prometheus"
 
 	storage: emptyDir: {}
@@ -31,6 +33,7 @@ k: Prometheus: "k8s": spec: {
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
 }
+
 k: ClusterRole: "prometheus-k8s-namespaced": rules: k.Role."monitoring/prometheus-k8s".rules
 
 k: ClusterRoleBinding: "prometheus-k8s-namespaced": {
