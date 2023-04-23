@@ -34,10 +34,7 @@ githubReleases: {
 	"ory/hydra":                  "v2.1.0"
 	"ory/kratos":                 "v0.11.1"
 	"zwave-js/zwave-js-ui":       "v8.13.1"
-	"fluxcd/flux2":               "v2.0.0-rc.1"
 }
-some: {
-	custom: tag: "1.2.3"
-	optional?: _ | *"field"
-	#def:      "field"
+otherTags: {
+	"fluxcd/flux2": "v2.0.0-rc.1"
 }
