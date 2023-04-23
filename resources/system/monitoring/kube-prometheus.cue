@@ -32,7 +32,7 @@ k: ClusterRoleBinding: "prometheus-k8s-namespaced": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
 		kind:     "ClusterRole"
-		name:     "pod-getter"
+		name:     k.ClusterRole."prometheus-k8s-namespaced".metadata.name
 	}
 	subjects: k.RoleBinding."monitoring/prometheus-k8s".subjects
 }
