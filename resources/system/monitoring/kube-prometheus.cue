@@ -23,6 +23,9 @@ k: Prometheus: "k8s": spec: {
 
 	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
 
+	prometheusExternalLabelName: ""
+	replicaExternalLabelName:    ""
+
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
 }
