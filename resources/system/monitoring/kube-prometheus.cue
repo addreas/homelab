@@ -38,6 +38,9 @@ k: GrafanaDatasource: "prometheus": spec: datasource: {
 
 k: Ingress: "prometheus-k8s": _authproxy: true
 
-k: Alertmanager: "main": spec: podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
+k: Alertmanager: "main": spec: {
+	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "alertmanager"
+	replicas: 1
+}
 
 k: Ingress: "alertmanager-main": _authproxy: true
