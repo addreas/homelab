@@ -1,6 +1,479 @@
 package manifests
 
 grafanaDashboards: {
+	"alertmanager-overview.json": {
+		"__inputs": []
+		"__requires": []
+		annotations: list: []
+		editable:     false
+		gnetId:       null
+		graphTooltip: 1
+		hideControls: false
+		id:           null
+		links: []
+		refresh: "30s"
+		rows: [{
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "current set of alerts stored in the Alertmanager"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 2
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         false
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "sum(alertmanager_alerts{namespace=~\"$namespace\",service=~\"$service\"}) by (namespace,service,instance)"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Alerts"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "none"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "none"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "rate of successful and invalid alerts received by the Alertmanager"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 3
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         false
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "sum(rate(alertmanager_alerts_received_total{namespace=~\"$namespace\",service=~\"$service\"}[$__rate_interval])) by (namespace,service,instance)"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Received"
+					refId:          "A"
+				}, {
+					expr:           "sum(rate(alertmanager_alerts_invalid_total{namespace=~\"$namespace\",service=~\"$service\"}[$__rate_interval])) by (namespace,service,instance)"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Invalid"
+					refId:          "B"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Alerts receive rate"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "ops"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "ops"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Alerts"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "rate of successful and invalid notifications sent by the Alertmanager"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 4
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         false
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        "integration"
+				seriesOverrides: []
+				spaceLength: 10
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "sum(rate(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (integration,namespace,service,instance)"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Total"
+					refId:          "A"
+				}, {
+					expr:           "sum(rate(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (integration,namespace,service,instance)"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Failed"
+					refId:          "B"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "$integration: Notifications Send Rate"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "ops"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "ops"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "latency of notifications sent by the Alertmanager"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 5
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         false
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        "integration"
+				seriesOverrides: []
+				spaceLength: 10
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr: """
+						histogram_quantile(0.99,
+						  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=~"$namespace",service=~"$service", integration="$integration"}[$__rate_interval])) by (le,namespace,service,instance)
+						) 
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} 99th Percentile"
+					refId:          "A"
+				}, {
+					expr: """
+						histogram_quantile(0.50,
+						  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=~"$namespace",service=~"$service", integration="$integration"}[$__rate_interval])) by (le,namespace,service,instance)
+						) 
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Median"
+					refId:          "B"
+				}, {
+					expr: """
+						sum(rate(alertmanager_notification_latency_seconds_sum{namespace=~"$namespace",service=~"$service", integration="$integration"}[$__rate_interval])) by (namespace,service,instance)
+						/
+						sum(rate(alertmanager_notification_latency_seconds_count{namespace=~"$namespace",service=~"$service", integration="$integration"}[$__rate_interval])) by (namespace,service,instance)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{instance}} Average"
+					refId:          "C"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "$integration: Notification Duration"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "s"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "s"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Notifications"
+			titleSize:       "h6"
+			type:            "row"
+		}]
+		schemaVersion: 14
+		style:         "dark"
+		tags: [
+			"alertmanager-mixin",
+		]
+		templating: list: [{
+			current: {
+				text:  "Prometheus"
+				value: "Prometheus"
+			}
+			hide:  0
+			label: "Data Source"
+			name:  "datasource"
+			options: []
+			query:   "prometheus"
+			refresh: 1
+			regex:   ""
+			type:    "datasource"
+		}, {
+			allValue: null
+			current: {
+				text:  ""
+				value: ""
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: false
+			label:      "namespace"
+			multi:      false
+			name:       "namespace"
+			options: []
+			query:          "label_values(alertmanager_alerts, namespace)"
+			refresh:        2
+			regex:          ""
+			sort:           1
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {
+				text:  ""
+				value: ""
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: false
+			label:      "service"
+			multi:      false
+			name:       "service"
+			options: []
+			query:          "label_values(alertmanager_alerts, service)"
+			refresh:        2
+			regex:          ""
+			sort:           1
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {
+				text:  "all"
+				value: "$__all"
+			}
+			datasource: "$datasource"
+			hide:       2
+			includeAll: true
+			label:      null
+			multi:      false
+			name:       "integration"
+			options: []
+			query:          "label_values(alertmanager_notifications_total{integration=~\".*\"}, integration)"
+			refresh:        2
+			regex:          ""
+			sort:           1
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}]
+		time: {
+			from: "now-1h"
+			to:   "now"
+		}
+		timepicker: {
+			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+		}
+		timezone: "utc"
+		title:    "Alertmanager / Overview"
+		uid:      "alertmanager-overview"
+		version:  0
+	}
 	"apiserver.json": {
 		"__inputs": []
 		"__requires": []
@@ -24218,6 +24691,2299 @@ grafanaDashboards: {
 		timezone: "UTC"
 		title:    "Kubernetes / Networking / Pod"
 		uid:      "7a18067ce943a40ae25454675c19ff5c"
+		version:  0
+	}
+	"prometheus-remote-write.json": {
+		"__inputs": []
+		"__requires": []
+		annotations: list: []
+		editable:     true
+		gnetId:       null
+		graphTooltip: 0
+		hideControls: false
+		id:           null
+		links: []
+		refresh: "60s"
+		rows: [{
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 2
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr: """
+						(
+						  prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"} 
+						-  
+						  ignoring(remote_name, url) group_right(instance) (prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance"} != 0)
+						)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Highest Timestamp In vs. Highest Timestamp Sent"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 3
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr: """
+						clamp_min(
+						  rate(prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"}[5m])  
+						- 
+						  ignoring (remote_name, url) group_right(instance) rate(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance"}[5m])
+						, 0)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Rate[5m]"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Timestamps"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 4
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        12
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr: """
+						rate(
+						  prometheus_remote_storage_samples_in_total{cluster=~"$cluster", instance=~"$instance"}[5m])
+						- 
+						  ignoring(remote_name, url) group_right(instance) (rate(prometheus_remote_storage_succeeded_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]) or rate(prometheus_remote_storage_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]))
+						- 
+						  (rate(prometheus_remote_storage_dropped_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~"$cluster", instance=~"$instance"}[5m]))
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Rate, in vs. succeeded or dropped [5m]"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Samples"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 5
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				minSpan:       6
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        12
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_shards{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Current Shards"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 6
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_shards_max{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Max Shards"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 7
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_shards_min{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Min Shards"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 8
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_shards_desired{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Desired Shards"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Shards"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 9
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_shard_capacity{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Shard Capacity"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 10
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\"} or prometheus_remote_storage_samples_pending{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Pending Samples"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Shard Details"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 11
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_tsdb_wal_segment_current{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "TSDB Current Segment"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "none"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 12
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_wal_watcher_current_segment{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{consumer}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Remote Write Current Segment"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "none"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Segments"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 13
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        3
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Dropped Samples"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 14
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        3
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_failed_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Failed Samples"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 15
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        3
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_retried_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Retried Samples"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 16
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        3
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_remote_storage_enqueue_retries_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Enqueue Retries"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Misc. Rates"
+			titleSize:       "h6"
+			type:            "row"
+		}]
+		schemaVersion: 14
+		style:         "dark"
+		tags: [
+			"prometheus-mixin",
+		]
+		templating: list: [{
+			hide:  0
+			label: null
+			name:  "datasource"
+			options: []
+			query:   "prometheus"
+			refresh: 1
+			regex:   ""
+			type:    "datasource"
+		}, {
+			allValue: null
+			current: {
+				text: {
+					selected: true
+					text:     "All"
+					value:    "$__all"
+				}
+				value: {
+					selected: true
+					text:     "All"
+					value:    "$__all"
+				}
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
+			label:      null
+			multi:      false
+			name:       "cluster"
+			options: []
+			query:          "label_values(kube_pod_container_info{image=~\".*prometheus.*\"}, cluster)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {
+				text: {
+					selected: true
+					text:     "All"
+					value:    "$__all"
+				}
+				value: {
+					selected: true
+					text:     "All"
+					value:    "$__all"
+				}
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
+			label:      null
+			multi:      false
+			name:       "instance"
+			options: []
+			query:          "label_values(prometheus_build_info{cluster=~\"$cluster\"}, instance)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
+			label:      null
+			multi:      false
+			name:       "url"
+			options: []
+			query:          "label_values(prometheus_remote_storage_shards{cluster=~\"$cluster\", instance=~\"$instance\"}, url)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}]
+		time: {
+			from: "now-6h"
+			to:   "now"
+		}
+		timepicker: {
+			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+		}
+		timezone: "browser"
+		title:    "Prometheus / Remote Write"
+		version:  0
+	}
+	"prometheus.json": {
+		annotations: list: []
+		editable:     true
+		gnetId:       null
+		graphTooltip: 0
+		hideControls: false
+		links: []
+		refresh: "60s"
+		rows: [{
+			collapse: false
+			height:   "250px"
+			panels: [{
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       1
+				id:         1
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        12
+				stack:       false
+				steppedLine: false
+				styles: [{
+					alias:      "Time"
+					dateFormat: "YYYY-MM-DD HH:mm:ss"
+					pattern:    "Time"
+					type:       "hidden"
+				}, {
+					alias:     "Count"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "Value #A"
+					thresholds: []
+					type: "hidden"
+					unit: "short"
+				}, {
+					alias:     "Uptime"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "Value #B"
+					thresholds: []
+					type: "number"
+					unit: "s"
+				}, {
+					alias:     "Instance"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "instance"
+					thresholds: []
+					type: "number"
+					unit: "short"
+				}, {
+					alias:     "Job"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "job"
+					thresholds: []
+					type: "number"
+					unit: "short"
+				}, {
+					alias:     "Version"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "version"
+					thresholds: []
+					type: "number"
+					unit: "short"
+				}, {
+					alias:     ""
+					colorMode: null
+					colors: []
+					dateFormat: "YYYY-MM-DD HH:mm:ss"
+					decimals:   2
+					pattern:    "/.*/"
+					thresholds: []
+					type: "string"
+					unit: "short"
+				}]
+				targets: [{
+					expr:           "count by (job, instance, version) (prometheus_build_info{job=~\"$job\", instance=~\"$instance\"})"
+					format:         "table"
+					instant:        true
+					intervalFactor: 2
+					legendFormat:   ""
+					refId:          "A"
+					step:           10
+				}, {
+					expr:           "max by (job, instance) (time() - process_start_time_seconds{job=~\"$job\", instance=~\"$instance\"})"
+					format:         "table"
+					instant:        true
+					intervalFactor: 2
+					legendFormat:   ""
+					refId:          "B"
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Prometheus Stats"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				transform: "table"
+				type:      "table"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Prometheus Stats"
+			titleSize:       "h6"
+		}, {
+			collapse: false
+			height:   "250px"
+			panels: [{
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       1
+				id:         2
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "sum(rate(prometheus_target_sync_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m])) by (scrape_job) * 1e3"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{scrape_job}}"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Target Sync"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "ms"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}, {
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         3
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "sum(prometheus_sd_discovered_targets{job=~\"$job\",instance=~\"$instance\"})"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "Targets"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Targets"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Discovery"
+			titleSize:       "h6"
+		}, {
+			collapse: false
+			height:   "250px"
+			panels: [{
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       1
+				id:         4
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_target_interval_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{job=~\"$job\",instance=~\"$instance\"}[5m]) * 1e3"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{interval}} configured"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Average Scrape Interval Duration"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "ms"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}, {
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         5
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "sum by (job) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "exceeded body size limit: {{job}}"
+					legendLink:     null
+					step:           10
+				}, {
+					expr:           "sum by (job) (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "exceeded sample limit: {{job}}"
+					legendLink:     null
+					step:           10
+				}, {
+					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_duplicate_timestamp_total[1m]))"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "duplicate timestamp: {{job}}"
+					legendLink:     null
+					step:           10
+				}, {
+					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_bounds_total[1m]))"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "out of bounds: {{job}}"
+					legendLink:     null
+					step:           10
+				}, {
+					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_order_total[1m]))"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "out of order: {{job}}"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Scrape failures"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}, {
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         6
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        4
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_tsdb_head_samples_appended_total{job=~\"$job\",instance=~\"$instance\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{job}} {{instance}}"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Appended Samples"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Retrieval"
+			titleSize:       "h6"
+		}, {
+			collapse: false
+			height:   "250px"
+			panels: [{
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         7
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_tsdb_head_series{job=~\"$job\",instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{job}} {{instance}} head series"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Head Series"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}, {
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         8
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "prometheus_tsdb_head_chunks{job=~\"$job\",instance=~\"$instance\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{job}} {{instance}} head chunks"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Head Chunks"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Storage"
+			titleSize:       "h6"
+		}, {
+			collapse: false
+			height:   "250px"
+			panels: [{
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         9
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "rate(prometheus_engine_query_duration_seconds_count{job=~\"$job\",instance=~\"$instance\",slice=\"inner_eval\"}[5m])"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{job}} {{instance}}"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Query Rate"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}, {
+				aliasColors: {}
+				bars:       false
+				dashLength: 10
+				dashes:     false
+				datasource: "$datasource"
+				fill:       10
+				id:         10
+				legend: {
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
+				}
+				lines:     true
+				linewidth: 0
+				links: []
+				nullPointMode: "null as zero"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr:           "max by (slice) (prometheus_engine_query_duration_seconds{quantile=\"0.9\",job=~\"$job\",instance=~\"$instance\"}) * 1e3"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "{{slice}}"
+					legendLink:     null
+					step:           10
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Stage Duration"
+				tooltip: {
+					shared:     true
+					sort:       2
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "ms"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    false
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Query"
+			titleSize:       "h6"
+		}]
+		schemaVersion: 14
+		style:         "dark"
+		tags: [
+			"prometheus-mixin",
+		]
+		templating: list: [{
+			current: {
+				text:  "default"
+				value: "default"
+			}
+			hide:  0
+			label: "Data Source"
+			name:  "datasource"
+			options: []
+			query:   "prometheus"
+			refresh: 1
+			regex:   ""
+			type:    "datasource"
+		}, {
+			allValue: ".+"
+			current: {
+				selected: true
+				text:     "All"
+				value:    "$__all"
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
+			label:      "job"
+			multi:      true
+			name:       "job"
+			options: []
+			query:          "label_values(prometheus_build_info{job=\"prometheus-k8s\",namespace=\"monitoring\"}, job)"
+			refresh:        1
+			regex:          ""
+			sort:           2
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: ".+"
+			current: {
+				selected: true
+				text:     "All"
+				value:    "$__all"
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
+			label:      "instance"
+			multi:      true
+			name:       "instance"
+			options: []
+			query:          "label_values(prometheus_build_info{job=~\"$job\"}, instance)"
+			refresh:        1
+			regex:          ""
+			sort:           2
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}]
+		time: {
+			from: "now-1h"
+			to:   "now"
+		}
+		timepicker: {
+			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+		}
+		timezone: "utc"
+		title:    "Prometheus / Overview"
+		uid:      ""
 		version:  0
 	}
 	"proxy.json": {

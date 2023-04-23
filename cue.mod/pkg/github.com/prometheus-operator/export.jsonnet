@@ -54,17 +54,19 @@ local resources(name, filter = function(r) true) = std.foldr(
 {
  "alertmanager.json": resources("alertmanager", function(r) r.kind != "NetworkPolicy"),
  "blackboxExporter.json": resources("blackboxExporter", function(r) r.kind != "NetworkPolicy"),
- "prometheus.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
- "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
- "prometheusAdapter.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
- "kubeStateMetrics.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
- "nodeExporter.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
-
- "kubernetesControlPlane.json": resources("kubernetesControlPlane"),
  "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
+ "kubeStateMetrics.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
+ "kubernetesControlPlane.json": resources("kubernetesControlPlane"),
+ "nodeExporter.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
+ "prometheus.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
+ "prometheusAdapter.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
+ "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
+
  "grafanaDashboards.json": { grafanaDashboards:
+    kp.alertmanager.mixin.grafanaDashboards + 
+    kp.kubernetesControlPlane.mixin.grafanaDashboards + 
     kp.nodeExporter.mixin.grafanaDashboards +
-    kp.kubernetesControlPlane.mixin.grafanaDashboards
+    kp.prometheus.mixin.grafanaDashboards
   }
 }
 

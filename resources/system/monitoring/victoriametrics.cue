@@ -40,6 +40,8 @@ k: GrafanaDatasource: "vmsingle-main": spec: datasource: {
 	basicAuth: false
 }
 
+k: GrafanaDashboard: "victoriametrics": spec: source: remote: grafanaCom: id: 10229
+
 k: GitRepository: "victoriametrics-operator": spec: {
 	ref: tag: goModVersions["github.com/VictoriaMetrics/operator"]
 	url: "https://github.com/victoriametrics/operator"
