@@ -14,32 +14,15 @@ k: GrafanaDashboard: {
 	}
 }
 
-k: m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter
-
-for R in things.PrometheusRule {
-	k: VMRule: "\(R.metadata.name)": {
-		metadata: R.metadata
-		spec:     R.spec
+k: {
+	for kind, resources in m.kubernetesControlPlane & m.kubePrometheus & m.kubeStateMetrics & m.prometheusAdapter & m.nodeExporter if kind != "NetworkPolicy" {
+		(kind): resources
 	}
 }
 
-for N in things.NetworkPolicy {
-	k: NetworkPolicy: "\(N.metadata.name)": {
-		metadata: N.metadata
-		spec: {
-			for key, value in N.spec if key != "ingress" {(key): value}
-			ingress: [ for i in N.spec.ingress {
-				if i.from != _|_ {
-					from: i.from + [{
-						podSelector: matchLabels: "app.kubernetes.io/name": "vmagent"
-					}, {
-						podSelector: matchLabels: "app.kubernetes.io/name": "grafana-agent"
-					}]
-				}
-				if i.ports != _|_ {
-					ports: i.ports
-				}
-			}]
-		}
+for R in k.PrometheusRule {
+	k: VMRule: "\(R.metadata.name)": {
+		metadata: R.metadata
+		spec:     R.spec
 	}
 }
