@@ -28,7 +28,7 @@ k: LogsInstance: primary: spec: {
 
 k: PodLogs: "kubernetes-pods": spec: {
 	pipelineStages: [{
-		docker: {}
+		cri: {}
 	}]
 	namespaceSelector: any: true
 	selector: matchLabels: {}
