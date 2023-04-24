@@ -23,7 +23,7 @@
 // represented as variadic arguments at the end of a given method call.
 // For instance, to use a label selector on list, you can call
 //
-//	err := someReader.List(context.Background(), &podList, client.MatchingLabels{"somelabel": "someval"})
+// err := someReader.List(context.Background(), &podList, client.MatchingLabels{"somelabel": "someval"})
 //
 // # Indexing
 //

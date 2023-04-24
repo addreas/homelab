@@ -128,9 +128,9 @@ package reflect
 //
 // tflag values must be kept in sync with copies in:
 //
-//	cmd/compile/internal/reflectdata/reflect.go
-//	cmd/link/internal/ld/decodesym.go
-//	runtime/type.go
+//       cmd/compile/internal/reflectdata/reflect.go
+//       cmd/link/internal/ld/decodesym.go
+//       runtime/type.go
 _#tflag: uint8
 
 // tflagUncommon means that there is a pointer, *uncommonType,
@@ -139,11 +139,11 @@ _#tflag: uint8
 // For example, if t.Kind() == Struct and t.tflag&tflagUncommon != 0,
 // then t has uncommonType data and it can be accessed as:
 //
-//	type tUncommon struct {
-//		structType
-//		u uncommonType
-//	}
-//	u := &(*tUncommon)(unsafe.Pointer(t)).u
+//               type tUncommon struct {
+//                structType
+//                u uncommonType
+//               }
+//               u := &(*tUncommon)(unsafe.Pointer(t)).u
 _#tflagUncommon: _#tflag & 1
 
 // tflagExtraStar means the name in the str field has an

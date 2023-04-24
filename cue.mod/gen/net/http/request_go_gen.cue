@@ -64,19 +64,19 @@ _#defaultMaxMemory: 33554432
 	//
 	// If a server received a request with header lines,
 	//
-	//	Host: example.com
-	//	accept-encoding: gzip, deflate
-	//	Accept-Language: en-us
-	//	fOO: Bar
-	//	foo: two
+	// Host: example.com
+	// accept-encoding: gzip, deflate
+	// Accept-Language: en-us
+	// fOO: Bar
+	// foo: two
 	//
 	// then
 	//
-	//	Header = map[string][]string{
-	//		"Accept-Encoding": {"gzip, deflate"},
-	//		"Accept-Language": {"en-us"},
-	//		"Foo": {"Bar", "two"},
-	//	}
+	// Header = map[string][]string{
+	//  "Accept-Encoding": {"gzip, deflate"},
+	//  "Accept-Language": {"en-us"},
+	//  "Foo": {"Bar", "two"},
+	// }
 	//
 	// For incoming requests, the Host header is promoted to the
 	// Request.Host field and removed from the Header map.

@@ -96,7 +96,7 @@ _#sanitizedConfig: null | #Config
 _#sanitizedAuthConfigPersister: AuthProviderConfigPersister: #AuthProviderConfigPersister
 
 _#sanitizedObject: {
-	Object: runtime.#Object @go(,gruntime.Object)
+	Object: runtime.#Object @go(,k8s.io/apimachinery/pkg/gruntime.Object)
 }
 
 // ImpersonationConfig has all the available impersonation options

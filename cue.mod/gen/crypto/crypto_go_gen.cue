@@ -80,9 +80,9 @@ _#maxHash:    #Hash & 20
 // Although this type is an empty interface for backwards compatibility reasons,
 // all public key types in the standard library implement the following interface
 //
-//	interface{
-//	    Equal(x crypto.PublicKey) bool
-//	}
+// interface{
+//     Equal(x crypto.PublicKey) bool
+// }
 //
 // which can be used for increased type safety within applications.
 #PublicKey: _
@@ -92,10 +92,10 @@ _#maxHash:    #Hash & 20
 // Although this type is an empty interface for backwards compatibility reasons,
 // all private key types in the standard library implement the following interface
 //
-//	interface{
-//	    Public() crypto.PublicKey
-//	    Equal(x crypto.PrivateKey) bool
-//	}
+// interface{
+//     Public() crypto.PublicKey
+//     Equal(x crypto.PrivateKey) bool
+// }
 //
 // as well as purpose-specific interfaces such as Signer and Decrypter, which
 // can be used for increased type safety within applications.

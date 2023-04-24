@@ -21,7 +21,7 @@ _#envBackoffDuration: "KUBE_CLIENT_BACKOFF_DURATION"
 //
 // TODO: ContentConfig will be updated to accept a Negotiator instead of a
 //
-//	NegotiatedSerializer and NegotiatedSerializer will be removed.
+// NegotiatedSerializer and NegotiatedSerializer will be removed.
 #ClientContentConfig: {
 	// AcceptContentTypes specifies the types the client will accept and is optional.
 	// If not set, ContentType will be used to define the Accept header
