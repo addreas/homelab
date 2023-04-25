@@ -28,17 +28,14 @@ k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "
 	job_name: "systemd-journal"
 	journal: {
 		labels: namespace: "systemd-journal"
-		path: "/var/log/journal"
+		max_age: "12h"
 	}
 	relabel_configs: [{
 		source_labels: ["__journal__systemd_unit"]
 		target_label: "systemd_unit"
 	}, {
 		source_labels: ["__journal__hostname"]
-		target_label: "nodename"
-	}, {
-		source_labels: ["__journal_syslog_identifier"]
-		target_label: "syslog_identifier"
+		target_label: "hostname"
 	}]
 }])
 
