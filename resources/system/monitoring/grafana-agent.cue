@@ -15,8 +15,6 @@ k: LogsInstance: primary: spec: {
 		url: "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
 	}]
 
-	logsExternalLabelName: ""
-
 	podLogsNamespaceSelector: {}
 	podLogsSelector: {}
 
@@ -48,7 +46,10 @@ k: GrafanaAgent: "grafana-agent": spec: {
 	logLevel:           "info"
 	serviceAccountName: "grafana-agent"
 	metrics: instanceSelector: {}
-	logs: instanceSelector: {}
+	logs: {
+		logsExternalLabelName: ""
+		instanceSelector: {}
+	}
 }
 
 k: HelmRepository: "grafana": spec: url: "https://grafana.github.io/helm-charts"
