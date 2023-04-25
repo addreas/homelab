@@ -1,30 +1,6 @@
 package kube
 
-// k: MetricsInstance: primary: spec: {
-// 	remoteWrite: [{
-// 		url: "http://vmsingle-main.monitoring.svc.cluster.local:8429/api/v1/write"
-// 	}, {
-// 		url: "http://prometheus-k8s.monitoring.svc.cluster.local:9090/api/v1/write"
-// 	}]
-
-// 	serviceMonitorNamespaceSelector: {}
-// 	serviceMonitorSelector: {}
-
-// 	podMonitorNamespaceSelector: {}
-// 	podMonitorSelector: {}
-
-// 	probeNamespaceSelector: {}
-// 	probeSelector: {}
-// }
-
-k: LogsInstance: primary: spec: {
-	clients: [{
-		url: "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
-	}]
-
-	podLogsNamespaceSelector: {}
-	podLogsSelector: {}
-}
+import "encoding/yaml"
 
 k: PodLogs: "kubernetes-pods": spec: {
 	pipelineStages: [{
@@ -33,6 +9,40 @@ k: PodLogs: "kubernetes-pods": spec: {
 	namespaceSelector: any: true
 	selector: matchLabels: {}
 }
+
+k: LogsInstance: primary: spec: {
+	clients: [{
+		url: "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+	}]
+
+	logsExternalLabelName: ""
+
+	podLogsNamespaceSelector: {}
+	podLogsSelector: {}
+
+	additionalScrapeConfigs: {
+		name: "grafana-agent-primary-logs-additional-scrape-configs"
+		key:  "config.yaml"
+	}
+}
+
+k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "config.yaml": yaml.Marshal([{
+	job_name: "systemd-journal"
+	journal: {
+		labels: namespace: "systemd-journal"
+		path: "/var/log/journal"
+	}
+	relabel_configs: [{
+		source_labels: ["__journal__systemd_unit"]
+		target_label: "systemd_unit"
+	}, {
+		source_labels: ["__journal__hostname"]
+		target_label: "nodename"
+	}, {
+		source_labels: ["__journal_syslog_identifier"]
+		target_label: "syslog_identifier"
+	}]
+}])
 
 k: GrafanaAgent: "grafana-agent": spec: {
 	logLevel:           "info"
