@@ -70,6 +70,7 @@ k: Deployment: loki: spec: template: {
 }
 
 k: Service: loki: {}
+k: ServiceMonitor: loki: spec: endpoints: [{port: "http"}]
 
 k: GrafanaDatasource: "loki": spec: {
 	datasource: {

@@ -24,6 +24,11 @@ k: LogsInstance: primary: spec: {
 	}
 }
 
+k: PodMonitor: "grafana-agent": spec: {
+	podMetricsEndpoints: [{port: "http-metrics"}]
+	selector: matchLabels: "app.kubernetes.io/name": "grafana-agent"
+}
+
 k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "config.yaml": yaml.Marshal([{
 	job_name: "systemd-journal"
 	journal: {
