@@ -59,7 +59,7 @@ k: GrafanaAgent: "grafana-agent": spec: {
 		}
 	}]
 	volumeMounts: [{
-		name:      "mahicne-id"
+		name:      "machine-id"
 		mountPath: "/etc/machine-id"
 		readOnly:  true
 	}]
