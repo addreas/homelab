@@ -50,6 +50,19 @@ k: GrafanaAgent: "grafana-agent": spec: {
 		logsExternalLabelName: ""
 		instanceSelector: {}
 	}
+
+	volumes: [{
+		name: "machine-id"
+		hostPath: {
+			path: "/etc/machine-id"
+			type: "File"
+		}
+	}]
+	volumeMounts: [{
+		name:      "mahicne-id"
+		mountPath: "/etc/machine-id"
+		readOnly:  true
+	}]
 }
 
 k: HelmRepository: "grafana": spec: url: "https://grafana.github.io/helm-charts"
