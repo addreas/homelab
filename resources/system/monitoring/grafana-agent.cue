@@ -72,6 +72,10 @@ k: Integration: "node-exporter": spec: {
 		mountPath: "/host/rootfs"
 		name:      "rootfs"
 		readOnly:  true
+	}, {
+		mountPath: "/run/systemd"
+		name:      "run-systemd"
+		readOnly:  true
 	}]
 	volumes: [{
 		name: "procfs"
@@ -82,6 +86,9 @@ k: Integration: "node-exporter": spec: {
 	}, {
 		name: "rootfs"
 		hostPath: path: "/"
+	}, {
+		name: "run-systemd"
+		hostPath: path: "/run/systemd"
 	}]
 }
 
