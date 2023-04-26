@@ -95,7 +95,7 @@ k: Integration: "eventhandler": spec: {
 }
 
 k: Integration: "blackbox": spec: {
-	name: "blackbox_exporter"
+	name: "blackbox"
 	type: {
 		unique:   true
 		allNodes: false
