@@ -2,6 +2,22 @@ package kube
 
 import "encoding/yaml"
 
+k: MetricsInstance: primary: spec: {
+	remoteWrite: [{
+		// url: "http://vmsingle.monitoring.svc.cluster.local:8429/api/v1/write"
+		url: "http://prometheus-k8s.monitoring.svc.cluster.local:9090/api/v1/write"
+	}]
+
+	serviceMonitorNamespaceSelector: {}
+	serviceMonitorSelector: {}
+
+	podMonitorNamespaceSelector: {}
+	podMonitorSelector: {}
+
+	probeNamespaceSelector: {}
+	probeSelector: {}
+}
+
 k: PodLogs: "kubernetes-pods": spec: {
 	pipelineStages: [{
 		cri: {}
@@ -24,6 +40,79 @@ k: LogsInstance: primary: spec: {
 	}
 }
 
+k: Integration: "node-exporter": spec: {
+	name: "node_exporter"
+	type: {
+		unique:   false
+		allNodes: true
+	}
+	config: {
+		autoscrape: {
+			enable:           true
+			metrics_instance: "monitoring/primary"
+		}
+
+		enable_collectors: ["systemd"]
+
+		netdev_device_exclude: "lxc.*"
+
+		rootfs_path: "/host/rootfs"
+		sysfs_path:  "/host/sys"
+		procfs_path: "/host/proc"
+	}
+	volumeMounts: [{
+		mountPath: "/host/proc"
+		name:      "procfs"
+		readOnly:  true
+	}, {
+		mountPath: "/host/sys"
+		name:      "sysfs"
+		readOnly:  true
+	}, {
+		mountPath: "/host/rootfs"
+		name:      "rootfs"
+		readOnly:  true
+	}]
+	volumes: [{
+		name: "procfs"
+		hostPath: path: "/proc"
+	}, {
+		name: "sysfs"
+		hostPath: path: "/sys"
+	}, {
+		name: "rootfs"
+		hostPath: path: "/"
+	}]
+}
+
+k: Integration: "eventhandler": spec: {
+	name: "eventhandler"
+	type: {
+		unique:   true
+		allNodes: false
+	}
+	config: logs_instance: "primary"
+}
+
+k: Integration: "blackbox": spec: {
+	name: "blackbox_exporter"
+	type: {
+		unique:   true
+		allNodes: false
+	}
+	config: {
+		autoscrape: {
+			enable:           true
+			metrics_instance: "monitoring/primary"
+		}
+		config_file: "/etc/grafana-agent/integrations/configMaps/monitoring/blackbox-exporter-configuration/config.yml"
+	}
+	configMaps: [{
+		name: "blackbox-exporter-configuration"
+		key:  "config.yml"
+	}]
+}
+
 k: PodMonitor: "grafana-agent": spec: {
 	podMetricsEndpoints: [{port: "http-metrics"}]
 	selector: matchLabels: "app.kubernetes.io/name": "grafana-agent"
@@ -33,6 +122,7 @@ k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "
 	job_name: "systemd-journal"
 	journal: {
 		labels: namespace: "systemd-journal"
+		path: "/run/log/journal"
 	}
 	relabel_configs: [{
 		source_labels: ["__journal__systemd_unit"]
@@ -50,6 +140,10 @@ k: GrafanaAgent: "grafana-agent": spec: {
 	logs: {
 		logsExternalLabelName: ""
 		instanceSelector: {}
+	}
+	integrations: {
+		selector: {}
+		namespaceSelector: {}
 	}
 
 	volumes: [{

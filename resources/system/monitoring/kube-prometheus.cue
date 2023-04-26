@@ -32,6 +32,12 @@ k: Prometheus: "k8s": spec: {
 
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
+
+	// madness:
+	enableRemoteWriteReceiver: true
+	serviceMonitorSelector: matchLabels: pls: "no"
+	podMonitorSelector: matchLabels: pls:     "no"
+	probeSelector: matchLabels: pls:          "no"
 }
 
 k: ClusterRole: "prometheus-k8s-namespaced": rules: k.Role."monitoring/prometheus-k8s".rules
