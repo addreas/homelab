@@ -82,3 +82,5 @@ k: GrafanaDatasource: "loki": spec: {
 		basicAuth: false
 	}
 }
+
+k: GrafanaDashboard: "loki": spec: source: remote: grafanaCom: id: 13407

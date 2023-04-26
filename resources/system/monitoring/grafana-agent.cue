@@ -33,7 +33,6 @@ k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "
 	job_name: "systemd-journal"
 	journal: {
 		labels: namespace: "systemd-journal"
-		max_age: "12h"
 	}
 	relabel_configs: [{
 		source_labels: ["__journal__systemd_unit"]
@@ -59,10 +58,20 @@ k: GrafanaAgent: "grafana-agent": spec: {
 			path: "/etc/machine-id"
 			type: "File"
 		}
+	}, {
+		name: "run-log-journal"
+		hostPath: {
+			path: "/run/log/journal"
+			type: "Directory"
+		}
 	}]
 	volumeMounts: [{
 		name:      "machine-id"
 		mountPath: "/etc/machine-id"
+		readOnly:  true
+	}, {
+		name:      "run-log-journal"
+		mountPath: "/run/log/journal"
 		readOnly:  true
 	}]
 }
