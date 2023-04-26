@@ -141,7 +141,7 @@ k: Secret: "grafana-agent-primary-logs-additional-scrape-configs": stringData: "
 }])
 
 k: GrafanaAgent: "grafana-agent": spec: {
-	logLevel:           "info"
+	logLevel:           "debug"
 	serviceAccountName: "grafana-agent"
 	metrics: instanceSelector: {}
 	logs: {
