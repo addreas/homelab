@@ -98,7 +98,7 @@ k: Integration: "eventhandler": spec: {
 		unique:   true
 		allNodes: false
 	}
-	config: logs_instance: "primary"
+	config: logs_instance: "monitoring/primary"
 }
 
 k: Integration: "blackbox": spec: {
