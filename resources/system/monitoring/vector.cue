@@ -184,6 +184,10 @@ k: DaemonSet: vector: {
 						mountPath: "/host/run"
 						name:      "run"
 						readOnly:  true
+					}, {
+						mountPath: "/etc/machine-id"
+						name:      "machine-id"
+						readOnly:  true
 					}]
 				}]
 				volumes: [{
@@ -212,6 +216,9 @@ k: DaemonSet: vector: {
 				}, {
 					hostPath: path: "/run"
 					name: "run"
+				}, {
+					hostPath: path: "/etc/machine-id"
+					name: "machine-id"
 				}]
 			}
 		}
