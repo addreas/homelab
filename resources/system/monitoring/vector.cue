@@ -17,17 +17,45 @@ let _cue_agent_yaml = {
 		host_metrics: {
 			filesystem: {
 				devices: excludes: ["binfmt_misc"]
-				filesystems: excludes: ["binfmt_misc"]
+				filesystems: excludes: [
+					"binfmt_misc",
+					"bpf",
+					"cgroup2",
+					"configfs",
+					"debugfs",
+					"fusectl",
+					"nsfs",
+					"proc",
+					"ramfs",
+					"securityfs",
+					"tmpfs",
+				]
 				mountPoints: excludes: ["*/proc/sys/fs/binfmt_misc"]
 			}
 			type: "host_metrics"
+		}
+		kube_controller_manager_metrics: {
+			type: "prometheus_scrape"
+			endpoints: ["https://127.0.0.1:10257/metrics"]
+			instance_tag: "instance"
+			auth: strategy: "bearer"
+			auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
+			tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+		}
+		kube_scheduler_metrics: {
+			type: "prometheus_scrape"
+			endpoints: ["https://127.0.0.1:10259/metrics"]
+			instance_tag: "instance"
+			auth: strategy: "bearer"
+			auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
+			tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 		}
 		internal_metrics: type: "internal_metrics"
 	}
 	sinks: {
 		prom_exporter: {
 			type: "prometheus_exporter"
-			inputs: ["host_metrics", "internal_metrics"]
+			inputs: ["host_metrics", "internal_metrics", "kube_controler_manager_metrics", "kube_scheduler_metrics"]
 			address: "0.0.0.0:9090"
 		}
 		loki_kubernetes: {
