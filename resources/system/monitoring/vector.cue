@@ -49,6 +49,12 @@ let _cue_agent_yaml = {
 			encoding: codec: "json"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "accept"
+			labels: {
+				cluster:   "nucles"
+				pod:       "{{ kubernetes.pod_name }}"
+				container: "{{ kubernetes.container_name }}"
+				namespace: "{{ kubernetes.pod_namespace}}"
+			}
 		}
 	}
 }
