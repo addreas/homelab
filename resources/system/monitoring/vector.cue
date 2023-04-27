@@ -144,7 +144,7 @@ k: PodMonitor: vector: spec: {
 		}]
 		metricRelabelings: [{
 			action: "labeldrop"
-			sourceLabels: ["host"]
+			regex:  "host"
 		}]
 	}]
 }

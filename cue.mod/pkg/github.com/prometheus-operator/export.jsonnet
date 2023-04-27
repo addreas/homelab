@@ -28,21 +28,29 @@ local kp =
         spec+: {
           template+: {
             spec+: {
-              local args = super.containers[0].args,
+              local nodeExporterContainer = super.containers[0],
               containers: [
-                super.containers[0] + {
+                nodeExporterContainer + {
                   args:
                     std.filter(function(x) !std.member([
                                             '--no-collector.btrfs',
                                             '--no-collector.hwmon'
                                           ], x),
-                               args)
+                               nodeExporterContainer.args)
                     + [
                       '--collector.systemd'
-                    ]
+                    ],
+                    volumeMounts: nodeExporterContainer.volumeMounts + [{
+                      name: 'systemd-dbus',
+                      mountPath: '/var/run/dbus/system_bus_socket'
+                    }],
                 },
                 super.containers[1]
               ],
+              volumes: super.volumes + [{
+                name: 'systemd-dbus',
+                hostPath: { path: '/var/run/dbus/system_bus_socket' }
+              }],
             },
           },
         },
