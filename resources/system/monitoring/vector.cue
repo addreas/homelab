@@ -1,6 +1,7 @@
 package kube
 
 import (
+	"strings"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/yaml"
@@ -55,7 +56,11 @@ let _cue_agent_yaml = {
 	sinks: {
 		prom_exporter: {
 			type: "prometheus_exporter"
-			inputs: ["host_metrics", "internal_metrics", "kube_controler_manager_metrics", "kube_scheduler_metrics"]
+			inputs: [
+				for key, _ in sources if strings.HasSuffix(key, "_metrics") {
+					key
+				},
+			]
 			address: "0.0.0.0:9090"
 		}
 		loki_kubernetes: {
