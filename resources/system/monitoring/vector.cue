@@ -43,17 +43,30 @@ let _cue_agent_yaml = {
 			inputs: ["host_metrics", "internal_metrics"]
 			address: "0.0.0.0:9090"
 		}
-		loki: {
+		loki_kubernetes: {
 			type: "loki"
-			inputs: ["kubernetes_logs", "journald_logs"]
+			inputs: ["kubernetes_logs"]
 			encoding: codec: "json"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
-			out_of_order_action: "accept"
+			out_of_order_action: "drop"
 			labels: {
-				cluster:   "nucles"
+				job:       "vector/kubernetes"
+				filename:  "{{ file }}"
+				stream:    "{{ stream }}"
 				pod:       "{{ kubernetes.pod_name }}"
 				container: "{{ kubernetes.container_name }}"
-				namespace: "{{ kubernetes.pod_namespace}}"
+				namespace: "{{ kubernetes.pod_namespace }}"
+			}
+		}
+		loki_journald: {
+			type: "loki"
+			inputs: ["journald_logs"]
+			encoding: codec: "json"
+			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
+			out_of_order_action: "drop"
+			labels: {
+				job:  "vector/journald"
+				host: "{{ host }}"
 			}
 		}
 	}
