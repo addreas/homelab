@@ -138,9 +138,7 @@ k: PodMonitor: vector: spec: {
 	podMetricsEndpoints: [{
 		port: "prom-exporter"
 		relabelings: [{
-			action:      "replace"
-			regex:       "(.*)"
-			replacement: "$1"
+			action: "replace"
 			sourceLabels: ["__meta_kubernetes_pod_node_name"]
 			targetLabel: "node"
 		}]
