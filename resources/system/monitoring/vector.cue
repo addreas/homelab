@@ -9,20 +9,7 @@ import (
 let _cue_agent_yaml = {
 	data_dir: "/vector-data-dir"
 	sources: {
-		kubernetes_logs: {
-			type: "kubernetes_logs"
-			namespace_annotation_fields: namespace_labels: ""
-			node_annotation_fields: node_labels:           ""
-			pod_annotation_fields: {
-				container_id:       ""
-				container_image_id: ""
-				pod_annotations:    ""
-				pod_ip:             ""
-				pod_ips:            ""
-				pod_labels:         ""
-				pod_uid:            ""
-			}
-		}
+		kubernetes_logs: type: "kubernetes_logs"
 		journald_logs: {
 			type:            "journald"
 			journalctl_path: "/host/run/current-system/sw/bin/journalctl"
@@ -46,9 +33,10 @@ let _cue_agent_yaml = {
 		loki_kubernetes: {
 			type: "loki"
 			inputs: ["kubernetes_logs"]
-			encoding: codec: "json"
+			encoding: codec: "raw_message"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "drop"
+			remove_label_fields: true
 			labels: {
 				job:       "vector/kubernetes"
 				filename:  "{{ file }}"
