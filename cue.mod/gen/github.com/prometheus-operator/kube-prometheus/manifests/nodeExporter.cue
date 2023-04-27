@@ -80,7 +80,7 @@ nodeExporter: {
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--no-collector.btrfs", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$"]
+						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
 						image: "quay.io/prometheus/node-exporter:v1.5.0"
 						name:  "node-exporter"
 						resources: {

@@ -17,6 +17,10 @@ local kp =
           }
         },
       },
+
+      nodeExporter+: {
+        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } }
+      },
     },
 
     nodeExporter+: {
@@ -26,8 +30,18 @@ local kp =
             spec+: {
               local args = super.containers[0].args,
               containers: [
-                super.containers[0] + { args: std.filter(function(x) x != "--no-collector.hwmon", args) },
-                super.containers[1] + { resources+: { limits+: { cpu: '140m' } } },
+                super.containers[0] + {
+                  args:
+                    std.filter(function(x) !std.member([
+                                            '--no-collector.btrfs',
+                                            '--no-collector.hwmon'
+                                          ], x),
+                               args)
+                    + [
+                      '--collector.systemd'
+                    ]
+                },
+                super.containers[1]
               ],
             },
           },
