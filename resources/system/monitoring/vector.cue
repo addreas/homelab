@@ -56,19 +56,18 @@ let _cue_agent_yaml = {
 	sinks: {
 		prom_exporter: {
 			type: "prometheus_exporter"
-			inputs: [
-				for key, _ in sources if strings.HasSuffix(key, "_metrics") {
-					key
-				},
-			]
+			inputs: [ for key, _ in sources if strings.HasSuffix(key, "_metrics") {key}]
 			address: "0.0.0.0:9090"
 		}
-		loki_kubernetes: {
+
+		let loki = {
 			type: "loki"
-			inputs: ["kubernetes_logs"]
 			encoding: codec: "raw_message"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "drop"
+		}
+		loki_kubernetes: loki & {
+			inputs: ["kubernetes_logs"]
 			labels: {
 				job:       "vector/kubernetes"
 				filename:  "{{ file }}"
@@ -78,12 +77,8 @@ let _cue_agent_yaml = {
 				namespace: "{{ kubernetes.pod_namespace }}"
 			}
 		}
-		loki_journald: {
-			type: "loki"
+		loki_journald: loki & {
 			inputs: ["journald_logs"]
-			encoding: codec: "raw_message"
-			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
-			out_of_order_action: "drop"
 			labels: {
 				job:               "vector/journald"
 				host:              "{{ host }}"
