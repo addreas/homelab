@@ -137,13 +137,17 @@ k: PodMonitor: vector: spec: {
 	selector: matchLabels: vectorLabels
 	podMetricsEndpoints: [{
 		port: "prom-exporter"
-		// relabelings: [{
-		// 	action:      "replace"
-		// 	regex:       "(.*)"
-		// 	replacement: "$1"
-		// 	sourceLabels: ["__meta_kubernetes_pod_node_name"]
-		// 	targetLabel: "node"
-		// }]
+		relabelings: [{
+			action:      "replace"
+			regex:       "(.*)"
+			replacement: "$1"
+			sourceLabels: ["__meta_kubernetes_pod_node_name"]
+			targetLabel: "node"
+		}]
+		metricRelabelings: [{
+			action: "labeldrop"
+			sourceLabels: ["host"]
+		}]
 	}]
 }
 
