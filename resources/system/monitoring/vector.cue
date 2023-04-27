@@ -35,22 +35,22 @@ let _cue_agent_yaml = {
 			}
 			type: "host_metrics"
 		}
-		kube_controller_manager_metrics: {
-			type: "prometheus_scrape"
-			endpoints: ["https://127.0.0.1:10257/metrics"]
-			instance_tag: "instance"
-			auth: strategy: "bearer"
-			auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
-			tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-		}
-		kube_scheduler_metrics: {
-			type: "prometheus_scrape"
-			endpoints: ["https://127.0.0.1:10259/metrics"]
-			instance_tag: "instance"
-			auth: strategy: "bearer"
-			auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
-			tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-		}
+		// kube_controller_manager_metrics: {
+		// 	type: "prometheus_scrape"
+		// 	endpoints: ["https://127.0.0.1:10257/metrics"]
+		// 	instance_tag: "instance"
+		// 	auth: strategy: "bearer"
+		// 	auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
+		// 	tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+		// }
+		// kube_scheduler_metrics: {
+		// 	type: "prometheus_scrape"
+		// 	endpoints: ["https://127.0.0.1:10259/metrics"]
+		// 	instance_tag: "instance"
+		// 	auth: strategy: "bearer"
+		// 	auth: token:    "/var/run/secrets/kubernetes.io/serviceaccount/token"
+		// 	tls: ca_file:   "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+		// }
 		internal_metrics: type: "internal_metrics"
 	}
 	sinks: {
@@ -137,8 +137,17 @@ k: PodMonitor: vector: spec: {
 	selector: matchLabels: vectorLabels
 	podMetricsEndpoints: [{
 		port: "prom-exporter"
+		relabelings: [{
+			action:      "replace"
+			regex:       "(.*)"
+			replacement: "$1"
+			sourceLabels: ["__meta_kubernetes_pod_node_name"]
+			targetLabel: "node"
+		}, {
+			action: "drop"
+			sourceLabels: ["host"]
+		}]
 	}]
-	attachMetadata: node: true
 }
 
 k: DaemonSet: vector: {
