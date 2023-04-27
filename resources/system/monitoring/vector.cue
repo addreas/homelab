@@ -138,6 +138,7 @@ k: PodMonitor: vector: spec: {
 	podMetricsEndpoints: [{
 		port: "prom-exporter"
 	}]
+	attachMetadata: node: true
 }
 
 k: DaemonSet: vector: {
