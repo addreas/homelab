@@ -36,7 +36,6 @@ let _cue_agent_yaml = {
 			encoding: codec: "raw_message"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "drop"
-			remove_label_fields: true
 			labels: {
 				job:       "vector/kubernetes"
 				filename:  "{{ file }}"
@@ -49,12 +48,17 @@ let _cue_agent_yaml = {
 		loki_journald: {
 			type: "loki"
 			inputs: ["journald_logs"]
-			encoding: codec: "json"
+			encoding: codec: "raw_message"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "drop"
 			labels: {
-				job:  "vector/journald"
-				host: "{{ host }}"
+				job:               "vector/journald"
+				host:              "{{ host }}"
+				boot_id:           "{{ _BOOT_ID }}"
+				systemd_unit:      "{{ _SYSTEMD_UNIT }}"
+				stream:            "{{ _TRANSPORT }}"
+				exe:               "{{ _EXE }}"
+				syslog_identifier: "{{ SYSLOG_IDENTIFIER }}"
 			}
 		}
 	}
