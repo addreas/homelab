@@ -95,10 +95,15 @@ k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=
 	})
 }
 
-k: Ingress: [Name=string]: {
-	// redundant since we use cloudflare as a fronting proxy
-	// metadata: annotations: _ | *{"cert-manager.io/cluster-issuer": "addem-se-letsencrypt"}
+k: ServiceMonitor: [Name=string]: spec: {
+	if k.Service[Name] != _|_ {
+		endpoints: _ | *[{
+			port: *k.Service[Name].spec.ports[0].name | k.Service[Name].spec.ports[0].port
+		}]
+	}
+}
 
+k: Ingress: [Name=string]: {
 	_authproxy: true | *false
 	if _authproxy {
 		metadata: annotations: {
@@ -107,11 +112,6 @@ k: Ingress: [Name=string]: {
 		}
 	}
 	spec: {
-		// redundant since we use cloudflare as a fronting proxy
-		// tls: _ | *[{
-		//  hosts: ["\(Name).addem.se", ...]
-		//  secretName: "\(Name)-cert"
-		// }, ...]
 		rules: _ | *[{
 			host: _ | *"\(Name).addem.se"
 			http: paths: _ | *[{
@@ -187,4 +187,26 @@ k: RoleBinding: [Name=string]: {
 		kind: _ | *"ServiceAccount"
 		name: _ | *Name
 	}]
+}
+
+k: PersistentVolume: [Name = =~"sergio-.*"]: spec: {
+	volumeMode: "Filesystem"
+	accessModes: ["ReadWriteOnce"]
+	persistentVolumeReclaimPolicy: "Retain"
+	storageClassName:              "static-node-local-storage"
+	nodeAffinity: required: nodeSelectorTerms: [{
+		matchExpressions: [{
+			key:      "kubernetes.io/hostname"
+			operator: "In"
+			values: ["sergio"]
+		}]
+	}]
+	capacity: storage: _ | *k.PersistentVolumeClaim[Name].spec.resources.requests.storage
+}
+
+k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
+	accessModes: ["ReadWriteOnce"]
+	storageClassName: "static-node-local-storage"
+	volumeMode:       "Filesystem"
+	volumeName:       Name
 }

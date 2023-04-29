@@ -70,6 +70,9 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 	}]
 }
 
+k: PersistentVolumeClaim: "sergio-plex-config": spec: resources: requests: storage: "20Gi"
+k: PersistentVolume: "sergio-plex-config": spec: local: path: "/mnt/plex-config"
+
 k: Service: "sergio-plex": {
 	metadata: annotations: "io.cilium/lb-ipam-ips": "192.168.10.83"
 	spec: type: "LoadBalancer"

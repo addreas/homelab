@@ -1,76 +1,48 @@
 package kube
 
-import (
-	"encoding/yaml"
-)
+k: Deployment: victoriametrics: spec: template: spec: {
+	containers: [{
+		image: "victoriametrics/victoria-metrics:v1.90.0"
+		args: [
+			"-httpListenAddr=:8429",
+			"-retentionPeriod=2y",
+			"-storageDataPath=/data",
+		]
+		ports: [{name: "http", containerPort: 8429}]
+		volumeMounts: [{
+			name:      "data"
+			mountPath: "/data"
+		}]
+		resources: {
+			requests: {
+				cpu:    "500m"
+				memory: "512Mi"
+			}
+			limits: {
+				cpu:    "4"
+				memory: "4Gi"
+			}
+		}
+	}]
+	volumes: [{
+		name: "data"
+		persistentVolumeClaim: claimName: "sergio-victoriametrics"
+	}]
+}
 
-k: VMSingle: "main": spec: {
-	retentionPeriod:      "20w"
-	removePvcAfterDelete: true
-	resources: {
-		requests: {
-			cpu:    "500m"
-			memory: "512Mi"
-		}
-		limits: {
-			cpu:    "4"
-			memory: "4Gi"
-		}
+k: PersistentVolumeClaim: "sergio-victoriametrics": spec: resources: requests: storage: "100Gi"
+k: PersistentVolume: "sergio-victoriametrics": spec: local: path: "/mnt/solid-data/victoriametrics"
+
+k: Service: victoriametrics: {}
+k: ServiceMonitor: victoriametrics: {}
+
+k: GrafanaDatasource: "victoriametrics": spec: {
+	datasource: {
+		name:      "VictoriaMetrics"
+		type:      "Prometheus"
+		url:       "http://victoriametrics.monitoring.svc.cluster.local:8429"
+		access:    "proxy"
+		isDefault: false
+		basicAuth: false
 	}
-	storage: {
-		accessModes: ["ReadWriteOnce"]
-		resources: requests: storage: "20Gi"
-	}
-}
-
-k: ServiceMonitor: "vmsingle-main": spec: {
-	endpoints: [{
-		path: "/metrics"
-		port: "http"
-	}]
-	selector: matchLabels: "app.kubernetes.io/name": "vmsingle"
-}
-
-k: GrafanaDatasource: "vmsingle-main": spec: datasource: {
-	name:      "VictoriaMetrics"
-	type:      "prometheus"
-	url:       "http://vmsingle-main.monitoring.svc:8429"
-	access:    "proxy"
-	isDefault: false
-	basicAuth: false
-}
-
-k: GrafanaDashboard: "victoriametrics": spec: source: remote: grafanaCom: id: 10229
-
-k: GitRepository: "victoriametrics-operator": spec: {
-	ref: tag: goModVersions["github.com/VictoriaMetrics/operator"]
-	url: "https://github.com/victoriametrics/operator"
-	ignore: """
-		/*
-		!/config/
-		"""
-}
-
-k: Kustomization: "victoriametrics-operator": spec: {
-	path:            "./config/default"
-	targetNamespace: "monitoring"
-	prune:           false
-	images: [{
-		name:   "victoriametrics/operator"
-		newTag: goModVersions["github.com/VictoriaMetrics/operator"]
-	}]
-	patches: [{
-		target: {
-			group:   "operator.victoriametrics.com"
-			version: "v1beta1"
-			kind:    "VMServiceScrape"
-			name:    "controller-manager-metrics-monitor"
-		}
-		patch: yaml.Marshal({
-			"$patch":   "delete"
-			apiVersion: "operator.victoriametrics.com/v1beta1"
-			kind:       "VMServiceScrape"
-			metadata: name: "controller-manager-metrics-monitor"
-		})
-	}]
 }

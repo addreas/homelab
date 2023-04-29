@@ -69,8 +69,11 @@ k: Deployment: loki: spec: template: {
 	}
 }
 
+k: PersistentVolumeClaim: "sergio-loki": spec: resources: requests: storage: "100Gi"
+k: PersistentVolume: "sergio-loki": spec: local: path: "/mnt/solid-data/loki"
+
 k: Service: loki: {}
-k: ServiceMonitor: loki: spec: endpoints: [{port: "http"}]
+k: ServiceMonitor: loki: {}
 
 k: GrafanaDatasource: "loki": spec: {
 	datasource: {
