@@ -30,14 +30,11 @@ k: StatefulSet: jackett: {
 					}
 				}]
 			}
+			volumes: [{
+				name: "config"
+				persistentVolumeClaim: claimName: "sergio-jackett-config"
+			}]
 		}
-		volumeClaimTemplates: [{
-			metadata: name: "config"
-			spec: {
-				resources: requests: storage: "1Gi"
-				accessModes: ["ReadWriteOnce"]
-			}
-		}]
 	}
 }
 
