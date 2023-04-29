@@ -38,8 +38,8 @@ k: ServiceMonitor: victoriametrics: {}
 
 k: GrafanaDatasource: "victoriametrics": spec: {
 	datasource: {
-		name:      "VictoriaMetrics"
-		type:      "Prometheus"
+		name:      "VictoriaMetrics (local pv storage)"
+		type:      "prometheus"
 		url:       "http://victoriametrics.monitoring.svc.cluster.local:8429"
 		access:    "proxy"
 		isDefault: false
