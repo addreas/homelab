@@ -28,7 +28,11 @@ k: Prometheus: "k8s": spec: {
 
 	storage: emptyDir: {}
 
-	remoteWrite: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"}]
+	remoteWrite: [{
+		url: "http://vmsingle-main.monitoring.svc:8429/api/v1/write"
+	}, {
+		url: "http://victoriametrics.monitoring.svc:8429/api/v1/write"
+	}]
 
 	// [=~"MonitorSelector"]: matchExpressions: [{key: "kube-prometheus-scrape", operator: "Exists"}]
 	// remoteRead: [{url: "http://vmsingle-main.monitoring.svc:8429/api/v1/read"}]
