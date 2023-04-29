@@ -73,6 +73,9 @@ k: StatefulSet: sonarr: {
 					name: "sergio-videos"
 					persistentVolumeClaim: claimName: "sergio-videos"
 				}, {
+					name: "config"
+					persistentVolumeClaim: claimName: "sergio-sonarr-config"
+				}, {
 					name: "home-nonroot"
 					emptyDir: {}
 				}, {
@@ -81,13 +84,6 @@ k: StatefulSet: sonarr: {
 				}]
 			}
 		}
-		volumeClaimTemplates: [{
-			metadata: name: "config"
-			spec: {
-				resources: requests: storage: "5Gi"
-				accessModes: ["ReadWriteOnce"]
-			}
-		}]
 	}
 }
 
