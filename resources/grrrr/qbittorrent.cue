@@ -111,18 +111,17 @@ k: StatefulSet: qbittorrent: {
 				}, {
 					name: "sergio-videos"
 					persistentVolumeClaim: claimName: "sergio-videos"
+				}, {
+					name: "config"
+					persistentVolumeClaim: claimName: "sergio-qbittorrent-config"
 				}]
 			}
 		}
-		volumeClaimTemplates: [{
-			metadata: name: "config"
-			spec: {
-				resources: requests: storage: "5Gi"
-				accessModes: ["ReadWriteOnce"]
-			}
-		}]
 	}
 }
+
+k: PersistentVolumeClaim: "sergio-qbittorrent-config": spec: resources: requests: storage: "5Gi"
+k: PersistentVolume: "sergio-qbittorrent-config": spec: local: path: "/mnt/solid-data/qbittorrent-config"
 
 k: Service: qbittorrent: spec: ports: [{
 	name: "http"

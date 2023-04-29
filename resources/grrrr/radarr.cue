@@ -82,6 +82,9 @@ k: StatefulSet: radarr: {
 	}
 }
 
+k: PersistentVolumeClaim: "sergio-radarr-config": spec: resources: requests: storage: "5Gi"
+k: PersistentVolume: "sergio-radarr-config": spec: local: path: "/mnt/solid-data/radarr-config"
+
 k: Service: radarr: spec: ports: [{
 	name: "http"
 	port: 7878

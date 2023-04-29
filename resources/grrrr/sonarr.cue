@@ -91,6 +91,9 @@ k: StatefulSet: sonarr: {
 	}
 }
 
+k: PersistentVolumeClaim: "sergio-sonarr-config": spec: resources: requests: storage: "1Gi"
+k: PersistentVolume: "sergio-sonarr-config": spec: local: path: "/mnt/solid-data/sonarr-config"
+
 k: Service: sonarr: {}
 
 k: ServiceMonitor: sonarr: spec: endpoints: [{

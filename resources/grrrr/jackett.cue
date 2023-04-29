@@ -41,6 +41,9 @@ k: StatefulSet: jackett: {
 	}
 }
 
+k: PersistentVolumeClaim: "sergio-jackett-config": spec: resources: requests: storage: "1Gi"
+k: PersistentVolume: "sergio-jackett-config": spec: local: path: "/mnt/solid-data/jackett-config"
+
 k: Service: jackett: {}
 
 k: Ingress: jackett: _authproxy: true
