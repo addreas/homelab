@@ -29,11 +29,11 @@ k: StatefulSet: jackett: {
 						requests: cpu: "10m"
 					}
 				}]
+				volumes: [{
+					name: "config"
+					persistentVolumeClaim: claimName: "sergio-jackett-config"
+				}]
 			}
-			volumes: [{
-				name: "config"
-				persistentVolumeClaim: claimName: "sergio-jackett-config"
-			}]
 		}
 	}
 }
