@@ -95,6 +95,7 @@ k: Kustomization: "grafana-operator": spec: {
 	interval:        "30m"
 	path:            "./config/default"
 	targetNamespace: "monitoring"
+	prune:           false // CRDs are included so prune becomes messy...
 	images: [{
 		name:    "ghcr.io/grafana-operator/grafana-operator"
 		newName: "ghcr.io/addreas/grafana-operator"
