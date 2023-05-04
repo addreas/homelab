@@ -9,13 +9,13 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name: "prometheus-operator"
 		}
 		rules: [{
 			apiGroups: ["monitoring.coreos.com"]
-			resources: ["alertmanagers", "alertmanagers/finalizers", "alertmanagers/status", "alertmanagerconfigs", "prometheuses", "prometheuses/finalizers", "prometheuses/status", "prometheusagents", "prometheusagents/finalizers", "prometheusagents/status", "thanosrulers", "thanosrulers/finalizers", "servicemonitors", "podmonitors", "probes", "prometheusrules"]
+			resources: ["alertmanagers", "alertmanagers/finalizers", "alertmanagers/status", "alertmanagerconfigs", "prometheuses", "prometheuses/finalizers", "prometheuses/status", "prometheusagents", "prometheusagents/finalizers", "prometheusagents/status", "thanosrulers", "thanosrulers/finalizers", "thanosrulers/status", "servicemonitors", "podmonitors", "probes", "prometheusrules"]
 			verbs: [
 				"*",
 			]
@@ -85,7 +85,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -5909,7 +5909,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -6080,7 +6080,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -6193,6 +6193,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -6200,7 +6220,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -6238,7 +6258,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -6382,7 +6402,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -6993,7 +7013,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -7164,7 +7184,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -7277,6 +7297,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -7284,7 +7324,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -7322,7 +7362,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -7466,7 +7506,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -7732,7 +7772,7 @@ prometheusOperator: {
 												description: """
 																Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																 This field is immutable.
+																 This field is immutable. It can only be set for containers.
 																"""
 												items: {
 													description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -7770,7 +7810,7 @@ prometheusOperator: {
 													pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 													"x-kubernetes-int-or-string": true
 												}
-												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 												type:        "object"
 											}
 										}
@@ -7941,7 +7981,7 @@ prometheusOperator: {
 														}, {
 															type: "string"
 														}]
-														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 														pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 														"x-kubernetes-int-or-string": true
 													}
@@ -8020,7 +8060,7 @@ prometheusOperator: {
 																			description: """
 																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable.
+																								 This field is immutable. It can only be set for containers.
 																								"""
 																			items: {
 																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -8058,7 +8098,7 @@ prometheusOperator: {
 																				pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																				"x-kubernetes-int-or-string": true
 																			}
-																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																			type:        "object"
 																		}
 																	}
@@ -8210,7 +8250,7 @@ prometheusOperator: {
 																		description: """
 																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable.
+																						 This field is immutable. It can only be set for containers.
 																						"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -8248,7 +8288,7 @@ prometheusOperator: {
 																			pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																			"x-kubernetes-int-or-string": true
 																		}
-																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																		type:        "object"
 																	}
 																}
@@ -8342,7 +8382,7 @@ prometheusOperator: {
 															conditions: {
 																description: "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
 																items: {
-																	description: "PersistentVolumeClaimCondition contails details about state of pvc"
+																	description: "PersistentVolumeClaimCondition contains details about state of pvc"
 																	properties: {
 																		lastProbeTime: {
 																			description: "lastProbeTime is the time we probed the condition."
@@ -8467,7 +8507,10 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												matchLabelKeys: {
-													description: "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector."
+													description: """
+																	MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector. 
+																	 This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
+																	"""
 													items: type: "string"
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
@@ -8860,7 +8903,7 @@ prometheusOperator: {
 															}, {
 																type: "string"
 															}]
-															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 															pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 															"x-kubernetes-int-or-string": true
 														}
@@ -8945,7 +8988,7 @@ prometheusOperator: {
 																				description: """
 																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable.
+																									 This field is immutable. It can only be set for containers.
 																									"""
 																				items: {
 																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -8983,7 +9026,7 @@ prometheusOperator: {
 																					pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																					"x-kubernetes-int-or-string": true
 																				}
-																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																				type:        "object"
 																			}
 																		}
@@ -9748,6 +9791,11 @@ prometheusOperator: {
 									web: {
 										description: "Defines the web command line flags when starting Alertmanager."
 										properties: {
+											getConcurrency: {
+												description: "Maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag."
+												format:      "int32"
+												type:        "integer"
+											}
 											httpConfig: {
 												description: "Defines HTTP parameters for web server."
 												properties: {
@@ -9785,6 +9833,11 @@ prometheusOperator: {
 													}
 												}
 												type: "object"
+											}
+											timeout: {
+												description: "Timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag."
+												format:      "int32"
+												type:        "integer"
 											}
 											tlsConfig: {
 												description: "Defines the TLS parameters for HTTPS."
@@ -9948,7 +10001,7 @@ prometheusOperator: {
 									conditions: {
 										description: "The current state of the Alertmanager object."
 										items: {
-											description: "Condition represents the state of the resources associated with the Prometheus or Alertmanager resource."
+											description: "Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource."
 											properties: {
 												lastTransitionTime: {
 													description: "lastTransitionTime is the time of the last update to the current status property."
@@ -10424,8 +10477,9 @@ prometheusOperator: {
 													type: "array"
 												}
 												scheme: {
-													description: "HTTP scheme to use for scraping."
-													type:        "string"
+													description: "HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`."
+													enum: ["http", "https"]
+													type: "string"
 												}
 												scrapeTimeout: {
 													description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape interval is used."
@@ -10945,8 +10999,9 @@ prometheusOperator: {
 												type:        "string"
 											}
 											scheme: {
-												description: "HTTP scheme to use for scraping. Defaults to `http`."
-												type:        "string"
+												description: "HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`."
+												enum: ["http", "https"]
+												type: "string"
 											}
 											url: {
 												description: "Mandatory URL of the prober."
@@ -12551,7 +12606,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -12722,7 +12777,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -12835,6 +12890,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -12842,7 +12917,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -12880,7 +12955,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -13024,7 +13099,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -13722,7 +13797,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -13893,7 +13968,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -14006,6 +14081,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -14013,7 +14108,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -14051,7 +14146,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -14195,7 +14290,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -15144,7 +15239,7 @@ prometheusOperator: {
 												description: """
 																Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																 This field is immutable.
+																 This field is immutable. It can only be set for containers.
 																"""
 												items: {
 													description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -15182,7 +15277,7 @@ prometheusOperator: {
 													pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 													"x-kubernetes-int-or-string": true
 												}
-												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 												type:        "object"
 											}
 										}
@@ -15434,7 +15529,7 @@ prometheusOperator: {
 														}, {
 															type: "string"
 														}]
-														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 														pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 														"x-kubernetes-int-or-string": true
 													}
@@ -15513,7 +15608,7 @@ prometheusOperator: {
 																			description: """
 																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable.
+																								 This field is immutable. It can only be set for containers.
 																								"""
 																			items: {
 																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -15551,7 +15646,7 @@ prometheusOperator: {
 																				pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																				"x-kubernetes-int-or-string": true
 																			}
-																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																			type:        "object"
 																		}
 																	}
@@ -15703,7 +15798,7 @@ prometheusOperator: {
 																		description: """
 																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable.
+																						 This field is immutable. It can only be set for containers.
 																						"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -15741,7 +15836,7 @@ prometheusOperator: {
 																			pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																			"x-kubernetes-int-or-string": true
 																		}
-																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																		type:        "object"
 																	}
 																}
@@ -15835,7 +15930,7 @@ prometheusOperator: {
 															conditions: {
 																description: "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
 																items: {
-																	description: "PersistentVolumeClaimCondition contails details about state of pvc"
+																	description: "PersistentVolumeClaimCondition contains details about state of pvc"
 																	properties: {
 																		lastProbeTime: {
 																			description: "lastProbeTime is the time we probed the condition."
@@ -15956,7 +16051,10 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												matchLabelKeys: {
-													description: "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector."
+													description: """
+																	MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector. 
+																	 This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
+																	"""
 													items: type: "string"
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
@@ -16349,7 +16447,7 @@ prometheusOperator: {
 															}, {
 																type: "string"
 															}]
-															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 															pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 															"x-kubernetes-int-or-string": true
 														}
@@ -16434,7 +16532,7 @@ prometheusOperator: {
 																				description: """
 																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable.
+																									 This field is immutable. It can only be set for containers.
 																									"""
 																				items: {
 																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -16472,7 +16570,7 @@ prometheusOperator: {
 																					pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																					"x-kubernetes-int-or-string": true
 																				}
-																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																				type:        "object"
 																			}
 																		}
@@ -17451,7 +17549,7 @@ prometheusOperator: {
 									conditions: {
 										description: "The current state of the Prometheus deployment."
 										items: {
-											description: "Condition represents the state of the resources associated with the Prometheus or Alertmanager resource."
+											description: "Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource."
 											properties: {
 												lastTransitionTime: {
 													description: "lastTransitionTime is the time of the last update to the current status property."
@@ -19149,7 +19247,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -19320,7 +19418,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -19433,6 +19531,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -19440,7 +19558,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -19478,7 +19596,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -19622,7 +19740,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -20343,7 +20461,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -20514,7 +20632,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -20627,6 +20745,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -20634,7 +20772,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -20672,7 +20810,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -20816,7 +20954,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -22174,7 +22312,7 @@ prometheusOperator: {
 												description: """
 																Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																 This field is immutable.
+																 This field is immutable. It can only be set for containers.
 																"""
 												items: {
 													description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -22212,7 +22350,7 @@ prometheusOperator: {
 													pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 													"x-kubernetes-int-or-string": true
 												}
-												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 												type:        "object"
 											}
 										}
@@ -22572,7 +22710,7 @@ prometheusOperator: {
 														}, {
 															type: "string"
 														}]
-														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 														pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 														"x-kubernetes-int-or-string": true
 													}
@@ -22651,7 +22789,7 @@ prometheusOperator: {
 																			description: """
 																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable.
+																								 This field is immutable. It can only be set for containers.
 																								"""
 																			items: {
 																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -22689,7 +22827,7 @@ prometheusOperator: {
 																				pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																				"x-kubernetes-int-or-string": true
 																			}
-																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																			type:        "object"
 																		}
 																	}
@@ -22841,7 +22979,7 @@ prometheusOperator: {
 																		description: """
 																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable.
+																						 This field is immutable. It can only be set for containers.
 																						"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -22879,7 +23017,7 @@ prometheusOperator: {
 																			pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																			"x-kubernetes-int-or-string": true
 																		}
-																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																		type:        "object"
 																	}
 																}
@@ -22973,7 +23111,7 @@ prometheusOperator: {
 															conditions: {
 																description: "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
 																items: {
-																	description: "PersistentVolumeClaimCondition contails details about state of pvc"
+																	description: "PersistentVolumeClaimCondition contains details about state of pvc"
 																	properties: {
 																		lastProbeTime: {
 																			description: "lastProbeTime is the time we probed the condition."
@@ -23275,7 +23413,7 @@ prometheusOperator: {
 														description: """
 																		Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																		 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																		 This field is immutable.
+																		 This field is immutable. It can only be set for containers.
 																		"""
 														items: {
 															description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -23313,7 +23451,7 @@ prometheusOperator: {
 															pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 															"x-kubernetes-int-or-string": true
 														}
-														description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+														description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 														type:        "object"
 													}
 												}
@@ -23466,7 +23604,10 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												matchLabelKeys: {
-													description: "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector."
+													description: """
+																	MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector. 
+																	 This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
+																	"""
 													items: type: "string"
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
@@ -23868,7 +24009,7 @@ prometheusOperator: {
 															}, {
 																type: "string"
 															}]
-															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 															pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 															"x-kubernetes-int-or-string": true
 														}
@@ -23953,7 +24094,7 @@ prometheusOperator: {
 																				description: """
 																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable.
+																									 This field is immutable. It can only be set for containers.
 																									"""
 																				items: {
 																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -23991,7 +24132,7 @@ prometheusOperator: {
 																					pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																					"x-kubernetes-int-or-string": true
 																				}
-																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																				type:        "object"
 																			}
 																		}
@@ -24970,7 +25111,7 @@ prometheusOperator: {
 									conditions: {
 										description: "The current state of the Prometheus deployment."
 										items: {
-											description: "Condition represents the state of the resources associated with the Prometheus or Alertmanager resource."
+											description: "Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource."
 											properties: {
 												lastTransitionTime: {
 													description: "lastTransitionTime is the time of the last update to the current status property."
@@ -25119,6 +25260,10 @@ prometheusOperator: {
 												description: "Interval determines how often rules in the group are evaluated."
 												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
+											}
+											limit: {
+												description: "Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus >= 2.31 and Thanos Ruler >= 0.24."
+												type:        "integer"
 											}
 											name: {
 												description: "Name of the rule group."
@@ -25569,8 +25714,9 @@ prometheusOperator: {
 													type: "array"
 												}
 												scheme: {
-													description: "HTTP scheme to use for scraping."
-													type:        "string"
+													description: "HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`."
+													enum: ["http", "https"]
+													type: "string"
 												}
 												scrapeTimeout: {
 													description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than `Interval` in which the latter is used."
@@ -25859,10 +26005,28 @@ prometheusOperator: {
 				scope: "Namespaced"
 				versions: [{
 					additionalPrinterColumns: [{
+						description: "The version of Thanos Ruler"
+						jsonPath:    ".spec.version"
+						name:        "Version"
+						type:        "string"
+					}, {
 						description: "The number of desired replicas"
 						jsonPath:    ".spec.replicas"
 						name:        "Replicas"
 						type:        "integer"
+					}, {
+						description: "The number of ready replicas"
+						jsonPath:    ".status.availableReplicas"
+						name:        "Ready"
+						type:        "integer"
+					}, {
+						jsonPath: ".status.conditions[?(@.type == 'Reconciled')].status"
+						name:     "Reconciled"
+						type:     "string"
+					}, {
+						jsonPath: ".status.conditions[?(@.type == 'Available')].status"
+						name:     "Available"
+						type:     "string"
 					}, {
 						jsonPath: ".metadata.creationTimestamp"
 						name:     "Age"
@@ -26882,7 +27046,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -27053,7 +27217,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -27166,6 +27330,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -27173,7 +27357,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -27211,7 +27395,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -27355,7 +27539,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28141,7 +28325,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28312,7 +28496,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28425,6 +28609,26 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												resizePolicy: {
+													description: "Resources resize policy for the container."
+													items: {
+														description: "ContainerResizePolicy represents resource resize policy for the container."
+														properties: {
+															resourceName: {
+																description: "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+																type:        "string"
+															}
+															restartPolicy: {
+																description: "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+																type:        "string"
+															}
+														}
+														required: ["resourceName", "restartPolicy"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
 												resources: {
 													description: "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 													properties: {
@@ -28432,7 +28636,7 @@ prometheusOperator: {
 															description: """
 																			Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																			 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																			 This field is immutable.
+																			 This field is immutable. It can only be set for containers.
 																			"""
 															items: {
 																description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -28470,7 +28674,7 @@ prometheusOperator: {
 																pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																"x-kubernetes-int-or-string": true
 															}
-															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+															description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 															type:        "object"
 														}
 													}
@@ -28614,7 +28818,7 @@ prometheusOperator: {
 															type:        "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port. This is a beta field and requires enabling GRPCContainerProbe feature gate."
+															description: "GRPC specifies an action involving a GRPC port."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28953,7 +29157,7 @@ prometheusOperator: {
 												description: """
 																Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																 This field is immutable.
+																 This field is immutable. It can only be set for containers.
 																"""
 												items: {
 													description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -28991,7 +29195,7 @@ prometheusOperator: {
 													pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 													"x-kubernetes-int-or-string": true
 												}
-												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+												description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 												type:        "object"
 											}
 										}
@@ -29225,7 +29429,7 @@ prometheusOperator: {
 														}, {
 															type: "string"
 														}]
-														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+														description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 														pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 														"x-kubernetes-int-or-string": true
 													}
@@ -29304,7 +29508,7 @@ prometheusOperator: {
 																			description: """
 																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable.
+																								 This field is immutable. It can only be set for containers.
 																								"""
 																			items: {
 																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -29342,7 +29546,7 @@ prometheusOperator: {
 																				pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																				"x-kubernetes-int-or-string": true
 																			}
-																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																			description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																			type:        "object"
 																		}
 																	}
@@ -29494,7 +29698,7 @@ prometheusOperator: {
 																		description: """
 																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable.
+																						 This field is immutable. It can only be set for containers.
 																						"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -29532,7 +29736,7 @@ prometheusOperator: {
 																			pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																			"x-kubernetes-int-or-string": true
 																		}
-																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																		description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																		type:        "object"
 																	}
 																}
@@ -29626,7 +29830,7 @@ prometheusOperator: {
 															conditions: {
 																description: "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
 																items: {
-																	description: "PersistentVolumeClaimCondition contails details about state of pvc"
+																	description: "PersistentVolumeClaimCondition contains details about state of pvc"
 																	properties: {
 																		lastProbeTime: {
 																			description: "lastProbeTime is the time we probed the condition."
@@ -29747,7 +29951,10 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												matchLabelKeys: {
-													description: "MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector."
+													description: """
+																	MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector. 
+																	 This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
+																	"""
 													items: type: "string"
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
@@ -30129,7 +30336,7 @@ prometheusOperator: {
 															}, {
 																type: "string"
 															}]
-															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir"
+															description:                  "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
 															pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 															"x-kubernetes-int-or-string": true
 														}
@@ -30214,7 +30421,7 @@ prometheusOperator: {
 																				description: """
 																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
 																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable.
+																									 This field is immutable. It can only be set for containers.
 																									"""
 																				items: {
 																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
@@ -30252,7 +30459,7 @@ prometheusOperator: {
 																					pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																					"x-kubernetes-int-or-string": true
 																				}
-																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+																				description: "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 																				type:        "object"
 																			}
 																		}
@@ -31018,12 +31225,51 @@ prometheusOperator: {
 								type: "object"
 							}
 							status: {
-								description: "Most recent observed status of the ThanosRuler cluster. Read-only. Not included when requesting from the apiserver, only from the ThanosRuler Operator API itself. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status"
+								description: "Most recent observed status of the ThanosRuler cluster. Read-only. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status"
 								properties: {
 									availableReplicas: {
 										description: "Total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment."
 										format:      "int32"
 										type:        "integer"
+									}
+									conditions: {
+										description: "The current state of the Alertmanager object."
+										items: {
+											description: "Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource."
+											properties: {
+												lastTransitionTime: {
+													description: "lastTransitionTime is the time of the last update to the current status property."
+													format:      "date-time"
+													type:        "string"
+												}
+												message: {
+													description: "Human-readable message indicating details for the condition's last transition."
+													type:        "string"
+												}
+												observedGeneration: {
+													description: "ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance."
+													format:      "int64"
+													type:        "integer"
+												}
+												reason: {
+													description: "Reason for the condition's last transition."
+													type:        "string"
+												}
+												status: {
+													description: "Status of the condition."
+													type:        "string"
+												}
+												type: {
+													description: "Type of the condition being reported."
+													type:        "string"
+												}
+											}
+											required: ["lastTransitionTime", "status", "type"]
+											type: "object"
+										}
+										type: "array"
+										"x-kubernetes-list-map-keys": ["type"]
+										"x-kubernetes-list-type": "map"
 									}
 									paused: {
 										description: "Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed."
@@ -31054,7 +31300,7 @@ prometheusOperator: {
 					}
 					served:  true
 					storage: true
-					subresources: {}
+					subresources: status: {}
 				}]
 			}
 		}
@@ -31067,7 +31313,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31086,14 +31332,14 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.64.0"
+						"app.kubernetes.io/version":   "0.64.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.64.0"]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.64.0"
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.64.1"]
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.64.1"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -31160,7 +31406,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -31290,7 +31536,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31318,7 +31564,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31332,7 +31578,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31349,7 +31595,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.64.0"
+				"app.kubernetes.io/version":   "0.64.1"
 			}
 		}
 	}
