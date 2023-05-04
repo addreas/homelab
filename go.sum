@@ -69,6 +69,8 @@ github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbt
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/addreas/cue-controller/api v0.35.0-cue h1:Scdn7Wkp8Rm5+oRsAdsjqxJLWowDgOdu5J2tr9c+IJM=
 github.com/addreas/cue-controller/api v0.35.0-cue/go.mod h1:dvVaQayuQXQXEuH7WCU4YPHgWlydz/2H8BjzevNVvxQ=
+github.com/addreas/cue-controller/api v1.0.0-rc1-cue h1:85+QpakrlutaPMOHj3eOBZP0HyH4y9xIsEciZJvEJKM=
+github.com/addreas/cue-controller/api v1.0.0-rc1-cue/go.mod h1:KRi3CbLVS0dH58lIVCGJRBrLi9zwFvqBh8hyNQnpJ3k=
 github.com/addreas/grafana-operator/v5 v5.0.0-20230415153927-b860de9cc3d3 h1:jFFyd0BNK09IjIT+9EUCfqHsHglyqIyCTcLk0A2pIzY=
 github.com/addreas/grafana-operator/v5 v5.0.0-20230415153927-b860de9cc3d3/go.mod h1:jUc/sxZX8pxIevRJkqlRi7Gj1wtQzLqCZftZ5a4MGrc=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=

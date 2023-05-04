@@ -3,7 +3,7 @@ module github.com/addreas/cuebernetes
 go 1.19
 
 require (
-	github.com/addreas/cue-controller/api v0.35.0-cue
+	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	github.com/bitnami-labs/sealed-secrets v0.20.5
 	github.com/cert-manager/cert-manager v1.11.1
 	github.com/cilium/cilium v1.13.2
