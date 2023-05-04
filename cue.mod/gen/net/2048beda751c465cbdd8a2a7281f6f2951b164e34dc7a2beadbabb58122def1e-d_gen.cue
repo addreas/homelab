@@ -4,7 +4,4 @@
 
 package net
 
-_#hexDigit: "0123456789abcdef"
-
-// A HardwareAddr represents a physical hardware address.
-#HardwareAddr: bytes
+_#cgoAddrInfoFlags: 26

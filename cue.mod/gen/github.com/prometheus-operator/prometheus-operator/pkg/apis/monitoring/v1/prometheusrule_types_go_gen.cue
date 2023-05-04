@@ -42,13 +42,19 @@ import (
 	interval?: #Duration @go(Interval)
 
 	// List of alerting and recording rules.
-	rules: [...#Rule] @go(Rules,[]Rule)
+	rules?: [...#Rule] @go(Rules,[]Rule)
 
 	// PartialResponseStrategy is only used by ThanosRuler and will
 	// be ignored by Prometheus instances.
 	// More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 	// +kubebuilder:validation:Pattern="^(?i)(abort|warn)?$"
 	partial_response_strategy?: string @go(PartialResponseStrategy)
+
+	// Limit the number of alerts an alerting rule and series a recording
+	// rule can produce.
+	// Limit is supported starting with Prometheus >= 2.31 and Thanos Ruler >= 0.24.
+	// +optional
+	limit?: null | int @go(Limit,*int)
 }
 
 // Rule describes an alerting or recording rule

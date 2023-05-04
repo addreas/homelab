@@ -22,11 +22,10 @@ import (
 	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	spec: #ThanosRulerSpec @go(Spec)
 
-	// Most recent observed status of the ThanosRuler cluster. Read-only. Not
-	// included when requesting from the apiserver, only from the ThanosRuler
-	// Operator API itself. More info:
+	// Most recent observed status of the ThanosRuler cluster. Read-only.
+	// More info:
 	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
-	status?: null | #ThanosRulerStatus @go(Status,*ThanosRulerStatus)
+	status?: #ThanosRulerStatus @go(Status)
 }
 
 // ThanosRulerList is a list of ThanosRulers.
@@ -269,9 +268,8 @@ import (
 	additionalArgs?: [...#Argument] @go(AdditionalArgs,[]Argument)
 }
 
-// ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only. Not
-// included when requesting from the apiserver, only from the Prometheus
-// Operator API itself. More info:
+// ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only.
+// More info:
 // https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 // +k8s:openapi-gen=true
 #ThanosRulerStatus: {
@@ -293,4 +291,10 @@ import (
 
 	// Total number of unavailable pods targeted by this ThanosRuler deployment.
 	unavailableReplicas: int32 @go(UnavailableReplicas)
+
+	// The current state of the Alertmanager object.
+	// +listType=map
+	// +listMapKey=type
+	// +optional
+	conditions?: [...#Condition] @go(Conditions,[]Condition)
 }

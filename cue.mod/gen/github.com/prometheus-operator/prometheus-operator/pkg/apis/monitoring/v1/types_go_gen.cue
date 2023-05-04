@@ -87,7 +87,8 @@ import (
 	deny?: bool @go(Deny)
 }
 
-// Condition represents the state of the resources associated with the Prometheus or Alertmanager resource.
+// Condition represents the state of the resources associated with the
+// Prometheus, Alertmanager or ThanosRuler resource.
 // +k8s:deepcopy-gen=true
 #Condition: {
 	// Type of the condition being reported.
@@ -314,6 +315,9 @@ import (
 	path?: string @go(Path)
 
 	// HTTP scheme to use for scraping.
+	// `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling.
+	// If empty, Prometheus uses the default value `http`.
+	// +kubebuilder:validation:Enum=http;https
 	scheme?: string @go(Scheme)
 
 	// Optional HTTP URL parameters

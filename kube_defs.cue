@@ -27,7 +27,6 @@ import (
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 
 	grafana_operator_v1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
-	grafana_agent_v1alpha1 "github.com/grafana/agent/pkg/operator/apis/monitoring/v1alpha1"
 
 	certmanager_v1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 
@@ -37,8 +36,6 @@ import (
 
 	cilium_v2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
 	cilium_v2alpha1 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1"
-
-	victoriametrics_v1beta1 "github.com/VictoriaMetrics/operator/api/v1beta1"
 
 	kpack_v1alpha2 "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
 
@@ -145,14 +142,6 @@ _kubernetesAPIs: {
 		GrafanaDatasource: grafana_operator_v1beta1.#GrafanaDatasource
 	}
 
-	"monitoring.grafana.com/v1alpha1": {
-		GrafanaAgent:    grafana_agent_v1alpha1.#GrafanaAgent
-		MetricsInstance: grafana_agent_v1alpha1.#MetricsInstance
-		LogsInstance:    grafana_agent_v1alpha1.#LogsInstance
-		PodLogs:         grafana_agent_v1alpha1.#PodLogs
-		Integration:     grafana_agent_v1alpha1.#Integration
-	}
-
 	"cert-manager.io/v1": {
 		Certificate:   certmanager_v1.#Certificate
 		ClusterIssuer: certmanager_v1.#ClusterIssuer
@@ -185,20 +174,6 @@ _kubernetesAPIs: {
 		CiliumBGPPeeringPolicy:   cilium_v2alpha1.#CiliumBGPPeeringPolicy
 		CiliumLoadBalancerIPPool: cilium_v2alpha1.#CiliumLoadBalancerIPPool
 		CiliumNodeConfig:         cilium_v2alpha1.#CiliumNodeConfig
-	}
-
-	"operator.victoriametrics.com/v1beta1": {
-		VMAgent:         victoriametrics_v1beta1.#VMAgent
-		VMAlert:         victoriametrics_v1beta1.#VMAlert
-		VMAlertmanager:  victoriametrics_v1beta1.#VMAlertmanager
-		VMCluster:       victoriametrics_v1beta1.#VMCluster
-		VMNodeScrape:    victoriametrics_v1beta1.#VMNodeScrape
-		VMPodScrape:     victoriametrics_v1beta1.#VMPodScrape
-		VMProbe:         victoriametrics_v1beta1.#VMProbe
-		VMRule:          victoriametrics_v1beta1.#VMRule
-		VMServiceScrape: victoriametrics_v1beta1.#VMServiceScrape
-		VMSingle:        victoriametrics_v1beta1.#VMSingle
-		VMStaticScrape:  victoriametrics_v1beta1.#VMStaticScrape
 	}
 
 	"kpack.io/v1alpha2": {

@@ -45,7 +45,7 @@ import (
 	interval?: #Duration @go(Interval)
 
 	// Timeout for scraping metrics from the Prometheus exporter.
-	// If not specified, the Prometheus global scrape interval is used.
+	// If not specified, the Prometheus global scrape timeout is used.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// TLS configuration to use when scraping the endpoint.
@@ -147,7 +147,9 @@ import (
 	url: string @go(URL)
 
 	// HTTP scheme to use for scraping.
-	// Defaults to `http`.
+	// `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling.
+	// If empty, Prometheus uses the default value `http`.
+	// +kubebuilder:validation:Enum=http;https
 	scheme?: string @go(Scheme)
 
 	// Path to collect metrics from.

@@ -26,8 +26,8 @@ import (
 
 	// ServiceMonitors to be selected for target discovery.
 	//
-	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector` and
-	// `spec.probeSelector` are null, the Prometheus configuration is unmanaged.
+	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
 	// The Prometheus operator will ensure that the Prometheus configuration's
 	// Secret exists, but it is the responsibility of the user to provide the raw
 	// gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
@@ -42,8 +42,8 @@ import (
 
 	// *Experimental* PodMonitors to be selected for target discovery.
 	//
-	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector` and
-	// `spec.probeSelector` are null, the Prometheus configuration is unmanaged.
+	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
 	// The Prometheus operator will ensure that the Prometheus configuration's
 	// Secret exists, but it is the responsibility of the user to provide the raw
 	// gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
@@ -58,8 +58,8 @@ import (
 
 	// *Experimental* Probes to be selected for target discovery.
 	//
-	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector` and
-	// `spec.probeSelector` are null, the Prometheus configuration is unmanaged.
+	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
 	// The Prometheus operator will ensure that the Prometheus configuration's
 	// Secret exists, but it is the responsibility of the user to provide the raw
 	// gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
@@ -70,6 +70,22 @@ import (
 
 	// *Experimental* Namespaces to be selected for Probe discovery. If nil, only check own namespace.
 	probeNamespaceSelector?: null | metav1.#LabelSelector @go(ProbeNamespaceSelector,*metav1.LabelSelector)
+
+	// *Experimental* ScrapeConfigs to be selected for target discovery.
+	//
+	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
+	// The Prometheus operator will ensure that the Prometheus configuration's
+	// Secret exists, but it is the responsibility of the user to provide the raw
+	// gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
+	// This behavior is deprecated and will be removed in the next major version
+	// of the custom resource definition. It is recommended to use
+	// `spec.additionalScrapeConfigs` instead.
+	scrapeConfigSelector?: null | metav1.#LabelSelector @go(ScrapeConfigSelector,*metav1.LabelSelector)
+
+	// Namespace's labels to match for ScrapeConfig discovery. If nil, only
+	// check own namespace.
+	scrapeConfigNamespaceSelector?: null | metav1.#LabelSelector @go(ScrapeConfigNamespaceSelector,*metav1.LabelSelector)
 
 	// Version of Prometheus to be deployed.
 	version?: string @go(Version)

@@ -338,6 +338,16 @@ import (
 // +k8s:openapi-gen=true
 #AlertmanagerWebSpec: {
 	#WebConfigFileFields
+
+	// Maximum number of GET requests processed concurrently. This corresponds to the
+	// Alertmanager's `--web.get-concurrency` flag.
+	// +optional
+	getConcurrency?: null | uint32 @go(GetConcurrency,*uint32)
+
+	// Timeout for HTTP requests. This corresponds to the Alertmanager's
+	// `--web.timeout` flag.
+	// +optional
+	timeout?: null | uint32 @go(Timeout,*uint32)
 }
 
 // HTTPConfig defines a client HTTP configuration.

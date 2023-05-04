@@ -2,6 +2,7 @@ package kube
 
 import (
 	"strings"
+	"regexp"
 	"tool/file"
 	"tool/exec"
 )
@@ -12,33 +13,25 @@ command: "update-gomod-defs": {
 		filename: "kube_defs.go"
 		contents: string
 	}
-	let packages = [ for field in strings.Fields(readDefsGo.contents) if strings.Contains(field, "\"") {strings.Trim(field, "\"")}]
-	getGo: exec.Run & {
-		cmd: ["sh", "-c", strings.Join([ for package in packages {
+
+	let matches = regexp.FindAllSubmatch(#"\s*_\s*"(.+)"(\s*//\s*(.*))?\n"#, readDefsGo.contents, -1)
+
+	let commands = [
+		for match in matches {
+			let package = match[1]
+			let args = match[3]
 			strings.Join([
 				"echo -n \(package)..",
 				"go get \(package)",
 				"echo -n .",
-				"cue get go \(package)",
+				"cue get go \(package) \(args)",
 				"echo done."],
-			"&&")
-		}], "\n")]
-	}
-	deleteReflect: exec.Run & {
-		$after: [getGo]
-		cmd: "sed -i /reflect/d ./cue.mod/gen/github.com/go-openapi/strfmt/format_go_gen.cue"
-	}
-	deleteNetUrl: exec.Run & {
-		$after: [getGo]
-		cmd: "sed -i /url/d ./cue.mod/gen/github.com/VictoriaMetrics/operator/api/v1beta1/vmrule_types_go_gen.cue"
-	}
-	deleteNetHttp: exec.Run & {
-		$after: [getGo]
-		cmd: "sed -i /http/d ./cue.mod/gen/k8s.io/client-go/rest/config_go_gen.cue ./cue.mod/gen/k8s.io/client-go/rest/client_go_gen.cue"
-	}
-	deleteBorkedColorStrings: exec.Run & {
-		$after: [getGo]
-		cmd: "sed -i /_#.*Color/d ./cue.mod/gen/k8s.io/client-go/rest/warnings_go_gen.cue"
+			" && ")
+		},
+	]
+
+	run: exec.Run & {
+		cmd: ["sh", "-c", strings.Join(commands, "\n")]
 	}
 }
 
