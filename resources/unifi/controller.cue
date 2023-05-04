@@ -29,7 +29,7 @@ k: StatefulSet: "unifi-controller": {
 					}]
 				}]
 				containers: [{
-					image: "jacobalberty/unifi:v7.3.76"
+					image: "jacobalberty/unifi:\(githubReleases["jacobalberty/unifi-docker"])"
 					name:  "controller"
 					env: [{
 						name:  "UNIFI_STDOUT"

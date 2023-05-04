@@ -23,19 +23,19 @@ goModVersions: {
 	"k8s.io/kube-aggregator":                                                 "v0.26.3"
 }
 githubReleases: {
-	"cloudflare/cloudflared":     "2023.4.1"
+	"cloudflare/cloudflared":     "2023.5.0"
 	"dani-garcia/vaultwarden":    "1.28.1"
-	"esphome/esphome":            "2023.4.0"
-	"grafana/grafana":            "v9.4.7"
-	"home-assistant/core":        "2023.4.6"
+	"esphome/esphome":            "2023.4.4"
+	"grafana/grafana":            "v9.5.1"
+	"home-assistant/core":        "2023.5.0"
+	"jacobalberty/unifi-docker":  "v7.3.83"
 	"jcmoraisjr/haproxy-ingress": "v0.14.2"
-	"kubereboot/charts":          "kured-4.4.2"
+	"kubereboot/charts":          "kured-4.5.0"
 	"longhorn/longhorn":          "v1.4.1"
 	"ory/hydra":                  "v2.1.1"
 	"ory/kratos":                 "v0.13.0"
-	"zwave-js/zwave-js-ui":       "v8.14.1"
+	"zwave-js/zwave-js-ui":       "v8.15.0"
 }
-
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"
 	"fluxcd/flux2":                       "v2.0.0-rc.1"
