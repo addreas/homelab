@@ -19,22 +19,6 @@ let conf = {
 
 	// homeassistant: media_dirs: media: "/media/videos"
 
-	sensor: {}
-
-	binary_sensor: [{
-		platform: "workday"
-		country:  "SE"
-	}]
-
-	prometheus: namespace: "hass"
-
-	sensor: {}
-
-	binary_sensor: [{
-		platform: "workday"
-		country:  "SE"
-	}]
-
 	prometheus: namespace: "hass"
 
 	light: [{
