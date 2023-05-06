@@ -15,7 +15,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.27
 	github.com/pivotal/kpack v0.10.1
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.65.0
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.65.1
 	k8s.io/api v0.27.1
 	k8s.io/apimachinery v0.27.1
 	k8s.io/kube-aggregator v0.27.1

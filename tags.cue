@@ -1,7 +1,7 @@
 package kube
 
 goModVersions: {
-	"github.com/addreas/cue-controller/api":                                  "v0.35.0-cue"
+	"github.com/addreas/cue-controller/api":                                  "v1.0.0-rc1-cue"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.20.5"
 	"github.com/cert-manager/cert-manager":                                   "v1.11.1"
 	"github.com/cilium/cilium":                                               "v1.13.2"
@@ -13,7 +13,7 @@ goModVersions: {
 	"github.com/k8snetworkplumbingwg/network-attachment-definition-client":   "v1.4.0"
 	"github.com/ory/hydra-maester":                                           "v0.0.27"
 	"github.com/pivotal/kpack":                                               "v0.10.1"
-	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.65.0"
+	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.65.1"
 	"k8s.io/api":                                                             "v0.27.1"
 	"k8s.io/apimachinery":                                                    "v0.27.1"
 	"k8s.io/kube-aggregator":                                                 "v0.27.1"
@@ -23,7 +23,7 @@ githubReleases: {
 	"dani-garcia/vaultwarden":    "1.28.1"
 	"esphome/esphome":            "2023.4.4"
 	"grafana/grafana":            "v9.5.1"
-	"home-assistant/core":        "2023.5.0"
+	"home-assistant/core":        "2023.5.2"
 	"jacobalberty/unifi-docker":  "v7.3.83"
 	"jcmoraisjr/haproxy-ingress": "v0.14.2"
 	"kubereboot/charts":          "kured-4.5.0"
