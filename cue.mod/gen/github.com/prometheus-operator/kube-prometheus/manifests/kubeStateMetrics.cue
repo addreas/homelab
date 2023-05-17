@@ -238,9 +238,9 @@ kubeStateMetrics: {
 					summary:     "kube-state-metrics is experiencing errors in list operations."
 				}
 				expr: """
-					(sum(rate(kube_state_metrics_list_total{job="kube-state-metrics",result="error"}[5m]))
+					(sum(rate(kube_state_metrics_list_total{job="kube-state-metrics",result="error"}[5m])) by (cluster)
 					  /
-					sum(rate(kube_state_metrics_list_total{job="kube-state-metrics"}[5m])))
+					sum(rate(kube_state_metrics_list_total{job="kube-state-metrics"}[5m])) by (cluster))
 					> 0.01
 
 					"""
@@ -254,9 +254,9 @@ kubeStateMetrics: {
 					summary:     "kube-state-metrics is experiencing errors in watch operations."
 				}
 				expr: """
-					(sum(rate(kube_state_metrics_watch_total{job="kube-state-metrics",result="error"}[5m]))
+					(sum(rate(kube_state_metrics_watch_total{job="kube-state-metrics",result="error"}[5m])) by (cluster)
 					  /
-					sum(rate(kube_state_metrics_watch_total{job="kube-state-metrics"}[5m])))
+					sum(rate(kube_state_metrics_watch_total{job="kube-state-metrics"}[5m])) by (cluster))
 					> 0.01
 
 					"""
@@ -270,7 +270,7 @@ kubeStateMetrics: {
 					summary:     "kube-state-metrics sharding is misconfigured."
 				}
 				expr: """
-					stdvar (kube_state_metrics_total_shards{job="kube-state-metrics"}) != 0
+					stdvar (kube_state_metrics_total_shards{job="kube-state-metrics"}) by (cluster) != 0
 
 					"""
 				for: "15m"
@@ -283,9 +283,9 @@ kubeStateMetrics: {
 					summary:     "kube-state-metrics shards are missing."
 				}
 				expr: """
-					2^max(kube_state_metrics_total_shards{job="kube-state-metrics"}) - 1
+					2^max(kube_state_metrics_total_shards{job="kube-state-metrics"}) by (cluster) - 1
 					  -
-					sum( 2 ^ max by (shard_ordinal) (kube_state_metrics_shard_ordinal{job="kube-state-metrics"}) )
+					sum( 2 ^ max by (cluster, shard_ordinal) (kube_state_metrics_shard_ordinal{job="kube-state-metrics"}) ) by (cluster)
 					!= 0
 
 					"""
