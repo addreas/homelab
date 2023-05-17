@@ -4,13 +4,13 @@ go 1.19
 
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
-	github.com/bitnami-labs/sealed-secrets v0.20.5
-	github.com/cert-manager/cert-manager v1.11.1
+	github.com/bitnami-labs/sealed-secrets v0.21.0
+	github.com/cert-manager/cert-manager v1.11.2
 	github.com/cilium/cilium v1.13.2
-	github.com/fluxcd/helm-controller/api v0.32.2
-	github.com/fluxcd/kustomize-controller/api v1.0.0-rc.1
+	github.com/fluxcd/helm-controller/api v0.33.0
+	github.com/fluxcd/kustomize-controller/api v1.0.0-rc.3
 	github.com/fluxcd/notification-controller/api v0.33.0
-	github.com/fluxcd/source-controller/api v1.0.0-rc.1
+	github.com/fluxcd/source-controller/api v1.0.0-rc.3
 	github.com/grafana-operator/grafana-operator/v5 v5.0.0-rc2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.27
@@ -85,7 +85,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20220216144756-c35f1ee13d7c // indirect
-	github.com/prometheus/client_golang v1.15.0 // indirect
+	github.com/prometheus/client_golang v1.15.1 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
