@@ -33,6 +33,7 @@ let baseContainer = {
 k: Deployment: "trippler": {
 	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
+		replicas: 2
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
