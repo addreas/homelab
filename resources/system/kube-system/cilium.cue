@@ -13,7 +13,7 @@ k: CiliumLoadBalancerIPPool: "main": spec: {
 }
 
 k: CiliumBGPPeeringPolicy: "main": spec: {
-	nodeSelector: matchExpressions: [{key: "kubernetes.io/hostname", operator: "In", values: ["nucle1", "nucle2", "nucle3", "nucle4"]}]
+	nodeSelector: matchExpressions: [{key: "kubernetes.io/hostname", operator: "In", values: ["nucle1", "nucle2", "nucle3"]}]
 	virtualRouters: [{
 		localASN: 64512
 		neighbors: [{
