@@ -25,11 +25,11 @@ k: HelmRelease: longhorn: spec: {
 		image: longhorn: {
 			manager: {
 				repository: "ghcr.io/addreas/longhorn-manager"
-				tag:        "v1.4.0-nix"
+				tag:        "v1.4.2-nix"
 			}
 			instanceManager: {
 				repository: "ghcr.io/addreas/longhorn-instance-manager"
-				tag:        "v1.4.0-nix"
+				tag:        "v1.4.2-nix"
 			}
 		}
 
