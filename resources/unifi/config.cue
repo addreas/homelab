@@ -28,6 +28,7 @@ k: ConfigMap: "config-gateway-json": data: {
 				"192.168.1.11": "remote-as": "64512"
 				"192.168.1.12": "remote-as": "64512"
 				"192.168.1.13": "remote-as": "64512"
+				"192.168.1.14": "remote-as": "64512"
 			}
 		}
 	})
