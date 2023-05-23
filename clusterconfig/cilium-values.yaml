@@ -1,9 +1,4 @@
-image:
-  repository: ghcr.io/addreas/cilium-agent
-  tag: 1.13.0-iptables-1.8.8
-  digest: sha256:769e23705eabc42900cbb9042b82558312dc66c3a3d3da7c157886498874e328
-
-cni:
+hcni:
   exclusive: false
 
 kubeProxyReplacement: strict
@@ -21,6 +16,7 @@ ingressController:
   # enabled: true
 
 loadBalancer:
+  algorithm: maglev
   l7:
     backend: envoy
 

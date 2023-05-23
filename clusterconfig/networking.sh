@@ -2,15 +2,11 @@
 helm repo add cilium https://helm.cilium.io/
 helm repo update
 
-CILIUM_VERSION=1.13.0
+# helm install cilium cilium/cilium --version $CILIUM_VERSION \
+#    --namespace kube-system \
+#    -f cilium-values.yaml
 
-helm install cilium cilium/cilium --version $CILIUM_VERSION \
-   --namespace kube-system \
-   -f cilium-values.yaml
-
-helm upgrade cilium cilium/cilium --version $CILIUM_VERSION \
-   --namespace kube-system \
-   -f cilium-values.yaml
+helm upgrade cilium cilium/cilium --version 1.13.1 --namespace kube-system -f cilium-values.yaml
 
 # https://docs.cilium.io/en/v1.12/gettingstarted/bgp/
 # probably conflicts with kube-vip?
