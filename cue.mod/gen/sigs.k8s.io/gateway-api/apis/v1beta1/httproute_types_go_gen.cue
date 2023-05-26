@@ -132,9 +132,12 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// ties. Across all rules specified on applicable Routes, precedence must be
 	// given to the match with the largest number of:
 	//
-	// * Characters in a matching path.
+	// * Characters in a matching "Exact" path match
+	// * Characters in a matching "Prefix" path match
 	// * Header matches.
 	// * Query param matches.
+	//
+	// Note: The precedence of RegularExpression path matches are implementation-specific.
 	//
 	// If ties still exist across multiple Routes, matching precedence MUST be
 	// determined in order of the following criteria, continuing on ties:
@@ -207,6 +210,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// choose how that 50 percent is determined.
 	//
 	// Support: Core for Kubernetes Service
+	//
+	// Support: Extended for Kubernetes ServiceImport
 	//
 	// Support: Implementation-specific for any other resource
 	//
@@ -323,12 +328,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 //   - ":method" - ":" is an invalid character. This means that HTTP/2 pseudo
 //     headers are not currently supported by this type.
-//   - "/invalid" - "/" is an invalid character
-//
-// +kubebuilder:validation:MinLength=1
-// +kubebuilder:validation:MaxLength=256
-// +kubebuilder:validation:Pattern=`^[A-Za-z0-9!#$%&'*+\-.^_\x60|~]+$`
-#HTTPHeaderName: string
+//   - "/invalid" - "/ " is an invalid character
+#HTTPHeaderName: #HeaderName
 
 // HTTPHeaderMatch describes how to select a HTTP route by matching HTTP request
 // headers.
@@ -430,10 +431,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Users SHOULD NOT route traffic based on repeated query params to guard
 	// themselves against potential differences in the implementations.
-	//
-	// +kubebuilder:validation:MinLength=1
-	// +kubebuilder:validation:MaxLength=256
-	name: string @go(Name)
+	name: #HTTPHeaderName @go(Name)
 
 	// Value is the value of HTTP query param to be matched.
 	//
@@ -577,8 +575,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Reason of `UnsupportedValue`.
 	//
 	// +unionDiscriminator
-	// +kubebuilder:validation:Enum=RequestHeaderModifier;RequestMirror;RequestRedirect;ExtensionRef
-	// <gateway:experimental:validation:Enum=RequestHeaderModifier;ResponseHeaderModifier;RequestMirror;RequestRedirect;URLRewrite;ExtensionRef>
+	// +kubebuilder:validation:Enum=RequestHeaderModifier;ResponseHeaderModifier;RequestMirror;RequestRedirect;URLRewrite;ExtensionRef
 	type: #HTTPRouteFilterType @go(Type)
 
 	// RequestHeaderModifier defines a schema for a filter that modifies request
@@ -595,7 +592,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Extended
 	//
 	// +optional
-	// <gateway:experimental>
 	responseHeaderModifier?: null | #HTTPHeaderFilter @go(ResponseHeaderModifier,*HTTPHeaderFilter)
 
 	// RequestMirror defines a schema for a filter that mirrors requests.
@@ -619,7 +615,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Support: Extended
 	//
-	// <gateway:experimental>
 	// +optional
 	urlRewrite?: null | #HTTPURLRewriteFilter @go(URLRewrite,*HTTPURLRewriteFilter)
 
@@ -659,7 +654,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Support in HTTPRouteRule: Extended
 //
 // Support in HTTPBackendRef: Extended
-// <gateway:experimental>
 #HTTPRouteFilterResponseHeaderModifier: #HTTPRouteFilterType & "ResponseHeaderModifier"
 
 // HTTPRouteFilterRequestRedirect can be used to redirect a request to
@@ -680,8 +674,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Support in HTTPRouteRule: Extended
 //
 // Support in HTTPBackendRef: Extended
-//
-// <gateway:experimental>
 #HTTPRouteFilterURLRewrite: #HTTPRouteFilterType & "URLRewrite"
 
 // HTTPRouteFilterRequestMirror can be used to mirror HTTP requests to a
@@ -819,7 +811,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #PrefixMatchHTTPPathModifier: #HTTPPathModifierType & "ReplacePrefixMatch"
 
 // HTTPPathModifier defines configuration for path modifiers.
-// <gateway:experimental>
 #HTTPPathModifier: {
 	// Type defines the type of path modifier. Additional types may be
 	// added in a future release of the API.
@@ -831,14 +822,12 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Accepted Condition for the Route to `status: False`, with a
 	// Reason of `UnsupportedValue`.
 	//
-	// <gateway:experimental>
 	// +kubebuilder:validation:Enum=ReplaceFullPath;ReplacePrefixMatch
 	type: #HTTPPathModifierType @go(Type)
 
 	// ReplaceFullPath specifies the value with which to replace the full path
 	// of a request during a rewrite or redirect.
 	//
-	// <gateway:experimental>
 	// +kubebuilder:validation:MaxLength=1024
 	// +optional
 	replaceFullPath?: null | string @go(ReplaceFullPath,*string)
@@ -853,7 +842,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all
 	// match the prefix `/abc`, but the path `/abcd` would not.
 	//
-	// <gateway:experimental>
 	// +kubebuilder:validation:MaxLength=1024
 	// +optional
 	replacePrefixMatch?: null | string @go(ReplacePrefixMatch,*string)
@@ -864,6 +852,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #HTTPRequestRedirectFilter: {
 	// Scheme is the scheme to be used in the value of the `Location` header in
 	// the response. When empty, the scheme of the request is used.
+	//
+	// Scheme redirects can affect the port of the redirect, for more information,
+	// refer to the documentation for the port field of this filter.
 	//
 	// Note that values may be added to this enum, implementations
 	// must ensure that unknown values will not cause a crash.
@@ -880,7 +871,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Hostname is the hostname to be used in the value of the `Location`
 	// header in the response.
-	// When empty, the hostname of the request is used.
+	// When empty, the hostname in the `Host` header of the request is used.
 	//
 	// Support: Core
 	//
@@ -893,13 +884,29 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Support: Extended
 	//
-	// <gateway:experimental>
 	// +optional
 	path?: null | #HTTPPathModifier @go(Path,*HTTPPathModifier)
 
 	// Port is the port to be used in the value of the `Location`
 	// header in the response.
-	// When empty, port (if specified) of the request is used.
+	//
+	// If no port is specified, the redirect port MUST be derived using the
+	// following rules:
+	//
+	// * If redirect scheme is not-empty, the redirect port MUST be the well-known
+	//   port associated with the redirect scheme. Specifically "http" to port 80
+	//   and "https" to port 443. If the redirect scheme does not have a
+	//   well-known port, the listener port of the Gateway SHOULD be used.
+	// * If redirect scheme is empty, the redirect port MUST be the Gateway
+	//   Listener port.
+	//
+	// Implementations SHOULD NOT add the port number in the 'Location'
+	// header in the following cases:
+	//
+	// * A Location header that will use HTTP (whether that is determined via
+	//   the Listener protocol or the Scheme field) _and_ use port 80.
+	// * A Location header that will use HTTPS (whether that is determined via
+	//   the Listener protocol or the Scheme field) _and_ use port 443.
 	//
 	// Support: Extended
 	//
@@ -928,15 +935,12 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.
 //
 // Support: Extended
-//
-// <gateway:experimental>
 #HTTPURLRewriteFilter: {
 	// Hostname is the value to be used to replace the Host header value during
 	// forwarding.
 	//
 	// Support: Extended
 	//
-	// <gateway:experimental>
 	// +optional
 	hostname?: null | #PreciseHostname @go(Hostname,*PreciseHostname)
 
@@ -944,7 +948,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Support: Extended
 	//
-	// <gateway:experimental>
 	// +optional
 	path?: null | #HTTPPathModifier @go(Path,*HTTPPathModifier)
 }

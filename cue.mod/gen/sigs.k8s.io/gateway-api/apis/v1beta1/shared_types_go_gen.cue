@@ -213,6 +213,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // * "NotAllowedByListeners"
 // * "NoMatchingListenerHostname"
+// * "NoMatchingParent"
 // * "UnsupportedValue"
 //
 // Possible reasons for this condition to be Unknown are:
@@ -548,6 +549,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#IPAddressType |
 	#HostnameAddressType |
 	#NamedAddressType
+
+// HeaderName is the name of a header or query parameter.
+//
+// +kubebuilder:validation:MinLength=1
+// +kubebuilder:validation:MaxLength=256
+// +kubebuilder:validation:Pattern=`^[A-Za-z0-9!#$%&'*+\-.^_\x60|~]+$`
+// +k8s:deepcopy-gen=false
+#HeaderName: string
 
 // A textual representation of a numeric IP address. IPv4
 // addresses must be in dotted-decimal form. IPv6 addresses

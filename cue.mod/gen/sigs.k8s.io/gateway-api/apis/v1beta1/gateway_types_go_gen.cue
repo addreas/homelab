@@ -17,7 +17,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Status defines the current state of Gateway.
 	//
-	// +kubebuilder:default={conditions: {{type: "Accepted", status: "Unknown", reason:"NotReconciled", message:"Waiting for controller", lastTransitionTime: "1970-01-01T00:00:00Z"}}}
+	// +kubebuilder:default={conditions: {{type: "Accepted", status: "Unknown", reason:"Pending", message:"Waiting for controller", lastTransitionTime: "1970-01-01T00:00:00Z"},{type: "Programmed", status: "Unknown", reason:"Pending", message:"Waiting for controller", lastTransitionTime: "1970-01-01T00:00:00Z"}}}
 	status?: #GatewayStatus @go(Status)
 }
 
@@ -474,6 +474,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Known condition types are:
 	//
 	// * "Accepted"
+	// * "Programmed"
 	// * "Ready"
 	//
 	// +optional
@@ -510,15 +511,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #enumGatewayConditionReason:
 	#GatewayReasonProgrammed |
 	#GatewayReasonInvalid |
-	#GatewayReasonAccepted |
-	#GatewayReasonScheduled |
-	#GatewayReasonPending |
-	#GatewayReasonNotReconciled |
 	#GatewayReasonNoResources |
-	#GatewayReasonReady |
+	#GatewayReasonAddressNotAssigned |
+	#GatewayReasonAccepted |
 	#GatewayReasonListenersNotValid |
-	#GatewayReasonListenersNotReady |
-	#GatewayReasonAddressNotAssigned
+	#GatewayReasonPending |
+	#GatewaReasonUnsupportedAddress |
+	#GatewayReasonScheduled |
+	#GatewayReasonNotReconciled |
+	#GatewayReasonReady |
+	#GatewayReasonListenersNotReady
 
 // This condition indicates whether a Gateway has generated some
 // configuration that is assumed to be ready soon in the underlying data
@@ -539,6 +541,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // * "Invalid"
 // * "Pending"
+// * "NoResources"
+// * "AddressNotAssigned"
 //
 // Possible reasons for this condition to be Unknown are:
 //
@@ -553,9 +557,20 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // true.
 #GatewayReasonProgrammed: #GatewayConditionReason & "Programmed"
 
-// This reason is used with the "Programmed" condition when the Listener is
+// This reason is used with the "Programmed" and "Accepted" conditions when the Gateway is
 // syntactically or semantically invalid.
 #GatewayReasonInvalid: #GatewayConditionReason & "Invalid"
+
+// This reason is used with the "Programmed" condition when the
+// Gateway is not scheduled because insufficient infrastructure
+// resources are available.
+#GatewayReasonNoResources: #GatewayConditionReason & "NoResources"
+
+// This reason is used with the "Programmed" condition when none of the requested
+// addresses have been assigned to the Gateway. This reason can be used to
+// express a range of circumstances, including (but not limited to) IPAM
+// address exhaustion, address not yet allocated, or a named address not being found.
+#GatewayReasonAddressNotAssigned: #GatewayConditionReason & "AddressNotAssigned"
 
 // This condition is true when the controller managing the Gateway is
 // syntactically and semantically valid enough to produce some configuration
@@ -565,11 +580,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Possible reasons for this condition to be True are:
 //
 // * "Accepted"
+// * "ListenersNotValid"
 //
 // Possible reasons for this condition to be False are:
 //
+// * "Invalid"
 // * "NotReconciled"
-// * "NoResources"
+// * "UnsupportedAddress"
+// * "ListenersNotValid"
 //
 // Possible reasons for this condition to be Unknown are:
 //
@@ -580,12 +598,32 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // interoperability.
 #GatewayConditionAccepted: #GatewayConditionType & "Accepted"
 
-// Deprecated: use "Accepted" instead.
-#GatewayConditionScheduled: #GatewayConditionType & "Scheduled"
-
 // This reason is used with the "Accepted" condition when the condition is
 // True.
 #GatewayReasonAccepted: #GatewayConditionReason & "Accepted"
+
+// This reason is used with the "Accepted" condition when one or
+// more Listeners have an invalid or unsupported configuration
+// and cannot be configured on the Gateway.
+// This can be the reason when "Accepted" is "True" or "False", depending on whether
+// the listener being invalid causes the entire Gateway to not be accepted.
+#GatewayReasonListenersNotValid: #GatewayConditionReason & "ListenersNotValid"
+
+// This reason is used with the "Accepted" and "Programmed"
+// conditions when the status is "Unknown" and no controller has reconciled
+// the Gateway.
+#GatewayReasonPending: #GatewayConditionReason & "Pending"
+
+// This reason is used with the "Accepted" condition when the Gateway could not be configured
+// because the requested address is not supported. This reason could be used in a number of
+// instances, including:
+//
+// * The address is already in use.
+// * The type of address is not supported by the implementation.
+#GatewaReasonUnsupportedAddress: #GatewayConditionReason & "UnsupportedAddress"
+
+// Deprecated: use "Accepted" instead.
+#GatewayConditionScheduled: #GatewayConditionType & "Scheduled"
 
 // This reason is used with the "Scheduled" condition when the condition is
 // True.
@@ -593,61 +631,28 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Deprecated: use the "Accepted" condition with reason "Accepted" instead.
 #GatewayReasonScheduled: #GatewayConditionReason & "Scheduled"
 
-// This reason is used with the "Accepted", "Programmed" and "Ready"
-// conditions when the status is "Unknown" and no controller has reconciled
-// the Gateway.
-#GatewayReasonPending: #GatewayConditionReason & "Pending"
-
 // Deprecated: Use "Pending" instead.
 #GatewayReasonNotReconciled: #GatewayConditionReason & "NotReconciled"
 
-// This reason is used with the "Accepted" condition when the
-// Gateway is not scheduled because insufficient infrastructure
-// resources are available.
-#GatewayReasonNoResources: #GatewayConditionReason & "NoResources"
-
-// Ready is an optional Condition that has Extended support. When it's set,
-// the condition indicates whether the Gateway has been completely configured
-// and traffic is ready to flow through the data plane immediately.
+// "Ready" is a condition type reserved for future use. It should not be used by implementations.
 //
-// If both the "ListenersNotValid" and "ListenersNotReady"
-// reasons are true, the Gateway controller should prefer the
-// "ListenersNotValid" reason.
+// If used in the future, "Ready" will represent the final state where all configuration is confirmed good
+// _and has completely propagated to the data plane_. That is, it is a _guarantee_ that, as soon as something
+// sees the Condition as `true`, then connections will be correctly routed _immediately_.
 //
-// Possible reasons for this condition to be true are:
+// This is a very strong guarantee, and to date no implementation has satisfied it enough to implement it.
+// This reservation can be discussed in the future if necessary.
 //
-// * "Ready"
-//
-// Possible reasons for this condition to be False are:
-//
-// * "ListenersNotValid"
-// * "ListenersNotReady"
-// * "AddressNotAssigned"
-//
-// Controllers may raise this condition with other reasons,
-// but should prefer to use the reasons listed above to improve
-// interoperability.
+// Note: This condition is not really "deprecated", but rather "reserved"; however, deprecated triggers Go linters
+// to alert about usage.
+// Deprecated: Ready is reserved for future use
 #GatewayConditionReady: #GatewayConditionType & "Ready"
 
-// This reason is used with the "Ready" condition when the condition is
-// true.
+// Deprecated: Ready is reserved for future use
 #GatewayReasonReady: #GatewayConditionReason & "Ready"
 
-// This reason is used with the "Ready" condition when one or
-// more Listeners have an invalid or unsupported configuration
-// and cannot be configured on the Gateway.
-#GatewayReasonListenersNotValid: #GatewayConditionReason & "ListenersNotValid"
-
-// This reason is used with the "Ready" condition when one or
-// more Listeners are not ready to serve traffic.
+// Deprecated: Ready is reserved for future use
 #GatewayReasonListenersNotReady: #GatewayConditionReason & "ListenersNotReady"
-
-// This reason is used with the "Ready" condition when none of the requested
-// addresses have been assigned to the Gateway. This reason can be used to
-// express a range of circumstances, including (but not limited to) IPAM
-// address exhaustion, invalid or unsupported address requests, or a named
-// address not being found.
-#GatewayReasonAddressNotAssigned: #GatewayConditionReason & "AddressNotAssigned"
 
 // ListenerStatus is the status associated with a Listener.
 #ListenerStatus: {
@@ -704,15 +709,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#ListenerReasonAttached |
 	#ListenerReasonPortUnavailable |
 	#ListenerReasonUnsupportedProtocol |
-	#ListenerReasonUnsupportedAddress |
 	#ListenerReasonResolvedRefs |
 	#ListenerReasonInvalidCertificateRef |
 	#ListenerReasonInvalidRouteKinds |
 	#ListenerReasonRefNotPermitted |
 	#ListenerReasonProgrammed |
-	#ListenerReasonReady |
 	#ListenerReasonInvalid |
-	#ListenerReasonPending
+	#ListenerReasonPending |
+	#ListenerReasonReady
 
 // This condition indicates that the controller was unable to resolve
 // conflicting specification requirements for this Listener. If a
@@ -766,7 +770,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // * "PortUnavailable"
 // * "UnsupportedProtocol"
-// * "UnsupportedAddress"
 //
 // Possible reasons for this condition to be Unknown are:
 //
@@ -802,14 +805,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Listener could not be attached to be Gateway because its
 // protocol type is not supported.
 #ListenerReasonUnsupportedProtocol: #ListenerConditionReason & "UnsupportedProtocol"
-
-// This reason is used with the "Accepted" condition when the Listener could
-// not be attached to the Gateway because the requested address is not
-// supported. This reason could be used in a number of instances, including:
-//
-// * The address is already in use.
-// * The type of address is not supported by the implementation.
-#ListenerReasonUnsupportedAddress: #ListenerConditionReason & "UnsupportedAddress"
 
 // This condition indicates whether the controller was able to
 // resolve all the object references for the Listener.
@@ -888,32 +883,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // true.
 #ListenerReasonProgrammed: #ListenerConditionReason & "Programmed"
 
-// Ready is an optional Condition that has Extended support. When it's set,
-// the condition indicates whether the Listener has been configured on the
-// Gateway and traffic is ready to flow through the data plane immediately.
-//
-// Possible reasons for this condition to be True are:
-//
-// * "Ready"
-//
-// Possible reasons for this condition to be False are:
-//
-// * "Invalid"
-// * "Pending"
-//
-// Possible reasons for this condition to be Unknown are:
-//
-// * "Pending"
-//
-// Controllers may raise this condition with other reasons,
-// but should prefer to use the reasons listed above to improve
-// interoperability.
-#ListenerConditionReady: #ListenerConditionType & "Ready"
-
-// This reason is used with the "Ready" condition when the condition is
-// true.
-#ListenerReasonReady: #ListenerConditionReason & "Ready"
-
 // This reason is used with the "Ready" and "Programmed" conditions when the
 // Listener is syntactically or semantically invalid.
 #ListenerReasonInvalid: #ListenerConditionReason & "Invalid"
@@ -922,3 +891,20 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // conditions when the Listener is either not yet reconciled or not yet not
 // online and ready to accept client traffic.
 #ListenerReasonPending: #ListenerConditionReason & "Pending"
+
+// "Ready" is a condition type reserved for future use. It should not be used by implementations.
+// Note: This condition is not really "deprecated", but rather "reserved"; however, deprecated triggers Go linters
+// to alert about usage.
+//
+// If used in the future, "Ready" will represent the final state where all configuration is confirmed good
+// _and has completely propagated to the data plane_. That is, it is a _guarantee_ that, as soon as something
+// sees the Condition as `true`, then connections will be correctly routed _immediately_.
+//
+// This is a very strong guarantee, and to date no implementation has satisfied it enough to implement it.
+// This reservation can be discussed in the future if necessary.
+//
+// Deprecated: Ready is reserved for future use
+#ListenerConditionReady: #ListenerConditionType & "Ready"
+
+// Deprecated: Ready is reserved for future use
+#ListenerReasonReady: #ListenerConditionReason & "Ready"
