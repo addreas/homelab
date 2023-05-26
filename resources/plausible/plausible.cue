@@ -20,6 +20,7 @@ k: Deployment: plausible: spec: template: spec: {
 			{secretRef: name: "plausible-config"},
 			{secretRef: name: "postgres-credentials-plausible"},
 			{secretRef: name: "plausible-events-db-user"},
+			{secretRef: name: "google-plausible-secrets"},
 		]
 		env: [{
 			name:  "DATABASE_URL"
@@ -41,6 +42,7 @@ k: Deployment: plausible: spec: template: spec: {
 			{secretRef: name: "plausible-config"},
 			{secretRef: name: "postgres-credentials-plausible"},
 			{secretRef: name: "plausible-events-db-user"},
+			{secretRef: name: "google-plausible-secrets"},
 		]
 		env: [{
 			name:  "DATABASE_URL"
