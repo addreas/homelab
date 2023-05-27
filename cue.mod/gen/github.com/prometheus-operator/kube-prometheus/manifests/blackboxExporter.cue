@@ -23,7 +23,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -88,7 +88,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter-configuration"
 			namespace: "monitoring"
@@ -102,7 +102,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -121,14 +121,14 @@ blackboxExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "blackbox-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.23.0"
+						"app.kubernetes.io/version":   "0.24.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--config.file=/etc/blackbox_exporter/config.yml", "--web.listen-address=:19115"]
-						image: "quay.io/prometheus/blackbox-exporter:v0.23.0"
+						image: "quay.io/prometheus/blackbox-exporter:v0.24.0"
 						name:  "blackbox-exporter"
 						ports: [{
 							containerPort: 19115
@@ -229,7 +229,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -260,7 +260,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -274,7 +274,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.23.0"
+				"app.kubernetes.io/version":   "0.24.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"

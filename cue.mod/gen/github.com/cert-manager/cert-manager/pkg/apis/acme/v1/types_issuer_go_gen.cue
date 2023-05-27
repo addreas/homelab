@@ -223,9 +223,17 @@ import (
 	// +optional
 	serviceType?: corev1.#ServiceType @go(ServiceType)
 
-	// The ingress class to use when creating Ingress resources to solve ACME
-	// challenges that use this challenge solver.
-	// Only one of 'class' or 'name' may be specified.
+	// This field configures the field `ingressClassName` on the created Ingress
+	// resources used to solve ACME challenges that use this challenge solver.
+	// This is the recommended way of configuring the ingress class. Only one of
+	// `class`, `name` or `ingressClassName` may be specified.
+	// +optional
+	ingressClassName?: null | string @go(IngressClassName,*string)
+
+	// This field configures the annotation `kubernetes.io/ingress.class` when
+	// creating Ingress resources to solve ACME challenges that use this
+	// challenge solver. Only one of `class`, `name` or `ingressClassName` may
+	// be specified.
 	// +optional
 	class?: null | string @go(Class,*string)
 
@@ -233,7 +241,8 @@ import (
 	// routes inserted into it in order to solve HTTP01 challenges.
 	// This is typically used in conjunction with ingress controllers like
 	// ingress-gce, which maintains a 1:1 mapping between external IPs and
-	// ingress resources.
+	// ingress resources. Only one of `class`, `name` or `ingressClassName` may
+	// be specified.
 	// +optional
 	name?: string @go(Name)
 
@@ -277,8 +286,7 @@ import (
 	metadata: #ACMEChallengeSolverHTTP01IngressPodObjectMeta @go(ACMEChallengeSolverHTTP01IngressPodObjectMeta)
 
 	// PodSpec defines overrides for the HTTP01 challenge solver pod.
-	// Only the 'priorityClassName', 'nodeSelector', 'affinity',
-	// 'serviceAccountName' and 'tolerations' fields are supported currently.
+	// Check ACMEChallengeSolverHTTP01IngressPodSpec to find out currently supported fields.
 	// All other fields will be ignored.
 	// +optional
 	spec: #ACMEChallengeSolverHTTP01IngressPodSpec @go(Spec)
@@ -316,6 +324,10 @@ import (
 	// If specified, the pod's service account
 	// +optional
 	serviceAccountName?: string @go(ServiceAccountName)
+
+	// If specified, the pod's imagePullSecrets
+	// +optional
+	imagePullSecrets?: [...corev1.#LocalObjectReference] @go(ImagePullSecrets,[]corev1.LocalObjectReference)
 }
 
 #ACMEChallengeSolverHTTP01IngressTemplate: {
@@ -620,4 +632,10 @@ import (
 	// associated with the  Issuer
 	// +optional
 	lastRegisteredEmail?: string @go(LastRegisteredEmail)
+
+	// LastPrivateKeyHash is a hash of the private key associated with the latest
+	// registered ACME account, in order to track changes made to registered account
+	// associated with the Issuer
+	// +optional
+	lastPrivateKeyHash?: string @go(LastPrivateKeyHash)
 }

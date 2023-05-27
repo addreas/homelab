@@ -243,8 +243,8 @@ _#labelPrefix:                 "batch.kubernetes.io/"
 	// checked against the backoffLimit. This field cannot be used in combination
 	// with restartPolicy=OnFailure.
 	//
-	// This field is alpha-level. To use this field, you must enable the
-	// `JobPodFailurePolicy` feature gate (disabled by default).
+	// This field is beta-level. It can be used when the `JobPodFailurePolicy`
+	// feature gate is enabled (enabled by default).
 	// +optional
 	podFailurePolicy?: null | #PodFailurePolicy @go(PodFailurePolicy,*PodFailurePolicy) @protobuf(11,bytes,opt)
 
