@@ -1,7 +1,7 @@
 package kube
 
 k: Ingress: logger: {}
-k: Ingress: logger: {
+k: Ingress: loggerjdahl: {
 	spec: {
 		rules: [{
 			host: "log.jdahl.se"
