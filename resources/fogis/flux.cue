@@ -1,4 +1,4 @@
-package kube 
+package kube
 
 k: CueExport: "homelab-fogis": spec: {
 	interval:  "30m"

@@ -1,11 +1,30 @@
 package kube
 
 k: Ingress: logger: {}
+k: Ingress: logger: {
+	spec: {
+		rules: [{
+			host: "log.jdahl.se"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "logger"
+					port: *close({
+						number: k.Service["logger"].spec.ports[0].port
+					}) | close({
+						name: k.Service["logger"].spec.ports[0].name
+					})
+				}
+			}]
+		}]
+	}
+}
 
 k: Service: logger: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/logger:main"
+	image:           "ghcr.io/jonasdahl/logger:main"
 	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "postgres-secrets"}, {secretRef: name: "app-secrets"}]
 	env: [{
