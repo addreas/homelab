@@ -19,7 +19,7 @@ k: Ingress: prototyp: {
 k: Service: prototyp: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/prototype:main"
+	image:           "ghcr.io/jonasdahl/prototype:main"
 	imagePullPolicy: "Always"
 }
 
@@ -31,8 +31,8 @@ k: Deployment: "prototyp": {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
 				containers: [baseContainer & {
-					name:  "prototyp"
-					ports: [{containerPort: 3000, name:"http"}]
+					name: "prototyp"
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}

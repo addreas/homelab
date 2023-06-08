@@ -21,7 +21,7 @@ k: Ingress: trippler: {
 k: Service: trippler: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/trippler.se:main"
+	image:           "ghcr.io/jonasdahl/trippler.se:main"
 	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "trippler-secrets"}]
 	env: [{
@@ -38,12 +38,12 @@ k: Deployment: "trippler": {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
 				initContainers: [baseContainer & {
-					name:  "migrations"
+					name: "migrations"
 					command: ["pnpm", "run", "prisma", "migrate", "deploy"]
 				}]
 				containers: [baseContainer & {
-					name:  "trippler"
-					ports: [{containerPort: 3000, name:"http"}]
+					name: "trippler"
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}
