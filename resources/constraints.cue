@@ -210,3 +210,23 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 	volumeMode:       "Filesystem"
 	volumeName:       Name
 }
+
+_PodKiller: {
+	Name=_name: string
+	Namespace=_namespace: string
+	LabelSelector=_labelSelector: string
+
+	k: {
+		Ingress: "\(Name)-pod-killer": {}
+		Service: "\(Name)-pod-killer": {}
+		Deployment: "\(Name)-pod-killer": spec: template: spec: containers: [{
+			ports: [{containerPort: 8080, name: "http"}]
+			image: "ghcr.io/jonasdahl/pod-killer:main"
+			env: [
+				{name: "KEY", value:            "VALUE"}, // TODO
+				{name: "NAMESPACE", value:      Namespace},
+				{name: "LABEL_SELECTOR", value: LabelSelector},
+			]
+		}]
+	}
+}

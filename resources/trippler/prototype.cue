@@ -18,23 +18,25 @@ k: Ingress: prototyp: {
 
 k: Service: prototyp: {}
 
-let baseContainer = {
-	image:           "ghcr.io/jonasdahl/prototype:main"
-	imagePullPolicy: "Always"
-}
-
 k: Deployment: "prototyp": {
-	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
 		replicas: 1
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
-				containers: [baseContainer & {
+				containers: [{
+					image:           "ghcr.io/jonasdahl/prototype:main"
+					imagePullPolicy: "Always"
 					name: "prototyp"
 					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}
 	}
+}
+
+_PodKiller & {
+	_name: "deployproto"
+	_namespace: "trippler"
+	_labelSelector: "app=prototype"
 }
