@@ -252,7 +252,7 @@ _PodKiller: {
 			subjects: [{
 				kind:      "ServiceAccount"
 				name:      "\(_ItemName)"
-				namespace: "trippler"
+				namespace: "\(Namespace)"
 			}]
 		}
 	}
