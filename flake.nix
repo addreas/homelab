@@ -1,7 +1,7 @@
 {
   description = "Just a bunch of stuff";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
 
@@ -22,7 +22,7 @@
     in
     {
       formatter.${system} = nixpkgs.legacyPkgs.${system}.nixpkgs-fmt;
-      apps.${system}.diff-current-system = flakefiles.apps.${system}.diff-current-system;
+      apps.${system} = flakefiles.apps.${system};
 
       nixosConfigurations.sergio = machine "sergio" [
         flakefiles.nixosModules.nix-builder

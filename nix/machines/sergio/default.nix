@@ -42,7 +42,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/addem/flakefiles";
+    flake = "/home/addem/github.com/addreas/homelab";
     flags = [ "--update-input" "nixpkgs" ];
     operation = "boot";
   };
