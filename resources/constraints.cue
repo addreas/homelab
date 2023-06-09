@@ -242,7 +242,7 @@ _PodKiller: {
 			resources: ["pods"]
 			verbs: ["deletecollection"]
 		}]
-		RoleBinding: (ItemName): {
+		RoleBinding: (_ItemName): {
 			roleRef: {
 				apiGroup: "rbac.authorization.k8s.io"
 				kind:     "Role"
