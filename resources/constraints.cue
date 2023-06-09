@@ -211,22 +211,49 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 	volumeName:       Name
 }
 
+//
+// Adds an endpoint which can be called to delete all pods matching a label.
+//
+// TODO Move below to separate file?
+//
 _PodKiller: {
 	Name=_name: string
 	Namespace=_namespace: string
 	LabelSelector=_labelSelector: string
+	_ItemName: "\(Name)-pod-killer"
 
 	k: {
-		Ingress: "\(Name)-pod-killer": {}
-		Service: "\(Name)-pod-killer": {}
-		Deployment: "\(Name)-pod-killer": spec: template: spec: containers: [{
-			ports: [{containerPort: 8080, name: "http"}]
-			image: "ghcr.io/jonasdahl/pod-killer:main"
-			env: [
-				{name: "KEY", value:            "VALUE"}, // TODO
-				{name: "NAMESPACE", value:      Namespace},
-				{name: "LABEL_SELECTOR", value: LabelSelector},
-			]
+		Ingress: "\(_ItemName)": {}
+		Service: "\(_ItemName)": {}
+		Deployment: "\(_ItemName)": spec: template: spec: {
+			serviceAccountName: "\(_ItemName)"
+			containers: [{
+				ports: [{containerPort: 8080, name: "http"}]
+				image: "ghcr.io/jonasdahl/pod-killer:main"
+				env: [
+					{name: "KEY", value:            "VALUE"}, // TODO
+					{name: "NAMESPACE", value:      Namespace},
+					{name: "LABEL_SELECTOR", value: LabelSelector},
+				]
+			}]
+		}
+		ServiceAccount: "\(_ItemName)": {}
+		ClusterRole: "\(_ItemName)": rules: [{
+			apiGroups: [""]
+			resources: ["pods"]
+			verbs: ["deletecollection"]
 		}]
+		ClusterRoleBinding: "\(_ItemName)": {
+			roleRef: {
+				apiGroup: "rbac.authorization.k8s.io"
+				kind:     "ClusterRole"
+				name:     "\(_ItemName)"
+			}
+			subjects: [{
+				kind:      "ServiceAccount"
+				name:      "\(_ItemName)"
+				namespace: "trippler"
+			}]
+		}
 	}
 }
