@@ -1,25 +1,21 @@
 package kube
 
 k: Ingress: logger: {}
-k: Ingress: loggerjdahl: {
-	spec: {
-		rules: [{
-			host: "log.jdahl.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "logger"
-					port: *close({
-						number: k.Service["logger"].spec.ports[0].port
-					}) | close({
-						name: k.Service["logger"].spec.ports[0].name
-					})
-				}
-			}]
-		}]
-	}
-}
+k: Ingress: loggerjdahl: spec: rules: [{
+	host: "log.jdahl.se"
+	http: paths: [{
+		path:     "/"
+		pathType: "Prefix"
+		backend: service: {
+			name: "logger"
+			port: *close({
+				number: k.Service["logger"].spec.ports[0].port
+			}) | close({
+				name: k.Service["logger"].spec.ports[0].name
+			})
+		}
+	}]
+}]
 
 k: Service: logger: {}
 
@@ -33,20 +29,19 @@ let baseContainer = {
 	}]
 }
 
-k: Deployment: "logger": {
-	metadata: labels: "homelab.addem.se/autodeploy": "true"
-	spec: {
-		template: {
-			spec: {
-				initContainers: [baseContainer & {
-					name: "migrations"
-					command: ["pnpm", "run", "prisma", "migrate", "deploy"]
-				}]
-				containers: [baseContainer & {
-					name: "logger"
-					ports: [{containerPort: 3000, name: "http"}]
-				}]
-			}
-		}
-	}
+k: Deployment: "logger": spec: template: spec: {
+	initContainers: [baseContainer & {
+		name: "migrations"
+		command: ["pnpm", "run", "prisma", "migrate", "deploy"]
+	}]
+	containers: [baseContainer & {
+		name: "logger"
+		ports: [{containerPort: 3000, name: "http"}]
+	}]
+}
+
+_PodKiller & {
+	_name: "logger"
+	_namespace: "fogis"
+	_labelSelector: "app=logger"
 }
