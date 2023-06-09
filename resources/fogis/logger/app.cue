@@ -42,6 +42,5 @@ k: Deployment: "logger": spec: template: spec: {
 
 _PodKiller & {
 	_name: "logger"
-	_namespace: "fogis"
 	_labelSelector: "app=logger"
 }
