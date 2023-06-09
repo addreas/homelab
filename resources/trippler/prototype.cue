@@ -36,7 +36,7 @@ k: Deployment: "prototyp": {
 }
 
 _PodKiller & {
-	_name: "deployproto"
+	_name: "prototyp"
 	_namespace: "trippler"
 	_labelSelector: "app=prototyp"
 }
