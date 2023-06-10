@@ -12,7 +12,6 @@ goModVersions: {
 	"github.com/grafana-operator/grafana-operator/v5":                        "v5.0.0"
 	"github.com/k8snetworkplumbingwg/network-attachment-definition-client":   "v1.4.0"
 	"github.com/ory/hydra-maester":                                           "v0.0.27"
-	"github.com/pivotal/kpack":                                               "v0.11.1"
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.65.2"
 	"k8s.io/api":                                                             "v0.27.2"
 	"k8s.io/apimachinery":                                                    "v0.27.2"

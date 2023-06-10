@@ -37,8 +37,6 @@ import (
 	cilium_v2 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"
 	cilium_v2alpha1 "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1"
 
-	kpack_v1alpha2 "github.com/pivotal/kpack/pkg/apis/build/v1alpha2"
-
 	hydra_v1alpha1 "github.com/ory/hydra-maester/api/v1alpha1"
 )
 
@@ -174,17 +172,6 @@ _kubernetesAPIs: {
 		CiliumBGPPeeringPolicy:   cilium_v2alpha1.#CiliumBGPPeeringPolicy
 		CiliumLoadBalancerIPPool: cilium_v2alpha1.#CiliumLoadBalancerIPPool
 		CiliumNodeConfig:         cilium_v2alpha1.#CiliumNodeConfig
-	}
-
-	"kpack.io/v1alpha2": {
-		Build:          kpack_v1alpha2.#Build
-		Builder:        kpack_v1alpha2.#Builder
-		ClusterBuilder: kpack_v1alpha2.#ClusterBuilder
-		ClusterStack:   kpack_v1alpha2.#ClusterStack
-		ClusterStore:   kpack_v1alpha2.#ClusterStore
-		Image:          kpack_v1alpha2.#Image
-		ImageBuilder:   kpack_v1alpha2.#ImageBuilder
-		SourceResolver: kpack_v1alpha2.#SourceResolver
 	}
 
 	"hydra.ory.sh/v1alpha1": OAuth2Client: hydra_v1alpha1.#OAuth2Client
