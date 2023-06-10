@@ -1,4 +1,4 @@
-hcni:
+cni:
   exclusive: false
 
 kubeProxyReplacement: strict
