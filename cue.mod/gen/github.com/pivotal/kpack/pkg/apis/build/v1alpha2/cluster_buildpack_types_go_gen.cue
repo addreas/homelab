@@ -10,26 +10,25 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-#ClusterStoreKind:   "ClusterStore"
-#ClusterStoreCRName: "clusterstores.kpack.io"
+#ClusterBuildpackKind:   "ClusterBuildpack"
+#ClusterBuildpackCRName: "clusterbuildpacks.kpack.io"
 
 // +k8s:openapi-gen=true
-#ClusterStore: {
+#ClusterBuildpack: {
 	metav1.#TypeMeta
-	metadata?: metav1.#ObjectMeta  @go(ObjectMeta)
-	spec:      #ClusterStoreSpec   @go(Spec)
-	status:    #ClusterStoreStatus @go(Status)
+	metadata?: metav1.#ObjectMeta      @go(ObjectMeta)
+	spec:      #ClusterBuildpackSpec   @go(Spec)
+	status:    #ClusterBuildpackStatus @go(Status)
 }
 
 // +k8s:openapi-gen=true
-#ClusterStoreSpec: {
-	// +listType
-	sources?: [...corev1alpha1.#ImageSource] @go(Sources,[]corev1alpha1.ImageSource)
+#ClusterBuildpackSpec: {
+	corev1alpha1.#ImageSource
 	serviceAccountRef?: null | corev1.#ObjectReference @go(ServiceAccountRef,*corev1.ObjectReference)
 }
 
 // +k8s:openapi-gen=true
-#ClusterStoreStatus: {
+#ClusterBuildpackStatus: {
 	corev1alpha1.#Status
 
 	// +listType
@@ -37,10 +36,10 @@ import (
 }
 
 // +k8s:openapi-gen=true
-#ClusterStoreList: {
+#ClusterBuildpackList: {
 	metav1.#TypeMeta
 	metadata: metav1.#ListMeta @go(ListMeta)
 
 	// +k8s:listType=atomic
-	items: [...#ClusterStore] @go(Items,[]ClusterStore)
+	items: [...#ClusterBuildpack] @go(Items,[]ClusterBuildpack)
 }

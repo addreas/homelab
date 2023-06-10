@@ -28,7 +28,21 @@ import (
 	store?: corev1.#ObjectReference @go(Store)
 
 	// +listType
-	order?: [...corev1alpha1.#OrderEntry] @go(Order,[]corev1alpha1.OrderEntry)
+	order?: [...#BuilderOrderEntry] @go(Order,[]BuilderOrderEntry)
+}
+
+// +k8s:openapi-gen=true
+#BuilderOrderEntry: {
+	// +listType
+	group?: [...#BuilderBuildpackRef] @go(Group,[]BuilderBuildpackRef)
+}
+
+// +k8s:openapi-gen=true
+#BuilderBuildpackRef: {
+	corev1alpha1.#BuildpackRef
+
+	corev1.#ObjectReference
+	image?: string @go(Image)
 }
 
 // +k8s:openapi-gen=true
