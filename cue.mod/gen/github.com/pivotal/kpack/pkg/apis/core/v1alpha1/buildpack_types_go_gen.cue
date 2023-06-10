@@ -6,16 +6,16 @@ package v1alpha1
 
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
-#StoreImage: {
+#ImageSource: {
 	image?: string @go(Image)
 }
 
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=true
-#StoreBuildpack: {
+#BuildpackStatus: {
 	#BuildpackInfo
 	buildpackage?: #BuildpackageInfo @go(Buildpackage)
-	storeImage?:   #StoreImage       @go(StoreImage)
+	storeImage?:   #ImageSource      @go(StoreImage)
 	diffId?:       string            @go(DiffId)
 	digest?:       string            @go(Digest)
 	size?:         int64             @go(Size)

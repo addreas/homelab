@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -85,7 +85,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -5753,7 +5753,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -5835,7 +5835,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -5944,7 +5944,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -6115,7 +6115,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -6437,7 +6437,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -6857,7 +6857,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -6939,7 +6939,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -7048,7 +7048,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -7219,7 +7219,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -7541,7 +7541,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -12450,7 +12450,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -12532,7 +12532,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -12641,7 +12641,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -12812,7 +12812,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -13134,7 +13134,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -13641,7 +13641,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -13723,7 +13723,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -13832,7 +13832,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -14003,7 +14003,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -14325,7 +14325,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -19170,7 +19170,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -19252,7 +19252,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -19361,7 +19361,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -19532,7 +19532,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -19854,7 +19854,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -20384,7 +20384,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -20466,7 +20466,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -20575,7 +20575,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -20746,7 +20746,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -21068,7 +21068,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -21602,6 +21602,10 @@ prometheusOperator: {
 												}
 												filterExternalLabels: {
 													description: "Whether to use the external labels as selectors for the remote read endpoint. Requires Prometheus v2.34.0 and above."
+													type:        "boolean"
+												}
+												followRedirects: {
+													description: "Configure whether HTTP requests follow HTTP 3xx redirects. Requires Prometheus v2.26.0 and above."
 													type:        "boolean"
 												}
 												headers: {
@@ -23815,6 +23819,189 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									tracingConfig: {
+										description: "TracingConfig configures tracing in Prometheus. This is an experimental feature, it may change in any upcoming release in a breaking way."
+										properties: {
+											clientType: {
+												description: "Client used to export the traces. Options are \"http\" or \"grpc\"."
+												enum: ["http", "grpc"]
+												type: "string"
+											}
+											compression: {
+												description: "Compression key for supported compression types. Supported compression: gzip"
+												enum: ["gzip"]
+												type: "string"
+											}
+											endpoint: {
+												description: "Endpoint to send the traces to. Should be provided in format <host>:<port>."
+												type:        "string"
+											}
+											headers: {
+												additionalProperties: type: "string"
+												description: "Key-value pairs to be used as headers associated with gRPC or HTTP requests."
+												type:        "object"
+											}
+											insecure: {
+												description: "If disabled, the client will use a secure connection."
+												type:        "boolean"
+											}
+											samplingFraction: {
+												anyOf: [{
+													type: "integer"
+												}, {
+													type: "string"
+												}]
+												description:                  "Sets the probability a given trace will be sampled. Must be a float from 0 through 1."
+												pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+												"x-kubernetes-int-or-string": true
+											}
+											timeout: {
+												description: "Maximum time the exporter will wait for each batch export. Default '10s'"
+												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+												type:        "string"
+											}
+											tlsConfig: {
+												description: "TLS Config to use when sending traces."
+												properties: {
+													ca: {
+														description: "Certificate authority used when verifying server certificates."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													caFile: {
+														description: "Path to the CA cert in the Prometheus container to use for the targets."
+														type:        "string"
+													}
+													cert: {
+														description: "Client certificate to present when doing client-authentication."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													certFile: {
+														description: "Path to the client cert file in the Prometheus container for the targets."
+														type:        "string"
+													}
+													insecureSkipVerify: {
+														description: "Disable target certificate validation."
+														type:        "boolean"
+													}
+													keyFile: {
+														description: "Path to the client key file in the Prometheus container for the targets."
+														type:        "string"
+													}
+													keySecret: {
+														description: "Secret containing the client key file for the targets."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													serverName: {
+														description: "Used to verify the hostname for the targets."
+														type:        "string"
+													}
+												}
+												type: "object"
+											}
+										}
+										required: ["endpoint"]
+										type: "object"
 									}
 									tsdb: {
 										description: "Defines the runtime reloadable configuration of the timeseries database (TSDB)."
@@ -27228,7 +27415,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -27310,7 +27497,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -27419,7 +27606,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -27590,7 +27777,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -27912,7 +28099,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -28507,7 +28694,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -28589,7 +28776,7 @@ prometheusOperator: {
 																				description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																				properties: {
 																					name: {
-																						description: "The header field name"
+																						description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																						type:        "string"
 																					}
 																					value: {
@@ -28698,7 +28885,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -28869,7 +29056,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -29191,7 +29378,7 @@ prometheusOperator: {
 																		description: "HTTPHeader describes a custom header to be used in HTTP probes"
 																		properties: {
 																			name: {
-																				description: "The header field name"
+																				description: "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
 																				type:        "string"
 																			}
 																			value: {
@@ -31690,7 +31877,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31709,14 +31896,14 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.65.1"
+						"app.kubernetes.io/version":   "0.65.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.65.1"]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.65.1"
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.65.2"]
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.65.2"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -31783,7 +31970,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -31913,7 +32100,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31941,7 +32128,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31955,7 +32142,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -31972,7 +32159,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.65.1"
+				"app.kubernetes.io/version":   "0.65.2"
 			}
 		}
 	}

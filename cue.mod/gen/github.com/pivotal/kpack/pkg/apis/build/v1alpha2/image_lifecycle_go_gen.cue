@@ -6,3 +6,4 @@ package v1alpha2
 
 #BuilderNotFound: "BuilderNotFound"
 #BuilderNotReady: "BuilderNotReady"
+#BuilderReady:    "BuilderReady"
