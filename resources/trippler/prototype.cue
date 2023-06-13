@@ -29,7 +29,7 @@ k: Deployment: "prototyp": {
 					imagePullPolicy: "Always"
 					name: "prototyp"
 					ports: [{containerPort: 3000, name: "http"}]
-					envFrom: [{secretRef: name: "positionstack"}]
+					envFrom: [{secretRef: name: "positionstack"}, {secretRef: name: "meteostat"}]
 				}]
 			}
 		}
