@@ -42,7 +42,7 @@ k: Deployment: "prototyp": {
 				imagePullSecrets: [{name: "regcred"}]
 				initContainers: [baseContainer & {
 					name: "migrations"
-					command: ["pnpm", "run", "prisma:prod", "migrate", "deploy"]
+					command: ["npx", "prisma", "migrate", "deploy"]
 				}]
 				containers: [baseContainer & {
 					name: "prototype"
