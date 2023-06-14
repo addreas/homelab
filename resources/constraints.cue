@@ -217,9 +217,9 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 // TODO Move below to separate file?
 //
 _PodKiller: {
-	Name=_name: string
+	Name=_name:                   string
 	LabelSelector=_labelSelector: string
-	_ItemName: "\(Name)-pod-killer"
+	_ItemName:                    "\(Name)-pod-killer"
 
 	k: {
 		Ingress: (_ItemName): {}
@@ -230,9 +230,9 @@ _PodKiller: {
 				ports: [{containerPort: 8080, name: "http"}]
 				image: "ghcr.io/jonasdahl/pod-killer:main"
 				env: [
-					{name: "KEY", value:            "VALUE"}, // TODO
-					{name: "NAMESPACE", valueFrom: fieldRef: fieldPath: "metadata.namespace" },
-					{name: "LABEL_SELECTOR", value: LabelSelector},
+					{name: "KEY", value:                                "VALUE"}, // TODO
+					{name: "NAMESPACE", valueFrom: fieldRef: fieldPath: "metadata.namespace"},
+					{name: "LABEL_SELECTOR", value:                     LabelSelector},
 				]
 			}]
 		}
@@ -249,8 +249,8 @@ _PodKiller: {
 				name:     _ItemName
 			}
 			subjects: [{
-				kind:      "ServiceAccount"
-				name:      _ItemName
+				kind: "ServiceAccount"
+				name: _ItemName
 			}]
 		}
 	}
