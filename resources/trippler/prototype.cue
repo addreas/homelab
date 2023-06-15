@@ -93,6 +93,32 @@ k: Service: "prototyp-postgres": spec: ports: [{
 	name: "prototyp-postgres"
 }]
 
+k: StatefulSet: "prototyp-redis": spec: {
+	template: spec: {
+		containers: [{
+			name:  "redis"
+			image: "redis:6.2-alpine"
+			ports: [{containerPort: 6379}]
+			env: [{name: "ALLOW_EMPTY_PASSWORD", value: "yes"}]
+			volumeMounts: [{
+				name:      "data"
+				mountPath: "/data"
+			}]
+		}]
+	}
+	volumeClaimTemplates: [{
+		metadata: name: "data"
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "1Gi"
+		}
+	}]
+}
+
+k: Service: "prototyp-redis": spec: ports: [{
+	name: "prototyp-redis"
+}]
+
 _PodKiller & {
 	_name:          "prototyp"
 	_labelSelector: "app=prototyp"
