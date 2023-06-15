@@ -31,6 +31,9 @@ let baseContainer = {
 	env: [{
 		name:  "DATABASE_URL"
 		value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@prototyp-postgres:5432/$(POSTGRES_DB)"
+	}, {
+		name:  "REDIS_URL"
+		value: "redis://prototyp-redis:6379"
 	}]
 }
 
