@@ -15,10 +15,10 @@ k: HelmRelease: haproxy: spec: {
 	}
 	values: controller: {
 		replicaCount: 2
-		stats: enabled:   false
-		metrics: enabled: false
+		stats: enabled:   true
+		metrics: enabled: true
 		serviceMonitor: {
-			enabled:  false
+			enabled:  true
 			interval: "60s"
 		}
 		logs: enabled: true
