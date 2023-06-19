@@ -11,6 +11,11 @@ let _cue_agent_yaml = {
 	data_dir: "/vector-data-dir"
 	sources: {
 		kubernetes_logs: type: "kubernetes_logs"
+		haproxy_logs: {
+			type:    "syslog"
+			address: "0.0.0.0:9514"
+			mode:    "udp"
+		}
 		journald_logs: {
 			type:            "journald"
 			journalctl_path: "/host/run/current-system/sw/bin/journalctl"
@@ -53,6 +58,13 @@ let _cue_agent_yaml = {
 		// }
 		internal_metrics: type: "internal_metrics"
 	}
+	transforms: {
+		haproxy_logs_parsed: {
+			inputs: ["haproxy_logs"]
+			type:   "remap"
+			source: ".parsed = parse_common_log!(.message)"
+		}
+	}
 	sinks: {
 		prom_exporter: {
 			type: "prometheus_exporter"
@@ -75,6 +87,12 @@ let _cue_agent_yaml = {
 				pod:       "{{ kubernetes.pod_name }}"
 				container: "{{ kubernetes.container_name }}"
 				namespace: "{{ kubernetes.pod_namespace }}"
+			}
+		}
+		loki_haproxy: loki & {
+			inputs: ["haproxy_logs_parsed"]
+			labels: {
+				job: "vector/haproxy"
 			}
 		}
 		loki_journald: loki & {
@@ -149,6 +167,10 @@ k: PodMonitor: vector: spec: {
 	}]
 }
 
+k: Service: vector: spec: {
+	selector: vectorLabels
+}
+
 k: DaemonSet: vector: {
 	metadata: labels: vectorLabels
 	spec: {
@@ -188,6 +210,10 @@ k: DaemonSet: vector: {
 					ports: [{
 						containerPort: 9090
 						name:          "prom-exporter"
+					}, {
+						containerPort: 9514
+						name:          "haproxy-syslog"
+						protocol:      "UDP"
 					}]
 					securityContext: {
 						runAsUser:    0
