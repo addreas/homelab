@@ -62,7 +62,7 @@ let _cue_agent_yaml = {
 		haproxy_logs_parsed: {
 			inputs: ["haproxy_logs"]
 			type:   "remap"
-			source: ".message = parse_json(.message) ?? .message"
+			source: ".parsed = parse_json!(.message)"
 		}
 	}
 	sinks: {
@@ -93,7 +93,8 @@ let _cue_agent_yaml = {
 			inputs: ["haproxy_logs_parsed"]
 			encoding: codec: "json"
 			labels: {
-				job: "vector/haproxy"
+				job:     "vector/haproxy"
+				backend: "{{ parsed.name.backend }}"
 			}
 		}
 		loki_journald: loki & {
