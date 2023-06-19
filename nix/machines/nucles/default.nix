@@ -16,10 +16,14 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/addem/flakefiles";
+    flake = "/home/addem/homelab";
     # flags = [ "--update-input" "nixpkgs" ];
     operation = "boot";
   };
+  systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
+    cd /home/addem/homelab
+    ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
+  '';
 
   networking.domain = "localdomain";
 
