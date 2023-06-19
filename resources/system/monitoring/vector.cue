@@ -62,7 +62,7 @@ let _cue_agent_yaml = {
 		haproxy_logs_parsed: {
 			inputs: ["haproxy_logs"]
 			type:   "remap"
-			source: ".message = parse_json!(.message) ?? .message"
+			source: ".message = parse_json(.message) ?? .message"
 		}
 	}
 	sinks: {
