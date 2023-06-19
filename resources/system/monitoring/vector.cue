@@ -62,7 +62,7 @@ let _cue_agent_yaml = {
 		haproxy_logs_parsed: {
 			inputs: ["haproxy_logs"]
 			type:   "remap"
-			source: ".parsed = parse_common_log!(.message)"
+			source: ".message = parse_json!(.message) ?? .message"
 		}
 	}
 	sinks: {
@@ -74,7 +74,7 @@ let _cue_agent_yaml = {
 
 		let loki = {
 			type: "loki"
-			encoding: codec: "raw_message"
+			encoding: codec: _ | *"raw_message"
 			endpoint:            "http://loki.monitoring.svc.cluster.local:3100"
 			out_of_order_action: "drop"
 		}
@@ -91,6 +91,7 @@ let _cue_agent_yaml = {
 		}
 		loki_haproxy: loki & {
 			inputs: ["haproxy_logs_parsed"]
+			encoding: codec: "json"
 			labels: {
 				job: "vector/haproxy"
 			}
