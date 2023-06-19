@@ -26,7 +26,9 @@ k: HelmRelease: haproxy: spec: {
 			"fronting-proxy-port": "80"
 			"syslog-endpoint":     "vector.monitoring.svc.cluster.local:9514"
 			"syslog-tag":          "haproxy"
-			"http-log-format":     "\"%{+Q}o %{-Q}ci - - [%trg] %r %ST %B \"\" \"\" %cp %ms %ft %b %s %TR %Tw %Tc %Tr %Ta %tsc %ac %fc %bc %sc %rc %sq %bq %CC %CS %hrl %hsl\""
+			"http-log-format": #"""
+				"%{+Q}o %{-Q}ci - - [%trg] %r %ST %B \"\" \"\" %cp %ms %ft %b %s %TR %Tw %Tc %Tr %Ta %tsc %ac %fc %bc %sc %rc %sq %bq %CC %CS %hrl %hsl"
+				"""#
 		}
 		extraArgs: {
 			"watch-ingress-without-class": "true"
