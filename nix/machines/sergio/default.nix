@@ -46,16 +46,14 @@
     flags = [ "--update-input" "nixpkgs" ];
     operation = "boot";
   };
-  systemd.services."nixos-upgrade".serviceConfig.ExecPreStart = pkgs.writeShellScript "flake-pull" ''
-    export GIT_SSH_COMMAND="ssh -i /home/addem/.ssh/id_ed25519"
+  systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
     cd /home/addem/github.com/addreas/homelab
-    git pull
+    ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
   '';
-  systemd.services."nixos-upgrade".serviceConfig.ExecPostStart = pkgs.writeShellScript "flake-push" ''
-    export GIT_SSH_COMMAND="ssh -i /home/addem/.ssh/id_ed25519"
+  systemd.services."nixos-upgrade".serviceConfig.ExecStartPost = pkgs.writeShellScript "flake-push" ''
     cd /home/addem/github.com/addreas/homelab
-    git commit -am "flake update"
-    git push
+    ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git commit -am "flake update"
+    ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git push
   '';
 
   # requires manual `sudo btrfs subvolume create /.snapshots`
