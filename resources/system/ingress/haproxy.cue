@@ -26,16 +26,14 @@ k: HelmRelease: haproxy: spec: {
 			"fronting-proxy-port": "80"
 			"syslog-endpoint":     "vector.monitoring.svc.cluster.local:9514"
 			"syslog-tag":          "haproxy"
-			"syslog-length":       "65536"
+			"syslog-length":       "65535"
 
 			// https://gist.github.com/vr/c9e158e298e6e316544c399b2ff3ef22
-			"http-log-format": #"'{"host":"%H","ident":"haproxy","pid":%pid,"time":"%Tl","haproxy":{"conn":{"act":%ac,"fe":%fc,"be":%bc,"srv":%sc},"queue":{"backend":%bq,"srv":%sq},"time":{"tq":%Tq,"tw":%Tw,"tc":%Tc,"tr":%Tr,"tt":%Tt},"termination_state":"%tsc","retries":%rc,"network":{"client_ip":"%ci","client_port":%cp,"frontend_ip":"%fi","frontend_port":%fp},"ssl":{"version":"%sslv","ciphers":"%sslc"},"request":{"method":"%HM","hu":"%HU",hp:"%HP",hq:"%HQ","protocol":"%HV","header":{"host":"%[capture.req.hdr(0),json(utf8s)]","xforwardfor":"%[capture.req.hdr(1),json(utf8s)]","referer":"%[capture.req.hdr(2),json(utf8s)]"}},"name":{"backend":"%b","frontend":"%ft","server":"%s"},"response":{"status_code":%ST,"header":{"xrequestid":"%[capture.res.hdr(0),json(utf8s)]"}},"bytes":{"uploaded":%U,"read":%B}}}'"#
+			// https://medium.com/thirddev/json-logging-in-haproxy-the-right-way-3636297d2d49
+			"http-log-format": #"'{"frontend_concurrent_connections":%fc,"backend_concurrent_connections":%bc,"server_concurrent_connections":%sc,"backend_queue":%bq,"server_queue":%sq,"client_request_send_time":%Tq,"queue_wait_time":%Tw,"server_wait_time":%Tc,"server_response_send_time":%Tr,"response_time":%Td,"session_duration":%Tt,"request_termination_state":"%tsc","server_connection_retries":%rc,"remote_addr":"%ci","remote_port":%cp,"frontend_addr":"%fi","frontend_port":%fp,"request_method":"%HM","request_uri":"%[capture.req.uri,json(utf8s)]","request_http_version":"%HV","host":"%[capture.req.hdr(0)]","referer":"%[capture.req.hdr(1),json(utf8s)]","backend_name":"%b","status":%ST,"response_size":%B,"request_size":%U}'"#
 			"config-frontend": """
-				capture request header Host len 40
-				capture request header X-Forwarded-For len 50
-				capture request header Referer len 200
-				capture request header User-Agent len 200
-				capture response header X-Request-ID len 50
+				capture req.hdr(Host) len 1000
+				capture req.hdr(Referer) len 1000
 				"""
 		}
 		extraArgs: {

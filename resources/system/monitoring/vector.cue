@@ -12,9 +12,10 @@ let _cue_agent_yaml = {
 	sources: {
 		kubernetes_logs: type: "kubernetes_logs"
 		haproxy_logs: {
-			type:    "syslog"
-			address: "0.0.0.0:9514"
-			mode:    "udp"
+			type:       "syslog"
+			address:    "0.0.0.0:9514"
+			mode:       "udp"
+			max_length: 65536
 		}
 		journald_logs: {
 			type:            "journald"
