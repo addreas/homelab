@@ -94,10 +94,9 @@ let _cue_agent_yaml = {
 			inputs: ["haproxy_logs_parsed"]
 			// encoding: codec: "json"
 			labels: {
-				job:     "vector/haproxy"
-				backend: "{{ parsed.backend_name }}"
-				host:    "{{ parsed.host }}"
-				level:   "{{ severity }}"
+				job:   "vector/haproxy"
+				host:  "{{ parsed.host }}"
+				level: "{{ severity }}"
 			}
 		}
 		loki_journald: loki & {
