@@ -27,6 +27,7 @@ let baseContainer = {
 		{secretRef: name: "meteostat"},
 		{secretRef: name: "google"},
 		{secretRef: name: "openai"},
+		{secretRef: name: "pexels"},
 		{secretRef: name: "trippler-secrets"},
 	]
 	env: [{
