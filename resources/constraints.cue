@@ -240,7 +240,7 @@ _PodKiller: {
 		Role: (_ItemName): rules: [{
 			apiGroups: ["apps"]
 			resources: ["deployments"]
-			verbs: ["delete", "list"]
+			verbs: ["patch", "list"]
 		}]
 		RoleBinding: (_ItemName): {
 			roleRef: {
