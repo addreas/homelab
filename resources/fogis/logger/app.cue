@@ -40,7 +40,7 @@ k: Deployment: "logger": spec: template: spec: {
 	}]
 }
 
-_PodKiller & {
+_DeploymentRestarter & {
 	_name: "logger"
 	_labelSelector: "app=logger"
 }

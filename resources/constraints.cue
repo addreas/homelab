@@ -216,7 +216,7 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 //
 // TODO Move below to separate file?
 //
-_PodKiller: {
+_DeploymentRestarter: {
 	Name=_name:                   string
 	LabelSelector=_labelSelector: string
 	_ItemName:                    "\(Name)-deployment-restarter"

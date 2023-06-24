@@ -124,7 +124,7 @@ k: Service: "prototyp-redis": spec: ports: [{
 	name: "prototyp-redis"
 }]
 
-_PodKiller & {
+_DeploymentRestarter & {
 	_name:          "prototyp"
 	_labelSelector: "app=prototyp"
 }
