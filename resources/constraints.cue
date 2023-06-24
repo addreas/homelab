@@ -219,7 +219,7 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 _PodKiller: {
 	Name=_name:                   string
 	LabelSelector=_labelSelector: string
-	_ItemName:                    "\(Name)-pod-killer"
+	_ItemName:                    "\(Name)-deployment-restarter"
 
 	k: {
 		Ingress: (_ItemName): {}
@@ -228,7 +228,7 @@ _PodKiller: {
 			serviceAccountName: _ItemName
 			containers: [{
 				ports: [{containerPort: 8080, name: "http"}]
-				image: "ghcr.io/jonasdahl/pod-killer:main"
+				image: "ghcr.io/jonasdahl/deployment-restarter:sha-e6b7a26"
 				env: [
 					{name: "KEY", value:                                "VALUE"}, // TODO
 					{name: "NAMESPACE", valueFrom: fieldRef: fieldPath: "metadata.namespace"},
@@ -239,8 +239,8 @@ _PodKiller: {
 		ServiceAccount: (_ItemName): {}
 		Role: (_ItemName): rules: [{
 			apiGroups: [""]
-			resources: ["pods"]
-			verbs: ["deletecollection"]
+			resources: ["deployments"]
+			verbs: ["delete", "get", "list"]
 		}]
 		RoleBinding: (_ItemName): {
 			roleRef: {
