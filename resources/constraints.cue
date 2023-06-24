@@ -238,9 +238,9 @@ _PodKiller: {
 		}
 		ServiceAccount: (_ItemName): {}
 		Role: (_ItemName): rules: [{
-			apiGroups: [""]
+			apiGroups: ["apps"]
 			resources: ["deployments"]
-			verbs: ["delete", "get", "list"]
+			verbs: ["delete", "list"]
 		}]
 		RoleBinding: (_ItemName): {
 			roleRef: {
