@@ -252,6 +252,11 @@ import (
 	// If defined, it takes precedence over the `configSecret` field.
 	// This field may change in future releases.
 	alertmanagerConfiguration?: null | #AlertmanagerConfiguration @go(AlertmanagerConfiguration,*AlertmanagerConfiguration)
+
+	// AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod.
+	// If the service account has `automountServiceAccountToken: true`, set the field to `false` to opt out of automounting API credentials.
+	// +optional
+	automountServiceAccountToken?: null | bool @go(AutomountServiceAccountToken,*bool)
 }
 
 // AlertmanagerConfigMatcherStrategy defines the strategy used by AlertmanagerConfig objects to match alerts.
@@ -301,6 +306,9 @@ import (
 
 	// The default OpsGenie API Key.
 	opsGenieApiKey?: null | v1.#SecretKeySelector @go(OpsGenieAPIKey,*v1.SecretKeySelector)
+
+	// The default Pagerduty URL.
+	pagerdutyUrl?: null | string @go(PagerdutyURL,*string)
 }
 
 // AlertmanagerStatus is the most recent observed status of the Alertmanager cluster. Read-only.

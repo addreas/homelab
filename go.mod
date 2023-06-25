@@ -4,20 +4,20 @@ go 1.19
 
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
-	github.com/bitnami-labs/sealed-secrets v0.21.0
-	github.com/cert-manager/cert-manager v1.12.1
-	github.com/cilium/cilium v1.13.3
-	github.com/fluxcd/helm-controller/api v0.34.1
+	github.com/bitnami-labs/sealed-secrets v0.22.0
+	github.com/cert-manager/cert-manager v1.12.2
+	github.com/cilium/cilium v1.13.4
+	github.com/fluxcd/helm-controller/api v0.34.2
 	github.com/fluxcd/kustomize-controller/api v1.0.0-rc.4
 	github.com/fluxcd/notification-controller/api v0.33.0
 	github.com/fluxcd/source-controller/api v1.0.0-rc.5
-	github.com/grafana-operator/grafana-operator/v5 v5.0.0
+	github.com/grafana-operator/grafana-operator/v5 v5.0.1
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.27
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.65.2
-	k8s.io/api v0.27.2
-	k8s.io/apimachinery v0.27.2
-	k8s.io/kube-aggregator v0.27.2
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.66.0
+	k8s.io/api v0.27.3
+	k8s.io/apimachinery v0.27.3
+	k8s.io/kube-aggregator v0.27.3
 )
 
 require (
@@ -103,14 +103,14 @@ require (
 	go.opentelemetry.io/otel/trace v1.15.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/crypto v0.8.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230124195608-d38c7dcee874 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/term v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/text v0.10.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect

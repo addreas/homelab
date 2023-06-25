@@ -105,6 +105,11 @@ import (
 	// be appended to other volumes that are generated as a result of StorageSpec objects.
 	volumes?: [...v1.#Volume] @go(Volumes,[]v1.Volume)
 
+	// VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition.
+	// VolumeMounts specified will be appended to other VolumeMounts in the ruler container,
+	// that are generated as a result of StorageSpec objects.
+	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
+
 	// ObjectStorageConfig configures object storage in Thanos.
 	// Alternative to ObjectStorageConfigFile, and lower order priority.
 	objectStorageConfig?: null | v1.#SecretKeySelector @go(ObjectStorageConfig,*v1.SecretKeySelector)
