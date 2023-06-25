@@ -39,9 +39,11 @@ import (
 	name: string @go(Name)
 
 	// Interval determines how often rules in the group are evaluated.
-	interval?: #Duration @go(Interval)
+	// +optional
+	interval?: null | #Duration @go(Interval,*Duration)
 
 	// List of alerting and recording rules.
+	// +optional
 	rules?: [...#Rule] @go(Rules,[]Rule)
 
 	// PartialResponseStrategy is only used by ThanosRuler and will
@@ -73,7 +75,12 @@ import (
 	expr: intstr.#IntOrString @go(Expr)
 
 	// Alerts are considered firing once they have been returned for this long.
-	for?: #Duration @go(For)
+	// +optional
+	for?: null | #Duration @go(For,*Duration)
+
+	// KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+	// +optional
+	keep_firing_for?: null | #NonEmptyDuration @go(KeepFiringFor,*NonEmptyDuration)
 
 	// Labels to add or overwrite.
 	labels?: {[string]: string} @go(Labels,map[string]string)

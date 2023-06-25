@@ -23,6 +23,14 @@ import (
 // +kubebuilder:validation:Pattern:="^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 #Duration: string
 
+// NonEmptyDuration is a valid time duration that can be parsed by Prometheus model.ParseDuration() function.
+// Compared to Duration,  NonEmptyDuration enforces a minimum length of 1.
+// Supported units: y, w, d, h, m, s, ms
+// Examples: `30s`, `1m`, `1h20m15s`, `15d`
+// +kubebuilder:validation:Pattern:="^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+// +kubebuilder:validation:MinLength=1
+#NonEmptyDuration: string
+
 // GoDuration is a valid time duration that can be parsed by Go's time.ParseDuration() function.
 // Supported units: h, m, s, ms
 // Examples: `45ms`, `30s`, `1m`, `1h20m15s`
@@ -41,13 +49,14 @@ import (
 	hostnames: [...string] @go(Hostnames,[]string)
 }
 
-// PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces
-// to be ignored while enforcing namespace label for alerts and metrics.
+// PrometheusRuleExcludeConfig enables users to configure excluded
+// PrometheusRule names and their namespaces to be ignored while enforcing
+// namespace label for alerts and metrics.
 #PrometheusRuleExcludeConfig: {
-	// RuleNamespace - namespace of excluded rule
+	// Namespace of the excluded PrometheusRule object.
 	ruleNamespace: string @go(RuleNamespace)
 
-	// RuleNamespace - name of excluded rule
+	// Name of the excluded PrometheusRule object.
 	ruleName: string @go(RuleName)
 }
 
@@ -70,7 +79,7 @@ import (
 	// +kubebuilder:validation:MinLength=1
 	namespace: string @go(Namespace)
 
-	// Name of the referent. When not set, all resources are matched.
+	// Name of the referent. When not set, all resources in the namespace are matched.
 	// +optional
 	name?: string @go(Name)
 }
@@ -163,14 +172,12 @@ import (
 	// EmbeddedMetadata contains metadata relevant to an EmbeddedResource.
 	metadata?: #EmbeddedObjectMetadata @go(EmbeddedObjectMetadata) @protobuf(1,bytes,opt)
 
-	// Spec defines the desired characteristics of a volume requested by a pod author.
+	// Defines the desired characteristics of a volume requested by a pod author.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	// +optional
 	spec?: v1.#PersistentVolumeClaimSpec @go(Spec) @protobuf(2,bytes,opt)
 
-	// Status represents the current information/status of a persistent volume claim.
-	// Read-only.
-	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+	// *Deprecated: this field is never set.*
 	// +optional
 	status?: v1.#PersistentVolumeClaimStatus @go(Status) @protobuf(3,bytes,opt)
 }
