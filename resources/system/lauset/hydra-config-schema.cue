@@ -8,7 +8,7 @@ import (
 #HydraConfigSchema: {
 	// Ory Hydra Configuration
 	@jsonschema(schema="http://json-schema.org/draft-07/schema#")
-	@jsonschema(id="https://github.com/ory/hydra/docs/config.schema.json")
+	@jsonschema(id="https://github.com/ory/hydra/spec/config.json")
 
 	// Configures the database connection
 	db?: {
@@ -109,6 +109,16 @@ import (
 
 				// Session Cookie Name
 				session?: string | *"ory_hydra_session"
+				...
+			}
+
+			// Cookie Paths
+			//
+			// Sets the path for which session cookie is scoped. Use with
+			// care!
+			paths?: {
+				// Session Cookie Path
+				session?: string | *"/"
 				...
 			}
 		}
@@ -415,6 +425,10 @@ import (
 		// Sets the refresh token hook endpoint. If set it will be called
 		// during token refresh to receive updated token claims.
 		refresh_token_hook?: string
+
+		// Sets the token hook endpoint for all grant types. If set it
+		// will be called while providing token to customize claims.
+		token_hook?: string
 	}
 
 	// The secrets section configures secrets used for encryption and
@@ -441,67 +455,7 @@ import (
 	// Enables profiling if set. For more details on profiling, head
 	// over to: https://blog.golang.org/profiling-go-programs
 	profiling?: "cpu" | "mem"
-
-	// Ory Hydra supports distributed tracing.
-	tracing?: {
-		// Set this to the tracing backend you wish to use. Supports
-		// Jaeger, Zipkin DataDog, Elastic APM and Instana. If omitted or
-		// empty, tracing will be disabled. Use environment variables to
-		// configure DataDog (see
-		// https://docs.datadoghq.com/tracing/setup/go/#configuration).
-		provider?: "jaeger" | "zipkin" | "datadog" | "elastic-apm" | "instana" | "otel"
-
-		// Specifies the service name to use on the tracer.
-		service_name?: string
-		providers?: {
-			// Configures the jaeger tracing backend.
-			jaeger?: {
-				// The address of the jaeger-agent where spans should be sent to.
-				local_agent_address?: =~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | string
-
-				// The tracing header format
-				propagation?: string
-
-				// The value passed to the max tag value length that has been
-				// configured.
-				max_tag_value_length?: int & >=0
-				sampling?:             ({
-					// The type of the sampler you want to use.
-					type?: "const"
-
-					// The value passed to the sampler type that has been configured.
-					value?: int & >=0 & <=1
-					...
-				} | {
-					// The type of the sampler you want to use.
-					type?: "rateLimiting"
-
-					// The value passed to the sampler type that has been configured.
-					value?: int & >=0
-					...
-				} | {
-					// The type of the sampler you want to use.
-					type?: "probabilistic"
-
-					// The value passed to the sampler type that has been configured.
-					value?: >=0 & <=1
-					...
-				}) & {
-					// The address of jaeger-agent's HTTP sampling server
-					server_url?: string
-					...
-				} & {
-					["type" | "value" | "server_url"]: _
-				}
-			}
-
-			// Configures the zipkin tracing backend.
-			zipkin?: {
-				// The address of Zipkin server where spans should be sent to.
-				server_url?: string
-			}
-		}
-	}
+	tracing?:   #OtelxTracingConfig
 
 	// Software Quality Assurance telemetry configuration section
 	sqa?: {
@@ -535,7 +489,7 @@ import (
 	#http_method: "POST" | "GET" | "PUT" | "PATCH" | "DELETE" | "CONNECT" | "HEAD" | "OPTIONS" | "TRACE"
 
 	#portNumber: null | bool | >=1 & <=65535 | string | [...] | {
-		...
+			...
 	}
 
 	#socket: {
@@ -617,5 +571,60 @@ import (
 		// Hydra serves http instead of https when this option is set.
 		allow_termination_from?: [...#cidr]
 		...
+	}
+
+	#OtelxTracingConfig: {
+		@jsonschema(id="ory://tracing-config")
+
+		// Set this to the tracing backend you wish to use. Supports
+		// Jaeger, Zipkin, and OTEL.
+		provider?: "jaeger" | "otel" | "zipkin"
+
+		// Specifies the service name to use on the tracer.
+		service_name?: string
+		providers?: {
+			// Configures the jaeger tracing backend.
+			jaeger?: {
+				// The address of the jaeger-agent where spans should be sent to.
+				local_agent_address?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
+				sampling?:            {
+					["server_url" | "trace_id_ratio"]: _
+				} & {
+					// The address of jaeger-agent's HTTP sampling server
+					server_url?: string
+
+					// Trace Id ratio sample
+					trace_id_ratio?: number
+				}
+			}
+
+			// Configures the zipkin tracing backend.
+			zipkin?: {
+				// The address of the Zipkin server where spans should be sent to.
+				server_url?: string
+				sampling?:   {
+					["sampling_ratio"]: _
+				} & {
+					// Sampling ratio for spans.
+					sampling_ratio?: number
+				}
+			}
+
+			// Configures the OTLP tracing backend.
+			otlp?: {
+				// The endpoint of the OTLP exporter (HTTP) where spans should be
+				// sent to.
+				server_url?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
+
+				// Will use HTTP if set to true; defaults to HTTPS.
+				insecure?: bool
+				sampling?: {
+					["sampling_ratio"]: _
+				} & {
+					// Sampling ratio for spans.
+					sampling_ratio?: number
+				}
+			}
+		}
 	}
 }

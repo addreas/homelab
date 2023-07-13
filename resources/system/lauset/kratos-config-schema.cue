@@ -17,7 +17,7 @@ import (
 		// List of URLs that are allowed to be redirected to. A
 		// redirection request is made by appending `?return_to=...` to
 		// Login, Registration, and other self-service flows.
-		allowed_return_urls?: list.UniqueItems() & [...string]
+		allowed_return_urls?: [...string]
 		flows?: {
 			settings?: {
 				// URL of the Settings page.
@@ -89,6 +89,12 @@ import (
 				//
 				// The strategy to use for verification requests
 				use?: "link" | "code" | *"code"
+
+				// Notify unknown recipients
+				//
+				// Whether to notify recipients, if verification was requested for
+				// their address.
+				notify_unknown_recipients?: bool | *false
 			}
 
 			// Account Recovery Configuration
@@ -119,6 +125,12 @@ import (
 				//
 				// The strategy to use for recovery requests
 				use?: "link" | "code" | *"code"
+
+				// Notify unknown recipients
+				//
+				// Whether to notify recipients, if recovery was requested for
+				// their account.
+				notify_unknown_recipients?: bool | *false
 			}
 			error?: {
 				// Ory Kratos Error UI URL
@@ -352,6 +364,19 @@ import (
 		// retried after it failed before it is marked as abandoned
 		message_retries?: int | *5
 
+		// Delivery Strategy
+		//
+		// Defines how emails will be sent, either through SMTP (default)
+		// or HTTP.
+		delivery_strategy?: "smtp" | "http" | *"smtp"
+
+		// HTTP Configuration
+		//
+		// Configures outgoing emails using HTTP.
+		http?: {
+			request_config?: #httpRequestConfig
+		}
+
 		// SMTP Configuration
 		//
 		// Configures outgoing emails using the SMTP protocol.
@@ -468,6 +493,12 @@ import (
 		headers?: {
 			[string]: string
 		}
+
+		// Persist OAuth2 request between flows
+		//
+		// Override the return_to query parameter with the OAuth2 provider
+		// request URL when perfoming an OAuth2 login flow.
+		override_return_to?: bool | *false
 	}
 	serve?: {
 		admin?: {
@@ -843,6 +874,8 @@ import (
 
 	#selfServiceRequireVerifiedAddressHook: hook: "require_verified_address"
 
+	#selfServiceShowVerificationUIHook: hook: "show_verification_ui"
+
 	#webHookAuthBasicAuthProperties: null | bool | number | string | [...] | {
 		type: "basic_auth"
 		config: {
@@ -852,6 +885,32 @@ import (
 			// password for basic auth
 			password: string
 		}
+	}
+
+	#httpRequestConfig: {
+		// HTTP address of API endpoint
+		//
+		// This URL will be used to send the emails to.
+		url?: =~"^https?://"
+
+		// The HTTP method to use (GET, POST, etc). Defaults to POST.
+		method?: string | *"POST"
+
+		// The HTTP headers that must be applied to request
+		headers?: {
+			[string]: string
+		}
+
+		// URI pointing to the jsonnet template used for payload
+		// generation. Only used for those HTTP methods, which support
+		// HTTP body payloads
+		body?: =~"^(http|https|file|base64)://" | *"base64://ZnVuY3Rpb24oY3R4KSB7CiAgcmVjaXBpZW50OiBjdHguUmVjaXBpZW50LAogIHRlbXBsYXRlX3R5cGU6IGN0eC5UZW1wbGF0ZVR5cGUsCiAgdG86IGlmICJUZW1wbGF0ZURhdGEiIGluIGN0eCAmJiAiVG8iIGluIGN0eC5UZW1wbGF0ZURhdGEgdGhlbiBjdHguVGVtcGxhdGVEYXRhLlRvIGVsc2UgbnVsbCwKICByZWNvdmVyeV9jb2RlOiBpZiAiVGVtcGxhdGVEYXRhIiBpbiBjdHggJiYgIlJlY292ZXJ5Q29kZSIgaW4gY3R4LlRlbXBsYXRlRGF0YSB0aGVuIGN0eC5UZW1wbGF0ZURhdGEuUmVjb3ZlcnlDb2RlIGVsc2UgbnVsbCwKICByZWNvdmVyeV91cmw6IGlmICJUZW1wbGF0ZURhdGEiIGluIGN0eCAmJiAiUmVjb3ZlcnlVUkwiIGluIGN0eC5UZW1wbGF0ZURhdGEgdGhlbiBjdHguVGVtcGxhdGVEYXRhLlJlY292ZXJ5VVJMIGVsc2UgbnVsbCwKICB2ZXJpZmljYXRpb25fdXJsOiBpZiAiVGVtcGxhdGVEYXRhIiBpbiBjdHggJiYgIlZlcmlmaWNhdGlvblVSTCIgaW4gY3R4LlRlbXBsYXRlRGF0YSB0aGVuIGN0eC5UZW1wbGF0ZURhdGEuVmVyaWZpY2F0aW9uVVJMIGVsc2UgbnVsbCwKICB2ZXJpZmljYXRpb25fY29kZTogaWYgIlRlbXBsYXRlRGF0YSIgaW4gY3R4ICYmICJWZXJpZmljYXRpb25Db2RlIiBpbiBjdHguVGVtcGxhdGVEYXRhIHRoZW4gY3R4LlRlbXBsYXRlRGF0YS5WZXJpZmljYXRpb25Db2RlIGVsc2UgbnVsbCwKICBzdWJqZWN0OiBjdHguU3ViamVjdCwKICBib2R5OiBjdHguQm9keQp9Cg=="
+
+		// Auth mechanisms
+		//
+		// Define which auth mechanism to use for auth with the HTTP email
+		// provider
+		auth?: #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
 	}
 
 	#webHookAuthApiKeyProperties: null | bool | number | string | [...] | {
@@ -888,6 +947,16 @@ import (
 				// will be made asynchronously which can be useful if you only
 				// wish to notify another system but do not parse the response.
 				ignore?: bool | *false
+
+				// If enabled parses the response before saving the flow result.
+				// Set this value to true if you would like to modify the
+				// identity, for example identity metadata, before saving it
+				// during registration. When enabled, you may also abort the
+				// registration, verification, login or settings flow due to, for
+				// example, a validation flow. Head over to the [web hook
+				// documentation](https://www.ory.sh/docs/kratos/hooks/configure-hooks)
+				// for more information.
+				parse?: bool | *false
 			}
 
 			// The URL the Web-Hook should call
@@ -897,8 +966,9 @@ import (
 			method: string
 			body?:  =~"^(http|https|file|base64)://" | string
 
-			// If enabled allows the web hook to interrupt / abort the
-			// self-service flow. It only applies to certain flows
+			// Deprecated, please use `response.parse` instead. If enabled
+			// allows the web hook to interrupt / abort the self-service
+			// flow. It only applies to certain flows
 			// (registration/verification/login/settings) and requires a
 			// valid response format.
 			can_interrupt?: bool | *false
@@ -913,9 +983,9 @@ import (
 	#OIDCClaims: {
 		{[=~"^userinfo$|^id_token$" & !~"^()$"]: {
 			{[=~".*" & !~"^()$"]: null | {
-				// Indicates whether the Claim being requested is an Essential
-				// Claim.
-				essential?: bool
+						// Indicates whether the Claim being requested is an Essential
+						// Claim.
+						essential?: bool
 
 				// Requests that the Claim be returned with a particular value.
 				value?: _
@@ -934,9 +1004,9 @@ import (
 		// Provider
 		//
 		// Can be one of github, github-app, gitlab, generic, google,
-		// microsoft, discord, slack, facebook, auth0, vk, yandex,
-		// spotify, dingtalk.
-		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify" | "netid" | "dingtalk"
+		// microsoft, discord, slack, facebook, auth0, vk, yandex, apple,
+		// spotify, netid, dingtalk, patreon.
+		provider: "github" | "github-app" | "gitlab" | "generic" | "google" | "microsoft" | "discord" | "slack" | "facebook" | "auth0" | "vk" | "yandex" | "apple" | "spotify" | "netid" | "dingtalk" | "patreon" | "linkedin" | "lark"
 
 		// Optional string which will be used when generating labels for
 		// UI buttons.
@@ -1006,12 +1076,12 @@ import (
 
 	#selfServiceAfterOIDCLoginMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceWebHook) & _]
+		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceWebHook | #selfServiceRequireVerifiedAddressHook) & _]
 	}
 
 	#selfServiceAfterRegistrationMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionIssuerHook | #selfServiceWebHook) & _]
+		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionIssuerHook | #selfServiceWebHook | #selfServiceShowVerificationUIHook) & _]
 	}
 
 	#featureRequiredAal: "aal1" | "highest_available" | *"highest_available"
@@ -1030,7 +1100,7 @@ import (
 		password?:                   #selfServiceAfterDefaultLoginMethod
 		webauthn?:                   #selfServiceAfterDefaultLoginMethod
 		oidc?:                       #selfServiceAfterOIDCLoginMethod
-		hooks?:                      #selfServiceHooks
+		hooks?:                      list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook) & _]
 	}
 
 	#selfServiceBeforeRegistration: hooks?: #selfServiceHooks
@@ -1080,7 +1150,7 @@ import (
 
 	#courierTemplates: {
 		invalid?: email: #emailCourierTemplate
-		valid?: email:   #emailCourierTemplate
+		valid?: email: #emailCourierTemplate
 	}
 
 	#emailCourierTemplate: {
@@ -1111,10 +1181,13 @@ import (
 				// The address of the jaeger-agent where spans should be sent to.
 				local_agent_address?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
 				sampling?:            {
-					["server_url"]: _
+					["server_url" | "trace_id_ratio"]: _
 				} & {
 					// The address of jaeger-agent's HTTP sampling server
 					server_url?: string
+
+					// Trace Id ratio sample
+					trace_id_ratio?: number
 				}
 			}
 

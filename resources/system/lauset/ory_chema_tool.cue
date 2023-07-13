@@ -5,6 +5,32 @@ import (
 	"tool/file"
 )
 
+#FixTracing: {
+	schema:      string
+	otelxSchema: exec.Run & {
+		cmd: [
+			"curl",
+			"-sSL",
+			"https://raw.githubusercontent.com/ory/x/master/otelx/config.schema.json",
+		]
+		stdout: string
+	}
+	setTracingConf: exec.Run & {
+		cmd: [
+			"jq",
+			"""
+				. as [$schema, $otelxSchema]
+				| .[0]
+				| .definitions.OtelxTracingConfig = $otelxSchema
+				| .properties.tracing["$ref"] = "#/definitions/OtelxTracingConfig"
+				""",
+		]
+		stdin:  "[\(schema), \(otelxSchema.stdout)]"
+		stdout: string
+	}
+	output: setTracingConf.stdout
+}
+
 command: "kratos-config-schema": task: {
 	kratosSchema: exec.Run & {
 		cmd: [
@@ -14,33 +40,24 @@ command: "kratos-config-schema": task: {
 		]
 		stdout: string
 	}
-	otelxSchema: exec.Run & {
-		cmd: [
-			"curl",
-			"-sSL",
-			"https://raw.githubusercontent.com/ory/x/master/otelx/config.schema.json",
-		]
-		stdout: string
+	fixTracing: #FixTracing & {
+		schema: kratosSchema.stdout
 	}
-	kratosSchemaJson: exec.Run & {
+	fixSchema: exec.Run & {
 		cmd: [
 			"jq",
 			"""
-				. as [$kratosSchema, $otelxSchema]
-				| .[0]
-				| del(.definitions.selfServiceWebHook.properties.config.properties.additionalProperties)
+				del(.definitions.selfServiceWebHook.properties.config.properties.additionalProperties)
+				| del(.definitions.httpRequestConfig.properties.additionalProperties)
 				| del(.properties.courier.properties.sms.properties.request_config.properties.additionalProperties)
 				| del(.required[] | select(. == "dsn"))
-				| .definitions.OtelxTracingConfig = $otelxSchema
-				| .properties.tracing["$ref"] = "#/definitions/OtelxTracingConfig"
 				""",
 		]
-		stdin:  "[\(kratosSchema.stdout), \(otelxSchema.stdout)]"
-		stdout: string
+		stdin: fixTracing.output
 	}
 	writeKratosSchemaJson: file.Create & {
 		filename: "kratos-config-schema.json"
-		contents: kratosSchemaJson.stdout
+		contents: fixSchema.stdout
 	}
 	importKratosSchema: exec.Run & {
 		$after: [writeKratosSchemaJson]
@@ -61,16 +78,23 @@ command: "kratos-config-schema": task: {
 }
 
 command: "hydra-config-schema": task: {
-	curl: exec.Run & {
+	hydraSchema: exec.Run & {
 		cmd: [
 			"curl",
-			"-sSLo",
-			"hydra-config-schema.json",
-			"https://raw.githubusercontent.com/ory/hydra/master/spec/config.json",
+			"-sSL",
+			"https://raw.githubusercontent.com/ory/hydra/\(githubReleases["ory/hydra"])/spec/config.json",
 		]
+		stdout: string
+	}
+	fixTracing: #FixTracing & {
+		schema: hydraSchema.stdout
+	}
+	writeHydraSchemaJson: file.Create & {
+		filename: "hydra-config-schema.json"
+		contents: fixTracing.output
 	}
 	import: exec.Run & {
-		$after: [curl]
+		$after: [writeHydraSchemaJson]
 		cmd: [
 			"cue",
 			"import",
