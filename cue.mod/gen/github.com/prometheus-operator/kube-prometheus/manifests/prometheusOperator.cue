@@ -310,6 +310,375 @@ prometheusOperator: {
 										items: {
 											description: "Receiver defines one or more notification integrations."
 											properties: {
+												discordConfigs: {
+													description: "List of Discord configurations."
+													items: {
+														description: "DiscordConfig configures notifications via Discord. See https://prometheus.io/docs/alerting/latest/configuration/#discord_config"
+														properties: {
+															apiURL: {
+																description: "The secret's key that contains the Discord webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type: "object"
+															}
+															httpConfig: {
+																description: "HTTP client configuration."
+																properties: {
+																	authorization: {
+																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+																		properties: {
+																			credentials: {
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																						type:        "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			type: {
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																	basicAuth: {
+																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+																		properties: {
+																			password: {
+																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																						type:        "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			username: {
+																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																						type:        "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	bearerTokenSecret: {
+																		description: "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																		properties: {
+																			key: {
+																				description: "The key of the secret to select from.  Must be a valid secret key."
+																				type:        "string"
+																			}
+																			name: {
+																				description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																				type:        "string"
+																			}
+																			optional: {
+																				description: "Specify whether the Secret or its key must be defined"
+																				type:        "boolean"
+																			}
+																		}
+																		required: ["key"]
+																		type: "object"
+																	}
+																	followRedirects: {
+																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																		type:        "boolean"
+																	}
+																	oauth2: {
+																		description: "OAuth2 client credentials used to fetch a token for the targets."
+																		properties: {
+																			clientId: {
+																				description: "The secret or configmap containing the OAuth2 client id"
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			clientSecret: {
+																				description: "The secret containing the OAuth2 client secret"
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																						type:        "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			endpointParams: {
+																				additionalProperties: type: "string"
+																				description: "Parameters to append to the token URL"
+																				type:        "object"
+																			}
+																			scopes: {
+																				description: "OAuth2 scopes used for the token request"
+																				items: type: "string"
+																				type: "array"
+																			}
+																			tokenUrl: {
+																				description: "The URL to fetch the token from"
+																				minLength:   1
+																				type:        "string"
+																			}
+																		}
+																		required: ["clientId", "clientSecret", "tokenUrl"]
+																		type: "object"
+																	}
+																	proxyURL: {
+																		description: "Optional proxy URL."
+																		type:        "string"
+																	}
+																	tlsConfig: {
+																		description: "TLS configuration for the client."
+																		properties: {
+																			ca: {
+																				description: "Certificate authority used when verifying server certificates."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			cert: {
+																				description: "Client certificate to present when doing client-authentication."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																								type:        "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			insecureSkipVerify: {
+																				description: "Disable target certificate validation."
+																				type:        "boolean"
+																			}
+																			keySecret: {
+																				description: "Secret containing the client key file for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																						type:        "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			serverName: {
+																				description: "Used to verify the hostname for the targets."
+																				type:        "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+															message: {
+																description: "The template of the message's body."
+																type:        "string"
+															}
+															sendResolved: {
+																description: "Whether or not to notify about resolved alerts."
+																type:        "boolean"
+															}
+															title: {
+																description: "The template of the message's title."
+																type:        "string"
+															}
+														}
+														required: ["apiURL"]
+														type: "object"
+													}
+													type: "array"
+												}
 												emailConfigs: {
 													description: "List of Email configurations."
 													items: {
@@ -616,7 +985,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -636,8 +1005,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -1050,7 +1423,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1070,8 +1443,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -1482,7 +1859,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1502,8 +1879,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -1970,7 +2351,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1990,8 +2371,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -2331,7 +2716,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2351,8 +2736,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -2778,7 +3167,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2798,8 +3187,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -3171,7 +3564,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3191,8 +3584,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -3524,7 +3921,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3544,8 +3941,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -3918,7 +4319,7 @@ prometheusOperator: {
 																		description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																		properties: {
 																			credentials: {
-																				description: "The secret's key that contains the credentials of the request"
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3938,8 +4339,12 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			type: {
-																				description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																				type:        "string"
+																				description: """
+																								Defines the authentication type. The value is case-insensitive. 
+																								 "Basic" is not a supported value. 
+																								 Default: "Bearer"
+																								"""
+																				type: "string"
 																			}
 																		}
 																		type: "object"
@@ -5068,7 +5473,7 @@ prometheusOperator: {
 																description: "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
 																properties: {
 																	credentials: {
-																		description: "The secret's key that contains the credentials of the request"
+																		description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																		properties: {
 																			key: {
 																				description: "The key of the secret to select from.  Must be a valid secret key."
@@ -5088,8 +5493,12 @@ prometheusOperator: {
 																		"x-kubernetes-map-type": "atomic"
 																	}
 																	type: {
-																		description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																		type:        "string"
+																		description: """
+																						Defines the authentication type. The value is case-insensitive. 
+																						 "Basic" is not a supported value. 
+																						 Default: "Bearer"
+																						"""
+																		type: "string"
 																	}
 																}
 																type: "object"
@@ -10250,7 +10659,7 @@ prometheusOperator: {
 													description: "Authorization section for this endpoint"
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -10270,8 +10679,12 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -10370,33 +10783,46 @@ prometheusOperator: {
 												metricRelabelings: {
 													description: "MetricRelabelConfigs to apply to samples before ingestion."
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -10405,8 +10831,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"
@@ -10524,33 +10954,46 @@ prometheusOperator: {
 												relabelings: {
 													description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -10559,8 +11002,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"
@@ -10823,7 +11270,7 @@ prometheusOperator: {
 										description: "Authorization section for this endpoint"
 										properties: {
 											credentials: {
-												description: "The secret's key that contains the credentials of the request"
+												description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -10843,8 +11290,12 @@ prometheusOperator: {
 												"x-kubernetes-map-type": "atomic"
 											}
 											type: {
-												description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-												type:        "string"
+												description: """
+																Defines the authentication type. The value is case-insensitive. 
+																 "Basic" is not a supported value. 
+																 Default: "Bearer"
+																"""
+												type: "string"
 											}
 										}
 										type: "object"
@@ -10942,33 +11393,46 @@ prometheusOperator: {
 									metricRelabelings: {
 										description: "MetricRelabelConfigs to apply to samples before ingestion."
 										items: {
-											description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+											description: """
+															RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+															 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+															"""
 											properties: {
 												action: {
-													default:     "replace"
-													description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+													default: "replace"
+													description: """
+																	Action to perform based on the regex matching. 
+																	 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																	 Default: "Replace"
+																	"""
 													enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 													type: "string"
 												}
 												modulus: {
-													description: "Modulus to take of the hash of the source label values."
-													format:      "int64"
-													type:        "integer"
+													description: """
+																	Modulus to take of the hash of the source label values. 
+																	 Only applicable when the action is `HashMod`.
+																	"""
+													format: "int64"
+													type:   "integer"
 												}
 												regex: {
-													description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+													description: "Regular expression against which the extracted value is matched."
 													type:        "string"
 												}
 												replacement: {
-													description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-													type:        "string"
+													description: """
+																	Replacement value against which a Replace action is performed if the regular expression matches. 
+																	 Regex capture groups are available.
+																	"""
+													type: "string"
 												}
 												separator: {
-													description: "Separator placed between concatenated source label values. default is ';'."
+													description: "Separator is the string between concatenated SourceLabels."
 													type:        "string"
 												}
 												sourceLabels: {
-													description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+													description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 													items: {
 														description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 														pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -10977,8 +11441,12 @@ prometheusOperator: {
 													type: "array"
 												}
 												targetLabel: {
-													description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-													type:        "string"
+													description: """
+																	Label to which the resulting string is written in a replacement. 
+																	 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																	 Regex capture groups are available.
+																	"""
+													type: "string"
 												}
 											}
 											type: "object"
@@ -11141,33 +11609,46 @@ prometheusOperator: {
 													relabelingConfigs: {
 														description: "RelabelConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 														items: {
-															description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+															description: """
+																			RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																			 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																			"""
 															properties: {
 																action: {
-																	default:     "replace"
-																	description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																	default: "replace"
+																	description: """
+																					Action to perform based on the regex matching. 
+																					 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																					 Default: "Replace"
+																					"""
 																	enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																	type: "string"
 																}
 																modulus: {
-																	description: "Modulus to take of the hash of the source label values."
-																	format:      "int64"
-																	type:        "integer"
+																	description: """
+																					Modulus to take of the hash of the source label values. 
+																					 Only applicable when the action is `HashMod`.
+																					"""
+																	format: "int64"
+																	type:   "integer"
 																}
 																regex: {
-																	description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																	description: "Regular expression against which the extracted value is matched."
 																	type:        "string"
 																}
 																replacement: {
-																	description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																	type:        "string"
+																	description: """
+																					Replacement value against which a Replace action is performed if the regular expression matches. 
+																					 Regex capture groups are available.
+																					"""
+																	type: "string"
 																}
 																separator: {
-																	description: "Separator placed between concatenated source label values. default is ';'."
+																	description: "Separator is the string between concatenated SourceLabels."
 																	type:        "string"
 																}
 																sourceLabels: {
-																	description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																	description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																	items: {
 																		description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																		pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -11176,8 +11657,12 @@ prometheusOperator: {
 																	type: "array"
 																}
 																targetLabel: {
-																	description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																	type:        "string"
+																	description: """
+																					Label to which the resulting string is written in a replacement. 
+																					 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																					 Regex capture groups are available.
+																					"""
+																	type: "string"
 																}
 															}
 															type: "object"
@@ -11234,33 +11719,46 @@ prometheusOperator: {
 													relabelingConfigs: {
 														description: "RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 														items: {
-															description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+															description: """
+																			RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																			 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																			"""
 															properties: {
 																action: {
-																	default:     "replace"
-																	description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																	default: "replace"
+																	description: """
+																					Action to perform based on the regex matching. 
+																					 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																					 Default: "Replace"
+																					"""
 																	enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																	type: "string"
 																}
 																modulus: {
-																	description: "Modulus to take of the hash of the source label values."
-																	format:      "int64"
-																	type:        "integer"
+																	description: """
+																					Modulus to take of the hash of the source label values. 
+																					 Only applicable when the action is `HashMod`.
+																					"""
+																	format: "int64"
+																	type:   "integer"
 																}
 																regex: {
-																	description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																	description: "Regular expression against which the extracted value is matched."
 																	type:        "string"
 																}
 																replacement: {
-																	description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																	type:        "string"
+																	description: """
+																					Replacement value against which a Replace action is performed if the regular expression matches. 
+																					 Regex capture groups are available.
+																					"""
+																	type: "string"
 																}
 																separator: {
-																	description: "Separator placed between concatenated source label values. default is ';'."
+																	description: "Separator is the string between concatenated SourceLabels."
 																	type:        "string"
 																}
 																sourceLabels: {
-																	description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																	description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																	items: {
 																		description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																		pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -11269,8 +11767,12 @@ prometheusOperator: {
 																	type: "array"
 																}
 																targetLabel: {
-																	description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																	type:        "string"
+																	description: """
+																					Label to which the resulting string is written in a replacement. 
+																					 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																					 Regex capture groups are available.
+																					"""
+																	type: "string"
 																}
 															}
 															type: "object"
@@ -12096,10 +12598,13 @@ prometheusOperator: {
 										description: "APIServerConfig allows specifying a host and auth methods to access the Kuberntees API server. If null, Prometheus is assumed to run inside of the cluster: it will discover the API servers automatically and use the Pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/."
 										properties: {
 											authorization: {
-												description: "Authorization section for accessing apiserver"
+												description: """
+																Authorization section for the API server. 
+																 Cannot be set at the same time as `basicAuth`, `bearerToken`, or `bearerTokenFile`.
+																"""
 												properties: {
 													credentials: {
-														description: "The secret's key that contains the credentials of the request"
+														description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -12119,18 +12624,25 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													credentialsFile: {
-														description: "File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)"
+														description: "File to read a secret from, mutually exclusive with `credentials`."
 														type:        "string"
 													}
 													type: {
-														description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-														type:        "string"
+														description: """
+																		Defines the authentication type. The value is case-insensitive. 
+																		 "Basic" is not a supported value. 
+																		 Default: "Bearer"
+																		"""
+														type: "string"
 													}
 												}
 												type: "object"
 											}
 											basicAuth: {
-												description: "BasicAuth allow an endpoint to authenticate over basic authentication"
+												description: """
+																BasicAuth configuration for the API server. 
+																 Cannot be set at the same time as `authorization`, `bearerToken`, or `bearerTokenFile`.
+																"""
 												properties: {
 													password: {
 														description: "The secret in the service monitor namespace that contains the password for authentication."
@@ -12176,19 +12688,26 @@ prometheusOperator: {
 												type: "object"
 											}
 											bearerToken: {
-												description: "Bearer token for accessing apiserver."
-												type:        "string"
+												description: """
+																*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
+																 *Deprecated: this will be removed in a future release.*
+																"""
+												type: "string"
 											}
 											bearerTokenFile: {
-												description: "File to read bearer token for accessing apiserver."
-												type:        "string"
+												description: """
+																File to read bearer token for accessing apiserver. 
+																 Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. 
+																 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																"""
+												type: "string"
 											}
 											host: {
-												description: "Host of apiserver. A valid string consisting of a hostname or IP followed by an optional port number"
+												description: "Kubernetes API address consisting of a hostname or IP address followed by an optional port number."
 												type:        "string"
 											}
 											tlsConfig: {
-												description: "TLS Config to use for accessing apiserver."
+												description: "TLS Config to use for the API server."
 												properties: {
 													ca: {
 														description: "Certificate authority used when verifying server certificates."
@@ -14871,7 +15390,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -14891,12 +15410,16 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														credentialsFile: {
-															description: "File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)"
+															description: "File to read a secret from, mutually exclusive with `credentials`."
 															type:        "string"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -14952,7 +15475,7 @@ prometheusOperator: {
 												}
 												bearerToken: {
 													description: """
-																	*Warning: this field shouldn't used because the token value appears in clear-text. Prefer using `authorization`.* 
+																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
 																	 *Deprecated: this will be removed in a future release.*
 																	"""
 													type: "string"
@@ -14976,11 +15499,11 @@ prometheusOperator: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
 														send: {
-															description: "Whether metric metadata is sent to the remote storage or not."
+															description: "Defines whether metric metadata is sent to the remote storage or not."
 															type:        "boolean"
 														}
 														sendInterval: {
-															description: "How frequently metric metadata is sent to the remote storage."
+															description: "Defines how frequently metric metadata is sent to the remote storage."
 															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
@@ -15358,33 +15881,46 @@ prometheusOperator: {
 												writeRelabelConfigs: {
 													description: "The list of remote write relabel configurations."
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -15393,8 +15929,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"
@@ -18847,17 +19387,20 @@ prometheusOperator: {
 										properties: alertmanagers: {
 											description: "AlertmanagerEndpoints Prometheus should fire alerts against."
 											items: {
-												description: "AlertmanagerEndpoints defines a selection of a single Endpoints object containing alertmanager IPs to fire alerts against."
+												description: "AlertmanagerEndpoints defines a selection of a single Endpoints object containing Alertmanager IPs to fire alerts against."
 												properties: {
 													apiVersion: {
 														description: "Version of the Alertmanager API that Prometheus uses to send alerts. It can be \"v1\" or \"v2\"."
 														type:        "string"
 													}
 													authorization: {
-														description: "Authorization section for this alertmanager endpoint"
+														description: """
+																			Authorization section for Alertmanager. 
+																			 Cannot be set at the same time as `basicAuth`, or `bearerTokenFile`.
+																			"""
 														properties: {
 															credentials: {
-																description: "The secret's key that contains the credentials of the request"
+																description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -18877,14 +19420,21 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															type: {
-																description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-																type:        "string"
+																description: """
+																					Defines the authentication type. The value is case-insensitive. 
+																					 "Basic" is not a supported value. 
+																					 Default: "Bearer"
+																					"""
+																type: "string"
 															}
 														}
 														type: "object"
 													}
 													basicAuth: {
-														description: "BasicAuth allow an endpoint to authenticate over basic authentication"
+														description: """
+																			BasicAuth configuration for Alertmanager. 
+																			 Cannot be set at the same time as `bearerTokenFile`, or `authorization`.
+																			"""
 														properties: {
 															password: {
 																description: "The secret in the service monitor namespace that contains the password for authentication."
@@ -18930,19 +19480,23 @@ prometheusOperator: {
 														type: "object"
 													}
 													bearerTokenFile: {
-														description: "BearerTokenFile to read from filesystem to use when authenticating to Alertmanager."
-														type:        "string"
+														description: """
+																			File to read bearer token for Alertmanager. 
+																			 Cannot be set at the same time as `basicAuth`, or `authorization`. 
+																			 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																			"""
+														type: "string"
 													}
 													enableHttp2: {
 														description: "Whether to enable HTTP2."
 														type:        "boolean"
 													}
 													name: {
-														description: "Name of Endpoints object in Namespace."
+														description: "Name of the Endpoints object in the namespace."
 														type:        "string"
 													}
 													namespace: {
-														description: "Namespace of Endpoints object."
+														description: "Namespace of the Endpoints object."
 														type:        "string"
 													}
 													pathPrefix: {
@@ -18955,7 +19509,7 @@ prometheusOperator: {
 														}, {
 															type: "string"
 														}]
-														description:                  "Port the Alertmanager API is exposed on."
+														description:                  "Port on which the Alertmanager API is exposed."
 														"x-kubernetes-int-or-string": true
 													}
 													scheme: {
@@ -18968,7 +19522,7 @@ prometheusOperator: {
 														type:        "string"
 													}
 													tlsConfig: {
-														description: "TLS Config to use for alertmanager connection."
+														description: "TLS Config to use for Alertmanager."
 														properties: {
 															ca: {
 																description: "Certificate authority used when verifying server certificates."
@@ -19125,10 +19679,13 @@ prometheusOperator: {
 										description: "APIServerConfig allows specifying a host and auth methods to access the Kuberntees API server. If null, Prometheus is assumed to run inside of the cluster: it will discover the API servers automatically and use the Pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/."
 										properties: {
 											authorization: {
-												description: "Authorization section for accessing apiserver"
+												description: """
+																Authorization section for the API server. 
+																 Cannot be set at the same time as `basicAuth`, `bearerToken`, or `bearerTokenFile`.
+																"""
 												properties: {
 													credentials: {
-														description: "The secret's key that contains the credentials of the request"
+														description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -19148,18 +19705,25 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													credentialsFile: {
-														description: "File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)"
+														description: "File to read a secret from, mutually exclusive with `credentials`."
 														type:        "string"
 													}
 													type: {
-														description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-														type:        "string"
+														description: """
+																		Defines the authentication type. The value is case-insensitive. 
+																		 "Basic" is not a supported value. 
+																		 Default: "Bearer"
+																		"""
+														type: "string"
 													}
 												}
 												type: "object"
 											}
 											basicAuth: {
-												description: "BasicAuth allow an endpoint to authenticate over basic authentication"
+												description: """
+																BasicAuth configuration for the API server. 
+																 Cannot be set at the same time as `authorization`, `bearerToken`, or `bearerTokenFile`.
+																"""
 												properties: {
 													password: {
 														description: "The secret in the service monitor namespace that contains the password for authentication."
@@ -19205,19 +19769,26 @@ prometheusOperator: {
 												type: "object"
 											}
 											bearerToken: {
-												description: "Bearer token for accessing apiserver."
-												type:        "string"
+												description: """
+																*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
+																 *Deprecated: this will be removed in a future release.*
+																"""
+												type: "string"
 											}
 											bearerTokenFile: {
-												description: "File to read bearer token for accessing apiserver."
-												type:        "string"
+												description: """
+																File to read bearer token for accessing apiserver. 
+																 Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. 
+																 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																"""
+												type: "string"
 											}
 											host: {
-												description: "Host of apiserver. A valid string consisting of a hostname or IP followed by an optional port number"
+												description: "Kubernetes API address consisting of a hostname or IP address followed by an optional port number."
 												type:        "string"
 											}
 											tlsConfig: {
-												description: "TLS Config to use for accessing apiserver."
+												description: "TLS Config to use for the API server."
 												properties: {
 													ca: {
 														description: "Certificate authority used when verifying server certificates."
@@ -20557,9 +21128,13 @@ prometheusOperator: {
 									exemplars: {
 										description: "Exemplars related settings that are runtime reloadable. It requires to enable the `exemplar-storage` feature flag to be effective."
 										properties: maxSize: {
-											description: "Maximum number of exemplars stored in memory for all series. If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage."
-											format:      "int64"
-											type:        "integer"
+											description: """
+																Maximum number of exemplars stored in memory for all series. 
+																 exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place. 
+																 If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage.
+																"""
+											format: "int64"
+											type:   "integer"
 										}
 										type: "object"
 									}
@@ -21983,7 +22558,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -22003,12 +22578,16 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														credentialsFile: {
-															description: "File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)"
+															description: "File to read a secret from, mutually exclusive with `credentials`."
 															type:        "string"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -22064,14 +22643,14 @@ prometheusOperator: {
 												}
 												bearerToken: {
 													description: """
-																	*Warning: this field shouldn't used because the token value appears in clear-text. Prefer using `authorization`.* 
+																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
 																	 *Deprecated: this will be removed in a future release.*
 																	"""
 													type: "string"
 												}
 												bearerTokenFile: {
 													description: """
-																	File from which to read bearer token for the URL. 
+																	File from which to read the bearer token for the URL. 
 																	 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
 																	"""
 													type: "string"
@@ -22373,7 +22952,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -22393,12 +22972,16 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														credentialsFile: {
-															description: "File to read a secret from, mutually exclusive with Credentials (from SafeAuthorization)"
+															description: "File to read a secret from, mutually exclusive with `credentials`."
 															type:        "string"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -22454,7 +23037,7 @@ prometheusOperator: {
 												}
 												bearerToken: {
 													description: """
-																	*Warning: this field shouldn't used because the token value appears in clear-text. Prefer using `authorization`.* 
+																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
 																	 *Deprecated: this will be removed in a future release.*
 																	"""
 													type: "string"
@@ -22478,11 +23061,11 @@ prometheusOperator: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
 														send: {
-															description: "Whether metric metadata is sent to the remote storage or not."
+															description: "Defines whether metric metadata is sent to the remote storage or not."
 															type:        "boolean"
 														}
 														sendInterval: {
-															description: "How frequently metric metadata is sent to the remote storage."
+															description: "Defines how frequently metric metadata is sent to the remote storage."
 															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
@@ -22860,33 +23443,46 @@ prometheusOperator: {
 												writeRelabelConfigs: {
 													description: "The list of remote write relabel configurations."
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -22895,8 +23491,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"
@@ -23070,11 +23670,17 @@ prometheusOperator: {
 									rules: {
 										description: "Defines the configuration of the Prometheus rules' engine."
 										properties: alert: {
-											description: "/--rules.alert.*/ command-line arguments"
+											description: """
+																Defines the parameters of the Prometheus rules' engine. 
+																 Any update to these parameters trigger a restart of the pods.
+																"""
 											properties: {
 												forGracePeriod: {
-													description: "Minimum duration between alert and restored 'for' state. This is maintained only for alerts with configured 'for' time greater than grace period."
-													type:        "string"
+													description: """
+																		Minimum duration between alert and restored 'for' state. 
+																		 This is maintained only for alerts with a configured 'for' time greater than the grace period.
+																		"""
+													type: "string"
 												}
 												forOutageTolerance: {
 													description: "Max time to tolerate prometheus outage for restoring 'for' state of alert."
@@ -24586,9 +25192,14 @@ prometheusOperator: {
 									tsdb: {
 										description: "Defines the runtime reloadable configuration of the timeseries database (TSDB)."
 										properties: outOfOrderTimeWindow: {
-											description: "Configures how old an out-of-order/out-of-bounds sample can be w.r.t. the TSDB max time. An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is >= (TSDB.MaxTime - outOfOrderTimeWindow). Out of order ingestion is an experimental feature and requires Prometheus >= v2.39.0."
-											pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-											type:        "string"
+											description: """
+																Configures how old an out-of-order/out-of-bounds sample can be with respect to the TSDB max time. 
+																 An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is >= (TSDB.MaxTime - outOfOrderTimeWindow). 
+																 Out of order ingestion is an experimental feature. 
+																 It requires Prometheus >= v2.39.0.
+																"""
+											pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+											type:    "string"
 										}
 										type: "object"
 									}
@@ -26324,7 +26935,7 @@ prometheusOperator: {
 										description: "Authorization header to use on every scrape request."
 										properties: {
 											credentials: {
-												description: "The secret's key that contains the credentials of the request"
+												description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -26344,8 +26955,12 @@ prometheusOperator: {
 												"x-kubernetes-map-type": "atomic"
 											}
 											type: {
-												description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-												type:        "string"
+												description: """
+																Defines the authentication type. The value is case-insensitive. 
+																 "Basic" is not a supported value. 
+																 Default: "Bearer"
+																"""
+												type: "string"
 											}
 										}
 										type: "object"
@@ -26439,7 +27054,7 @@ prometheusOperator: {
 													description: "Authorization header configuration to authenticate against the target HTTP endpoint."
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -26459,8 +27074,12 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -26516,6 +27135,132 @@ prometheusOperator: {
 													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 													type:        "string"
 												}
+												tlsConfig: {
+													description: "TLS configuration applying to the target HTTP endpoint."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
 												url: {
 													description: "URL from which the targets are fetched."
 													minLength:   1
@@ -26528,6 +27273,35 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									kubernetesSDConfigs: {
+										description: "KubernetesSDConfigs defines a list of Kubernetes service discovery configurations."
+										items: {
+											description: "KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config"
+											properties: role: {
+												description: "Role of the Kubernetes entities that should be discovered. Currently the only supported role is \"Node\"."
+												enum: ["Node"]
+												type: "string"
+											}
+											required: ["role"]
+											type: "object"
+										}
+										type: "array"
+									}
+									labelLimit: {
+										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelNameLengthLimit: {
+										description: "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelValueLengthLimit: {
+										description: "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
 									metricsPath: {
 										description: "MetricsPath HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics)."
 										type:        "string"
@@ -26535,33 +27309,46 @@ prometheusOperator: {
 									relabelings: {
 										description: "RelabelConfigs defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 										items: {
-											description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+											description: """
+															RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+															 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+															"""
 											properties: {
 												action: {
-													default:     "replace"
-													description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+													default: "replace"
+													description: """
+																	Action to perform based on the regex matching. 
+																	 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																	 Default: "Replace"
+																	"""
 													enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 													type: "string"
 												}
 												modulus: {
-													description: "Modulus to take of the hash of the source label values."
-													format:      "int64"
-													type:        "integer"
+													description: """
+																	Modulus to take of the hash of the source label values. 
+																	 Only applicable when the action is `HashMod`.
+																	"""
+													format: "int64"
+													type:   "integer"
 												}
 												regex: {
-													description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+													description: "Regular expression against which the extracted value is matched."
 													type:        "string"
 												}
 												replacement: {
-													description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-													type:        "string"
+													description: """
+																	Replacement value against which a Replace action is performed if the regular expression matches. 
+																	 Regex capture groups are available.
+																	"""
+													type: "string"
 												}
 												separator: {
-													description: "Separator placed between concatenated source label values. default is ';'."
+													description: "Separator is the string between concatenated SourceLabels."
 													type:        "string"
 												}
 												sourceLabels: {
-													description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+													description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 													items: {
 														description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 														pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -26570,13 +27357,22 @@ prometheusOperator: {
 													type: "array"
 												}
 												targetLabel: {
-													description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-													type:        "string"
+													description: """
+																	Label to which the resulting string is written in a replacement. 
+																	 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																	 Regex capture groups are available.
+																	"""
+													type: "string"
 												}
 											}
 											type: "object"
 										}
 										type: "array"
+									}
+									sampleLimit: {
+										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted."
+										format:      "int64"
+										type:        "integer"
 									}
 									scheme: {
 										description: "Configures the protocol scheme used for requests. If empty, Prometheus uses HTTP by default."
@@ -26606,6 +27402,137 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									targetLimit: {
+										description: "TargetLimit defines a limit on the number of scraped targets that will be accepted."
+										format:      "int64"
+										type:        "integer"
+									}
+									tlsConfig: {
+										description: "TLS configuration to use on every scrape request"
+										properties: {
+											ca: {
+												description: "Certificate authority used when verifying server certificates."
+												properties: {
+													configMap: {
+														description: "ConfigMap containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key to select."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the ConfigMap or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													secret: {
+														description: "Secret containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+												}
+												type: "object"
+											}
+											cert: {
+												description: "Client certificate to present when doing client-authentication."
+												properties: {
+													configMap: {
+														description: "ConfigMap containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key to select."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the ConfigMap or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													secret: {
+														description: "Secret containing data to use for the targets."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+												}
+												type: "object"
+											}
+											insecureSkipVerify: {
+												description: "Disable target certificate validation."
+												type:        "boolean"
+											}
+											keySecret: {
+												description: "Secret containing the client key file for the targets."
+												properties: {
+													key: {
+														description: "The key of the secret to select from.  Must be a valid secret key."
+														type:        "string"
+													}
+													name: {
+														description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+														type:        "string"
+													}
+													optional: {
+														description: "Specify whether the Secret or its key must be defined"
+														type:        "boolean"
+													}
+												}
+												required: ["key"]
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											serverName: {
+												description: "Used to verify the hostname for the targets."
+												type:        "string"
+											}
+										}
+										type: "object"
 									}
 								}
 								type: "object"
@@ -26674,7 +27601,7 @@ prometheusOperator: {
 													description: "Authorization section for this endpoint"
 													properties: {
 														credentials: {
-															description: "The secret's key that contains the credentials of the request"
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -26694,8 +27621,12 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														type: {
-															description: "Set the authentication type. Defaults to Bearer, Basic will cause an error"
-															type:        "string"
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -26798,33 +27729,46 @@ prometheusOperator: {
 												metricRelabelings: {
 													description: "MetricRelabelConfigs to apply to samples before ingestion."
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -26833,8 +27777,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"
@@ -26952,33 +27900,46 @@ prometheusOperator: {
 												relabelings: {
 													description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
 													items: {
-														description: "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs"
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+																		 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
 														properties: {
 															action: {
-																default:     "replace"
-																description: "Action to perform based on regex matching. Default is 'replace'. uppercase and lowercase actions require Prometheus >= 2.36."
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching. 
+																				 `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+																				 Default: "Replace"
+																				"""
 																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
 																type: "string"
 															}
 															modulus: {
-																description: "Modulus to take of the hash of the source label values."
-																format:      "int64"
-																type:        "integer"
+																description: """
+																				Modulus to take of the hash of the source label values. 
+																				 Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
 															}
 															regex: {
-																description: "Regular expression against which the extracted value is matched. Default is '(.*)'"
+																description: "Regular expression against which the extracted value is matched."
 																type:        "string"
 															}
 															replacement: {
-																description: "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
-																type:        "string"
+																description: """
+																				Replacement value against which a Replace action is performed if the regular expression matches. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 															separator: {
-																description: "Separator placed between concatenated source label values. default is ';'."
+																description: "Separator is the string between concatenated SourceLabels."
 																type:        "string"
 															}
 															sourceLabels: {
-																description: "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+																description: "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
 																items: {
 																	description: "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
 																	pattern:     "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -26987,8 +27948,12 @@ prometheusOperator: {
 																type: "array"
 															}
 															targetLabel: {
-																description: "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
-																type:        "string"
+																description: """
+																				Label to which the resulting string is written in a replacement. 
+																				 It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+																				 Regex capture groups are available.
+																				"""
+																type: "string"
 															}
 														}
 														type: "object"

@@ -10,7 +10,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name: "prometheus-k8s"
 		}
@@ -38,7 +38,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name: "prometheus-k8s"
 		}
@@ -62,7 +62,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name:      "prometheus-k8s"
 			namespace: "monitoring"
@@ -86,7 +86,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name:      "k8s"
 			namespace: "monitoring"
@@ -100,14 +100,14 @@ prometheus: {
 			}]
 			enableFeatures: []
 			externalLabels: {}
-			image: "quay.io/prometheus/prometheus:v2.44.0"
+			image: "quay.io/prometheus/prometheus:v2.45.0"
 			nodeSelector: "kubernetes.io/os": "linux"
 			podMetadata: labels: {
 				"app.kubernetes.io/component": "prometheus"
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			podMonitorNamespaceSelector: {}
 			podMonitorSelector: {}
@@ -125,7 +125,7 @@ prometheus: {
 			serviceAccountName: "prometheus-k8s"
 			serviceMonitorNamespaceSelector: {}
 			serviceMonitorSelector: {}
-			version: "2.44.0"
+			version: "2.45.0"
 		}
 	}
 	PrometheusRule: "prometheus-k8s-prometheus-rules": {
@@ -137,7 +137,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -498,7 +498,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "default"
@@ -528,7 +528,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "kube-system"
@@ -558,7 +558,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "monitoring"
@@ -588,7 +588,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s-config"
 				namespace: "monitoring"
@@ -614,7 +614,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "default"
@@ -639,7 +639,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "kube-system"
@@ -664,7 +664,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s"
 				namespace: "monitoring"
@@ -689,7 +689,7 @@ prometheus: {
 					"app.kubernetes.io/instance":  "k8s"
 					"app.kubernetes.io/name":      "prometheus"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "2.44.0"
+					"app.kubernetes.io/version":   "2.45.0"
 				}
 				name:      "prometheus-k8s-config"
 				namespace: "monitoring"
@@ -715,7 +715,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name:      "prometheus-k8s"
 			namespace: "monitoring"
@@ -749,7 +749,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name:      "prometheus-k8s"
 			namespace: "monitoring"
@@ -764,7 +764,7 @@ prometheus: {
 				"app.kubernetes.io/instance":  "k8s"
 				"app.kubernetes.io/name":      "prometheus"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "2.44.0"
+				"app.kubernetes.io/version":   "2.45.0"
 			}
 			name:      "prometheus-k8s"
 			namespace: "monitoring"
