@@ -590,6 +590,13 @@ import (
 	// a Helm uninstall is performed.
 	// +optional
 	disableWait?: bool @go(DisableWait)
+
+	// DeletionPropagation specifies the deletion propagation policy when
+	// a Helm uninstall is performed.
+	// +kubebuilder:default=background
+	// +kubebuilder:validation:Enum=background;foreground;orphan
+	// +optional
+	deletionPropagation?: null | string @go(DeletionPropagation,*string)
 }
 
 // HelmReleaseStatus defines the observed state of a HelmRelease.

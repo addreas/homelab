@@ -101,6 +101,10 @@ import (
 	// SecretName points to the K8s secret that contains this client's ID and password
 	secretName: string @go(SecretName)
 
+	// +kubebuilder:validation:type=bool
+	// +kubebuilder:default=false
+	skipConsent?: bool @go(SkipConsent)
+
 	// HydraAdmin is the optional configuration to use for managing
 	// this client
 	hydraAdmin?: #HydraAdmin @go(HydraAdmin)

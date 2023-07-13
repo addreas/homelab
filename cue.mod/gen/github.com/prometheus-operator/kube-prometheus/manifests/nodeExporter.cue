@@ -197,7 +197,7 @@ nodeExporter: {
 			rules: [{
 				alert: "NodeFilesystemSpaceFillingUp"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left and is filling up."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left and is filling up."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemspacefillingup"
 					summary:     "Filesystem is predicted to run out of space within the next 24 hours."
 				}
@@ -216,7 +216,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemSpaceFillingUp"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left and is filling up fast."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left and is filling up fast."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemspacefillingup"
 					summary:     "Filesystem is predicted to run out of space within the next 4 hours."
 				}
@@ -235,7 +235,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemAlmostOutOfSpace"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemalmostoutofspace"
 					summary:     "Filesystem has less than 5% space left."
 				}
@@ -252,7 +252,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemAlmostOutOfSpace"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available space left."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemalmostoutofspace"
 					summary:     "Filesystem has less than 3% space left."
 				}
@@ -269,7 +269,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemFilesFillingUp"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left and is filling up."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left and is filling up."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemfilesfillingup"
 					summary:     "Filesystem is predicted to run out of inodes within the next 24 hours."
 				}
@@ -288,7 +288,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemFilesFillingUp"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left and is filling up fast."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left and is filling up fast."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemfilesfillingup"
 					summary:     "Filesystem is predicted to run out of inodes within the next 4 hours."
 				}
@@ -307,7 +307,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemAlmostOutOfFiles"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemalmostoutoffiles"
 					summary:     "Filesystem has less than 5% inodes left."
 				}
@@ -324,7 +324,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeFilesystemAlmostOutOfFiles"
 				annotations: {
-					description: "Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left."
+					description: "Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint }}, at {{ $labels.instance }} has only {{ printf \"%.2f\" $value }}% available inodes left."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodefilesystemalmostoutoffiles"
 					summary:     "Filesystem has less than 3% inodes left."
 				}
@@ -346,7 +346,7 @@ nodeExporter: {
 					summary:     "Network interface is reporting many receive errors."
 				}
 				expr: """
-					rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m]) > 0.01
+					rate(node_network_receive_errs_total{job="node-exporter"}[2m]) / rate(node_network_receive_packets_total{job="node-exporter"}[2m]) > 0.01
 
 					"""
 				for: "1h"
@@ -359,7 +359,7 @@ nodeExporter: {
 					summary:     "Network interface is reporting many transmit errors."
 				}
 				expr: """
-					rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m]) > 0.01
+					rate(node_network_transmit_errs_total{job="node-exporter"}[2m]) / rate(node_network_transmit_packets_total{job="node-exporter"}[2m]) > 0.01
 
 					"""
 				for: "1h"
@@ -372,14 +372,14 @@ nodeExporter: {
 					summary:     "Number of conntrack are getting close to the limit."
 				}
 				expr: """
-					(node_nf_conntrack_entries / node_nf_conntrack_entries_limit) > 0.75
+					(node_nf_conntrack_entries{job="node-exporter"} / node_nf_conntrack_entries_limit) > 0.75
 
 					"""
 				labels: severity: "warning"
 			}, {
 				alert: "NodeTextFileCollectorScrapeError"
 				annotations: {
-					description: "Node Exporter text file collector failed to scrape."
+					description: "Node Exporter text file collector on {{ $labels.instance }} failed to scrape."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodetextfilecollectorscrapeerror"
 					summary:     "Node Exporter text file collector failed to scrape."
 				}
@@ -391,7 +391,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeClockSkewDetected"
 				annotations: {
-					description: "Clock on {{ $labels.instance }} is out of sync by more than 0.05s. Ensure NTP is configured correctly on this host."
+					description: "Clock at {{ $labels.instance }} is out of sync by more than 0.05s. Ensure NTP is configured correctly on this host."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodeclockskewdetected"
 					summary:     "Clock skew detected."
 				}
@@ -414,7 +414,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeClockNotSynchronising"
 				annotations: {
-					description: "Clock on {{ $labels.instance }} is not synchronising. Ensure NTP is configured on this host."
+					description: "Clock at {{ $labels.instance }} is not synchronising. Ensure NTP is configured on this host."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodeclocknotsynchronising"
 					summary:     "Clock not synchronising."
 				}
@@ -429,9 +429,9 @@ nodeExporter: {
 			}, {
 				alert: "NodeRAIDDegraded"
 				annotations: {
-					description: "RAID array '{{ $labels.device }}' on {{ $labels.instance }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically."
+					description: "RAID array '{{ $labels.device }}' at {{ $labels.instance }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/noderaiddegraded"
-					summary:     "RAID Array is degraded"
+					summary:     "RAID Array is degraded."
 				}
 				expr: """
 					node_md_disks_required{job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"} - ignoring (state) (node_md_disks{state="active",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"}) > 0
@@ -442,9 +442,9 @@ nodeExporter: {
 			}, {
 				alert: "NodeRAIDDiskFailure"
 				annotations: {
-					description: "At least one device in RAID array on {{ $labels.instance }} failed. Array '{{ $labels.device }}' needs attention and possibly a disk swap."
+					description: "At least one device in RAID array at {{ $labels.instance }} failed. Array '{{ $labels.device }}' needs attention and possibly a disk swap."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/noderaiddiskfailure"
-					summary:     "Failed device in RAID array"
+					summary:     "Failed device in RAID array."
 				}
 				expr: """
 					node_md_disks{state="failed",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"} > 0
@@ -481,6 +481,103 @@ nodeExporter: {
 					"""
 				for: "15m"
 				labels: severity: "critical"
+			}, {
+				alert: "NodeCPUHighUsage"
+				annotations: {
+					description: """
+						CPU usage at {{ $labels.instance }} has been above 90% for the last 15 minutes, is currently at {{ printf "%.2f" $value }}%.
+
+						"""
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodecpuhighusage"
+					summary:     "High CPU usage."
+				}
+				expr: """
+					sum without(mode) (avg without (cpu) (rate(node_cpu_seconds_total{job="node-exporter", mode!="idle"}[2m]))) * 100 > 90
+
+					"""
+				for: "15m"
+				labels: severity: "info"
+			}, {
+				alert: "NodeSystemSaturation"
+				annotations: {
+					description: """
+						System load per core at {{ $labels.instance }} has been above 2 for the last 15 minutes, is currently at {{ printf "%.2f" $value }}.
+						This might indicate this instance resources saturation and can cause it becoming unresponsive.
+
+						"""
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodesystemsaturation"
+					summary:     "System saturated, load per core is very high."
+				}
+				expr: """
+					node_load1{job="node-exporter"}
+					/ count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle"}) > 2
+
+					"""
+				for: "15m"
+				labels: severity: "warning"
+			}, {
+				alert: "NodeMemoryMajorPagesFaults"
+				annotations: {
+					description: """
+						Memory major pages are occurring at very high rate at {{ $labels.instance }}, 500 major page faults per second for the last 15 minutes, is currently at {{ printf "%.2f" $value }}.
+						Please check that there is enough memory available at this instance.
+
+						"""
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodememorymajorpagesfaults"
+					summary:     "Memory major page faults are occurring at very high rate."
+				}
+				expr: """
+					rate(node_vmstat_pgmajfault{job="node-exporter"}[5m]) > 500
+
+					"""
+				for: "15m"
+				labels: severity: "warning"
+			}, {
+				alert: "NodeMemoryHighUtilization"
+				annotations: {
+					description: """
+						Memory is filling up at {{ $labels.instance }}, has been above 90% for the last 15 minutes, is currently at {{ printf "%.2f" $value }}%.
+
+						"""
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodememoryhighutilization"
+					summary:     "Host is running out of memory."
+				}
+				expr: """
+					100 - (node_memory_MemAvailable_bytes{job="node-exporter"} / node_memory_MemTotal_bytes{job="node-exporter"} * 100) > 90
+
+					"""
+				for: "15m"
+				labels: severity: "warning"
+			}, {
+				alert: "NodeDiskIOSaturation"
+				annotations: {
+					description: """
+						Disk IO queue (aqu-sq) is high on {{ $labels.device }} at {{ $labels.instance }}, has been above 10 for the last 15 minutes, is currently at {{ printf "%.2f" $value }}.
+						This symptom might indicate disk saturation.
+
+						"""
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodediskiosaturation"
+					summary:     "Disk IO queue is high."
+				}
+				expr: """
+					rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"}[5m]) > 10
+
+					"""
+				for: "30m"
+				labels: severity: "warning"
+			}, {
+				alert: "NodeSystemdServiceFailed"
+				annotations: {
+					description: "Systemd service {{ $labels.name }} has entered failed state at {{ $labels.instance }}"
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodesystemdservicefailed"
+					summary:     "Systemd service has entered failed state."
+				}
+				expr: """
+					node_systemd_unit_state{job="node-exporter", state="failed"} == 1
+
+					"""
+				for: "5m"
+				labels: severity: "warning"
 			}]
 		}, {
 			name: "node-exporter.rules"

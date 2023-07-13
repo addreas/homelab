@@ -7,13 +7,13 @@ require (
 	github.com/bitnami-labs/sealed-secrets v0.22.0
 	github.com/cert-manager/cert-manager v1.12.2
 	github.com/cilium/cilium v1.13.4
-	github.com/fluxcd/helm-controller/api v0.34.2
-	github.com/fluxcd/kustomize-controller/api v1.0.0-rc.4
-	github.com/fluxcd/notification-controller/api v0.33.0
-	github.com/fluxcd/source-controller/api v1.0.0-rc.5
-	github.com/grafana-operator/grafana-operator/v5 v5.0.1
+	github.com/fluxcd/helm-controller/api v0.35.0
+	github.com/fluxcd/kustomize-controller/api v1.0.1
+	github.com/fluxcd/notification-controller/api v1.0.0
+	github.com/fluxcd/source-controller/api v1.0.1
+	github.com/grafana-operator/grafana-operator/v5 v5.2.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
-	github.com/ory/hydra-maester v0.0.27
+	github.com/ory/hydra-maester v0.0.28
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.66.0
 	k8s.io/api v0.27.3
 	k8s.io/apimachinery v0.27.3
@@ -33,8 +33,8 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v0.6.13 // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v1.1.0 // indirect
-	github.com/fluxcd/pkg/apis/meta v1.1.0 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v1.1.1 // indirect
+	github.com/fluxcd/pkg/apis/meta v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -118,7 +118,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.27.2 // indirect
+	k8s.io/apiextensions-apiserver v0.27.3 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
 	k8s.io/klog/v2 v2.100.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20230515203736-54b630e78af5 // indirect
