@@ -4,7 +4,7 @@ import "list"
 
 name: "Homelab Dependency Check"
 
-on: schedule: [{ cron: "37 13 * * *" }]
+on: schedule: [{ cron: "30 14 * * 6" }]
 
 let setup = [{
 	uses: "actions/checkout@v3"
