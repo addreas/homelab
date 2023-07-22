@@ -27,10 +27,15 @@ jobs:
       - run: cue cmd update-gomod-tags
       - run: git diff
       - run: cue vet -c ./resources/...
+      - run: |-
+          echo "Automatically updated dependencies:" > PR.md
+          echo '````diff' >> PR.md
+          git diff -U0 main tags.cue | sed '/@.*/d' | tail -n +5 >> PR.md
+          echo '````' >> PR.md
       - name: Create Pull Request
         with:
           title: Updated dependencies
-          body: Automatically updated dependencies. The changes have passed a `cue vet -c ./resources/...`.
+          body-path: PR.md
           commit-message: Automatically update dependencies/definitions
           branch: automatically-update-deps
         uses: peter-evans/create-pull-request@v4

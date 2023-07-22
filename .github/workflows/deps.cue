@@ -4,7 +4,7 @@ import "list"
 
 name: "Homelab Dependency Check"
 
-on: schedule: [{ cron: "30 14 * * 6" }]
+on: schedule: [{cron: "30 14 * * 6"}]
 
 let setup = [{
 	uses: "actions/checkout@v3"
@@ -46,12 +46,16 @@ jobs: {
 			{run: "cue cmd update-gomod-tags"},
 			{run: "git diff"},
 			{run: "cue vet -c ./resources/..."},
+			{run: """
+				echo "Automatically updated dependencies:" > PR.md
+				echo '````diff' >> PR.md
+				git diff -U0 main tags.cue | sed '/@.*/d' | tail -n +5 >> PR.md
+				echo '````' >> PR.md
+				"""},
 			createPullRequest & {
 				with: {
-					title: "Updated dependencies"
-					body: """
-						Automatically updated dependencies. The changes have passed a `cue vet -c ./resources/...`.
-						"""
+					title:            "Updated dependencies"
+					"body-path":      "PR.md"
 					"commit-message": "Automatically update dependencies/definitions"
 					branch:           "automatically-update-deps"
 				}
