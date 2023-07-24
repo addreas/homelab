@@ -27,7 +27,7 @@ let setup = [{
 
 let createPullRequest = {
 	name: "Create Pull Request"
-	uses: "peter-evans/create-pull-request@v4"
+	uses: "peter-evans/create-pull-request@v5"
 }
 
 jobs: {
