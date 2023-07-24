@@ -38,4 +38,4 @@ jobs:
           body-path: PR.md
           commit-message: Automatically update dependencies/definitions
           branch: automatically-update-deps
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v5
