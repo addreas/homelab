@@ -4,7 +4,7 @@
 
 package api
 
-import "github.com/cilium/cilium/pkg/policy/api/kafka"
+import "github.com/cilium/proxy/pkg/policy/api/kafka"
 
 // L4Proto is a layer 4 protocol name
 #L4Proto: string // #enumL4Proto

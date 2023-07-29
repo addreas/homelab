@@ -42,22 +42,26 @@ import (
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
 	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
-	sampleLimit?: uint64 @go(SampleLimit)
+	sampleLimit?: null | uint64 @go(SampleLimit,*uint64)
 
 	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
-	targetLimit?: uint64 @go(TargetLimit)
+	// +optional
+	targetLimit?: null | uint64 @go(TargetLimit,*uint64)
 
 	// Per-scrape limit on number of labels that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
-	labelLimit?: uint64 @go(LabelLimit)
+	// +optional
+	labelLimit?: null | uint64 @go(LabelLimit,*uint64)
 
 	// Per-scrape limit on length of labels name that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
-	labelNameLengthLimit?: uint64 @go(LabelNameLengthLimit)
+	// +optional
+	labelNameLengthLimit?: null | uint64 @go(LabelNameLengthLimit,*uint64)
 
 	// Per-scrape limit on length of labels value that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
-	labelValueLengthLimit?: uint64 @go(LabelValueLengthLimit)
+	// +optional
+	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
 
 	// Attaches node metadata to discovered targets.
 	// Requires Prometheus v2.35.0 and above.

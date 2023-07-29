@@ -36,8 +36,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/part-of":   "kube-prometheus"
 					"app.kubernetes.io/version":   "0.10.0"
 				}
-				name:      "prometheus-adapter"
-				namespace: "monitoring"
+				name: "prometheus-adapter"
 			}
 			rules: [{
 				apiGroups: [
@@ -57,8 +56,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/part-of":   "kube-prometheus"
 					"app.kubernetes.io/version":   "0.10.0"
 				}
-				name:      "resource-metrics-server-resources"
-				namespace: "monitoring"
+				name: "resource-metrics-server-resources"
 			}
 			rules: [{
 				apiGroups: ["metrics.k8s.io"]
@@ -83,8 +81,7 @@ prometheusAdapter: {
 					"rbac.authorization.k8s.io/aggregate-to-edit":  "true"
 					"rbac.authorization.k8s.io/aggregate-to-view":  "true"
 				}
-				name:      "system:aggregated-metrics-reader"
-				namespace: "monitoring"
+				name: "system:aggregated-metrics-reader"
 			}
 			rules: [{
 				apiGroups: ["metrics.k8s.io"]
@@ -104,8 +101,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/part-of":   "kube-prometheus"
 					"app.kubernetes.io/version":   "0.10.0"
 				}
-				name:      "prometheus-adapter"
-				namespace: "monitoring"
+				name: "prometheus-adapter"
 			}
 			roleRef: {
 				apiGroup: "rbac.authorization.k8s.io"
@@ -128,8 +124,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/part-of":   "kube-prometheus"
 					"app.kubernetes.io/version":   "0.10.0"
 				}
-				name:      "resource-metrics:system:auth-delegator"
-				namespace: "monitoring"
+				name: "resource-metrics:system:auth-delegator"
 			}
 			roleRef: {
 				apiGroup: "rbac.authorization.k8s.io"

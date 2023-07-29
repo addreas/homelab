@@ -20,7 +20,7 @@ package v1alpha1
 #SealedSecretExpansion: _
 
 // SealingScope is an enum that declares the mobility of a sealed secret by defining
-// in which scopes
+// in which scopes.
 #SealingScope: int // #enumSealingScope
 
 #enumSealingScope:

@@ -4,22 +4,26 @@
 
 package api
 
-// AuthType is a string identifying a supported authentication type
-#AuthType: string // #enumAuthType
+// AuthenticationMode is a string identifying a supported authentication type
+#AuthenticationMode: string // #enumAuthenticationMode
 
-#enumAuthType:
-	#AuthTypeNull
+#enumAuthenticationMode:
+	#AuthenticationModeDisabled |
+	#AuthenticationModeRequired |
+	#AuthenticationModeAlwaysFail
 
-#AuthTypeNull: #AuthType & "null"
+#AuthenticationModeDisabled:   #AuthenticationMode & "disabled"
+#AuthenticationModeRequired:   #AuthenticationMode & "required"
+#AuthenticationModeAlwaysFail: #AuthenticationMode & "test-always-fail"
 
-// Auth specifies the kind of cryptographic authentication required for the traffic to
+// Authentication specifies the kind of cryptographic authentication required for the traffic to
 // be allowed.
-#Auth: {
-	// Type is the required authentication type for the allowed traffic, if any.
+#Authentication: {
+	// Mode is the required authentication mode for the allowed traffic, if any.
 	//
-	// +kubebuilder:validation:Enum=null
+	// +kubebuilder:validation:Enum=disabled;required;test-always-fail
 	// +kubebuilder:validation:Required
-	type: #AuthType @go(Type)
+	mode: #AuthenticationMode @go(Mode)
 }
 
 // Rule is a policy rule which must be applied to all endpoints which match the

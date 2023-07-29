@@ -39,6 +39,14 @@ import (
 	// If a destination IP matches any one CIDR, it will be selected.
 	destinationCIDRs: [...#IPv4CIDR] @go(DestinationCIDRs,[]IPv4CIDR)
 
+	// ExcludedCIDRs is a list of destination CIDRs that will be excluded
+	// from the egress gateway redirection and SNAT logic.
+	// Should be a subset of destinationCIDRs otherwise it will not have any
+	// effect.
+	//
+	// +kubebuilder:validation:Optional
+	excludedCIDRs: [...#IPv4CIDR] @go(ExcludedCIDRs,[]IPv4CIDR)
+
 	// EgressGateway is the gateway node responsible for SNATing traffic.
 	egressGateway?: null | #EgressGateway @go(EgressGateway,*EgressGateway)
 }

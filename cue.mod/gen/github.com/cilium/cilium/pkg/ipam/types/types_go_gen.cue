@@ -47,6 +47,56 @@ import "github.com/cilium/cilium/pkg/cidr"
 // AllocationMap is a map of allocated IPs indexed by IP
 #AllocationMap: {[string]: #AllocationIP}
 
+// IPAMPodCIDR is a pod CIDR
+//
+// +kubebuilder:validation:Format=cidr
+#IPAMPodCIDR: string
+
+// IPAMPoolAllocation describes an allocation of an IPAM pool from the operator to the
+// node. It contains the assigned PodCIDRs allocated from this pool
+#IPAMPoolAllocation: {
+	// Pool is the name of the IPAM pool backing this allocation
+	//
+	// +kubebuilder:validation:MinLength=1
+	pool: string @go(Pool)
+
+	// CIDRs contains a list of pod CIDRs currently allocated from this pool
+	//
+	// +optional
+	cidrs?: [...#IPAMPodCIDR] @go(CIDRs,[]IPAMPodCIDR)
+}
+
+#IPAMPoolRequest: {
+	// Pool is the name of the IPAM pool backing this request
+	//
+	// +kubebuilder:validation:MinLength=1
+	pool: string @go(Pool)
+
+	// Needed indicates how many IPs out of the above Pool this node requests
+	// from the operator. The operator runs a reconciliation loop to ensure each
+	// node always has enough PodCIDRs allocated in each pool to fulfill the
+	// requested number of IPs here.
+	//
+	// +optional
+	needed?: #IPAMPoolDemand @go(Needed)
+}
+
+#IPAMPoolSpec: {
+	// Requested contains a list of IPAM pool requests, i.e. indicates how many
+	// addresses this node requests out of each pool listed here. This field
+	// is owned and written to by cilium-agent and read by the operator.
+	//
+	// +optional
+	requested?: [...#IPAMPoolRequest] @go(Requested,[]IPAMPoolRequest)
+
+	// Allocated contains the list of pooled CIDR assigned to this node. The
+	// operator will add new pod CIDRs to this field, whereas the agent will
+	// remove CIDRs it has released.
+	//
+	// +optional
+	allocated?: [...#IPAMPoolAllocation] @go(Allocated,[]IPAMPoolAllocation)
+}
+
 // IPAMSpec is the IPAM specification of the node
 //
 // This structure is embedded into v2.CiliumNode
@@ -57,6 +107,11 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +optional
 	pool?: #AllocationMap @go(Pool)
+
+	// Pools contains the list of assigned IPAM pools for this node.
+	//
+	// +optional
+	pools?: #IPAMPoolSpec @go(Pools)
 
 	// PodCIDRs is the list of CIDRs available to the node for allocation.
 	// When an IP is used, the IP will be added to Status.IPAM.Used
@@ -153,6 +208,22 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +optional
 	"release-ips"?: {[string]: #IPReleaseStatus} @go(ReleaseIPs,map[string]IPReleaseStatus)
+}
+
+// IPAMPoolRequest is a request from the agent to the operator, indicating how
+// may IPs it requires from a given pool
+#IPAMPoolDemand: {
+	// IPv4Addrs contains the number of requested IPv4 addresses out of a given
+	// pool
+	//
+	// +optional
+	"ipv4-addrs"?: int @go(IPv4Addrs)
+
+	// IPv6Addrs contains the number of requested IPv6 addresses out of a given
+	// pool
+	//
+	// +optional
+	"ipv6-addrs"?: int @go(IPv6Addrs)
 }
 
 #PodCIDRMap: [string]: #PodCIDRMapEntry

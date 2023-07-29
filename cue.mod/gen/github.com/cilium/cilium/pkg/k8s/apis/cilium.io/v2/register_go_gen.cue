@@ -10,19 +10,6 @@ package v2
 // CustomResourceDefinitionVersion is the current version of the resource
 #CustomResourceDefinitionVersion: "v2"
 
-// CustomResourceDefinitionSchemaVersion is semver-conformant version of CRD schema
-// Used to determine if CRD needs to be updated in cluster
-//
-// Maintainers: Run ./Documentation/check-crd-compat-table.sh for each release
-// Developers: Bump patch for each change in the CRD schema.
-#CustomResourceDefinitionSchemaVersion: "1.26.7"
-
-// CustomResourceDefinitionSchemaVersionKey is key to label which holds the CRD schema version
-#CustomResourceDefinitionSchemaVersionKey: "io.cilium.k8s.crd.schema.version"
-
-// CNPSingularName is the singular name of Cilium Network Policy
-#CNPSingularName: "ciliumnetworkpolicy"
-
 // CNPPluralName is the plural name of Cilium Network Policy
 #CNPPluralName: "ciliumnetworkpolicies"
 
@@ -31,9 +18,6 @@ package v2
 
 // CNPName is the full name of Cilium Network Policy
 #CNPName: "ciliumnetworkpolicies.cilium.io"
-
-// CCNPSingularName is the singular name of Cilium Cluster wide Network Policy
-#CCNPSingularName: "ciliumclusterwidenetworkpolicy"
 
 // CCNPPluralName is the plural name of Cilium Cluster wide Network Policy
 #CCNPPluralName: "ciliumclusterwidenetworkpolicies"
@@ -44,9 +28,6 @@ package v2
 // CCNPName is the full name of Cilium Cluster wide Network Policy
 #CCNPName: "ciliumclusterwidenetworkpolicies.cilium.io"
 
-// CEGPSingularName is the singular name of Cilium Egress Gateway Policy
-#CEGPSingularName: "ciliumegressgatewaypolicy"
-
 // CEGPPluralName is the plural name of Cilium Egress Gateway Policy
 #CEGPPluralName: "ciliumegressgatewaypolicies"
 
@@ -55,9 +36,6 @@ package v2
 
 // CEGPName is the full name of Cilium Egress Gateway Policy
 #CEGPName: "ciliumegressgatewaypolicies.cilium.io"
-
-// CESingularName is the singular name of Cilium Endpoint
-#CEPSingularName: "ciliumendpoint"
 
 // CEPluralName is the plural name of Cilium Endpoint
 #CEPPluralName: "ciliumendpoints"
@@ -68,9 +46,6 @@ package v2
 // CEPName is the full name of Cilium Endpoint
 #CEPName: "ciliumendpoints.cilium.io"
 
-// CNSingularName is the singular name of Cilium Node
-#CNSingularName: "ciliumnode"
-
 // CNPluralName is the plural name of Cilium Node
 #CNPluralName: "ciliumnodes"
 
@@ -79,9 +54,6 @@ package v2
 
 // CNName is the full name of Cilium Node
 #CNName: "ciliumnodes.cilium.io"
-
-// CIDSingularName is the singular name of Cilium Identity
-#CIDSingularName: "ciliumidentity"
 
 // CIDPluralName is the plural name of Cilium Identity
 #CIDPluralName: "ciliumidentities"
@@ -92,9 +64,6 @@ package v2
 // CIDName is the full name of Cilium Identity
 #CIDName: "ciliumidentities.cilium.io"
 
-// CLRPSingularName is the singular name of Local Redirect Policy
-#CLRPSingularName: "ciliumlocalredirectpolicy"
-
 // CLRPPluralName is the plural name of Local Redirect Policy
 #CLRPPluralName: "ciliumlocalredirectpolicies"
 
@@ -103,9 +72,6 @@ package v2
 
 // CLRPName is the full name of Local Redirect Policy
 #CLRPName: "ciliumlocalredirectpolicies.cilium.io"
-
-// CEWSingularName is the singular name of Cilium External Workload
-#CEWSingularName: "ciliumexternalworkload"
 
 // CEWPluralName is the plural name of Cilium External Workload
 #CEWPluralName: "ciliumexternalworkloads"
@@ -116,9 +82,6 @@ package v2
 // CEWName is the full name of Cilium External Workload
 #CEWName: "ciliumexternalworkloads.cilium.io"
 
-// CCECSingularName is the singular name of Cilium Clusterwide Envoy Config
-#CCECSingularName: "ciliumclusterwideenvoyconfig"
-
 // CCECPluralName is the plural name of Cilium Clusterwide Envoy Config
 #CCECPluralName: "ciliumclusterwideenvoyconfigs"
 
@@ -127,9 +90,6 @@ package v2
 
 // CCECName is the full name of Cilium Clusterwide Envoy Config
 #CCECName: "ciliumclusterwideenvoyconfigs.cilium.io"
-
-// CECSingularName is the singular name of Cilium Envoy Config
-#CECSingularName: "ciliumenvoyconfig"
 
 // CECPluralName is the plural name of Cilium Envoy Config
 #CECPluralName: "ciliumenvoyconfigs"

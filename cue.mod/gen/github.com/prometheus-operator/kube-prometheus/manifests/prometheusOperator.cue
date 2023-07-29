@@ -12853,6 +12853,11 @@ prometheusOperator: {
 										properties: deny: type: "boolean"
 										type: "object"
 									}
+									bodySizeLimit: {
+										description: "BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer."
+										pattern:     "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+										type:        "string"
+									}
 									configMaps: {
 										description: "ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`. The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus' container."
 										items: type: "string"
@@ -15147,6 +15152,21 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									labelLimit: {
+										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelNameLengthLimit: {
+										description: "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelValueLengthLimit: {
+										description: "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
 									listenLocal: {
 										description: "When true, the Prometheus server listens on the loopback address instead of the Pod IP's address."
 										type:        "boolean"
@@ -16020,6 +16040,11 @@ prometheusOperator: {
 														"""
 										type: "string"
 									}
+									sampleLimit: {
+										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
 									scrapeConfigNamespaceSelector: {
 										description: "Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only."
 										properties: {
@@ -16793,6 +16818,11 @@ prometheusOperator: {
 											}
 										}
 										type: "object"
+									}
+									targetLimit: {
+										description: "TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
 									}
 									tolerations: {
 										description: "Defines the Pods' tolerations if specified."
@@ -19938,6 +19968,11 @@ prometheusOperator: {
 										description: "*Deprecated: use 'spec.image' instead.*"
 										type:        "string"
 									}
+									bodySizeLimit: {
+										description: "BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer."
+										pattern:     "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+										type:        "string"
+									}
 									configMaps: {
 										description: "ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`. The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus' container."
 										items: type: "string"
@@ -22263,6 +22298,21 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									labelLimit: {
+										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelNameLengthLimit: {
+										description: "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
+									labelValueLengthLimit: {
+										description: "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
 									listenLocal: {
 										description: "When true, the Prometheus server listens on the loopback address instead of the Pod IP's address."
 										type:        "boolean"
@@ -23695,6 +23745,11 @@ prometheusOperator: {
 										}
 										type: "object"
 									}
+									sampleLimit: {
+										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
+									}
 									scrapeConfigNamespaceSelector: {
 										description: "Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only."
 										properties: {
@@ -24476,6 +24531,11 @@ prometheusOperator: {
 									tag: {
 										description: "*Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.*"
 										type:        "string"
+									}
+									targetLimit: {
+										description: "TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+										format:      "int64"
+										type:        "integer"
 									}
 									thanos: {
 										description: """
@@ -27010,6 +27070,427 @@ prometheusOperator: {
 											}
 										}
 										type: "object"
+									}
+									consulSDConfigs: {
+										description: "ConsulSDConfigs defines a list of Consul service discovery configurations."
+										items: {
+											description: "ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config"
+											properties: {
+												allow_stale: {
+													description: "Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value."
+													type:        "boolean"
+												}
+												authorization: {
+													description: "Authorization header configuration to authenticate against the Consul Server."
+													properties: {
+														credentials: {
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: {
+															description: """
+																			Defines the authentication type. The value is case-insensitive. 
+																			 "Basic" is not a supported value. 
+																			 Default: "Bearer"
+																			"""
+															type: "string"
+														}
+													}
+													type: "object"
+												}
+												basicAuth: {
+													description: "BasicAuth information to authenticate against the Consul Server. More info: https://prometheus.io/docs/operating/configuration/#endpoints"
+													properties: {
+														password: {
+															description: "The secret in the service monitor namespace that contains the password for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														username: {
+															description: "The secret in the service monitor namespace that contains the username for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												datacenter: {
+													description: "Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter."
+													type:        "string"
+												}
+												enable_http2: {
+													description: "Whether to enable HTTP2. If unset, Prometheus uses its default value."
+													type:        "boolean"
+												}
+												follow_redirects: {
+													description: "Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value."
+													type:        "boolean"
+												}
+												namespace: {
+													description: "Namespaces are only supported in Consul Enterprise."
+													type:        "string"
+												}
+												no_proxy: {
+													description: "Comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers."
+													type:        "string"
+												}
+												node_meta: {
+													additionalProperties: type: "string"
+													description:             "Node metadata key/value pairs to filter nodes for a given service."
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												oauth2: {
+													description: "Optional OAuth 2.0 configuration."
+													properties: {
+														clientId: {
+															description: "The secret or configmap containing the OAuth2 client id"
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														clientSecret: {
+															description: "The secret containing the OAuth2 client secret"
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														endpointParams: {
+															additionalProperties: type: "string"
+															description: "Parameters to append to the token URL"
+															type:        "object"
+														}
+														scopes: {
+															description: "OAuth2 scopes used for the token request"
+															items: type: "string"
+															type: "array"
+														}
+														tokenUrl: {
+															description: "The URL to fetch the token from"
+															minLength:   1
+															type:        "string"
+														}
+													}
+													required: ["clientId", "clientSecret", "tokenUrl"]
+													type: "object"
+												}
+												partition: {
+													description: "Admin Partitions are only supported in Consul Enterprise."
+													type:        "string"
+												}
+												proxy_connect_header: {
+													additionalProperties: {
+														description: "SecretKeySelector selects a key of a Secret."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type: "object"
+													}
+													description:             "Specifies headers to send to proxies during CONNECT requests."
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxy_from_environment: {
+													description: "Use proxy URL indicated by environment variables (HTTP_PROXY, https_proxy, HTTPs_PROXY, https_proxy, and no_proxy) If unset, Prometheus uses its default value."
+													type:        "boolean"
+												}
+												proxy_url: {
+													description: "Optional proxy URL."
+													type:        "string"
+												}
+												refresh_interval: {
+													description: "The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												scheme: {
+													description: "HTTP Scheme default \"http\""
+													enum: ["HTTP", "HTTPS"]
+													type: "string"
+												}
+												server: {
+													description: "A valid string consisting of a hostname or IP followed by an optional port number."
+													minLength:   1
+													type:        "string"
+												}
+												services: {
+													description: "A list of services for which targets are retrieved. If omitted, all services are scraped."
+													items: type: "string"
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
+												tag_separator: {
+													description: "The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value."
+													type:        "string"
+												}
+												tags: {
+													description: "An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list."
+													items: type: "string"
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
+												}
+												tlsConfig: {
+													description: "TLS Config"
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												tokenRef: {
+													description: "Consul ACL TokenRef, if not provided it will use the ACL from the local Consul Agent."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type: "object"
+												}
+											}
+											required: ["server"]
+											type: "object"
+										}
+										type: "array"
 									}
 									fileSDConfigs: {
 										description: "FileSDConfigs defines a list of file service discovery configurations."
