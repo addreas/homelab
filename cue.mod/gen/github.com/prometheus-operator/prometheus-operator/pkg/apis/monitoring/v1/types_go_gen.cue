@@ -70,7 +70,7 @@ import (
 
 	// Resource of the referent.
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:Enum=prometheusrules;servicemonitors;podmonitors;probes
+	// +kubebuilder:validation:Enum=prometheusrules;servicemonitors;podmonitors;probes;scrapeconfigs
 	resource: string @go(Resource)
 
 	// Namespace of the referent.

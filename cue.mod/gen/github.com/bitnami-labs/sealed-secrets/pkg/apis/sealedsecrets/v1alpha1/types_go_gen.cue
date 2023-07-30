@@ -9,13 +9,13 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 )
 
-// SealedSecretName is the name used in SealedSecret CRD
+// SealedSecretName is the name used in SealedSecret CRD.
 #SealedSecretName: "sealed-secret.bitnami.com"
 
-// SealedSecretPlural is the collection plural used with SealedSecret API
+// SealedSecretPlural is the collection plural used with SealedSecret API.
 #SealedSecretPlural: "sealedsecrets"
 
-// Annotation namespace prefix
+// Annotation namespace prefix.
 _#annoNs: "sealedsecrets.bitnami.com/"
 
 // SealedSecretClusterWideAnnotation is the name for the annotation for
@@ -27,15 +27,19 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 #SealedSecretNamespaceWideAnnotation: "sealedsecrets.bitnami.com/namespace-wide"
 
 // SealedSecretManagedAnnotation is the name for the annotation for
-// flaging the existing secrets be managed by SealedSecret controller.
+// flagging existing secrets to be managed by the Sealed Secrets controller.
 #SealedSecretManagedAnnotation: "sealedsecrets.bitnami.com/managed"
+
+// SealedSecretPatchAnnotation is the name for the annotation for
+// flagging existing secrets to be patched instead of overwritten by the Sealed Secrets controller.
+#SealedSecretPatchAnnotation: "sealedsecrets.bitnami.com/patch"
 
 // SealedSecretSkipSetOwnerReferencesAnnotation is the name for the annotation for
 // flagging the controller not to set owner reference to secret.
 #SealedSecretSkipSetOwnerReferencesAnnotation: "sealedsecrets.bitnami.com/skip-set-owner-references"
 
 // SecretTemplateSpec describes the structure a Secret should have
-// when created from a template
+// when created from a template.
 #SecretTemplateSpec: {
 	// Standard object's metadata.
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
@@ -48,13 +52,13 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	// +optional
 	type?: apiv1.#SecretType @go(Type) @protobuf(3,bytes,opt,casttype=SecretType)
 
-	// Keys that should be templated using decrypted data
+	// Keys that should be templated using decrypted data.
 	// +optional
 	// +nullable
 	data?: {[string]: string} @go(Data,map[string]string)
 }
 
-// SealedSecretSpec is the specification of a SealedSecret
+// SealedSecretSpec is the specification of a SealedSecret.
 #SealedSecretSpec: {
 	// Template defines the structure of the Secret that will be
 	// created from this sealed secret.
@@ -69,7 +73,7 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 // +kubebuilder:pruning:PreserveUnknownFields
 #SealedSecretEncryptedData: _
 
-// SealedSecretConditionType describes the type of SealedSecret condition
+// SealedSecretConditionType describes the type of SealedSecret condition.
 #SealedSecretConditionType: string // #enumSealedSecretConditionType
 
 #enumSealedSecretConditionType:
@@ -126,12 +130,12 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	status?: null | #SealedSecretStatus @go(Status,*SealedSecretStatus)
 }
 
-// SealedSecretList represents a list of SealedSecrets
+// SealedSecretList represents a list of SealedSecrets.
 #SealedSecretList: {
 	metav1.#TypeMeta
 	metadata: metav1.#ListMeta @go(ListMeta)
 	items: [...#SealedSecret] @go(Items,[]SealedSecret)
 }
 
-// ByCreationTimestamp is used to sort a list of secrets
+// ByCreationTimestamp is used to sort a list of secrets.
 #ByCreationTimestamp: [...apiv1.#Secret]

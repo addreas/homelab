@@ -290,6 +290,10 @@ import (
 // AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts.
 // See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
 #AlertmanagerGlobalConfig: {
+	// Configures global SMTP parameters.
+	// +optional
+	smtp?: null | #GlobalSMTPConfig @go(SMTPConfig,*GlobalSMTPConfig)
+
 	// ResolveTimeout is the default value used by alertmanager if the alert does
 	// not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated.
 	// This has no impact on alerts from Prometheus, as they always include EndsAt.
@@ -356,6 +360,54 @@ import (
 	// `--web.timeout` flag.
 	// +optional
 	timeout?: null | uint32 @go(Timeout,*uint32)
+}
+
+// GlobalSMTPConfig configures global SMTP parameters.
+// See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+#GlobalSMTPConfig: {
+	// The default SMTP From header field.
+	// +optional
+	from?: null | string @go(From,*string)
+
+	// The default SMTP smarthost used for sending emails.
+	// +optional
+	smartHost?: null | #HostPort @go(SmartHost,*HostPort)
+
+	// The default hostname to identify to the SMTP server.
+	// +optional
+	hello?: null | string @go(Hello,*string)
+
+	// SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+	// +optional
+	authUsername?: null | string @go(AuthUsername,*string)
+
+	// SMTP Auth using LOGIN and PLAIN.
+	// +optional
+	authPassword?: null | v1.#SecretKeySelector @go(AuthPassword,*v1.SecretKeySelector)
+
+	// SMTP Auth using PLAIN
+	// +optional
+	authIdentity?: null | string @go(AuthIdentity,*string)
+
+	// SMTP Auth using CRAM-MD5.
+	// +optional
+	authSecret?: null | v1.#SecretKeySelector @go(AuthSecret,*v1.SecretKeySelector)
+
+	// The default SMTP TLS requirement.
+	// Note that Go does not support unencrypted connections to remote SMTP endpoints.
+	// +optional
+	requireTLS?: null | bool @go(RequireTLS,*bool)
+}
+
+// HostPort represents a "host:port" network address.
+#HostPort: {
+	// Defines the host's address, it can be a DNS name or a literal IP address.
+	// +kubebuilder:validation:MinLength=1
+	host: string @go(Host)
+
+	// Defines the host's port, it can be a literal port number or a port name.
+	// +kubebuilder:validation:MinLength=1
+	port: string @go(Port)
 }
 
 // HTTPConfig defines a client HTTP configuration.

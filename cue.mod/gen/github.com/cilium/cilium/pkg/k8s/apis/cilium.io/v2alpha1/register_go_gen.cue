@@ -10,19 +10,6 @@ package v2alpha1
 // CustomResourceDefinitionVersion is the current version of the resource
 #CustomResourceDefinitionVersion: "v2alpha1"
 
-// CustomResourceDefinitionSchemaVersion is semver-conformant version of CRD schema
-// Used to determine if CRD needs to be updated in cluster
-//
-// Maintainers: Run ./Documentation/check-crd-compat-table.sh for each release
-// Developers: Bump patch for each change in the CRD schema.
-#CustomResourceDefinitionSchemaVersion: "1.26.5"
-
-// CustomResourceDefinitionSchemaVersionKey is key to label which holds the CRD schema version
-#CustomResourceDefinitionSchemaVersionKey: "io.cilium.k8s.crd.schema.version"
-
-// CESSingularName is the singular name of Cilium Endpoint Slice
-#CESSingularName: "ciliumendpointslice"
-
 // CESPluralName is the plural name of Cilium Endpoint Slice
 #CESPluralName: "ciliumendpointslices"
 
@@ -32,9 +19,6 @@ package v2alpha1
 // CESName is the full name of Cilium Endpoint Slice
 #CESName: "ciliumendpointslices.cilium.io"
 
-// BGPPSingularName is the singular name of Cilium BGP Peering Policy
-#BGPPSingularName: "ciliumbgppeeringpolicy"
-
 // BGPPPluralName is the plural name of Cilium BGP Peering Policy
 #BGPPPluralName: "ciliumbgppeeringpolicies"
 
@@ -43,9 +27,6 @@ package v2alpha1
 
 // BGPPName is the full name of Cilium BGP Peering Policy
 #BGPPName: "ciliumbgppeeringpolicies.cilium.io"
-
-// PoolSingularName is the singular name of Cilium Load Balancer IP Pool
-#PoolSingularName: "ciliumloadbalancerippool"
 
 // PoolPluralName is the plural name of Cilium Load Balancer IP Pool
 #PoolPluralName: "ciliumloadbalancerippools"
@@ -60,3 +41,25 @@ package v2alpha1
 #CNCPluralName:     "ciliumnodeconfigs"
 #CNCKindDefinition: "CiliumNodeConfig"
 #CNCName:           "ciliumnodeconfigs.cilium.io"
+
+// CiliumCIDRGroup (CCG)
+#CCGPluralName:     "ciliumcidrgroups"
+#CCGKindDefinition: "CiliumCIDRGroup"
+#CCGName:           "ciliumcidrgroups.cilium.io"
+
+// L2AnnouncementSingularName is the singular name ofCilium L2 announcement policy
+#L2AnnouncementSingularName: "ciliuml2announcementpolicy"
+
+// L2AnnouncementPluralName is the plural name of Cilium L2 announcement policy
+#L2AnnouncementPluralName: "ciliuml2announcementpolicies"
+
+// L2AnnouncementKindDefinition is the kind name of Cilium L2 announcement policy
+#L2AnnouncementKindDefinition: "CiliumL2AnnouncementPolicy"
+
+// L2AnnouncementName is the full name of Cilium L2 announcement policy
+#L2AnnouncementName: "ciliuml2announcementpolicies.cilium.io"
+
+// CiliumPodIPPool (CPIP)
+#CPIPPluralName:     "ciliumpodippools"
+#CPIPKindDefinition: "CiliumPodIPPool"
+#CPIPName:           "ciliumpodippools.cilium.io"

@@ -64,7 +64,8 @@ package api
 
 	// ToEntities is a list of special entities to which the endpoint subject
 	// to the rule is allowed to initiate connections. Supported entities are
-	// `world`, `cluster` and `host`
+	// `world`, `cluster`,`host`,`remote-node`,`kube-apiserver`, `init`,
+	// `health`,`unmanaged` and `all`.
 	//
 	// +kubebuilder:validation:Optional
 	toEntities?: #EntitySlice @go(ToEntities)
@@ -160,10 +161,10 @@ package api
 	// +kubebuilder:validation:Optional
 	icmps?: #ICMPRules @go(ICMPs)
 
-	// Auth is the required authentication type for the allowed traffic, if any.
+	// Authentication is the required authentication type for the allowed traffic, if any.
 	//
 	// +kubebuilder:validation:Optional
-	auth?: null | #Auth @go(Auth,*Auth)
+	authentication?: null | #Authentication @go(Authentication,*Authentication)
 }
 
 // EgressDenyRule contains all rule types which can be applied at egress, i.e.

@@ -80,7 +80,7 @@ import "k8s.io/apimachinery/pkg/types"
 	// automatically. Name is primarily intended for creation idempotence and configuration
 	// definition.
 	// Cannot be updated.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
 	// +optional
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 
@@ -106,7 +106,7 @@ import "k8s.io/apimachinery/pkg/types"
 	//
 	// Must be a DNS_LABEL.
 	// Cannot be updated.
-	// More info: http://kubernetes.io/docs/user-guide/namespaces
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces
 	// +optional
 	namespace?: string @go(Namespace) @protobuf(3,bytes,opt)
 
@@ -116,7 +116,7 @@ import "k8s.io/apimachinery/pkg/types"
 	//
 	// Populated by the system.
 	// Read-only.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#uids
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
 	// +optional
 	uid?: types.#UID @go(UID) @protobuf(5,bytes,opt,casttype=k8s.io/kubernetes/pkg/types.UID)
 
@@ -163,14 +163,14 @@ import "k8s.io/apimachinery/pkg/types"
 	// Map of string keys and values that can be used to organize and categorize
 	// (scope and select) objects. May match selectors of replication controllers
 	// and services.
-	// More info: http://kubernetes.io/docs/user-guide/labels
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels
 	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string) @protobuf(11,bytes,rep)
 
 	// Annotations is an unstructured key value map stored with a resource that may be
 	// set by external tools to store and retrieve arbitrary metadata. They are not
 	// queryable and should be preserved when modifying objects.
-	// More info: http://kubernetes.io/docs/user-guide/annotations
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations
 	// +optional
 	annotations?: {[string]: string} @go(Annotations,map[string]string) @protobuf(12,bytes,rep)
 
@@ -209,7 +209,7 @@ import "k8s.io/apimachinery/pkg/types"
 	kind: string @go(Kind) @protobuf(1,bytes,opt)
 
 	// Name of the referent.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
 	name: string @go(Name) @protobuf(3,bytes,opt)
 
 	// If true, this reference points to the managing controller.
@@ -277,6 +277,17 @@ import "k8s.io/apimachinery/pkg/types"
 #LabelSelectorOpExists:       #LabelSelectorOperator & "Exists"
 #LabelSelectorOpDoesNotExist: #LabelSelectorOperator & "DoesNotExist"
 
+#ConditionStatus: string // #enumConditionStatus
+
+#enumConditionStatus:
+	#ConditionTrue |
+	#ConditionFalse |
+	#ConditionUnknown
+
+#ConditionTrue:    #ConditionStatus & "True"
+#ConditionFalse:   #ConditionStatus & "False"
+#ConditionUnknown: #ConditionStatus & "Unknown"
+
 // PartialObjectMetadata is a generic representation of any object with ObjectMeta. It allows clients
 // to get access to a particular ObjectMeta schema without knowing the details of the version.
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -302,17 +313,6 @@ import "k8s.io/apimachinery/pkg/types"
 	// items contains each of the included items.
 	items: [...#PartialObjectMetadata] @go(Items,[]PartialObjectMetadata) @protobuf(2,bytes,rep)
 }
-
-#ConditionStatus: string // #enumConditionStatus
-
-#enumConditionStatus:
-	#ConditionTrue |
-	#ConditionFalse |
-	#ConditionUnknown
-
-#ConditionTrue:    #ConditionStatus & "True"
-#ConditionFalse:   #ConditionStatus & "False"
-#ConditionUnknown: #ConditionStatus & "Unknown"
 
 // Condition contains details for one aspect of the current state of this API Resource.
 // ---

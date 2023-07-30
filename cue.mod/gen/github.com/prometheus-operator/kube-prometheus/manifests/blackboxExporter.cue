@@ -25,8 +25,7 @@ blackboxExporter: {
 				"app.kubernetes.io/part-of":   "kube-prometheus"
 				"app.kubernetes.io/version":   "0.24.0"
 			}
-			name:      "blackbox-exporter"
-			namespace: "monitoring"
+			name: "blackbox-exporter"
 		}
 		roleRef: {
 			apiGroup: "rbac.authorization.k8s.io"

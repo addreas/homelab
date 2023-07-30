@@ -110,10 +110,10 @@ package api
 	// +kubebuilder:validation:Optional
 	icmps?: #ICMPRules @go(ICMPs)
 
-	// Auth is the required authentication type for the allowed traffic, if any.
+	// Authentication is the required authentication type for the allowed traffic, if any.
 	//
 	// +kubebuilder:validation:Optional
-	auth?: null | #Auth @go(Auth,*Auth)
+	authentication?: null | #Authentication @go(Authentication,*Authentication)
 }
 
 // IngressDenyRule contains all rule types which can be applied at ingress,

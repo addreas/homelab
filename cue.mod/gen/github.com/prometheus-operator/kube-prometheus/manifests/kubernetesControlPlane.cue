@@ -103,7 +103,7 @@ kubernetesControlPlane: {
 				annotations: {
 					description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubestatefulsetreplicasmismatch"
-					summary:     "Deployment has not matched the expected number of replicas."
+					summary:     "StatefulSet has not matched the expected number of replicas."
 				}
 				expr: """
 					(
