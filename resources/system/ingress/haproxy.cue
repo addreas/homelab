@@ -30,10 +30,11 @@ k: HelmRelease: haproxy: spec: {
 
 			// https://gist.github.com/vr/c9e158e298e6e316544c399b2ff3ef22
 			// https://medium.com/thirddev/json-logging-in-haproxy-the-right-way-3636297d2d49
-			"http-log-format": #"'{"server_response_send_time":%Tr,"response_time":%Td,"session_duration":%Tt,"request_termination_state":"%tsc","request_method":"%HM","request_uri":"%[capture.req.uri,json(utf8s)]","request_http_version":"%HV","host":"%[capture.req.hdr(0)]","referer":"%[capture.req.hdr(1),json(utf8s)]","backend_name":"%b","status":%ST,"response_size":%B,"request_size":%U}'"#
+			"http-log-format": #"'{"server_response_send_time":%Tr,"response_time":%Td,"session_duration":%Tt,"request_termination_state":"%tsc","request_method":"%HM","request_uri":"%[capture.req.uri,json(utf8s)]","request_http_version":"%HV","host":"%[capture.req.hdr(0)]","referer":"%[capture.req.hdr(1),json(utf8s)]","x_forward_for":"%[capture.req.hdr(2),json(utf8s)]","backend_name":"%b","status":%ST,"response_size":%B,"request_size":%U}'"#
 			"config-frontend": """
 				http-request capture req.hdr(Host) len 1000
 				http-request capture req.hdr(Referer) len 1000
+				http-request capture req.hrd(X-Forwarded-For) len 50
 				"""
 		}
 		extraArgs: {
