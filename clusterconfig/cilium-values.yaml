@@ -12,13 +12,13 @@ ingressController:
   enabled: true
   loadbalancerMode: shared
 
-# gatewayAPI:
-  # enabled: true
+l7proxy: true
 
-loadBalancer:
-  algorithm: maglev
-  l7:
-    backend: envoy
+envoy:
+  enabled: true
+
+gatewayAPI:
+  enabled: true
 
 externalIPs:
   enabled: true

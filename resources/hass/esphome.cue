@@ -78,4 +78,4 @@ k: Deployment: esphome: spec: template: spec: {
 
 k: Service: esphome: {}
 
-k: Ingress: esphome: _authproxy: true
+// k: Ingress: esphome: _authproxy: true
