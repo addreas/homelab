@@ -2,7 +2,7 @@ package kube
 
 import (
 	"strings"
-	"encoding/yaml"
+	// "encoding/yaml"
 )
 
 k: HelmRepository: "haproxy-ingress": spec: url: "https://haproxy-ingress.github.io/charts"
