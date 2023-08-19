@@ -4,6 +4,8 @@
 
 package net
 
+_#cgoAvailable: true
+
 // An addrinfoErrno represents a getaddrinfo, getnameinfo-specific
 // error number. It's a signed number and a zero value is a non-error
 // by convention.
