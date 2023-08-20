@@ -9,7 +9,6 @@ import (
 // Prefer adding stuff here instead of in the configmap below
 let conf = {
 	logger: default: "info"
-	discovery: {}
 	default_config: {}
 
 	http: {
