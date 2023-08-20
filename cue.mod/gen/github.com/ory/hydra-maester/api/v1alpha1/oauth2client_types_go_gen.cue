@@ -101,6 +101,7 @@ import (
 	// SecretName points to the K8s secret that contains this client's ID and password
 	secretName: string @go(SecretName)
 
+	// SkipConsent skips the consent screen for this client.
 	// +kubebuilder:validation:type=bool
 	// +kubebuilder:default=false
 	skipConsent?: bool @go(SkipConsent)
@@ -120,6 +121,12 @@ import (
 	//
 	// Metadata is abritrary data
 	metadata?: apiextensionsv1.#JSON @go(Metadata)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// JwksUri Define the URL where the JSON Web Key Set should be fetched from when performing the private_key_jwt client authentication method.
+	jwksUri?: string @go(JwksUri)
 }
 
 // +kubebuilder:validation:Enum=client_credentials;authorization_code;implicit;refresh_token

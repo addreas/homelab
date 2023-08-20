@@ -6,7 +6,21 @@ package net
 
 import "time"
 
+// defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
+// See go.dev/issue/31510
 _#defaultTCPKeepAlive: time.#Duration & 15000000000
+
+// For the moment, MultiPath TCP is not used by default
+// See go.dev/issue/56539
+_#defaultMPTCPEnabled: false
+
+// mptcpStatus is a tristate for Multipath TCP, see go.dev/issue/56539
+_#mptcpStatus: uint8
+
+// The value 0 is the system default, linked to defaultMPTCPEnabled
+_#mptcpUseDefault: _#mptcpStatus & 0
+_#mptcpEnabled:    _#mptcpStatus & 1
+_#mptcpDisabled:   _#mptcpStatus & 2
 
 // A Dialer contains options for connecting to an address.
 //
