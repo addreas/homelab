@@ -38,6 +38,11 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "esphome-configs"
 			mountPath: "/static/config"
 		}]
+	}, {
+		name:  "default-route"
+		image: "nixery.dev/iproute2"
+		command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
+		securityContext: capabilities: add: ["NET_ADMIN"]
 	}]
 	dnsPolicy: "None"
 	dnsConfig: {
@@ -78,4 +83,4 @@ k: Deployment: esphome: spec: template: spec: {
 
 k: Service: esphome: {}
 
-// k: Ingress: esphome: _authproxy: true
+k: Ingress: esphome: _authproxy: true
