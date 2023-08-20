@@ -20,14 +20,7 @@ k: Kustomization: "esphome-configs": {
 	}
 }
 
-k: Deployment: esphome: spec: template: metadata: {
-	// annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
-	annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-	// annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-	//  "name": "cilium"
-	//  "default-route": []
-	// }])
-}
+k: Deployment: esphome: spec: template: metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 
 k: Deployment: esphome: spec: template: spec: {
 	initContainers: [util.copyStatic & {
@@ -44,11 +37,6 @@ k: Deployment: esphome: spec: template: spec: {
 		command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
 		securityContext: capabilities: add: ["NET_ADMIN"]
 	}]
-	dnsPolicy: "None"
-	dnsConfig: {
-		nameservers: ["192.168.1.1"]
-		searches: ["localdomain"]
-	}
 	containers: [{
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
 		ports: [{containerPort: 6052}]
