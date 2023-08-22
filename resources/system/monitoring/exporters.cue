@@ -24,6 +24,19 @@ k: HelmRelease: "smartctl-exporter": spec: {
 					action: "replace"
 					sourceLabels: ["__meta_kubernetes_endpoint_node_name"]
 					targetLabel: "node"
+				},
+					for l in ["service", "pod", "job", "endpoint", "container", "namespace"] {
+						action: "labeldrop"
+						regex:  l
+					},
+				]
+			}, {
+				op:   "add"
+				path: "/spec/endpoints/0/metricRelabelings"
+				value: [{
+					action: "drop"
+					sourceLabels: ["serial_number"]
+					regex: "beaf.*"
 				}]
 			}]
 		}]
