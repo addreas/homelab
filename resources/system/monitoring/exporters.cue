@@ -1,7 +1,5 @@
 package kube
 
-// TODO: add rules like these: https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-smartctl-exporter/rules/rules.txt
-
 k: HelmRepository: "prometheus-community": spec: url: "https://prometheus-community.github.io/helm-charts"
 
 k: HelmRelease: "smartctl-exporter": spec: {
@@ -11,7 +9,23 @@ k: HelmRelease: "smartctl-exporter": spec: {
 		sourceRef: name: "prometheus-community"
 	}
 	values: {
+		fullnameOverride: "smartctl-exporter"
 		serviceMonitor: enabled:  true
 		prometheusRules: enabled: true
 	}
+	postRenderers: [{
+		kustomize: patchesJson6902: [{
+			target: kind: "ServiceMonitor"
+			target: name: "smartctl-exporter"
+			patch: [{
+				op:   "add"
+				path: "/spec/endpoints/0/relabelings"
+				value: [{
+					action: "replace"
+					sourceLabels: ["__meta_kubernetes_endpoint_node_name"]
+					targetLabel: "node"
+				}]
+			}]
+		}]
+	}]
 }
