@@ -236,11 +236,14 @@ prometheusAdapter: {
 				maxUnavailable: 1
 			}
 			template: {
-				metadata: labels: {
-					"app.kubernetes.io/component": "metrics-adapter"
-					"app.kubernetes.io/name":      "prometheus-adapter"
-					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "0.11.0"
+				metadata: {
+					annotations: "checksum.config/md5": "3b1ebf7df0232d1675896f67b66373db"
+					labels: {
+						"app.kubernetes.io/component": "metrics-adapter"
+						"app.kubernetes.io/name":      "prometheus-adapter"
+						"app.kubernetes.io/part-of":   "kube-prometheus"
+						"app.kubernetes.io/version":   "0.11.0"
+					}
 				}
 				spec: {
 					automountServiceAccountToken: true

@@ -19,6 +19,26 @@ import (
 // present on the resource if it is True.
 #IncludeUnavailableCondition: "IncludeUnavailable"
 
+// GitVerificationMode specifies the verification mode for a Git repository.
+#GitVerificationMode: string // #enumGitVerificationMode
+
+#enumGitVerificationMode:
+	#ModeGitHEAD |
+	#ModeGitTag |
+	#ModeGitTagAndHEAD
+
+// ModeGitHEAD implies that the HEAD of the Git repository (after it has been
+// checked out to the required commit) should be verified.
+#ModeGitHEAD: #GitVerificationMode & "HEAD"
+
+// ModeGitTag implies that the tag object specified in the checkout configuration
+// should be verified.
+#ModeGitTag: #GitVerificationMode & "Tag"
+
+// ModeGitTagAndHEAD implies that both the tag object and the commit it points
+// to should be verified.
+#ModeGitTagAndHEAD: #GitVerificationMode & "TagAndHEAD"
+
 // GitRepositorySpec specifies the required configuration to produce an
 // Artifact for a Git repository.
 #GitRepositorySpec: {
@@ -36,7 +56,9 @@ import (
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
 
-	// Interval at which to check the GitRepository for updates.
+	// Interval at which the GitRepository URL is checked for updates.
+	// This interval is approximate and may be subject to jitter to ensure
+	// efficient use of resources.
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +required
@@ -58,6 +80,11 @@ import (
 	// signature(s).
 	// +optional
 	verify?: null | #GitRepositoryVerification @go(Verification,*GitRepositoryVerification)
+
+	// ProxySecretRef specifies the Secret containing the proxy configuration
+	// to use while communicating with the Git server.
+	// +optional
+	proxySecretRef?: null | meta.#LocalObjectReference @go(ProxySecretRef,*meta.LocalObjectReference)
 
 	// Ignore overrides the set of excluded patterns in the .sourceignore format
 	// (which is the same as .gitignore). If not provided, a default will be used,
@@ -132,9 +159,15 @@ import (
 // GitRepositoryVerification specifies the Git commit signature verification
 // strategy.
 #GitRepositoryVerification: {
-	// Mode specifies what Git object should be verified, currently ('head').
-	// +kubebuilder:validation:Enum=head
-	mode: string @go(Mode)
+	// Mode specifies which Git object(s) should be verified.
+	//
+	// The variants "head" and "HEAD" both imply the same thing, i.e. verify
+	// the commit that the HEAD of the Git repository points to. The variant
+	// "head" solely exists to ensure backwards compatibility.
+	// +kubebuilder:validation:Enum=head;HEAD;Tag;TagAndHEAD
+	// +optional
+	// +kubebuilder:default:=HEAD
+	mode?: #GitVerificationMode @go(Mode)
 
 	// SecretRef specifies the Secret containing the public keys of trusted Git
 	// authors.
@@ -176,6 +209,11 @@ import (
 	// produce the current Artifact.
 	// +optional
 	observedInclude?: [...#GitRepositoryInclude] @go(ObservedInclude,[]GitRepositoryInclude)
+
+	// SourceVerificationMode is the last used verification mode indicating
+	// which Git object(s) have been verified.
+	// +optional
+	sourceVerificationMode?: null | #GitVerificationMode @go(SourceVerificationMode,*GitVerificationMode)
 
 	meta.#ReconcileRequestStatus
 }

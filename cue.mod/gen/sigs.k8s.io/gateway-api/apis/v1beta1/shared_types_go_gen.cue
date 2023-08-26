@@ -152,10 +152,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // BackendRef defines how a Route should forward a request to a Kubernetes
 // resource.
 //
-// Note that when a namespace is specified, a ReferenceGrant object
-// is required in the referent namespace to allow that namespace's
-// owner to accept the reference. See the ReferenceGrant documentation
-// for details.
+// Note that when a namespace different than the local namespace is specified, a
+// ReferenceGrant object is required in the referent namespace to allow that
+// namespace's owner to accept the reference. See the ReferenceGrant
+// documentation for details.
 #BackendRef: {
 	#BackendObjectReference
 

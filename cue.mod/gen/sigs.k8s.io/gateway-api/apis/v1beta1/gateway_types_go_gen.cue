@@ -672,7 +672,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:MaxItems=8
 	supportedKinds: [...#RouteGroupKind] @go(SupportedKinds,[]RouteGroupKind)
 
-	// AttachedRoutes represents the total number of Routes that have been
+	// AttachedRoutes represents the total number of accepted Routes that have been
 	// successfully attached to this Listener.
 	attachedRoutes: int32 @go(AttachedRoutes)
 
