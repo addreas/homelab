@@ -37,10 +37,28 @@ import (
 	// for the HelmRepository.
 	// For HTTP/S basic auth the secret must contain 'username' and 'password'
 	// fields.
-	// For TLS the secret must contain a 'certFile' and 'keyFile', and/or
-	// 'caFile' fields.
+	// Support for TLS auth using the 'certFile' and 'keyFile', and/or 'caFile'
+	// keys is deprecated. Please use `.spec.certSecretRef` instead.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
+
+	// CertSecretRef can be given the name of a Secret containing
+	// either or both of
+	//
+	// - a PEM-encoded client certificate (`tls.crt`) and private
+	// key (`tls.key`);
+	// - a PEM-encoded CA certificate (`ca.crt`)
+	//
+	// and whichever are supplied, will be used for connecting to the
+	// registry. The client cert and key are useful if you are
+	// authenticating with a certificate; the CA cert is useful if
+	// you are using a self-signed server certificate. The Secret must
+	// be of type `Opaque` or `kubernetes.io/tls`.
+	//
+	// It takes precedence over the values specified in the Secret referred
+	// to by `.spec.secretRef`.
+	// +optional
+	certSecretRef?: null | meta.#LocalObjectReference @go(CertSecretRef,*meta.LocalObjectReference)
 
 	// PassCredentials allows the credentials from the SecretRef to be passed
 	// on to a host that does not match the host as defined in URL.
@@ -51,7 +69,9 @@ import (
 	// +optional
 	passCredentials?: bool @go(PassCredentials)
 
-	// Interval at which to check the URL for updates.
+	// Interval at which the HelmRepository URL is checked for updates.
+	// This interval is approximate and may be subject to jitter to ensure
+	// efficient use of resources.
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +required

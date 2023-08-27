@@ -15,7 +15,9 @@ import (
 #MaxConditionMessageLength: 20000
 #EnabledValue:              "enabled"
 #DisabledValue:             "disabled"
-#MergeValue:                "merge"
+#MergeValue:                "Merge"
+#IfNotPresentValue:         "IfNotPresent"
+#IgnoreValue:               "Ignore"
 
 // KustomizationSpec defines the configuration to calculate the desired state
 // from a Source using Kustomize.
@@ -37,6 +39,8 @@ import (
 	decryption?: null | #Decryption @go(Decryption,*Decryption)
 
 	// The interval at which to reconcile the Kustomization.
+	// This interval is approximate and may be subject to jitter to ensure
+	// efficient use of resources.
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +required

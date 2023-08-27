@@ -80,21 +80,27 @@ import (
 	// +optional
 	serviceAccountName?: string @go(ServiceAccountName)
 
-	// CertSecretRef can be given the name of a secret containing
+	// CertSecretRef can be given the name of a Secret containing
 	// either or both of
 	//
-	//  - a PEM-encoded client certificate (`certFile`) and private
-	//  key (`keyFile`);
-	//  - a PEM-encoded CA certificate (`caFile`)
+	// - a PEM-encoded client certificate (`tls.crt`) and private
+	// key (`tls.key`);
+	// - a PEM-encoded CA certificate (`ca.crt`)
 	//
-	//  and whichever are supplied, will be used for connecting to the
-	//  registry. The client cert and key are useful if you are
-	//  authenticating with a certificate; the CA cert is useful if
-	//  you are using a self-signed server certificate.
+	// and whichever are supplied, will be used for connecting to the
+	// registry. The client cert and key are useful if you are
+	// authenticating with a certificate; the CA cert is useful if
+	// you are using a self-signed server certificate. The Secret must
+	// be of type `Opaque` or `kubernetes.io/tls`.
+	//
+	// Note: Support for the `caFile`, `certFile` and `keyFile` keys have
+	// been deprecated.
 	// +optional
 	certSecretRef?: null | meta.#LocalObjectReference @go(CertSecretRef,*meta.LocalObjectReference)
 
-	// The interval at which to check for image updates.
+	// Interval at which the OCIRepository URL is checked for updates.
+	// This interval is approximate and may be subject to jitter to ensure
+	// efficient use of resources.
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +required
