@@ -63,6 +63,7 @@ let baseContainer = {
 		{secretRef: name: "github"},
 		{secretRef: name: "nextauth"},
 		{secretRef: name: "trippler-secrets"},
+		{secretRef: name: "google-oauth"},
 	]
 	env: [{
 		name:  "DATABASE_URL"
