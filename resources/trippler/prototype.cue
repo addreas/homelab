@@ -16,6 +16,38 @@ k: Ingress: prototyp: {
 	}
 }
 
+k: Ingress: svalaappse: {
+	spec: {
+		rules: [{
+			host: "svalaapp.se"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "prototyp"
+					port: name: "http"
+				}
+			}]
+		}]
+	}
+}
+
+k: Ingress: svalaappcom: {
+	spec: {
+		rules: [{
+			host: "svalaapp.com"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "prototyp"
+					port: name: "http"
+				}
+			}]
+		}]
+	}
+}
+
 k: Service: prototyp: {}
 
 let baseContainer = {
