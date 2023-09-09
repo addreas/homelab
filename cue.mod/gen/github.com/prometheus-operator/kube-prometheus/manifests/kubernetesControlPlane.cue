@@ -1861,7 +1861,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
@@ -1940,7 +1940,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
@@ -2026,7 +2026,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"

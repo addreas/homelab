@@ -91,6 +91,14 @@ import (
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
+
+	// Per-scrape limit on the number of targets dropped by relabeling
+	// that will be kept in memory. 0 means no limit.
+	//
+	// It requires Prometheus >= v2.47.0.
+	//
+	// +optional
+	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
 }
 
 // ProbeTargets defines how to discover the probed targets.

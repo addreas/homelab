@@ -347,7 +347,8 @@ import (
 	// Secret to mount to read bearer token for scraping targets. The secret
 	// needs to be in the same namespace as the service monitor and accessible by
 	// the Prometheus Operator.
-	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
+	//+ optional
+	bearerTokenSecret?: null | v1.#SecretKeySelector @go(BearerTokenSecret,*v1.SecretKeySelector)
 
 	// Authorization section for this endpoint
 	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)

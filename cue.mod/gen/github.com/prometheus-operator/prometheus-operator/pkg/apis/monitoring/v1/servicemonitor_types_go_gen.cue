@@ -70,6 +70,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
 
+	// Per-scrape limit on the number of targets dropped by relabeling
+	// that will be kept in memory. 0 means no limit.
+	//
+	// It requires Prometheus >= v2.47.0.
+	//
+	// +optional
+	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
+
 	// Attaches node metadata to discovered targets.
 	// Requires Prometheus v2.37.0 and above.
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)

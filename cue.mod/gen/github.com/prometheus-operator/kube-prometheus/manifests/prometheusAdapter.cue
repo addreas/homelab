@@ -9,7 +9,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name: "v1beta1.metrics.k8s.io"
 		}
@@ -34,7 +34,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/component": "metrics-adapter"
 					"app.kubernetes.io/name":      "prometheus-adapter"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "0.11.0"
+					"app.kubernetes.io/version":   "0.11.1"
 				}
 				name: "prometheus-adapter"
 			}
@@ -54,7 +54,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/component": "metrics-adapter"
 					"app.kubernetes.io/name":      "prometheus-adapter"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "0.11.0"
+					"app.kubernetes.io/version":   "0.11.1"
 				}
 				name: "resource-metrics-server-resources"
 			}
@@ -76,7 +76,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/component":                  "metrics-adapter"
 					"app.kubernetes.io/name":                       "prometheus-adapter"
 					"app.kubernetes.io/part-of":                    "kube-prometheus"
-					"app.kubernetes.io/version":                    "0.11.0"
+					"app.kubernetes.io/version":                    "0.11.1"
 					"rbac.authorization.k8s.io/aggregate-to-admin": "true"
 					"rbac.authorization.k8s.io/aggregate-to-edit":  "true"
 					"rbac.authorization.k8s.io/aggregate-to-view":  "true"
@@ -99,7 +99,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/component": "metrics-adapter"
 					"app.kubernetes.io/name":      "prometheus-adapter"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "0.11.0"
+					"app.kubernetes.io/version":   "0.11.1"
 				}
 				name: "prometheus-adapter"
 			}
@@ -122,7 +122,7 @@ prometheusAdapter: {
 					"app.kubernetes.io/component": "metrics-adapter"
 					"app.kubernetes.io/name":      "prometheus-adapter"
 					"app.kubernetes.io/part-of":   "kube-prometheus"
-					"app.kubernetes.io/version":   "0.11.0"
+					"app.kubernetes.io/version":   "0.11.1"
 				}
 				name: "resource-metrics:system:auth-delegator"
 			}
@@ -205,7 +205,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "adapter-config"
 			namespace: "monitoring"
@@ -219,7 +219,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "prometheus-adapter"
 			namespace: "monitoring"
@@ -242,14 +242,14 @@ prometheusAdapter: {
 						"app.kubernetes.io/component": "metrics-adapter"
 						"app.kubernetes.io/name":      "prometheus-adapter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.11.0"
+						"app.kubernetes.io/version":   "0.11.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--cert-dir=/var/run/serving-cert", "--config=/etc/adapter/config.yaml", "--metrics-relist-interval=1m", "--prometheus-url=http://prometheus-k8s.monitoring.svc:9090/", "--secure-port=6443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA"]
-						image: "registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.0"
+						image: "registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.1"
 						livenessProbe: {
 							failureThreshold: 5
 							httpGet: {
@@ -335,7 +335,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "prometheus-adapter"
 			namespace: "monitoring"
@@ -357,7 +357,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "resource-metrics-auth-reader"
 			namespace: "kube-system"
@@ -381,7 +381,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "prometheus-adapter"
 			namespace: "monitoring"
@@ -408,7 +408,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "prometheus-adapter"
 			namespace: "monitoring"
@@ -422,7 +422,7 @@ prometheusAdapter: {
 				"app.kubernetes.io/component": "metrics-adapter"
 				"app.kubernetes.io/name":      "prometheus-adapter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.11.0"
+				"app.kubernetes.io/version":   "0.11.1"
 			}
 			name:      "prometheus-adapter"
 			namespace: "monitoring"
