@@ -458,6 +458,17 @@ import (
 	// +optional
 	enforcedLabelValueLengthLimit?: null | uint64 @go(EnforcedLabelValueLengthLimit,*uint64)
 
+	// When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets
+	// dropped by relabeling that will be kept in memory. The value overrides
+	// any `spec.keepDroppedTargets` set by
+	// ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is
+	// greater than zero and less than `spec.enforcedKeepDroppedTargets`.
+	//
+	// It requires Prometheus >= v2.47.0.
+	//
+	// +optional
+	enforcedKeepDroppedTargets?: null | uint64 @go(EnforcedKeepDroppedTargets,*uint64)
+
 	// When defined, enforcedBodySizeLimit specifies a global limit on the size
 	// of uncompressed response body that will be accepted by Prometheus.
 	// Targets responding with a body larger than this many bytes will cause
@@ -572,6 +583,14 @@ import (
 	//
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
+
+	// Per-scrape limit on the number of targets dropped by relabeling
+	// that will be kept in memory. 0 means no limit.
+	//
+	// It requires Prometheus >= v2.47.0.
+	//
+	// +optional
+	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
 }
 
 // Prometheus defines a Prometheus deployment.

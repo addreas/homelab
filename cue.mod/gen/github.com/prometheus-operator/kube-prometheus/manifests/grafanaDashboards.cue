@@ -12752,7 +12752,7 @@ grafanaDashboards: {
 						sum(
 						    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -12941,7 +12941,7 @@ grafanaDashboards: {
 						sum(
 						    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -12955,7 +12955,7 @@ grafanaDashboards: {
 						sum(
 						    kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -12969,12 +12969,12 @@ grafanaDashboards: {
 						sum(
 						    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 						/sum(
 						    kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -12988,7 +12988,7 @@ grafanaDashboards: {
 						sum(
 						    kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13002,12 +13002,12 @@ grafanaDashboards: {
 						sum(
 						    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 						/sum(
 						    kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13098,7 +13098,7 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13287,7 +13287,7 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13301,7 +13301,7 @@ grafanaDashboards: {
 						sum(
 						    kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13315,12 +13315,12 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 						/sum(
 						    kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13334,7 +13334,7 @@ grafanaDashboards: {
 						sum(
 						    kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13348,12 +13348,12 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 						/sum(
 						    kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 						) by (pod)
 
 						"""
@@ -13557,7 +13557,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13569,7 +13569,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13581,7 +13581,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13593,7 +13593,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13605,7 +13605,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13617,7 +13617,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "table"
@@ -13706,7 +13706,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -13783,7 +13783,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -13870,7 +13870,7 @@ grafanaDashboards: {
 					expr: """
 						(avg(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -13947,7 +13947,7 @@ grafanaDashboards: {
 					expr: """
 						(avg(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -14034,7 +14034,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -14111,7 +14111,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -14198,7 +14198,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -14275,7 +14275,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -14393,7 +14393,7 @@ grafanaDashboards: {
 			}
 			datasource: "$datasource"
 			hide:       0
-			includeAll: false
+			includeAll: true
 			label:      null
 			multi:      false
 			name:       "type"
@@ -14401,7 +14401,7 @@ grafanaDashboards: {
 			query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload_type)"
 			refresh:        2
 			regex:          ""
-			sort:           1
+			sort:           0
 			tagValuesQuery: ""
 			tags: []
 			tagsQuery: ""
@@ -14420,7 +14420,7 @@ grafanaDashboards: {
 			multi:      false
 			name:       "workload"
 			options: []
-			query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}, workload)"
+			query:          "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}, workload)"
 			refresh:        2
 			regex:          ""
 			sort:           1
@@ -14512,7 +14512,7 @@ grafanaDashboards: {
 						sum(
 						  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14737,7 +14737,7 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}) by (workload, workload_type)"
+					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
 					format:         "table"
 					instant:        true
 					intervalFactor: 2
@@ -14748,7 +14748,7 @@ grafanaDashboards: {
 						sum(
 						  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14762,7 +14762,7 @@ grafanaDashboards: {
 						sum(
 						  kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14776,12 +14776,12 @@ grafanaDashboards: {
 						sum(
 						  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 						/sum(
 						  kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14795,7 +14795,7 @@ grafanaDashboards: {
 						sum(
 						  kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14809,12 +14809,12 @@ grafanaDashboards: {
 						sum(
 						  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 						/sum(
 						  kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="cpu"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -14925,7 +14925,7 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15150,7 +15150,7 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}) by (workload, workload_type)"
+					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
 					format:         "table"
 					instant:        true
 					intervalFactor: 2
@@ -15161,7 +15161,7 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15175,7 +15175,7 @@ grafanaDashboards: {
 						sum(
 						  kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15189,12 +15189,12 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 						/sum(
 						  kube_pod_container_resource_requests{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15208,7 +15208,7 @@ grafanaDashboards: {
 						sum(
 						  kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15222,12 +15222,12 @@ grafanaDashboards: {
 						sum(
 						    container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace", container!="", image!=""}
 						  * on(namespace,pod)
-						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 						/sum(
 						  kube_pod_container_resource_limits{job="kube-state-metrics", cluster="$cluster", namespace="$namespace", resource="memory"}
 						* on(namespace,pod)
-						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}
+						  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 						) by (workload, workload_type)
 
 						"""
@@ -15445,7 +15445,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15457,7 +15457,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15469,7 +15469,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15481,7 +15481,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15493,7 +15493,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15505,7 +15505,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "table"
@@ -15594,7 +15594,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -15671,7 +15671,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -15758,7 +15758,7 @@ grafanaDashboards: {
 					expr: """
 						(avg(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -15835,7 +15835,7 @@ grafanaDashboards: {
 					expr: """
 						(avg(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -15922,7 +15922,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -15999,7 +15999,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -16086,7 +16086,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -16163,7 +16163,7 @@ grafanaDashboards: {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -16279,13 +16279,13 @@ grafanaDashboards: {
 			auto_count: 30
 			auto_min:   "10s"
 			current: {
-				text:  "deployment"
-				value: "deployment"
+				text:  ""
+				value: ""
 			}
 			datasource: "$datasource"
 			definition: "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\"}, workload_type)"
 			hide:       0
-			includeAll: false
+			includeAll: true
 			label:      null
 			multi:      false
 			name:       "type"
@@ -19350,7 +19350,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "time_series"
@@ -19442,7 +19442,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "time_series"
@@ -19674,7 +19674,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19687,7 +19687,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19700,7 +19700,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(avg(irate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19713,7 +19713,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(avg(irate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19726,7 +19726,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_packets_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19739,7 +19739,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_packets_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19752,7 +19752,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19765,7 +19765,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "table"
@@ -19840,7 +19840,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(avg(irate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -19932,7 +19932,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(avg(irate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -20048,7 +20048,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "time_series"
@@ -20138,7 +20138,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 					"""
 				format:         "time_series"
@@ -20238,7 +20238,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_receive_packets_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -20328,7 +20328,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_transmit_packets_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -20436,7 +20436,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -20526,7 +20526,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type="$type"}) by (workload))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
 					format:         "time_series"
@@ -20648,13 +20648,13 @@ grafanaDashboards: {
 			auto_count: 30
 			auto_min:   "10s"
 			current: {
-				text:  "deployment"
-				value: "deployment"
+				text:  ""
+				value: ""
 			}
 			datasource: "$datasource"
 			definition: "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\"}, workload_type)"
 			hide:       0
-			includeAll: false
+			includeAll: true
 			label:      null
 			multi:      false
 			name:       "type"
@@ -29784,7 +29784,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 					"""
 				format:         "time_series"
@@ -29876,7 +29876,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 					"""
 				format:         "time_series"
@@ -29978,7 +29978,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(avg(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30070,7 +30070,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(avg(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30186,7 +30186,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_receive_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 					"""
 				format:         "time_series"
@@ -30276,7 +30276,7 @@ grafanaDashboards: {
 				expr: """
 					sort_desc(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 					* on (namespace,pod)
-					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 					"""
 				format:         "time_series"
@@ -30376,7 +30376,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30466,7 +30466,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30574,7 +30574,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30664,7 +30664,7 @@ grafanaDashboards: {
 					expr: """
 						sort_desc(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster",namespace=~"$namespace"}[$interval:$resolution])
 						* on (namespace,pod)
-						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type="$type"}) by (pod))
+						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace=~"$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
 					format:         "time_series"
@@ -30813,13 +30813,13 @@ grafanaDashboards: {
 			auto_count: 30
 			auto_min:   "10s"
 			current: {
-				text:  "deployment"
-				value: "deployment"
+				text:  ""
+				value: ""
 			}
 			datasource: "$datasource"
 			definition: "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\"}, workload_type)"
 			hide:       0
-			includeAll: false
+			includeAll: true
 			label:      null
 			multi:      false
 			name:       "type"
