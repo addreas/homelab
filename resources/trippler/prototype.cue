@@ -51,7 +51,7 @@ k: Ingress: svalaappcom: {
 k: Service: prototyp: {}
 
 let baseContainer = {
-	image:           "ghcr.io/jonasdahl/prototype:main"
+	image:           "ghcr.io/jonasdahl/svalaapp.com:main"
 	imagePullPolicy: "Always"
 	ports: [{containerPort: 3000, name: "http"}]
 	envFrom: [
