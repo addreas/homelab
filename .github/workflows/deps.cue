@@ -47,15 +47,15 @@ jobs: {
 			{run: "git diff"},
 			{run: "cue vet -c ./resources/..."},
 			{run: """
-				echo "Automatically updated dependencies:" > PR.md
-				echo '````diff' >> PR.md
-				git diff -U0 main tags.cue | sed '/@.*/d' | tail -n +5 >> PR.md
-				echo '````' >> PR.md
+				echo "Automatically updated dependencies:" > .pr-body.md
+				echo '````diff' >> .pr-body.md
+				git diff -U0 main tags.cue | sed '/@.*/d' | tail -n +5 >> .pr-body.md
+				echo '````' >> .pr-body.md
 				"""},
 			createPullRequest & {
 				with: {
 					title:            "Updated dependencies"
-					"body-path":      "PR.md"
+					"body-path":      ".pr-body.md"
 					"commit-message": "Automatically update dependencies/definitions"
 					branch:           "automatically-update-deps"
 				}
