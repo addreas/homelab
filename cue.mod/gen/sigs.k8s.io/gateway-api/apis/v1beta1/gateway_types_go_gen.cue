@@ -46,6 +46,19 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Each listener in a Gateway must have a unique combination of Hostname,
 	// Port, and Protocol.
 	//
+	// Within the HTTP Conformance Profile, the below combinations of port and
+	// protocol are considered Core and MUST be supported:
+	//
+	// 1. Port: 80, Protocol: HTTP
+	// 2. Port: 443, Protocol: HTTPS
+	//
+	// Within the TLS Conformance Profile, the below combinations of port and
+	// protocol are considered Core and MUST be supported:
+	//
+	// 1. Port: 443, Protocol: TLS
+	//
+	// Port and protocol combinations not listed above are considered Extended.
+	//
 	// An implementation MAY group Listeners by Port and then collapse each
 	// group of Listeners into a single Listener if the implementation
 	// determines that the Listeners in the group are "compatible". An
@@ -85,6 +98,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +listMapKey=name
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:MaxItems=64
+	// +kubebuilder:validation:XValidation:message="tls must be specified for protocols ['HTTPS', 'TLS']",rule="self.all(l, l.protocol in ['HTTPS', 'TLS'] ? has(l.tls) : true)"
+	// +kubebuilder:validation:XValidation:message="tls must not be specified for protocols ['HTTP', 'TCP', 'UDP']",rule="self.all(l, l.protocol in ['HTTP', 'TCP', 'UDP'] ? !has(l.tls) : true)"
+	// +kubebuilder:validation:XValidation:message="hostname must not be specified for protocols ['TCP', 'UDP']",rule="self.all(l, l.protocol in ['TCP', 'UDP']  ? (!has(l.hostname) || l.hostname == '') : true)"
+	// +kubebuilder:validation:XValidation:message="Listener name must be unique within the Gateway",rule="self.all(l1, self.exists_one(l2, l1.name == l2.name))"
+	// +kubebuilder:validation:XValidation:message="Combination of port, protocol and hostname must be unique for each listener",rule="self.all(l1, self.exists_one(l2, l1.port == l2.port && l1.protocol == l2.protocol && (has(l1.hostname) && has(l2.hostname) ? l1.hostname == l2.hostname : true)))"
 	listeners: [...#Listener] @go(Listeners,[]Listener)
 
 	// Addresses requested for this Gateway. This is optional and behavior can
@@ -112,7 +130,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Extended
 	//
 	// +optional
+	// <gateway:validateIPAddress>
 	// +kubebuilder:validation:MaxItems=16
+	// +kubebuilder:validation:XValidation:message="IPAddress values must be unique",rule="self.all(a1, a1.type == 'IPAddress' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
+	// +kubebuilder:validation:XValidation:message="Hostname values must be unique",rule="self.all(a1, a1.type == 'Hostname' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
 	addresses?: [...#GatewayAddress] @go(Addresses,[]GatewayAddress)
 }
 
@@ -265,6 +286,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #UDPProtocolType: #ProtocolType & "UDP"
 
 // GatewayTLSConfig describes a TLS configuration.
+//
+// +kubebuilder:validation:XValidation:message="certificateRefs must be specified when TLSModeType is Terminate",rule="self.mode == 'Terminate' ? size(self.certificateRefs) > 0 : true"
 #GatewayTLSConfig: {
 	// Mode defines the TLS behavior for the TLS session initiated by the client.
 	// There are two possible modes:
@@ -402,6 +425,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #RouteNamespaces: {
 	// From indicates where Routes will be selected for this Gateway. Possible
 	// values are:
+	//
 	// * All: Routes in all namespaces may be used by this Gateway.
 	// * Selector: Routes in namespaces selected by the selector may be used by
 	//   this Gateway.
@@ -436,7 +460,29 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // GatewayAddress describes an address that can be bound to a Gateway.
+//
+// +kubebuilder:validation:XValidation:message="Hostname value must only contain valid characters (matching ^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$)",rule="self.type == 'Hostname' ? self.value.matches(r\"\"\"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$\"\"\"): true"
 #GatewayAddress: {
+	// Type of the address.
+	//
+	// +optional
+	// +kubebuilder:default=IPAddress
+	type?: null | #AddressType @go(Type,*AddressType)
+
+	// Value of the address. The validity of the values will depend
+	// on the type and support by the controller.
+	//
+	// Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
+	value: string @go(Value)
+}
+
+// GatewayStatusAddress describes an address that is bound to a Gateway.
+//
+// +kubebuilder:validation:XValidation:message="Hostname value must only contain valid characters (matching ^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$)",rule="self.type == 'Hostname' ? self.value.matches(r\"\"\"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$\"\"\"): true"
+#GatewayStatusAddress: {
 	// Type of the address.
 	//
 	// +optional
@@ -461,8 +507,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// assigns an address from a reserved pool.
 	//
 	// +optional
+	// <gateway:validateIPAddress>
 	// +kubebuilder:validation:MaxItems=16
-	addresses?: [...#GatewayAddress] @go(Addresses,[]GatewayAddress)
+	addresses?: [...#GatewayStatusAddress] @go(Addresses,[]GatewayStatusAddress)
 
 	// Conditions describe the current conditions of the Gateway.
 	//
@@ -516,7 +563,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#GatewayReasonAccepted |
 	#GatewayReasonListenersNotValid |
 	#GatewayReasonPending |
-	#GatewaReasonUnsupportedAddress |
+	#GatewayReasonUnsupportedAddress |
 	#GatewayReasonScheduled |
 	#GatewayReasonNotReconciled |
 	#GatewayReasonReady |
@@ -620,7 +667,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // * The address is already in use.
 // * The type of address is not supported by the implementation.
-#GatewaReasonUnsupportedAddress: #GatewayConditionReason & "UnsupportedAddress"
+#GatewayReasonUnsupportedAddress: #GatewayConditionReason & "UnsupportedAddress"
 
 // Deprecated: use "Accepted" instead.
 #GatewayConditionScheduled: #GatewayConditionType & "Scheduled"
@@ -752,15 +799,17 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // is False.
 #ListenerReasonNoConflicts: #ListenerConditionReason & "NoConflicts"
 
-// This condition indicates that, even though the listener is
-// syntactically and semantically valid, the controller is not able
-// to configure it on the underlying Gateway infrastructure.
+// This condition indicates that the listener is syntactically and
+// semantically valid, and that all features used in the listener's spec are
+// supported.
 //
-// A Listener is specified as a logical requirement, but needs to be
-// configured on a network endpoint (i.e. address and port) by a
-// controller. The controller may be unable to attach the Listener
-// if it specifies an unsupported requirement, or prerequisite
-// resources are not available.
+// In general, a Listener will be marked as Accepted when the supplied
+// configuration will generate at least some data plane configuration.
+//
+// For example, a Listener with an unsupported protocol will never generate
+// any data plane config, and so will have Accepted set to `false.`
+// Conversely, a Listener that does not have any Routes will be able to
+// generate data plane config, and so will have Accepted set to `true`.
 //
 // Possible reasons for this condition to be True are:
 //

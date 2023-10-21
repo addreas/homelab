@@ -185,7 +185,7 @@ blackboxExporter: {
 						}]
 					}, {
 						args: ["--secure-listen-address=:9115", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:19115/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.14.2"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.14.3"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9115
@@ -208,6 +208,7 @@ blackboxExporter: {
 							runAsGroup:             65532
 							runAsNonRoot:           true
 							runAsUser:              65532
+							seccompProfile: type: "RuntimeDefault"
 						}
 					}]
 					nodeSelector: "kubernetes.io/os": "linux"

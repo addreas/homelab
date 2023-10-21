@@ -22,8 +22,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // support ReferenceGrant MUST NOT permit cross-namespace references which have
 // no grant, and MUST respond to the removal of a grant by revoking the access
 // that the grant allowed.
-//
-// Support: Core
 #ReferenceGrant: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)

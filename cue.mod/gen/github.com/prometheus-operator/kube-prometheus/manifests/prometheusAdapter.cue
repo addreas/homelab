@@ -287,6 +287,8 @@ prometheusAdapter: {
 							allowPrivilegeEscalation: false
 							capabilities: drop: ["ALL"]
 							readOnlyRootFilesystem: true
+							runAsNonRoot:           true
+							seccompProfile: type: "RuntimeDefault"
 						}
 						startupProbe: {
 							failureThreshold: 18
