@@ -1796,8 +1796,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -3337,8 +3338,9 @@ grafanaDashboards: {
 			useTags:   false
 		}, {
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -4236,8 +4238,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -18045,8 +18048,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -19124,8 +19128,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -20585,8 +20590,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -24524,8 +24530,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -25414,8 +25421,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -28778,8 +28786,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -29634,8 +29643,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"
@@ -30723,8 +30733,9 @@ grafanaDashboards: {
 		]
 		templating: list: [{
 			current: {
-				text:  "default"
-				value: "default"
+				selected: true
+				text:     "default"
+				value:    "default"
 			}
 			hide:  0
 			label: "Data Source"

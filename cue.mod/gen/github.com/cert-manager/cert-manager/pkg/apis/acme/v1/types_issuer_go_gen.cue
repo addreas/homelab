@@ -39,7 +39,7 @@ import (
 	// chains that has a certificate with this value as its issuer's CN
 	// +optional
 	// +kubebuilder:validation:MaxLength=64
-	preferredChain: string @go(PreferredChain)
+	preferredChain?: string @go(PreferredChain)
 
 	// Base64-encoded bundle of PEM CAs which can be used to validate the certificate
 	// chain presented by the ACME server.

@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -68,6 +68,12 @@ prometheusOperator: {
 			resources: ["ingresses"]
 			verbs: ["get", "list", "watch"]
 		}, {
+			apiGroups: ["storage.k8s.io"]
+			resources: ["storageclasses"]
+			verbs: [
+				"get",
+			]
+		}, {
 			apiGroups: ["authentication.k8s.io"]
 			resources: ["tokenreviews"]
 			verbs: ["create"]
@@ -85,7 +91,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -125,7 +131,7 @@ prometheusOperator: {
 				versions: [{
 					name: "v1alpha1"
 					schema: openAPIV3Schema: {
-						description: "AlertmanagerConfig defines a namespaced AlertmanagerConfig to be aggregated across multiple namespaces configuring one Alertmanager cluster."
+						description: "AlertmanagerConfig configures the Prometheus Alertmanager, specifying how alerts should be grouped, inhibited and notified to external systems."
 						properties: {
 							apiVersion: {
 								description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
@@ -2205,7 +2211,7 @@ prometheusOperator: {
 																type:        "string"
 															}
 															token: {
-																description: "The secret's key that contains the registered application's API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																description: "The secret's key that contains the registered application's API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `token` or `tokenFile` is required."
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2222,6 +2228,10 @@ prometheusOperator: {
 																}
 																required: ["key"]
 																type: "object"
+															}
+															tokenFile: {
+																description: "The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager >= v0.26.0."
+																type:        "string"
 															}
 															url: {
 																description: "A supplementary URL shown alongside the message."
@@ -2232,7 +2242,7 @@ prometheusOperator: {
 																type:        "string"
 															}
 															userKey: {
-																description: "The secret's key that contains the recipient user's user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																description: "The secret's key that contains the recipient user's user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `userKey` or `userKeyFile` is required."
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2249,6 +2259,10 @@ prometheusOperator: {
 																}
 																required: ["key"]
 																type: "object"
+															}
+															userKeyFile: {
+																description: "The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager >= v0.26.0."
+																type:        "string"
 															}
 														}
 														type: "object"
@@ -3133,7 +3147,10 @@ prometheusOperator: {
 																type:        "string"
 															}
 															botToken: {
-																description: "Telegram bot token The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+																description: """
+																				Telegram bot token. It is mutually exclusive with `botTokenFile`. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. 
+																				 Either `botToken` or `botTokenFile` is required.
+																				"""
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3150,6 +3167,13 @@ prometheusOperator: {
 																}
 																required: ["key"]
 																type: "object"
+															}
+															botTokenFile: {
+																description: """
+																				File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required. 
+																				 It requires Alertmanager >= v0.26.0.
+																				"""
+																type: "string"
 															}
 															chatID: {
 																description: "The Telegram chat ID."
@@ -7120,6 +7144,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -7201,7 +7229,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -7227,7 +7255,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -8224,6 +8252,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -8305,7 +8337,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -8331,7 +8363,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -8743,7 +8775,7 @@ prometheusOperator: {
 												description: "The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows."
 												properties: {
 													localhostProfile: {
-														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 														type:        "string"
 													}
 													type: {
@@ -8796,7 +8828,7 @@ prometheusOperator: {
 														type:        "string"
 													}
 													hostProcess: {
-														description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+														description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 														type:        "boolean"
 													}
 													runAsUserName: {
@@ -9209,6 +9241,20 @@ prometheusOperator: {
 																items: type: "string"
 																type: "array"
 															}
+															allocatedResourceStatuses: {
+																additionalProperties: {
+																	description: "When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource that it does not recognizes, then it should ignore that update and let other controllers handle it."
+																	type:        "string"
+																}
+																description: """
+																				allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 ClaimResourceStatus can be in any of following states: - ControllerResizeInProgress: State set when resize controller starts resizing the volume in control-plane. - ControllerResizeFailed: State set when resize has failed in resize controller with a terminal error. - NodeResizePending: State set when resize controller has finished resizing the volume but further resizing of volume is needed on the node. - NodeResizeInProgress: State set when kubelet starts resizing the volume. - NodeResizeFailed: State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed. For example: if expanding a PVC for more capacity - this field can be one of the following states: - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed" When this field is not set, it means that no resize operation is in progress for the given PVC. 
+																				 A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type:                    "object"
+																"x-kubernetes-map-type": "granular"
+															}
 															allocatedResources: {
 																additionalProperties: {
 																	anyOf: [{
@@ -9219,8 +9265,13 @@ prometheusOperator: {
 																	pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																	"x-kubernetes-int-or-string": true
 																}
-																description: "allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
-																type:        "object"
+																description: """
+																				allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 Capacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. 
+																				 A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type: "object"
 															}
 															capacity: {
 																additionalProperties: {
@@ -9271,10 +9322,6 @@ prometheusOperator: {
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
-																type:        "string"
-															}
-															resizeStatus: {
-																description: "resizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 																type:        "string"
 															}
 														}
@@ -10976,6 +11023,14 @@ prometheusOperator: {
 										description: "The label to use to retrieve the job name from."
 										type:        "string"
 									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
 									labelLimit: {
 										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
 										format:      "int64"
@@ -11730,6 +11785,14 @@ prometheusOperator: {
 									jobName: {
 										description: "The job name assigned to scraped metrics by default."
 										type:        "string"
+									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelLimit: {
 										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
@@ -13940,6 +14003,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -14021,7 +14088,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -14047,7 +14114,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -14300,6 +14367,14 @@ prometheusOperator: {
 										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 										type:    "string"
 									}
+									enforcedKeepDroppedTargets: {
+										description: """
+														When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
 									enforcedLabelLimit: {
 										description: """
 														When defined, enforcedLabelLimit specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`. 
@@ -14423,7 +14498,7 @@ prometheusOperator: {
 										type: "boolean"
 									}
 									ignoreNamespaceSelectors: {
-										description: "When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe objec."
+										description: "When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object."
 										type:        "boolean"
 									}
 									image: {
@@ -15173,6 +15248,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -15254,7 +15333,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -15280,7 +15359,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -15507,6 +15586,14 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelLimit: {
 										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
@@ -15762,7 +15849,7 @@ prometheusOperator: {
 													description: """
 																	Authorization section for the URL. 
 																	 It requires Prometheus >= v2.26.0. 
-																	 Cannot be set at the same time as `sigv4`, `basicAuth`, or `oauth2`.
+																	 Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														credentials: {
@@ -15800,10 +15887,35 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												azureAd: {
+													description: """
+																	AzureAD for the URL. 
+																	 It requires Prometheus >= v2.45.0. 
+																	 Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
+																	"""
+													properties: {
+														cloud: {
+															description: "The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'."
+															enum: ["AzureChina", "AzureGovernment", "AzurePublic"]
+															type: "string"
+														}
+														managedIdentity: {
+															description: "ManagedIdentity defines the Azure User-assigned Managed identity."
+															properties: clientId: {
+																description: "The client id"
+																type:        "string"
+															}
+															required: ["clientId"]
+															type: "object"
+														}
+													}
+													required: ["managedIdentity"]
+													type: "object"
+												}
 												basicAuth: {
 													description: """
 																	BasicAuth configuration for the URL. 
-																	 Cannot be set at the same time as `sigv4`, `authorization`, or `oauth2`.
+																	 Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														password: {
@@ -15897,7 +16009,7 @@ prometheusOperator: {
 													description: """
 																	OAuth2 configuration for the URL. 
 																	 It requires Prometheus >= v2.27.0. 
-																	 Cannot be set at the same time as `sigv4`, `authorization`, or `basicAuth`.
+																	 Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
 																	"""
 													properties: {
 														clientId: {
@@ -16054,7 +16166,7 @@ prometheusOperator: {
 													description: """
 																	Sigv4 allows to configures AWS's Signature Verification 4 for the URL. 
 																	 It requires Prometheus >= v2.26.0. 
-																	 Cannot be set at the same time as `authorization`, `basicAuth`, or `oauth2`.
+																	 Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														accessKey: {
@@ -16551,7 +16663,7 @@ prometheusOperator: {
 												description: "The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows."
 												properties: {
 													localhostProfile: {
-														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 														type:        "string"
 													}
 													type: {
@@ -16604,7 +16716,7 @@ prometheusOperator: {
 														type:        "string"
 													}
 													hostProcess: {
-														description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+														description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 														type:        "boolean"
 													}
 													runAsUserName: {
@@ -17098,6 +17210,20 @@ prometheusOperator: {
 																items: type: "string"
 																type: "array"
 															}
+															allocatedResourceStatuses: {
+																additionalProperties: {
+																	description: "When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource that it does not recognizes, then it should ignore that update and let other controllers handle it."
+																	type:        "string"
+																}
+																description: """
+																				allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 ClaimResourceStatus can be in any of following states: - ControllerResizeInProgress: State set when resize controller starts resizing the volume in control-plane. - ControllerResizeFailed: State set when resize has failed in resize controller with a terminal error. - NodeResizePending: State set when resize controller has finished resizing the volume but further resizing of volume is needed on the node. - NodeResizeInProgress: State set when kubelet starts resizing the volume. - NodeResizeFailed: State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed. For example: if expanding a PVC for more capacity - this field can be one of the following states: - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed" When this field is not set, it means that no resize operation is in progress for the given PVC. 
+																				 A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type:                    "object"
+																"x-kubernetes-map-type": "granular"
+															}
 															allocatedResources: {
 																additionalProperties: {
 																	anyOf: [{
@@ -17108,8 +17234,13 @@ prometheusOperator: {
 																	pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																	"x-kubernetes-int-or-string": true
 																}
-																description: "allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
-																type:        "object"
+																description: """
+																				allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 Capacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. 
+																				 A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type: "object"
 															}
 															capacity: {
 																additionalProperties: {
@@ -17160,10 +17291,6 @@ prometheusOperator: {
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
-																type:        "string"
-															}
-															resizeStatus: {
-																description: "resizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 																type:        "string"
 															}
 														}
@@ -21055,6 +21182,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -21136,7 +21267,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -21162,7 +21293,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -21427,6 +21558,14 @@ prometheusOperator: {
 										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 										type:    "string"
 									}
+									enforcedKeepDroppedTargets: {
+										description: """
+														When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
 									enforcedLabelLimit: {
 										description: """
 														When defined, enforcedLabelLimit specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`. 
@@ -21569,7 +21708,7 @@ prometheusOperator: {
 										type: "boolean"
 									}
 									ignoreNamespaceSelectors: {
-										description: "When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe objec."
+										description: "When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object."
 										type:        "boolean"
 									}
 									image: {
@@ -22319,6 +22458,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -22400,7 +22543,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -22426,7 +22569,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -22653,6 +22796,14 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelLimit: {
 										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
@@ -23354,7 +23505,7 @@ prometheusOperator: {
 													description: """
 																	Authorization section for the URL. 
 																	 It requires Prometheus >= v2.26.0. 
-																	 Cannot be set at the same time as `sigv4`, `basicAuth`, or `oauth2`.
+																	 Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														credentials: {
@@ -23392,10 +23543,35 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												azureAd: {
+													description: """
+																	AzureAD for the URL. 
+																	 It requires Prometheus >= v2.45.0. 
+																	 Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
+																	"""
+													properties: {
+														cloud: {
+															description: "The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'."
+															enum: ["AzureChina", "AzureGovernment", "AzurePublic"]
+															type: "string"
+														}
+														managedIdentity: {
+															description: "ManagedIdentity defines the Azure User-assigned Managed identity."
+															properties: clientId: {
+																description: "The client id"
+																type:        "string"
+															}
+															required: ["clientId"]
+															type: "object"
+														}
+													}
+													required: ["managedIdentity"]
+													type: "object"
+												}
 												basicAuth: {
 													description: """
 																	BasicAuth configuration for the URL. 
-																	 Cannot be set at the same time as `sigv4`, `authorization`, or `oauth2`.
+																	 Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														password: {
@@ -23489,7 +23665,7 @@ prometheusOperator: {
 													description: """
 																	OAuth2 configuration for the URL. 
 																	 It requires Prometheus >= v2.27.0. 
-																	 Cannot be set at the same time as `sigv4`, `authorization`, or `basicAuth`.
+																	 Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
 																	"""
 													properties: {
 														clientId: {
@@ -23646,7 +23822,7 @@ prometheusOperator: {
 													description: """
 																	Sigv4 allows to configures AWS's Signature Verification 4 for the URL. 
 																	 It requires Prometheus >= v2.26.0. 
-																	 Cannot be set at the same time as `authorization`, `basicAuth`, or `oauth2`.
+																	 Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
 													properties: {
 														accessKey: {
@@ -24256,7 +24432,7 @@ prometheusOperator: {
 												description: "The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows."
 												properties: {
 													localhostProfile: {
-														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 														type:        "string"
 													}
 													type: {
@@ -24309,7 +24485,7 @@ prometheusOperator: {
 														type:        "string"
 													}
 													hostProcess: {
-														description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+														description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 														type:        "boolean"
 													}
 													runAsUserName: {
@@ -24807,6 +24983,20 @@ prometheusOperator: {
 																items: type: "string"
 																type: "array"
 															}
+															allocatedResourceStatuses: {
+																additionalProperties: {
+																	description: "When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource that it does not recognizes, then it should ignore that update and let other controllers handle it."
+																	type:        "string"
+																}
+																description: """
+																				allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 ClaimResourceStatus can be in any of following states: - ControllerResizeInProgress: State set when resize controller starts resizing the volume in control-plane. - ControllerResizeFailed: State set when resize has failed in resize controller with a terminal error. - NodeResizePending: State set when resize controller has finished resizing the volume but further resizing of volume is needed on the node. - NodeResizeInProgress: State set when kubelet starts resizing the volume. - NodeResizeFailed: State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed. For example: if expanding a PVC for more capacity - this field can be one of the following states: - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed" When this field is not set, it means that no resize operation is in progress for the given PVC. 
+																				 A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type:                    "object"
+																"x-kubernetes-map-type": "granular"
+															}
 															allocatedResources: {
 																additionalProperties: {
 																	anyOf: [{
@@ -24817,8 +25007,13 @@ prometheusOperator: {
 																	pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																	"x-kubernetes-int-or-string": true
 																}
-																description: "allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
-																type:        "object"
+																description: """
+																				allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 Capacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. 
+																				 A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type: "object"
 															}
 															capacity: {
 																additionalProperties: {
@@ -24869,10 +25064,6 @@ prometheusOperator: {
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
-																type:        "string"
-															}
-															resizeStatus: {
-																description: "resizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 																type:        "string"
 															}
 														}
@@ -27879,6 +28070,67 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									ec2SDConfigs: {
+										description: "EC2SDConfigs defines a list of EC2 service discovery configurations."
+										items: {
+											description: "EC2SDConfig allow retrieving scrape targets from AWS EC2 instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. The IAM credentials used must have the ec2:DescribeInstances permission to discover scrape targets See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ec2_sd_config"
+											properties: {
+												accessKey: {
+													description: "AccessKey is the AWS API key."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type: "object"
+												}
+												port: {
+													description: "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+													type:        "integer"
+												}
+												refreshInterval: {
+													description: "RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												region: {
+													description: "The AWS region"
+													type:        "string"
+												}
+												secretKey: {
+													description: "SecretKey is the AWS API secret."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type: "object"
+												}
+											}
+											type: "object"
+										}
+										type: "array"
+									}
 									fileSDConfigs: {
 										description: "FileSDConfigs defines a list of file service discovery configurations."
 										items: {
@@ -28140,6 +28392,14 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									kubernetesSDConfigs: {
 										description: "KubernetesSDConfigs defines a list of Kubernetes service discovery configurations."
@@ -29079,6 +29339,14 @@ prometheusOperator: {
 														 If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the Kubernetes Service.
 														"""
 										type: "string"
+									}
+									keepDroppedTargets: {
+										description: """
+														Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
+														 It requires Prometheus >= v2.47.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelLimit: {
 										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
@@ -30598,6 +30866,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -30679,7 +30951,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -30705,7 +30977,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -31877,6 +32149,10 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												restartPolicy: {
+													description: "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+													type:        "string"
+												}
 												securityContext: {
 													description: "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
 													properties: {
@@ -31958,7 +32234,7 @@ prometheusOperator: {
 															description: "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
 															properties: {
 																localhostProfile: {
-																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+																	description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 																	type:        "string"
 																}
 																type: {
@@ -31984,7 +32260,7 @@ prometheusOperator: {
 																	type:        "string"
 																}
 																hostProcess: {
-																	description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+																	description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 																	type:        "boolean"
 																}
 																runAsUserName: {
@@ -32536,7 +32812,7 @@ prometheusOperator: {
 												description: "The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows."
 												properties: {
 													localhostProfile: {
-														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must only be set if type is \"Localhost\"."
+														description: "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
 														type:        "string"
 													}
 													type: {
@@ -32589,7 +32865,7 @@ prometheusOperator: {
 														type:        "string"
 													}
 													hostProcess: {
-														description: "HostProcess determines if a container should be run as a 'Host Process' container. This field is alpha-level and will only be honored by components that enable the WindowsHostProcessContainers feature flag. Setting this field without the feature flag will result in errors when validating the Pod. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).  In addition, if HostProcess is true then HostNetwork must also be set to true."
+														description: "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
 														type:        "boolean"
 													}
 													runAsUserName: {
@@ -32998,6 +33274,20 @@ prometheusOperator: {
 																items: type: "string"
 																type: "array"
 															}
+															allocatedResourceStatuses: {
+																additionalProperties: {
+																	description: "When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource that it does not recognizes, then it should ignore that update and let other controllers handle it."
+																	type:        "string"
+																}
+																description: """
+																				allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 ClaimResourceStatus can be in any of following states: - ControllerResizeInProgress: State set when resize controller starts resizing the volume in control-plane. - ControllerResizeFailed: State set when resize has failed in resize controller with a terminal error. - NodeResizePending: State set when resize controller has finished resizing the volume but further resizing of volume is needed on the node. - NodeResizeInProgress: State set when kubelet starts resizing the volume. - NodeResizeFailed: State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed. For example: if expanding a PVC for more capacity - this field can be one of the following states: - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed" When this field is not set, it means that no resize operation is in progress for the given PVC. 
+																				 A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type:                    "object"
+																"x-kubernetes-map-type": "granular"
+															}
 															allocatedResources: {
 																additionalProperties: {
 																	anyOf: [{
@@ -33008,8 +33298,13 @@ prometheusOperator: {
 																	pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
 																	"x-kubernetes-int-or-string": true
 																}
-																description: "allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
-																type:        "object"
+																description: """
+																				allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
+																				 Capacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. 
+																				 A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
+																				 This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+																				"""
+																type: "object"
 															}
 															capacity: {
 																additionalProperties: {
@@ -33060,10 +33355,6 @@ prometheusOperator: {
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
-																type:        "string"
-															}
-															resizeStatus: {
-																description: "resizeStatus stores status of resize operation. ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty string by resize controller or kubelet. This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature."
 																type:        "string"
 															}
 														}
@@ -34545,7 +34836,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -34564,14 +34855,14 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.67.1"
+						"app.kubernetes.io/version":   "0.68.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.67.1"]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.67.1"
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.68.0"]
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.68.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -34594,7 +34885,7 @@ prometheusOperator: {
 						}
 					}, {
 						args: ["--secure-listen-address=:8443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:8080/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.14.2"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.14.3"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 8443
@@ -34617,6 +34908,7 @@ prometheusOperator: {
 							runAsGroup:             65532
 							runAsNonRoot:           true
 							runAsUser:              65532
+							seccompProfile: type: "RuntimeDefault"
 						}
 					}]
 					nodeSelector: "kubernetes.io/os": "linux"
@@ -34638,7 +34930,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -34768,7 +35060,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -34796,7 +35088,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -34810,7 +35102,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -34827,7 +35119,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.67.1"
+				"app.kubernetes.io/version":   "0.68.0"
 			}
 		}
 	}
