@@ -8,6 +8,9 @@ k8sServicePort: 6443
 bgpControlPlane:
   enabled: true
 
+l2announcements:
+  enabled: true
+
 ingressController:
   enabled: true
   loadbalancerMode: shared

@@ -22,11 +22,11 @@ k: StatefulSet: hass: spec: {
 					name:      "hass-config"
 					mountPath: "/static/config"
 				}]
-			}, {
-				name:  "default-route"
-				image: "nixery.dev/iproute2"
-				command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
-				securityContext: capabilities: add: ["NET_ADMIN"]
+				// }, {
+				// 	name:  "default-route"
+				// 	image: "nixery.dev/iproute2"
+				// 	command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
+				// 	securityContext: capabilities: add: ["NET_ADMIN"]
 			}]
 			containers: [{
 				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"

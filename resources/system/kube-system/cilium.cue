@@ -12,15 +12,9 @@ k: CiliumLoadBalancerIPPool: "main": spec: {
 	disabled:        false
 }
 
-k: CiliumBGPPeeringPolicy: "main": spec: {
-	nodeSelector: matchExpressions: [{key: "kubernetes.io/hostname", operator: "In", values: ["nucle1", "nucle2", "nucle3"]}]
-	virtualRouters: [{
-		localASN: 64512
-		neighbors: [{
-			peerAddress: "192.168.1.1/32"
-			peerASN:     64512
-		}]
-		exportPodCIDR:   false
-		serviceSelector: dummyMatch
-	}]
+k: CiliumL2AnnouncementPolicy: "main": spec: {
+	nodeSelector:    dummyMatch
+	serviceSelector: dummyMatch
+	externalIPs:     true
+	loadBalancerIPs: true
 }

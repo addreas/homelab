@@ -168,10 +168,11 @@ _kubernetesAPIs: {
 	}
 
 	"cilium.io/v2alpha1": {
-		CiliumEgressNATPolicy:    cilium_v2alpha1.#CiliumEgressNATPolicy
-		CiliumBGPPeeringPolicy:   cilium_v2alpha1.#CiliumBGPPeeringPolicy
-		CiliumLoadBalancerIPPool: cilium_v2alpha1.#CiliumLoadBalancerIPPool
-		CiliumNodeConfig:         cilium_v2alpha1.#CiliumNodeConfig
+		CiliumBGPPeeringPolicy:     cilium_v2alpha1.#CiliumBGPPeeringPolicy
+		CiliumEgressNATPolicy:      cilium_v2alpha1.#CiliumEgressNATPolicy
+		CiliumL2AnnouncementPolicy: cilium_v2alpha1.#CiliumL2AnnouncementPolicy
+		CiliumLoadBalancerIPPool:   cilium_v2alpha1.#CiliumLoadBalancerIPPool
+		CiliumNodeConfig:           cilium_v2alpha1.#CiliumNodeConfig
 	}
 
 	"hydra.ory.sh/v1alpha1": OAuth2Client: hydra_v1alpha1.#OAuth2Client

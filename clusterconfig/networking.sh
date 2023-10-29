@@ -6,7 +6,7 @@ helm repo update
 #    --namespace kube-system \
 #    -f cilium-values.yaml
 
-helm upgrade cilium cilium/cilium --version 1.13.1 --namespace kube-system -f cilium-values.yaml
+helm upgrade cilium cilium/cilium --version 1.14.3 --namespace kube-system -f cilium-values.yaml
 
 kubectl apply -f multus.yaml
 

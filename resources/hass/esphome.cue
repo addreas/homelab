@@ -31,11 +31,11 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "esphome-configs"
 			mountPath: "/static/config"
 		}]
-	}, {
-		name:  "default-route"
-		image: "nixery.dev/iproute2"
-		command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
-		securityContext: capabilities: add: ["NET_ADMIN"]
+		// }, {
+		// 	name:  "default-route"
+		// 	image: "nixery.dev/iproute2"
+		// 	command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
+		// 	securityContext: capabilities: add: ["NET_ADMIN"]
 	}]
 	containers: [{
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"

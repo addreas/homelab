@@ -33,7 +33,7 @@ k: HelmRelease: longhorn: spec: {
 			}
 		}
 
-		defaultSettings: backupTarget: "nfs://sergio.localdomain:/export/longhorn-backup"
+		defaultSettings: backupTarget: "nfs://nucles.localdomain:/export/longhorn-backup"
 	}
 	postRenderers: [{
 		kustomize: patchesStrategicMerge: [{
