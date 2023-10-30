@@ -15,6 +15,7 @@ k: CiliumLoadBalancerIPPool: "main": spec: {
 k: CiliumL2AnnouncementPolicy: "main": spec: {
 	nodeSelector:    dummyMatch
 	serviceSelector: dummyMatch
-	externalIPs:     false
+	interfaces: ["eno1"]
+	externalIPs:     true
 	loadBalancerIPs: true
 }
