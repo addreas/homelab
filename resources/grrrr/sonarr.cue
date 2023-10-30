@@ -11,6 +11,7 @@ k: StatefulSet: sonarr: {
 					imagePullPolicy: "Always"
 					command: ["sh", "-c"]
 					args: ["""
+						cert-sync /etc/ssl/certs/ca-certificates.crt
 						exec mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
 						"""]
 					ports: [{
