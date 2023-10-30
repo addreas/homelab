@@ -34,7 +34,7 @@ k: Deployment: esphome: spec: template: spec: {
 	}, {
 		name:  "default-route"
 		image: "nixery.dev/iproute2"
-		command: ["ip", "route", "delete", "default", "via", "192.168.1.1"]
+		command: ["ip", "route", "delete", "default", "via", "192.168.0.1"]
 		securityContext: capabilities: add: ["NET_ADMIN"]
 	}]
 	containers: [{
