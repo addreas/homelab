@@ -91,51 +91,6 @@ metadata:
   name: multus
   namespace: kube-system
 ---
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: multus-cni-config
-  namespace: kube-system
-  labels:
-    tier: node
-    app: multus
-data:
-  cni-conf.json: |
-    {
-      "cniVersion": "0.3.1",
-      "name": "multus-cni-network",
-      "type": "multus",
-      "kubeconfig": "/etc/cni/net.d/multus.d/multus.kubeconfig",
-      "delegates": [{
-        "cniVersion": "0.3.1",
-        "name": "cilium",
-        "type": "cilium-cni",
-        "enable-debug": false
-      }]
-    }
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cni-configuration
-  namespace: kube-system
-data:
-  cni-config: |-
-    {
-      "name": "generic-veth",
-      "cniVersion": "0.3.1",
-      "plugins": [
-        {
-          "type": "multus",
-          "kubeconfig": "/etc/cni/net.d/multus.d/multus.kubeconfig",
-          "delegates": []
-        },
-        {
-          "type": "cilium-cni"
-        }
-      ]
-    }
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -167,13 +122,12 @@ spec:
       serviceAccountName: multus
       containers:
       - name: kube-multus
-        image: ghcr.io/k8snetworkplumbingwg/multus-cni:stable
-        command: ["/entrypoint.sh"]
+        image: ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
+        command: ["/thin_entrypoint"]
         args:
-        # - "--multus-conf-file=/tmp/multus-conf/70-multus.conf"
         - "--multus-conf-file=auto"
-        - "--cni-version=0.3.1"
-        - "--restart-crio"
+        - "--multus-autoconfig-dir=/host/etc/cni/net.d"
+        - "--cni-conf-dir=/host/etc/cni/net.d"
         resources:
           requests:
             cpu: "100m"
@@ -188,15 +142,13 @@ spec:
           mountPath: /host/etc/cni/net.d
         - name: cnibin
           mountPath: /host/opt/cni/bin
-        - name: multus-cfg
-          mountPath: /tmp/multus-conf
       initContainers:
         - name: install-multus-binary
-          image: ghcr.io/k8snetworkplumbingwg/multus-cni:stable
-          command:
-            - "cp"
-            - "/usr/src/multus-cni/bin/multus"
-            - "/host/opt/cni/bin/multus"
+          image: ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
+          command: ["/install_multus"]
+          args:
+            - "--type"
+            - "thin"
           resources:
             requests:
               cpu: "10m"
@@ -215,9 +167,3 @@ spec:
         - name: cnibin
           hostPath:
             path: /opt/cni/bin
-        - name: multus-cfg
-          configMap:
-            name: multus-cni-config
-            items:
-            - key: cni-conf.json
-              path: 70-multus.conf
