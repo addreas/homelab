@@ -129,5 +129,10 @@
     32413 # plex
     32414 # plex
   ];
+
+  environment.systemPackages = with pkgs; [
+    sysstat
+    smartmontools
+  ];
 }
 
