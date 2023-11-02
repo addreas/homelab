@@ -4,6 +4,8 @@
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
+  inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.flakefiles.inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, nixpkgs, flakefiles, ... }:
     let

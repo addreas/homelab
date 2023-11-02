@@ -68,6 +68,7 @@
   networking.hostName = "sergio";
   networking.domain = "localdomain";
 
+  networking.useNetworkd = true;
   systemd.network.enable = true;
   systemd.network.networks.lan.name = "eno1";
   # systemd.network.networks.lan.dns = ["192.168.1.1"];
