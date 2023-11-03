@@ -12,7 +12,7 @@ k: HelmRepository: longhorn: {
 
 k: HelmRelease: longhorn: spec: {
 	chart: spec: {
-		version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
+		version: "1.4.2" //strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
