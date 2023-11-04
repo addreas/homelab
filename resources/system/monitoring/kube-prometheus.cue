@@ -26,7 +26,7 @@ k: Prometheus: "k8s": spec: {
 
 	podMetadata: annotations: "kubectl.kubernetes.io/default-container": "prometheus"
 
-	storage: emptyDir: {}
+	storage: emptyDir: medium: "Memory"
 
 	remoteWrite: [{
 		url: "http://victoriametrics.monitoring.svc:8429/api/v1/write"
