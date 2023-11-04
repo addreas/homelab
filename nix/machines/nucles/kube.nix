@@ -24,7 +24,7 @@ in
       clusterName = "nucles";
       apiServer = {
         certSANs = hosts;
-        extraArgs.feature-gates = "MixedProtocolLBService=true";
+        extraArgs.feature-gates = "";
       };
       controllerManager.extraArgs.bind-address = "0.0.0.0";
       scheduler.extraArgs.bind-address = "0.0.0.0";

@@ -175,7 +175,7 @@ in
         in
         if cfg.controlPlane
         then ''
-          until ${pkgs.curl}/bin/curl --insecure https://${cfg.init.clusterConfig.controlPlaneEndpoint}; do
+          until ${pkgs.curl}/bin/curl -sS --insecure https://${cfg.init.clusterConfig.controlPlaneEndpoint}; do
             sleep 1
           done
 
