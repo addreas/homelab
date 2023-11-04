@@ -5,7 +5,6 @@ import "strings"
 k: HelmRepository: kured: spec: url: "https://kubereboot.github.io/charts"
 
 k: HelmRelease: kured: spec: {
-	suspend: true
 	chart: spec: {
 		version: strings.TrimPrefix(githubReleases["kubereboot/charts"], "kured-")
 	}
