@@ -13,7 +13,7 @@ require (
 	github.com/fluxcd/source-controller/api v1.1.2
 	github.com/grafana-operator/grafana-operator/v5 v5.4.1
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
-	github.com/ory/hydra-maester v0.0.30
+	github.com/ory/hydra-maester v0.0.31
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.68.0
 	k8s.io/api v0.28.3
 	k8s.io/apimachinery v0.28.3
