@@ -3,7 +3,8 @@ package kube
 k: StatefulSet: "sergio-plex": spec: template: metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 k: StatefulSet: "sergio-plex": spec: template: spec: {
 	containers: [{
-		image: "plexinc/pms-docker"
+		image:           "plexinc/pms-docker"
+		imagePullPolicy: "Always"
 		command: ["/usr/lib/plexmediaserver/Plex Media Server"]
 		env: [{
 			name:  "PLEX_UID"
