@@ -1,5 +1,6 @@
 package kube
 
+k: StatefulSet: "sergio-plex": spec: template: metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 k: StatefulSet: "sergio-plex": spec: template: spec: {
 	containers: [{
 		image: "plexinc/pms-docker"
@@ -13,39 +14,6 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 		}, {
 			name:  "TZ"
 			value: "Europe/Stockholm"
-			// }, {
-			// 	name:  "ADVERTISE_IP"
-			// 	value: "http://192.168.10.83:32400"
-		}]
-		ports: [{
-			name:          "http"
-			containerPort: 32400
-		}, {
-			name:          "companion"
-			containerPort: 3005
-		}, {
-			name:          "plex-dlna"
-			containerPort: 32469
-		}, {
-			name:          "dlna"
-			containerPort: 1900
-			protocol:      "UDP"
-		}, {
-			name:          "discovery-0"
-			containerPort: 32410
-			protocol:      "UDP"
-		}, {
-			name:          "discovery-2"
-			containerPort: 32412
-			protocol:      "UDP"
-		}, {
-			name:          "discovery-3"
-			containerPort: 32413
-			protocol:      "UDP"
-		}, {
-			name:          "discovery-4"
-			containerPort: 32414
-			protocol:      "UDP"
 		}]
 		volumeMounts: [{
 			name:      "config"
@@ -72,8 +40,3 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 
 k: PersistentVolumeClaim: "sergio-plex-config": spec: resources: requests: storage: "20Gi"
 k: PersistentVolume: "sergio-plex-config": spec: local: path: "/mnt/plex-config"
-
-// k: Service: "sergio-plex": {
-// 	metadata: annotations: "io.cilium/lb-ipam-ips": "192.168.10.83"
-// 	spec: type: "LoadBalancer"
-// }
