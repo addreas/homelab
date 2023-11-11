@@ -117,6 +117,8 @@ prometheus: {
 			resources: requests: memory: "400Mi"
 			ruleNamespaceSelector: {}
 			ruleSelector: {}
+			scrapeConfigNamespaceSelector: {}
+			scrapeConfigSelector: {}
 			securityContext: {
 				fsGroup:      2000
 				runAsNonRoot: true

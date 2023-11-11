@@ -48,7 +48,14 @@ import (
 	// Version of Thanos to be deployed.
 	version?: string @go(Version)
 
-	// PodMetadata contains Labels and Annotations gets propagated to the thanos ruler pods.
+	// PodMetadata configures labels and annotations which are propagated to the ThanosRuler pods.
+	//
+	// The following items are reserved and cannot be overridden:
+	// * "app.kubernetes.io/name" label, set to "thanos-ruler".
+	// * "app.kubernetes.io/managed-by" label, set to "prometheus-operator".
+	// * "app.kubernetes.io/instance" label, set to the name of the ThanosRuler instance.
+	// * "thanos-ruler" label, set to the name of the ThanosRuler instance.
+	// * "kubectl.kubernetes.io/default-container" annotation, set to "thanos-ruler".
 	podMetadata?: null | #EmbeddedObjectMetadata @go(PodMetadata,*EmbeddedObjectMetadata)
 
 	// Thanos container image URL.
@@ -167,11 +174,11 @@ import (
 	prometheusRulesExcludedFromEnforce?: [...#PrometheusRuleExcludeConfig] @go(PrometheusRulesExcludedFromEnforce,[]PrometheusRuleExcludeConfig)
 
 	// Log level for ThanosRuler to be configured with.
-	//+kubebuilder:validation:Enum="";debug;info;warn;error
+	// +kubebuilder:validation:Enum="";debug;info;warn;error
 	logLevel?: string @go(LogLevel)
 
 	// Log format for ThanosRuler to be configured with.
-	//+kubebuilder:validation:Enum="";logfmt;json
+	// +kubebuilder:validation:Enum="";logfmt;json
 	logFormat?: string @go(LogFormat)
 
 	// Port name used for the pods and governing service.

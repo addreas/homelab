@@ -32,7 +32,15 @@ import (
 // https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 // +k8s:openapi-gen=true
 #AlertmanagerSpec: {
-	// PodMetadata configures Labels and Annotations which are propagated to the alertmanager pods.
+	// PodMetadata configures labels and annotations which are propagated to the Alertmanager pods.
+	//
+	// The following items are reserved and cannot be overridden:
+	// * "alertmanager" label, set to the name of the Alertmanager instance.
+	// * "app.kubernetes.io/instance" label, set to the name of the Alertmanager instance.
+	// * "app.kubernetes.io/managed-by" label, set to "prometheus-operator".
+	// * "app.kubernetes.io/name" label, set to "alertmanager".
+	// * "app.kubernetes.io/version" label, set to the Alertmanager version.
+	// * "kubectl.kubernetes.io/default-container" annotation, set to "alertmanager".
 	podMetadata?: null | #EmbeddedObjectMetadata @go(PodMetadata,*EmbeddedObjectMetadata)
 
 	// Image if specified has precedence over baseImage, tag and sha
@@ -98,11 +106,11 @@ import (
 	configSecret?: string @go(ConfigSecret)
 
 	// Log level for Alertmanager to be configured with.
-	//+kubebuilder:validation:Enum="";debug;info;warn;error
+	// +kubebuilder:validation:Enum="";debug;info;warn;error
 	logLevel?: string @go(LogLevel)
 
 	// Log format for Alertmanager to be configured with.
-	//+kubebuilder:validation:Enum="";logfmt;json
+	// +kubebuilder:validation:Enum="";logfmt;json
 	logFormat?: string @go(LogFormat)
 
 	// Size is the expected size of the alertmanager cluster. The controller will
