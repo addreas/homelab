@@ -23,6 +23,16 @@ import (
 // +k8s:deepcopy-gen=true
 #CommonPrometheusFields: {
 	// PodMetadata configures labels and annotations which are propagated to the Prometheus pods.
+	//
+	// The following items are reserved and cannot be overridden:
+	// * "prometheus" label, set to the name of the Prometheus object.
+	// * "app.kubernetes.io/instance" label, set to the name of the Prometheus object.
+	// * "app.kubernetes.io/managed-by" label, set to "prometheus-operator".
+	// * "app.kubernetes.io/name" label, set to "prometheus".
+	// * "app.kubernetes.io/version" label, set to the Prometheus version.
+	// * "operator.prometheus.io/name" label, set to the name of the Prometheus object.
+	// * "operator.prometheus.io/shard" label, set to the shard number of the Prometheus object.
+	// * "kubectl.kubernetes.io/default-container" annotation, set to "prometheus".
 	podMetadata?: null | #EmbeddedObjectMetadata @go(PodMetadata,*EmbeddedObjectMetadata)
 
 	// ServiceMonitors to be selected for target discovery. An empty label
@@ -176,11 +186,11 @@ import (
 	prometheusExternalLabelName?: null | string @go(PrometheusExternalLabelName,*string)
 
 	// Log level for Prometheus and the config-reloader sidecar.
-	//+kubebuilder:validation:Enum="";debug;info;warn;error
+	// +kubebuilder:validation:Enum="";debug;info;warn;error
 	logLevel?: string @go(LogLevel)
 
 	// Log format for Log level for Prometheus and the config-reloader sidecar.
-	//+kubebuilder:validation:Enum="";logfmt;json
+	// +kubebuilder:validation:Enum="";logfmt;json
 	logFormat?: string @go(LogFormat)
 
 	// Interval between consecutive scrapes.
@@ -280,7 +290,7 @@ import (
 	tolerations?: [...v1.#Toleration] @go(Tolerations,[]v1.Toleration)
 
 	// Defines the pod's topology spread constraints if specified.
-	//+optional
+	// +optional
 	topologySpreadConstraints?: [...v1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]v1.TopologySpreadConstraint)
 
 	// Defines the list of remote write configurations.
@@ -388,7 +398,7 @@ import (
 	// When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor
 	// and Probe objects will be ignored. They will only discover targets
 	// within the namespace of the PodMonitor, ServiceMonitor and Probe
-	// objec.
+	// object.
 	ignoreNamespaceSelectors?: bool @go(IgnoreNamespaceSelectors)
 
 	// When not empty, a label will be added to
@@ -771,7 +781,7 @@ import (
 
 #PrometheusTracingConfig: {
 	// Client used to export the traces. Supported values are `http` or `grpc`.
-	//+kubebuilder:validation:Enum=http;grpc
+	// +kubebuilder:validation:Enum=http;grpc
 	// +optional
 	clientType?: null | string @go(ClientType,*string)
 
@@ -793,7 +803,7 @@ import (
 	headers: {[string]: string} @go(Headers,map[string]string)
 
 	// Compression key for supported compression types. The only supported value is `gzip`.
-	//+kubebuilder:validation:Enum=gzip
+	// +kubebuilder:validation:Enum=gzip
 	// +optional
 	compression?: null | string @go(Compression,*string)
 
@@ -1023,11 +1033,11 @@ import (
 	grpcServerTlsConfig?: null | #TLSConfig @go(GRPCServerTLSConfig,*TLSConfig)
 
 	// Log level for the Thanos sidecar.
-	//+kubebuilder:validation:Enum="";debug;info;warn;error
+	// +kubebuilder:validation:Enum="";debug;info;warn;error
 	logLevel?: string @go(LogLevel)
 
 	// Log format for the Thanos sidecar.
-	//+kubebuilder:validation:Enum="";logfmt;json
+	// +kubebuilder:validation:Enum="";logfmt;json
 	logFormat?: string @go(LogFormat)
 
 	// Defines the start of time range limit served by the Thanos sidecar's StoreAPI.
@@ -1124,13 +1134,13 @@ import (
 	//
 	// It requires Prometheus >= v2.27.0.
 	//
-	// Cannot be set at the same time as `sigv4`, `authorization`, or `basicAuth`.
+	// Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
 	// +optional
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// BasicAuth configuration for the URL.
 	//
-	// Cannot be set at the same time as `sigv4`, `authorization`, or `oauth2`.
+	// Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
 	//
 	// +optional
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
@@ -1144,7 +1154,7 @@ import (
 	//
 	// It requires Prometheus >= v2.26.0.
 	//
-	// Cannot be set at the same time as `sigv4`, `basicAuth`, or `oauth2`.
+	// Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
 	//
 	// +optional
 	authorization?: null | #Authorization @go(Authorization,*Authorization)
@@ -1153,10 +1163,19 @@ import (
 	//
 	// It requires Prometheus >= v2.26.0.
 	//
-	// Cannot be set at the same time as `authorization`, `basicAuth`, or `oauth2`.
+	// Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
 	//
 	// +optional
 	sigv4?: null | #Sigv4 @go(Sigv4,*Sigv4)
+
+	// AzureAD for the URL.
+	//
+	// It requires Prometheus >= v2.45.0.
+	//
+	// Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
+	//
+	// +optional
+	azureAd?: null | #AzureAD @go(AzureAD,*AzureAD)
 
 	// *Warning: this field shouldn't be used because the token value appears
 	// in clear-text. Prefer using `authorization`.*
@@ -1236,6 +1255,27 @@ import (
 
 	// RoleArn is the named AWS profile used to authenticate.
 	roleArn?: string @go(RoleArn)
+}
+
+// AzureAD defines the configuration for remote write's azuread parameters.
+// +k8s:openapi-gen=true
+#AzureAD: {
+	// The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
+	// +kubebuilder:validation:Enum=AzureChina;AzureGovernment;AzurePublic
+	// +optional
+	cloud?: null | string @go(Cloud,*string)
+
+	// ManagedIdentity defines the Azure User-assigned Managed identity.
+	// +required
+	managedIdentity: #ManagedIdentity @go(ManagedIdentity)
+}
+
+// ManagedIdentity defines the Azure User-assigned Managed identity.
+// +k8s:openapi-gen=true
+#ManagedIdentity: {
+	// The client id
+	// +required
+	clientId: string @go(ClientID)
 }
 
 // RemoteReadSpec defines the configuration for Prometheus to read back samples
@@ -1451,24 +1491,33 @@ import (
 
 	// BasicAuth configuration for Alertmanager.
 	//
-	// Cannot be set at the same time as `bearerTokenFile`, or `authorization`.
+	// Cannot be set at the same time as `bearerTokenFile`, `authorization` or `sigv4`.
 	//
 	// +optional
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
 	// File to read bearer token for Alertmanager.
 	//
-	// Cannot be set at the same time as `basicAuth`, or `authorization`.
+	// Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.
 	//
 	// *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
 	bearerTokenFile?: string @go(BearerTokenFile)
 
 	// Authorization section for Alertmanager.
 	//
-	// Cannot be set at the same time as `basicAuth`, or `bearerTokenFile`.
+	// Cannot be set at the same time as `basicAuth`, `bearerTokenFile` or `sigv4`.
 	//
 	// +optional
 	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
+
+	// Sigv4 allows to configures AWS's Signature Verification 4 for the URL.
+	//
+	// It requires Prometheus >= v2.48.0.
+	//
+	// Cannot be set at the same time as `basicAuth`, `bearerTokenFile` or `authorization`.
+	//
+	// +optional
+	sigv4?: null | #Sigv4 @go(Sigv4,*Sigv4)
 
 	// Version of the Alertmanager API that Prometheus uses to send alerts.
 	// It can be "v1" or "v2".

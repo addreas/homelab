@@ -940,7 +940,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{verb=\"read\", cluster=\"$cluster\"}"
+					expr:           "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"read\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{ resource }}"
@@ -1264,7 +1264,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "cluster_quantile:apiserver_request_slo_duration_seconds:histogram_quantile{verb=\"write\", cluster=\"$cluster\"}"
+					expr:           "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"write\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{ resource }}"
@@ -6484,7 +6484,7 @@ grafanaDashboards: {
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -6492,13 +6492,13 @@ grafanaDashboards: {
 					pattern:         "Value #A"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -6506,13 +6506,13 @@ grafanaDashboards: {
 					pattern:         "Value #B"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Reads + Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -6520,7 +6520,7 @@ grafanaDashboards: {
 					pattern:         "Value #C"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "Throughput(Read)"
 					colorMode: null
@@ -9728,7 +9728,7 @@ grafanaDashboards: {
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -9736,13 +9736,13 @@ grafanaDashboards: {
 					pattern:         "Value #A"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -9750,13 +9750,13 @@ grafanaDashboards: {
 					pattern:         "Value #B"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Reads + Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -9764,7 +9764,7 @@ grafanaDashboards: {
 					pattern:         "Value #C"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "Throughput(Read)"
 					colorMode: null
@@ -12420,7 +12420,7 @@ grafanaDashboards: {
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -12428,13 +12428,13 @@ grafanaDashboards: {
 					pattern:         "Value #A"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -12442,13 +12442,13 @@ grafanaDashboards: {
 					pattern:         "Value #B"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "IOPS(Reads + Writes)"
 					colorMode: null
 					colors: []
 					dateFormat:      "YYYY-MM-DD HH:mm:ss"
-					decimals:        -1
+					decimals:        3
 					link:            false
 					linkTargetBlank: false
 					linkTooltip:     "Drill down"
@@ -12456,7 +12456,7 @@ grafanaDashboards: {
 					pattern:         "Value #C"
 					thresholds: []
 					type: "number"
-					unit: "short"
+					unit: "iops"
 				}, {
 					alias:     "Throughput(Read)"
 					colorMode: null
@@ -25643,7 +25643,7 @@ grafanaDashboards: {
 						(
 						  prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"} 
 						-  
-						  ignoring(remote_name, url) group_right(instance) (prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance"} != 0)
+						  ignoring(remote_name, url) group_right(instance) (prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"} != 0)
 						)
 
 						"""
@@ -25725,7 +25725,7 @@ grafanaDashboards: {
 						clamp_min(
 						  rate(prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"}[5m])  
 						- 
-						  ignoring (remote_name, url) group_right(instance) rate(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance"}[5m])
+						  ignoring (remote_name, url) group_right(instance) rate(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m])
 						, 0)
 
 						"""
@@ -25818,9 +25818,9 @@ grafanaDashboards: {
 						rate(
 						  prometheus_remote_storage_samples_in_total{cluster=~"$cluster", instance=~"$instance"}[5m])
 						- 
-						  ignoring(remote_name, url) group_right(instance) (rate(prometheus_remote_storage_succeeded_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]) or rate(prometheus_remote_storage_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]))
+						  ignoring(remote_name, url) group_right(instance) (rate(prometheus_remote_storage_succeeded_samples_total{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m]) or rate(prometheus_remote_storage_samples_total{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m]))
 						- 
-						  (rate(prometheus_remote_storage_dropped_samples_total{cluster=~"$cluster", instance=~"$instance"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~"$cluster", instance=~"$instance"}[5m]))
+						  (rate(prometheus_remote_storage_dropped_samples_total{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m]))
 
 						"""
 					format:         "time_series"
@@ -25909,7 +25909,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_shards{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_shards{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -25984,7 +25984,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_shards_max{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_shards_max{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26059,7 +26059,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_shards_min{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_shards_min{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26134,7 +26134,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_shards_desired{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_shards_desired{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26220,7 +26220,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_shard_capacity{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_shard_capacity{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26295,7 +26295,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\"} or prometheus_remote_storage_samples_pending{cluster=~\"$cluster\", instance=~\"$instance\"}"
+					expr:           "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"} or prometheus_remote_storage_samples_pending{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26542,7 +26542,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					expr:           "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m])"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26617,7 +26617,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_failed_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					expr:           "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m]) or rate(prometheus_remote_storage_samples_failed_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m])"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26692,7 +26692,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_retried_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					expr:           "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m]) or rate(prometheus_remote_storage_samples_retried_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m])"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
@@ -26767,7 +26767,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_remote_storage_enqueue_retries_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])"
+					expr:           "rate(prometheus_remote_storage_enqueue_retries_total{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}[5m])"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
