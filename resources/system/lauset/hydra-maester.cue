@@ -52,7 +52,7 @@ k: RoleBinding: "hydra-maester": {
 
 k: Deployment: "hydra-maester": spec: template: spec: {
 	containers: [{
-		image: "oryd/hydra-maester:\(goModVersions["github.com/ory/hydra-maester"])"
+		image: "oryd/hydra-maester:\(goModVersions["github.com/ory/hydra-maester"])-amd64"
 		command: ["/manager"]
 		args: [
 			"--metrics-addr=127.0.0.1:8080",
