@@ -9,7 +9,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name: "node-exporter"
 		}
@@ -31,7 +31,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name: "node-exporter"
 		}
@@ -54,7 +54,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -72,14 +72,14 @@ nodeExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "node-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "1.6.1"
+						"app.kubernetes.io/version":   "1.7.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
-						image: "quay.io/prometheus/node-exporter:v1.6.1"
+						image: "quay.io/prometheus/node-exporter:v1.7.0"
 						name:  "node-exporter"
 						resources: {
 							limits: {
@@ -184,7 +184,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -577,6 +577,19 @@ nodeExporter: {
 					"""
 				for: "5m"
 				labels: severity: "warning"
+			}, {
+				alert: "NodeBondingDegraded"
+				annotations: {
+					description: "Bonding interface {{ $labels.master }} on {{ $labels.instance }} is in degraded state due to one or more slave failures."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodebondingdegraded"
+					summary:     "Bonding interface is degraded"
+				}
+				expr: """
+					(node_bonding_slaves - node_bonding_active) != 0
+
+					"""
+				for: "5m"
+				labels: severity: "warning"
 			}]
 		}, {
 			name: "node-exporter.rules"
@@ -689,7 +702,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -717,7 +730,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -731,7 +744,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.6.1"
+				"app.kubernetes.io/version":   "1.7.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"

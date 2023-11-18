@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -91,7 +91,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -112,11 +112,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "alertmanagerconfigs.monitoring.coreos.com"
+				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -341,7 +340,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															httpConfig: {
 																description: "HTTP client configuration."
@@ -443,7 +443,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -714,7 +715,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															authSecret: {
 																description: "The secret's key that contains the CRAM-MD5 secret. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
@@ -733,7 +735,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															authUsername: {
 																description: "The username to use for authentication."
@@ -1027,7 +1030,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -1283,7 +1287,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														required: ["webhookUrl"]
@@ -1322,7 +1327,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															apiURL: {
 																description: "The URL to send OpsGenie API requests to."
@@ -1456,7 +1462,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -1894,7 +1901,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -2178,7 +2186,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															sendResolved: {
 																description: "Whether or not to notify about resolved alerts."
@@ -2201,7 +2210,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															severity: {
 																description: "Severity of the incident."
@@ -2330,7 +2340,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -2599,7 +2610,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															tokenFile: {
 																description: "The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager >= v0.26.0."
@@ -2630,7 +2642,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															userKeyFile: {
 																description: "The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager >= v0.26.0."
@@ -2700,7 +2713,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															callbackId: type: "string"
 															channel: {
@@ -2830,7 +2844,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -3195,7 +3210,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -3538,7 +3554,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															botTokenFile: {
 																description: """
@@ -3656,7 +3673,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -3923,7 +3941,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															apiUrl: {
 																description: "The VictorOps API URL."
@@ -4053,7 +4072,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -4415,7 +4435,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -4766,7 +4787,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -5024,7 +5046,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 														}
 														type: "object"
@@ -5054,7 +5077,8 @@ prometheusOperator: {
 																	}
 																}
 																required: ["key"]
-																type: "object"
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
 															}
 															apiURL: {
 																description: "The WeChat API URL."
@@ -5164,7 +5188,8 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["key"]
-																		type: "object"
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
 																	}
 																	followRedirects: {
 																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
@@ -5506,11 +5531,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "alertmanagers.monitoring.coreos.com"
+				name: "alertmanagers.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -11356,11 +11380,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "podmonitors.monitoring.coreos.com"
+				name: "podmonitors.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -12025,11 +12048,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "probes.monitoring.coreos.com"
+				name: "probes.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -12736,11 +12758,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "prometheusagents.monitoring.coreos.com"
+				name: "prometheusagents.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -16035,6 +16056,20 @@ prometheusOperator: {
 									paused: {
 										description: "When a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects."
 										type:        "boolean"
+									}
+									persistentVolumeClaimRetentionPolicy: {
+										description: "The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet. The default behavior is all PVCs are retained. This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26. It requires enabling the StatefulSetAutoDeletePVC feature gate."
+										properties: {
+											whenDeleted: {
+												description: "WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted."
+												type:        "string"
+											}
+											whenScaled: {
+												description: "WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted."
+												type:        "string"
+											}
+										}
+										type: "object"
 									}
 									podMetadata: {
 										description: """
@@ -19572,11 +19607,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "prometheuses.monitoring.coreos.com"
+				name: "prometheuses.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -23313,6 +23347,20 @@ prometheusOperator: {
 									paused: {
 										description: "When a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects."
 										type:        "boolean"
+									}
+									persistentVolumeClaimRetentionPolicy: {
+										description: "The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet. The default behavior is all PVCs are retained. This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26. It requires enabling the StatefulSetAutoDeletePVC feature gate."
+										properties: {
+											whenDeleted: {
+												description: "WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted."
+												type:        "string"
+											}
+											whenScaled: {
+												description: "WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted."
+												type:        "string"
+											}
+										}
+										type: "object"
 									}
 									podMetadata: {
 										description: """
@@ -27836,11 +27884,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "prometheusrules.monitoring.coreos.com"
+				name: "prometheusrules.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -27966,11 +28013,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "scrapeconfigs.monitoring.coreos.com"
+				name: "scrapeconfigs.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -28307,7 +28353,8 @@ prometheusOperator: {
 															}
 														}
 														required: ["key"]
-														type: "object"
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
 													}
 													description:             "Specifies headers to send to proxies during CONNECT requests."
 													type:                    "object"
@@ -28495,7 +28542,8 @@ prometheusOperator: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											required: ["server"]
@@ -28556,7 +28604,8 @@ prometheusOperator: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 												filters: {
 													description: "Filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html"
@@ -28608,7 +28657,8 @@ prometheusOperator: {
 														}
 													}
 													required: ["key"]
-													type: "object"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
 												}
 											}
 											type: "object"
@@ -29267,11 +29317,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "servicemonitors.monitoring.coreos.com"
+				name: "servicemonitors.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -29961,11 +30010,10 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.11.1"
-					"operator.prometheus.io/version":        "0.69.0"
+					"controller-gen.kubebuilder.io/version": "v0.13.0"
+					"operator.prometheus.io/version":        "0.69.1"
 				}
-				creationTimestamp: null
-				name:              "thanosrulers.monitoring.coreos.com"
+				name: "thanosrulers.monitoring.coreos.com"
 			}
 			spec: {
 				group: "monitoring.coreos.com"
@@ -35351,7 +35399,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35370,14 +35418,14 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.69.0"
+						"app.kubernetes.io/version":   "0.69.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.69.0"]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.69.0"
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.69.1"]
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.69.1"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -35445,7 +35493,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -35575,7 +35623,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35603,7 +35651,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35617,7 +35665,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35634,7 +35682,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.0"
+				"app.kubernetes.io/version":   "0.69.1"
 			}
 		}
 	}
