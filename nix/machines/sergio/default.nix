@@ -48,6 +48,7 @@
   };
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
     cd /home/addem/github.com/addreas/homelab
+    git restore .
     ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
   '';
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPost = pkgs.writeShellScript "flake-push" ''
