@@ -131,7 +131,7 @@ alertmanager: {
 					(
 					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[5m])
 					/
-					  rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
 					)
 					> 0.01
 
@@ -149,7 +149,7 @@ alertmanager: {
 					min by (namespace,service, integration) (
 					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
 					/
-					  rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
 					)
 					> 0.01
 
@@ -167,7 +167,7 @@ alertmanager: {
 					min by (namespace,service, integration) (
 					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
 					/
-					  rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
 					)
 					> 0.01
 

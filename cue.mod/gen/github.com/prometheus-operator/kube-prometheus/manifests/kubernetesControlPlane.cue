@@ -1467,7 +1467,7 @@ kubernetesControlPlane: {
 				record: "code_verb:apiserver_request_total:increase1h"
 			}]
 		}, {
-			name: "k8s.rules"
+			name: "k8s.rules.container_cpu_usage_seconds_total"
 			rules: [{
 				expr: """
 					sum by (cluster, namespace, pod, container) (
@@ -1478,7 +1478,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_memory_working_set_bytes"
+			rules: [{
 				expr: """
 					container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
 					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
@@ -1487,7 +1490,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "node_namespace_pod_container:container_memory_working_set_bytes"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_memory_rss"
+			rules: [{
 				expr: """
 					container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
 					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
@@ -1496,7 +1502,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "node_namespace_pod_container:container_memory_rss"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_memory_cache"
+			rules: [{
 				expr: """
 					container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
 					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
@@ -1505,7 +1514,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "node_namespace_pod_container:container_memory_cache"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_memory_swap"
+			rules: [{
 				expr: """
 					container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
 					* on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
@@ -1514,7 +1526,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "node_namespace_pod_container:container_memory_swap"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_resource"
+			rules: [{
 				expr: """
 					kube_pod_container_resource_requests{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
 					group_left() max by (namespace, pod, cluster) (
@@ -1606,7 +1621,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "namespace_cpu:kube_pod_container_resource_limits:sum"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.pod_owner"
+			rules: [{
 				expr: """
 					max by (cluster, namespace, workload, pod) (
 					  label_replace(
