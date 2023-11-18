@@ -29,7 +29,7 @@ githubReleases: {
 	"longhorn/longhorn":          "v1.5.3"
 	"ory/hydra":                  "v2.1.2"
 	"ory/kratos":                 "v1.0.0"
-	"zwave-js/zwave-js-ui":       "v9.4.0"
+	"zwave-js/zwave-js-ui":       "v9.3.2"
 }
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"
