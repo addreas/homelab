@@ -17,7 +17,8 @@
   system.autoUpgrade = {
     enable = true;
     flake = "/home/addem/homelab";
-    # flags = [ "--update-input" "nixpkgs" ];
+    dates = "Sat,Sun";
+    flags = [];
     operation = "boot";
   };
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''

@@ -43,6 +43,7 @@
   system.autoUpgrade = {
     enable = true;
     flake = "/home/addem/github.com/addreas/homelab";
+    dates = "Sat,Sun";
     flags = [ "--update-input" "nixpkgs" ];
     operation = "boot";
   };
