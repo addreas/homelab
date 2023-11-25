@@ -28,11 +28,11 @@
   '';
 
   networking.domain = "localdomain";
+  networking.useNetworkd = true;
 
   systemd.network.enable = true;
   systemd.network.networks.lan.name = "en*";
   systemd.network.networks.lan.DHCP = "yes";
-  networking.dhcpcd.enable = false;
   systemd.network.wait-online.anyInterface = true;
   services.resolved.dnssec = "false"; # dnssec fails for localdomain and breaks stuff
 
