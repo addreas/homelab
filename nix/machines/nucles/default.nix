@@ -17,7 +17,7 @@
   system.autoUpgrade = {
     enable = true;
     flake = "/home/addem/homelab";
-    dates = "Sat,Sun";
+    dates = "Sat,Sun 05:40";
     flags = [];
     operation = "boot";
   };
