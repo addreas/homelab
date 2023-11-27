@@ -384,7 +384,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -404,7 +404,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -454,7 +454,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -500,7 +500,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -521,16 +521,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -971,7 +971,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -991,7 +991,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1041,7 +1041,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -1087,7 +1087,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1108,16 +1108,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -1403,7 +1403,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1423,7 +1423,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1473,7 +1473,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -1519,7 +1519,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1540,16 +1540,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -1842,7 +1842,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1862,7 +1862,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1912,7 +1912,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -1958,7 +1958,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -1979,16 +1979,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -2281,7 +2281,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2301,7 +2301,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2351,7 +2351,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -2397,7 +2397,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2418,16 +2418,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -2785,7 +2785,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2805,7 +2805,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2855,7 +2855,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -2901,7 +2901,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -2922,16 +2922,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -3151,7 +3151,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3171,7 +3171,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3221,7 +3221,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -3267,7 +3267,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3288,16 +3288,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -3614,7 +3614,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3634,7 +3634,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3684,7 +3684,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -3730,7 +3730,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -3751,16 +3751,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -4013,7 +4013,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4033,7 +4033,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4083,7 +4083,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -4129,7 +4129,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4150,16 +4150,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -4376,7 +4376,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4396,7 +4396,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4446,7 +4446,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -4492,7 +4492,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4513,16 +4513,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -4728,7 +4728,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4748,7 +4748,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4798,7 +4798,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -4844,7 +4844,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -4865,16 +4865,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -5129,7 +5129,7 @@ prometheusOperator: {
 																		description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																		properties: {
 																			password: {
-																				description: "The secret in the service monitor namespace that contains the password for authentication."
+																				description: "`password` specifies a key of a Secret containing the password for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -5149,7 +5149,7 @@ prometheusOperator: {
 																				"x-kubernetes-map-type": "atomic"
 																			}
 																			username: {
-																				description: "The secret in the service monitor namespace that contains the username for authentication."
+																				description: "`username` specifies a key of a Secret containing the username for authentication."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -5199,7 +5199,7 @@ prometheusOperator: {
 																		description: "OAuth2 client credentials used to fetch a token for the targets."
 																		properties: {
 																			clientId: {
-																				description: "The secret or configmap containing the OAuth2 client id"
+																				description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																				properties: {
 																					configMap: {
 																						description: "ConfigMap containing data to use for the targets."
@@ -5245,7 +5245,7 @@ prometheusOperator: {
 																				type: "object"
 																			}
 																			clientSecret: {
-																				description: "The secret containing the OAuth2 client secret"
+																				description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																				properties: {
 																					key: {
 																						description: "The key of the secret to select from.  Must be a valid secret key."
@@ -5266,16 +5266,16 @@ prometheusOperator: {
 																			}
 																			endpointParams: {
 																				additionalProperties: type: "string"
-																				description: "Parameters to append to the token URL"
+																				description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																				type:        "object"
 																			}
 																			scopes: {
-																				description: "OAuth2 scopes used for the token request"
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
 																				items: type: "string"
 																				type: "array"
 																			}
 																			tokenUrl: {
-																				description: "The URL to fetch the token from"
+																				description: "`tokenURL` configures the URL to fetch the token from."
 																				minLength:   1
 																				type:        "string"
 																			}
@@ -6286,7 +6286,7 @@ prometheusOperator: {
 																description: "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
 																properties: {
 																	password: {
-																		description: "The secret in the service monitor namespace that contains the password for authentication."
+																		description: "`password` specifies a key of a Secret containing the password for authentication."
 																		properties: {
 																			key: {
 																				description: "The key of the secret to select from.  Must be a valid secret key."
@@ -6306,7 +6306,7 @@ prometheusOperator: {
 																		"x-kubernetes-map-type": "atomic"
 																	}
 																	username: {
-																		description: "The secret in the service monitor namespace that contains the username for authentication."
+																		description: "`username` specifies a key of a Secret containing the username for authentication."
 																		properties: {
 																			key: {
 																				description: "The key of the secret to select from.  Must be a valid secret key."
@@ -6356,7 +6356,7 @@ prometheusOperator: {
 																description: "OAuth2 client credentials used to fetch a token for the targets."
 																properties: {
 																	clientId: {
-																		description: "The secret or configmap containing the OAuth2 client id"
+																		description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 																		properties: {
 																			configMap: {
 																				description: "ConfigMap containing data to use for the targets."
@@ -6402,7 +6402,7 @@ prometheusOperator: {
 																		type: "object"
 																	}
 																	clientSecret: {
-																		description: "The secret containing the OAuth2 client secret"
+																		description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 																		properties: {
 																			key: {
 																				description: "The key of the secret to select from.  Must be a valid secret key."
@@ -6423,16 +6423,16 @@ prometheusOperator: {
 																	}
 																	endpointParams: {
 																		additionalProperties: type: "string"
-																		description: "Parameters to append to the token URL"
+																		description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 																		type:        "object"
 																	}
 																	scopes: {
-																		description: "OAuth2 scopes used for the token request"
+																		description: "`scopes` defines the OAuth2 scopes used for the token request."
 																		items: type: "string"
 																		type: "array"
 																	}
 																	tokenUrl: {
-																		description: "The URL to fetch the token from"
+																		description: "`tokenURL` configures the URL to fetch the token from."
 																		minLength:   1
 																		type:        "string"
 																	}
@@ -11416,16 +11416,23 @@ prometheusOperator: {
 								description: "Specification of desired Pod selection for target discovery by Prometheus."
 								properties: {
 									attachMetadata: {
-										description: "Attaches node metadata to discovered targets. Requires Prometheus v2.35.0 and above."
+										description: """
+														`attachMetadata` defines additional metadata which is added to the discovered targets. 
+														 It requires Prometheus >= v2.37.0.
+														"""
 										properties: node: {
-											description: "When set to true, Prometheus must have permissions to get Nodes."
+											description: "When set to true, Prometheus must have the `get` permission on the `Nodes` objects."
 											type:        "boolean"
 										}
 										type: "object"
 									}
 									jobLabel: {
-										description: "The label to use to retrieve the job name from."
-										type:        "string"
+										description: """
+														The label to use to retrieve the job name from. `jobLabel` selects the label from the associated Kubernetes `Pod` object which will be used as the `job` label for all metrics. 
+														 For example if `jobLabel` is set to `foo` and the Kubernetes `Pod` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics. 
+														 If the value of this field is empty, the `job` label of the metrics defaults to the namespace and name of the PodMonitor object (e.g. `<namespace>/<name>`).
+														"""
+										type: "string"
 									}
 									keepDroppedTargets: {
 										description: """
@@ -11436,22 +11443,31 @@ prometheusOperator: {
 										type:   "integer"
 									}
 									labelLimit: {
-										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on number of labels that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelNameLengthLimit: {
-										description: "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on length of labels name that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelValueLengthLimit: {
-										description: "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on length of labels value that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									namespaceSelector: {
-										description: "Selector to select which namespaces the Endpoints objects are discovered from."
+										description: "Selector to select which namespaces the Kubernetes `Pods` objects are discovered from."
 										properties: {
 											any: {
 												description: "Boolean describing whether all namespaces are selected in contrast to a list restricting them."
@@ -11466,12 +11482,15 @@ prometheusOperator: {
 										type: "object"
 									}
 									podMetricsEndpoints: {
-										description: "A list of endpoints allowed as part of this PodMonitor."
+										description: "List of endpoints part of this PodMonitor."
 										items: {
-											description: "PodMetricsEndpoint defines a scrapeable endpoint of a Kubernetes Pod serving Prometheus metrics."
+											description: "PodMetricsEndpoint defines an endpoint serving Prometheus metrics to be scraped by Prometheus."
 											properties: {
 												authorization: {
-													description: "Authorization section for this endpoint"
+													description: """
+																	`authorization` configures the Authorization header credentials to use when scraping the target. 
+																	 Cannot be set at the same time as `basicAuth`, or `oauth2`.
+																	"""
 													properties: {
 														credentials: {
 															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -11505,10 +11524,13 @@ prometheusOperator: {
 													type: "object"
 												}
 												basicAuth: {
-													description: "BasicAuth allow an endpoint to authenticate over basic authentication. More info: https://prometheus.io/docs/operating/configuration/#endpoint"
+													description: """
+																	`basicAuth` configures the Basic Authentication credentials to use when scraping the target. 
+																	 Cannot be set at the same time as `authorization`, or `oauth2`.
+																	"""
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -11528,7 +11550,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -11551,7 +11573,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												bearerTokenSecret: {
-													description: "Secret to mount to read bearer token for scraping targets. The secret needs to be in the same namespace as the pod monitor and accessible by the Prometheus Operator."
+													description: """
+																	`bearerTokenSecret` specifies a key of a Secret containing the bearer token for scraping targets. The secret needs to be in the same namespace as the PodMonitor object and readable by the Prometheus Operator. 
+																	 Deprecated: use `authorization` instead.
+																	"""
 													properties: {
 														key: {
 															description: "The key of the secret to select from.  Must be a valid secret key."
@@ -11571,32 +11596,39 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												enableHttp2: {
-													description: "Whether to enable HTTP2."
+													description: "`enableHttp2` can be used to disable HTTP2 when scraping the target."
 													type:        "boolean"
 												}
 												filterRunning: {
-													description: "Drop pods that are not running. (Failed, Succeeded). Enabled by default. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase"
-													type:        "boolean"
+													description: """
+																	When true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery. 
+																	 If unset, the filtering is enabled. 
+																	 More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+																	"""
+													type: "boolean"
 												}
 												followRedirects: {
-													description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
+													description: "`followRedirects` defines whether the scrape requests should follow HTTP 3xx redirects."
 													type:        "boolean"
 												}
 												honorLabels: {
-													description: "HonorLabels chooses the metric's labels on collisions with target labels."
+													description: "When true, `honorLabels` preserves the metric's labels when they collide with the target's labels."
 													type:        "boolean"
 												}
 												honorTimestamps: {
-													description: "HonorTimestamps controls whether Prometheus respects the timestamps present in scraped data."
+													description: "`honorTimestamps` controls whether Prometheus preserves the timestamps when exposed by the target."
 													type:        "boolean"
 												}
 												interval: {
-													description: "Interval at which metrics should be scraped If not specified Prometheus' global scrape interval is used."
-													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-													type:        "string"
+													description: """
+																	Interval at which Prometheus scrapes the metrics from the target. 
+																	 If empty, Prometheus uses the global scrape interval.
+																	"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
 												}
 												metricRelabelings: {
-													description: "MetricRelabelConfigs to apply to samples before ingestion."
+													description: "`metricRelabelings` configures the relabeling rules to apply to the samples before ingestion."
 													items: {
 														description: """
 																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
@@ -11659,10 +11691,14 @@ prometheusOperator: {
 													type: "array"
 												}
 												oauth2: {
-													description: "OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer."
+													description: """
+																	`oauth2` configures the OAuth2 settings to use when scraping the target. 
+																	 It requires Prometheus >= 2.27.0. 
+																	 Cannot be set at the same time as `authorization`, or `basicAuth`.
+																	"""
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -11708,7 +11744,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -11729,16 +11765,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -11751,23 +11787,34 @@ prometheusOperator: {
 														items: type: "string"
 														type: "array"
 													}
-													description: "Optional HTTP URL parameters"
+													description: "`params` define optional HTTP URL parameters."
 													type:        "object"
 												}
 												path: {
-													description: "HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. `/metrics`)."
-													type:        "string"
+													description: """
+																	HTTP path from which to scrape for metrics. 
+																	 If empty, Prometheus uses the default value (e.g. `/metrics`).
+																	"""
+													type: "string"
 												}
 												port: {
-													description: "Name of the pod port this endpoint refers to. Mutually exclusive with targetPort."
-													type:        "string"
+													description: """
+																	Name of the Pod port which this endpoint refers to. 
+																	 It takes precedence over `targetPort`.
+																	"""
+													type: "string"
 												}
 												proxyUrl: {
-													description: "ProxyURL eg http://proxyserver:2195 Directs scrapes to proxy through this endpoint."
+													description: "`proxyURL` configures the HTTP Proxy URL (e.g. \"http://proxyserver:2195\") to go through when scraping the target."
 													type:        "string"
 												}
 												relabelings: {
-													description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+													description: """
+																	`relabelings` configures the relabeling rules to apply the target's metadata labels. 
+																	 The Operator automatically adds relabelings for a few standard Kubernetes fields. 
+																	 The original scrape job's name is available via the `__tmp_prometheus_job_name` label. 
+																	 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																	"""
 													items: {
 														description: """
 																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
@@ -11830,14 +11877,21 @@ prometheusOperator: {
 													type: "array"
 												}
 												scheme: {
-													description: "HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`."
+													description: """
+																	HTTP scheme to use for scraping. 
+																	 `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. 
+																	 If empty, Prometheus uses the default value `http`.
+																	"""
 													enum: ["http", "https"]
 													type: "string"
 												}
 												scrapeTimeout: {
-													description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape interval is used."
-													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-													type:        "string"
+													description: """
+																	Timeout after which Prometheus considers the scrape to be failed. 
+																	 If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
+																	"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
 												}
 												targetPort: {
 													anyOf: [{
@@ -11845,11 +11899,14 @@ prometheusOperator: {
 													}, {
 														type: "string"
 													}]
-													description:                  "Deprecated: Use 'port' instead."
+													description: """
+																	Name or number of the target port of the `Pod` object behind the Service, the port must be specified with container port property. 
+																	 Deprecated: use 'port' instead.
+																	"""
 													"x-kubernetes-int-or-string": true
 												}
 												tlsConfig: {
-													description: "TLS configuration to use when scraping the endpoint."
+													description: "TLS configuration to use when scraping the target."
 													properties: {
 														ca: {
 															description: "Certificate authority used when verifying server certificates."
@@ -11974,23 +12031,30 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												trackTimestampsStaleness: {
+													description: """
+																	TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamps present in scraped data. Has no effect if `honorTimestamps` is false. 
+																	 It requires Prometheus >= v2.48.0.
+																	"""
+													type: "boolean"
+												}
 											}
 											type: "object"
 										}
 										type: "array"
 									}
 									podTargetLabels: {
-										description: "PodTargetLabels transfers labels on the Kubernetes Pod onto the target."
+										description: "`podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics."
 										items: type: "string"
 										type: "array"
 									}
 									sampleLimit: {
-										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted."
+										description: "`sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted."
 										format:      "int64"
 										type:        "integer"
 									}
 									selector: {
-										description: "Selector to select Pod objects."
+										description: "Label selector to select the Kubernetes `Pod` objects."
 										properties: {
 											matchExpressions: {
 												description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -12026,12 +12090,12 @@ prometheusOperator: {
 										"x-kubernetes-map-type": "atomic"
 									}
 									targetLimit: {
-										description: "TargetLimit defines a limit on the number of scraped targets that will be accepted."
+										description: "`targetLimit` defines a limit on the number of scraped targets that will be accepted."
 										format:      "int64"
 										type:        "integer"
 									}
 								}
-								required: ["podMetricsEndpoints", "selector"]
+								required: ["selector"]
 								type: "object"
 							}
 						}
@@ -12121,7 +12185,7 @@ prometheusOperator: {
 										description: "BasicAuth allow an endpoint to authenticate over basic authentication. More info: https://prometheus.io/docs/operating/configuration/#endpoint"
 										properties: {
 											password: {
-												description: "The secret in the service monitor namespace that contains the password for authentication."
+												description: "`password` specifies a key of a Secret containing the password for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -12141,7 +12205,7 @@ prometheusOperator: {
 												"x-kubernetes-map-type": "atomic"
 											}
 											username: {
-												description: "The secret in the service monitor namespace that contains the username for authentication."
+												description: "`username` specifies a key of a Secret containing the username for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -12286,7 +12350,7 @@ prometheusOperator: {
 										description: "OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer."
 										properties: {
 											clientId: {
-												description: "The secret or configmap containing the OAuth2 client id"
+												description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 												properties: {
 													configMap: {
 														description: "ConfigMap containing data to use for the targets."
@@ -12332,7 +12396,7 @@ prometheusOperator: {
 												type: "object"
 											}
 											clientSecret: {
-												description: "The secret containing the OAuth2 client secret"
+												description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -12353,16 +12417,16 @@ prometheusOperator: {
 											}
 											endpointParams: {
 												additionalProperties: type: "string"
-												description: "Parameters to append to the token URL"
+												description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 												type:        "object"
 											}
 											scopes: {
-												description: "OAuth2 scopes used for the token request"
+												description: "`scopes` defines the OAuth2 scopes used for the token request."
 												items: type: "string"
 												type: "array"
 											}
 											tokenUrl: {
-												description: "The URL to fetch the token from"
+												description: "`tokenURL` configures the URL to fetch the token from."
 												minLength:   1
 												type:        "string"
 											}
@@ -13472,7 +13536,7 @@ prometheusOperator: {
 																"""
 												properties: {
 													password: {
-														description: "The secret in the service monitor namespace that contains the password for authentication."
+														description: "`password` specifies a key of a Secret containing the password for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -13492,7 +13556,7 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													username: {
-														description: "The secret in the service monitor namespace that contains the username for authentication."
+														description: "`username` specifies a key of a Secret containing the username for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -16325,7 +16389,7 @@ prometheusOperator: {
 															type: "string"
 														}
 														managedIdentity: {
-															description: "ManagedIdentity defines the Azure User-assigned Managed identity."
+															description: "ManagedIdentity defines the Azure User-assigned Managed identity. Cannot be set at the same time as `oauth`."
 															properties: clientId: {
 																description: "The client id"
 																type:        "string"
@@ -16333,8 +16397,48 @@ prometheusOperator: {
 															required: ["clientId"]
 															type: "object"
 														}
+														oauth: {
+															description: """
+																			OAuth defines the oauth config that is being used to authenticate. Cannot be set at the same time as `managedIdentity`. 
+																			 It requires Prometheus >= v2.48.0.
+																			"""
+															properties: {
+																clientId: {
+																	description: "`clientID` is the clientId of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	type:        "string"
+																}
+																clientSecret: {
+																	description: "`clientSecret` specifies a key of a Secret containing the client secret of the Azure Active Directory application that is being used to authenticate."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																tenantId: {
+																	description: "`tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	pattern:     "^[0-9a-zA-Z-.]+$"
+																	type:        "string"
+																}
+															}
+															required: ["clientId", "clientSecret", "tenantId"]
+															type: "object"
+														}
 													}
-													required: ["managedIdentity"]
 													type: "object"
 												}
 												basicAuth: {
@@ -16344,7 +16448,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -16364,7 +16468,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -16438,7 +16542,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -16484,7 +16588,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -16505,16 +16609,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -20377,7 +20481,7 @@ prometheusOperator: {
 																			"""
 														properties: {
 															password: {
-																description: "The secret in the service monitor namespace that contains the password for authentication."
+																description: "`password` specifies a key of a Secret containing the password for authentication."
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -20397,7 +20501,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															username: {
-																description: "The secret in the service monitor namespace that contains the username for authentication."
+																description: "`username` specifies a key of a Secret containing the username for authentication."
 																properties: {
 																	key: {
 																		description: "The key of the secret to select from.  Must be a valid secret key."
@@ -20728,7 +20832,7 @@ prometheusOperator: {
 																"""
 												properties: {
 													password: {
-														description: "The secret in the service monitor namespace that contains the password for authentication."
+														description: "`password` specifies a key of a Secret containing the password for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -20748,7 +20852,7 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													username: {
-														description: "The secret in the service monitor namespace that contains the username for authentication."
+														description: "`username` specifies a key of a Secret containing the username for authentication."
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -23662,7 +23766,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -23682,7 +23786,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -23752,7 +23856,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -23798,7 +23902,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -23819,16 +23923,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -24062,7 +24166,7 @@ prometheusOperator: {
 															type: "string"
 														}
 														managedIdentity: {
-															description: "ManagedIdentity defines the Azure User-assigned Managed identity."
+															description: "ManagedIdentity defines the Azure User-assigned Managed identity. Cannot be set at the same time as `oauth`."
 															properties: clientId: {
 																description: "The client id"
 																type:        "string"
@@ -24070,8 +24174,48 @@ prometheusOperator: {
 															required: ["clientId"]
 															type: "object"
 														}
+														oauth: {
+															description: """
+																			OAuth defines the oauth config that is being used to authenticate. Cannot be set at the same time as `managedIdentity`. 
+																			 It requires Prometheus >= v2.48.0.
+																			"""
+															properties: {
+																clientId: {
+																	description: "`clientID` is the clientId of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	type:        "string"
+																}
+																clientSecret: {
+																	description: "`clientSecret` specifies a key of a Secret containing the client secret of the Azure Active Directory application that is being used to authenticate."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																tenantId: {
+																	description: "`tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	pattern:     "^[0-9a-zA-Z-.]+$"
+																	type:        "string"
+																}
+															}
+															required: ["clientId", "clientSecret", "tenantId"]
+															type: "object"
+														}
 													}
-													required: ["managedIdentity"]
 													type: "object"
 												}
 												basicAuth: {
@@ -24081,7 +24225,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -24101,7 +24245,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -24175,7 +24319,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -24221,7 +24365,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -24242,16 +24386,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -28082,11 +28226,77 @@ prometheusOperator: {
 										}
 										type: "object"
 									}
+									azureSDConfigs: {
+										description: "AzureSDConfigs defines a list of Azure service discovery configurations."
+										items: {
+											description: "AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config"
+											properties: {
+												authenticationMethod: {
+													description: "# The authentication method, either OAuth or ManagedIdentity. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview"
+													enum: ["OAuth", "ManagedIdentity"]
+													type: "string"
+												}
+												clientID: {
+													description: "Optional client ID. Only required with the OAuth authentication method."
+													type:        "string"
+												}
+												clientSecret: {
+													description: "Optional client secret. Only required with the OAuth authentication method."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												environment: {
+													description: "The Azure environment."
+													type:        "string"
+												}
+												port: {
+													description: "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+													type:        "integer"
+												}
+												refreshInterval: {
+													description: "RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												resourceGroup: {
+													description: "Optional resource group name. Limits discovery to this resource group."
+													type:        "string"
+												}
+												subscriptionID: {
+													description: "The subscription ID. Always required."
+													minLength:   1
+													type:        "string"
+												}
+												tenantID: {
+													description: "Optional tenant ID. Only required with the OAuth authentication method."
+													type:        "string"
+												}
+											}
+											required: ["subscriptionID"]
+											type: "object"
+										}
+										type: "array"
+									}
 									basicAuth: {
 										description: "BasicAuth information to use on every scrape request."
 										properties: {
 											password: {
-												description: "The secret in the service monitor namespace that contains the password for authentication."
+												description: "`password` specifies a key of a Secret containing the password for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28106,7 +28316,7 @@ prometheusOperator: {
 												"x-kubernetes-map-type": "atomic"
 											}
 											username: {
-												description: "The secret in the service monitor namespace that contains the username for authentication."
+												description: "`username` specifies a key of a Secret containing the username for authentication."
 												properties: {
 													key: {
 														description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28133,7 +28343,7 @@ prometheusOperator: {
 										items: {
 											description: "ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config"
 											properties: {
-												allow_stale: {
+												allowStale: {
 													description: "Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value."
 													type:        "boolean"
 												}
@@ -28175,7 +28385,7 @@ prometheusOperator: {
 													description: "BasicAuth information to authenticate against the Consul Server. More info: https://prometheus.io/docs/operating/configuration/#endpoints"
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28195,7 +28405,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28221,11 +28431,11 @@ prometheusOperator: {
 													description: "Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter."
 													type:        "string"
 												}
-												enable_http2: {
+												enableHTTP2: {
 													description: "Whether to enable HTTP2. If unset, Prometheus uses its default value."
 													type:        "boolean"
 												}
-												follow_redirects: {
+												followRedirects: {
 													description: "Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value."
 													type:        "boolean"
 												}
@@ -28233,11 +28443,11 @@ prometheusOperator: {
 													description: "Namespaces are only supported in Consul Enterprise."
 													type:        "string"
 												}
-												no_proxy: {
+												noProxy: {
 													description: "Comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers."
 													type:        "string"
 												}
-												node_meta: {
+												nodeMeta: {
 													additionalProperties: type: "string"
 													description:             "Node metadata key/value pairs to filter nodes for a given service."
 													type:                    "object"
@@ -28247,7 +28457,7 @@ prometheusOperator: {
 													description: "Optional OAuth 2.0 configuration."
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -28293,7 +28503,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28314,16 +28524,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -28335,7 +28545,7 @@ prometheusOperator: {
 													description: "Admin Partitions are only supported in Consul Enterprise."
 													type:        "string"
 												}
-												proxy_connect_header: {
+												proxyConnectHeader: {
 													additionalProperties: {
 														description: "SecretKeySelector selects a key of a Secret."
 														properties: {
@@ -28360,15 +28570,15 @@ prometheusOperator: {
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
 												}
-												proxy_from_environment: {
+												proxyFromEnvironment: {
 													description: "Use proxy URL indicated by environment variables (HTTP_PROXY, https_proxy, HTTPs_PROXY, https_proxy, and no_proxy) If unset, Prometheus uses its default value."
 													type:        "boolean"
 												}
-												proxy_url: {
+												proxyUrl: {
 													description: "Optional proxy URL."
 													type:        "string"
 												}
-												refresh_interval: {
+												refreshInterval: {
 													description: "The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value."
 													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 													type:        "string"
@@ -28389,7 +28599,7 @@ prometheusOperator: {
 													type:                     "array"
 													"x-kubernetes-list-type": "atomic"
 												}
-												tag_separator: {
+												tagSeparator: {
 													description: "The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value."
 													type:        "string"
 												}
@@ -28691,6 +28901,48 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									gceSDConfigs: {
+										description: "GCESDConfigs defines a list of GCE service discovery configurations."
+										items: {
+											description: """
+															GCESDConfig configures scrape targets from GCP GCE instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config 
+															 The GCE service discovery will load the Google Cloud credentials from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable. See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform 
+															 A pre-requisite for using GCESDConfig is that a Secret containing valid Google Cloud credentials is mounted into the Prometheus or PrometheusAgent pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS environment variable is set to /etc/prometheus/secrets/<secret-name>/<credentials-filename.json>.
+															"""
+											properties: {
+												filter: {
+													description: "Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list"
+													type:        "string"
+												}
+												port: {
+													description: "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+													type:        "integer"
+												}
+												project: {
+													description: "The Google Cloud Project ID"
+													minLength:   1
+													type:        "string"
+												}
+												refreshInterval: {
+													description: "RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												tagSeparator: {
+													description: "The tag separator is used to separate the tags on concatenation"
+													type:        "string"
+												}
+												zone: {
+													description: "The zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs."
+													minLength:   1
+													type:        "string"
+												}
+											}
+											required: ["project", "zone"]
+											type: "object"
+										}
+										type: "array"
+									}
 									honorLabels: {
 										description: "HonorLabels chooses the metric's labels on collisions with target labels."
 										type:        "boolean"
@@ -28742,7 +28994,7 @@ prometheusOperator: {
 													description: "BasicAuth information to authenticate against the target HTTP endpoint. More info: https://prometheus.io/docs/operating/configuration/#endpoints"
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28762,7 +29014,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -28942,7 +29194,7 @@ prometheusOperator: {
 											properties: {
 												role: {
 													description: "Role of the Kubernetes entities that should be discovered."
-													enum: ["Node", "node"]
+													enum: ["Node", "node", "Service", "service", "Pod", "pod", "Endpoints", "endpoints", "EndpointSlice", "endpointslice", "Ingress", "ingress"]
 													type: "string"
 												}
 												selectors: {
@@ -28953,8 +29205,8 @@ prometheusOperator: {
 															field: type: "string"
 															label: type: "string"
 															role: {
-																description: "K8SRole is role of the service in Kubernetes. Currently the only supported role is \"Node\"."
-																enum: ["Node", "node"]
+																description: "Role is role of the service in Kubernetes."
+																enum: ["Node", "node", "Service", "service", "Pod", "pod", "Endpoints", "endpoints", "EndpointSlice", "endpointslice", "Ingress", "ingress"]
 																type: "string"
 															}
 														}
@@ -29300,6 +29552,10 @@ prometheusOperator: {
 										}
 										type: "object"
 									}
+									trackTimestampsStaleness: {
+										description: "TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus >= v2.48.0."
+										type:        "boolean"
+									}
 								}
 								type: "object"
 							}
@@ -29353,20 +29609,26 @@ prometheusOperator: {
 								description: "Specification of desired Service selection for target discovery by Prometheus."
 								properties: {
 									attachMetadata: {
-										description: "Attaches node metadata to discovered targets. Requires Prometheus v2.37.0 and above."
+										description: """
+														`attachMetadata` defines additional metadata which is added to the discovered targets. 
+														 It requires Prometheus >= v2.37.0.
+														"""
 										properties: node: {
-											description: "When set to true, Prometheus must have permissions to get Nodes."
+											description: "When set to true, Prometheus must have the `get` permission on the `Nodes` objects."
 											type:        "boolean"
 										}
 										type: "object"
 									}
 									endpoints: {
-										description: "A list of endpoints allowed as part of this ServiceMonitor."
+										description: "List of endpoints part of this ServiceMonitor."
 										items: {
-											description: "Endpoint defines a scrapeable endpoint serving Prometheus metrics."
+											description: "Endpoint defines an endpoint serving Prometheus metrics to be scraped by Prometheus."
 											properties: {
 												authorization: {
-													description: "Authorization section for this endpoint"
+													description: """
+																	`authorization` configures the Authorization header credentials to use when scraping the target. 
+																	 Cannot be set at the same time as `basicAuth`, or `oauth2`.
+																	"""
 													properties: {
 														credentials: {
 															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -29400,10 +29662,13 @@ prometheusOperator: {
 													type: "object"
 												}
 												basicAuth: {
-													description: "BasicAuth allow an endpoint to authenticate over basic authentication More info: https://prometheus.io/docs/operating/configuration/#endpoints"
+													description: """
+																	`basicAuth` configures the Basic Authentication credentials to use when scraping the target. 
+																	 Cannot be set at the same time as `authorization`, or `oauth2`.
+																	"""
 													properties: {
 														password: {
-															description: "The secret in the service monitor namespace that contains the password for authentication."
+															description: "`password` specifies a key of a Secret containing the password for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -29423,7 +29688,7 @@ prometheusOperator: {
 															"x-kubernetes-map-type": "atomic"
 														}
 														username: {
-															description: "The secret in the service monitor namespace that contains the username for authentication."
+															description: "`username` specifies a key of a Secret containing the username for authentication."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -29446,11 +29711,17 @@ prometheusOperator: {
 													type: "object"
 												}
 												bearerTokenFile: {
-													description: "File to read bearer token for scraping targets."
-													type:        "string"
+													description: """
+																	File to read bearer token for scraping the target. 
+																	 Deprecated: use `authorization` instead.
+																	"""
+													type: "string"
 												}
 												bearerTokenSecret: {
-													description: "Secret to mount to read bearer token for scraping targets. The secret needs to be in the same namespace as the service monitor and accessible by the Prometheus Operator."
+													description: """
+																	`bearerTokenSecret` specifies a key of a Secret containing the bearer token for scraping targets. The secret needs to be in the same namespace as the ServiceMonitor object and readable by the Prometheus Operator. 
+																	 Deprecated: use `authorization` instead.
+																	"""
 													properties: {
 														key: {
 															description: "The key of the secret to select from.  Must be a valid secret key."
@@ -29470,32 +29741,39 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												enableHttp2: {
-													description: "Whether to enable HTTP2."
+													description: "`enableHttp2` can be used to disable HTTP2 when scraping the target."
 													type:        "boolean"
 												}
 												filterRunning: {
-													description: "Drop pods that are not running. (Failed, Succeeded). Enabled by default. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase"
-													type:        "boolean"
+													description: """
+																	When true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery. 
+																	 If unset, the filtering is enabled. 
+																	 More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+																	"""
+													type: "boolean"
 												}
 												followRedirects: {
-													description: "FollowRedirects configures whether scrape requests follow HTTP 3xx redirects."
+													description: "`followRedirects` defines whether the scrape requests should follow HTTP 3xx redirects."
 													type:        "boolean"
 												}
 												honorLabels: {
-													description: "HonorLabels chooses the metric's labels on collisions with target labels."
+													description: "When true, `honorLabels` preserves the metric's labels when they collide with the target's labels."
 													type:        "boolean"
 												}
 												honorTimestamps: {
-													description: "HonorTimestamps controls whether Prometheus respects the timestamps present in scraped data."
+													description: "`honorTimestamps` controls whether Prometheus preserves the timestamps when exposed by the target."
 													type:        "boolean"
 												}
 												interval: {
-													description: "Interval at which metrics should be scraped If not specified Prometheus' global scrape interval is used."
-													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-													type:        "string"
+													description: """
+																	Interval at which Prometheus scrapes the metrics from the target. 
+																	 If empty, Prometheus uses the global scrape interval.
+																	"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
 												}
 												metricRelabelings: {
-													description: "MetricRelabelConfigs to apply to samples before ingestion."
+													description: "`metricRelabelings` configures the relabeling rules to apply to the samples before ingestion."
 													items: {
 														description: """
 																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
@@ -29558,10 +29836,14 @@ prometheusOperator: {
 													type: "array"
 												}
 												oauth2: {
-													description: "OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer."
+													description: """
+																	`oauth2` configures the OAuth2 settings to use when scraping the target. 
+																	 It requires Prometheus >= 2.27.0. 
+																	 Cannot be set at the same time as `authorization`, or `basicAuth`.
+																	"""
 													properties: {
 														clientId: {
-															description: "The secret or configmap containing the OAuth2 client id"
+															description: "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
 															properties: {
 																configMap: {
 																	description: "ConfigMap containing data to use for the targets."
@@ -29607,7 +29889,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														clientSecret: {
-															description: "The secret containing the OAuth2 client secret"
+															description: "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
 															properties: {
 																key: {
 																	description: "The key of the secret to select from.  Must be a valid secret key."
@@ -29628,16 +29910,16 @@ prometheusOperator: {
 														}
 														endpointParams: {
 															additionalProperties: type: "string"
-															description: "Parameters to append to the token URL"
+															description: "`endpointParams` configures the HTTP parameters to append to the token URL."
 															type:        "object"
 														}
 														scopes: {
-															description: "OAuth2 scopes used for the token request"
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
 															items: type: "string"
 															type: "array"
 														}
 														tokenUrl: {
-															description: "The URL to fetch the token from"
+															description: "`tokenURL` configures the URL to fetch the token from."
 															minLength:   1
 															type:        "string"
 														}
@@ -29650,23 +29932,34 @@ prometheusOperator: {
 														items: type: "string"
 														type: "array"
 													}
-													description: "Optional HTTP URL parameters"
+													description: "params define optional HTTP URL parameters."
 													type:        "object"
 												}
 												path: {
-													description: "HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. `/metrics`)."
-													type:        "string"
+													description: """
+																	HTTP path from which to scrape for metrics. 
+																	 If empty, Prometheus uses the default value (e.g. `/metrics`).
+																	"""
+													type: "string"
 												}
 												port: {
-													description: "Name of the service port this endpoint refers to. Mutually exclusive with targetPort."
-													type:        "string"
+													description: """
+																	Name of the Service port which this endpoint refers to. 
+																	 It takes precedence over `targetPort`.
+																	"""
+													type: "string"
 												}
 												proxyUrl: {
-													description: "ProxyURL eg http://proxyserver:2195 Directs scrapes to proxy through this endpoint."
+													description: "`proxyURL` configures the HTTP Proxy URL (e.g. \"http://proxyserver:2195\") to go through when scraping the target."
 													type:        "string"
 												}
 												relabelings: {
-													description: "RelabelConfigs to apply to samples before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+													description: """
+																	`relabelings` configures the relabeling rules to apply the target's metadata labels. 
+																	 The Operator automatically adds relabelings for a few standard Kubernetes fields. 
+																	 The original scrape job's name is available via the `__tmp_prometheus_job_name` label. 
+																	 More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																	"""
 													items: {
 														description: """
 																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
@@ -29729,14 +30022,21 @@ prometheusOperator: {
 													type: "array"
 												}
 												scheme: {
-													description: "HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`."
+													description: """
+																	HTTP scheme to use for scraping. 
+																	 `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. 
+																	 If empty, Prometheus uses the default value `http`.
+																	"""
 													enum: ["http", "https"]
 													type: "string"
 												}
 												scrapeTimeout: {
-													description: "Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than `Interval` in which the latter is used."
-													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-													type:        "string"
+													description: """
+																	Timeout after which Prometheus considers the scrape to be failed. 
+																	 If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
+																	"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
 												}
 												targetPort: {
 													anyOf: [{
@@ -29744,11 +30044,14 @@ prometheusOperator: {
 													}, {
 														type: "string"
 													}]
-													description:                  "Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port."
+													description: """
+																	Name or number of the target port of the `Pod` object behind the Service, the port must be specified with container port property. 
+																	 Deprecated: use `port` instead.
+																	"""
 													"x-kubernetes-int-or-string": true
 												}
 												tlsConfig: {
-													description: "TLS configuration to use when scraping the endpoint"
+													description: "TLS configuration to use when scraping the target."
 													properties: {
 														ca: {
 															description: "Certificate authority used when verifying server certificates."
@@ -29885,6 +30188,13 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												trackTimestampsStaleness: {
+													description: """
+																	`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. 
+																	 It requires Prometheus >= v2.48.0.
+																	"""
+													type: "boolean"
+												}
 											}
 											type: "object"
 										}
@@ -29892,9 +30202,9 @@ prometheusOperator: {
 									}
 									jobLabel: {
 										description: """
-														JobLabel selects the label from the associated Kubernetes service which will be used as the `job` label for all metrics. 
-														 For example: If in `ServiceMonitor.spec.jobLabel: foo` and in `Service.metadata.labels.foo: bar`, then the `job="bar"` label is added to all metrics. 
-														 If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the Kubernetes Service.
+														`jobLabel` selects the label from the associated Kubernetes `Service` object which will be used as the `job` label for all metrics. 
+														 For example if `jobLabel` is set to `foo` and the Kubernetes `Service` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics. 
+														 If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the associated Kubernetes `Service`.
 														"""
 										type: "string"
 									}
@@ -29907,22 +30217,31 @@ prometheusOperator: {
 										type:   "integer"
 									}
 									labelLimit: {
-										description: "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on number of labels that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelNameLengthLimit: {
-										description: "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on length of labels name that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									labelValueLengthLimit: {
-										description: "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
-										format:      "int64"
-										type:        "integer"
+										description: """
+														Per-scrape limit on length of labels value that will be accepted for a sample. 
+														 It requires Prometheus >= v2.27.0.
+														"""
+										format: "int64"
+										type:   "integer"
 									}
 									namespaceSelector: {
-										description: "Selector to select which namespaces the Kubernetes Endpoints objects are discovered from."
+										description: "Selector to select which namespaces the Kubernetes `Endpoints` objects are discovered from."
 										properties: {
 											any: {
 												description: "Boolean describing whether all namespaces are selected in contrast to a list restricting them."
@@ -29937,17 +30256,17 @@ prometheusOperator: {
 										type: "object"
 									}
 									podTargetLabels: {
-										description: "PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics."
+										description: "`podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics."
 										items: type: "string"
 										type: "array"
 									}
 									sampleLimit: {
-										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted."
+										description: "`sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted."
 										format:      "int64"
 										type:        "integer"
 									}
 									selector: {
-										description: "Selector to select Endpoints objects."
+										description: "Label selector to select the Kubernetes `Endpoints` objects."
 										properties: {
 											matchExpressions: {
 												description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -29983,17 +30302,17 @@ prometheusOperator: {
 										"x-kubernetes-map-type": "atomic"
 									}
 									targetLabels: {
-										description: "TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics."
+										description: "`targetLabels` defines the labels which are transferred from the associated Kubernetes `Service` object onto the ingested metrics."
 										items: type: "string"
 										type: "array"
 									}
 									targetLimit: {
-										description: "TargetLimit defines a limit on the number of scraped targets that will be accepted."
+										description: "`targetLimit` defines a limit on the number of scraped targets that will be accepted."
 										format:      "int64"
 										type:        "integer"
 									}
 								}
-								required: ["endpoints", "selector"]
+								required: ["selector"]
 								type: "object"
 							}
 						}
@@ -35425,6 +35744,10 @@ prometheusOperator: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.69.1"]
+						env: [{
+							name:  "GOGC"
+							value: "30"
+						}]
 						image: "quay.io/prometheus-operator/prometheus-operator:v0.69.1"
 						name:  "prometheus-operator"
 						ports: [{

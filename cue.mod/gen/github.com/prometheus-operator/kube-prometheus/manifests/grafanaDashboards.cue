@@ -4348,11 +4348,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "cluster:node_cpu:ratio_rate5m{cluster=\"$cluster\"}"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "cluster:node_cpu:ratio_rate5m{cluster=\"$cluster\"}"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4421,11 +4420,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\",cluster=\"$cluster\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\",cluster=\"$cluster\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4494,11 +4492,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\",cluster=\"$cluster\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"cpu\",cluster=\"$cluster\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4567,11 +4564,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "1 - sum(:node_memory_MemAvailable_bytes:sum{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\",cluster=\"$cluster\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "1 - sum(:node_memory_MemAvailable_bytes:sum{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\",cluster=\"$cluster\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4640,11 +4636,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\",cluster=\"$cluster\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\",cluster=\"$cluster\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4713,11 +4708,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\",cluster=\"$cluster\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\",resource=\"memory\",cluster=\"$cluster\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -4795,11 +4789,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5005,54 +4998,47 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(kube_pod_owner{job=\"kube-state-metrics\", cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(kube_pod_owner{job=\"kube-state-metrics\", cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "count(avg(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\"}) by (workload, namespace)) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "count(avg(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\"}) by (workload, namespace)) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "G"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "G"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5131,11 +5117,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5341,54 +5326,47 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(kube_pod_owner{job=\"kube-state-metrics\", cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(kube_pod_owner{job=\"kube-state-metrics\", cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "count(avg(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\"}) by (workload, namespace)) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "count(avg(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\"}) by (workload, namespace)) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "G"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "G"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5581,47 +5559,41 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5700,11 +5672,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5772,11 +5743,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5854,11 +5824,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "avg(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "avg(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -5926,11 +5895,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "avg(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "avg(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6008,11 +5976,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6080,11 +6047,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6162,11 +6128,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6234,11 +6199,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6317,11 +6281,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "ceil(sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval])))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "ceil(sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval])))"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6389,11 +6352,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{namespace}}"
-					legendLink:     null
+					expr:         "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "time_series"
+					legendFormat: "{{namespace}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6589,47 +6551,41 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum by(namespace) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum by(namespace) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum by(namespace) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum by(namespace) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum by(namespace) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum by(namespace) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace!=\"\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -6772,11 +6728,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "cluster:node_cpu:ratio_rate5m"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "cluster:node_cpu:ratio_rate5m"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -6845,11 +6800,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -6918,11 +6872,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -6991,11 +6944,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes{job=\"node-exporter\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -7064,11 +7016,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -7137,11 +7088,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) / sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -7219,11 +7169,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{cluster}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
+					format:       "time_series"
+					legendFormat: "{{cluster}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -7401,40 +7350,35 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -7513,11 +7457,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{cluster}}"
-					legendLink:     null
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster)"
+					format:       "time_series"
+					legendFormat: "{{cluster}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -7695,40 +7638,35 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\"}) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"memory\"}) by (cluster)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -7849,11 +7787,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -7922,11 +7859,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -7995,11 +7931,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -8068,11 +8003,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})"
-					format:         "time_series"
-					instant:        true
-					intervalFactor: 2
-					refId:          "A"
+					expr:    "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})"
+					format:  "time_series"
+					instant: true
+					refId:   "A"
 				}]
 				thresholds: "70,80"
 				timeFrom:   null
@@ -8170,23 +8104,20 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - requests"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})"
+					format:       "time_series"
+					legendFormat: "quota - requests"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - limits"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})"
+					format:       "time_series"
+					legendFormat: "quota - limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -8364,40 +8295,35 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -8496,23 +8422,20 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - requests"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})"
+					format:       "time_series"
+					legendFormat: "quota - requests"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - limits"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})"
+					format:       "time_series"
+					legendFormat: "quota - limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -8732,61 +8655,53 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}, {
-					expr:           "sum(container_memory_cache{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "G"
+					expr:         "sum(container_memory_cache{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "G"
 				}, {
-					expr:           "sum(container_memory_swap{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "H"
+					expr:         "sum(container_memory_swap{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "H"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -8979,47 +8894,41 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9098,11 +9007,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9170,11 +9078,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9252,11 +9159,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9324,11 +9230,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9406,11 +9311,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9478,11 +9382,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9561,11 +9464,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "ceil(sum by(pod) (rate(container_fs_reads_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "ceil(sum by(pod) (rate(container_fs_reads_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])))"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9633,11 +9535,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum by(pod) (rate(container_fs_reads_bytes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum by(pod) (rate(container_fs_reads_bytes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{container!=\"\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -9833,47 +9734,41 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum by(pod) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum by(pod) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10047,17 +9942,15 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"cpu\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "max capacity"
-					legendLink:     null
+					expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"cpu\"})"
+					format:       "time_series"
+					legendFormat: "max capacity"
+					legendLink:   null
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10235,40 +10128,35 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10357,17 +10245,15 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"memory\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "max capacity"
-					legendLink:     null
+					expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"memory\"})"
+					format:       "time_series"
+					legendFormat: "max capacity"
+					legendLink:   null
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10587,61 +10473,53 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_rss{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(node_namespace_pod_container:container_memory_rss{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_cache{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "G"
+					expr:         "sum(node_namespace_pod_container:container_memory_cache{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "G"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_memory_swap{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "H"
+					expr:         "sum(node_namespace_pod_container:container_memory_swap{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "H"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10821,11 +10699,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$namespace\", pod=\"$pod\", cluster=\"$cluster\"}) by (container)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{container}}"
-					legendLink:     null
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$namespace\", pod=\"$pod\", cluster=\"$cluster\"}) by (container)"
+					format:       "time_series"
+					legendFormat: "{{container}}"
+					legendLink:   null
 				}, {
 					expr: """
 						sum(
@@ -10833,10 +10710,9 @@ grafanaDashboards: {
 						)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "requests"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "requests"
+					legendLink:   null
 				}, {
 					expr: """
 						sum(
@@ -10844,10 +10720,9 @@ grafanaDashboards: {
 						)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "limits"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -10925,11 +10800,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(increase(container_cpu_cfs_throttled_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (container) /sum(increase(container_cpu_cfs_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (container)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{container}}"
-					legendLink:     null
+					expr:         "sum(increase(container_cpu_cfs_throttled_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (container) /sum(increase(container_cpu_cfs_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (container)"
+					format:       "time_series"
+					legendFormat: "{{container}}"
+					legendLink:   null
 				}]
 				thresholds: [{
 					colorMode: "critical"
@@ -11114,40 +10988,35 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11244,11 +11113,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{container}}"
-					legendLink:     null
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container)"
+					format:       "time_series"
+					legendFormat: "{{container}}"
+					legendLink:   null
 				}, {
 					expr: """
 						sum(
@@ -11256,10 +11124,9 @@ grafanaDashboards: {
 						)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "requests"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "requests"
+					legendLink:   null
 				}, {
 					expr: """
 						sum(
@@ -11267,10 +11134,9 @@ grafanaDashboards: {
 						)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "limits"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11490,61 +11356,53 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", image!=\"\"}) by (container) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", image!=\"\"}) by (container) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum(container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container) / sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum(container_memory_rss{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}, {
-					expr:           "sum(container_memory_cache{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "G"
+					expr:         "sum(container_memory_cache{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "G"
 				}, {
-					expr:           "sum(container_memory_swap{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "H"
+					expr:         "sum(container_memory_swap{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container != \"\", container != \"POD\"}) by (container)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "H"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11623,11 +11481,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11695,11 +11552,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11777,11 +11633,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11849,11 +11704,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -11931,11 +11785,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12003,11 +11856,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					expr:         "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)"
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12086,17 +11938,15 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "ceil(sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Reads"
-					legendLink:     null
+					expr:         "ceil(sum by(pod) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))"
+					format:       "time_series"
+					legendFormat: "Reads"
+					legendLink:   null
 				}, {
-					expr:           "ceil(sum by(pod) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\",namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Writes"
-					legendLink:     null
+					expr:         "ceil(sum by(pod) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\",namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))"
+					format:       "time_series"
+					legendFormat: "Writes"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12164,17 +12014,15 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Reads"
-					legendLink:     null
+					expr:         "sum by(pod) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))"
+					format:       "time_series"
+					legendFormat: "Reads"
+					legendLink:   null
 				}, {
-					expr:           "sum by(pod) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Writes"
-					legendLink:     null
+					expr:         "sum by(pod) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))"
+					format:       "time_series"
+					legendFormat: "Writes"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12253,11 +12101,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "ceil(sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{container}}"
-					legendLink:     null
+					expr:         "ceil(sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))"
+					format:       "time_series"
+					legendFormat: "{{container}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12325,11 +12172,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{container}}"
-					legendLink:     null
+					expr:         "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "time_series"
+					legendFormat: "{{container}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12525,47 +12371,41 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "sum by(container) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\",device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "sum by(container) (rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\",device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
-					expr:           "sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					expr:         "sum by(container) (rate(container_fs_reads_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
-					expr:           "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					expr:         "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
-					expr:           "sum by(container) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					expr:         "sum by(container) (rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
-					expr:           "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					expr:         "sum by(container) (rate(container_fs_reads_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]) + rate(container_fs_writes_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\", container!=\"\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval]))"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12759,10 +12599,9 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -12948,11 +12787,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						sum(
@@ -12962,11 +12800,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						sum(
@@ -12981,11 +12818,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						sum(
@@ -12995,11 +12831,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						sum(
@@ -13014,11 +12849,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13105,10 +12939,9 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13294,11 +13127,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						sum(
@@ -13308,11 +13140,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						sum(
@@ -13327,11 +13158,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						sum(
@@ -13341,11 +13171,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						sum(
@@ -13360,11 +13189,10 @@ grafanaDashboards: {
 						) by (pod)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13563,11 +13391,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -13575,11 +13402,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -13587,11 +13413,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -13599,11 +13424,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -13611,11 +13435,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -13623,11 +13446,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13712,10 +13534,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13789,10 +13610,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13876,10 +13696,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -13953,10 +13772,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14040,10 +13858,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14117,10 +13934,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14204,10 +14020,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14281,10 +14096,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~"$workload", workload_type=~"$type"}) by (pod))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{pod}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{pod}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14519,22 +14333,19 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}} - {{workload_type}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}} - {{workload_type}}"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - requests"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})"
+					format:       "time_series"
+					legendFormat: "quota - requests"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - limits"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})"
+					format:       "time_series"
+					legendFormat: "quota - limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14740,12 +14551,11 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						sum(
@@ -14755,11 +14565,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						sum(
@@ -14769,11 +14578,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						sum(
@@ -14788,11 +14596,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						sum(
@@ -14802,11 +14609,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
 					expr: """
 						sum(
@@ -14821,11 +14627,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -14932,22 +14737,19 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}} - {{workload_type}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}} - {{workload_type}}"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - requests"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})"
+					format:       "time_series"
+					legendFormat: "quota - requests"
+					legendLink:   null
 				}, {
-					expr:           "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "quota - limits"
-					legendLink:     null
+					expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})"
+					format:       "time_series"
+					legendFormat: "quota - limits"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15153,12 +14955,11 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "count(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload, workload_type)"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						sum(
@@ -15168,11 +14969,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						sum(
@@ -15182,11 +14982,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						sum(
@@ -15201,11 +15000,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						sum(
@@ -15215,11 +15013,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
 					expr: """
 						sum(
@@ -15234,11 +15031,10 @@ grafanaDashboards: {
 						) by (workload, workload_type)
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15451,11 +15247,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_bytes_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -15463,11 +15258,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}, {
 					expr: """
 						(sum(irate(container_network_receive_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -15475,11 +15269,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "C"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "C"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_packets_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -15487,11 +15280,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "D"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "D"
 				}, {
 					expr: """
 						(sum(irate(container_network_receive_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -15499,11 +15291,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "E"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "E"
 				}, {
 					expr: """
 						(sum(irate(container_network_transmit_packets_dropped_total{job="kubelet", metrics_path="/metrics/cadvisor", cluster="$cluster", namespace="$namespace"}[$__rate_interval])
@@ -15511,11 +15302,10 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "F"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "F"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15600,10 +15390,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15677,10 +15466,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15764,10 +15552,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15841,10 +15628,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -15928,10 +15714,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -16005,10 +15790,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -16092,10 +15876,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -16169,10 +15952,9 @@ grafanaDashboards: {
 						group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
 						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{workload}}"
-					legendLink:     null
+					format:       "time_series"
+					legendFormat: "{{workload}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27048,19 +26830,17 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:           "count by (job, instance, version) (prometheus_build_info{job=~\"$job\", instance=~\"$instance\"})"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
+					expr:         "count by (job, instance, version) (prometheus_build_info{job=~\"$job\", instance=~\"$instance\"})"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "A"
 				}, {
-					expr:           "max by (job, instance) (time() - process_start_time_seconds{job=~\"$job\", instance=~\"$instance\"})"
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "B"
+					expr:         "max by (job, instance) (time() - process_start_time_seconds{job=~\"$job\", instance=~\"$instance\"})"
+					format:       "table"
+					instant:      true
+					legendFormat: ""
+					refId:        "B"
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27136,11 +26916,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "sum(rate(prometheus_target_sync_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m])) by (scrape_job) * 1e3"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{scrape_job}}"
-					legendLink:     null
+					expr:         "sum(rate(prometheus_target_sync_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m])) by (scrape_job) * 1e3"
+					format:       "time_series"
+					legendFormat: "{{scrape_job}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27205,11 +26984,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum(prometheus_sd_discovered_targets{job=~\"$job\",instance=~\"$instance\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Targets"
-					legendLink:     null
+					expr:         "sum(prometheus_sd_discovered_targets{job=~\"$job\",instance=~\"$instance\"})"
+					format:       "time_series"
+					legendFormat: "Targets"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27284,11 +27062,10 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_target_interval_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{job=~\"$job\",instance=~\"$instance\"}[5m]) * 1e3"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{interval}} configured"
-					legendLink:     null
+					expr:         "rate(prometheus_target_interval_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{job=~\"$job\",instance=~\"$instance\"}[5m]) * 1e3"
+					format:       "time_series"
+					legendFormat: "{{interval}} configured"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27353,35 +27130,30 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "sum by (job) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "exceeded body size limit: {{job}}"
-					legendLink:     null
+					expr:         "sum by (job) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))"
+					format:       "time_series"
+					legendFormat: "exceeded body size limit: {{job}}"
+					legendLink:   null
 				}, {
-					expr:           "sum by (job) (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "exceeded sample limit: {{job}}"
-					legendLink:     null
+					expr:         "sum by (job) (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))"
+					format:       "time_series"
+					legendFormat: "exceeded sample limit: {{job}}"
+					legendLink:   null
 				}, {
-					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_duplicate_timestamp_total[1m]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "duplicate timestamp: {{job}}"
-					legendLink:     null
+					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_duplicate_timestamp_total[1m]))"
+					format:       "time_series"
+					legendFormat: "duplicate timestamp: {{job}}"
+					legendLink:   null
 				}, {
-					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_bounds_total[1m]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "out of bounds: {{job}}"
-					legendLink:     null
+					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_bounds_total[1m]))"
+					format:       "time_series"
+					legendFormat: "out of bounds: {{job}}"
+					legendLink:   null
 				}, {
-					expr:           "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_order_total[1m]))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "out of order: {{job}}"
-					legendLink:     null
+					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_order_total[1m]))"
+					format:       "time_series"
+					legendFormat: "out of order: {{job}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27446,11 +27218,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_tsdb_head_samples_appended_total{job=~\"$job\",instance=~\"$instance\"}[5m])"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{job}} {{instance}}"
-					legendLink:     null
+					expr:         "rate(prometheus_tsdb_head_samples_appended_total{job=~\"$job\",instance=~\"$instance\"}[5m])"
+					format:       "time_series"
+					legendFormat: "{{job}} {{instance}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27525,11 +27296,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_tsdb_head_series{job=~\"$job\",instance=~\"$instance\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{job}} {{instance}} head series"
-					legendLink:     null
+					expr:         "prometheus_tsdb_head_series{job=~\"$job\",instance=~\"$instance\"}"
+					format:       "time_series"
+					legendFormat: "{{job}} {{instance}} head series"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27594,11 +27364,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "prometheus_tsdb_head_chunks{job=~\"$job\",instance=~\"$instance\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{job}} {{instance}} head chunks"
-					legendLink:     null
+					expr:         "prometheus_tsdb_head_chunks{job=~\"$job\",instance=~\"$instance\"}"
+					format:       "time_series"
+					legendFormat: "{{job}} {{instance}} head chunks"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27673,11 +27442,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "rate(prometheus_engine_query_duration_seconds_count{job=~\"$job\",instance=~\"$instance\",slice=\"inner_eval\"}[5m])"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{job}} {{instance}}"
-					legendLink:     null
+					expr:         "rate(prometheus_engine_query_duration_seconds_count{job=~\"$job\",instance=~\"$instance\",slice=\"inner_eval\"}[5m])"
+					format:       "time_series"
+					legendFormat: "{{job}} {{instance}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
@@ -27742,11 +27510,10 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:           "max by (slice) (prometheus_engine_query_duration_seconds{quantile=\"0.9\",job=~\"$job\",instance=~\"$instance\"}) * 1e3"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{slice}}"
-					legendLink:     null
+					expr:         "max by (slice) (prometheus_engine_query_duration_seconds{quantile=\"0.9\",job=~\"$job\",instance=~\"$instance\"}) * 1e3"
+					format:       "time_series"
+					legendFormat: "{{slice}}"
+					legendLink:   null
 				}]
 				thresholds: []
 				timeFrom:  null
