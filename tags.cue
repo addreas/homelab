@@ -9,10 +9,10 @@ goModVersions: {
 	"github.com/fluxcd/kustomize-controller/api":                             "v1.1.1"
 	"github.com/fluxcd/notification-controller/api":                          "v1.1.0"
 	"github.com/fluxcd/source-controller/api":                                "v1.1.2"
-	"github.com/grafana-operator/grafana-operator/v5":                        "v5.5.1"
+	"github.com/grafana-operator/grafana-operator/v5":                        "v5.5.2"
 	"github.com/k8snetworkplumbingwg/network-attachment-definition-client":   "v1.4.0"
 	"github.com/ory/hydra-maester":                                           "v0.0.32"
-	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.69.1"
+	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring": "v0.70.0"
 	"k8s.io/api":                                                             "v0.28.4"
 	"k8s.io/apimachinery":                                                    "v0.28.4"
 	"k8s.io/kube-aggregator":                                                 "v0.28.4"
@@ -20,7 +20,7 @@ goModVersions: {
 githubReleases: {
 	"cloudflare/cloudflared":     "2023.10.0"
 	"dani-garcia/vaultwarden":    "1.30.1"
-	"esphome/esphome":            "2023.11.4"
+	"esphome/esphome":            "2023.11.6"
 	"grafana/grafana":            "v10.2.2"
 	"home-assistant/core":        "2023.11.3"
 	"jacobalberty/unifi-docker":  "v7.5.176"
@@ -29,7 +29,7 @@ githubReleases: {
 	"longhorn/longhorn":          "v1.5.3"
 	"ory/hydra":                  "v2.1.2"
 	"ory/kratos":                 "v1.0.0"
-	"zwave-js/zwave-js-ui":       "v9.4.1"
+	"zwave-js/zwave-js-ui":       "v9.5.1"
 }
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"

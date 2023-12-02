@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -91,7 +91,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -113,7 +113,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -2231,6 +2231,10 @@ prometheusOperator: {
 													items: {
 														description: "PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config"
 														properties: {
+															device: {
+																description: "The name of a device to send the notification to"
+																type:        "string"
+															}
 															expire: {
 																description: "How long your notification will continue to be retried for, unless the user acknowledges the notification."
 																pattern:     "^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$"
@@ -5532,7 +5536,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -11381,7 +11385,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -12033,7 +12037,7 @@ prometheusOperator: {
 												}
 												trackTimestampsStaleness: {
 													description: """
-																	TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamps present in scraped data. Has no effect if `honorTimestamps` is false. 
+																	`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. 
 																	 It requires Prometheus >= v2.48.0.
 																	"""
 													type: "boolean"
@@ -12113,7 +12117,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -12823,7 +12827,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -16329,6 +16333,11 @@ prometheusOperator: {
 														"""
 										type: "string"
 									}
+									reloadStrategy: {
+										description: "Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint."
+										enum: ["HTTP", "ProcessSignal"]
+										type: "string"
+									}
 									remoteWrite: {
 										description: "Defines the list of remote write configurations."
 										items: {
@@ -19712,7 +19721,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -23710,6 +23719,11 @@ prometheusOperator: {
 														queryLogFile specifies where the file to which PromQL queries are logged. 
 														 If the filename has an empty path, e.g. 'query.log', The Prometheus Pods will mount the file into an emptyDir volume at `/var/log/prometheus`. If a full path is provided, e.g. '/var/log/prometheus/query.log', you must mount a volume in the specified directory and it must be writable. This is because the prometheus container runs with a read-only root filesystem for security reasons. Alternatively, the location can be set to a standard I/O stream, e.g. `/dev/stdout`, to log query information to the default Prometheus log stream.
 														"""
+										type: "string"
+									}
+									reloadStrategy: {
+										description: "Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint."
+										enum: ["HTTP", "ProcessSignal"]
 										type: "string"
 									}
 									remoteRead: {
@@ -28029,7 +28043,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -28158,7 +28172,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -29574,7 +29588,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -30190,7 +30204,7 @@ prometheusOperator: {
 												}
 												trackTimestampsStaleness: {
 													description: """
-																	`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. 
+																	`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. 
 																	 It requires Prometheus >= v2.48.0.
 																	"""
 													type: "boolean"
@@ -30330,7 +30344,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.69.1"
+					"operator.prometheus.io/version":        "0.70.0"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -35718,7 +35732,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35737,18 +35751,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.69.1"
+						"app.kubernetes.io/version":   "0.70.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.69.1"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.70.0"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.69.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.70.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -35816,7 +35830,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -35946,7 +35960,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35974,7 +35988,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -35988,7 +36002,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -36005,7 +36019,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.69.1"
+				"app.kubernetes.io/version":   "0.70.0"
 			}
 		}
 	}
