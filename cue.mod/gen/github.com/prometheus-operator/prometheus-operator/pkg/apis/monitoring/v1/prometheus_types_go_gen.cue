@@ -7,6 +7,7 @@ package v1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
@@ -255,6 +256,14 @@ import (
 	// VolumeMounts will be appended to other VolumeMounts in the 'prometheus'
 	// container, that are generated as a result of StorageSpec objects.
 	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
+
+	// The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet.
+	// The default behavior is all PVCs are retained.
+	// This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26.
+	// It requires enabling the StatefulSetAutoDeletePVC feature gate.
+	//
+	// +optional
+	persistentVolumeClaimRetentionPolicy?: null | appsv1.#StatefulSetPersistentVolumeClaimRetentionPolicy @go(PersistentVolumeClaimRetentionPolicy,*appsv1.StatefulSetPersistentVolumeClaimRetentionPolicy)
 
 	// Defines the configuration of the Prometheus web server.
 	web?: null | #PrometheusWebSpec @go(Web,*PrometheusWebSpec)
@@ -601,7 +610,25 @@ import (
 	//
 	// +optional
 	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
+
+	// Defines the strategy used to reload the Prometheus configuration.
+	// If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
+	// +optional
+	reloadStrategy?: null | #ReloadStrategyType @go(ReloadStrategy,*ReloadStrategyType)
 }
+
+// +kubebuilder:validation:Enum=HTTP;ProcessSignal
+#ReloadStrategyType: string // #enumReloadStrategyType
+
+#enumReloadStrategyType:
+	#HTTPReloadStrategyType |
+	#ProcessSignalReloadStrategyType
+
+// HTTPReloadStrategyType reloads the configuration using the /-/reload HTTP endpoint.
+#HTTPReloadStrategyType: #ReloadStrategyType & "HTTP"
+
+// ProcessSignalReloadStrategyType reloads the configuration by sending a SIGHUP signal to the process.
+#ProcessSignalReloadStrategyType: #ReloadStrategyType & "ProcessSignal"
 
 // Prometheus defines a Prometheus deployment.
 #Prometheus: {
@@ -1266,8 +1293,36 @@ import (
 	cloud?: null | string @go(Cloud,*string)
 
 	// ManagedIdentity defines the Azure User-assigned Managed identity.
+	// Cannot be set at the same time as `oauth`.
+	// +optional
+	managedIdentity?: null | #ManagedIdentity @go(ManagedIdentity,*ManagedIdentity)
+
+	// OAuth defines the oauth config that is being used to authenticate.
+	// Cannot be set at the same time as `managedIdentity`.
+	//
+	// It requires Prometheus >= v2.48.0.
+	//
+	// +optional
+	oauth?: null | #AzureOAuth @go(OAuth,*AzureOAuth)
+}
+
+// AzureOAuth defines the Azure OAuth settings.
+// +k8s:openapi-gen=true
+#AzureOAuth: {
+	// `clientID` is the clientId of the Azure Active Directory application that is being used to authenticate.
 	// +required
-	managedIdentity: #ManagedIdentity @go(ManagedIdentity)
+	// +kubebuilder:validation:MinLength=1
+	clientId: string @go(ClientID)
+
+	// `clientSecret` specifies a key of a Secret containing the client secret of the Azure Active Directory application that is being used to authenticate.
+	// +required
+	clientSecret: v1.#SecretKeySelector @go(ClientSecret)
+
+	// `tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern:=^[0-9a-zA-Z-.]+$
+	tenantId: string @go(TenantID)
 }
 
 // ManagedIdentity defines the Azure User-assigned Managed identity.
