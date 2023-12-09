@@ -5,12 +5,12 @@ go 1.19
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	github.com/bitnami-labs/sealed-secrets v0.24.4
-	github.com/cert-manager/cert-manager v1.13.2
+	github.com/cert-manager/cert-manager v1.13.3
 	github.com/cilium/cilium v1.14.4
 	github.com/fluxcd/helm-controller/api v0.36.2
 	github.com/fluxcd/kustomize-controller/api v1.1.1
-	github.com/fluxcd/notification-controller/api v1.1.0
-	github.com/fluxcd/source-controller/api v1.1.2
+	github.com/fluxcd/notification-controller/api v1.2.1
+	github.com/fluxcd/source-controller/api v1.2.1
 	github.com/grafana-operator/grafana-operator/v5 v5.5.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.32
@@ -36,7 +36,7 @@ require (
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
 	github.com/fluxcd/pkg/apis/kustomize v1.1.1 // indirect
-	github.com/fluxcd/pkg/apis/meta v1.1.2 // indirect
+	github.com/fluxcd/pkg/apis/meta v1.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -105,9 +105,9 @@ require (
 	github.com/vishvananda/netns v0.0.4 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	go.mongodb.org/mongo-driver v1.11.3 // indirect
-	go.opentelemetry.io/otel v1.19.0 // indirect
-	go.opentelemetry.io/otel/metric v1.19.0 // indirect
-	go.opentelemetry.io/otel/trace v1.19.0 // indirect
+	go.opentelemetry.io/otel v1.20.0 // indirect
+	go.opentelemetry.io/otel/metric v1.20.0 // indirect
+	go.opentelemetry.io/otel/trace v1.20.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/dig v1.17.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect

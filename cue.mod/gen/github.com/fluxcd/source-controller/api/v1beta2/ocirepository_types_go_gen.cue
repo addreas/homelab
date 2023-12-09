@@ -173,6 +173,29 @@ import (
 	// trusted public keys.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
+
+	// MatchOIDCIdentity specifies the identity matching criteria to use
+	// while verifying an OCI artifact which was signed using Cosign keyless
+	// signing. The artifact's identity is deemed to be verified if any of the
+	// specified matchers match against the identity.
+	// +optional
+	matchOIDCIdentity?: [...#OIDCIdentityMatch] @go(MatchOIDCIdentity,[]OIDCIdentityMatch)
+}
+
+// OIDCIdentityMatch specifies options for verifying the certificate identity,
+// i.e. the issuer and the subject of the certificate.
+#OIDCIdentityMatch: {
+	// Issuer specifies the regex pattern to match against to verify
+	// the OIDC issuer in the Fulcio certificate. The pattern must be a
+	// valid Go regular expression.
+	// +required
+	issuer: string @go(Issuer)
+
+	// Subject specifies the regex pattern to match against to verify
+	// the identity subject in the Fulcio certificate. The pattern must
+	// be a valid Go regular expression.
+	// +required
+	subject: string @go(Subject)
 }
 
 // OCIRepositoryStatus defines the observed state of OCIRepository
