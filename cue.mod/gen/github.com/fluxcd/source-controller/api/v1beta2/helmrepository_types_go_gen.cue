@@ -30,6 +30,7 @@ import (
 #HelmRepositorySpec: {
 	// URL of the Helm repository, a valid URL contains at least a protocol and
 	// host.
+	// +kubebuilder:validation:Pattern="^(http|https|oci)://.*$"
 	// +required
 	url: string @go(URL)
 
@@ -74,13 +75,18 @@ import (
 	// efficient use of resources.
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
-	// +required
-	interval: metav1.#Duration @go(Interval)
+	// +optional
+	interval?: metav1.#Duration @go(Interval)
+
+	// Insecure allows connecting to a non-TLS HTTP container registry.
+	// This field is only taken into account if the .spec.type field is set to 'oci'.
+	// +optional
+	insecure?: bool @go(Insecure)
 
 	// Timeout is used for the index fetch operation for an HTTPS helm repository,
-	// and for remote OCI Repository operations like pulling for an OCI helm repository.
+	// and for remote OCI Repository operations like pulling for an OCI helm
+	// chart by the associated HelmChart.
 	// Its default value is 60s.
-	// +kubebuilder:default:="60s"
 	// +kubebuilder:validation:Type=string
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m))+$"
 	// +optional

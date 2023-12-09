@@ -57,6 +57,10 @@ import (
 	// +optional
 	region?: string @go(Region)
 
+	// Prefix to use for server-side filtering of files in the Bucket.
+	// +optional
+	prefix?: string @go(Prefix)
+
 	// SecretRef specifies the Secret containing authentication credentials
 	// for the Bucket.
 	// +optional
