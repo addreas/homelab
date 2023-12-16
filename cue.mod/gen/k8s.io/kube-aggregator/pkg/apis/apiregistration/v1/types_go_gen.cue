@@ -60,8 +60,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	caBundle?: bytes @go(CABundle,[]byte) @protobuf(5,bytes,opt)
 
-	// GroupPriorityMininum is the priority this group should have at least. Higher priority means that the group is preferred by clients over lower priority ones.
-	// Note that other versions of this group might specify even higher GroupPriorityMininum values such that the whole group gets a higher priority.
+	// GroupPriorityMinimum is the priority this group should have at least. Higher priority means that the group is preferred by clients over lower priority ones.
+	// Note that other versions of this group might specify even higher GroupPriorityMinimum values such that the whole group gets a higher priority.
 	// The primary sort is based on GroupPriorityMinimum, ordered highest number to lowest (20 before 10).
 	// The secondary sort is based on the alphabetical comparison of the name of the object.  (v1.bar before v1.foo)
 	// We'd recommend something like: *.k8s.io (except extensions) at 18000 and

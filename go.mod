@@ -1,23 +1,25 @@
 module github.com/addreas/cuebernetes
 
-go 1.19
+go 1.21
+
+toolchain go1.21.5
 
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
-	github.com/bitnami-labs/sealed-secrets v0.24.4
+	github.com/bitnami-labs/sealed-secrets v0.24.5
 	github.com/cert-manager/cert-manager v1.13.3
-	github.com/cilium/cilium v1.14.4
-	github.com/fluxcd/helm-controller/api v0.36.2
-	github.com/fluxcd/kustomize-controller/api v1.1.1
-	github.com/fluxcd/notification-controller/api v1.2.1
-	github.com/fluxcd/source-controller/api v1.2.1
-	github.com/grafana-operator/grafana-operator/v5 v5.5.2
+	github.com/cilium/cilium v1.14.5
+	github.com/fluxcd/helm-controller/api v0.37.1
+	github.com/fluxcd/kustomize-controller/api v1.2.1
+	github.com/fluxcd/notification-controller/api v1.2.3
+	github.com/fluxcd/source-controller/api v1.2.3
+	github.com/grafana-operator/grafana-operator/v5 v5.6.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/ory/hydra-maester v0.0.32
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.70.0
-	k8s.io/api v0.28.4
-	k8s.io/apimachinery v0.28.4
-	k8s.io/kube-aggregator v0.28.4
+	k8s.io/api v0.29.0
+	k8s.io/apimachinery v0.29.0
+	k8s.io/kube-aggregator v0.29.0
 )
 
 require (
@@ -28,16 +30,16 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cilium/ebpf v0.10.1-0.20230626090016-654491c8a500 // indirect
-	github.com/cilium/proxy v0.0.0-20230623092907-8fddead4e52c // indirect
+	github.com/cilium/proxy v0.0.0-20231202123106-38b645b854f3 // indirect
 	github.com/cncf/xds/go v0.0.0-20230607035331-e9ce68804cb4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.11.0 // indirect
-	github.com/envoyproxy/protoc-gen-validate v0.10.1 // indirect
+	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v1.1.1 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v1.2.0 // indirect
 	github.com/fluxcd/pkg/apis/meta v1.2.0 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -129,13 +131,13 @@ require (
 	k8s.io/apiextensions-apiserver v0.28.4 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
 	k8s.io/klog/v2 v2.110.1 // indirect
-	k8s.io/kube-openapi v0.0.0-20230905202853-d090da108d2f // indirect
+	k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00 // indirect
 	k8s.io/utils v0.0.0-20231127182322-b307cd553661 // indirect
 	sigs.k8s.io/controller-runtime v0.16.3 // indirect
 	sigs.k8s.io/gateway-api v0.8.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
-	sigs.k8s.io/yaml v1.3.0 // indirect
+	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
 replace (
