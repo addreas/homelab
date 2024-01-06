@@ -4,23 +4,23 @@ k: StatefulSet: "hass-thread-matter": spec: {
 	template: {
 		metadata: annotations: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 		spec: {
-			securityContext: sysctls: [{
-				name:  "net.ipv4.conf.all.src_valid_mark"
-				value: "0"
-			}, {
-				name:  "net.ipv4.conf.all.forwarding"
-				value: "1"
-			}, {
-				name:  "net.ipv6.conf.all.forwarding"
-				value: "1"
-				// https://github.com/home-assistant-libs/python-matter-server#requirements-to-communicate-with-thread-devices-through-thread-border-routers
-				// }, {
-				// 	name:  "net.ipv6.conf.wlan0.accept_ra"
-				// 	value: "2"
-				// }, {
-				// 	name:  "net.ipv6.conf.wlan0.accept_ra_rt_info_max_plen=64"
-				// 	value: "1"
-			}]
+			// securityContext: sysctls: [{
+			// 	name:  "net.ipv4.conf.all.src_valid_mark"
+			// 	value: "0"
+			// }, {
+			// 	name:  "net.ipv4.conf.all.forwarding"
+			// 	value: "1"
+			// }, {
+			// name:  "net.ipv6.conf.all.forwarding"
+			// value: "1"
+			// https://github.com/home-assistant-libs/python-matter-server#requirements-to-communicate-with-thread-devices-through-thread-border-routers
+			// }, {
+			// 	name:  "net.ipv6.conf.wlan0.accept_ra"
+			// 	value: "2"
+			// }, {
+			// 	name:  "net.ipv6.conf.wlan0.accept_ra_rt_info_max_plen=64"
+			// 	value: "1"
+			// }]
 			initContainers: [{
 				name:  "default-route"
 				image: "nixery.dev/iproute2"
