@@ -2,6 +2,7 @@ package kube
 
 k: StatefulSet: "hass-thread-matter": spec: {
 	template: {
+		metadata: annotations: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 		spec: {
 			securityContext: sysctls: [{
 				name:  "net.ipv4.conf.all.src_valid_mark"
@@ -19,6 +20,12 @@ k: StatefulSet: "hass-thread-matter": spec: {
 				// }, {
 				// 	name:  "net.ipv6.conf.wlan0.accept_ra_rt_info_max_plen=64"
 				// 	value: "1"
+			}]
+			initContainers: [{
+				name:  "default-route"
+				image: "nixery.dev/iproute2"
+				command: ["ip", "route", "delete", "default", "via", "192.168.0.1"]
+				securityContext: capabilities: add: ["NET_ADMIN"]
 			}]
 			containers: [{
 				name:  "otbr"
