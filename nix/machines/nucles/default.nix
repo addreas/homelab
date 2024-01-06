@@ -37,4 +37,6 @@
   services.resolved.dnssec = "false"; # dnssec fails for localdomain and breaks stuff
 
   security.sudo.wheelNeedsPassword = false;
+
+  nix.gc.automatic = true;
 }
