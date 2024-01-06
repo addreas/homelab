@@ -14,15 +14,6 @@ k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 				ID_MODEL:  "Yanzi_Serial_Radio"
 			}
 		}
-		"addem.se/dev_thread_rcp": {
-			containerPath: "/dev/thread-rcp"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "Nordic_Semiconductor_ASA"
-				ID_MODEL:  "Thread_Co-Processor"
-			}
-		}
 		"addem.se/dev_deconz_conbee": {
 			containerPath: "/dev/deconz-conbee"
 			permissions:   "rw"
