@@ -2,7 +2,7 @@ package kube
 
 k: StatefulSet: "hass-thread-matter": spec: {
 	template: {
-		metadata: annotations: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+		metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
 		spec: {
 			// securityContext: sysctls: [{
 			// 	name:  "net.ipv4.conf.all.src_valid_mark"
