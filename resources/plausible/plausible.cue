@@ -15,7 +15,7 @@ k: Deployment: plausible: spec: template: spec: {
 		name:  "plausible-init"
 		image: "plausible/analytics:latest"
 		command: ["/bin/sh", "-c"]
-		args: ["sleep 30 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"]
+		args: ["sleep 30 && /entrypoint.sh db createdb && /entrypoint.sh db migrate"]
 		envFrom: [
 			{secretRef: name: "plausible-config"},
 			{secretRef: name: "postgres-credentials-plausible"},
