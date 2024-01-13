@@ -177,8 +177,8 @@ import (
 	// +optional
 	spec?: v1.#PersistentVolumeClaimSpec @go(Spec) @protobuf(2,bytes,opt)
 
-	// *Deprecated: this field is never set.*
 	// +optional
+	// Deprecated: this field is never set.
 	status?: v1.#PersistentVolumeClaimStatus @go(Status) @protobuf(3,bytes,opt)
 }
 

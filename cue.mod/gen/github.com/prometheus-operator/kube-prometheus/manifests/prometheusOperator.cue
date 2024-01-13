@@ -173,7 +173,7 @@ prometheusOperator: {
 																type:        "string"
 															}
 															regex: {
-																description: "Whether to match on equality (false) or regular-expression (true). Deprecated as of AlertManager >= v0.22.0 where a user should use MatchType instead."
+																description: "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
 																type:        "boolean"
 															}
 															value: {
@@ -202,7 +202,7 @@ prometheusOperator: {
 																type:        "string"
 															}
 															regex: {
-																description: "Whether to match on equality (false) or regular-expression (true). Deprecated as of AlertManager >= v0.22.0 where a user should use MatchType instead."
+																description: "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
 																type:        "boolean"
 															}
 															value: {
@@ -5484,7 +5484,7 @@ prometheusOperator: {
 															type:        "string"
 														}
 														regex: {
-															description: "Whether to match on equality (false) or regular-expression (true). Deprecated as of AlertManager >= v0.22.0 where a user should use MatchType instead."
+															description: "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
 															type:        "boolean"
 														}
 														value: {
@@ -6795,7 +6795,7 @@ prometheusOperator: {
 										type:        "boolean"
 									}
 									baseImage: {
-										description: "Base image that is used to deploy pods, without tag. Deprecated: use 'image' instead"
+										description: "Base image that is used to deploy pods, without tag. Deprecated: use 'image' instead."
 										type:        "string"
 									}
 									clusterAdvertiseAddress: {
@@ -6805,6 +6805,10 @@ prometheusOperator: {
 									clusterGossipInterval: {
 										description: "Interval between gossip attempts."
 										pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:        "string"
+									}
+									clusterLabel: {
+										description: "Defines the identifier that uniquely identifies the Alertmanager cluster. You should only set it when the Alertmanager cluster includes Alertmanager instances which are external to this Alertmanager resource. In practice, the addresses of the external instances are provided via the `.spec.additionalPeers` field."
 										type:        "string"
 									}
 									clusterPeerTimeout: {
@@ -9252,14 +9256,14 @@ prometheusOperator: {
 										type:        "string"
 									}
 									sha: {
-										description: "SHA of Alertmanager container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. Deprecated: use 'image' instead.  The image digest can be specified as part of the image URL."
+										description: "SHA of Alertmanager container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. Deprecated: use 'image' instead. The image digest can be specified as part of the image URL."
 										type:        "string"
 									}
 									storage: {
 										description: "Storage is the definition of how storage will be used by the Alertmanager instances."
 										properties: {
 											disableMountSubPath: {
-												description: "*Deprecated: subPath usage will be removed in a future release.*"
+												description: "Deprecated: subPath usage will be removed in a future release."
 												type:        "boolean"
 											}
 											emptyDir: {
@@ -9640,7 +9644,7 @@ prometheusOperator: {
 														type: "object"
 													}
 													status: {
-														description: "*Deprecated: this field is never set.*"
+														description: "Deprecated: this field is never set."
 														properties: {
 															accessModes: {
 																description: "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
@@ -9740,7 +9744,7 @@ prometheusOperator: {
 										type: "object"
 									}
 									tag: {
-										description: "Tag of Alertmanager container image to be deployed. Defaults to the value of `version`. Version is ignored if Tag is set. Deprecated: use 'image' instead.  The image tag can be specified as part of the image URL."
+										description: "Tag of Alertmanager container image to be deployed. Defaults to the value of `version`. Version is ignored if Tag is set. Deprecated: use 'image' instead. The image tag can be specified as part of the image URL."
 										type:        "string"
 									}
 									tolerations: {
@@ -13585,7 +13589,7 @@ prometheusOperator: {
 											bearerToken: {
 												description: """
 																*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-																 *Deprecated: this will be removed in a future release.*
+																 Deprecated: this will be removed in a future release.
 																"""
 												type: "string"
 											}
@@ -13593,7 +13597,7 @@ prometheusOperator: {
 												description: """
 																File to read bearer token for accessing apiserver. 
 																 Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. 
-																 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																"""
 												type: "string"
 											}
@@ -16100,6 +16104,12 @@ prometheusOperator: {
 										enum: ["", "debug", "info", "warn", "error"]
 										type: "string"
 									}
+									maximumStartupDurationSeconds: {
+										description: "Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes)."
+										format:      "int32"
+										minimum:     60
+										type:        "integer"
+									}
 									minReadySeconds: {
 										description: """
 														Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) 
@@ -16502,16 +16512,20 @@ prometheusOperator: {
 												bearerToken: {
 													description: """
 																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-																	 *Deprecated: this will be removed in a future release.*
+																	 Deprecated: this will be removed in a future release.
 																	"""
 													type: "string"
 												}
 												bearerTokenFile: {
 													description: """
 																	File from which to read bearer token for the URL. 
-																	 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																	 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																	"""
 													type: "string"
+												}
+												enableHttp2: {
+													description: "Whether to enable HTTP2."
+													type:        "boolean"
 												}
 												headers: {
 													additionalProperties: type: "string"
@@ -17360,7 +17374,7 @@ prometheusOperator: {
 										description: "Storage defines the storage used by Prometheus."
 										properties: {
 											disableMountSubPath: {
-												description: "*Deprecated: subPath usage will be removed in a future release.*"
+												description: "Deprecated: subPath usage will be removed in a future release."
 												type:        "boolean"
 											}
 											emptyDir: {
@@ -17741,7 +17755,7 @@ prometheusOperator: {
 														type: "object"
 													}
 													status: {
-														description: "*Deprecated: this field is never set.*"
+														description: "Deprecated: this field is never set."
 														properties: {
 															accessModes: {
 																description: "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
@@ -20540,7 +20554,7 @@ prometheusOperator: {
 														description: """
 																			File to read bearer token for Alertmanager. 
 																			 Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`. 
-																			 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																			 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																			"""
 														type: "string"
 													}
@@ -20790,7 +20804,7 @@ prometheusOperator: {
 									allowOverlappingBlocks: {
 										description: """
 														AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus. 
-														 *Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.*
+														 Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.
 														"""
 										type: "boolean"
 									}
@@ -20890,7 +20904,7 @@ prometheusOperator: {
 											bearerToken: {
 												description: """
 																*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-																 *Deprecated: this will be removed in a future release.*
+																 Deprecated: this will be removed in a future release.
 																"""
 												type: "string"
 											}
@@ -20898,7 +20912,7 @@ prometheusOperator: {
 												description: """
 																File to read bearer token for accessing apiserver. 
 																 Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. 
-																 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																"""
 												type: "string"
 											}
@@ -21054,7 +21068,7 @@ prometheusOperator: {
 										type: "object"
 									}
 									baseImage: {
-										description: "*Deprecated: use 'spec.image' instead.*"
+										description: "Deprecated: use 'spec.image' instead."
 										type:        "string"
 									}
 									bodySizeLimit: {
@@ -23440,6 +23454,12 @@ prometheusOperator: {
 										enum: ["", "debug", "info", "warn", "error"]
 										type: "string"
 									}
+									maximumStartupDurationSeconds: {
+										description: "Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes)."
+										format:      "int32"
+										minimum:     60
+										type:        "integer"
+									}
 									minReadySeconds: {
 										description: """
 														Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) 
@@ -23674,7 +23694,7 @@ prometheusOperator: {
 										type: "string"
 									}
 									prometheusRulesExcludedFromEnforce: {
-										description: "Defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. *Deprecated: use `spec.excludedFromEnforcement` instead.*"
+										description: "Defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead."
 										items: {
 											description: "PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces to be ignored while enforcing namespace label for alerts and metrics."
 											properties: {
@@ -23829,14 +23849,14 @@ prometheusOperator: {
 												bearerToken: {
 													description: """
 																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-																	 *Deprecated: this will be removed in a future release.*
+																	 Deprecated: this will be removed in a future release.
 																	"""
 													type: "string"
 												}
 												bearerTokenFile: {
 													description: """
 																	File from which to read the bearer token for the URL. 
-																	 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																	 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																	"""
 													type: "string"
 												}
@@ -24288,16 +24308,20 @@ prometheusOperator: {
 												bearerToken: {
 													description: """
 																	*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-																	 *Deprecated: this will be removed in a future release.*
+																	 Deprecated: this will be removed in a future release.
 																	"""
 													type: "string"
 												}
 												bearerTokenFile: {
 													description: """
 																	File from which to read bearer token for the URL. 
-																	 *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+																	 Deprecated: this will be removed in a future release. Prefer using `authorization`.
 																	"""
 													type: "string"
+												}
+												enableHttp2: {
+													description: "Whether to enable HTTP2."
+													type:        "boolean"
 												}
 												headers: {
 													additionalProperties: type: "string"
@@ -25246,7 +25270,7 @@ prometheusOperator: {
 										"x-kubernetes-map-type": "atomic"
 									}
 									sha: {
-										description: "*Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.*"
+										description: "Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name."
 										type:        "string"
 									}
 									shards: {
@@ -25263,7 +25287,7 @@ prometheusOperator: {
 										description: "Storage defines the storage used by Prometheus."
 										properties: {
 											disableMountSubPath: {
-												description: "*Deprecated: subPath usage will be removed in a future release.*"
+												description: "Deprecated: subPath usage will be removed in a future release."
 												type:        "boolean"
 											}
 											emptyDir: {
@@ -25644,7 +25668,7 @@ prometheusOperator: {
 														type: "object"
 													}
 													status: {
-														description: "*Deprecated: this field is never set.*"
+														description: "Deprecated: this field is never set."
 														properties: {
 															accessModes: {
 																description: "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
@@ -25744,7 +25768,7 @@ prometheusOperator: {
 										type: "object"
 									}
 									tag: {
-										description: "*Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.*"
+										description: "Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name."
 										type:        "string"
 									}
 									targetLimit: {
@@ -25779,7 +25803,7 @@ prometheusOperator: {
 												type: "array"
 											}
 											baseImage: {
-												description: "*Deprecated: use 'image' instead.*"
+												description: "Deprecated: use 'image' instead."
 												type:        "string"
 											}
 											blockSize: {
@@ -25965,7 +25989,7 @@ prometheusOperator: {
 												type: "string"
 											}
 											listenLocal: {
-												description: "*Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.*"
+												description: "Deprecated: use `grpcListenLocal` and `httpListenLocal` instead."
 												type:        "boolean"
 											}
 											logFormat: {
@@ -26071,11 +26095,11 @@ prometheusOperator: {
 												type: "object"
 											}
 											sha: {
-												description: "*Deprecated: use 'image' instead.  The image digest can be specified as part of the image name.*"
+												description: "Deprecated: use 'image' instead.  The image digest can be specified as part of the image name."
 												type:        "string"
 											}
 											tag: {
-												description: "*Deprecated: use 'image' instead. The image's tag can be specified as part of the image name.*"
+												description: "Deprecated: use 'image' instead. The image's tag can be specified as as part of the image name."
 												type:        "string"
 											}
 											tracingConfig: {
@@ -29396,6 +29420,247 @@ prometheusOperator: {
 														 It requires Prometheus >= v2.43.0.
 														"""
 										type: "string"
+									}
+									openstackSDConfigs: {
+										description: "OpenStackSDConfigs defines a list of OpenStack service discovery configurations."
+										items: {
+											description: "OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config"
+											properties: {
+												allTenants: {
+													description: "Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions."
+													type:        "boolean"
+												}
+												applicationCredentialId: {
+													description: "ApplicationCredentialID"
+													type:        "string"
+												}
+												applicationCredentialName: {
+													description: "The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password."
+													type:        "string"
+												}
+												applicationCredentialSecret: {
+													description: "The applicationCredentialSecret field is required if using an application credential to authenticate."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												availability: {
+													description: "Availability of the endpoint to connect to."
+													enum: ["Public", "public", "Admin", "admin", "Internal", "internal"]
+													type: "string"
+												}
+												domainID: {
+													description: "DomainID"
+													type:        "string"
+												}
+												domainName: {
+													description: "At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional."
+													type:        "string"
+												}
+												identityEndpoint: {
+													description: "IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version."
+													type:        "string"
+												}
+												password: {
+													description: "Password for the Identity V2 and V3 APIs. Consult with your provider's control panel to discover your account's preferred method of authentication."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+															type:        "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												port: {
+													description: "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+													type:        "integer"
+												}
+												projectID: {
+													description: "ProjectID"
+													type:        "string"
+												}
+												projectName: {
+													description: "The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication."
+													type:        "string"
+												}
+												refreshInterval: {
+													description: "Refresh interval to re-read the instance list."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												region: {
+													description: "The OpenStack Region."
+													minLength:   1
+													type:        "string"
+												}
+												role: {
+													description: "The OpenStack role of entities that should be discovered."
+													enum: ["Instance", "instance", "Hypervisor", "hypervisor"]
+													type: "string"
+												}
+												tlsConfig: {
+													description: "TLS configuration applying to the target HTTP endpoint."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												userid: {
+													description: "UserID"
+													type:        "string"
+												}
+												username: {
+													description: "Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed"
+													type:        "string"
+												}
+											}
+											required: ["region", "role"]
+											type: "object"
+										}
+										type: "array"
 									}
 									params: {
 										additionalProperties: {
@@ -33903,7 +34168,7 @@ prometheusOperator: {
 										description: "Storage spec to specify how storage shall be used."
 										properties: {
 											disableMountSubPath: {
-												description: "*Deprecated: subPath usage will be removed in a future release.*"
+												description: "Deprecated: subPath usage will be removed in a future release."
 												type:        "boolean"
 											}
 											emptyDir: {
@@ -34284,7 +34549,7 @@ prometheusOperator: {
 														type: "object"
 													}
 													status: {
-														description: "*Deprecated: this field is never set.*"
+														description: "Deprecated: this field is never set."
 														properties: {
 															accessModes: {
 																description: "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
@@ -36004,10 +36269,23 @@ prometheusOperator: {
 				annotations: {
 					description: "{{ $value | humanizePercentage }} of reconciling operations failed for {{ $labels.controller }} controller in {{ $labels.namespace }} namespace."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorreconcileerrors"
-					summary:     "Errors while reconciling controller."
+					summary:     "Errors while reconciling objects."
 				}
 				expr: """
 					(sum by (cluster,controller,namespace) (rate(prometheus_operator_reconcile_errors_total{job="prometheus-operator",namespace="monitoring"}[5m]))) / (sum by (cluster,controller,namespace) (rate(prometheus_operator_reconcile_operations_total{job="prometheus-operator",namespace="monitoring"}[5m]))) > 0.1
+
+					"""
+				for: "10m"
+				labels: severity: "warning"
+			}, {
+				alert: "PrometheusOperatorStatusUpdateErrors"
+				annotations: {
+					description: "{{ $value | humanizePercentage }} of status update operations failed for {{ $labels.controller }} controller in {{ $labels.namespace }} namespace."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorstatusupdateerrors"
+					summary:     "Errors while updating objects status."
+				}
+				expr: """
+					(sum by (cluster,controller,namespace) (rate(prometheus_operator_status_update_errors_total{job="prometheus-operator",namespace="monitoring"}[5m]))) / (sum by (cluster,controller,namespace) (rate(prometheus_operator_status_update_operations_total{job="prometheus-operator",namespace="monitoring"}[5m]))) > 0.1
 
 					"""
 				for: "10m"

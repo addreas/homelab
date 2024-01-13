@@ -5,8 +5,8 @@
 package v1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -19,6 +19,29 @@ import (
 // PrometheusInterface is used by Prometheus and PrometheusAgent to share common methods, e.g. config generation.
 // +k8s:deepcopy-gen=false
 #PrometheusInterface: _
+
+// +kubebuilder:validation:Enum=OnResource;OnShard
+#AdditionalLabelSelectors: string // #enumAdditionalLabelSelectors
+
+#enumAdditionalLabelSelectors:
+	#ResourceNameLabelSelector |
+	#ShardAndResourceNameLabelSelector
+
+// Automatically add a label selector that will select all pods matching the same Prometheus/PrometheusAgent resource (irrespective of their shards).
+#ResourceNameLabelSelector: #AdditionalLabelSelectors & "OnResource"
+
+// Automatically add a label selector that will select all pods matching the same shard.
+#ShardAndResourceNameLabelSelector: #AdditionalLabelSelectors & "OnShard"
+
+#CoreV1TopologySpreadConstraint: v1.#TopologySpreadConstraint
+
+#TopologySpreadConstraint: {
+	#CoreV1TopologySpreadConstraint
+
+	//+optional
+	// Defines what Prometheus Operator managed labels should be added to labelSelector on the topologySpreadConstraint.
+	additionalLabelSelectors?: null | #AdditionalLabelSelectors @go(AdditionalLabelSelectors,*AdditionalLabelSelectors)
+}
 
 // CommonPrometheusFields are the options available to both the Prometheus server and agent.
 // +k8s:deepcopy-gen=true
@@ -299,8 +322,8 @@ import (
 	tolerations?: [...v1.#Toleration] @go(Tolerations,[]v1.Toleration)
 
 	// Defines the pod's topology spread constraints if specified.
-	// +optional
-	topologySpreadConstraints?: [...v1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]v1.TopologySpreadConstraint)
+	//+optional
+	topologySpreadConstraints?: [...#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]TopologySpreadConstraint)
 
 	// Defines the list of remote write configurations.
 	// +optional
@@ -615,6 +638,12 @@ import (
 	// If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
 	// +optional
 	reloadStrategy?: null | #ReloadStrategyType @go(ReloadStrategy,*ReloadStrategyType)
+
+	// Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete.
+	// If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes).
+	// +optional
+	// +kubebuilder:validation:Minimum=60
+	maximumStartupDurationSeconds?: null | int32 @go(MaximumStartupDurationSeconds,*int32)
 }
 
 // +kubebuilder:validation:Enum=HTTP;ProcessSignal
@@ -664,15 +693,13 @@ import (
 #PrometheusSpec: {
 	#CommonPrometheusFields
 
-	// *Deprecated: use 'spec.image' instead.*
+	// Deprecated: use 'spec.image' instead.
 	baseImage?: string @go(BaseImage)
 
-	// *Deprecated: use 'spec.image' instead. The image's tag can be specified
-	// as part of the image name.*
+	// Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.
 	tag?: string @go(Tag)
 
-	// *Deprecated: use 'spec.image' instead. The image's digest can be
-	// specified as part of the image name.*
+	// Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.
 	sha?: string @go(SHA)
 
 	// How long to retain the Prometheus data.
@@ -692,8 +719,8 @@ import (
 	// Defines the list of PrometheusRule objects to which the namespace label
 	// enforcement doesn't apply.
 	// This is only relevant when `spec.enforcedNamespaceLabel` is set to true.
-	// *Deprecated: use `spec.excludedFromEnforcement` instead.*
 	// +optional
+	// Deprecated: use `spec.excludedFromEnforcement` instead.
 	prometheusRulesExcludedFromEnforce?: [...#PrometheusRuleExcludeConfig] @go(PrometheusRulesExcludedFromEnforce,[]PrometheusRuleExcludeConfig)
 
 	// PrometheusRule objects to be selected for rule evaluation. An empty
@@ -777,7 +804,7 @@ import (
 	// AllowOverlappingBlocks enables vertical compaction and vertical query
 	// merge in Prometheus.
 	//
-	// *Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.*
+	// Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.
 	allowOverlappingBlocks?: bool @go(AllowOverlappingBlocks)
 
 	// Exemplars related settings that are runtime reloadable.
@@ -878,6 +905,12 @@ import (
 	// +listMapKey=shardID
 	// +optional
 	shardStatuses?: [...#ShardStatus] @go(ShardStatuses,[]ShardStatus)
+
+	// Shards is the most recently observed number of shards.
+	shards?: int32 @go(Shards)
+
+	// The selector used to match the pods targeted by this Prometheus resource.
+	selector?: string @go(Selector)
 }
 
 // AlertingSpec defines parameters for alerting configuration of Prometheus servers.
@@ -897,7 +930,7 @@ import (
 //
 // +k8s:openapi-gen=true
 #StorageSpec: {
-	// *Deprecated: subPath usage will be removed in a future release.*
+	// Deprecated: subPath usage will be removed in a future release.
 	disableMountSubPath?: bool @go(DisableMountSubPath)
 
 	// EmptyDirVolumeSource to be used by the StatefulSet.
@@ -983,18 +1016,16 @@ import (
 	// +optional
 	version?: null | string @go(Version,*string)
 
-	// *Deprecated: use 'image' instead. The image's tag can be specified as
-	// part of the image name.*
 	// +optional
+	// Deprecated: use 'image' instead. The image's tag can be specified as as part of the image name.
 	tag?: null | string @go(Tag,*string)
 
-	// *Deprecated: use 'image' instead.  The image digest can be specified
-	// as part of the image name.*
 	// +optional
+	// Deprecated: use 'image' instead.  The image digest can be specified as part of the image name.
 	sha?: null | string @go(SHA,*string)
 
-	// *Deprecated: use 'image' instead.*
 	// +optional
+	// Deprecated: use 'image' instead.
 	baseImage?: null | string @go(BaseImage,*string)
 
 	// Defines the resources requests and limits of the Thanos sidecar.
@@ -1016,7 +1047,7 @@ import (
 	// +optional
 	objectStorageConfigFile?: null | string @go(ObjectStorageConfigFile,*string)
 
-	// *Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.*
+	// Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.
 	listenLocal?: bool @go(ListenLocal)
 
 	// When true, the Thanos sidecar listens on the loopback interface instead
@@ -1174,7 +1205,7 @@ import (
 
 	// File from which to read bearer token for the URL.
 	//
-	// *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+	// Deprecated: this will be removed in a future release. Prefer using `authorization`.
 	bearerTokenFile?: string @go(BearerTokenFile)
 
 	// Authorization section for the URL.
@@ -1207,7 +1238,7 @@ import (
 	// *Warning: this field shouldn't be used because the token value appears
 	// in clear-text. Prefer using `authorization`.*
 	//
-	// *Deprecated: this will be removed in a future release.*
+	// Deprecated: this will be removed in a future release.
 	bearerToken?: string @go(BearerToken)
 
 	// TLS Config to use for the URL.
@@ -1224,6 +1255,10 @@ import (
 	// MetadataConfig configures the sending of series metadata to the remote storage.
 	// +optional
 	metadataConfig?: null | #MetadataConfig @go(MetadataConfig,*MetadataConfig)
+
+	// Whether to enable HTTP2.
+	// +optional
+	enableHTTP2?: null | bool @go(EnableHttp2,*bool)
 }
 
 // QueueConfig allows the tuning of remote write's queue_config parameters.
@@ -1384,7 +1419,7 @@ import (
 
 	// File from which to read the bearer token for the URL.
 	//
-	// *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+	// Deprecated: this will be removed in a future release. Prefer using `authorization`.
 	bearerTokenFile?: string @go(BearerTokenFile)
 
 	// Authorization section for the URL.
@@ -1399,7 +1434,7 @@ import (
 	// *Warning: this field shouldn't be used because the token value appears
 	// in clear-text. Prefer using `authorization`.*
 	//
-	// *Deprecated: this will be removed in a future release.*
+	// Deprecated: this will be removed in a future release.
 	bearerToken?: string @go(BearerToken)
 
 	// TLS Config to use for the URL.
@@ -1497,7 +1532,7 @@ import (
 	//
 	// Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.
 	//
-	// *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+	// Deprecated: this will be removed in a future release. Prefer using `authorization`.
 	bearerTokenFile?: string @go(BearerTokenFile)
 
 	// TLS Config to use for the API server.
@@ -1516,7 +1551,7 @@ import (
 	// *Warning: this field shouldn't be used because the token value appears
 	// in clear-text. Prefer using `authorization`.*
 	//
-	// *Deprecated: this will be removed in a future release.*
+	// Deprecated: this will be removed in a future release.
 	bearerToken?: string @go(BearerToken)
 }
 
@@ -1555,7 +1590,7 @@ import (
 	//
 	// Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.
 	//
-	// *Deprecated: this will be removed in a future release. Prefer using `authorization`.*
+	// Deprecated: this will be removed in a future release. Prefer using `authorization`.
 	bearerTokenFile?: string @go(BearerTokenFile)
 
 	// Authorization section for Alertmanager.
