@@ -23,7 +23,6 @@ githubReleases: {
 	"esphome/esphome":            "2023.12.5"
 	"grafana/grafana":            "v10.2.3"
 	"home-assistant/core":        "2024.1.3"
-	"jacobalberty/unifi-docker":  "v8.0.26"
 	"jcmoraisjr/haproxy-ingress": "v0.14.5"
 	"kubereboot/charts":          "kured-5.3.2"
 	"longhorn/longhorn":          "v1.5.2"
