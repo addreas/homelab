@@ -59,19 +59,17 @@ import (
 
 	// Tag of Alertmanager container image to be deployed. Defaults to the value of `version`.
 	// Version is ignored if Tag is set.
-	// Deprecated: use 'image' instead.  The image tag can be specified
-	// as part of the image URL.
+	// Deprecated: use 'image' instead. The image tag can be specified as part of the image URL.
 	tag?: string @go(Tag)
 
 	// SHA of Alertmanager container image to be deployed. Defaults to the value of `version`.
 	// Similar to a tag, but the SHA explicitly deploys an immutable container image.
 	// Version and Tag are ignored if SHA is set.
-	// Deprecated: use 'image' instead.  The image digest can be specified
-	// as part of the image URL.
+	// Deprecated: use 'image' instead. The image digest can be specified as part of the image URL.
 	sha?: string @go(SHA)
 
 	// Base image that is used to deploy pods, without tag.
-	// Deprecated: use 'image' instead
+	// Deprecated: use 'image' instead.
 	baseImage?: string @go(BaseImage)
 
 	// An optional list of references to secrets in the same namespace
@@ -214,6 +212,10 @@ import (
 
 	// Interval between gossip attempts.
 	clusterGossipInterval?: #GoDuration @go(ClusterGossipInterval)
+
+	// Defines the identifier that uniquely identifies the Alertmanager cluster.
+	// You should only set it when the Alertmanager cluster includes Alertmanager instances which are external to this Alertmanager resource. In practice, the addresses of the external instances are provided via the `.spec.additionalPeers` field.
+	clusterLabel?: null | string @go(ClusterLabel,*string)
 
 	// Interval between pushpull attempts.
 	clusterPushpullInterval?: #GoDuration @go(ClusterPushpullInterval)
