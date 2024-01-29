@@ -26777,6 +26777,20 @@ grafanaDashboards: {
 					type: "number"
 					unit: "s"
 				}, {
+					alias:     "Cluster"
+					colorMode: null
+					colors: []
+					dateFormat:      "YYYY-MM-DD HH:mm:ss"
+					decimals:        2
+					link:            false
+					linkTargetBlank: false
+					linkTooltip:     "Drill down"
+					linkUrl:         ""
+					pattern:         "cluster"
+					thresholds: []
+					type: "number"
+					unit: "short"
+				}, {
 					alias:     "Instance"
 					colorMode: null
 					colors: []
@@ -26830,13 +26844,13 @@ grafanaDashboards: {
 					unit: "short"
 				}]
 				targets: [{
-					expr:         "count by (job, instance, version) (prometheus_build_info{job=~\"$job\", instance=~\"$instance\"})"
+					expr:         "count by (cluster, job, instance, version) (prometheus_build_info{cluster=~\"$cluster\", job=~\"$job\", instance=~\"$instance\"})"
 					format:       "table"
 					instant:      true
 					legendFormat: ""
 					refId:        "A"
 				}, {
-					expr:         "max by (job, instance) (time() - process_start_time_seconds{job=~\"$job\", instance=~\"$instance\"})"
+					expr:         "max by (cluster, job, instance) (time() - process_start_time_seconds{cluster=~\"$cluster\", job=~\"$job\", instance=~\"$instance\"})"
 					format:       "table"
 					instant:      true
 					legendFormat: ""
@@ -26916,9 +26930,9 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:         "sum(rate(prometheus_target_sync_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m])) by (scrape_job) * 1e3"
+					expr:         "sum(rate(prometheus_target_sync_length_seconds_sum{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[5m])) by (cluster, job, scrape_job, instance) * 1e3"
 					format:       "time_series"
-					legendFormat: "{{scrape_job}}"
+					legendFormat: "{{cluster}}:{{job}}:{{instance}}:{{scrape_job}}"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -26984,9 +26998,9 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "sum(prometheus_sd_discovered_targets{job=~\"$job\",instance=~\"$instance\"})"
+					expr:         "sum by (cluster, job, instance) (prometheus_sd_discovered_targets{cluster=~\"$cluster\", job=~\"$job\",instance=~\"$instance\"})"
 					format:       "time_series"
-					legendFormat: "Targets"
+					legendFormat: "{{cluster}}:{{job}}:{{instance}}"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27062,9 +27076,9 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:         "rate(prometheus_target_interval_length_seconds_sum{job=~\"$job\",instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{job=~\"$job\",instance=~\"$instance\"}[5m]) * 1e3"
+					expr:         "rate(prometheus_target_interval_length_seconds_sum{cluster=~\"$cluster\", job=~\"$job\",instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{cluster=~\"$cluster\", job=~\"$job\",instance=~\"$instance\"}[5m]) * 1e3"
 					format:       "time_series"
-					legendFormat: "{{interval}} configured"
+					legendFormat: "{{cluster}}:{{job}}:{{instance}} {{interval}} configured"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27130,29 +27144,29 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "sum by (job) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))"
+					expr:         "sum by (cluster, job, instance) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[1m]))"
 					format:       "time_series"
-					legendFormat: "exceeded body size limit: {{job}}"
+					legendFormat: "exceeded body size limit: {{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}, {
-					expr:         "sum by (job) (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))"
+					expr:         "sum by (cluster, job, instance) (rate(prometheus_target_scrapes_exceeded_sample_limit_total{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[1m]))"
 					format:       "time_series"
-					legendFormat: "exceeded sample limit: {{job}}"
+					legendFormat: "exceeded sample limit: {{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}, {
-					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_duplicate_timestamp_total[1m]))"
+					expr:         "sum by (cluster, job, instance) (rate(prometheus_target_scrapes_sample_duplicate_timestamp_total{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[1m]))"
 					format:       "time_series"
-					legendFormat: "duplicate timestamp: {{job}}"
+					legendFormat: "duplicate timestamp: {{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}, {
-					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_bounds_total[1m]))"
+					expr:         "sum by (cluster, job, instance) (rate(prometheus_target_scrapes_sample_out_of_bounds_total{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[1m]))"
 					format:       "time_series"
-					legendFormat: "out of bounds: {{job}}"
+					legendFormat: "out of bounds: {{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}, {
-					expr:         "sum by (job) (rate(prometheus_target_scrapes_sample_out_of_order_total[1m]))"
+					expr:         "sum by (cluster, job, instance) (rate(prometheus_target_scrapes_sample_out_of_order_total{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}[1m]))"
 					format:       "time_series"
-					legendFormat: "out of order: {{job}}"
+					legendFormat: "out of order: {{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27218,9 +27232,9 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "rate(prometheus_tsdb_head_samples_appended_total{job=~\"$job\",instance=~\"$instance\"}[5m])"
+					expr:         "rate(prometheus_tsdb_head_samples_appended_total{cluster=~\"$cluster\", job=~\"$job\",instance=~\"$instance\"}[5m])"
 					format:       "time_series"
-					legendFormat: "{{job}} {{instance}}"
+					legendFormat: "{{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27296,9 +27310,9 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "prometheus_tsdb_head_series{job=~\"$job\",instance=~\"$instance\"}"
+					expr:         "prometheus_tsdb_head_series{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}"
 					format:       "time_series"
-					legendFormat: "{{job}} {{instance}} head series"
+					legendFormat: "{{cluster}} {{job}} {{instance}} head series"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27364,9 +27378,9 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "prometheus_tsdb_head_chunks{job=~\"$job\",instance=~\"$instance\"}"
+					expr:         "prometheus_tsdb_head_chunks{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\"}"
 					format:       "time_series"
-					legendFormat: "{{job}} {{instance}} head chunks"
+					legendFormat: "{{cluster}} {{job}} {{instance}} head chunks"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27442,9 +27456,9 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "rate(prometheus_engine_query_duration_seconds_count{job=~\"$job\",instance=~\"$instance\",slice=\"inner_eval\"}[5m])"
+					expr:         "rate(prometheus_engine_query_duration_seconds_count{cluster=~\"$cluster\",job=~\"$job\",instance=~\"$instance\",slice=\"inner_eval\"}[5m])"
 					format:       "time_series"
-					legendFormat: "{{job}} {{instance}}"
+					legendFormat: "{{cluster}} {{job}} {{instance}}"
 					legendLink:   null
 				}]
 				thresholds: []
@@ -27510,7 +27524,7 @@ grafanaDashboards: {
 				stack:       true
 				steppedLine: false
 				targets: [{
-					expr:         "max by (slice) (prometheus_engine_query_duration_seconds{quantile=\"0.9\",job=~\"$job\",instance=~\"$instance\"}) * 1e3"
+					expr:         "max by (slice) (prometheus_engine_query_duration_seconds{quantile=\"0.9\",cluster=~\"$cluster\", job=~\"$job\",instance=~\"$instance\"}) * 1e3"
 					format:       "time_series"
 					legendFormat: "{{slice}}"
 					legendLink:   null
@@ -27583,11 +27597,34 @@ grafanaDashboards: {
 			datasource: "$datasource"
 			hide:       0
 			includeAll: true
+			label:      "cluster"
+			multi:      true
+			name:       "cluster"
+			options: []
+			query:          "label_values(prometheus_build_info{job=\"prometheus-k8s\",namespace=\"monitoring\"}, cluster)"
+			refresh:        1
+			regex:          ""
+			sort:           2
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: ".+"
+			current: {
+				selected: true
+				text:     "All"
+				value:    "$__all"
+			}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: true
 			label:      "job"
 			multi:      true
 			name:       "job"
 			options: []
-			query:          "label_values(prometheus_build_info{job=\"prometheus-k8s\",namespace=\"monitoring\"}, job)"
+			query:          "label_values(prometheus_build_info{cluster=~\"$cluster\"}, job)"
 			refresh:        1
 			regex:          ""
 			sort:           2
@@ -27610,7 +27647,7 @@ grafanaDashboards: {
 			multi:      true
 			name:       "instance"
 			options: []
-			query:          "label_values(prometheus_build_info{job=~\"$job\"}, instance)"
+			query:          "label_values(prometheus_build_info{cluster=~\"$cluster\", job=~\"$job\"}, instance)"
 			refresh:        1
 			regex:          ""
 			sort:           2
