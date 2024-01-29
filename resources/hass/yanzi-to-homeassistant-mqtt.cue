@@ -1,6 +1,6 @@
 package kube
 
-version: "sha256:13beb29169e062674fd1839594df05e3bdcf18baab826ad451732865affb285f"
+version: "sha256:e454c8289a64da4e27e91a44e2069ed047e1a13dd92c32366c6e9efa197bb135"
 
 k: StatefulSet: "hass-yanzi-to-homeassistant-mqtt": spec: template: spec: {
 	containers: [{
