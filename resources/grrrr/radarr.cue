@@ -7,12 +7,9 @@ k: StatefulSet: radarr: {
 			spec: {
 				containers: [{
 					name:  "radarr"
-					image: "nixery.addem.se/radarr"
+					image: "nixery.addem.se/shell/radarr"
 					command: ["Radarr", "--nobrowser", "--data=/config"]
 					env: [{
-						name:  "HOME"
-						value: "/"
-					}, {
 						name:  "COMPlus_EnableDiagnostics"
 						value: "0"
 					}]
