@@ -22,7 +22,7 @@ k: HelmRelease: kured: spec: {
 			allowPrivilegeEscalation: false
 			capabilities: {
 				add: ["CAP_KILL"]
-				drop: ["*"]
+				drop: ["ALL"]
 			}
 		}
 	}
