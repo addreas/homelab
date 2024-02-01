@@ -36,11 +36,6 @@ k: Deployment: "nixery": spec: template: spec: {
 	}]
 }
 
-k: Deployment: "nixery-test-deploy": spec: template: spec: containers: [{
-	image: "nixery.addem.se/shell"
-	command: ["tail", "-f", "/dev/null"]
-}]
-
 k: PersistentVolumeClaim: "sergio-nixery": spec: resources: requests: storage: "100Gi"
 k: PersistentVolume: "sergio-nixery": spec: local: path: "/mnt/solid-data/nixery"
 

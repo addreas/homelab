@@ -6,13 +6,16 @@ k: StatefulSet: radarr: {
 			metadata: labels: "vpn-egress": "client"
 			spec: {
 				containers: [{
-					name:            "radarr"
-					image:           "ghcr.io/hotio/radarr"
-					imagePullPolicy: "Always"
-					command: ["sh", "-c"]
-					args: ["""
-						exec $APP_DIR/bin/Radarr --nobrowser --data="$CONFIG_DIR"
-						"""]
+					name:  "radarr"
+					image: "nixery.addem.se/radarr"
+					command: ["Radarr", "--nobrowser", "--data=/config"]
+					env: [{
+						name:  "HOME"
+						value: "/"
+					}, {
+						name:  "COMPlus_EnableDiagnostics"
+						value: "0"
+					}]
 					ports: [{
 						containerPort: 7878
 					}]
@@ -34,10 +37,9 @@ k: StatefulSet: radarr: {
 						}
 					}
 				}, {
-					name:            "exportarr"
-					image:           "ghcr.io/onedr0p/exportarr:master"
-					imagePullPolicy: "IfNotPresent"
-					args: ["radarr"]
+					name:  "exportarr"
+					image: "nixery.addem.se/exportarr"
+					command: ["exportarr", "radarr"]
 					env: [{
 						name:  "PORT"
 						value: "9707"
@@ -58,10 +60,6 @@ k: StatefulSet: radarr: {
 						cpu:    "200m"
 						memory: "128Mi"
 					}
-					volumeMounts: [{
-						name:      "home-nonroot"
-						mountPath: "/home/nonroot"
-					}]
 				}]
 				volumes: [{
 					name: "sergio-videos"
@@ -69,9 +67,6 @@ k: StatefulSet: radarr: {
 				}, {
 					name: "config"
 					persistentVolumeClaim: claimName: "sergio-radarr-config"
-				}, {
-					name: "home-nonroot"
-					emptyDir: {}
 				}]
 			}
 		}

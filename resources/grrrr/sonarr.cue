@@ -7,13 +7,9 @@ k: StatefulSet: sonarr: {
 			spec: {
 				containers: [{
 					name:            "sonarr"
-					image:           "ghcr.io/hotio/sonarr"
+					image:           "nixery.addem.se/sonarr"
 					imagePullPolicy: "Always"
-					command: ["sh", "-c"]
-					args: ["""
-						cert-sync /etc/ssl/certs/ca-certificates.crt
-						exec mono --debug $APP_DIR/bin/Sonarr.exe --nobrowser --data="$CONFIG_DIR"
-						"""]
+					command: ["NzbDrone", "--nobrowser", "--data=/config"]
 					ports: [{
 						name:          "http"
 						containerPort: 8989
@@ -24,9 +20,6 @@ k: StatefulSet: sonarr: {
 					}, {
 						mountPath: "/videos"
 						name:      "sergio-videos"
-					}, {
-						mountPath: "/usr/share/.mono"
-						name:      "mono-dir"
 					}]
 					resources: {
 						limits: {
@@ -40,9 +33,9 @@ k: StatefulSet: sonarr: {
 					}
 				}, {
 					name:            "exportarr"
-					image:           "ghcr.io/onedr0p/exportarr:master"
+					image:           "nixery.addem.se/exportarr"
 					imagePullPolicy: "IfNotPresent"
-					args: ["sonarr"]
+					command: ["exportarr", "sonarr"]
 					env: [{
 						name:  "PORT"
 						value: "9707"
@@ -64,10 +57,6 @@ k: StatefulSet: sonarr: {
 						cpu:    "200m"
 						memory: "64Mi"
 					}
-					volumeMounts: [{
-						name:      "home-nonroot"
-						mountPath: "/home/nonroot"
-					}]
 				}]
 				volumes: [{
 					name: "sergio-videos"
@@ -75,12 +64,6 @@ k: StatefulSet: sonarr: {
 				}, {
 					name: "config"
 					persistentVolumeClaim: claimName: "sergio-sonarr-config"
-				}, {
-					name: "home-nonroot"
-					emptyDir: {}
-				}, {
-					name: "mono-dir"
-					emptyDir: {}
 				}]
 			}
 		}

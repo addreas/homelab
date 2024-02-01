@@ -1,7 +1,7 @@
 package kube
 
 import (
-	"struct"
+	// "struct"
 	"strings"
 )
 
@@ -41,7 +41,7 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 
 k: Job: [string]: spec: {
 	ttlSecondsAfterFinished: 60 * 60
-	template:                podTemplate & {
+	template: podTemplate & {
 		spec: restartPolicy: _ | *"OnFailure"
 	}
 }
@@ -90,7 +90,7 @@ k: Service: [Name=string]: {
 k: ["ServiceMonitor" | "PodMonitor" | "VMServiceScrape" | "VMPodScrape"]: [Name=string]: {
 	_selector: _ | *close({app: Name})
 	metadata: labels: _selector
-	spec: selector:   _ | *close({
+	spec: selector: _ | *close({
 		matchLabels: _selector
 	})
 }
@@ -138,11 +138,11 @@ k: SealedSecret: [string]: {
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
 	spec: {
-		interval:                      _ | *"1h"
-		allowCrossNamespaceReferences: _ | *true
-		folder:                        _ | *strings.ToTitle(metadata.namespace)
-		source:                        _ | *{remote: contentCacheDuration: "24h"}
-		source:                        struct.MaxFields(1)
+		interval:                                   _ | *"1h"
+		allowCrossNamespaceReferences:              _ | *true
+		folder:                                     _ | *strings.ToTitle(metadata.namespace)
+		source: _ | *{remote: contentCacheDuration: "24h"}
+		// source:                        struct.MaxFields(1)
 	}
 }
 
@@ -157,8 +157,8 @@ k: HelmRelease: [Name=string]: {
 	spec: {
 		interval: _ | *"1h"
 		chart: spec: {
-			interval:  _ | *"1h"
-			chart:     _ | *Name
+			interval: _ | *"1h"
+			chart:    _ | *Name
 			sourceRef: _ | *{
 				kind:      "HelmRepository"
 				name:      _ | *Name
@@ -169,8 +169,8 @@ k: HelmRelease: [Name=string]: {
 }
 
 k: Kustomization: [Name=string]: spec: {
-	interval:  _ | *"1h"
-	prune:     _ | *true
+	interval: _ | *"1h"
+	prune:    _ | *true
 	sourceRef: _ | *{
 		kind: "GitRepository"
 		name: _ | *Name
