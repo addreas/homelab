@@ -1,5 +1,7 @@
 package kube
 
+import "strings"
+
 k: Namespace: "longhorn-system": {}
 
 k: HelmRepository: longhorn: {
@@ -10,7 +12,7 @@ k: HelmRepository: longhorn: {
 
 k: HelmRelease: longhorn: spec: {
 	chart: spec: {
-		version: githubReleases["longhorn/longhorn"]
+		version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
