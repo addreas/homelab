@@ -33,7 +33,7 @@ jobs:
           build-args: |
             VERSION=${{ env.LONGHORN_VERSION }}
           context: ./resources/system/longhorn-system
-          file: ./resources/system/longhorm-system/longhorn-manager.Dockerfile
+          file: ./resources/system/longhorn-system/longhorn-manager.Dockerfile
       -
         name: Build and push
         uses: docker/build-push-action@v5
@@ -43,4 +43,4 @@ jobs:
           build-args: |
             VERSION=${{ env.LONGHORN_VERSION }}
           context: ./resources/system/longhorn-system
-          file: ./resources/system/longhorm-system/instance-manager.Dockerfile
+          file: ./resources/system/longhorn-system/instance-manager.Dockerfile
