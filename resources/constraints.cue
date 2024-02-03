@@ -1,7 +1,6 @@
 package kube
 
 import (
-	// "struct"
 	"strings"
 )
 
@@ -138,11 +137,12 @@ k: SealedSecret: [string]: {
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
 	spec: {
-		interval:                                   _ | *"1h"
-		allowCrossNamespaceReferences:              _ | *true
-		folder:                                     _ | *strings.ToTitle(metadata.namespace)
-		source: _ | *{remote: contentCacheDuration: "24h"}
-		// source:                        struct.MaxFields(1)
+		interval:                      _ | *"1h"
+		allowCrossNamespaceReferences: _ | *true
+		folder:                        _ | *strings.ToTitle(metadata.namespace)
+		source: _ | *close({
+			remote: contentCacheDuration: "24h"
+		})
 	}
 }
 
