@@ -30,6 +30,19 @@ import (
 // DefaultBGPGRRestartTimeSeconds defines default Restart Time for graceful restart (RFC 4724, section 4.2)
 #DefaultBGPGRRestartTimeSeconds: 120
 
+// BGPLoadBalancerClass defines the BGP Control Plane load balancer class for Services.
+#BGPLoadBalancerClass: "io.cilium/bgp-control-plane"
+
+// PodCIDRSelectorName defines the name for a selector matching Pod CIDRs
+// (standard cluster scope / Kubernetes IPAM CIDRs, not Multi-Pool IPAM CIDRs).
+#PodCIDRSelectorName: "PodCIDR"
+
+// CiliumLoadBalancerIPPoolSelectorName defines the name for a selector matching CiliumLoadBalancerIPPool resources.
+#CiliumLoadBalancerIPPoolSelectorName: "CiliumLoadBalancerIPPool"
+
+// CiliumPodIPPoolSelectorName defines the name for a selector matching CiliumPodIPPool resources.
+#CiliumPodIPPoolSelectorName: "CiliumPodIPPool"
+
 // CiliumBGPPeeringPolicy is a Kubernetes third-party resource for instructing
 // Cilium's BGP control plane to create virtual BGP routers.
 #CiliumBGPPeeringPolicy: {
@@ -91,6 +104,70 @@ import (
 	restartTimeSeconds?: null | int32 @go(RestartTimeSeconds,*int32)
 }
 
+// BGPStandardCommunity type represents a value of the "standard" 32-bit BGP Communities Attribute (RFC 1997)
+// as a 4-byte decimal number or two 2-byte decimal numbers separated by a colon.
+// +kubebuilder:validation:Pattern=`^([0-9]|[1-9][0-9]{1,8}|[1-3][0-9]{9}|4[01][0-9]{8}|42[0-8][0-9]{7}|429[0-3][0-9]{6}|4294[0-8][0-9]{5}|42949[0-5][0-9]{4}|429496[0-6][0-9]{3}|4294967[01][0-9]{2}|42949672[0-8][0-9]|429496729[0-5])$|^([0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]):([0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$`
+#BGPStandardCommunity: string
+
+// BGPLargeCommunity type represents a value of the BGP Large Communities Attribute (RFC 8092),
+// as three 4-byte decimal numbers separated by colons.
+// +kubebuilder:validation:Pattern=`^([0-9]|[1-9][0-9]{1,8}|[1-3][0-9]{9}|4[01][0-9]{8}|42[0-8][0-9]{7}|429[0-3][0-9]{6}|4294[0-8][0-9]{5}|42949[0-5][0-9]{4}|429496[0-6][0-9]{3}|4294967[01][0-9]{2}|42949672[0-8][0-9]|429496729[0-5]):([0-9]|[1-9][0-9]{1,8}|[1-3][0-9]{9}|4[01][0-9]{8}|42[0-8][0-9]{7}|429[0-3][0-9]{6}|4294[0-8][0-9]{5}|42949[0-5][0-9]{4}|429496[0-6][0-9]{3}|4294967[01][0-9]{2}|42949672[0-8][0-9]|429496729[0-5]):([0-9]|[1-9][0-9]{1,8}|[1-3][0-9]{9}|4[01][0-9]{8}|42[0-8][0-9]{7}|429[0-3][0-9]{6}|4294[0-8][0-9]{5}|42949[0-5][0-9]{4}|429496[0-6][0-9]{3}|4294967[01][0-9]{2}|42949672[0-8][0-9]|429496729[0-5])$`
+#BGPLargeCommunity: string
+
+// BGPCommunities holds community values of the supported BGP community path attributes.
+#BGPCommunities: {
+	// Standard holds a list of "standard" 32-bit BGP Communities Attribute (RFC 1997) values.
+	//
+	// +kubebuilder:validation:Optional
+	standard?: [...#BGPStandardCommunity] @go(Standard,[]BGPStandardCommunity)
+
+	// Large holds a list of the BGP Large Communities Attribute (RFC 8092) values.
+	//
+	// +kubebuilder:validation:Optional
+	large?: [...#BGPLargeCommunity] @go(Large,[]BGPLargeCommunity)
+}
+
+// CiliumBGPPathAttributes can be used to apply additional path attributes
+// to matched routes when advertising them to a BGP peer.
+#CiliumBGPPathAttributes: {
+	// SelectorType defines the object type on which the Selector applies:
+	// - For "PodCIDR" the Selector matches k8s CiliumNode resources
+	//   (path attributes apply to routes announced for PodCIDRs of selected CiliumNodes.
+	//   Only affects routes of cluster scope / Kubernetes IPAM CIDRs, not Multi-Pool IPAM CIDRs.
+	// - For "CiliumLoadBalancerIPPool" the Selector matches CiliumLoadBalancerIPPool custom resources
+	//   (path attributes apply to routes announced for selected CiliumLoadBalancerIPPools).
+	// - For "CiliumPodIPPool" the Selector matches CiliumPodIPPool custom resources
+	//   (path attributes apply to routes announced for allocated CIDRs of selected CiliumPodIPPools).
+	//
+	// +kubebuilder:validation:Enum=PodCIDR;CiliumLoadBalancerIPPool;CiliumPodIPPool
+	// +kubebuilder:validation:Required
+	selectorType: string @go(SelectorType)
+
+	// Selector selects a group of objects of the SelectorType
+	// resulting into routes that will be announced with the configured Attributes.
+	// If nil / not set, all objects of the SelectorType are selected.
+	//
+	// +kubebuilder:validation:Optional
+	selector?: null | slimv1.#LabelSelector @go(Selector,*slimv1.LabelSelector)
+
+	// Communities defines a set of community values advertised in the supported BGP Communities path attributes.
+	// If nil / not set, no BGP Communities path attribute will be advertised.
+	//
+	// +kubebuilder:validation:Optional
+	communities?: null | #BGPCommunities @go(Communities,*BGPCommunities)
+
+	// LocalPreference defines the preference value advertised in the BGP Local Preference path attribute.
+	// As Local Preference is only valid for iBGP peers, this value will be ignored for eBGP peers
+	// (no Local Preference path attribute will be advertised).
+	// If nil / not set, the default Local Preference of 100 will be advertised in
+	// the Local Preference path attribute for iBGP peers.
+	//
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4294967295
+	localPreference?: null | int64 @go(LocalPreference,*int64)
+}
+
 // CiliumBGPNeighbor is a neighboring peer for use in a
 // CiliumBGPVirtualRouter configuration.
 #CiliumBGPNeighbor: {
@@ -118,6 +195,11 @@ import (
 	// +kubebuilder:validation:Minimum=0
 	// +kubebuilder:validation:Maximum=4294967295
 	peerASN: int64 @go(PeerASN)
+
+	// AuthSecretRef is the name of the secret to use to fetch a TCP
+	// authentication password for this peer.
+	// +kubebuilder:validation:Optional
+	authSecretRef?: null | string @go(AuthSecretRef,*string)
 
 	// EBGPMultihopTTL controls the multi-hop feature for eBGP peers.
 	// Its value defines the Time To Live (TTL) value used in BGP packets sent to the neighbor.
@@ -161,6 +243,22 @@ import (
 	//
 	// +kubebuilder:validation:Optional
 	gracefulRestart?: null | #CiliumBGPNeighborGracefulRestart @go(GracefulRestart,*CiliumBGPNeighborGracefulRestart)
+
+	// Families, if provided, defines a set of AFI/SAFIs the speaker will
+	// negotiate with it's peer.
+	//
+	// If this slice is not provided the default families of IPv6 and IPv4 will
+	// be provided.
+	//
+	// +kubebuilder:validation:Optional
+	families: [...#CiliumBGPFamily] @go(Families,[]CiliumBGPFamily)
+
+	// AdvertisedPathAttributes can be used to apply additional path attributes
+	// to selected routes when advertising them to the peer.
+	// If empty / nil, no additional path attributes are advertised.
+	//
+	// +kubebuilder:validation:Optional
+	advertisedPathAttributes?: [...#CiliumBGPPathAttributes] @go(AdvertisedPathAttributes,[]CiliumBGPPathAttributes)
 }
 
 // CiliumBGPVirtualRouter defines a discrete BGP virtual router configuration.
@@ -180,8 +278,21 @@ import (
 	// +kubebuilder:default=false
 	exportPodCIDR?: null | bool @go(ExportPodCIDR,*bool)
 
+	// PodIPPoolSelector selects CiliumPodIPPools based on labels. The virtual
+	// router will announce allocated CIDRs of matching CiliumPodIPPools.
+	//
+	// If empty / nil no CiliumPodIPPools will be announced.
+	//
+	// +kubebuilder:validation:Optional
+	podIPPoolSelector?: null | slimv1.#LabelSelector @go(PodIPPoolSelector,*slimv1.LabelSelector)
+
 	// ServiceSelector selects a group of load balancer services which this
-	// virtual router will announce.
+	// virtual router will announce. The loadBalancerClass for a service must
+	// be nil or specify a class supported by Cilium, e.g. "io.cilium/bgp-control-plane".
+	// Refer to the following document for additional details regarding load balancer
+	// classes:
+	//
+	//   https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-class
 	//
 	// If empty / nil no services will be announced.
 	//

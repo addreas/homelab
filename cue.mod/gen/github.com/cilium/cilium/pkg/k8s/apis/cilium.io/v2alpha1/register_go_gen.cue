@@ -28,6 +28,31 @@ package v2alpha1
 // BGPPName is the full name of Cilium BGP Peering Policy
 #BGPPName: "ciliumbgppeeringpolicies.cilium.io"
 
+// BGPClusterConfig (BGPCC)
+#BGPCCPluralName:     "ciliumbgpclusterconfigs"
+#BGPCCKindDefinition: "CiliumBGPClusterConfig"
+#BGPCCName:           "ciliumbgpclusterconfigs.cilium.io"
+
+// BGPPeerConfig (BGPPC)
+#BGPPCPluralName:     "ciliumbgppeerconfigs"
+#BGPPCKindDefinition: "CiliumBGPPeerConfig"
+#BGPPCName:           "ciliumbgppeerconfigs.cilium.io"
+
+// BGPAdvertisement (BGPA)
+#BGPAPluralName:     "ciliumbgpadvertisements"
+#BGPAKindDefinition: "CiliumBGPAdvertisement"
+#BGPAName:           "ciliumbgpadvertisements.cilium.io"
+
+// BGPNodeConfig (BGPNC)
+#BGPNCPluralName:     "ciliumbgpnodeconfigs"
+#BGPNCKindDefinition: "CiliumBGPNodeConfig"
+#BGPNCName:           "ciliumbgpnodeconfigs.cilium.io"
+
+// BGPNodeConfigOverride (BGPNCO)
+#BGPNCOPluralName:     "ciliumbgpnodeconfigoverrides"
+#BGPNCOKindDefinition: "CiliumBGPNodeConfigOverride"
+#BGPNCOName:           "ciliumbgpnodeconfigoverrides.cilium.io"
+
 // PoolPluralName is the plural name of Cilium Load Balancer IP Pool
 #PoolPluralName: "ciliumloadbalancerippools"
 

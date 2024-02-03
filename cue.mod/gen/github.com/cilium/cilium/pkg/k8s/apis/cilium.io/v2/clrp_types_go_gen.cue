@@ -139,8 +139,6 @@ import (
 
 // CiliumLocalRedirectPolicySpec specifies the configurations for redirecting traffic
 // within a node.
-//
-// +kubebuilder:validation:Type=object
 #CiliumLocalRedirectPolicySpec: {
 	// RedirectFrontend specifies frontend configuration to redirect traffic from.
 	// It can not be empty.
@@ -164,8 +162,6 @@ import (
 // CiliumLocalRedirectPolicyStatus is the status of a Local Redirect Policy.
 #CiliumLocalRedirectPolicyStatus: {
 	// TODO Define status(aditi)
-	//
-	// +kubebuilder:validation:Type=object
 	ok?: bool @go(OK)
 }
 
