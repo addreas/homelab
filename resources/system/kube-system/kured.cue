@@ -10,9 +10,8 @@ k: HelmRelease: kured: spec: {
 		metrics: create: true
 		configuration: {
 			rebootDays: ["sa"]
-			startTime: "08:00"
-			endTime:   "22:00"
-			// notifyUrl: "http://user:pass@ntfy.default.svc:8080/kured"
+			startTime:    "08:00"
+			endTime:      "22:00"
 			notifyUrl:    "generic+http://hass.default.svc.cluster.local:8123/api/webhook/kured-reboot"
 			rebootMethod: "signal"
 		}
@@ -22,7 +21,7 @@ k: HelmRelease: kured: spec: {
 			allowPrivilegeEscalation: false
 			capabilities: {
 				add: ["CAP_KILL"]
-				drop: ["ALL"]
+				// drop: ["ALL"]
 			}
 		}
 	}
