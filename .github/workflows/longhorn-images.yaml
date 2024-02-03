@@ -20,8 +20,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: cue-lang/setup-cue@v1.0.0
-      - run:
-          - echo LONGHORN_VERSION=$(cue eval -e 'githubReleases["longhorn/longhorn"]') >> $GITHUB_ENV
+      - run: | 
+         echo LONGHORN_VERSION=$(cue eval -e 'githubReleases["longhorn/longhorn"]') >> $GITHUB_ENV
 
       -
         name: Build and push
