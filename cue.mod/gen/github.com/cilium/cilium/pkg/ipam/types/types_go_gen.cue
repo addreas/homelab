@@ -153,25 +153,6 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +kubebuilder:validation:Minimum=0
 	"max-above-watermark"?: int @go(MaxAboveWatermark)
-
-	// PodCIDRAllocationThreshold defines the minimum number of free IPs which
-	// must be available to this node via its pod CIDR pool. If the total number
-	// of IP addresses in the pod CIDR pool is less than this value, the pod
-	// CIDRs currently in-use by this node will be marked as depleted and
-	// cilium-operator will allocate a new pod CIDR to this node.
-	// This value effectively defines the buffer of IP addresses available
-	// immediately without requiring cilium-operator to get involved.
-	//
-	// +kubebuilder:validation:Minimum=0
-	"pod-cidr-allocation-threshold"?: int @go(PodCIDRAllocationThreshold)
-
-	// PodCIDRReleaseThreshold defines the maximum number of free IPs which may
-	// be available to this node via its pod CIDR pool. While the total number
-	// of free IP addresses in the pod CIDR pool is larger than this value,
-	// cilium-agent will attempt to release currently unused pod CIDRs.
-	//
-	// +kubebuilder:validation:Minimum=0
-	"pod-cidr-release-threshold"?: int @go(PodCIDRReleaseThreshold)
 }
 
 // IPReleaseStatus  defines the valid states in IP release handshake

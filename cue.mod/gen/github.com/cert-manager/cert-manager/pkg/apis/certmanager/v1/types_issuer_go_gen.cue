@@ -283,6 +283,12 @@ import (
 	// OCSP server URL could be "http://ocsp.int-x3.letsencrypt.org".
 	// +optional
 	ocspServers?: [...string] @go(OCSPServers,[]string)
+
+	// IssuingCertificateURLs is a list of URLs which this issuer should embed into certificates
+	// it creates. See https://www.rfc-editor.org/rfc/rfc5280#section-4.2.2.1 for more details.
+	// As an example, such a URL might be "http://ca.domain.com/ca.crt".
+	// +optional
+	issuingCertificateURLs?: [...string] @go(IssuingCertificateURLs,[]string)
 }
 
 // IssuerStatus contains status information about an Issuer

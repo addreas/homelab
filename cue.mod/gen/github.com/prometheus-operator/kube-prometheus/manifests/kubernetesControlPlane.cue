@@ -441,7 +441,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubePersistentVolumeFillingUp"
 				annotations: {
-					description: "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} on Cluster {{ $labels.cluster }} is only {{ $value | humanizePercentage }} free."
+					description: "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} {{ with $labels.cluster -}} on Cluster {{ . }} {{- end }} is only {{ $value | humanizePercentage }} free."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumefillingup"
 					summary:     "PersistentVolume is filling up."
 				}
@@ -464,7 +464,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubePersistentVolumeFillingUp"
 				annotations: {
-					description: "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} on Cluster {{ $labels.cluster }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available."
+					description: "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} {{ with $labels.cluster -}} on Cluster {{ . }} {{- end }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumefillingup"
 					summary:     "PersistentVolume is filling up."
 				}
@@ -489,7 +489,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubePersistentVolumeInodesFillingUp"
 				annotations: {
-					description: "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} on Cluster {{ $labels.cluster }} only has {{ $value | humanizePercentage }} free inodes."
+					description: "The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} {{ with $labels.cluster -}} on Cluster {{ . }} {{- end }} only has {{ $value | humanizePercentage }} free inodes."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeinodesfillingup"
 					summary:     "PersistentVolumeInodes are filling up."
 				}
@@ -512,7 +512,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubePersistentVolumeInodesFillingUp"
 				annotations: {
-					description: "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} on Cluster {{ $labels.cluster }} is expected to run out of inodes within four days. Currently {{ $value | humanizePercentage }} of its inodes are free."
+					description: "Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} {{ with $labels.cluster -}} on Cluster {{ . }} {{- end }} is expected to run out of inodes within four days. Currently {{ $value | humanizePercentage }} of its inodes are free."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeinodesfillingup"
 					summary:     "PersistentVolumeInodes are filling up."
 				}
@@ -537,7 +537,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubePersistentVolumeErrors"
 				annotations: {
-					description: "The persistent volume {{ $labels.persistentvolume }} on Cluster {{ $labels.cluster }} has status {{ $labels.phase }}."
+					description: "The persistent volume {{ $labels.persistentvolume }} {{ with $labels.cluster -}} on Cluster {{ . }} {{- end }} has status {{ $labels.phase }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepersistentvolumeerrors"
 					summary:     "PersistentVolume is having issues with provisioning."
 				}

@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -97,7 +97,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -119,7 +119,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -5542,7 +5542,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -11395,7 +11395,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -12127,7 +12127,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -12837,7 +12837,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -17155,6 +17155,20 @@ prometheusOperator: {
 										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:    "string"
 									}
+									scrapeProtocols: {
+										description: """
+														The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									scrapeTimeout: {
 										description: "Number of seconds to wait until a scrape request times out."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -19761,7 +19775,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -25080,6 +25094,20 @@ prometheusOperator: {
 										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:    "string"
 									}
+									scrapeProtocols: {
+										description: """
+														The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									scrapeTimeout: {
 										description: "Number of seconds to wait until a scrape request times out."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -28113,7 +28141,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -28242,7 +28270,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -29204,8 +29232,11 @@ prometheusOperator: {
 													type:        "string"
 												}
 												type: {
-													description: "The type of DNS query to perform. One of SRV, A, AAAA or MX. If not set, Prometheus uses its default value."
-													enum: ["SRV", "A", "AAAA", "MX"]
+													description: """
+																	The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value. 
+																	 When set to NS, It requires Prometheus >= 2.49.0.
+																	"""
+													enum: ["SRV", "A", "AAAA", "MX", "NS"]
 													type: "string"
 												}
 											}
@@ -30542,6 +30573,20 @@ prometheusOperator: {
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:        "string"
 									}
+									scrapeProtocols: {
+										description: """
+														The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									scrapeTimeout: {
 										description: "ScrapeTimeout is the number of seconds to wait until a scrape request times out."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -30724,7 +30769,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -31480,7 +31525,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.0"
+					"operator.prometheus.io/version":        "0.71.2"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -36868,7 +36913,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -36887,18 +36932,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.71.0"
+						"app.kubernetes.io/version":   "0.71.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.71.0"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.71.2"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.71.0"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.71.2"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -36966,7 +37011,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -37109,7 +37154,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -37137,7 +37182,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -37151,7 +37196,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -37168,7 +37213,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.0"
+				"app.kubernetes.io/version":   "0.71.2"
 			}
 		}
 	}

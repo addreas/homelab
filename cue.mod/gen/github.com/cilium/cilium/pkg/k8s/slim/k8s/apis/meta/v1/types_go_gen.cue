@@ -204,6 +204,9 @@ import "k8s.io/apimachinery/pkg/types"
 // be cluster-scoped, so there is no namespace field.
 // +structType=atomic
 #OwnerReference: {
+	// API version of the referent.
+	apiVersion: string @go(APIVersion) @protobuf(5,bytes,opt)
+
 	// Kind of the referent.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: string @go(Kind) @protobuf(1,bytes,opt)
@@ -211,6 +214,10 @@ import "k8s.io/apimachinery/pkg/types"
 	// Name of the referent.
 	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
 	name: string @go(Name) @protobuf(3,bytes,opt)
+
+	// UID of the referent.
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
+	uid: types.#UID @go(UID) @protobuf(4,bytes,opt,casttype=k8s.io/apimachinery/pkg/types.UID)
 
 	// If true, this reference points to the managing controller.
 	// +optional
@@ -244,8 +251,6 @@ import "k8s.io/apimachinery/pkg/types"
 // relates the key and values.
 #LabelSelectorRequirement: {
 	// key is the label key that the selector applies to.
-	// +patchMergeKey=key
-	// +patchStrategy=merge
 	key: string @go(Key) @protobuf(1,bytes,opt)
 
 	// operator represents a key's relationship to a set of values.

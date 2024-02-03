@@ -168,6 +168,13 @@ import (
 	// +optional
 	uris?: [...string] @go(URIs,[]string)
 
+	// `otherNames` is an escape hatch for SAN that allows any type. We currently restrict the support to string like otherNames, cf RFC 5280 p 37
+	// Any UTF8 String valued otherName can be passed with by setting the keys oid: x.x.x.x and UTF8Value: somevalue for `otherName`.
+	// Most commonly this would be UPN set with oid: 1.3.6.1.4.1.311.20.2.3
+	// You should ensure that any OID passed is valid for the UTF8String type as we do not explicitly validate this.
+	// +optional
+	otherNames?: [...#OtherName] @go(OtherNames,[]OtherName)
+
 	// Requested email subject alternative names.
 	// +optional
 	emailAddresses?: [...string] @go(EmailAddresses,[]string)
@@ -249,6 +256,26 @@ import (
 	// the controller and webhook components.
 	// +optional
 	additionalOutputFormats?: [...#CertificateAdditionalOutputFormat] @go(AdditionalOutputFormats,[]CertificateAdditionalOutputFormat)
+
+	// x.509 certificate NameConstraint extension which MUST NOT be used in a non-CA certificate.
+	// More Info: https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.10
+	//
+	// This is an Alpha Feature and is only enabled with the
+	// `--feature-gates=NameConstraints=true` option set on both
+	// the controller and webhook components.
+	// +optional
+	nameConstraints?: null | #NameConstraints @go(NameConstraints,*NameConstraints)
+}
+
+#OtherName: {
+	// OID is the object identifier for the otherName SAN.
+	// The object identifier must be expressed as a dotted string, for
+	// example, "1.2.840.113556.1.4.221".
+	oid?: string @go(OID)
+
+	// utf8Value is the string value of the otherName SAN.
+	// The utf8Value accepts any valid UTF8 string to set as value for the otherName SAN.
+	utf8Value?: string @go(UTF8Value)
 }
 
 // CertificatePrivateKey contains configuration options for private keys
@@ -435,7 +462,36 @@ import (
 	// PasswordSecretRef is a reference to a key in a Secret resource
 	// containing the password used to encrypt the PKCS12 keystore.
 	passwordSecretRef: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
+
+	// Profile specifies the key and certificate encryption algorithms and the HMAC algorithm
+	// used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.
+	//
+	// If provided, allowed values are:
+	// `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20.
+	// `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility.
+	// `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms
+	// (eg. because of company policy). Please note that the security of the algorithm is not that important
+	// in reality, because the unencrypted certificate and private key are also stored in the Secret.
+	// +optional
+	profile?: #PKCS12Profile @go(Profile)
 }
+
+// +kubebuilder:validation:Enum=LegacyRC2;LegacyDES;Modern2023
+#PKCS12Profile: string // #enumPKCS12Profile
+
+#enumPKCS12Profile:
+	#LegacyRC2PKCS12Profile |
+	#LegacyDESPKCS12Profile |
+	#Modern2023PKCS12Profile
+
+// see: https://pkg.go.dev/software.sslmate.com/src/go-pkcs12#LegacyRC2
+#LegacyRC2PKCS12Profile: #PKCS12Profile & "LegacyRC2"
+
+// see: https://pkg.go.dev/software.sslmate.com/src/go-pkcs12#LegacyDES
+#LegacyDESPKCS12Profile: #PKCS12Profile & "LegacyDES"
+
+// see: https://pkg.go.dev/software.sslmate.com/src/go-pkcs12#Modern2023
+#Modern2023PKCS12Profile: #PKCS12Profile & "Modern2023"
 
 // CertificateStatus defines the observed state of Certificate
 #CertificateStatus: {
@@ -580,4 +636,47 @@ import (
 	// Labels is a key value map to be copied to the target Kubernetes Secret.
 	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string)
+}
+
+// NameConstraints is a type to represent x509 NameConstraints
+#NameConstraints: {
+	// if true then the name constraints are marked critical.
+	//
+	// +optional
+	critical?: bool @go(Critical)
+
+	// Permitted contains the constraints in which the names must be located.
+	//
+	// +optional
+	permitted?: null | #NameConstraintItem @go(Permitted,*NameConstraintItem)
+
+	// Excluded contains the constraints which must be disallowed. Any name matching a
+	// restriction in the excluded field is invalid regardless
+	// of information appearing in the permitted
+	//
+	// +optional
+	excluded?: null | #NameConstraintItem @go(Excluded,*NameConstraintItem)
+}
+
+#NameConstraintItem: {
+	// DNSDomains is a list of DNS domains that are permitted or excluded.
+	//
+	// +optional
+	dnsDomains?: [...string] @go(DNSDomains,[]string)
+
+	// IPRanges is a list of IP Ranges that are permitted or excluded.
+	// This should be a valid CIDR notation.
+	//
+	// +optional
+	ipRanges?: [...string] @go(IPRanges,[]string)
+
+	// EmailAddresses is a list of Email Addresses that are permitted or excluded.
+	//
+	// +optional
+	emailAddresses?: [...string] @go(EmailAddresses,[]string)
+
+	// URIDomains is a list of URI domains that are permitted or excluded.
+	//
+	// +optional
+	uriDomains?: [...string] @go(URIDomains,[]string)
 }
