@@ -29,8 +29,8 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/longhorn-manager:${{ env.LONGHORN_VERSION }}
-          build-args:
-            VERSION: ${{ env.LONGHORN_VERSION }}
+          build-args: |
+            VERSION=${{ env.LONGHORN_VERSION }}
           context: resources/system/longhorn-system
           file: resources/system/longhorm-system/longhorn-manager.Dockerfile
       -
@@ -39,7 +39,7 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/longhorn-instance-manager:${{ env.LONGHORN_VERSION }}
-          build-args:
-            VERSION: ${{ env.LONGHORN_VERSION }}
+          build-args: |
+            VERSION=${{ env.LONGHORN_VERSION }}
           context: resources/system/longhorn-system
           file: resources/system/longhorm-system/instance-manager.Dockerfile
