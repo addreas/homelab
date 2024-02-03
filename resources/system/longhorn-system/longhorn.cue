@@ -1,6 +1,6 @@
 package kube
 
-// import "strings"
+import "strings"
 
 k: Namespace: "longhorn-system": {}
 
@@ -12,7 +12,7 @@ k: HelmRepository: longhorn: {
 
 k: HelmRelease: longhorn: spec: {
 	chart: spec: {
-		version: "1.4.2" //strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
+		version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
@@ -25,11 +25,11 @@ k: HelmRelease: longhorn: spec: {
 		image: longhorn: {
 			manager: {
 				repository: "ghcr.io/addreas/longhorn-manager"
-				tag:        "v1.4.2-nix"
+				tag:        githubReleases["longhorn/longhorn"]
 			}
 			instanceManager: {
 				repository: "ghcr.io/addreas/longhorn-instance-manager"
-				tag:        "v1.4.2-nix"
+				tag:        githubReleases["longhorn/longhorn"]
 			}
 		}
 

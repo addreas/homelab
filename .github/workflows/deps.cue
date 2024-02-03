@@ -11,11 +11,11 @@ let setup = [{
 	with: submodules: true
 }, {
 	uses: "actions/setup-go@v3"
-	with: "go-version": "^1.19"
+	with: "go-version": "^1.22"
 }, {
 	name: "Install `cue`, `jsonnet`, `jb`, `jq`"
 	run: """
-		go install cuelang.org/go/cmd/cue@v0.4.3
+		go install cuelang.org/go/cmd/cue@latest
 		go install github.com/google/go-jsonnet/cmd/jsonnet@latest
 		go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
 
