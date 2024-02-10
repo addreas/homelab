@@ -10,6 +10,10 @@ k: StatefulSet: sonarr: {
 					image:           "nixery.addem.se/sonarr"
 					imagePullPolicy: "Always"
 					command: ["NzbDrone", "--nobrowser", "--data=/config"]
+					env: [{
+						name:  "COMPlus_EnableDiagnostics"
+						value: "0"
+					}]
 					ports: [{
 						name:          "http"
 						containerPort: 8989
