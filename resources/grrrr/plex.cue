@@ -1,6 +1,12 @@
 package kube
 
-k: StatefulSet: "sergio-plex": spec: template: metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
+k: StatefulSet: "sergio-plex": spec: template: {
+	metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
+	spec: {
+		dnsPolicy: "None"
+		dnsConfig: nameservers: ["192.168.0.1"]
+	}
+}
 k: StatefulSet: "sergio-plex": spec: template: spec: {
 	containers: [{
 		image:           "plexinc/pms-docker"
