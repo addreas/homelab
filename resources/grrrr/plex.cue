@@ -11,7 +11,10 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 	containers: [{
 		image:           "plexinc/pms-docker"
 		imagePullPolicy: "Always"
-		command: ["/usr/lib/plexmediaserver/Plex Media Server"]
+		command: ["sh", "-c", """
+			tail --follow=name "/config/Library/Logs/Plex Media Server/Plex Media Server.log" &
+			exec "/usr/lib/plexmediaserver/Plex Media Server"
+			"""]
 		env: [{
 			name:  "PLEX_UID"
 			value: "1000"
