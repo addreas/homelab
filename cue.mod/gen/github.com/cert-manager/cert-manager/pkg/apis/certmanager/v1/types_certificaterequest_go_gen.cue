@@ -48,14 +48,14 @@ import (
 	// Specification of the desired state of the CertificateRequest resource.
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	// +optional
-	spec: #CertificateRequestSpec @go(Spec)
+	spec?: #CertificateRequestSpec @go(Spec)
 
 	// Status of the CertificateRequest.
 	// This is set and managed automatically.
 	// Read-only.
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	// +optional
-	status: #CertificateRequestStatus @go(Status)
+	status?: #CertificateRequestStatus @go(Status)
 }
 
 // CertificateRequestList is a list of CertificateRequests.

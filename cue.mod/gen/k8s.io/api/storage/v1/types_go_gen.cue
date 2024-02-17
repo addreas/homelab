@@ -522,7 +522,7 @@ import (
 	// It is possible for different nodes to use different topology keys.
 	// This can be empty if driver does not support topology.
 	// +optional
-	topologyKeys: [...string] @go(TopologyKeys,[]string) @protobuf(3,bytes,rep)
+	topologyKeys?: [...string] @go(TopologyKeys,[]string) @protobuf(3,bytes,rep)
 
 	// allocatable represents the volume resources of a node that are available for scheduling.
 	// This field is beta.

@@ -91,7 +91,7 @@ import (
 // CiliumIdentity instances that include particular labels. This can be done
 // with invocations such as:
 //
-// kubectl get ciliumid -l 'foo=bar'
+//	kubectl get ciliumid -l 'foo=bar'
 #CiliumIdentity: {
 	metav1.#TypeMeta
 

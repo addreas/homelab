@@ -26,7 +26,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Revision is a human-readable identifier traceable in the origin source
 	// system. It can be a Git commit SHA, Git tag, a Helm chart version, etc.
 	// +optional
-	revision: string @go(Revision)
+	revision?: string @go(Revision)
 
 	// Checksum is the SHA256 checksum of the Artifact file.
 	// Deprecated: use Artifact.Digest instead.

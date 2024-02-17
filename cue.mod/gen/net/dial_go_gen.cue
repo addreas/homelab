@@ -26,7 +26,7 @@ _#mptcpDisabled:   _#mptcpStatus & 2
 //
 // The zero value for each field is equivalent to dialing
 // without that option. Dialing with the zero value of Dialer
-// is therefore equivalent to just calling the Dial function.
+// is therefore equivalent to just calling the [Dial] function.
 //
 // It is safe to call Dialer's methods concurrently.
 #Dialer: {

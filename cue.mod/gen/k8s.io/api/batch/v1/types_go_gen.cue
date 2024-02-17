@@ -236,7 +236,7 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// least one pattern matches an actual pod condition. At most 20 elements are allowed.
 	// +listType=atomic
 	// +optional
-	onPodConditions: [...#PodFailurePolicyOnPodConditionsPattern] @go(OnPodConditions,[]PodFailurePolicyOnPodConditionsPattern) @protobuf(3,bytes,opt)
+	onPodConditions?: [...#PodFailurePolicyOnPodConditionsPattern] @go(OnPodConditions,[]PodFailurePolicyOnPodConditionsPattern) @protobuf(3,bytes,opt)
 }
 
 // PodFailurePolicy describes how failed pods influence the backoffLimit.

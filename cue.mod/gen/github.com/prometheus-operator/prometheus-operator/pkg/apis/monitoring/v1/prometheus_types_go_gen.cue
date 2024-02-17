@@ -854,7 +854,7 @@ import (
 
 	// Key-value pairs to be used as headers associated with gRPC or HTTP requests.
 	// +optional
-	headers: {[string]: string} @go(Headers,map[string]string)
+	headers?: {[string]: string} @go(Headers,map[string]string)
 
 	// Compression key for supported compression types. The only supported value is `gzip`.
 	// +kubebuilder:validation:Enum=gzip

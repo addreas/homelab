@@ -46,7 +46,7 @@ import (
 	// List of endpoints part of this PodMonitor.
 	//
 	// +optional
-	podMetricsEndpoints: [...#PodMetricsEndpoint] @go(PodMetricsEndpoints,[]PodMetricsEndpoint)
+	podMetricsEndpoints?: [...#PodMetricsEndpoint] @go(PodMetricsEndpoints,[]PodMetricsEndpoint)
 
 	// Label selector to select the Kubernetes `Pod` objects.
 	selector: metav1.#LabelSelector @go(Selector)

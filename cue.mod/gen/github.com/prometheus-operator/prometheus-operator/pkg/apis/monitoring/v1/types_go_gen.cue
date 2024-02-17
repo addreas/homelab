@@ -66,7 +66,7 @@ import (
 	// +optional
 	// +kubebuilder:default:="monitoring.coreos.com"
 	// +kubebuilder:validation:Enum=monitoring.coreos.com
-	group: string @go(Group)
+	group?: string @go(Group)
 
 	// Resource of the referent.
 	// +kubebuilder:validation:Required
