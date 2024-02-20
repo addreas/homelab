@@ -20,7 +20,7 @@ import (
 	// A list of events to handle,
 	// e.g. 'push' for GitHub or 'Push Hook' for GitLab.
 	// +optional
-	events: [...string] @go(Events,[]string)
+	events?: [...string] @go(Events,[]string)
 
 	// A list of resources to be notified about changes.
 	// +required

@@ -121,44 +121,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Network Attachment Selection Annotation as described in section 4.1.2
 // of the CRD specification.
 // +k8s:deepcopy-gen=false
-#NetworkSelectionElement: {
-	// Name contains the name of the Network object this element selects
-	name: string @go(Name)
-
-	// Namespace contains the optional namespace that the network referenced
-	// by Name exists in
-	namespace?: string @go(Namespace)
-
-	// IPRequest contains an optional requested IP addresses for this network
-	// attachment
-	ips?: [...string] @go(IPRequest,[]string)
-
-	// MacRequest contains an optional requested MAC address for this
-	// network attachment
-	mac?: string @go(MacRequest)
-
-	// InfinibandGUIDRequest contains an optional requested Infiniband GUID
-	// address for this network attachment
-	"infiniband-guid"?: string @go(InfinibandGUIDRequest)
-
-	// InterfaceRequest contains an optional requested name for the
-	// network interface this attachment will create in the container
-	interface?: string @go(InterfaceRequest)
-
-	// PortMappingsRequest contains an optional requested port mapping
-	// for the network
-	portMappings?: [...null | #PortMapEntry] @go(PortMappingsRequest,[]*PortMapEntry)
-
-	// BandwidthRequest contains an optional requested bandwidth for
-	// the network
-	bandwidth?: null | #BandwidthEntry @go(BandwidthRequest,*BandwidthEntry)
-
-	// CNIArgs contains additional CNI arguments for the network interface
-	"cni-args"?: null | {...} @go(CNIArgs,*map[string]interface{})
-
-	// GatewayRequest contains default route IP address for the pod
-	"default-route"?: [...string] @go(GatewayRequest,[]net.IP)
-}
+#NetworkSelectionElement: _
 
 // Pod annotation for network-attachment-definition
 #NetworkAttachmentAnnot: "k8s.v1.cni.cncf.io/networks"

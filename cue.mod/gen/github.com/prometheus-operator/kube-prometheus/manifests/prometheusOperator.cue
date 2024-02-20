@@ -12067,6 +12067,20 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scrapeProtocols: {
+										description: """
+														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									selector: {
 										description: "Label selector to select the Kubernetes `Pod` objects."
 										properties: {
@@ -12477,6 +12491,20 @@ prometheusOperator: {
 										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted."
 										format:      "int64"
 										type:        "integer"
+									}
+									scrapeProtocols: {
+										description: """
+														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									scrapeTimeout: {
 										description: "Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used."
@@ -31460,6 +31488,20 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scrapeProtocols: {
+										description: """
+														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
+														 If unset, Prometheus uses its default value. 
+														 It requires Prometheus >= v2.49.0.
+														"""
+										items: {
+											description: "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											type: "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									selector: {
 										description: "Label selector to select the Kubernetes `Endpoints` objects."
 										properties: {
@@ -36966,7 +37008,7 @@ prometheusOperator: {
 						}
 					}, {
 						args: ["--secure-listen-address=:8443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:8080/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.15.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.16.0"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 8443

@@ -119,7 +119,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.15.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.16.0"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100

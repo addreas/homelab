@@ -283,13 +283,13 @@ import (
 	// If labels or annotations overlap with in-built values, the values here
 	// will override the in-built values.
 	// +optional
-	metadata: #ACMEChallengeSolverHTTP01IngressPodObjectMeta @go(ACMEChallengeSolverHTTP01IngressPodObjectMeta)
+	metadata?: #ACMEChallengeSolverHTTP01IngressPodObjectMeta @go(ACMEChallengeSolverHTTP01IngressPodObjectMeta)
 
 	// PodSpec defines overrides for the HTTP01 challenge solver pod.
 	// Check ACMEChallengeSolverHTTP01IngressPodSpec to find out currently supported fields.
 	// All other fields will be ignored.
 	// +optional
-	spec: #ACMEChallengeSolverHTTP01IngressPodSpec @go(Spec)
+	spec?: #ACMEChallengeSolverHTTP01IngressPodSpec @go(Spec)
 }
 
 #ACMEChallengeSolverHTTP01IngressPodObjectMeta: {
@@ -336,7 +336,7 @@ import (
 	// If labels or annotations overlap with in-built values, the values here
 	// will override the in-built values.
 	// +optional
-	metadata: #ACMEChallengeSolverHTTP01IngressObjectMeta @go(ACMEChallengeSolverHTTP01IngressObjectMeta)
+	metadata?: #ACMEChallengeSolverHTTP01IngressObjectMeta @go(ACMEChallengeSolverHTTP01IngressObjectMeta)
 }
 
 #ACMEChallengeSolverHTTP01IngressObjectMeta: {
@@ -488,7 +488,7 @@ import (
 	// vars, shared credentials file or AWS Instance metadata,
 	// see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials
 	// +optional
-	secretAccessKeySecretRef: cmmeta.#SecretKeySelector @go(SecretAccessKey)
+	secretAccessKeySecretRef?: cmmeta.#SecretKeySelector @go(SecretAccessKey)
 
 	// Role is a Role ARN which the Route53 provider will assume using either the explicit credentials AccessKeyID/SecretAccessKey
 	// or the inferred credentials from environment variables, shared credentials file or AWS Instance metadata

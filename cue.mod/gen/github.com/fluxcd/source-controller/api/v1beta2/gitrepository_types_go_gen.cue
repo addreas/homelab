@@ -113,12 +113,12 @@ import (
 	// FromPath specifies the path to copy contents from, defaults to the root
 	// of the Artifact.
 	// +optional
-	fromPath: string @go(FromPath)
+	fromPath?: string @go(FromPath)
 
 	// ToPath specifies the path to copy contents to, defaults to the name of
 	// the GitRepositoryRef.
 	// +optional
-	toPath: string @go(ToPath)
+	toPath?: string @go(ToPath)
 }
 
 // GitRepositoryRef specifies the Git reference to resolve and checkout.

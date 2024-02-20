@@ -40,7 +40,7 @@ import (
 	// maximum of 100 ports.
 	// +optional
 	// +listType=atomic
-	ports: [...#EndpointPort] @go(Ports,[]EndpointPort) @protobuf(3,bytes,rep)
+	ports?: [...#EndpointPort] @go(Ports,[]EndpointPort) @protobuf(3,bytes,rep)
 }
 
 // AddressType represents the type of address referred to by an endpoint.

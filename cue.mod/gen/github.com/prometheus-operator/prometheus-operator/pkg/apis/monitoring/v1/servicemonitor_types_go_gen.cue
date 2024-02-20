@@ -50,7 +50,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// List of endpoints part of this ServiceMonitor.
 	//
 	// +optional
-	endpoints: [...#Endpoint] @go(Endpoints,[]Endpoint)
+	endpoints?: [...#Endpoint] @go(Endpoints,[]Endpoint)
 
 	// Label selector to select the Kubernetes `Endpoints` objects.
 	selector: metav1.#LabelSelector @go(Selector)
