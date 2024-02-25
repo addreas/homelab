@@ -30,8 +30,7 @@ in
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/installer/netboot/netboot-minimal.nix")
-
-    ../common/base.nix
+    ./base.nix
   ];
 
   system.stateVersion = "22.11";
@@ -47,7 +46,6 @@ in
   '';
 
   services.getty.autologinUser = lib.mkForce "root";
-  services.kmscon.autologinUser = lib.mkForce "root";
 
   programs.ssh.knownHostsFiles = [
     (pkgs.writeText "github.keys" ''
