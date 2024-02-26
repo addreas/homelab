@@ -29,7 +29,6 @@ parted --script ${DEVICE} \
 
 mkfs.fat -F 32 ${DEVICE}p1
 mkfs.btrfs ${DEVICE}p2 -f
-mkfs.ext4 ${DEVICE}p3
 
 P2=${DEVICE}p2
 mount -t btrfs "$P2" $MNT/
