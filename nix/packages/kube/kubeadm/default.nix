@@ -115,7 +115,7 @@ in
         Type = "oneshot";
         ExecCondition = "${pkgs.curl}/bin/curl --insecure https://${cfg.init.clusterConfig.controlPlaneEndpoint}";
       };
-      unitConfig.ConditionPathExists = "!/etc/kubernetes";
+      unitConfig.ConditionPathExists = "!/etc/kubernetes/.kubeadm-joined";
 
       script = ''
         ${cfg.package}/bin/kubeadm join ${cfg.init.clusterConfig.controlPlaneEndpoint} \
@@ -129,6 +129,7 @@ in
 
 
         rm ${cfg.init.bootstrapTokenFile} ${lib.strings.optionalString cfg.controlPlane cfg.init.certificateKeyFile}
+        touch /etc/kubernetes/.kubeadm-joined
       '';
 
       wantedBy = [ "kubelet.service" ];

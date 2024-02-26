@@ -9,7 +9,6 @@ MNT=/mnt
 set -e
 set -x
 
-umount $MNT/var/lib/longhorn || true
 umount $MNT/{boot,home,nix,var/log,var/lib} || true
 umount $MNT || true
 
@@ -60,7 +59,7 @@ ssh-keygen \
 chmod 600 "$MNT/home/addem/.ssh/id_ed25519.pub"
 
 curl "$(cmdline pixie-api)/v1/ssh-key/addem@$(hostname)" \
-  --silent \
+  --verbose \
   --request POST \
   --upload-file - < "$MNT/home/addem/.ssh/id_ed25519.pub"
 
