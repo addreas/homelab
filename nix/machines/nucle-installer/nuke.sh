@@ -23,8 +23,7 @@ sleep 10
 parted --script ${DEVICE} \
                 mklabel gpt \
                 mkpart esp fat32 1MiB 512MiB \
-                mkpart os btrfs 512MiB 20GiB \
-                mkpart data ext4 50% 100% \
+                mkpart os btrfs 512MiB 100% \
                 set 1 esp on \
                 set 1 boot on
 
@@ -52,10 +51,6 @@ mount -t btrfs -o noatime,compress=zstd,subvol=@nix "$P2" "$MNT/nix"
 mount -t btrfs -o noatime,compress=zstd,subvol=@varlib "$P2" "$MNT/var/lib"
 mount -t btrfs -o noatime,compress=zstd,subvol=@varlog "$P2" "$MNT/var/log"
 
-mkdir $MNT/var/lib/longhorn
-
-mount -t ext4  -o noatime,defaults ${DEVICE}p3 "$MNT/var/lib/longhorn"
-
 mkdir -p "$MNT/home/addem/.ssh"
 ssh-keygen \
   -t ed25519 \
@@ -72,17 +67,17 @@ curl "$(cmdline pixie-api)/v1/ssh-key/addem@$(hostname)" \
 
 export GIT_SSH_COMMAND="ssh -i $MNT/home/addem/.ssh/id_ed25519"
 
-git clone git@github.com:addreas/flakefiles.git $MNT/home/addem/flakefiles
+git clone git@github.com:addreas/homelab.git $MNT/home/addem/homelab
 
 nixos-generate-config --root $MNT
 
-cd $MNT/home/addem/flakefiles
+cd $MNT/home/addem/homelab
 cp "$MNT/etc/nixos/hardware-configuration.nix" \
-  "./machines/nucles/$(hostname)"
-git add "./machines/nucles/$(hostname)"
+  "./nix/machines/nucles/$(hostname)"
+git add "./nix/machines/nucles/$(hostname)"
 
 ln -s -r \
-  "$MNT/home/addem/flakefiles/flake.nix" \
+  "$MNT/home/addem/homelab/flake.nix" \
   "$MNT/etc/nixos"
 
 nixos-install \
@@ -90,7 +85,7 @@ nixos-install \
   --no-root-password \
   --option extra-experimental-features auto-allocate-uids \
   --option extra-experimental-features cgroups \
-  --flake "$MNT/home/addem/flakefiles#$(hostname)"
+  --flake "$MNT/home/addem/homelab#$(hostname)"
 
 git add .
 git config user.email "$(hostname)@addem.se"

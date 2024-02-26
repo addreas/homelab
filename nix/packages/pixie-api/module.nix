@@ -13,7 +13,8 @@ let
     cmdline = builtins.concatStringsSep " " (builtins.concatLists [
       [
         "init=${host.nixosSystem.config.system.build.toplevel}/init"
-        "pixie-api=http://${config.networking.fqdn}:${builtins.toString cfg.port}"
+        "pixie-api=http://nucles.localdomain:${builtins.toString cfg.port}"
+        # "pixie-api=http://${config.networking.fqdn}:${builtins.toString cfg.port}"
         # TODO: serve nuke.sh from instead of baking into nucle-installer
         "mac=${mac}"
       ]

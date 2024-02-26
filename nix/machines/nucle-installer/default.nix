@@ -66,6 +66,7 @@ in
     serviceConfig = {
       ExecStart = "${nuke}/bin/nuke-nvme0n1-and-install";
       StandardOutput = "journal+console";
+      StandardError = "journal+console";
     };
   };
 }

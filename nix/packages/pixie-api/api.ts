@@ -31,7 +31,7 @@ const routeHandler = router<HandlerContext>({
     const title = match.title;
     const key = await req.text();
 
-    return await fetchGithub("/repos/addreas/flakefiles/keys", {
+    return await fetchGithub("/repos/addreas/homelab/keys", {
       githubToken,
       method: "POST",
       body: JSON.stringify({ key: key.trim(), title, read_only: false }),
