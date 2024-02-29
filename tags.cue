@@ -27,7 +27,7 @@ githubReleases: {
 	"kubereboot/charts":          "kured-5.4.2"
 	"longhorn/longhorn":          "v1.6.0"
 	"ory/hydra":                  "v2.2.0"
-	"ory/kratos":                 "v1.0.0"
+	"ory/kratos":                 "v1.1.0"
 	"zwave-js/zwave-js-ui":       "v9.9.0"
 }
 otherTags: {

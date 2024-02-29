@@ -6,7 +6,7 @@ import (
 )
 
 #FixTracing: {
-	schema:      string
+	schema: string
 	otelxSchema: exec.Run & {
 		cmd: [
 			"curl",
@@ -53,7 +53,8 @@ command: "kratos-config-schema": task: {
 				| del(.required[] | select(. == "dsn"))
 				""",
 		]
-		stdin: fixTracing.output
+		stdin:  fixTracing.output
+		stdout: string
 	}
 	writeKratosSchemaJson: file.Create & {
 		filename: "kratos-config-schema.json"

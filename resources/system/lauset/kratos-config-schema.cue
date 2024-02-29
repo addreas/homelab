@@ -1,8 +1,8 @@
 package kube
 
 import (
-	"list"
 	"strings"
+	"list"
 )
 
 #KratosConfigSchema: {
@@ -38,6 +38,13 @@ import (
 				// If set to true will enable [User
 				// Registration](https://www.ory.sh/kratos/docs/self-service/flows/user-registration/).
 				enabled?: bool | *true
+
+				// Provide Login Hints on Failed Registration
+				//
+				// When registration fails because an account with the given
+				// credentials or addresses previously signed up, provide login
+				// hints about available methods to sign in to the user.
+				login_hints?: bool | *false
 
 				// Registration UI URL
 				//
@@ -163,7 +170,34 @@ import (
 					...
 				}
 			}
-			code?: {
+			code?: ({
+				passwordless_enabled?: true
+				mfa_enabled?:          false
+				...
+			} | {
+				mfa_enabled?:          true
+				passwordless_enabled?: false
+				...
+			} | {
+				mfa_enabled?:          false
+				passwordless_enabled?: false
+				...
+			}) & {
+				// Enables login and registration with the code method.
+				//
+				// If set to true, code.enabled will be set to true as well.
+				passwordless_enabled?: bool | *false
+
+				// Enables login flows code method to fulfil MFA requests
+				mfa_enabled?: bool | *false
+
+				// Passwordless Login Fallback Enabled
+				//
+				// This setting allows the code method to always login a user with
+				// code if they have registered with another authentication
+				// method such as password or social sign in.
+				passwordless_login_fallback_enabled?: bool | *false
+
 				// Enables Code Method
 				enabled?: bool | *true
 
@@ -252,21 +286,47 @@ import (
 					passwordless?: bool
 
 					// Relying Party (RP) Config
-					rp?: {
+					rp?: ({
+						origin?:      _
+						origins?:     _
+						id:           _
+						display_name: _
+						...
+					} | {
+						origin:       string
+						origins?:     _
+						id:           _
+						display_name: _
+						...
+					} | {
+						origin?: _
+						origins: [...string]
+						id:           _
+						display_name: _
+						...
+					}) & {
 						// Relying Party Display Name
 						//
 						// An name to help the user identify this RP.
-						display_name: string
+						display_name?: string
 
 						// Relying Party Identifier
 						//
 						// The id must be a subset of the domain currently in the browser.
-						id: string
+						id?: string
 
 						// Relying Party Origin
 						//
-						// An explicit RP origin. If left empty, this defaults to `id`.
+						// An explicit RP origin. If left empty, this defaults to `id`,
+						// prepended with the current protocol schema (HTTP or HTTPS).
 						origin?: string
+
+						// Relying Party Origins
+						//
+						// A list of explicit RP origins. If left empty, this defaults to
+						// either `origin` or `id`, prepended with the current protocol
+						// schema (HTTP or HTTPS).
+						origins?: [...string]
 
 						// Relying Party Icon
 						//
@@ -352,6 +412,11 @@ import (
 			recovery_code?:     #courierTemplates
 			verification?:      #courierTemplates
 			verification_code?: #courierTemplates
+			registration_code?: valid?: email: #emailCourierTemplate
+			login_code?: valid?: {
+				email: #emailCourierTemplate
+				sms?:  #smsCourierTemplate
+			}
 		}
 
 		// Override message templates
@@ -363,6 +428,17 @@ import (
 		// Defines the maximum number of times the sending of a message is
 		// retried after it failed before it is marked as abandoned
 		message_retries?: int | *5
+
+		// Configures the dispatch worker.
+		worker?: {
+			// Defines how many messages are pulled from the queue at once.
+			pull_count?: int | *10
+
+			// Defines how long the worker waits before pulling messages from
+			// the queue again.
+			pull_wait?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1s"
+			...
+		}
 
 		// Delivery Strategy
 		//
@@ -380,7 +456,7 @@ import (
 		// SMTP Configuration
 		//
 		// Configures outgoing emails using the SMTP protocol.
-		smtp: {
+		smtp?: {
 			// SMTP connection string
 			//
 			// This URI will be used to connect to the SMTP server. Use the
@@ -473,6 +549,20 @@ import (
 				auth?: #webHookAuthApiKeyProperties | #webHookAuthBasicAuthProperties
 			}
 		}
+		channels?: [...{
+			// Channel id
+			//
+			// The channel id. Corresponds to the .via property of the
+			// identity schema for recovery, verification, etc. Currently
+			// only phone is supported.
+			id: "sms" & strings.MaxRunes(32)
+
+			// Channel type
+			//
+			// The channel type. Currently only http is supported.
+			type?:          "http"
+			request_config: #httpRequestConfig
+		}]
 	}
 
 	// OAuth2 Provider Configuration
@@ -499,6 +589,19 @@ import (
 		// Override the return_to query parameter with the OAuth2 provider
 		// request URL when perfoming an OAuth2 login flow.
 		override_return_to?: bool | *false
+	}
+
+	// Configure Preview Features
+	preview?: {
+		// Default Read Consistency Level
+		//
+		// The default consistency level to use when reading from the
+		// database. Defaults to `strong` to not break existing API
+		// contracts. Only set this to `eventual` if you can accept that
+		// other read APIs will suddenly return eventually consistent
+		// results. It is only effective in Ory Network.
+		default_read_consistency_level?: "strong" | "eventual" | *"strong"
+		...
 	}
 	serve?: {
 		admin?: {
@@ -554,7 +657,7 @@ import (
 
 				// A list of non simple headers the client is allowed to use with
 				// cross-domain requests.
-				allowed_headers?: [...string] | *["Authorization", "Content-Type", "X-Session-Token"]
+				allowed_headers?: [...string] | *["Authorization", "Content-Type", "Max-Age", "X-Session-Token", "X-XSRF-TOKEN", "X-CSRF-TOKEN"]
 
 				// Sets which headers are safe to expose to the API of a CORS API
 				// specification.
@@ -738,6 +841,31 @@ import (
 		// Control how the `/sessions/whoami` endpoint is behaving.
 		whoami?: {
 			required_aal?: #featureRequiredAal
+
+			// Tokenizer configuration
+			//
+			// Configure the tokenizer, responsible for converting a session
+			// into a token format such as JWT.
+			tokenizer?: {
+				// Tokenizer templates
+				//
+				// A list of different templates that govern how a session is
+				// converted to a token format.
+				templates?: {
+					{[=~"[a-zA-Z0-9-_.]+" & !~"^()$"]: {
+						// Token time to live
+						ttl?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"1m"
+
+						// JsonNet mapper URL
+						claims_mapper_url?: string
+
+						// JSON Web Key Set URL
+						jwks_url: string, ...
+					}}
+					...
+				}
+				...
+			}
 		}
 
 		// Session Lifespan
@@ -787,7 +915,7 @@ import (
 		// until 24 hours before it expires. This setting prevents
 		// excessive writes to the database. We highly recommend setting
 		// this value.
-		earliest_possible_extend?: =~"^([0-9]+(ns|us|ms|s|m|h))+$" | *"24h"
+		earliest_possible_extend?: =~"^([0-9]+(ns|us|ms|s|m|h))+$"
 	}
 
 	// The kratos version this config is written for.
@@ -849,7 +977,19 @@ import (
 		// If enabled allows Ory Sessions to be cached. Only effective in
 		// the Ory Network.
 		cacheable_sessions?: bool | *false
+
+		// Enable new flow transitions using `continue_with` items
+		//
+		// If enabled allows new flow transitions using `continue_with`
+		// items.
+		use_continue_with_transitions?: bool | *false
 	}
+
+	// Organizations
+	//
+	// Secifies which organizations are available. Only effective in
+	// the Ory Network.
+	organizations?: [...] | *[]
 
 	#baseUrl: string
 
@@ -875,6 +1015,13 @@ import (
 	#selfServiceRequireVerifiedAddressHook: hook: "require_verified_address"
 
 	#selfServiceShowVerificationUIHook: hook: "show_verification_ui"
+
+	#b2bSSOHook: {
+		hook: "b2b_sso"
+		config: {
+			...
+		}
+	}
 
 	#webHookAuthBasicAuthProperties: null | bool | number | string | [...] | {
 		type: "basic_auth"
@@ -904,7 +1051,7 @@ import (
 		// URI pointing to the jsonnet template used for payload
 		// generation. Only used for those HTTP methods, which support
 		// HTTP body payloads
-		body?: =~"^(http|https|file|base64)://" | *"base64://ZnVuY3Rpb24oY3R4KSB7CiAgcmVjaXBpZW50OiBjdHguUmVjaXBpZW50LAogIHRlbXBsYXRlX3R5cGU6IGN0eC5UZW1wbGF0ZVR5cGUsCiAgdG86IGlmICJUZW1wbGF0ZURhdGEiIGluIGN0eCAmJiAiVG8iIGluIGN0eC5UZW1wbGF0ZURhdGEgdGhlbiBjdHguVGVtcGxhdGVEYXRhLlRvIGVsc2UgbnVsbCwKICByZWNvdmVyeV9jb2RlOiBpZiAiVGVtcGxhdGVEYXRhIiBpbiBjdHggJiYgIlJlY292ZXJ5Q29kZSIgaW4gY3R4LlRlbXBsYXRlRGF0YSB0aGVuIGN0eC5UZW1wbGF0ZURhdGEuUmVjb3ZlcnlDb2RlIGVsc2UgbnVsbCwKICByZWNvdmVyeV91cmw6IGlmICJUZW1wbGF0ZURhdGEiIGluIGN0eCAmJiAiUmVjb3ZlcnlVUkwiIGluIGN0eC5UZW1wbGF0ZURhdGEgdGhlbiBjdHguVGVtcGxhdGVEYXRhLlJlY292ZXJ5VVJMIGVsc2UgbnVsbCwKICB2ZXJpZmljYXRpb25fdXJsOiBpZiAiVGVtcGxhdGVEYXRhIiBpbiBjdHggJiYgIlZlcmlmaWNhdGlvblVSTCIgaW4gY3R4LlRlbXBsYXRlRGF0YSB0aGVuIGN0eC5UZW1wbGF0ZURhdGEuVmVyaWZpY2F0aW9uVVJMIGVsc2UgbnVsbCwKICB2ZXJpZmljYXRpb25fY29kZTogaWYgIlRlbXBsYXRlRGF0YSIgaW4gY3R4ICYmICJWZXJpZmljYXRpb25Db2RlIiBpbiBjdHguVGVtcGxhdGVEYXRhIHRoZW4gY3R4LlRlbXBsYXRlRGF0YS5WZXJpZmljYXRpb25Db2RlIGVsc2UgbnVsbCwKICBzdWJqZWN0OiBjdHguU3ViamVjdCwKICBib2R5OiBjdHguQm9keQp9Cg=="
+		body?: =~"^(http|https|file|base64)://" | *"base64://ZnVuY3Rpb24oY3R4KSB7CiAgcmVjaXBpZW50OiBjdHgucmVjaXBpZW50LAogIHRlbXBsYXRlX3R5cGU6IGN0eC50ZW1wbGF0ZV90eXBlLAogIHRvOiBpZiAidGVtcGxhdGVfZGF0YSIgaW4gY3R4ICYmICJ0byIgaW4gY3R4LnRlbXBsYXRlX2RhdGEgdGhlbiBjdHgudGVtcGxhdGVfZGF0YS50byBlbHNlIG51bGwsCiAgcmVjb3ZlcnlfY29kZTogaWYgInRlbXBsYXRlX2RhdGEiIGluIGN0eCAmJiAicmVjb3ZlcnlfY29kZSIgaW4gY3R4LnRlbXBsYXRlX2RhdGEgdGhlbiBjdHgudGVtcGxhdGVfZGF0YS5yZWNvdmVyeV9jb2RlIGVsc2UgbnVsbCwKICByZWNvdmVyeV91cmw6IGlmICJ0ZW1wbGF0ZV9kYXRhIiBpbiBjdHggJiYgInJlY292ZXJ5X3VybCIgaW4gY3R4LnRlbXBsYXRlX2RhdGEgdGhlbiBjdHgudGVtcGxhdGVfZGF0YS5yZWNvdmVyeV91cmwgZWxzZSBudWxsLAogIHZlcmlmaWNhdGlvbl91cmw6IGlmICJ0ZW1wbGF0ZV9kYXRhIiBpbiBjdHggJiYgInZlcmlmaWNhdGlvbl91cmwiIGluIGN0eC50ZW1wbGF0ZV9kYXRhIHRoZW4gY3R4LnRlbXBsYXRlX2RhdGEudmVyaWZpY2F0aW9uX3VybCBlbHNlIG51bGwsCiAgdmVyaWZpY2F0aW9uX2NvZGU6IGlmICJ0ZW1wbGF0ZV9kYXRhIiBpbiBjdHggJiYgInZlcmlmaWNhdGlvbl9jb2RlIiBpbiBjdHgudGVtcGxhdGVfZGF0YSB0aGVuIGN0eC50ZW1wbGF0ZV9kYXRhLnZlcmlmaWNhdGlvbl9jb2RlIGVsc2UgbnVsbCwKICBzdWJqZWN0OiBjdHguc3ViamVjdCwKICBib2R5OiBjdHguYm9keQp9Cg=="
 
 		// Auth mechanisms
 		//
@@ -973,6 +1120,9 @@ import (
 			// valid response format.
 			can_interrupt?: bool | *false
 
+			// Emit tracing events for this webhook on delivery or error
+			emit_analytics_event?: bool | *true
+
 			// Auth mechanisms
 			//
 			// Define which auth mechanism the Web-Hook should use
@@ -983,9 +1133,9 @@ import (
 	#OIDCClaims: {
 		{[=~"^userinfo$|^id_token$" & !~"^()$"]: {
 			{[=~".*" & !~"^()$"]: null | {
-						// Indicates whether the Claim being requested is an Essential
-						// Claim.
-						essential?: bool
+				// Indicates whether the Claim being requested is an Essential
+				// Claim.
+				essential?: bool
 
 				// Requests that the Claim be returned with a particular value.
 				value?: _
@@ -1058,37 +1208,62 @@ import (
 		// token for client secret
 		apple_private_key?: string
 		requested_claims?:  #OIDCClaims
+
+		// Organization ID
+		//
+		// The ID of the organization that this provider belongs to. Only
+		// effective in the Ory Network.
+		organization_id?: string
+
+		// Additional client ids allowed when using ID token submission
+		additional_id_token_audiences?: [...string]
+
+		// Claims source
+		//
+		// Can be either `userinfo` (calls the userinfo endpoint to get
+		// the claims) or `id_token` (takes the claims from the id
+		// token). It defaults to `id_token`
+		claims_source?: "id_token" | "userinfo" | *"id_token"
 	}
 
-	#selfServiceHooks: list.UniqueItems() & [...#selfServiceWebHook & _]
+	#selfServiceHooks: list.UniqueItems() & [...(#selfServiceWebHook | #b2bSSOHook) & _]
 
 	#selfServiceAfterRecoveryHooks: list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook) & _]
 
 	#selfServiceAfterSettingsMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...#selfServiceWebHook & _]
+		hooks?: list.UniqueItems() & [...#selfServiceWebHook & _]
+	}
+
+	#selfServiceAfterSettingsAuthMethod: {
+		default_browser_return_url?: #defaultReturnTo
+		hooks?: list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook) & _]
 	}
 
 	#selfServiceAfterDefaultLoginMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook | #selfServiceWebHook) & _]
+		hooks?: list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook | #selfServiceWebHook) & _]
 	}
 
 	#selfServiceAfterOIDCLoginMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceWebHook | #selfServiceRequireVerifiedAddressHook) & _]
+		hooks?: list.UniqueItems() & [...(#selfServiceSessionRevokerHook | #selfServiceWebHook | #selfServiceRequireVerifiedAddressHook | #b2bSSOHook) & _]
 	}
 
 	#selfServiceAfterRegistrationMethod: {
 		default_browser_return_url?: #defaultReturnTo
-		hooks?:                      list.UniqueItems() & [...(#selfServiceSessionIssuerHook | #selfServiceWebHook | #selfServiceShowVerificationUIHook) & _]
+		hooks?: list.UniqueItems() & [...(#selfServiceSessionIssuerHook | #selfServiceWebHook | #selfServiceShowVerificationUIHook | #b2bSSOHook) & _]
 	}
 
 	#featureRequiredAal: "aal1" | "highest_available" | *"highest_available"
 
 	#selfServiceAfterSettings: {
 		default_browser_return_url?: #defaultReturnTo
-		password?:                   #selfServiceAfterSettingsMethod
+		password?:                   #selfServiceAfterSettingsAuthMethod
+		totp?:                       #selfServiceAfterSettingsAuthMethod
+		oidc?:                       #selfServiceAfterSettingsAuthMethod
+		webauthn?:                   #selfServiceAfterSettingsAuthMethod
+		lookup_secret?:              #selfServiceAfterSettingsAuthMethod
 		profile?:                    #selfServiceAfterSettingsMethod
 		hooks?:                      #selfServiceHooks
 	}
@@ -1100,7 +1275,10 @@ import (
 		password?:                   #selfServiceAfterDefaultLoginMethod
 		webauthn?:                   #selfServiceAfterDefaultLoginMethod
 		oidc?:                       #selfServiceAfterOIDCLoginMethod
-		hooks?:                      list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook) & _]
+		code?:                       #selfServiceAfterDefaultLoginMethod
+		totp?:                       #selfServiceAfterDefaultLoginMethod
+		lookup_secret?:              #selfServiceAfterDefaultLoginMethod
+		hooks?: list.UniqueItems() & [...(#selfServiceWebHook | #selfServiceSessionRevokerHook | #selfServiceRequireVerifiedAddressHook | #b2bSSOHook) & _]
 	}
 
 	#selfServiceBeforeRegistration: hooks?: #selfServiceHooks
@@ -1116,6 +1294,7 @@ import (
 		password?:                   #selfServiceAfterRegistrationMethod
 		webauthn?:                   #selfServiceAfterRegistrationMethod
 		oidc?:                       #selfServiceAfterRegistrationMethod
+		code?:                       #selfServiceAfterRegistrationMethod
 		hooks?:                      #selfServiceHooks
 	}
 
@@ -1150,7 +1329,15 @@ import (
 
 	#courierTemplates: {
 		invalid?: email: #emailCourierTemplate
-		valid?: email: #emailCourierTemplate
+		valid?: {
+			email: #emailCourierTemplate
+			sms?:  #smsCourierTemplate
+		}
+	}
+
+	#smsCourierTemplate: body?: {
+		// A template send to the SMS provider.
+		plaintext?: string
 	}
 
 	#emailCourierTemplate: {
@@ -1175,12 +1362,15 @@ import (
 
 		// Specifies the service name to use on the tracer.
 		service_name?: string
+
+		// Specifies the deployment environment to use on the tracer.
+		deployment_environment?: string
 		providers?: {
 			// Configures the jaeger tracing backend.
 			jaeger?: {
 				// The address of the jaeger-agent where spans should be sent to.
 				local_agent_address?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
-				sampling?:            {
+				sampling?: {
 					["server_url" | "trace_id_ratio"]: _
 				} & {
 					// The address of jaeger-agent's HTTP sampling server
@@ -1195,7 +1385,7 @@ import (
 			zipkin?: {
 				// The address of the Zipkin server where spans should be sent to.
 				server_url?: string
-				sampling?:   {
+				sampling?: {
 					["sampling_ratio"]: _
 				} & {
 					// Sampling ratio for spans.
@@ -1217,6 +1407,7 @@ import (
 					// Sampling ratio for spans.
 					sampling_ratio?: number
 				}
+				authorization_header?: string
 			}
 		}
 	}

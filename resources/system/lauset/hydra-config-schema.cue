@@ -489,7 +489,7 @@ import (
 	#http_method: "POST" | "GET" | "PUT" | "PATCH" | "DELETE" | "CONNECT" | "HEAD" | "OPTIONS" | "TRACE"
 
 	#portNumber: null | bool | >=1 & <=65535 | string | [...] | {
-			...
+		...
 	}
 
 	#socket: {
@@ -582,12 +582,15 @@ import (
 
 		// Specifies the service name to use on the tracer.
 		service_name?: string
+
+		// Specifies the deployment environment to use on the tracer.
+		deployment_environment?: string
 		providers?: {
 			// Configures the jaeger tracing backend.
 			jaeger?: {
 				// The address of the jaeger-agent where spans should be sent to.
 				local_agent_address?: (=~"^\\[(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))]:([0-9]*)$" | =~"^([0-9]{1,3}\\.){3}[0-9]{1,3}:([0-9]*)$" | =~"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9]):([0-9]*)$") & string
-				sampling?:            {
+				sampling?: {
 					["server_url" | "trace_id_ratio"]: _
 				} & {
 					// The address of jaeger-agent's HTTP sampling server
@@ -602,7 +605,7 @@ import (
 			zipkin?: {
 				// The address of the Zipkin server where spans should be sent to.
 				server_url?: string
-				sampling?:   {
+				sampling?: {
 					["sampling_ratio"]: _
 				} & {
 					// Sampling ratio for spans.
@@ -624,6 +627,7 @@ import (
 					// Sampling ratio for spans.
 					sampling_ratio?: number
 				}
+				authorization_header?: string
 			}
 		}
 	}
