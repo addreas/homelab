@@ -216,41 +216,41 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 //
 // TODO Move below to separate file?
 //
-_DeploymentRestarter: {
-	Name=_name:                   string
-	LabelSelector=_labelSelector: string
-	_ItemName:                    "\(Name)-deployment-restarter"
+_deploymentRestarter: {
+	_name:          string
+	_labelSelector: string
+	_itemName:      "\(_name)-deployment-restarter"
 
 	k: {
-		Ingress: (_ItemName): {}
-		Service: (_ItemName): {}
-		Deployment: (_ItemName): spec: template: spec: {
-			serviceAccountName: _ItemName
+		Ingress: (_itemName): {}
+		Service: (_itemName): {}
+		Deployment: (_itemName): spec: template: spec: {
+			serviceAccountName: _itemName
 			containers: [{
 				ports: [{containerPort: 8080, name: "http"}]
 				image: "ghcr.io/jonasdahl/deployment-restarter:sha-e6b7a26"
 				env: [
 					{name: "KEY", value:                                "VALUE"}, // TODO
 					{name: "NAMESPACE", valueFrom: fieldRef: fieldPath: "metadata.namespace"},
-					{name: "LABEL_SELECTOR", value:                     LabelSelector},
+					{name: "LABEL_SELECTOR", value:                     _labelSelector},
 				]
 			}]
 		}
-		ServiceAccount: (_ItemName): {}
-		Role: (_ItemName): rules: [{
+		ServiceAccount: (_itemName): {}
+		Role: (_itemName): rules: [{
 			apiGroups: ["apps"]
 			resources: ["deployments"]
 			verbs: ["patch", "list"]
 		}]
-		RoleBinding: (_ItemName): {
+		RoleBinding: (_itemName): {
 			roleRef: {
 				apiGroup: "rbac.authorization.k8s.io"
 				kind:     "Role"
-				name:     _ItemName
+				name:     _itemName
 			}
 			subjects: [{
 				kind: "ServiceAccount"
-				name: _ItemName
+				name: _itemName
 			}]
 		}
 	}

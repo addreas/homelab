@@ -159,7 +159,7 @@ k: Service: "prototyp-redis": spec: ports: [{
 	name: "prototyp-redis"
 }]
 
-_DeploymentRestarter & {
+_deploymentRestarter & {
 	_name:          "prototyp"
 	_labelSelector: "app=prototyp"
 }

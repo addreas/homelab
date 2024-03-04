@@ -10,7 +10,7 @@ k: CueExport: "homelab-splitplace": spec: {
 	suspend: false
 }
 
-_DeploymentRestarter & {
-	_name: "splitplace"
+_deploymentRestarter & {
+	_name:          "splitplace"
 	_labelSelector: "app=splitplace"
 }
