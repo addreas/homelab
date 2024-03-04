@@ -33,8 +33,8 @@ let baseContainer = {
 		name:  "DATABASE_URL"
 		value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@\(postgresHost):5432/$(POSTGRES_DB)"
 	}, {
-		name:  "APP_HOST"
-		value: "\(hostNames[0])"
+		name:  "APP_URL"
+		value: "https://\(hostNames[0])"
 	}]
 }
 
