@@ -1,5 +1,6 @@
 package kube
 
+k: Deployment: victoriametrics: spec: strategy: type: "Recreate"
 k: Deployment: victoriametrics: spec: template: spec: {
 	containers: [{
 		image: "victoriametrics/victoria-metrics:v1.99.0"
