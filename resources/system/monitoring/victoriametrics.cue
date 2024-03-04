@@ -2,7 +2,7 @@ package kube
 
 k: Deployment: victoriametrics: spec: template: spec: {
 	containers: [{
-		image: "victoriametrics/victoria-metrics:v1.90.0"
+		image: "victoriametrics/victoria-metrics:v1.99.0"
 		args: [
 			"-httpListenAddr=:8429",
 			"-retentionPeriod=2y",
