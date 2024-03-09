@@ -67,6 +67,17 @@ import (
 	// +optional
 	targetLimit?: null | uint64 @go(TargetLimit,*uint64)
 
+	// `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
+	// protocols supported by Prometheus in order of preference (from most to least preferred).
+	//
+	// If unset, Prometheus uses its default value.
+	//
+	// It requires Prometheus >= v2.49.0.
+	//
+	// +listType=set
+	// +optional
+	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
+
 	// Per-scrape limit on number of labels that will be accepted for a sample.
 	//
 	// It requires Prometheus >= v2.27.0.
@@ -103,6 +114,11 @@ import (
 	//
 	// +optional
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
+
+	// The scrape class to apply.
+	// +optional
+	// +kubebuilder:validation:MinLength=1
+	scrapeClass?: null | string @go(ScrapeClassName,*string)
 }
 
 // PodMonitorList is a list of PodMonitors.

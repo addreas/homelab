@@ -551,7 +551,7 @@ nodeExporter: {
 				alert: "NodeDiskIOSaturation"
 				annotations: {
 					description: """
-						Disk IO queue (aqu-sq) is high on {{ $labels.device }} at {{ $labels.instance }}, has been above 10 for the last 15 minutes, is currently at {{ printf "%.2f" $value }}.
+						Disk IO queue (aqu-sq) is high on {{ $labels.device }} at {{ $labels.instance }}, has been above 10 for the last 30 minutes, is currently at {{ printf "%.2f" $value }}.
 						This symptom might indicate disk saturation.
 
 						"""

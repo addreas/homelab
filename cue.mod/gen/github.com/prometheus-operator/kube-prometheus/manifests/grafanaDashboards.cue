@@ -475,18 +475,12 @@ grafanaDashboards: {
 		version:  0
 	}
 	"apiserver.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
-		graphTooltip: 0
-		hideControls: false
-		id:           null
-		links: []
+		editable: false
 		panels: [{
-			content:     "The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only."
-			datasource:  null
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
 			description: "The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only."
 			gridPos: {
 				h: 2
@@ -494,1303 +488,647 @@ grafanaDashboards: {
 				x: 0
 				y: 0
 			}
-			id:    2
-			mode:  "markdown"
-			span:  12
-			title: "Notice"
-			type:  "text"
+			id: 1
+			options: content: "The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only."
+			pluginVersion: "v10.2.0"
+			title:         "Notice"
+			type:          "text"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?"
+			fieldConfig: defaults: {
+				decimals: 3
+				unit:     "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 8
+				x: 0
+				y: 2
+			}
+			id:            2
+			interval:      "1m"
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr: "apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"}"
+			}]
+			title: "Availability (30d) > 99.000%"
+			type:  "stat"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How much error budget is left looking at our 0.990% availability guarantees?"
+			fieldConfig: defaults: {
+				custom: fillOpacity: 100
+				decimals: 3
+				unit:     "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 16
+				x: 8
+				y: 2
+			}
+			id:       3
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "100 * (apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"} - 0.990000)"
+				legendFormat: "errorbudget"
+			}]
+			title: "ErrorBudget (30d) > 99.000%"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?"
+			fieldConfig: defaults: {
+				decimals: 3
+				unit:     "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 0
+				y: 9
+			}
+			id:            4
+			interval:      "1m"
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr: "apiserver_request:availability30d{verb=\"read\", cluster=\"$cluster\"}"
+			}]
+			title: "Read Availability (30d)"
+			type:  "stat"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many read requests (LIST,GET) per second do the apiservers get by code?"
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						stacking: mode: "normal"
+					}
+					unit: "reqps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/2../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#56A64B"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/3../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#F2CC0C"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/4../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#3274D9"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/5../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#E02F44"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 6
+				y: 9
+			}
+			id:       5
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"read\", cluster=\"$cluster\"})"
+				legendFormat: "{{ code }}"
+			}]
+			title: "Read SLI - Requests"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?"
+			fieldConfig: defaults: {
+				min:  0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 12
+				y: 9
+			}
+			id:       6
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"read\",code=~\"5..\", cluster=\"$cluster\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"read\", cluster=\"$cluster\"})"
+				legendFormat: "{{ resource }}"
+			}]
+			title: "Read SLI - Errors"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many seconds is the 99th percentile for reading (LIST|GET) a given resource?"
+			fieldConfig: defaults: unit: "s"
+			gridPos: {
+				h: 7
+				w: 6
+				x: 18
+				y: 9
+			}
+			id:       7
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"read\", cluster=\"$cluster\"}"
+				legendFormat: "{{ resource }}"
+			}]
+			title: "Read SLI - Duration"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?"
+			fieldConfig: defaults: {
+				decimals: 3
+				unit:     "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 0
+				y: 16
+			}
+			id:            8
+			interval:      "1m"
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr: "apiserver_request:availability30d{verb=\"write\", cluster=\"$cluster\"}"
+			}]
+			title: "Write Availability (30d)"
+			type:  "stat"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?"
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						stacking: mode: "normal"
+					}
+					unit: "reqps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/2../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#56A64B"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/3../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#F2CC0C"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/4../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#3274D9"
+					}]
+				}, {
+					matcher: {
+						id:      "byRegexp"
+						options: "/5../i"
+					}
+					properties: [{
+						id:    "color"
+						value: "#E02F44"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 6
+				y: 16
+			}
+			id:       9
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"write\", cluster=\"$cluster\"})"
+				legendFormat: "{{ code }}"
+			}]
+			title: "Write SLI - Requests"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?"
+			fieldConfig: defaults: {
+				min:  0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 12
+				y: 16
+			}
+			id:       10
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"write\",code=~\"5..\", cluster=\"$cluster\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"write\", cluster=\"$cluster\"})"
+				legendFormat: "{{ resource }}"
+			}]
+			title: "Write SLI - Errors"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			description: "How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?"
+			fieldConfig: defaults: unit: "s"
+			gridPos: {
+				h: 7
+				w: 6
+				x: 18
+				y: 16
+			}
+			id:       11
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"write\", cluster=\"$cluster\"}"
+				legendFormat: "{{ resource }}"
+			}]
+			title: "Write SLI - Duration"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: {
+				min:  0
+				unit: "ops"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 23
+			}
+			id:       12
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: false
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)"
+				legendFormat: "{{instance}} {{name}}"
+			}]
+			title: "Work Queue Add Rate"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: {
+				min:  0
+				unit: "short"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 23
+			}
+			id:       13
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: false
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)"
+				legendFormat: "{{instance}} {{name}}"
+			}]
+			title: "Work Queue Depth"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: {
+				min:  0
+				unit: "s"
+			}
+			gridPos: {
+				h: 7
+				w: 24
+				x: 0
+				y: 30
+			}
+			id:       14
+			interval: "1m"
+			options: {
+				legend: {
+					asTable: true
+					calcs: ["lastNotNull"]
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name, le))"
+				legendFormat: "{{instance}} {{name}}"
+			}]
+			title: "Work Queue Latency"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: unit: "bytes"
+			gridPos: {
+				h: 7
+				w: 8
+				x: 0
+				y: 37
+			}
+			id:       15
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "{{instance}}"
+			}]
+			title: "Memory"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: {
+				min:  0
+				unit: "short"
+			}
+			gridPos: {
+				h: 7
+				w: 8
+				x: 8
+				y: 37
+			}
+			id:       16
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])"
+				legendFormat: "{{instance}}"
+			}]
+			title: "CPU usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: defaults: unit: "short"
+			gridPos: {
+				h: 7
+				w: 8
+				x: 16
+				y: 37
+			}
+			id:       17
+			interval: "1m"
+			options: {
+				legend: {
+					asTable:    true
+					placement:  "right"
+					showLegend: true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v10.2.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "go_goroutines{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "{{instance}}"
+			}]
+			title: "Goroutines"
+			type:  "timeseries"
 		}]
-		refresh: "10s"
-		rows: [{
-			collapse:  false
-			collapsed: false
-			panels: [{
-				cacheTimeout:    null
-				colorBackground: false
-				colorValue:      false
-				colors: ["#299c46", "rgba(237, 129, 40, 0.89)", "#d44a3a"]
-				datasource:  "$datasource"
-				decimals:    3
-				description: "How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?"
-				format:      "percentunit"
-				gauge: {
-					maxValue:         100
-					minValue:         0
-					show:             false
-					thresholdLabels:  false
-					thresholdMarkers: true
-				}
-				gridPos: {}
-				id:       3
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
-				links: []
-				mappingType: 1
-				mappingTypes: [{
-					name:  "value to text"
-					value: 1
-				}, {
-					name:  "range to text"
-					value: 2
-				}]
-				maxDataPoints:   100
-				nullPointMode:   "connected"
-				nullText:        null
-				postfix:         ""
-				postfixFontSize: "50%"
-				prefix:          ""
-				prefixFontSize:  "50%"
-				rangeMaps: [{
-					from: "null"
-					text: "N/A"
-					to:   "null"
-				}]
-				span: 4
-				sparkline: {
-					fillColor: "rgba(31, 118, 189, 0.18)"
-					full:      false
-					lineColor: "rgb(31, 120, 193)"
-					show:      false
-				}
-				tableColumn: ""
-				targets: [{
-					expr:           "apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
-				}]
-				thresholds: ""
-				title:      "Availability (30d) > 99.000%"
-				tooltip: shared: false
-				type:          "singlestat"
-				valueFontSize: "80%"
-				valueMaps: [{
-					op:    "="
-					text:  "N/A"
-					value: "null"
-				}]
-				valueName: "avg"
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				decimals:     3
-				description:  "How much error budget is left looking at our 0.990% availability guarantees?"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id:       4
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        8
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "100 * (apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"} - 0.990000)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "errorbudget"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "ErrorBudget (30d) > 99.000%"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					decimals: 3
-					format:   "percentunit"
-					label:    null
-					logBase:  1
-					max:      null
-					min:      null
-					show:     true
-				}, {
-					decimals: 3
-					format:   "percentunit"
-					label:    null
-					logBase:  1
-					max:      null
-					min:      null
-					show:     true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       false
-			title:           "Dashboard Row"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				cacheTimeout:    null
-				colorBackground: false
-				colorValue:      false
-				colors: ["#299c46", "rgba(237, 129, 40, 0.89)", "#d44a3a"]
-				datasource:  "$datasource"
-				decimals:    3
-				description: "How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?"
-				format:      "percentunit"
-				gauge: {
-					maxValue:         100
-					minValue:         0
-					show:             false
-					thresholdLabels:  false
-					thresholdMarkers: true
-				}
-				gridPos: {}
-				id:       5
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
-				links: []
-				mappingType: 1
-				mappingTypes: [{
-					name:  "value to text"
-					value: 1
-				}, {
-					name:  "range to text"
-					value: 2
-				}]
-				maxDataPoints:   100
-				nullPointMode:   "connected"
-				nullText:        null
-				postfix:         ""
-				postfixFontSize: "50%"
-				prefix:          ""
-				prefixFontSize:  "50%"
-				rangeMaps: [{
-					from: "null"
-					text: "N/A"
-					to:   "null"
-				}]
-				span: 3
-				sparkline: {
-					fillColor: "rgba(31, 118, 189, 0.18)"
-					full:      false
-					lineColor: "rgb(31, 120, 193)"
-					show:      false
-				}
-				tableColumn: ""
-				targets: [{
-					expr:           "apiserver_request:availability30d{verb=\"read\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
-				}]
-				thresholds: ""
-				title:      "Read Availability (30d)"
-				tooltip: shared: false
-				type:          "singlestat"
-				valueFontSize: "80%"
-				valueMaps: [{
-					op:    "="
-					text:  "N/A"
-					value: "null"
-				}]
-				valueName: "avg"
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many read requests (LIST,GET) per second do the apiservers get by code?"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id:       6
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/2../i"
-					color: "#56A64B"
-				}, {
-					alias: "/3../i"
-					color: "#F2CC0C"
-				}, {
-					alias: "/4../i"
-					color: "#3274D9"
-				}, {
-					alias: "/5../i"
-					color: "#E02F44"
-				}]
-				spaceLength: 10
-				span:        3
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"read\", cluster=\"$cluster\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ code }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Read SLI - Requests"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "reqps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "reqps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       7
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        3
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"read\",code=~\"5..\", cluster=\"$cluster\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"read\", cluster=\"$cluster\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ resource }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Read SLI - Errors"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many seconds is the 99th percentile for reading (LIST|GET) a given resource?"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       8
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        3
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"read\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ resource }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Read SLI - Duration"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       false
-			title:           "Dashboard Row"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				cacheTimeout:    null
-				colorBackground: false
-				colorValue:      false
-				colors: ["#299c46", "rgba(237, 129, 40, 0.89)", "#d44a3a"]
-				datasource:  "$datasource"
-				decimals:    3
-				description: "How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?"
-				format:      "percentunit"
-				gauge: {
-					maxValue:         100
-					minValue:         0
-					show:             false
-					thresholdLabels:  false
-					thresholdMarkers: true
-				}
-				gridPos: {}
-				id:       9
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
-				links: []
-				mappingType: 1
-				mappingTypes: [{
-					name:  "value to text"
-					value: 1
-				}, {
-					name:  "range to text"
-					value: 2
-				}]
-				maxDataPoints:   100
-				nullPointMode:   "connected"
-				nullText:        null
-				postfix:         ""
-				postfixFontSize: "50%"
-				prefix:          ""
-				prefixFontSize:  "50%"
-				rangeMaps: [{
-					from: "null"
-					text: "N/A"
-					to:   "null"
-				}]
-				span: 3
-				sparkline: {
-					fillColor: "rgba(31, 118, 189, 0.18)"
-					full:      false
-					lineColor: "rgb(31, 120, 193)"
-					show:      false
-				}
-				tableColumn: ""
-				targets: [{
-					expr:           "apiserver_request:availability30d{verb=\"write\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-					refId:          "A"
-				}]
-				thresholds: ""
-				title:      "Write Availability (30d)"
-				tooltip: shared: false
-				type:          "singlestat"
-				valueFontSize: "80%"
-				valueMaps: [{
-					op:    "="
-					text:  "N/A"
-					value: "null"
-				}]
-				valueName: "avg"
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id:       10
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/2../i"
-					color: "#56A64B"
-				}, {
-					alias: "/3../i"
-					color: "#F2CC0C"
-				}, {
-					alias: "/4../i"
-					color: "#3274D9"
-				}, {
-					alias: "/5../i"
-					color: "#E02F44"
-				}]
-				spaceLength: 10
-				span:        3
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"write\", cluster=\"$cluster\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ code }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Write SLI - Requests"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "reqps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "reqps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       11
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        3
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"write\",code=~\"5..\", cluster=\"$cluster\"}) / sum by (resource) (code_resource:apiserver_request_total:rate5m{verb=\"write\", cluster=\"$cluster\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ resource }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Write SLI - Errors"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       12
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        3
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"write\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ resource }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Write SLI - Duration"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       false
-			title:           "Dashboard Row"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       13
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} {{name}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Work Queue Add Rate"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "ops"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "ops"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       14
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} {{name}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Work Queue Depth"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       15
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      true
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       true
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        12
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name, le))"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} {{name}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Work Queue Latency"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "s"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       false
-			title:           "Dashboard Row"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       16
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        4
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       17
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        4
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU usage"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id:       18
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        4
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "go_goroutines{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Goroutines"
-				tooltip: {
-					shared:     false
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       false
-			title:           "Dashboard Row"
-			titleSize:       "h6"
-			type:            "row"
-		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "10s"
+		schemaVersion: 36
 		tags: [
 			"kubernetes-mixin",
 		]
@@ -1801,64 +1139,43 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			regex: ""
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       0
-			includeAll: false
-			label:      "cluster"
-			multi:      false
-			name:       "cluster"
-			options: []
-			query:          "label_values(up{job=\"apiserver\"}, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           1
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			hide:    0
+			label:   "cluster"
+			name:    "cluster"
+			query:   "label_values(up{job=\"apiserver\"}, cluster)"
+			refresh: 2
+			sort:    1
+			type:    "query"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
 			hide:       0
 			includeAll: true
-			label:      null
-			multi:      false
 			name:       "instance"
-			options: []
-			query:          "label_values(up{job=\"apiserver\", cluster=\"$cluster\"}, instance)"
-			refresh:        2
-			regex:          ""
-			sort:           1
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			query:      "label_values(up{job=\"apiserver\", cluster=\"$cluster\"}, instance)"
+			refresh:    2
+			sort:       1
+			type:       "query"
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
 		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
-		}
 		timezone: "UTC"
 		title:    "Kubernetes / API server"
 		uid:      "09ec8aa1e996d6ffcd6817bbaff4db1b"
-		version:  0
 	}
 	"cluster-total.json": {
 		"__inputs": []
@@ -3343,7 +2660,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -3413,11 +2730,7 @@ grafanaDashboards: {
 				}
 				gridPos: {}
 				id:       2
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
+				interval: null
 				links: []
 				mappingType: 1
 				mappingTypes: [{
@@ -3454,9 +2767,8 @@ grafanaDashboards: {
 					legendFormat:   ""
 					refId:          "A"
 				}]
-				thresholds: ""
-				title:      "Up"
-				tooltip: shared: false
+				thresholds:    ""
+				title:         "Up"
 				type:          "singlestat"
 				valueFontSize: "80%"
 				valueMaps: [{
@@ -3474,8 +2786,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       3
-				interval: "1m"
+				id: 3
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -3514,7 +2825,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Work Queue Add Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -3561,8 +2872,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       4
-				interval: "1m"
+				id: 4
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -3601,7 +2911,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Work Queue Depth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -3648,8 +2958,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       5
-				interval: "1m"
+				id: 5
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -3688,7 +2997,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Work Queue Latency"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -3735,15 +3044,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       6
-				interval: "1m"
+				id: 6
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -3793,7 +3101,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Kube API Request Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -3829,15 +3137,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       7
-				interval: "1m"
+				id: 7
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -3869,7 +3176,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Post Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -3916,8 +3223,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       8
-				interval: "1m"
+				id: 8
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -3956,7 +3262,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Get Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -4003,15 +3309,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       9
-				interval: "1m"
+				id: 9
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -4043,7 +3348,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -4079,15 +3384,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       10
-				interval: "1m"
+				id: 10
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -4119,7 +3423,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -4155,15 +3459,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       11
-				interval: "1m"
+				id: 11
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -4195,7 +3498,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Goroutines"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -4243,7 +3546,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -4322,17 +3625,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4358,7 +3658,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Utilisation"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4394,17 +3694,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4430,7 +3727,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Requests Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4466,17 +3763,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4502,7 +3796,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Limits Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4538,17 +3832,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4574,7 +3865,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Utilisation"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4610,17 +3901,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4646,7 +3934,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Requests Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4682,17 +3970,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -4718,7 +4003,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Limits Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4763,17 +4048,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -4799,7 +4081,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -4844,17 +4126,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -5045,7 +4324,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5091,17 +4370,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5127,7 +4403,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage (w/o cache)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5172,17 +4448,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -5373,7 +4646,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Requests by Namespace"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5421,15 +4694,13 @@ grafanaDashboards: {
 				id:         11
 				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -5600,7 +4871,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Network Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5646,17 +4917,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         12
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5682,7 +4950,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Receive Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5717,17 +4985,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         13
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5753,7 +5018,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Transmit Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5798,17 +5063,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         14
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5834,7 +5096,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Namespace: Received"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5869,17 +5131,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         15
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5905,7 +5164,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Namespace: Transmitted"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -5950,17 +5209,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         16
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -5986,7 +5242,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6021,17 +5277,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         17
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -6057,7 +5310,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6102,17 +5355,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         18
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -6138,7 +5388,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6173,17 +5423,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         19
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -6209,7 +5456,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6255,17 +5502,14 @@ grafanaDashboards: {
 				decimals:   -1
 				fill:       10
 				id:         20
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -6291,7 +5535,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "IOPS(Reads+Writes)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6326,17 +5570,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         21
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -6362,7 +5603,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "ThroughPut(Read+Write)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6407,17 +5648,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         22
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -6592,7 +5830,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Storage IO"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6702,17 +5940,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -6738,7 +5973,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Utilisation"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6774,17 +6009,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -6810,7 +6042,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Requests Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6846,17 +6078,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -6882,7 +6111,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Limits Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6918,17 +6147,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -6954,7 +6180,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Utilisation"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -6990,17 +6216,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7026,7 +6249,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Requests Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7062,17 +6285,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7098,7 +6318,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Limits Commitment"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7143,17 +6363,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       0
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 2
@@ -7179,7 +6396,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7224,17 +6441,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7385,7 +6599,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7431,17 +6645,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       0
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 2
@@ -7467,7 +6678,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage (w/o cache)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7512,17 +6723,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7673,7 +6881,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Requests by Cluster"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7761,17 +6969,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7797,7 +7002,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Utilisation (from requests)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7833,17 +7038,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7869,7 +7071,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "CPU Utilisation (from limits)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7905,17 +7107,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -7941,7 +7140,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Utilisation (from requests)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -7977,17 +7176,14 @@ grafanaDashboards: {
 				fill:       1
 				format:     "percentunit"
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -8013,7 +7209,7 @@ grafanaDashboards: {
 				timeShift:  null
 				title:      "Memory Utilisation (from limits)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8058,17 +7254,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -8124,7 +7317,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8169,17 +7362,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -8330,7 +7520,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8376,17 +7566,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -8442,7 +7629,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage (w/o cache)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8487,17 +7674,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -8708,7 +7892,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8754,17 +7938,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -8935,7 +8116,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Network Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -8981,17 +8162,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9017,7 +8195,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Receive Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9052,17 +8230,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         11
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9088,7 +8263,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Transmit Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9133,17 +8308,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         12
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9169,7 +8341,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9204,17 +8376,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         13
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9240,7 +8409,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9285,17 +8454,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         14
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9321,7 +8487,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9356,17 +8522,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         15
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9392,7 +8555,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9438,17 +8601,14 @@ grafanaDashboards: {
 				decimals:   -1
 				fill:       10
 				id:         16
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9474,7 +8634,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "IOPS(Reads+Writes)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9509,17 +8669,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         17
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9545,7 +8702,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "ThroughPut(Read+Write)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9590,17 +8747,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         18
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -9775,7 +8929,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Storage IO"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -9906,17 +9060,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -9957,7 +9108,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10002,17 +9153,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -10163,7 +9311,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10209,17 +9357,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -10260,7 +9405,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage (w/o cache)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10305,17 +9450,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -10526,7 +9668,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10657,17 +9799,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -10729,7 +9868,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10774,17 +9913,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      true
-					max:          true
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: true
+					max:     true
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -10817,7 +9953,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Throttling"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -10862,17 +9998,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -11023,7 +10156,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11069,17 +10202,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11143,7 +10273,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage (WSS)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11188,17 +10318,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -11409,7 +10536,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11455,17 +10582,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11491,7 +10615,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Receive Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11526,17 +10650,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11562,7 +10683,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Transmit Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11607,17 +10728,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11643,7 +10761,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11678,17 +10796,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11714,7 +10829,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11759,17 +10874,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11795,7 +10907,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11830,17 +10942,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         11
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11866,7 +10975,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11912,17 +11021,14 @@ grafanaDashboards: {
 				decimals:   -1
 				fill:       10
 				id:         12
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -11953,7 +11059,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "IOPS"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -11988,17 +11094,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         13
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -12029,7 +11132,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "ThroughPut"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12075,17 +11178,14 @@ grafanaDashboards: {
 				decimals:   -1
 				fill:       10
 				id:         14
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -12111,7 +11211,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "IOPS(Reads+Writes)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12146,17 +11246,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         15
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -12182,7 +11279,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "ThroughPut(Read+Write)"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12227,17 +11324,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         16
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -12412,7 +11506,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Storage IO"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12565,17 +11659,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -12608,7 +11699,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12653,17 +11744,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -12859,7 +11947,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12905,17 +11993,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -12948,7 +12033,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -12993,17 +12078,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -13199,7 +12281,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13245,17 +12327,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -13456,7 +12535,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Network Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13502,17 +12581,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13543,7 +12619,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Receive Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13578,17 +12654,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13619,7 +12692,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Transmit Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13664,17 +12737,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13705,7 +12775,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Pod: Received"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13740,17 +12810,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13781,7 +12848,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Pod: Transmitted"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13826,17 +12893,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13867,7 +12931,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13902,17 +12966,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         11
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -13943,7 +13004,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -13988,17 +13049,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         12
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -14029,7 +13087,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -14064,17 +13122,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         13
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -14105,7 +13160,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -14279,17 +13334,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         1
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -14352,7 +13404,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -14397,17 +13449,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         2
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -14637,7 +13686,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -14683,17 +13732,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         3
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -14756,7 +13802,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -14801,17 +13847,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         4
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -15041,7 +14084,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory Quota"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15087,17 +14130,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       1
 				id:         5
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 1
@@ -15312,7 +14352,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Current Network Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15358,17 +14398,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         6
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15399,7 +14436,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Receive Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15434,17 +14471,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         7
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15475,7 +14509,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Transmit Bandwidth"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15520,17 +14554,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         8
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15561,7 +14592,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Workload: Received"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15596,17 +14627,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         9
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15637,7 +14665,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Average Container Bandwidth by Workload: Transmitted"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15682,17 +14710,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         10
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15723,7 +14748,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15758,17 +14783,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         11
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15799,7 +14821,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15844,17 +14866,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         12
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15885,7 +14904,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Received Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -15920,17 +14939,14 @@ grafanaDashboards: {
 				datasource: "$datasource"
 				fill:       10
 				id:         13
-				interval:   "1m"
 				legend: {
-					alignAsTable: true
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    true
-					show:         true
-					total:        false
-					values:       false
+					avg:     false
+					current: false
+					max:     false
+					min:     false
+					show:    true
+					total:   false
+					values:  false
 				}
 				lines:     true
 				linewidth: 0
@@ -15961,7 +14977,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rate of Transmitted Packets Dropped"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       2
 					value_type: "individual"
 				}
@@ -17835,7 +16851,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -18915,7 +17931,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -20377,7 +19393,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -23956,15 +22972,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       2
-				interval: "1m"
+				id: 2
 				legend: {
 					alignAsTable: true
 					avg:          true
 					current:      true
 					max:          true
 					min:          true
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -24012,7 +23027,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Volume Space Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -24055,11 +23070,7 @@ grafanaDashboards: {
 				}
 				gridPos: {}
 				id:       3
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
+				interval: null
 				links: []
 				mappingType: 1
 				mappingTypes: [{
@@ -24107,9 +23118,8 @@ grafanaDashboards: {
 					legendFormat:   ""
 					refId:          "A"
 				}]
-				thresholds: "80, 90"
-				title:      "Volume Space Usage"
-				tooltip: shared: false
+				thresholds:    "80, 90"
+				title:         "Volume Space Usage"
 				type:          "singlestat"
 				valueFontSize: "80%"
 				valueMaps: [{
@@ -24138,15 +23148,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       4
-				interval: "1m"
+				id: 4
 				legend: {
 					alignAsTable: true
 					avg:          true
 					current:      true
 					max:          true
 					min:          true
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -24194,7 +23203,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Volume inodes Usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -24237,11 +23246,7 @@ grafanaDashboards: {
 				}
 				gridPos: {}
 				id:       5
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
+				interval: null
 				links: []
 				mappingType: 1
 				mappingTypes: [{
@@ -24285,9 +23290,8 @@ grafanaDashboards: {
 					legendFormat:   ""
 					refId:          "A"
 				}]
-				thresholds: "80, 90"
-				title:      "Volume inodes Usage"
-				tooltip: shared: false
+				thresholds:    "80, 90"
+				title:         "Volume inodes Usage"
 				type:          "singlestat"
 				valueFontSize: "80%"
 				valueMaps: [{
@@ -24317,7 +23321,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -25208,7 +24212,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -27700,11 +26704,7 @@ grafanaDashboards: {
 				}
 				gridPos: {}
 				id:       2
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
+				interval: null
 				links: []
 				mappingType: 1
 				mappingTypes: [{
@@ -27741,9 +26741,8 @@ grafanaDashboards: {
 					legendFormat:   ""
 					refId:          "A"
 				}]
-				thresholds: ""
-				title:      "Up"
-				tooltip: shared: false
+				thresholds:    ""
+				title:         "Up"
 				type:          "singlestat"
 				valueFontSize: "80%"
 				valueMaps: [{
@@ -27761,15 +26760,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       3
-				interval: "1m"
+				id: 3
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -27801,7 +26799,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rules Sync Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -27837,8 +26835,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       4
-				interval: "1m"
+				id: 4
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -27877,7 +26874,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Rule Sync Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -27924,15 +26921,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       5
-				interval: "1m"
+				id: 5
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -27964,7 +26960,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Network Programming Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28000,8 +26996,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       6
-				interval: "1m"
+				id: 6
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -28040,7 +27035,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Network Programming Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28087,15 +27082,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       7
-				interval: "1m"
+				id: 7
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -28145,7 +27139,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Kube API Request Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28181,15 +27175,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       8
-				interval: "1m"
+				id: 8
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -28221,7 +27214,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Post Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28268,8 +27261,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       9
-				interval: "1m"
+				id: 9
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -28308,7 +27300,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Get Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28355,15 +27347,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       10
-				interval: "1m"
+				id: 10
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -28395,7 +27386,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28431,15 +27422,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       11
-				interval: "1m"
+				id: 11
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -28471,7 +27461,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28507,15 +27497,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       12
-				interval: "1m"
+				id: 12
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -28547,7 +27536,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Goroutines"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28595,7 +27584,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -28684,11 +27673,7 @@ grafanaDashboards: {
 				}
 				gridPos: {}
 				id:       2
-				interval: "1m"
-				legend: {
-					alignAsTable: true
-					rightSide:    true
-				}
+				interval: null
 				links: []
 				mappingType: 1
 				mappingTypes: [{
@@ -28725,9 +27710,8 @@ grafanaDashboards: {
 					legendFormat:   ""
 					refId:          "A"
 				}]
-				thresholds: ""
-				title:      "Up"
-				tooltip: shared: false
+				thresholds:    ""
+				title:         "Up"
 				type:          "singlestat"
 				valueFontSize: "80%"
 				valueMaps: [{
@@ -28745,8 +27729,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       3
-				interval: "1m"
+				id: 3
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -28803,7 +27786,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Scheduling Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28839,8 +27822,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       4
-				interval: "1m"
+				id: 4
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -28897,7 +27879,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Scheduling latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -28944,15 +27926,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       5
-				interval: "1m"
+				id: 5
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -29002,7 +27983,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Kube API Request Rate"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29038,15 +28019,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       6
-				interval: "1m"
+				id: 6
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -29078,7 +28058,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Post Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29125,8 +28105,7 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       7
-				interval: "1m"
+				id: 7
 				legend: {
 					alignAsTable: true
 					avg:          false
@@ -29165,7 +28144,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Get Request Latency 99th Quantile"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29212,15 +28191,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       8
-				interval: "1m"
+				id: 8
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -29252,7 +28230,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Memory"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29288,15 +28266,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       9
-				interval: "1m"
+				id: 9
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -29328,7 +28305,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "CPU usage"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29364,15 +28341,14 @@ grafanaDashboards: {
 				fill:         1
 				fillGradient: 0
 				gridPos: {}
-				id:       10
-				interval: "1m"
+				id: 10
 				legend: {
-					alignAsTable: true
+					alignAsTable: false
 					avg:          false
 					current:      false
 					max:          false
 					min:          false
-					rightSide:    true
+					rightSide:    false
 					show:         true
 					sideWidth:    null
 					total:        false
@@ -29404,7 +28380,7 @@ grafanaDashboards: {
 				timeShift: null
 				title:     "Goroutines"
 				tooltip: {
-					shared:     false
+					shared:     true
 					sort:       0
 					value_type: "individual"
 				}
@@ -29452,7 +28428,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"
@@ -30542,7 +29518,7 @@ grafanaDashboards: {
 				value:    "default"
 			}
 			hide:  0
-			label: "Data Source"
+			label: "Data source"
 			name:  "datasource"
 			options: []
 			query:   "prometheus"

@@ -320,10 +320,10 @@ import (
 	// It takes precedence over `targetPort`.
 	port?: string @go(Port)
 
-	// Name or number of the target port of the `Pod` object behind the Service, the
-	// port must be specified with container port property.
+	// Name or number of the target port of the `Pod` object behind the
+	// Service. The port must be specified with the container's port property.
 	//
-	// Deprecated: use `port` instead.
+	// +optional
 	targetPort?: null | intstr.#IntOrString @go(TargetPort,*intstr.IntOrString)
 
 	// HTTP path from which to scrape for metrics.

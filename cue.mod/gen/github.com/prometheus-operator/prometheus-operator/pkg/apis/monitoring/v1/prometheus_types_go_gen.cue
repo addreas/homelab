@@ -16,6 +16,15 @@ import (
 #PrometheusName:    "prometheuses"
 #PrometheusKindKey: "prometheus"
 
+// ScrapeProtocol represents a protocol used by Prometheus for scraping metrics.
+// Supported values are:
+// * `OpenMetricsText0.0.1`
+// * `OpenMetricsText1.0.0`
+// * `PrometheusProto`
+// * `PrometheusText0.0.4`
+// +kubebuilder:validation:Enum=PrometheusProto;OpenMetricsText0.0.1;OpenMetricsText1.0.0;PrometheusText0.0.4
+#ScrapeProtocol: string
+
 // PrometheusInterface is used by Prometheus and PrometheusAgent to share common methods, e.g. config generation.
 // +k8s:deepcopy-gen=false
 #PrometheusInterface: _
@@ -225,6 +234,17 @@ import (
 
 	// Number of seconds to wait until a scrape request times out.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
+
+	// The protocols to negotiate during a scrape. It tells clients the
+	// protocols supported by Prometheus in order of preference (from most to least preferred).
+	//
+	// If unset, Prometheus uses its default value.
+	//
+	// It requires Prometheus >= v2.49.0.
+	//
+	// +listType=set
+	// +optional
+	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
 
 	// The labels to add to any time series or alerts when communicating with
 	// external systems (federation, remote storage, Alertmanager).
@@ -644,6 +664,12 @@ import (
 	// +optional
 	// +kubebuilder:validation:Minimum=60
 	maximumStartupDurationSeconds?: null | int32 @go(MaximumStartupDurationSeconds,*int32)
+
+	// EXPERIMENTAL List of scrape classes to expose to monitors and other scrape configs.
+	// This is experimental feature and might change in the future.
+	// +listType=map
+	// +listMapKey=name
+	scrapeClasses?: [...#ScrapeClass] @go(ScrapeClasses,[]ScrapeClass)
 }
 
 // +kubebuilder:validation:Enum=HTTP;ProcessSignal
@@ -1728,4 +1754,21 @@ import (
 
 	// File to read a secret from, mutually exclusive with `credentials`.
 	credentialsFile?: string @go(CredentialsFile)
+}
+
+#ScrapeClass: {
+	// Name of the scrape class.
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	name: string @go(Name)
+
+	// Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.
+	//
+	// Only one scrape class can be set as default.
+	// +optional
+	default?: null | bool @go(Default,*bool)
+
+	// TLSConfig section for scrapes.
+	// +optional
+	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 }
