@@ -5772,7 +5772,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -5806,6 +5806,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -5873,7 +5885,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -5907,6 +5919,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -5974,7 +5998,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -6008,6 +6032,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -6075,7 +6111,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -6109,6 +6145,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -7076,6 +7124,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -7156,6 +7214,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -8184,6 +8252,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -8264,6 +8342,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -9360,25 +9448,6 @@ prometheusOperator: {
 																resources: {
 																	description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																	properties: {
-																		claims: {
-																			description: """
-																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable. It can only be set for containers.
-																								"""
-																			items: {
-																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																				properties: name: {
-																					description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																					type:        "string"
-																				}
-																				required: ["name"]
-																				type: "object"
-																			}
-																			type: "array"
-																			"x-kubernetes-list-map-keys": ["name"]
-																			"x-kubernetes-list-type": "map"
-																		}
 																		limits: {
 																			additionalProperties: {
 																				anyOf: [{
@@ -9446,6 +9515,10 @@ prometheusOperator: {
 																}
 																storageClassName: {
 																	description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																	type:        "string"
+																}
+																volumeAttributesClassName: {
+																	description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																	type:        "string"
 																}
 																volumeMode: {
@@ -9550,25 +9623,6 @@ prometheusOperator: {
 															resources: {
 																description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																properties: {
-																	claims: {
-																		description: """
-																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable. It can only be set for containers.
-																						"""
-																		items: {
-																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																				type:        "string"
-																			}
-																			required: ["name"]
-																			type: "object"
-																		}
-																		type: "array"
-																		"x-kubernetes-list-map-keys": ["name"]
-																		"x-kubernetes-list-type": "map"
-																	}
 																	limits: {
 																		additionalProperties: {
 																			anyOf: [{
@@ -9636,6 +9690,10 @@ prometheusOperator: {
 															}
 															storageClassName: {
 																description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																type:        "string"
+															}
+															volumeAttributesClassName: {
+																description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																type:        "string"
 															}
 															volumeMode: {
@@ -9735,6 +9793,25 @@ prometheusOperator: {
 																	type: "object"
 																}
 																type: "array"
+															}
+															currentVolumeAttributesClassName: {
+																description: "currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is an alpha field and requires enabling VolumeAttributesClass feature."
+																type:        "string"
+															}
+															modifyVolumeStatus: {
+																description: "ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted. This is an alpha field and requires enabling VolumeAttributesClass feature."
+																properties: {
+																	status: {
+																		description: "status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately."
+																		type:        "string"
+																	}
+																	targetVolumeAttributesClassName: {
+																		description: "targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled"
+																		type:        "string"
+																	}
+																}
+																required: ["status"]
+																type: "object"
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
@@ -10303,25 +10380,6 @@ prometheusOperator: {
 																	resources: {
 																		description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																		properties: {
-																			claims: {
-																				description: """
-																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable. It can only be set for containers.
-																									"""
-																				items: {
-																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																					properties: name: {
-																						description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																						type:        "string"
-																					}
-																					required: ["name"]
-																					type: "object"
-																				}
-																				type: "array"
-																				"x-kubernetes-list-map-keys": ["name"]
-																				"x-kubernetes-list-type": "map"
-																			}
 																			limits: {
 																				additionalProperties: {
 																					anyOf: [{
@@ -10389,6 +10447,10 @@ prometheusOperator: {
 																	}
 																	storageClassName: {
 																		description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																		type:        "string"
+																	}
+																	volumeAttributesClassName: {
+																		description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																		type:        "string"
 																	}
 																	volumeMode: {
@@ -10704,6 +10766,70 @@ prometheusOperator: {
 															items: {
 																description: "Projection that may be projected along with other supported volume types"
 																properties: {
+																	clusterTrustBundle: {
+																		description: """
+																						ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field of ClusterTrustBundle objects in an auto-updating file. 
+																						 Alpha, gated by the ClusterTrustBundleProjection feature gate. 
+																						 ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector. 
+																						 Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem.  Esoteric PEM features such as inter-block comments and block headers are stripped.  Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.
+																						"""
+																		properties: {
+																			labelSelector: {
+																				description: "Select all ClusterTrustBundles that match this label selector.  Only has effect if signerName is set.  Mutually-exclusive with name.  If unset, interpreted as \"match nothing\".  If set but empty, interpreted as \"match everything\"."
+																				properties: {
+																					matchExpressions: {
+																						description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+																						items: {
+																							description: "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+																							properties: {
+																								key: {
+																									description: "key is the label key that the selector applies to."
+																									type:        "string"
+																								}
+																								operator: {
+																									description: "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+																									type:        "string"
+																								}
+																								values: {
+																									description: "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+																									items: type: "string"
+																									type: "array"
+																								}
+																							}
+																							required: ["key", "operator"]
+																							type: "object"
+																						}
+																						type: "array"
+																					}
+																					matchLabels: {
+																						additionalProperties: type: "string"
+																						description: "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+																						type:        "object"
+																					}
+																				}
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			name: {
+																				description: "Select a single ClusterTrustBundle by object name.  Mutually-exclusive with signerName and labelSelector."
+																				type:        "string"
+																			}
+																			optional: {
+																				description: "If true, don't block pod startup if the referenced ClusterTrustBundle(s) aren't available.  If using name, then the named ClusterTrustBundle is allowed not to exist.  If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles."
+																				type:        "boolean"
+																			}
+																			path: {
+																				description: "Relative path from the volume root to write the bundle."
+																				type:        "string"
+																			}
+																			signerName: {
+																				description: "Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name.  The contents of all selected ClusterTrustBundles will be unified and deduplicated."
+																				type:        "string"
+																			}
+																		}
+																		required: ["path"]
+																		type: "object"
+																	}
 																	configMap: {
 																		description: "configMap information about the configMap data to project"
 																		properties: {
@@ -12067,6 +12193,11 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scrapeClass: {
+										description: "The scrape class to apply."
+										minLength:   1
+										type:        "string"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
@@ -12491,6 +12622,11 @@ prometheusOperator: {
 										description: "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted."
 										format:      "int64"
 										type:        "integer"
+									}
+									scrapeClass: {
+										description: "The scrape class to apply."
+										minLength:   1
+										type:        "string"
 									}
 									scrapeProtocols: {
 										description: """
@@ -13132,7 +13268,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -13166,6 +13302,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -13233,7 +13381,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -13267,6 +13415,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -13334,7 +13494,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -13368,6 +13528,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -13435,7 +13607,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -13469,6 +13641,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -14036,6 +14220,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -14116,6 +14310,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -15281,6 +15485,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -15361,6 +15575,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -17099,6 +17323,168 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scrapeClasses: {
+										description: "EXPERIMENTAL List of scrape classes to expose to monitors and other scrape configs. This is experimental feature and might change in the future."
+										items: {
+											properties: {
+												default: {
+													description: """
+																	Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name. 
+																	 Only one scrape class can be set as default.
+																	"""
+													type: "boolean"
+												}
+												name: {
+													description: "Name of the scrape class."
+													minLength:   1
+													type:        "string"
+												}
+												tlsConfig: {
+													description: "TLSConfig section for scrapes."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														caFile: {
+															description: "Path to the CA cert in the Prometheus container to use for the targets."
+															type:        "string"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														certFile: {
+															description: "Path to the client cert file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keyFile: {
+															description: "Path to the client key file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+											}
+											required: ["name"]
+											type: "object"
+										}
+										type: "array"
+										"x-kubernetes-list-map-keys": ["name"]
+										"x-kubernetes-list-type": "map"
+									}
 									scrapeConfigNamespaceSelector: {
 										description: "Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only."
 										properties: {
@@ -17513,25 +17899,6 @@ prometheusOperator: {
 																resources: {
 																	description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																	properties: {
-																		claims: {
-																			description: """
-																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable. It can only be set for containers.
-																								"""
-																			items: {
-																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																				properties: name: {
-																					description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																					type:        "string"
-																				}
-																				required: ["name"]
-																				type: "object"
-																			}
-																			type: "array"
-																			"x-kubernetes-list-map-keys": ["name"]
-																			"x-kubernetes-list-type": "map"
-																		}
 																		limits: {
 																			additionalProperties: {
 																				anyOf: [{
@@ -17599,6 +17966,10 @@ prometheusOperator: {
 																}
 																storageClassName: {
 																	description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																	type:        "string"
+																}
+																volumeAttributesClassName: {
+																	description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																	type:        "string"
 																}
 																volumeMode: {
@@ -17703,25 +18074,6 @@ prometheusOperator: {
 															resources: {
 																description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																properties: {
-																	claims: {
-																		description: """
-																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable. It can only be set for containers.
-																						"""
-																		items: {
-																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																				type:        "string"
-																			}
-																			required: ["name"]
-																			type: "object"
-																		}
-																		type: "array"
-																		"x-kubernetes-list-map-keys": ["name"]
-																		"x-kubernetes-list-type": "map"
-																	}
 																	limits: {
 																		additionalProperties: {
 																			anyOf: [{
@@ -17789,6 +18141,10 @@ prometheusOperator: {
 															}
 															storageClassName: {
 																description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																type:        "string"
+															}
+															volumeAttributesClassName: {
+																description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																type:        "string"
 															}
 															volumeMode: {
@@ -17888,6 +18244,25 @@ prometheusOperator: {
 																	type: "object"
 																}
 																type: "array"
+															}
+															currentVolumeAttributesClassName: {
+																description: "currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is an alpha field and requires enabling VolumeAttributesClass feature."
+																type:        "string"
+															}
+															modifyVolumeStatus: {
+																description: "ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted. This is an alpha field and requires enabling VolumeAttributesClass feature."
+																properties: {
+																	status: {
+																		description: "status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately."
+																		type:        "string"
+																	}
+																	targetVolumeAttributesClassName: {
+																		description: "targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled"
+																		type:        "string"
+																	}
+																}
+																required: ["status"]
+																type: "object"
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
@@ -18651,25 +19026,6 @@ prometheusOperator: {
 																	resources: {
 																		description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																		properties: {
-																			claims: {
-																				description: """
-																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable. It can only be set for containers.
-																									"""
-																				items: {
-																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																					properties: name: {
-																						description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																						type:        "string"
-																					}
-																					required: ["name"]
-																					type: "object"
-																				}
-																				type: "array"
-																				"x-kubernetes-list-map-keys": ["name"]
-																				"x-kubernetes-list-type": "map"
-																			}
 																			limits: {
 																				additionalProperties: {
 																					anyOf: [{
@@ -18737,6 +19093,10 @@ prometheusOperator: {
 																	}
 																	storageClassName: {
 																		description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																		type:        "string"
+																	}
+																	volumeAttributesClassName: {
+																		description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																		type:        "string"
 																	}
 																	volumeMode: {
@@ -19052,6 +19412,70 @@ prometheusOperator: {
 															items: {
 																description: "Projection that may be projected along with other supported volume types"
 																properties: {
+																	clusterTrustBundle: {
+																		description: """
+																						ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field of ClusterTrustBundle objects in an auto-updating file. 
+																						 Alpha, gated by the ClusterTrustBundleProjection feature gate. 
+																						 ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector. 
+																						 Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem.  Esoteric PEM features such as inter-block comments and block headers are stripped.  Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.
+																						"""
+																		properties: {
+																			labelSelector: {
+																				description: "Select all ClusterTrustBundles that match this label selector.  Only has effect if signerName is set.  Mutually-exclusive with name.  If unset, interpreted as \"match nothing\".  If set but empty, interpreted as \"match everything\"."
+																				properties: {
+																					matchExpressions: {
+																						description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+																						items: {
+																							description: "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+																							properties: {
+																								key: {
+																									description: "key is the label key that the selector applies to."
+																									type:        "string"
+																								}
+																								operator: {
+																									description: "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+																									type:        "string"
+																								}
+																								values: {
+																									description: "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+																									items: type: "string"
+																									type: "array"
+																								}
+																							}
+																							required: ["key", "operator"]
+																							type: "object"
+																						}
+																						type: "array"
+																					}
+																					matchLabels: {
+																						additionalProperties: type: "string"
+																						description: "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+																						type:        "object"
+																					}
+																				}
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			name: {
+																				description: "Select a single ClusterTrustBundle by object name.  Mutually-exclusive with signerName and labelSelector."
+																				type:        "string"
+																			}
+																			optional: {
+																				description: "If true, don't block pod startup if the referenced ClusterTrustBundle(s) aren't available.  If using name, then the named ClusterTrustBundle is allowed not to exist.  If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles."
+																				type:        "boolean"
+																			}
+																			path: {
+																				description: "Relative path from the volume root to write the bundle."
+																				type:        "string"
+																			}
+																			signerName: {
+																				description: "Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name.  The contents of all selected ClusterTrustBundles will be unified and deduplicated."
+																				type:        "string"
+																			}
+																		}
+																		required: ["path"]
+																		type: "object"
+																	}
 																	configMap: {
 																		description: "configMap information about the configMap data to project"
 																		properties: {
@@ -20122,7 +20546,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -20156,6 +20580,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -20223,7 +20659,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -20257,6 +20693,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -20324,7 +20772,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -20358,6 +20806,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -20425,7 +20885,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -20459,6 +20919,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -21385,6 +21857,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -21465,6 +21947,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -22661,6 +23153,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -22741,6 +23243,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -25038,6 +25550,168 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scrapeClasses: {
+										description: "EXPERIMENTAL List of scrape classes to expose to monitors and other scrape configs. This is experimental feature and might change in the future."
+										items: {
+											properties: {
+												default: {
+													description: """
+																	Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name. 
+																	 Only one scrape class can be set as default.
+																	"""
+													type: "boolean"
+												}
+												name: {
+													description: "Name of the scrape class."
+													minLength:   1
+													type:        "string"
+												}
+												tlsConfig: {
+													description: "TLSConfig section for scrapes."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														caFile: {
+															description: "Path to the CA cert in the Prometheus container to use for the targets."
+															type:        "string"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																			type:        "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														certFile: {
+															description: "Path to the client cert file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keyFile: {
+															description: "Path to the client key file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																	type:        "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+											}
+											required: ["name"]
+											type: "object"
+										}
+										type: "array"
+										"x-kubernetes-list-map-keys": ["name"]
+										"x-kubernetes-list-type": "map"
+									}
 									scrapeConfigNamespaceSelector: {
 										description: "Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only."
 										properties: {
@@ -25456,25 +26130,6 @@ prometheusOperator: {
 																resources: {
 																	description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																	properties: {
-																		claims: {
-																			description: """
-																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable. It can only be set for containers.
-																								"""
-																			items: {
-																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																				properties: name: {
-																					description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																					type:        "string"
-																				}
-																				required: ["name"]
-																				type: "object"
-																			}
-																			type: "array"
-																			"x-kubernetes-list-map-keys": ["name"]
-																			"x-kubernetes-list-type": "map"
-																		}
 																		limits: {
 																			additionalProperties: {
 																				anyOf: [{
@@ -25542,6 +26197,10 @@ prometheusOperator: {
 																}
 																storageClassName: {
 																	description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																	type:        "string"
+																}
+																volumeAttributesClassName: {
+																	description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																	type:        "string"
 																}
 																volumeMode: {
@@ -25646,25 +26305,6 @@ prometheusOperator: {
 															resources: {
 																description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																properties: {
-																	claims: {
-																		description: """
-																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable. It can only be set for containers.
-																						"""
-																		items: {
-																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																				type:        "string"
-																			}
-																			required: ["name"]
-																			type: "object"
-																		}
-																		type: "array"
-																		"x-kubernetes-list-map-keys": ["name"]
-																		"x-kubernetes-list-type": "map"
-																	}
 																	limits: {
 																		additionalProperties: {
 																			anyOf: [{
@@ -25732,6 +26372,10 @@ prometheusOperator: {
 															}
 															storageClassName: {
 																description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																type:        "string"
+															}
+															volumeAttributesClassName: {
+																description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																type:        "string"
 															}
 															volumeMode: {
@@ -25831,6 +26475,25 @@ prometheusOperator: {
 																	type: "object"
 																}
 																type: "array"
+															}
+															currentVolumeAttributesClassName: {
+																description: "currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is an alpha field and requires enabling VolumeAttributesClass feature."
+																type:        "string"
+															}
+															modifyVolumeStatus: {
+																description: "ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted. This is an alpha field and requires enabling VolumeAttributesClass feature."
+																properties: {
+																	status: {
+																		description: "status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately."
+																		type:        "string"
+																	}
+																	targetVolumeAttributesClassName: {
+																		description: "targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled"
+																		type:        "string"
+																	}
+																}
+																required: ["status"]
+																type: "object"
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
@@ -27017,25 +27680,6 @@ prometheusOperator: {
 																	resources: {
 																		description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																		properties: {
-																			claims: {
-																				description: """
-																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable. It can only be set for containers.
-																									"""
-																				items: {
-																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																					properties: name: {
-																						description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																						type:        "string"
-																					}
-																					required: ["name"]
-																					type: "object"
-																				}
-																				type: "array"
-																				"x-kubernetes-list-map-keys": ["name"]
-																				"x-kubernetes-list-type": "map"
-																			}
 																			limits: {
 																				additionalProperties: {
 																					anyOf: [{
@@ -27103,6 +27747,10 @@ prometheusOperator: {
 																	}
 																	storageClassName: {
 																		description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																		type:        "string"
+																	}
+																	volumeAttributesClassName: {
+																		description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																		type:        "string"
 																	}
 																	volumeMode: {
@@ -27418,6 +28066,70 @@ prometheusOperator: {
 															items: {
 																description: "Projection that may be projected along with other supported volume types"
 																properties: {
+																	clusterTrustBundle: {
+																		description: """
+																						ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field of ClusterTrustBundle objects in an auto-updating file. 
+																						 Alpha, gated by the ClusterTrustBundleProjection feature gate. 
+																						 ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector. 
+																						 Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem.  Esoteric PEM features such as inter-block comments and block headers are stripped.  Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.
+																						"""
+																		properties: {
+																			labelSelector: {
+																				description: "Select all ClusterTrustBundles that match this label selector.  Only has effect if signerName is set.  Mutually-exclusive with name.  If unset, interpreted as \"match nothing\".  If set but empty, interpreted as \"match everything\"."
+																				properties: {
+																					matchExpressions: {
+																						description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+																						items: {
+																							description: "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+																							properties: {
+																								key: {
+																									description: "key is the label key that the selector applies to."
+																									type:        "string"
+																								}
+																								operator: {
+																									description: "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+																									type:        "string"
+																								}
+																								values: {
+																									description: "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+																									items: type: "string"
+																									type: "array"
+																								}
+																							}
+																							required: ["key", "operator"]
+																							type: "object"
+																						}
+																						type: "array"
+																					}
+																					matchLabels: {
+																						additionalProperties: type: "string"
+																						description: "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+																						type:        "object"
+																					}
+																				}
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			name: {
+																				description: "Select a single ClusterTrustBundle by object name.  Mutually-exclusive with signerName and labelSelector."
+																				type:        "string"
+																			}
+																			optional: {
+																				description: "If true, don't block pod startup if the referenced ClusterTrustBundle(s) aren't available.  If using name, then the named ClusterTrustBundle is allowed not to exist.  If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles."
+																				type:        "boolean"
+																			}
+																			path: {
+																				description: "Relative path from the volume root to write the bundle."
+																				type:        "string"
+																			}
+																			signerName: {
+																				description: "Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name.  The contents of all selected ClusterTrustBundles will be unified and deduplicated."
+																				type:        "string"
+																			}
+																		}
+																		required: ["path"]
+																		type: "object"
+																	}
 																	configMap: {
 																		description: "configMap information about the configMap data to project"
 																		properties: {
@@ -30596,6 +31308,11 @@ prometheusOperator: {
 										enum: ["HTTP", "HTTPS"]
 										type: "string"
 									}
+									scrapeClass: {
+										description: "The scrape class to apply."
+										minLength:   1
+										type:        "string"
+									}
 									scrapeInterval: {
 										description: "ScrapeInterval is the interval between consecutive scrapes."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -31267,10 +31984,7 @@ prometheusOperator: {
 													}, {
 														type: "string"
 													}]
-													description: """
-																	Name or number of the target port of the `Pod` object behind the Service, the port must be specified with container port property. 
-																	 Deprecated: use `port` instead.
-																	"""
+													description:                  "Name or number of the target port of the `Pod` object behind the Service. The port must be specified with the container's port property."
 													"x-kubernetes-int-or-string": true
 												}
 												tlsConfig: {
@@ -31487,6 +32201,11 @@ prometheusOperator: {
 										description: "`sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted."
 										format:      "int64"
 										type:        "integer"
+									}
+									scrapeClass: {
+										description: "The scrape class to apply."
+										minLength:   1
+										type:        "string"
 									}
 									scrapeProtocols: {
 										description: """
@@ -31812,7 +32531,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -31846,6 +32565,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -31913,7 +32644,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -31947,6 +32678,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -32014,7 +32757,7 @@ prometheusOperator: {
 																	description: "Required. A pod affinity term, associated with the corresponding weight."
 																	properties: {
 																		labelSelector: {
-																			description: "A label query over a set of resources, in this case pods."
+																			description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																			properties: {
 																				matchExpressions: {
 																					description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -32048,6 +32791,18 @@ prometheusOperator: {
 																			}
 																			type:                    "object"
 																			"x-kubernetes-map-type": "atomic"
+																		}
+																		matchLabelKeys: {
+																			description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
+																		}
+																		mismatchLabelKeys: {
+																			description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																			items: type: "string"
+																			type:                     "array"
+																			"x-kubernetes-list-type": "atomic"
 																		}
 																		namespaceSelector: {
 																			description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -32115,7 +32870,7 @@ prometheusOperator: {
 															description: "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
 															properties: {
 																labelSelector: {
-																	description: "A label query over a set of resources, in this case pods."
+																	description: "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
 																	properties: {
 																		matchExpressions: {
 																			description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -32149,6 +32904,18 @@ prometheusOperator: {
 																	}
 																	type:                    "object"
 																	"x-kubernetes-map-type": "atomic"
+																}
+																matchLabelKeys: {
+																	description: "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
+																}
+																mismatchLabelKeys: {
+																	description: "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+																	items: type: "string"
+																	type:                     "array"
+																	"x-kubernetes-list-type": "atomic"
 																}
 																namespaceSelector: {
 																	description: "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
@@ -32501,6 +33268,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -32581,6 +33358,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -33784,6 +34571,16 @@ prometheusOperator: {
 																	required: ["port"]
 																	type: "object"
 																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
+																	type: "object"
+																}
 																tcpSocket: {
 																	description: "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
 																	properties: {
@@ -33864,6 +34661,16 @@ prometheusOperator: {
 																		}
 																	}
 																	required: ["port"]
+																	type: "object"
+																}
+																sleep: {
+																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	properties: seconds: {
+																		description: "Seconds is the number of seconds to sleep."
+																		format:      "int64"
+																		type:        "integer"
+																	}
+																	required: ["seconds"]
 																	type: "object"
 																}
 																tcpSocket: {
@@ -35096,25 +35903,6 @@ prometheusOperator: {
 																resources: {
 																	description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																	properties: {
-																		claims: {
-																			description: """
-																								Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																								 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																								 This field is immutable. It can only be set for containers.
-																								"""
-																			items: {
-																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																				properties: name: {
-																					description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																					type:        "string"
-																				}
-																				required: ["name"]
-																				type: "object"
-																			}
-																			type: "array"
-																			"x-kubernetes-list-map-keys": ["name"]
-																			"x-kubernetes-list-type": "map"
-																		}
 																		limits: {
 																			additionalProperties: {
 																				anyOf: [{
@@ -35182,6 +35970,10 @@ prometheusOperator: {
 																}
 																storageClassName: {
 																	description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																	type:        "string"
+																}
+																volumeAttributesClassName: {
+																	description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																	type:        "string"
 																}
 																volumeMode: {
@@ -35286,25 +36078,6 @@ prometheusOperator: {
 															resources: {
 																description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																properties: {
-																	claims: {
-																		description: """
-																						Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																						 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																						 This field is immutable. It can only be set for containers.
-																						"""
-																		items: {
-																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																				type:        "string"
-																			}
-																			required: ["name"]
-																			type: "object"
-																		}
-																		type: "array"
-																		"x-kubernetes-list-map-keys": ["name"]
-																		"x-kubernetes-list-type": "map"
-																	}
 																	limits: {
 																		additionalProperties: {
 																			anyOf: [{
@@ -35372,6 +36145,10 @@ prometheusOperator: {
 															}
 															storageClassName: {
 																description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																type:        "string"
+															}
+															volumeAttributesClassName: {
+																description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																type:        "string"
 															}
 															volumeMode: {
@@ -35471,6 +36248,25 @@ prometheusOperator: {
 																	type: "object"
 																}
 																type: "array"
+															}
+															currentVolumeAttributesClassName: {
+																description: "currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is an alpha field and requires enabling VolumeAttributesClass feature."
+																type:        "string"
+															}
+															modifyVolumeStatus: {
+																description: "ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted. This is an alpha field and requires enabling VolumeAttributesClass feature."
+																properties: {
+																	status: {
+																		description: "status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately."
+																		type:        "string"
+																	}
+																	targetVolumeAttributesClassName: {
+																		description: "targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled"
+																		type:        "string"
+																	}
+																}
+																required: ["status"]
+																type: "object"
 															}
 															phase: {
 																description: "phase represents the current phase of PersistentVolumeClaim."
@@ -36059,25 +36855,6 @@ prometheusOperator: {
 																	resources: {
 																		description: "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
 																		properties: {
-																			claims: {
-																				description: """
-																									Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-																									 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-																									 This field is immutable. It can only be set for containers.
-																									"""
-																				items: {
-																					description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																					properties: name: {
-																						description: "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
-																						type:        "string"
-																					}
-																					required: ["name"]
-																					type: "object"
-																				}
-																				type: "array"
-																				"x-kubernetes-list-map-keys": ["name"]
-																				"x-kubernetes-list-type": "map"
-																			}
 																			limits: {
 																				additionalProperties: {
 																					anyOf: [{
@@ -36145,6 +36922,10 @@ prometheusOperator: {
 																	}
 																	storageClassName: {
 																		description: "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+																		type:        "string"
+																	}
+																	volumeAttributesClassName: {
+																		description: "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
 																		type:        "string"
 																	}
 																	volumeMode: {
@@ -36460,6 +37241,70 @@ prometheusOperator: {
 															items: {
 																description: "Projection that may be projected along with other supported volume types"
 																properties: {
+																	clusterTrustBundle: {
+																		description: """
+																						ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field of ClusterTrustBundle objects in an auto-updating file. 
+																						 Alpha, gated by the ClusterTrustBundleProjection feature gate. 
+																						 ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector. 
+																						 Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem.  Esoteric PEM features such as inter-block comments and block headers are stripped.  Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.
+																						"""
+																		properties: {
+																			labelSelector: {
+																				description: "Select all ClusterTrustBundles that match this label selector.  Only has effect if signerName is set.  Mutually-exclusive with name.  If unset, interpreted as \"match nothing\".  If set but empty, interpreted as \"match everything\"."
+																				properties: {
+																					matchExpressions: {
+																						description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+																						items: {
+																							description: "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+																							properties: {
+																								key: {
+																									description: "key is the label key that the selector applies to."
+																									type:        "string"
+																								}
+																								operator: {
+																									description: "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+																									type:        "string"
+																								}
+																								values: {
+																									description: "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+																									items: type: "string"
+																									type: "array"
+																								}
+																							}
+																							required: ["key", "operator"]
+																							type: "object"
+																						}
+																						type: "array"
+																					}
+																					matchLabels: {
+																						additionalProperties: type: "string"
+																						description: "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+																						type:        "object"
+																					}
+																				}
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			name: {
+																				description: "Select a single ClusterTrustBundle by object name.  Mutually-exclusive with signerName and labelSelector."
+																				type:        "string"
+																			}
+																			optional: {
+																				description: "If true, don't block pod startup if the referenced ClusterTrustBundle(s) aren't available.  If using name, then the named ClusterTrustBundle is allowed not to exist.  If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles."
+																				type:        "boolean"
+																			}
+																			path: {
+																				description: "Relative path from the volume root to write the bundle."
+																				type:        "string"
+																			}
+																			signerName: {
+																				description: "Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name.  The contents of all selected ClusterTrustBundles will be unified and deduplicated."
+																				type:        "string"
+																			}
+																		}
+																		required: ["path"]
+																		type: "object"
+																	}
 																	configMap: {
 																		description: "configMap information about the configMap data to project"
 																		properties: {
