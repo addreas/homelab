@@ -8,10 +8,6 @@ package time
 // Typically, the Location represents the collection of time offsets
 // in use in a geographical area. For many Locations the time offset varies
 // depending on whether daylight savings time is in use at the time instant.
-//
-// Location is used to provide a time zone in a printed Time value and for
-// calculations involving intervals that may cross daylight savings time
-// boundaries.
 #Location: {
 }
 

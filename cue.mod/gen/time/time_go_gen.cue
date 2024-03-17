@@ -76,14 +76,6 @@
 // For debugging, the result of t.String does include the monotonic
 // clock reading if present. If t != u because of different monotonic clock readings,
 // that difference will be visible when printing t.String() and u.String().
-//
-// # Timer Resolution
-//
-// Timer resolution varies depending on the Go runtime, the operating system
-// and the underlying hardware.
-// On Unix, the resolution is approximately 1ms.
-// On Windows, the default resolution is approximately 16ms, but
-// a higher resolution may be requested using [golang.org/x/sys/windows.TimeBeginPeriod].
 package time
 
 // A Time represents an instant in time with nanosecond precision.
@@ -104,10 +96,12 @@ package time
 // As this time is unlikely to come up in practice, the IsZero method gives
 // a simple way of detecting a time that has not been initialized explicitly.
 //
-// Each time has an associated Location. The methods Local, UTC, and In return a
-// Time with a specific Location. Changing the Location of a Time value with
-// these methods does not change the actual instant it represents, only the time
-// zone in which to interpret it.
+// Each Time has associated with it a Location, consulted when computing the
+// presentation form of the time, such as in the Format, Hour, and Year methods.
+// The methods Local, UTC, and In return a Time with a specific location.
+// Changing the location in this way changes only the presentation; it does not
+// change the instant in time being denoted and therefore does not affect the
+// computations described in earlier paragraphs.
 //
 // Representations of a Time value saved by the GobEncode, MarshalBinary,
 // MarshalJSON, and MarshalText methods store the Time.Location's offset, but not

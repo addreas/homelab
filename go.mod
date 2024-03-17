@@ -8,7 +8,7 @@ require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	github.com/bitnami-labs/sealed-secrets v0.24.5
 	github.com/cert-manager/cert-manager v1.14.4
-	github.com/cilium/cilium v1.15.1
+	github.com/cilium/cilium v1.15.2
 	github.com/fluxcd/helm-controller/api v0.37.4
 	github.com/fluxcd/kustomize-controller/api v1.2.2
 	github.com/fluxcd/notification-controller/api v1.2.4
@@ -17,9 +17,9 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.6.0
 	github.com/ory/hydra-maester v0.0.33
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.72.0
-	k8s.io/api v0.29.2
-	k8s.io/apimachinery v0.29.2
-	k8s.io/kube-aggregator v0.29.2
+	k8s.io/api v0.29.3
+	k8s.io/apimachinery v0.29.3
+	k8s.io/kube-aggregator v0.29.3
 )
 
 require (
@@ -55,7 +55,7 @@ require (
 	github.com/go-openapi/validate v0.22.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect

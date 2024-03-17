@@ -7,8 +7,8 @@
 //
 // Although the package provides access to low-level networking
 // primitives, most clients will need only the basic interface provided
-// by the [Dial], [Listen], and Accept functions and the associated
-// [Conn] and [Listener] interfaces. The crypto/tls package uses
+// by the Dial, Listen, and Accept functions and the associated
+// Conn and Listener interfaces. The crypto/tls package uses
 // the same interfaces and similar Dial and Listen functions.
 //
 // The Dial function connects to a server:
@@ -38,7 +38,7 @@
 // # Name Resolution
 //
 // The method for resolving domain names, whether indirectly with functions like Dial
-// or directly with functions like [LookupHost] and [LookupAddr], varies by operating system.
+// or directly with functions like LookupHost and LookupAddr, varies by operating system.
 //
 // On Unix systems, the resolver has two options for resolving names.
 // It can use a pure Go resolver that sends DNS requests directly to the servers
@@ -81,10 +81,12 @@
 //
 package net
 
+import "io"
+
 // Addr represents a network end point address.
 //
-// The two methods [Addr.Network] and [Addr.String] conventionally return strings
-// that can be passed as the arguments to [Dial], but the exact form
+// The two methods Network and String conventionally return strings
+// that can be passed as the arguments to Dial, but the exact form
 // and meaning of the strings is up to the implementation.
 #Addr: _
 
@@ -180,22 +182,10 @@ _#timeoutError: {
 	Server:      string
 	IsTimeout:   bool
 	IsTemporary: bool
-
-	// IsNotFound is set to true when the requested name does not
-	// contain any records of the requested type (data not found),
-	// or the name itself was not found (NXDOMAIN).
-	IsNotFound: bool
+	IsNotFound:  bool
 }
 
-// noReadFrom can be embedded alongside another type to
-// hide the ReadFrom method of that other type.
-_#noReadFrom: {
-}
-
-// noWriteTo can be embedded alongside another type to
-// hide the WriteTo method of that other type.
-_#noWriteTo: {
-}
+_#writerOnly: Writer: io.#Writer
 
 // buffersWriter is the interface implemented by Conns that support a
 // "writev"-like batch write optimization.
