@@ -1,0 +1,33 @@
+package kube
+
+let dummyMatch = {
+	matchExpressions: [{key: "dummy", operator: "NotIn", values: ["anything"]}]
+}
+
+k: CiliumLoadBalancerIPPool: "main": spec: {
+	cidrs: [{
+		cidr: "192.168.10.0/24"
+	}]
+	serviceSelector: dummyMatch
+	disabled:        false
+}
+
+k: CiliumL2AnnouncementPolicy: "main": spec: {
+	nodeSelector:    dummyMatch
+	serviceSelector: dummyMatch
+	externalIPs:     true
+	loadBalancerIPs: true
+}
+
+k: CiliumBGPPeeringPolicy: "main": spec: {
+	nodeSelector: dummyMatch
+	virtualRouters: [{
+		localASN: 64512
+		neighbors: [{
+			peerASN:     64512
+			peerAddress: "192.168.0.1/32"
+		}]
+		serviceSelector: dummyMatch
+		exportPodCIDR:   false
+	}]
+}

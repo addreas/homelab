@@ -5,11 +5,11 @@ kubeProxyReplacement: strict
 k8sServiceHost: nucles.localdomain
 k8sServicePort: 6443
 
-# bgpControlPlane:
-#   enabled: true
+bgpControlPlane:
+  enabled: true
 
-# l2announcements:
-#   enabled: true
+l2announcements:
+  enabled: true
 
 ingressController:
   enabled: true

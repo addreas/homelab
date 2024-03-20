@@ -3,31 +3,32 @@ package kube
 import (
 	"crypto/md5"
 	"encoding/hex"
-	// "encoding/json"
+	"encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
+k: StatefulSet: hass: spec: template: metadata:
+	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+		name: "macvlan-conf"
+		mac:  "02:00:00:00:00:03" // https://en.wikipedia.org/wiki/MAC_address#IEEE_802c_local_MAC_address_usage
+	}])
+
 k: StatefulSet: hass: spec: {
 	template: {
-		metadata: {
-			annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
-			labels: "config-hash":                      hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
-		}
+		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		spec: {
-			initContainers: [util.copyStatic & {
-				volumeMounts: [{
-					name:      "config"
-					mountPath: "/config"
-				}, {
-					name:      "hass-config"
-					mountPath: "/static/config"
-				}]
-			}, {
-				name:  "default-route"
-				image: "nixery.dev/iproute2"
-				command: ["ip", "route", "delete", "default", "via", "192.168.0.1"]
-				securityContext: capabilities: add: ["NET_ADMIN"]
-			}]
+			initContainers: [
+				util.macvlanDefaultRouteFix,
+				util.copyStatic & {
+					volumeMounts: [{
+						name:      "config"
+						mountPath: "/config"
+					}, {
+						name:      "hass-config"
+						mountPath: "/static/config"
+					}]
+				},
+			]
 			containers: [{
 				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
 				command: ["hass", "-c", "/config"]
@@ -54,9 +55,6 @@ k: StatefulSet: hass: spec: {
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/config"
-					// }, {
-					//  name:      "nfs-videos"
-					//  mountPath: "/media/videos"
 				}]
 			}]
 			volumes: [{
@@ -66,12 +64,6 @@ k: StatefulSet: hass: spec: {
 				}, {
 					secret: name: "hass-gcp-credential-json"
 				}]
-				// }, {
-				//  name: "nfs-videos"
-				//  nfs: {
-				//   path:   "/export/videos"
-				//   server: "sergio.localdomain"
-				//  }
 			}]
 		}
 	}

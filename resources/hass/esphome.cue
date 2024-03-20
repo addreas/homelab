@@ -1,7 +1,7 @@
 package kube
 
 import (
-	// "encoding/json"
+	"encoding/json"
 	"github.com/addreas/homelab/util"
 )
 
@@ -20,23 +20,25 @@ k: Kustomization: "esphome-configs": {
 	}
 }
 
-k: Deployment: esphome: spec: template: metadata: annotations: "k8s.v1.cni.cncf.io/networks": "macvlan-conf"
+k: Deployment: esphome: spec: template: metadata:
+	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+		name: "macvlan-conf"
+		mac:  "02:00:00:00:00:07" // https://en.wikipedia.org/wiki/MAC_address#IEEE_802c_local_MAC_address_usage
+	}])
 
 k: Deployment: esphome: spec: template: spec: {
-	initContainers: [util.copyStatic & {
-		volumeMounts: [{
-			name:      "config"
-			mountPath: "/config"
-		}, {
-			name:      "esphome-configs"
-			mountPath: "/static/config"
-		}]
-	}, {
-		name:  "default-route"
-		image: "nixery.dev/iproute2"
-		command: ["ip", "route", "delete", "default", "via", "192.168.0.1"]
-		securityContext: capabilities: add: ["NET_ADMIN"]
-	}]
+	initContainers: [
+		util.macvlanDefaultRouteFix,
+		util.copyStatic & {
+			volumeMounts: [{
+				name:      "config"
+				mountPath: "/config"
+			}, {
+				name:      "esphome-configs"
+				mountPath: "/static/config"
+			}]
+		},
+	]
 	containers: [{
 		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
 		ports: [{containerPort: 6052}]
