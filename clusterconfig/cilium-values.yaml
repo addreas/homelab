@@ -14,14 +14,20 @@ l2announcements:
 ingressController:
   enabled: true
   loadbalancerMode: shared
+  secretsNamespace:
+    name: kube-system
+    create: false
 
 l7proxy: true
 
-envoy:
-  enabled: true
+# envoy:
+#   enabled: true
 
 gatewayAPI:
   enabled: true
+  secretsNamespace:
+    name: kube-system
+    create: false
 
 externalIPs:
   enabled: true
