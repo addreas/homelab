@@ -12,13 +12,6 @@ k: CiliumLoadBalancerIPPool: "main": spec: {
 	disabled:        false
 }
 
-k: CiliumL2AnnouncementPolicy: "main": spec: {
-	nodeSelector:    dummyMatch
-	serviceSelector: dummyMatch
-	externalIPs:     true
-	loadBalancerIPs: true
-}
-
 k: CiliumBGPPeeringPolicy: "main": spec: {
 	nodeSelector: dummyMatch
 	virtualRouters: [{
