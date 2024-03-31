@@ -33,7 +33,7 @@ command: "update-github-tags": {
 				}
 
 				jq: exec.Run & {
-					cmd: ["jq", "-r", """
+					cmd: ["jq", "-rj", """
 						map(select(.prerelease == false))
 							| sort_by(
 								.tag_name
@@ -46,8 +46,6 @@ command: "update-github-tags": {
 					stdin:  req.response.body
 					stdout: string
 				}
-
-				tag_name: strings.TrimSpace(jq.stdout)
 			}
 		}
 	}
@@ -55,7 +53,7 @@ command: "update-github-tags": {
 	writeTags: #WriteTags & {
 		content: githubReleases: {
 			for key in releaseKeys {
-				(key): releases[key].tag_name
+				(key): releases[key].jq.stdout
 			}
 		}
 	}
