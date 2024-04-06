@@ -69,7 +69,7 @@ let _cue_agent_yaml = {
 	sinks: {
 		prom_exporter: {
 			type: "prometheus_exporter"
-			inputs: [ for key, _ in sources if strings.HasSuffix(key, "_metrics") {key}]
+			inputs: [for key, _ in sources if strings.HasSuffix(key, "_metrics") {key}]
 			address: "0.0.0.0:9090"
 		}
 
@@ -83,6 +83,7 @@ let _cue_agent_yaml = {
 			inputs: ["kubernetes_logs"]
 			labels: {
 				job:       "vector/kubernetes"
+				node:      "{{ host }}"
 				filename:  "{{ file }}"
 				stream:    "{{ stream }}"
 				pod:       "{{ kubernetes.pod_name }}"
@@ -95,6 +96,7 @@ let _cue_agent_yaml = {
 			// encoding: codec: "json"
 			labels: {
 				job:   "vector/haproxy"
+				node:  "{{ host }}"
 				host:  "{{ parsed.host }}"
 				level: "{{ severity }}"
 			}
@@ -103,7 +105,7 @@ let _cue_agent_yaml = {
 			inputs: ["journald_logs"]
 			labels: {
 				job:               "vector/journald"
-				host:              "{{ host }}"
+				node:              "{{ host }}"
 				boot_id:           "{{ _BOOT_ID }}"
 				systemd_unit:      "{{ _SYSTEMD_UNIT }}"
 				stream:            "{{ _TRANSPORT }}"
