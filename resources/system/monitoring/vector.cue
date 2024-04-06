@@ -83,10 +83,10 @@ let _cue_agent_yaml = {
 			inputs: ["kubernetes_logs"]
 			labels: {
 				job:       "vector/kubernetes"
-				node:      "{{ host }}"
 				filename:  "{{ file }}"
 				stream:    "{{ stream }}"
 				pod:       "{{ kubernetes.pod_name }}"
+				node:      "{{ kubernetes.pod_node_name }}"
 				container: "{{ kubernetes.container_name }}"
 				namespace: "{{ kubernetes.pod_namespace }}"
 			}
