@@ -166,6 +166,11 @@ import (
 	// some other means of identification.
 	"instance-id"?: string @go(InstanceID)
 
+	// BootID is a unique node identifier generated on boot
+	//
+	// +kubebuilder:validation:Optional
+	bootid?: string @go(BootID)
+
 	// Addresses is the list of all node addresses.
 	//
 	// +kubebuilder:validation:Optional

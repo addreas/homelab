@@ -5,8 +5,8 @@
 package v1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
@@ -58,6 +58,38 @@ import (
 
 	// Name of the excluded PrometheusRule object.
 	ruleName: string @go(RuleName)
+}
+
+#ProxyConfig: {
+	// `proxyURL` defines the HTTP proxy server to use.
+	//
+	// It requires Prometheus >= v2.43.0.
+	// +kubebuilder:validation:Pattern:="^http(s)?://.+$"
+	// +optional
+	proxyUrl?: null | string @go(ProxyURL,*string)
+
+	// `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+	// that should be excluded from proxying. IP and domain names can
+	// contain port numbers.
+	//
+	// It requires Prometheus >= v2.43.0.
+	// +optional
+	noProxy?: null | string @go(NoProxy,*string)
+
+	// Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+	// If unset, Prometheus uses its default value.
+	//
+	// It requires Prometheus >= v2.43.0.
+	// +optional
+	proxyFromEnvironment?: null | bool @go(ProxyFromEnvironment,*bool)
+
+	// ProxyConnectHeader optionally specifies headers to send to
+	// proxies during CONNECT requests.
+	//
+	// It requires Prometheus >= v2.43.0.
+	// +optional
+	// +mapType:=atomic
+	proxyConnectHeader?: {[string]: v1.#SecretKeySelector} @go(ProxyConnectHeader,map[string]v1.SecretKeySelector)
 }
 
 // ObjectReference references a PodMonitor, ServiceMonitor, Probe or PrometheusRule object.
@@ -582,3 +614,10 @@ import (
 	// Argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)
 	value?: string @go(Value)
 }
+
+#RoleNode:          "node"
+#RolePod:           "pod"
+#RoleService:       "service"
+#RoleEndpoint:      "endpoints"
+#RoleEndpointSlice: "endpointslice"
+#RoleIngress:       "ingress"

@@ -21320,9 +21320,9 @@ grafanaDashboards: {
 				targets: [{
 					expr: """
 						(
-						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance"}[$__rate_interval])))
+						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
 						/ ignoring(cpu) group_left
-						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance"})
+						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
 						)
 
 						"""
@@ -21400,25 +21400,25 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "1m load average"
 					refId:          "A"
 				}, {
-					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "5m load average"
 					refId:          "B"
 				}, {
-					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "15m load average"
 					refId:          "C"
 				}, {
-					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", mode=\"idle\"})"
+					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "logical cores"
@@ -21504,7 +21504,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "Physical Memory"
@@ -21512,10 +21512,10 @@ grafanaDashboards: {
 				}, {
 					expr: """
 						(
-						    node_memory_internal_bytes{job="node-exporter", instance="$instance"} -
-						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance"} +
-						    node_memory_wired_bytes{job="node-exporter", instance="$instance"} +
-						    node_memory_compressed_bytes{job="node-exporter", instance="$instance"}
+						    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
+						    node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
+						    node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						)
 
 						"""
@@ -21526,8 +21526,8 @@ grafanaDashboards: {
 				}, {
 					expr: """
 						(
-						    node_memory_internal_bytes{job="node-exporter", instance="$instance"} -
-						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance"}
+						    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						)
 
 						"""
@@ -21536,13 +21536,13 @@ grafanaDashboards: {
 					legendFormat:   "App Memory"
 					refId:          "C"
 				}, {
-					expr:           "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "Wired Memory"
 					refId:          "D"
 				}, {
-					expr:           "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "Compressed"
@@ -21606,12 +21606,12 @@ grafanaDashboards: {
 					expr: """
 						(
 						    (
-						      avg(node_memory_internal_bytes{job="node-exporter", instance="$instance"}) -
-						      avg(node_memory_purgeable_bytes{job="node-exporter", instance="$instance"}) +
-						      avg(node_memory_wired_bytes{job="node-exporter", instance="$instance"}) +
-						      avg(node_memory_compressed_bytes{job="node-exporter", instance="$instance"})
+						      avg(node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) -
+						      avg(node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
+						      avg(node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
+						      avg(node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
 						    ) /
-						    avg(node_memory_total_bytes{job="node-exporter", instance="$instance"})
+						    avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
 						)
 						*
 						100
@@ -21678,19 +21678,19 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} read"
 					refId:          "A"
 				}, {
-					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} written"
 					refId:          "B"
 				}, {
-					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} io time"
@@ -21808,7 +21808,7 @@ grafanaDashboards: {
 				span: 6
 				targets: [{
 					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
+						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -21817,7 +21817,7 @@ grafanaDashboards: {
 					legendFormat:   ""
 				}, {
 					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
+						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -21942,7 +21942,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8"
+					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}}"
@@ -22018,7 +22018,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8"
+					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}}"
@@ -22087,13 +22087,32 @@ grafanaDashboards: {
 			allValue: null
 			current: {}
 			datasource: "$datasource"
+			hide:       2
+			includeAll: false
+			label:      "Cluster"
+			multi:      false
+			name:       "cluster"
+			options: []
+			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"}, cluster)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {}
+			datasource: "$datasource"
 			hide:       0
 			includeAll: false
 			label:      "Instance"
 			multi:      false
 			name:       "instance"
 			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"}, instance)"
+			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname=\"Darwin\"}, instance)"
 			refresh:        2
 			regex:          ""
 			sort:           0
@@ -22168,9 +22187,9 @@ grafanaDashboards: {
 				targets: [{
 					expr: """
 						(
-						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance"}[$__rate_interval])))
+						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
 						/ ignoring(cpu) group_left
-						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance"})
+						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
 						)
 
 						"""
@@ -22248,25 +22267,25 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "1m load average"
 					refId:          "A"
 				}, {
-					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "5m load average"
 					refId:          "B"
 				}, {
-					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "15m load average"
 					refId:          "C"
 				}, {
-					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", mode=\"idle\"})"
+					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "logical cores"
@@ -22354,13 +22373,13 @@ grafanaDashboards: {
 				targets: [{
 					expr: """
 						(
-						  node_memory_MemTotal_bytes{job="node-exporter", instance="$instance"}
+						  node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						-
-						  node_memory_MemFree_bytes{job="node-exporter", instance="$instance"}
+						  node_memory_MemFree_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						-
-						  node_memory_Buffers_bytes{job="node-exporter", instance="$instance"}
+						  node_memory_Buffers_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						-
-						  node_memory_Cached_bytes{job="node-exporter", instance="$instance"}
+						  node_memory_Cached_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
 						)
 
 						"""
@@ -22369,19 +22388,19 @@ grafanaDashboards: {
 					legendFormat:   "memory used"
 					refId:          "A"
 				}, {
-					expr:           "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "memory buffers"
 					refId:          "B"
 				}, {
-					expr:           "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "memory cached"
 					refId:          "C"
 				}, {
-					expr:           "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\"}"
+					expr:           "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
 					format:         "time_series"
 					intervalFactor: 2
 					legendFormat:   "memory free"
@@ -22445,8 +22464,8 @@ grafanaDashboards: {
 					expr: """
 						100 -
 						(
-						  avg(node_memory_MemAvailable_bytes{job="node-exporter", instance="$instance"}) /
-						  avg(node_memory_MemTotal_bytes{job="node-exporter", instance="$instance"})
+						  avg(node_memory_MemAvailable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
+						  avg(node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
 						* 100
 						)
 
@@ -22512,19 +22531,19 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} read"
 					refId:          "A"
 				}, {
-					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} written"
 					refId:          "B"
 				}, {
-					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}} io time"
@@ -22642,7 +22661,7 @@ grafanaDashboards: {
 				span: 6
 				targets: [{
 					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
+						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -22651,7 +22670,7 @@ grafanaDashboards: {
 					legendFormat:   ""
 				}, {
 					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", fstype!="", mountpoint!=""})
+						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
 
 						"""
 					format:         "table"
@@ -22776,7 +22795,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8"
+					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}}"
@@ -22852,7 +22871,7 @@ grafanaDashboards: {
 				stack:       false
 				steppedLine: false
 				targets: [{
-					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8"
+					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
 					format:         "time_series"
 					intervalFactor: 1
 					legendFormat:   "{{device}}"
@@ -22921,13 +22940,32 @@ grafanaDashboards: {
 			allValue: null
 			current: {}
 			datasource: "$datasource"
+			hide:       2
+			includeAll: false
+			label:      "Cluster"
+			multi:      false
+			name:       "cluster"
+			options: []
+			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {}
+			datasource: "$datasource"
 			hide:       0
 			includeAll: false
 			label:      "Instance"
 			multi:      false
 			name:       "instance"
 			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, instance)"
+			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
 			refresh:        2
 			regex:          ""
 			sort:           0
