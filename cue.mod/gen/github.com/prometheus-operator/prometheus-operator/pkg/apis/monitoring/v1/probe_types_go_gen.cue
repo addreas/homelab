@@ -49,7 +49,7 @@ import (
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// TLS configuration to use when scraping the endpoint.
-	tlsConfig?: null | #ProbeTLSConfig @go(TLSConfig,*ProbeTLSConfig)
+	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
 
 	// Secret to mount to read bearer token for scraping targets. The secret
 	// needs to be in the same namespace as the probe and accessible by
@@ -201,10 +201,4 @@ import (
 
 	// List of Probes
 	items: [...null | #Probe] @go(Items,[]*Probe)
-}
-
-// ProbeTLSConfig specifies TLS configuration parameters for the prober.
-// +k8s:openapi-gen=true
-#ProbeTLSConfig: {
-	#SafeTLSConfig
 }

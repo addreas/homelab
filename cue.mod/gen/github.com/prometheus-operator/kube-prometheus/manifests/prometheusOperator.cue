@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -97,7 +97,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -119,7 +119,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -5542,7 +5542,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -7962,6 +7962,14 @@ prometheusOperator: {
 											required: ["name"]
 											type: "object"
 										}
+										type: "array"
+									}
+									enableFeatures: {
+										description: """
+														Enable access to Alertmanager feature flags. By default, no features are enabled. Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice. 
+														 It requires Alertmanager >= 0.27.0.
+														"""
+										items: type: "string"
 										type: "array"
 									}
 									externalUrl: {
@@ -11521,7 +11529,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -11565,6 +11573,14 @@ prometheusOperator: {
 											type:        "boolean"
 										}
 										type: "object"
+									}
+									bodySizeLimit: {
+										description: """
+														When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus. 
+														 It requires Prometheus >= v2.28.0.
+														"""
+										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+										type:    "string"
 									}
 									jobLabel: {
 										description: """
@@ -12272,7 +12288,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -13001,7 +13017,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -16916,6 +16932,7 @@ prometheusOperator: {
 													properties: {
 														batchSendDeadline: {
 															description: "BatchSendDeadline is the maximum time a sample will wait in buffer."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														capacity: {
@@ -16924,6 +16941,7 @@ prometheusOperator: {
 														}
 														maxBackoff: {
 															description: "MaxBackoff is the maximum retry delay."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														maxRetries: {
@@ -16940,6 +16958,7 @@ prometheusOperator: {
 														}
 														minBackoff: {
 															description: "MinBackoff is the initial retry delay. Gets doubled for every retry."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														minShards: {
@@ -16949,6 +16968,11 @@ prometheusOperator: {
 														retryOnRateLimit: {
 															description: "Retry upon receiving a 429 status code from the remote-write storage. This is experimental feature and might change in the future."
 															type:        "boolean"
+														}
+														sampleAgeLimit: {
+															description: "SampleAgeLimit drops samples older than the limit. It requires Prometheus >= v2.50.0."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
 														}
 													}
 													type: "object"
@@ -20227,7 +20251,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -25030,6 +25054,7 @@ prometheusOperator: {
 													properties: {
 														batchSendDeadline: {
 															description: "BatchSendDeadline is the maximum time a sample will wait in buffer."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														capacity: {
@@ -25038,6 +25063,7 @@ prometheusOperator: {
 														}
 														maxBackoff: {
 															description: "MaxBackoff is the maximum retry delay."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														maxRetries: {
@@ -25054,6 +25080,7 @@ prometheusOperator: {
 														}
 														minBackoff: {
 															description: "MinBackoff is the initial retry delay. Gets doubled for every retry."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:        "string"
 														}
 														minShards: {
@@ -25063,6 +25090,11 @@ prometheusOperator: {
 														retryOnRateLimit: {
 															description: "Retry upon receiving a 429 status code from the remote-write storage. This is experimental feature and might change in the future."
 															type:        "boolean"
+														}
+														sampleAgeLimit: {
+															description: "SampleAgeLimit drops samples older than the limit. It requires Prometheus >= v2.50.0."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
 														}
 													}
 													type: "object"
@@ -28881,7 +28913,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -29010,7 +29042,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -31514,7 +31546,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -31558,6 +31590,14 @@ prometheusOperator: {
 											type:        "boolean"
 										}
 										type: "object"
+									}
+									bodySizeLimit: {
+										description: """
+														When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus. 
+														 It requires Prometheus >= v2.28.0.
+														"""
+										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+										type:    "string"
 									}
 									endpoints: {
 										description: "List of endpoints part of this ServiceMonitor."
@@ -32286,7 +32326,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.13.0"
-					"operator.prometheus.io/version":        "0.71.2"
+					"operator.prometheus.io/version":        "0.72.0"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -37708,6 +37748,195 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									web: {
+										description: "Defines the configuration of the ThanosRuler web server."
+										properties: {
+											httpConfig: {
+												description: "Defines HTTP parameters for web server."
+												properties: {
+													headers: {
+														description: "List of headers that can be added to HTTP responses."
+														properties: {
+															contentSecurityPolicy: {
+																description: "Set the Content-Security-Policy header to HTTP responses. Unset if blank."
+																type:        "string"
+															}
+															strictTransportSecurity: {
+																description: "Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"
+																type:        "string"
+															}
+															xContentTypeOptions: {
+																description: "Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
+																enum: ["", "NoSniff"]
+																type: "string"
+															}
+															xFrameOptions: {
+																description: "Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options"
+																enum: ["", "Deny", "SameOrigin"]
+																type: "string"
+															}
+															xXSSProtection: {
+																description: "Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection"
+																type:        "string"
+															}
+														}
+														type: "object"
+													}
+													http2: {
+														description: "Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered."
+														type:        "boolean"
+													}
+												}
+												type: "object"
+											}
+											tlsConfig: {
+												description: "Defines the TLS parameters for HTTPS."
+												properties: {
+													cert: {
+														description: "Contains the TLS certificate for the server."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													cipherSuites: {
+														description: "List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants"
+														items: type: "string"
+														type: "array"
+													}
+													clientAuthType: {
+														description: "Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType"
+														type:        "string"
+													}
+													client_ca: {
+														description: "Contains the CA certificate for client certificate authentication to the server."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																		type:        "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													curvePreferences: {
+														description: "Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID"
+														items: type: "string"
+														type: "array"
+													}
+													keySecret: {
+														description: "Secret containing the TLS key for the server."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+																type:        "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													maxVersion: {
+														description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+														type:        "string"
+													}
+													minVersion: {
+														description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+														type:        "string"
+													}
+													preferServerCipherSuites: {
+														description: "Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used."
+														type:        "boolean"
+													}
+												}
+												required: ["cert", "keySecret"]
+												type: "object"
+											}
+										}
+										type: "object"
+									}
 								}
 								type: "object"
 							}
@@ -37800,7 +38029,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -37819,18 +38048,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.71.2"
+						"app.kubernetes.io/version":   "0.72.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.71.2"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.72.0"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.71.2"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.72.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -37898,7 +38127,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -38041,7 +38270,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -38069,7 +38298,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -38083,7 +38312,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -38100,7 +38329,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.71.2"
+				"app.kubernetes.io/version":   "0.72.0"
 			}
 		}
 	}

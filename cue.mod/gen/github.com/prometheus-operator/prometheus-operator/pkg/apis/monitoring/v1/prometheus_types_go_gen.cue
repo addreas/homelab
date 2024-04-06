@@ -86,9 +86,8 @@ import (
 	// namespace only.
 	serviceMonitorNamespaceSelector?: null | metav1.#LabelSelector @go(ServiceMonitorNamespaceSelector,*metav1.LabelSelector)
 
-	// *Experimental* PodMonitors to be selected for target discovery. An empty
-	// label selector matches all objects. A null label selector matches no
-	// objects.
+	// PodMonitors to be selected for target discovery. An empty label selector
+	// matches all objects. A null label selector matches no objects.
 	//
 	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
 	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
@@ -105,9 +104,8 @@ import (
 	// namespace only.
 	podMonitorNamespaceSelector?: null | metav1.#LabelSelector @go(PodMonitorNamespaceSelector,*metav1.LabelSelector)
 
-	// *Experimental* Probes to be selected for target discovery. An empty
-	// label selector matches all objects. A null label selector matches no
-	// objects.
+	// Probes to be selected for target discovery. An empty label selector
+	// matches all objects. A null label selector matches no objects.
 	//
 	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
 	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
@@ -119,14 +117,13 @@ import (
 	// `spec.additionalScrapeConfigs` instead.
 	probeSelector?: null | metav1.#LabelSelector @go(ProbeSelector,*metav1.LabelSelector)
 
-	// *Experimental* Namespaces to match for Probe discovery. An empty label
+	// Namespaces to match for Probe discovery. An empty label
 	// selector matches all namespaces. A null label selector matches the
 	// current namespace only.
 	probeNamespaceSelector?: null | metav1.#LabelSelector @go(ProbeNamespaceSelector,*metav1.LabelSelector)
 
-	// *Experimental* ScrapeConfigs to be selected for target discovery. An
-	// empty label selector matches all objects. A null label selector matches
-	// no objects.
+	// ScrapeConfigs to be selected for target discovery. An empty label
+	// selector matches all objects. A null label selector matches no objects.
 	//
 	// If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
 	// and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
@@ -136,11 +133,19 @@ import (
 	// This behavior is *deprecated* and will be removed in the next major version
 	// of the custom resource definition. It is recommended to use
 	// `spec.additionalScrapeConfigs` instead.
+	//
+	// Note that the ScrapeConfig custom resource definition is currently at Alpha level.
+	//
+	// +optional
 	scrapeConfigSelector?: null | metav1.#LabelSelector @go(ScrapeConfigSelector,*metav1.LabelSelector)
 
 	// Namespaces to match for ScrapeConfig discovery. An empty label selector
 	// matches all namespaces. A null label selector matches the current
-	// current namespace only.
+	// namespace only.
+	//
+	// Note that the ScrapeConfig custom resource definition is currently at Alpha level.
+	//
+	// +optional
 	scrapeConfigNamespaceSelector?: null | metav1.#LabelSelector @go(ScrapeConfigNamespaceSelector,*metav1.LabelSelector)
 
 	// Version of Prometheus being deployed. The operator uses this information
@@ -186,7 +191,7 @@ import (
 	// +optional
 	replicas?: null | int32 @go(Replicas,*int32)
 
-	// EXPERIMENTAL: Number of shards to distribute targets onto. `spec.replicas`
+	// Number of shards to distribute targets onto. `spec.replicas`
 	// multiplied by `spec.shards` is the total number of Pods created.
 	//
 	// Note that scaling down shards will not reshard data onto remaining
@@ -470,7 +475,7 @@ import (
 	// When defined, enforcedSampleLimit specifies a global limit on the number
 	// of scraped samples that will be accepted. This overrides any
 	// `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects
-	// unless `spec.sampleLimit` is greater than zero and less than than
+	// unless `spec.sampleLimit` is greater than zero and less than
 	// `spec.enforcedSampleLimit`.
 	//
 	// It is meant to be used by admins to keep the overall number of
@@ -603,9 +608,10 @@ import (
 	// +optional
 	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 
-	// EXPERIMENTAL: TracingConfig configures tracing in Prometheus. This is an
-	// experimental feature, it may change in any upcoming release in a
-	// breaking way.
+	// TracingConfig configures tracing in Prometheus.
+	//
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
 	//
 	// +optional
 	tracingConfig?: null | #PrometheusTracingConfig @go(TracingConfig,*PrometheusTracingConfig)
@@ -665,8 +671,12 @@ import (
 	// +kubebuilder:validation:Minimum=60
 	maximumStartupDurationSeconds?: null | int32 @go(MaximumStartupDurationSeconds,*int32)
 
-	// EXPERIMENTAL List of scrape classes to expose to monitors and other scrape configs.
-	// This is experimental feature and might change in the future.
+	// List of scrape classes to expose to scraping objects such as
+	// PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
+	//
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
+	//
 	// +listType=map
 	// +listMapKey=name
 	scrapeClasses?: [...#ScrapeClass] @go(ScrapeClasses,[]ScrapeClass)
@@ -809,8 +819,6 @@ import (
 
 	// Defines the configuration of the optional Thanos sidecar.
 	//
-	// This section is experimental, it may change significantly without
-	// deprecation notice in any release.
 	// +optional
 	thanos?: null | #ThanosSpec @go(Thanos,*ThanosSpec)
 
@@ -1090,23 +1098,24 @@ import (
 
 	// Defines the tracing configuration for the Thanos sidecar.
 	//
+	// `tracingConfigFile` takes precedence over this field.
+	//
 	// More info: https://thanos.io/tip/thanos/tracing.md/
 	//
-	// This is an experimental feature, it may change in any upcoming release
+	// This is an *experimental feature*, it may change in any upcoming release
 	// in a breaking way.
 	//
-	// tracingConfigFile takes precedence over this field.
 	// +optional
 	tracingConfig?: null | v1.#SecretKeySelector @go(TracingConfig,*v1.SecretKeySelector)
 
 	// Defines the tracing configuration file for the Thanos sidecar.
 	//
+	// This field takes precedence over `tracingConfig`.
+	//
 	// More info: https://thanos.io/tip/thanos/tracing.md/
 	//
-	// This is an experimental feature, it may change in any upcoming release
+	// This is an *experimental feature*, it may change in any upcoming release
 	// in a breaking way.
-	//
-	// This field takes precedence over tracingConfig.
 	tracingConfigFile?: string @go(TracingConfigFile)
 
 	// Configures the TLS parameters for the gRPC server providing the StoreAPI.
@@ -1305,20 +1314,31 @@ import (
 	maxSamplesPerSend?: int @go(MaxSamplesPerSend)
 
 	// BatchSendDeadline is the maximum time a sample will wait in buffer.
-	batchSendDeadline?: string @go(BatchSendDeadline)
+	// +optional
+	batchSendDeadline?: null | #Duration @go(BatchSendDeadline,*Duration)
 
 	// MaxRetries is the maximum number of times to retry a batch on recoverable errors.
 	maxRetries?: int @go(MaxRetries)
 
 	// MinBackoff is the initial retry delay. Gets doubled for every retry.
-	minBackoff?: string @go(MinBackoff)
+	// +optional
+	minBackoff?: null | #Duration @go(MinBackoff,*Duration)
 
 	// MaxBackoff is the maximum retry delay.
-	maxBackoff?: string @go(MaxBackoff)
+	// +optional
+	maxBackoff?: null | #Duration @go(MaxBackoff,*Duration)
 
 	// Retry upon receiving a 429 status code from the remote-write storage.
-	// This is experimental feature and might change in the future.
+	//
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
 	retryOnRateLimit?: bool @go(RetryOnRateLimit)
+
+	// SampleAgeLimit drops samples older than the limit.
+	// It requires Prometheus >= v2.50.0.
+	//
+	// +optional
+	sampleAgeLimit?: null | #Duration @go(SampleAgeLimit,*Duration)
 }
 
 // Sigv4 optionally configures AWS's Signature Verification 4 signing process to
@@ -1500,7 +1520,7 @@ import (
 	sourceLabels?: [...#LabelName] @go(SourceLabels,[]LabelName)
 
 	// Separator is the string between concatenated SourceLabels.
-	separator?: string @go(Separator)
+	separator?: null | string @go(Separator,*string)
 
 	// Label to which the resulting string is written in a replacement.
 	//
@@ -1713,7 +1733,8 @@ import (
 	// An out-of-order/out-of-bounds sample is ingested into the TSDB as long as
 	// the timestamp of the sample is >= (TSDB.MaxTime - outOfOrderTimeWindow).
 	//
-	// Out of order ingestion is an experimental feature.
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
 	//
 	// It requires Prometheus >= v2.39.0.
 	outOfOrderTimeWindow?: #Duration @go(OutOfOrderTimeWindow)
@@ -1771,4 +1792,16 @@ import (
 	// TLSConfig section for scrapes.
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
+
+	// Relabelings configures the relabeling rules to apply to all scrape targets.
+	//
+	// The Operator automatically adds relabelings for a few standard Kubernetes fields
+	// like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`.
+	// Then the Operator adds the scrape class relabelings defined here.
+	// Then the Operator adds the target-specific relabelings defined in the scrape object.
+	//
+	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+	//
+	// +optional
+	relabelings?: [...null | #RelabelConfig] @go(Relabelings,[]*RelabelConfig)
 }

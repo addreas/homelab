@@ -213,11 +213,24 @@ import (
 	// at any time without notice.
 	initContainers?: [...v1.#Container] @go(InitContainers,[]v1.Container)
 
-	// TracingConfig configures tracing in Thanos. This is an experimental feature, it may change in any upcoming release in a breaking way.
+	// TracingConfig configures tracing in Thanos.
+	//
+	// `tracingConfigFile` takes precedence over this field.
+	//
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
+	//
+	//+optional
 	tracingConfig?: null | v1.#SecretKeySelector @go(TracingConfig,*v1.SecretKeySelector)
 
 	// TracingConfig specifies the path of the tracing configuration file.
-	// When used alongside with TracingConfig, TracingConfigFile takes precedence.
+	//
+	// This field takes precedence over `tracingConfig`.
+	//
+	// This is an *experimental feature*, it may change in any upcoming release
+	// in a breaking way.
+	//
+	//+optional
 	tracingConfigFile?: string @go(TracingConfigFile)
 
 	// Labels configure the external label pairs to ThanosRuler. A default replica label
@@ -278,6 +291,15 @@ import (
 	// operator itself) or when providing an invalid argument the reconciliation will
 	// fail and an error will be logged.
 	additionalArgs?: [...#Argument] @go(AdditionalArgs,[]Argument)
+
+	// Defines the configuration of the ThanosRuler web server.
+	web?: null | #ThanosRulerWebSpec @go(Web,*ThanosRulerWebSpec)
+}
+
+// ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+// +k8s:openapi-gen=true
+#ThanosRulerWebSpec: {
+	#WebConfigFileFields
 }
 
 // ThanosRulerStatus is the most recent observed status of the ThanosRuler. Read-only.
