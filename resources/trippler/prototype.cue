@@ -48,7 +48,24 @@ k: Ingress: svalaappcom: {
 	}
 }
 
+k: Ingress: "plan-jdahl-se": {
+	spec: {
+		rules: [{
+			host: "plan.jdahl.se"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "plan-jdahl-se"
+					port: name: "http"
+				}
+			}]
+		}]
+	}
+}
+
 k: Service: prototyp: {}
+k: Service: "plan-jdahl-se": {}
 
 let baseContainer = {
 	image:           "ghcr.io/jonasdahl/svalaapp.com:main"
@@ -71,7 +88,7 @@ let baseContainer = {
 	}, {
 		name:  "REDIS_URL"
 		value: "redis://prototyp-redis:6379"
-	}]
+	}, ...]
 }
 
 k: Deployment: "prototyp": {
@@ -85,6 +102,32 @@ k: Deployment: "prototyp": {
 					command: ["npx", "-y", "prisma", "migrate", "deploy"]
 				}]
 				containers: [baseContainer & {
+					name: "prototype"
+					ports: [{containerPort: 3000, name: "http"}]
+				}]
+			}
+		}
+	}
+}
+
+let planJdahlSeContainer = baseContainer & {
+	env: baseContainer.env + [{
+		name:  "BRAND"
+		value: "jdahl"
+	}]
+}
+
+k: Deployment: "plan-jdahl-se": {
+	spec: {
+		replicas: 1
+		template: {
+			spec: {
+				imagePullSecrets: [{name: "regcred"}]
+				initContainers: [planJdahlSeContainer & {
+					name: "migrations"
+					command: ["npx", "-y", "prisma", "migrate", "deploy"]
+				}]
+				containers: [planJdahlSeContainer & {
 					name: "prototype"
 					ports: [{containerPort: 3000, name: "http"}]
 				}]
