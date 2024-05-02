@@ -6,8 +6,9 @@ k: StatefulSet: radarr: {
 			metadata: labels: "vpn-egress": "client"
 			spec: {
 				containers: [{
-					name:  "radarr"
-					image: "nixery.addem.se/shell/radarr"
+					name:            "radarr"
+					image:           "nixery.addem.se/shell/radarr"
+					imagePullPolicy: "Always"
 					command: ["Radarr", "--nobrowser", "--data=/config"]
 					env: [{
 						name:  "COMPlus_EnableDiagnostics"
