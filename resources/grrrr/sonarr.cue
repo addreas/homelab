@@ -7,7 +7,7 @@ k: StatefulSet: sonarr: {
 			spec: {
 				containers: [{
 					name:            "sonarr"
-					image:           "nixery.addem.se/sonarr"
+					image:           "nixery.addem.se/shell/sonarr"
 					imagePullPolicy: "Always"
 					command: ["NzbDrone", "--nobrowser", "--data=/config"]
 					env: [{

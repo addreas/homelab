@@ -24,6 +24,7 @@ k: StatefulSet: qbittorrent: {
 						wg-quick up /config/wg0.conf
 						ip route add 10.96.0.0/12 dev eth0
 						ip route add 10.0.0.0/16 dev eth0
+						ip route add 10.0.0.1/32 dev wg0
 						"""]
 
 					securityContext: {
