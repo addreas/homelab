@@ -283,6 +283,10 @@ alertmanager: {
 			  - "send_resolved": false
 			    "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
 			- "name": "null"
+			- "name": "Warning"
+			  "webhook_configs":
+			  - "send_resolved": false
+			    "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
 			"route":
 			  "group_by":
 			  - "namespace"
@@ -300,6 +304,9 @@ alertmanager: {
 			  - "matchers":
 			    - "severity = critical"
 			    "receiver": "Critical"
+			  - "matchers":
+			    - "severity = warning"
+			    "receiver": "Warning"
 			"""
 		type: "Opaque"
 	}

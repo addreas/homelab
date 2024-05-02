@@ -25,12 +25,26 @@ local kp =
       alertmanager+: {
           config+: {
             local critical = {
+                name: "Critical",
                 webhook_configs: [{
                   send_resolved: false,
                   url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
                 }]
             },
-            receivers: std.map(function(x) if x.name == "Critical" then x + critical else x, super.receivers),
+            local warning = {
+                name: "Warning",
+                webhook_configs: [{
+                  send_resolved: false,
+                  url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
+                }]
+            },
+            receivers: std.map(function(x) if x.name == "Critical" then critical else x, super.receivers) + [warning],
+            route+: {
+              routes: super.routes + [{
+                matchers: ["severity = warning"],
+                receiver: "Warning"
+              }]
+            }
           },
       },
     },
