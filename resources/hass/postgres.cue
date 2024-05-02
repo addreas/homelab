@@ -20,7 +20,7 @@ k: StatefulSet: "hass-postgres": spec: {
 		metadata: name: "data"
 		spec: {
 			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "5Gi"
+			resources: requests: storage: "10Gi"
 		}
 	}]
 }
