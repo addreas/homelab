@@ -28,10 +28,10 @@
 
       # nix build .#nixosConfigurations.frr-test.config.system.build.vm
       # QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset
-      nixosConfigurations.frr-test = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [ ./nix/machines/frr-test/configuration.nix ];
-      };
+      # nixosConfigurations.frr-test = nixpkgs.lib.nixosSystem {
+      #   inherit system;
+      #   modules = [ ./nix/machines/frr-test/configuration.nix ];
+      # };
 
       nixosConfigurations.sergio = machine "sergio" [
         flakefiles.nixosModules.nix-builder

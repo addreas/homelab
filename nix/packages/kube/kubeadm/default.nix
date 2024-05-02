@@ -2,7 +2,7 @@
 let
   cfg = config.services.kubeadm;
 
-  kubeadmConfig = pkgs.writeText "kubeadm.yaml" (
+  kubeadmInitConfig = pkgs.writeText "kubeadm-init.yaml" (
     lib.strings.concatMapStringsSep
       "\n---\n"
       builtins.toJSON
@@ -12,6 +12,11 @@ let
         cfg.init.kubeletConfig
         cfg.init.kubeProxyConfig
       ]
+  );
+
+  kubeadmUpgradeConfig = pkgs.writeText "kubeadm-upgrade.yaml" (
+      builtins.toJSON
+      cfg.upgrade.upgradeConfig
   );
 in
 {
@@ -82,7 +87,7 @@ in
 
       script = ''
         if ! ${pkgs.curl}/bin/curl --insecure https://${cfg.init.clusterConfig.controlPlaneEndpoint}; then
-          ${cfg.package}/bin/kubeadm init --config ${kubeadmConfig}
+          ${cfg.package}/bin/kubeadm init --config ${kubeadmInitConfig}
         fi
       '';
 
@@ -91,7 +96,7 @@ in
       wants = [ "network-online.target" ];
     };
 
-    systemd.services.kubeadm-join = lib.mkIf (cfg.init.enable) {
+    systemd.services.kubeadm-join = lib.mkIf cfg.init.enable {
       description = "kubeadm join";
 
       path = with pkgs; [
@@ -138,7 +143,7 @@ in
     };
 
 
-    systemd.services.kubeadm-upgrade = {
+    systemd.services.kubeadm-upgrade = lib.mkIf cfg.upgrade.enable {
       description = "kubeadm upgrade";
 
       path = with pkgs; [
@@ -184,14 +189,14 @@ in
           KUBEADM_CLI_VERSION=$(${kubeadm} version -o short)
           KUBE_APISERVER_MANIFEST_VERSION=$(cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep image: | cut -d: -f3)
           if [[ "$KUBEADM_CONFIG_TARGET_VERSION" != "$KUBEADM_CLI_VERSION" ]]; then
-              ${kubeadm} upgrade plan $KUBEADM_CLI_VERSION --config ${kubeadmConfig} \
-                && ${kubeadm} upgrade apply $KUBEADM_CLI_VERSION --config ${kubeadmConfig} --yes
+              ${kubeadm} upgrade plan $KUBEADM_CLI_VERSION --config ${kubeadmUpgradeConfig} \
+                && ${kubeadm} upgrade apply $KUBEADM_CLI_VERSION --config ${kubeadmUpgradeConfig}
           else
-              ${kubeadm} upgrade node
+              ${kubeadm} upgrade node --config ${kubeadmUpgradeConfig}
           fi
         ''
         else ''
-          ${kubeadm} upgrade node
+          ${kubeadm} upgrade node --config ${kubeadmUpgradeConfig}
         '';
 
       wantedBy = [ "kubelet.service" ];

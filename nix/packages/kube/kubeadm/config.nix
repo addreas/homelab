@@ -14,12 +14,12 @@
 
     initConfig = mkOption {
       type = types.attrs;
-      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/#kubeadm-k8s-io-v1beta3-InitConfiguration";
+      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-InitConfiguration";
     };
 
     clusterConfig = mkOption {
       type = types.attrs;
-      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/#kubeadm-k8s-io-v1beta3-ClusterConfiguration";
+      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-ClusterConfiguration";
     };
 
     kubeletConfig = mkOption {
@@ -33,11 +33,20 @@
     };
   };
 
+  options.services.kubeadm.upgrade= with lib; {
+    enable = mkEnableOption "kubeadm upgrade";
+
+    upgradeConfig = mkOption {
+      type = types.attrs;
+      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-UpgradeConfiguration";
+    };
+  };
+
   config.services.kubeadm.init = {
-    initConfig.apiVersion = "kubeadm.k8s.io/v1beta3";
+    initConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     initConfig.kind = "InitConfiguration";
 
-    clusterConfig.apiVersion = "kubeadm.k8s.io/v1beta3";
+    clusterConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     clusterConfig.kind = "ClusterConfiguration";
 
     kubeletConfig.apiVersion = "kubelet.config.k8s.io/v1beta1";
@@ -45,5 +54,11 @@
 
     kubeProxyConfig.apiVersion = "kubeproxy.config.k8s.io/v1alpha1";
     kubeProxyConfig.kind = "KubeProxyConfiguration";
+  };
+
+  config.services.kubeadm.upgrade= {
+    upgradeConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
+    upgradeConfig.kind = "UpgradeConfiguration";
+    upgradeConfig.apply.forceUpgrade = true; # non-interactive upgrade is required
   };
 }

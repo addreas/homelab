@@ -3,9 +3,6 @@ let
   hosts = [
     "sergio.localdomain"
     "nucles.localdomain"
-    "nucle1.localdomain"
-    "nucle2.localdomain"
-    "nucle3.localdomain"
   ];
 in
 {
@@ -18,17 +15,26 @@ in
     package = pkgs.kubernetes;
     kubelet.enable = true;
 
-    init.initConfig = { };
+    init.initConfig = {};
 
     init.clusterConfig = {
       clusterName = "nucles";
-      apiServer = {
-        certSANs = hosts;
-        extraArgs.feature-gates = "";
-      };
-      controllerManager.extraArgs.bind-address = "0.0.0.0";
-      scheduler.extraArgs.bind-address = "0.0.0.0";
+
       controlPlaneEndpoint = "nucles.localdomain:6443";
+
+      apiServer.certSANs = hosts;
+
+      proxy.disabled = true;
+
+      controllerManager.extraArgs = [{
+        name = "bind-address";
+        value = "0.0.0.0";
+      }];
+
+      scheduler.extraArgs = [{
+        name = "bind-address";
+        value = "0.0.0.0";
+      }];
     };
 
     init.kubeletConfig = {
@@ -37,6 +43,9 @@ in
       shutdownGracePeriod = "5m";
       shutdownGracePeriodCriticalPods = "1m";
     };
+
+    upgrade.enable = true;
+    upgrade.upgradeConfig = {};
   };
 
   environment.systemPackages = [ pkgs.kubernetes ];
