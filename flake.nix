@@ -23,7 +23,7 @@
       };
     in
     {
-      formatter.${system} = nixpkgs.legacyPkgs.${system}.nixpkgs-fmt;
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
       apps.${system} = flakefiles.apps.${system};
 
       # nix build .#nixosConfigurations.frr-test.config.system.build.vm
@@ -57,7 +57,7 @@
       # nixosConfigurations.nucle-installer = machine "nucle-installer" [];
 
       # nixosConfigurations.nucle2 = machine "nucles/nucle2" [];
-      # nixosConfigurations.nucle3 = machine "nucles/nucle3" [];
-      # nixosConfigurations.nucle4 = machine "nucles/nucle4" [];
+      nixosConfigurations.nucle3 = machine "nucles/nucle3" [];
+      nixosConfigurations.nucle4 = machine "nucles/nucle4" [];
     };
 }
