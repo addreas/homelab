@@ -43,6 +43,9 @@ local kp =
               routes: super.routes + [{
                 matchers: ["severity = warning"],
                 receiver: "Warning"
+              }, {
+                matchers: ["severity = error"],
+                receiver: "Critical"
               }]
             }
           },

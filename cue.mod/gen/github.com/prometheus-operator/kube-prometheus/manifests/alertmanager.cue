@@ -307,6 +307,9 @@ alertmanager: {
 			  - "matchers":
 			    - "severity = warning"
 			    "receiver": "Warning"
+			  - "matchers":
+			    - "severity = error"
+			    "receiver": "Critical"
 			"""
 		type: "Opaque"
 	}
