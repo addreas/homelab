@@ -216,7 +216,7 @@ k: CiliumNetworkPolicy: "vpn-egress-gateway": {
 			}]
 		}, {
 			toFQDNs: [{
-				matchName: "se1.wg.azirevpn.net"
+				matchName: "se-sto.azirevpn.net"
 			}]
 			toPorts: [{
 				ports: [{
