@@ -15,14 +15,8 @@ let
   );
 
   kubeadmUpgradeConfig = pkgs.writeText "kubeadm-upgrade.yaml" (
-    lib.strings.concatMapStringsSep
-      "\n---\n"
       builtins.toJSON
-      [
-        cfg.upgrade.upgradeConfig
-        cfg.init.kubeletConfig
-        cfg.init.kubeProxyConfig
-      ]
+      cfg.upgrade.upgradeConfig
   );
 in
 {
