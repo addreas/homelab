@@ -280,13 +280,11 @@ alertmanager: {
 			- "name": "Watchdog"
 			- "name": "Critical"
 			  "webhook_configs":
-			  - "send_resolved": false
-			    "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
+			  - "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
 			- "name": "null"
 			- "name": "Warning"
 			  "webhook_configs":
-			  - "send_resolved": false
-			    "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
+			  - "url": "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
 			"route":
 			  "group_by":
 			  - "namespace"

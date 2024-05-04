@@ -41,14 +41,12 @@ local kp =
             local critical = {
                 name: "Critical",
                 webhook_configs: [{
-                  send_resolved: false,
                   url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
                 }]
             },
             local warning = {
                 name: "Warning",
                 webhook_configs: [{
-                  send_resolved: false,
                   url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
                 }]
             },
