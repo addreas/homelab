@@ -16,9 +16,23 @@ local kp =
             limits+: { cpu: '140m' },
           }
         },
+        kubeRbacProxySelf+: {
+          resources+: {
+            limits+: { cpu: '140m' },
+          }
+        },
       },
 
       nodeExporter+: {
+        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } }
+      },
+
+      blackboxExporter+: {
+        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } },
+        resources+: { limits+: { cpu: '140m' } } // jsonnet defs seem to use this for kubeRbacProxy
+      },
+
+      prometheusOperator+: {
         kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } }
       },
 
