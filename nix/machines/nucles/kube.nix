@@ -42,6 +42,7 @@ in
       allowedUnsafeSysctls = [ "net.ipv4.conf.all.src_valid_mark" ];
       shutdownGracePeriod = "5m";
       shutdownGracePeriodCriticalPods = "1m";
+      cpuCFSQuota = false;
     };
 
     upgrade.enable = true;
