@@ -246,5 +246,4 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // SupportedFeature is used to describe distinct features that are covered by
 // conformance tests.
-// +kubebuilder:validation:Enum=Gateway;GatewayPort8080;GatewayStaticAddresses;HTTPRoute;HTTPRouteDestinationPortMatching;HTTPRouteHostRewrite;HTTPRouteMethodMatching;HTTPRoutePathRedirect;HTTPRoutePathRewrite;HTTPRoutePortRedirect;HTTPRouteQueryParamMatching;HTTPRouteRequestMirror;HTTPRouteRequestMultipleMirrors;HTTPRouteResponseHeaderModification;HTTPRouteSchemeRedirect;Mesh;ReferenceGrant;TLSRoute
 #SupportedFeature: string

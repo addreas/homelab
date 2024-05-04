@@ -40,6 +40,7 @@ import (
 	// e.g. ["ro", "soft"]. Not validated -
 	// mount of the PVs will simply fail if one is invalid.
 	// +optional
+	// +listType=atomic
 	mountOptions?: [...string] @go(MountOptions,[]string) @protobuf(5,bytes,opt)
 
 	// allowVolumeExpansion shows whether the storage class allow volume expand.
@@ -278,7 +279,7 @@ import (
 	// deployed on such a cluster and the deployment determines which mode that is, for example
 	// via a command line parameter of the driver.
 	//
-	// This field is immutable.
+	// This field was immutable in Kubernetes < 1.29 and now is mutable.
 	//
 	// +optional
 	podInfoOnMount?: null | bool @go(PodInfoOnMount,*bool) @protobuf(2,bytes,opt)
@@ -325,7 +326,7 @@ import (
 	// permission of the volume before being mounted.
 	// Refer to the specific FSGroupPolicy values for additional details.
 	//
-	// This field is immutable.
+	// This field was immutable in Kubernetes < 1.29 and now is mutable.
 	//
 	// Defaults to ReadWriteOnceWithFSType, which will examine each volume
 	// to determine if Kubernetes should modify ownership and permissions of the volume.
@@ -490,6 +491,8 @@ import (
 	// If all drivers in the list are uninstalled, this can become empty.
 	// +patchMergeKey=name
 	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
 	drivers: [...#CSINodeDriver] @go(Drivers,[]CSINodeDriver) @protobuf(1,bytes,rep)
 }
 
@@ -522,6 +525,7 @@ import (
 	// It is possible for different nodes to use different topology keys.
 	// This can be empty if driver does not support topology.
 	// +optional
+	// +listType=atomic
 	topologyKeys?: [...string] @go(TopologyKeys,[]string) @protobuf(3,bytes,rep)
 
 	// allocatable represents the volume resources of a node that are available for scheduling.
@@ -646,7 +650,5 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta) @protobuf(1,bytes,opt)
 
 	// items is the list of CSIStorageCapacity objects.
-	// +listType=map
-	// +listMapKey=name
 	items: [...#CSIStorageCapacity] @go(Items,[]CSIStorageCapacity) @protobuf(2,bytes,rep)
 }

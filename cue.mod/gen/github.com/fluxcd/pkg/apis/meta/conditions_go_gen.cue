@@ -25,6 +25,10 @@ package meta
 // https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
 #ReconcilingCondition: "Reconciling"
 
+// HealthyCondition represents the last recorded
+// health assessment result.
+#HealthyCondition: "Healthy"
+
 // SucceededReason indicates a condition or event observed a success, for example when declared desired state
 // matches actual state, or a performed action succeeded.
 //
@@ -73,6 +77,30 @@ package meta
 // UnsupportedConnectionTypeReason signals a failure caused by
 // the use of unsupported network protocols.
 #UnsupportedConnectionTypeReason: "UnsupportedConnectionType"
+
+// PruneFailedReason represents the fact that the
+// pruning of the resources failed.
+#PruneFailedReason: "PruneFailed"
+
+// ArtifactFailedReason represents the fact that the
+// source artifact download failed.
+#ArtifactFailedReason: "ArtifactFailed"
+
+// BuildFailedReason represents the fact that the
+// build failed.
+#BuildFailedReason: "BuildFailed"
+
+// HealthCheckFailedReason represents the fact that
+// one of the health checks failed.
+#HealthCheckFailedReason: "HealthCheckFailed"
+
+// ReconciliationSucceededReason represents the fact that
+// the reconciliation succeeded.
+#ReconciliationSucceededReason: "ReconciliationSucceeded"
+
+// ReconciliationFailedReason represents the fact that
+// the reconciliation failed.
+#ReconciliationFailedReason: "ReconciliationFailed"
 
 // ObjectWithConditions describes a Kubernetes resource object with status conditions.
 // +k8s:deepcopy-gen=false

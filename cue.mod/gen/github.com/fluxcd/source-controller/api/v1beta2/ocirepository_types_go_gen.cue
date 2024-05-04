@@ -6,8 +6,8 @@ package v1beta2
 
 import (
 	"github.com/fluxcd/pkg/apis/meta"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	apiv1 "github.com/fluxcd/source-controller/api/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // OCIRepositoryKind is the string representation of a OCIRepository.
@@ -72,7 +72,7 @@ import (
 	// used to verify the signature and specifies which provider to use to check
 	// whether OCI image is authentic.
 	// +optional
-	verify?: null | #OCIRepositoryVerification @go(Verify,*OCIRepositoryVerification)
+	verify?: null | apiv1.#OCIRepositoryVerification @go(Verify,*apiv1.OCIRepositoryVerification)
 
 	// ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
 	// the image pull if the service account has attached pull secrets. For more information:
@@ -140,6 +140,10 @@ import (
 	// +optional
 	semver?: string @go(SemVer)
 
+	// SemverFilter is a regex pattern to filter the tags within the SemVer range.
+	// +optional
+	semverFilter?: string @go(SemverFilter)
+
 	// Tag is the image tag to pull, defaults to latest.
 	// +optional
 	tag?: string @go(Tag)
@@ -160,42 +164,6 @@ import (
 	// +kubebuilder:validation:Enum=extract;copy
 	// +optional
 	operation?: string @go(Operation)
-}
-
-// OCIRepositoryVerification verifies the authenticity of an OCI Artifact
-#OCIRepositoryVerification: {
-	// Provider specifies the technology used to sign the OCI Artifact.
-	// +kubebuilder:validation:Enum=cosign
-	// +kubebuilder:default:=cosign
-	provider: string @go(Provider)
-
-	// SecretRef specifies the Kubernetes Secret containing the
-	// trusted public keys.
-	// +optional
-	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
-
-	// MatchOIDCIdentity specifies the identity matching criteria to use
-	// while verifying an OCI artifact which was signed using Cosign keyless
-	// signing. The artifact's identity is deemed to be verified if any of the
-	// specified matchers match against the identity.
-	// +optional
-	matchOIDCIdentity?: [...#OIDCIdentityMatch] @go(MatchOIDCIdentity,[]OIDCIdentityMatch)
-}
-
-// OIDCIdentityMatch specifies options for verifying the certificate identity,
-// i.e. the issuer and the subject of the certificate.
-#OIDCIdentityMatch: {
-	// Issuer specifies the regex pattern to match against to verify
-	// the OIDC issuer in the Fulcio certificate. The pattern must be a
-	// valid Go regular expression.
-	// +required
-	issuer: string @go(Issuer)
-
-	// Subject specifies the regex pattern to match against to verify
-	// the identity subject in the Fulcio certificate. The pattern must
-	// be a valid Go regular expression.
-	// +required
-	subject: string @go(Subject)
 }
 
 // OCIRepositoryStatus defines the observed state of OCIRepository
