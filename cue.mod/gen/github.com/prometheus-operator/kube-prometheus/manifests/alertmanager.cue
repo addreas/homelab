@@ -288,6 +288,7 @@ alertmanager: {
 			"route":
 			  "group_by":
 			  - "namespace"
+			  - "alertname"
 			  "group_interval": "5m"
 			  "group_wait": "30s"
 			  "receiver": "Default"

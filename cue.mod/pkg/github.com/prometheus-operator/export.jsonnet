@@ -52,7 +52,8 @@ local kp =
             },
             receivers: std.map(function(x) if x.name == "Critical" then critical else x, super.receivers) + [warning],
             route+: {
-              routes: super.routes + [{
+              group_by+: ["alertname"],
+              routes+: [{
                 matchers: ["severity = warning"],
                 receiver: "Warning"
               }, {
