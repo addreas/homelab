@@ -57,6 +57,7 @@ import (
 	// this field is empty then this NetworkPolicy does not allow any traffic (and serves
 	// solely to ensure that the pods it selects are isolated by default)
 	// +optional
+	// +listType=atomic
 	ingress?: [...#NetworkPolicyIngressRule] @go(Ingress,[]NetworkPolicyIngressRule) @protobuf(2,bytes,rep)
 
 	// egress is a list of egress rules to be applied to the selected pods. Outgoing traffic
@@ -67,6 +68,7 @@ import (
 	// solely to ensure that the pods it selects are isolated by default).
 	// This field is beta-level in 1.8
 	// +optional
+	// +listType=atomic
 	egress?: [...#NetworkPolicyEgressRule] @go(Egress,[]NetworkPolicyEgressRule) @protobuf(3,bytes,rep)
 
 	// policyTypes is a list of rule types that the NetworkPolicy relates to.
@@ -80,6 +82,7 @@ import (
 	// an egress section and would otherwise default to just [ "Ingress" ]).
 	// This field is beta-level in 1.8
 	// +optional
+	// +listType=atomic
 	policyTypes?: [...#PolicyType] @go(PolicyTypes,[]PolicyType) @protobuf(4,bytes,rep,casttype=PolicyType)
 }
 
@@ -92,6 +95,7 @@ import (
 	// If this field is present and contains at least one item, then this rule allows
 	// traffic only if the traffic matches at least one port in the list.
 	// +optional
+	// +listType=atomic
 	ports?: [...#NetworkPolicyPort] @go(Ports,[]NetworkPolicyPort) @protobuf(1,bytes,rep)
 
 	// from is a list of sources which should be able to access the pods selected for this rule.
@@ -100,6 +104,7 @@ import (
 	// source). If this field is present and contains at least one item, this rule
 	// allows traffic only if the traffic matches at least one item in the from list.
 	// +optional
+	// +listType=atomic
 	from?: [...#NetworkPolicyPeer] @go(From,[]NetworkPolicyPeer) @protobuf(2,bytes,rep)
 }
 
@@ -113,6 +118,7 @@ import (
 	// If this field is present and contains at least one item, then this rule allows
 	// traffic only if the traffic matches at least one port in the list.
 	// +optional
+	// +listType=atomic
 	ports?: [...#NetworkPolicyPort] @go(Ports,[]NetworkPolicyPort) @protobuf(1,bytes,rep)
 
 	// to is a list of destinations for outgoing traffic of pods selected for this rule.
@@ -121,6 +127,7 @@ import (
 	// destination). If this field is present and contains at least one item, this rule
 	// allows traffic only if the traffic matches at least one item in the to list.
 	// +optional
+	// +listType=atomic
 	to?: [...#NetworkPolicyPeer] @go(To,[]NetworkPolicyPeer) @protobuf(2,bytes,rep)
 }
 
@@ -158,6 +165,7 @@ import (
 	// Valid examples are "192.168.1.0/24" or "2001:db8::/64"
 	// Except values will be rejected if they are outside the cidr range
 	// +optional
+	// +listType=atomic
 	except?: [...string] @go(Except,[]string) @protobuf(2,bytes,rep)
 }
 
@@ -305,6 +313,7 @@ import (
 #IngressLoadBalancerStatus: {
 	// ingress is a list containing ingress points for the load-balancer.
 	// +optional
+	// +listType=atomic
 	ingress?: [...#IngressLoadBalancerIngress] @go(Ingress,[]IngressLoadBalancerIngress) @protobuf(1,bytes,rep)
 }
 

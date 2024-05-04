@@ -49,6 +49,10 @@ _#labelPrefix: "batch.kubernetes.io/"
 // pod failure policy. When the annotation is absent zero is implied.
 #JobIndexIgnoredFailureCountAnnotation: "batch.kubernetes.io/job-index-ignored-failure-count"
 
+// JobControllerName reserved value for the managedBy field for the built-in
+// Job controller.
+#JobControllerName: "kubernetes.io/job-controller"
+
 // Job represents the configuration of a single job.
 #Job: {
 	metav1.#TypeMeta
@@ -250,6 +254,51 @@ _#labelPrefix: "batch.kubernetes.io/"
 	rules: [...#PodFailurePolicyRule] @go(Rules,[]PodFailurePolicyRule) @protobuf(1,bytes,opt)
 }
 
+// SuccessPolicy describes when a Job can be declared as succeeded based on the success of some indexes.
+#SuccessPolicy: {
+	// rules represents the list of alternative rules for the declaring the Jobs
+	// as successful before `.status.succeeded >= .spec.completions`. Once any of the rules are met,
+	// the "SucceededCriteriaMet" condition is added, and the lingering pods are removed.
+	// The terminal state for such a Job has the "Complete" condition.
+	// Additionally, these rules are evaluated in order; Once the Job meets one of the rules,
+	// other rules are ignored. At most 20 elements are allowed.
+	// +listType=atomic
+	rules: [...#SuccessPolicyRule] @go(Rules,[]SuccessPolicyRule) @protobuf(1,bytes,opt)
+}
+
+// SuccessPolicyRule describes rule for declaring a Job as succeeded.
+// Each rule must have at least one of the "succeededIndexes" or "succeededCount" specified.
+#SuccessPolicyRule: {
+	// succeededIndexes specifies the set of indexes
+	// which need to be contained in the actual set of the succeeded indexes for the Job.
+	// The list of indexes must be within 0 to ".spec.completions-1" and
+	// must not contain duplicates. At least one element is required.
+	// The indexes are represented as intervals separated by commas.
+	// The intervals can be a decimal integer or a pair of decimal integers separated by a hyphen.
+	// The number are listed in represented by the first and last element of the series,
+	// separated by a hyphen.
+	// For example, if the completed indexes are 1, 3, 4, 5 and 7, they are
+	// represented as "1,3-5,7".
+	// When this field is null, this field doesn't default to any value
+	// and is never evaluated at any time.
+	//
+	// +optional
+	succeededIndexes?: null | string @go(SucceededIndexes,*string) @protobuf(1,bytes,opt)
+
+	// succeededCount specifies the minimal required size of the actual set of the succeeded indexes
+	// for the Job. When succeededCount is used along with succeededIndexes, the check is
+	// constrained only to the set of indexes specified by succeededIndexes.
+	// For example, given that succeededIndexes is "1-4", succeededCount is "3",
+	// and completed indexes are "1", "3", and "5", the Job isn't declared as succeeded
+	// because only "1" and "3" indexes are considered in that rules.
+	// When this field is null, this doesn't default to any value and
+	// is never evaluated at any time.
+	// When specified it needs to be a positive integer.
+	//
+	// +optional
+	succeededCount?: null | int32 @go(SucceededCount,*int32) @protobuf(2,varint,opt)
+}
+
 // JobSpec describes how the job execution will look like.
 #JobSpec: {
 	// Specifies the maximum desired number of pods the job should
@@ -289,6 +338,17 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// feature gate is enabled (enabled by default).
 	// +optional
 	podFailurePolicy?: null | #PodFailurePolicy @go(PodFailurePolicy,*PodFailurePolicy) @protobuf(11,bytes,opt)
+
+	// successPolicy specifies the policy when the Job can be declared as succeeded.
+	// If empty, the default behavior applies - the Job is declared as succeeded
+	// only when the number of succeeded pods equals to the completions.
+	// When the field is specified, it must be immutable and works only for the Indexed Jobs.
+	// Once the Job meets the SuccessPolicy, the lingering pods are terminated.
+	//
+	// This field  is alpha-level. To use this field, you must enable the
+	// `JobSuccessPolicy` feature gate (disabled by default).
+	// +optional
+	successPolicy?: null | #SuccessPolicy @go(SuccessPolicy,*SuccessPolicy) @protobuf(16,bytes,opt)
 
 	// Specifies the number of retries before marking this job failed.
 	// Defaults to 6
@@ -402,6 +462,20 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// This is on by default.
 	// +optional
 	podReplacementPolicy?: null | #PodReplacementPolicy @go(PodReplacementPolicy,*PodReplacementPolicy) @protobuf(14,bytes,opt,casttype=podReplacementPolicy)
+
+	// ManagedBy field indicates the controller that manages a Job. The k8s Job
+	// controller reconciles jobs which don't have this field at all or the field
+	// value is the reserved string `kubernetes.io/job-controller`, but skips
+	// reconciling Jobs with a custom value for this field.
+	// The value must be a valid domain-prefixed path (e.g. acme.io/foo) -
+	// all characters before the first "/" must be a valid subdomain as defined
+	// by RFC 1123. All characters trailing the first "/" must be valid HTTP Path
+	// characters as defined by RFC 3986. The value cannot exceed 64 characters.
+	//
+	// This field is alpha-level. The job controller accepts setting the field
+	// when the feature gate JobManagedBy is enabled (disabled by default).
+	// +optional
+	managedBy?: null | string @go(ManagedBy,*string) @protobuf(15,bytes,opt)
 }
 
 // JobStatus represents the current state of a Job.
@@ -412,6 +486,12 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// status true; when the Job is resumed, the status of this condition will
 	// become false. When a Job is completed, one of the conditions will have
 	// type "Complete" and status true.
+	//
+	// A job is considered finished when it is in a terminal condition, either
+	// "Complete" or "Failed". A Job cannot have both the "Complete" and "Failed" conditions.
+	// Additionally, it cannot be in the "Complete" and "FailureTarget" conditions.
+	// The "Complete", "Failed" and "FailureTarget" conditions cannot be disabled.
+	//
 	// More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
 	// +optional
 	// +patchMergeKey=type
@@ -423,25 +503,36 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// Job is created in the suspended state, this field is not set until the
 	// first time it is resumed. This field is reset every time a Job is resumed
 	// from suspension. It is represented in RFC3339 form and is in UTC.
+	//
+	// Once set, the field can only be removed when the job is suspended.
+	// The field cannot be modified while the job is unsuspended or finished.
+	//
 	// +optional
 	startTime?: null | metav1.#Time @go(StartTime,*metav1.Time) @protobuf(2,bytes,opt)
 
 	// Represents time when the job was completed. It is not guaranteed to
 	// be set in happens-before order across separate operations.
 	// It is represented in RFC3339 form and is in UTC.
-	// The completion time is only set when the job finishes successfully.
+	// The completion time is set when the job finishes successfully, and only then.
+	// The value cannot be updated or removed. The value indicates the same or
+	// later point in time as the startTime field.
 	// +optional
 	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time) @protobuf(3,bytes,opt)
 
-	// The number of pending and running pods.
+	// The number of pending and running pods which are not terminating (without
+	// a deletionTimestamp).
+	// The value is zero for finished jobs.
 	// +optional
 	active?: int32 @go(Active) @protobuf(4,varint,opt)
 
 	// The number of pods which reached phase Succeeded.
+	// The value increases monotonically for a given spec. However, it may
+	// decrease in reaction to scale down of elastic indexed jobs.
 	// +optional
 	succeeded?: int32 @go(Succeeded) @protobuf(5,varint,opt)
 
 	// The number of pods which reached phase Failed.
+	// The value increases monotonically.
 	// +optional
 	failed?: int32 @go(Failed) @protobuf(6,varint,opt)
 
@@ -463,7 +554,7 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// +optional
 	completedIndexes?: string @go(CompletedIndexes) @protobuf(7,bytes,opt)
 
-	// FailedIndexes holds the failed indexes when backoffLimitPerIndex=true.
+	// FailedIndexes holds the failed indexes when spec.backoffLimitPerIndex is set.
 	// The indexes are represented in the text format analogous as for the
 	// `completedIndexes` field, ie. they are kept as decimal integers
 	// separated by commas. The numbers are listed in increasing order. Three or
@@ -471,6 +562,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// last element of the series, separated by a hyphen.
 	// For example, if the failed indexes are 1, 3, 4, 5 and 7, they are
 	// represented as "1,3-5,7".
+	// The set of failed indexes cannot overlap with the set of completed indexes.
+	//
 	// This field is beta-level. It can be used when the `JobBackoffLimitPerIndex`
 	// feature gate is enabled (enabled by default).
 	// +optional
@@ -490,6 +583,7 @@ _#labelPrefix: "batch.kubernetes.io/"
 	//
 	// Old jobs might not be tracked using this field, in which case the field
 	// remains null.
+	// The structure is empty for finished jobs.
 	// +optional
 	uncountedTerminatedPods?: null | #UncountedTerminatedPods @go(UncountedTerminatedPods,*UncountedTerminatedPods) @protobuf(8,bytes,opt)
 
@@ -518,7 +612,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	#JobSuspended |
 	#JobComplete |
 	#JobFailed |
-	#JobFailureTarget
+	#JobFailureTarget |
+	#JobSuccessCriteriaMet
 
 // JobSuspended means the job has been suspended.
 #JobSuspended: #JobConditionType & "Suspended"
@@ -531,6 +626,9 @@ _#labelPrefix: "batch.kubernetes.io/"
 
 // FailureTarget means the job is about to fail its execution.
 #JobFailureTarget: #JobConditionType & "FailureTarget"
+
+// JobSuccessCriteriaMet means the Job has been succeeded.
+#JobSuccessCriteriaMet: #JobConditionType & "SuccessCriteriaMet"
 
 // JobReasonPodFailurePolicy reason indicates a job failure condition is added due to
 // a failed pod matching a pod failure policy rule
@@ -552,6 +650,12 @@ _#labelPrefix: "batch.kubernetes.io/"
 // JobReasonFailedIndexes means Job has failed indexes.
 // This const is used in beta-level feature: https://kep.k8s.io/3850.
 #JobReasonFailedIndexes: "FailedIndexes"
+
+// JobReasonSuccessPolicy reason indicates a SuccessCriteriaMet condition is added due to
+// a Job met successPolicy.
+// https://kep.k8s.io/3998
+// This is currently an alpha field.
+#JobReasonSuccessPolicy: "SuccessPolicy"
 
 // JobCondition describes current state of a job.
 #JobCondition: {

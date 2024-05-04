@@ -93,6 +93,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	interface?: string @go(Interface)
 	ips?: [...string] @go(IPs,[]string)
 	mac?:           string             @go(Mac)
+	mtu?:           int                @go(Mtu)
 	default?:       bool               @go(Default)
 	dns?:           #DNS               @go(DNS)
 	"device-info"?: null | #DeviceInfo @go(DeviceInfo,*DeviceInfo)
