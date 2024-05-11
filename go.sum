@@ -283,6 +283,8 @@ github.com/fluxcd/helm-controller/api v0.37.3 h1:9h4Syu4vOFpFWdK7f/hdBOgipa4Vjyi
 github.com/fluxcd/helm-controller/api v0.37.3/go.mod h1:KFdP5Lbrc4Vv+Jt4xRj6UUo3qiwdBqBPl1xiiAnBe9c=
 github.com/fluxcd/helm-controller/api v0.37.4 h1:rkBMqYXexyf1s5BS8QpxGi691DsCi+yugIFCM5fNKLU=
 github.com/fluxcd/helm-controller/api v0.37.4/go.mod h1:KFdP5Lbrc4Vv+Jt4xRj6UUo3qiwdBqBPl1xiiAnBe9c=
+github.com/fluxcd/helm-controller/api v1.0.1 h1:Gn9qEVuif6D5+gHmVwTEZkR4+nmLOcOhKx4Sw2gL2EA=
+github.com/fluxcd/helm-controller/api v1.0.1/go.mod h1:/6AD5a2qjo/ttxVM8GR33syLZwqigta60DCLdy8GrME=
 github.com/fluxcd/kustomize-controller/api v1.0.0-rc.4 h1:e5dO5HaFISFNzhfi4zuPniE545vVnEi3VnSBcbxcZqU=
 github.com/fluxcd/kustomize-controller/api v1.0.0-rc.4/go.mod h1:UTJu1JMr+rkabWkUWMNiOeFeDu+4ZKfJIK+oqEwOjzc=
 github.com/fluxcd/kustomize-controller/api v1.0.1 h1:zz9zx4Mc7rw9gqdgdhMWX1uDM2uR1x7WBUujKs4mdx8=
@@ -295,6 +297,8 @@ github.com/fluxcd/kustomize-controller/api v1.2.1 h1:+WgQOU7jpqz9bA4djPWmaeYAp9c
 github.com/fluxcd/kustomize-controller/api v1.2.1/go.mod h1:0Kgc4uYnr5jCm4H8JwArkR0v4WTmXeX/9KgoDbxluVc=
 github.com/fluxcd/kustomize-controller/api v1.2.2 h1:LXRa2181usLsDkAJ86i/CnvCyPwhLcFUw9jBnXxTFJ4=
 github.com/fluxcd/kustomize-controller/api v1.2.2/go.mod h1:dfAaPQuuoWfExyWaeO7Kj2ZtfKQ4nDcJrt7AeAFlLZs=
+github.com/fluxcd/kustomize-controller/api v1.3.0 h1:IwXkU48lQ/YhU6XULlPXDgQlnpNyQdCNbUvhLdWVIbE=
+github.com/fluxcd/kustomize-controller/api v1.3.0/go.mod h1:kg/WM9Uye5NOqGVW/F3jnkjrlgFZHHa84+4lnzOV8fI=
 github.com/fluxcd/notification-controller/api v0.33.0 h1:iVnIGDfkpVuzcILSGwi//Q3devCg7E7G4lfDx8vuvsA=
 github.com/fluxcd/notification-controller/api v0.33.0/go.mod h1:0IyWy0J6+z1TbijVQjFx1gWQDOzXaRfzV2NClfjHZPk=
 github.com/fluxcd/notification-controller/api v1.0.0 h1:WiXS116pwhFp7Qe/Fc1GmKCfLBRnZu+rYCeIn07cO+4=
@@ -307,6 +311,8 @@ github.com/fluxcd/notification-controller/api v1.2.3 h1:vXVMg2PmTjmRC5+ULZfbmBEm
 github.com/fluxcd/notification-controller/api v1.2.3/go.mod h1:A0VkH3mswQAeGKsmzq81jAUN+zNJt9SPXjwe8mvnnaw=
 github.com/fluxcd/notification-controller/api v1.2.4 h1:H/C8XW5boncf8rzJjSe/MCr186Hgvw+arPat9XOaRlw=
 github.com/fluxcd/notification-controller/api v1.2.4/go.mod h1:LeHtKKTI3ew+FXY0oYtYqM68UYOArfBa/cy4pxAzN4M=
+github.com/fluxcd/notification-controller/api v1.3.0 h1:e3Plvo44XIKP2pUjwx8U4/fMpPwVM3EvJrYLIIqcVrI=
+github.com/fluxcd/notification-controller/api v1.3.0/go.mod h1:KUaWXACNwWpAYo/Q4mzBjGbsYlUzXdq654jc1XpgMQw=
 github.com/fluxcd/pkg/apis/acl v0.1.0 h1:EoAl377hDQYL3WqanWCdifauXqXbMyFuK82NnX6pH4Q=
 github.com/fluxcd/pkg/apis/acl v0.1.0/go.mod h1:zfEZzz169Oap034EsDhmCAGgnWlcWmIObZjYMusoXS8=
 github.com/fluxcd/pkg/apis/acl v0.3.0 h1:UOrKkBTOJK+OlZX7n8rWt2rdBmDCoTK+f5TY2LcZi8A=
@@ -319,6 +325,8 @@ github.com/fluxcd/pkg/apis/kustomize v1.2.0 h1:vkVs+OumxaWso0jNCqdgFFfMHdh+qtZhy
 github.com/fluxcd/pkg/apis/kustomize v1.2.0/go.mod h1:VF7tR/WuVFeum+HaMTHwp+eCtsHiiQlY6ihgqtAnW/M=
 github.com/fluxcd/pkg/apis/kustomize v1.3.0 h1:qvB46CfaOWcL1SyR2RiVWN/j7/035D0OtB1ltLN7rgI=
 github.com/fluxcd/pkg/apis/kustomize v1.3.0/go.mod h1:PCXf5kktTzNav0aH2Ns3jsowqwmA9xTcsrEOoPzx/K8=
+github.com/fluxcd/pkg/apis/kustomize v1.5.0 h1:ah4sfqccnio+/5Edz/tVz6LetFhiBoDzXAElj6fFCzU=
+github.com/fluxcd/pkg/apis/kustomize v1.5.0/go.mod h1:nEzhnhHafhWOUUV8VMFLojUOH+HHDEsL75y54mt/c30=
 github.com/fluxcd/pkg/apis/meta v1.1.0 h1:vYU1mvUzztnQyTzZOLHQ3wm/tXd7E1QZ2V91zuVJPsQ=
 github.com/fluxcd/pkg/apis/meta v1.1.0/go.mod h1:/QwCotRKL/BT6RSa4O75FlYW14fU8eRfKnoagzbkmL4=
 github.com/fluxcd/pkg/apis/meta v1.1.1 h1:sLAKLbEu7rRzJ+Mytffu3NcpfdbOBTa6hcpOQzFWm+M=
@@ -1374,6 +1382,7 @@ golang.org/x/sync v0.3.0 h1:ftCYgMx6zT/asHUrPw8BLLscYtGznsLAnjq5RH9P66E=
 golang.org/x/sync v0.3.0/go.mod h1:FU7BRWz2tNW+3quACPkgCx/L+uEAv1htQ0V83Z9Rj+Y=
 golang.org/x/sync v0.5.0 h1:60k92dhOjHxJkrqnwsfl8KuaHbn/5dl0lUPUklKo3qE=
 golang.org/x/sync v0.5.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
+golang.org/x/sync v0.6.0 h1:5BMeUDZ7vkXGfEr1x9B4bRcTH4lpkTkpdh0T/J+qjbQ=
 golang.org/x/sync v0.6.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
 golang.org/x/sys v0.0.0-20180823144017-11551d06cbcc/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180830151530-49385e6e1522/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
