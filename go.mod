@@ -9,9 +9,9 @@ require (
 	github.com/bitnami-labs/sealed-secrets v0.24.5
 	github.com/cert-manager/cert-manager v1.14.5
 	github.com/cilium/cilium v1.15.4
-	github.com/fluxcd/helm-controller/api v0.37.4
-	github.com/fluxcd/kustomize-controller/api v1.2.2
-	github.com/fluxcd/notification-controller/api v1.2.4
+	github.com/fluxcd/helm-controller/api v1.0.1
+	github.com/fluxcd/kustomize-controller/api v1.3.0
+	github.com/fluxcd/notification-controller/api v1.3.0
 	github.com/fluxcd/source-controller/api v1.3.0
 	github.com/grafana-operator/grafana-operator/v5 v5.6.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
@@ -37,7 +37,7 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.3.0 // indirect
-	github.com/fluxcd/pkg/apis/kustomize v1.3.0 // indirect
+	github.com/fluxcd/pkg/apis/kustomize v1.5.0 // indirect
 	github.com/fluxcd/pkg/apis/meta v1.5.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect

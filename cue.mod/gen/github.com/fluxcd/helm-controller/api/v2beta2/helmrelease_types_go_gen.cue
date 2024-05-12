@@ -9,6 +9,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/fluxcd/pkg/apis/meta"
+	"github.com/fluxcd/helm-controller/api/v2"
 )
 
 // HelmReleaseKind is the kind in string format.
@@ -53,11 +54,20 @@ _#defaultMaxHistory: 5
 }
 
 // HelmReleaseSpec defines the desired state of a Helm release.
+// +kubebuilder:validation:XValidation:rule="(has(self.chart) && !has(self.chartRef)) || (!has(self.chart) && has(self.chartRef))", message="either chart or chartRef must be set"
 #HelmReleaseSpec: {
 	// Chart defines the template of the v1beta2.HelmChart that should be created
 	// for this HelmRelease.
-	// +required
-	chart: #HelmChartTemplate @go(Chart)
+	// +optional
+	chart?: null | #HelmChartTemplate @go(Chart,*HelmChartTemplate)
+
+	// ChartRef holds a reference to a source controller resource containing the
+	// Helm chart artifact.
+	//
+	// Note: this field is provisional to the v2 API, and not actively used
+	// by v2beta2 HelmReleases.
+	// +optional
+	chartRef?: null | #CrossNamespaceSourceReference @go(ChartRef,*CrossNamespaceSourceReference)
 
 	// Interval at which to reconcile the Helm release.
 	// +kubebuilder:validation:Type=string
@@ -302,6 +312,10 @@ _#defaultMaxHistory: 5
 	// +deprecated
 	valuesFile?: string @go(ValuesFile)
 
+	// IgnoreMissingValuesFiles controls whether to silently ignore missing values files rather than failing.
+	// +optional
+	ignoreMissingValuesFiles?: bool @go(IgnoreMissingValuesFiles)
+
 	// Verify contains the secret name containing the trusted public keys
 	// used to verify the signature and specifies which provider to use to check
 	// whether OCI image is authentic.
@@ -315,7 +329,7 @@ _#defaultMaxHistory: 5
 // HelmChartTemplateVerification verifies the authenticity of an OCI Helm chart.
 #HelmChartTemplateVerification: {
 	// Provider specifies the technology used to sign the OCI Helm chart.
-	// +kubebuilder:validation:Enum=cosign
+	// +kubebuilder:validation:Enum=cosign;notation
 	// +kubebuilder:default:=cosign
 	provider: string @go(Provider)
 
@@ -687,6 +701,11 @@ _#defaultMaxHistory: 5
 	// +optional
 	observedGeneration?: int64 @go(ObservedGeneration)
 
+	// ObservedPostRenderersDigest is the digest for the post-renderers of
+	// the last successful reconciliation attempt.
+	// +optional
+	observedPostRenderersDigest?: string @go(ObservedPostRenderersDigest)
+
 	// LastAttemptedGeneration is the last generation the controller attempted
 	// to reconcile.
 	// +optional
@@ -712,7 +731,7 @@ _#defaultMaxHistory: 5
 	// History holds the history of Helm releases performed for this HelmRelease
 	// up to the last successfully completed release.
 	// +optional
-	history?: #Snapshots @go(History)
+	history?: v2.#Snapshots @go(History)
 
 	// LastAttemptedReleaseAction is the last release action performed for this
 	// HelmRelease. It is used to determine the active remediation strategy.
@@ -742,9 +761,15 @@ _#defaultMaxHistory: 5
 	lastAppliedRevision?: string @go(LastAppliedRevision)
 
 	// LastAttemptedRevision is the Source revision of the last reconciliation
-	// attempt.
+	// attempt. For OCIRepository  sources, the 12 first characters of the digest are
+	// appended to the chart version e.g. "1.2.3+1234567890ab".
 	// +optional
 	lastAttemptedRevision?: string @go(LastAttemptedRevision)
+
+	// LastAttemptedRevisionDigest is the digest of the last reconciliation attempt.
+	// This is only set for OCIRepository sources.
+	// +optional
+	lastAttemptedRevisionDigest?: string @go(LastAttemptedRevisionDigest)
 
 	// LastAttemptedValuesChecksum is the SHA1 checksum for the values of the last
 	// reconciliation attempt.

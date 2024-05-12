@@ -83,6 +83,20 @@ import (
 	// +optional
 	healthChecks?: [...meta.#NamespacedObjectKindReference] @go(HealthChecks,[]meta.NamespacedObjectKindReference)
 
+	// NamePrefix will prefix the names of all managed resources.
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=200
+	// +kubebuilder:validation:Optional
+	// +optional
+	namePrefix?: string @go(NamePrefix)
+
+	// NameSuffix will suffix the names of all managed resources.
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=200
+	// +kubebuilder:validation:Optional
+	// +optional
+	nameSuffix?: string @go(NameSuffix)
+
 	// Strategic merge and JSON patches, defined as inline YAML objects,
 	// capable of targeting objects based on kind, label and annotation selectors.
 	// +optional
