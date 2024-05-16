@@ -88,6 +88,12 @@ let baseContainer = {
 	}, {
 		name:  "REDIS_URL"
 		value: "redis://prototyp-redis:6379"
+	},  {
+		name:  "PERSIST_EMAILS"
+		value: "redis://prototyp-redis:6379"
+	}, {
+		name: "PERSIST_EMAILS_DIRECTORY",
+		value: "/emails"
 	}, ...]
 }
 
