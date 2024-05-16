@@ -112,7 +112,7 @@ k: Deployment: "prototyp": {
 					ports: [{containerPort: 3000, name: "http"}]
 					volumeMounts: [{mountPath: "/emails", name: "emails"}]
 				}]
-				volumes: [{name: "emails", emptyDir: {sizeLimit: "500Mi"}}]
+				volumes: [{name: "emails", emptyDir: sizeLimit: "500Mi"}]
 			}
 		}
 	}
