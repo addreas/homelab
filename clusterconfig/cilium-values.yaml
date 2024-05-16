@@ -12,7 +12,7 @@ l2announcements:
   enabled: true
 
 ingressController:
-  enabled: true
+  enabled: false
   loadbalancerMode: shared
   secretsNamespace:
     name: kube-system
@@ -20,8 +20,15 @@ ingressController:
 
 l7proxy: true
 
-# envoy:
-#   enabled: true
+envoy:
+  enabled: true
+  securityContext:
+    capabilities:
+      keepCapNetBindService: true
+      envoy:
+      - NET_BIND_SERVICE
+      - NET_ADMIN
+      - BPF
 
 gatewayAPI:
   enabled: true
@@ -37,3 +44,6 @@ hubble:
     enabled: true
   ui:
     enabled: true
+
+endpointRoutes:
+  enabled: true

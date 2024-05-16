@@ -20,6 +20,13 @@
       53 # routing kube dns responses
     ];
 
+    networking.firewall.allowedTCPPorts = [
+      179 # bgp
+
+      9100 # node-exporter
+      9633 # smartctl-exporter
+    ];
+
     systemd.sockets.cni-dhcp = {
       description = "CNI DHCP service socket";
       documentation = [ "https://github.com/containernetworking/plugins/tree/master/plugins/ipam/dhcp" ];
@@ -46,11 +53,5 @@
 
       wantedBy = [ "multi-user.target" ];
     };
-
-    networking.firewall.allowedTCPPorts = [
-      9100 # node-exporter
-      9633 # smartctl-exporter
-      3493 # nut upsd
-    ];
   };
 }
