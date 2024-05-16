@@ -15,6 +15,9 @@
     services.openiscsi.enable = true;
     services.openiscsi.name = "iqn.2023-01.se.addem.nucles:${config.networking.hostName}";
 
+    networking.firewall.enable = false;
+    networking.firewall.logRefusedPackets = true;
+
     networking.firewall.checkReversePath = false; # even loose breaks kube-dns responses
     networking.firewall.allowedUDPPorts = [
       53 # routing kube dns responses
