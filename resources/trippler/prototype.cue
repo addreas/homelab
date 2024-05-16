@@ -88,11 +88,11 @@ let baseContainer = {
 	}, {
 		name:  "REDIS_URL"
 		value: "redis://prototyp-redis:6379"
-	},  {
+	}, {
 		name:  "PERSIST_EMAILS"
 		value: "redis://prototyp-redis:6379"
 	}, {
-		name: "PERSIST_EMAILS_DIRECTORY",
+		name:  "PERSIST_EMAILS_DIRECTORY"
 		value: "/emails"
 	}, ...]
 }
@@ -110,7 +110,9 @@ k: Deployment: "prototyp": {
 				containers: [baseContainer & {
 					name: "prototype"
 					ports: [{containerPort: 3000, name: "http"}]
+					volumeMounts: [{mountPath: "/emails", name: "emails"}]
 				}]
+				volumes: [{name: "emails", emptyDir: {sizeLimit: "500Mi"}}]
 			}
 		}
 	}
