@@ -249,7 +249,7 @@ import (
 	// samples before ingestion.
 	//
 	// +optional
-	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
+	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelConfigs,[]RelabelConfig)
 
 	// `relabelings` configures the relabeling rules to apply the target's
 	// metadata labels.
@@ -261,7 +261,7 @@ import (
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
 	//
 	// +optional
-	relabelings?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
+	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 
 	// `proxyURL` configures the HTTP Proxy URL (e.g.
 	// "http://proxyserver:2195") to go through when scraping the target.

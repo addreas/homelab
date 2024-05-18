@@ -64,7 +64,7 @@ import (
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
 	// MetricRelabelConfigs to apply to samples before ingestion.
-	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
+	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelConfigs,[]RelabelConfig)
 
 	// Authorization section for this endpoint
 	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
@@ -146,7 +146,7 @@ import (
 	// RelabelConfigs to apply to the label set of the targets before it gets
 	// scraped.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
-	relabelingConfigs?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
+	relabelingConfigs?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 }
 
 // ProbeTargetIngress defines the set of Ingress objects considered for probing.
@@ -166,7 +166,7 @@ import (
 	// probed URL.
 	// The original scrape job's name is available via the `__tmp_prometheus_job_name` label.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
-	relabelingConfigs?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
+	relabelingConfigs?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 }
 
 // ProberSpec contains specification parameters for the Prober used for probing.

@@ -8,7 +8,7 @@ require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	github.com/bitnami-labs/sealed-secrets v0.24.5
 	github.com/cert-manager/cert-manager v1.14.5
-	github.com/cilium/cilium v1.15.4
+	github.com/cilium/cilium v1.15.5
 	github.com/fluxcd/helm-controller/api v1.0.1
 	github.com/fluxcd/kustomize-controller/api v1.3.0
 	github.com/fluxcd/notification-controller/api v1.3.0
@@ -16,10 +16,10 @@ require (
 	github.com/grafana-operator/grafana-operator/v5 v5.6.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/ory/hydra-maester v0.0.33
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.73.2
-	k8s.io/api v0.30.0
-	k8s.io/apimachinery v0.30.0
-	k8s.io/kube-aggregator v0.30.0
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.74.0
+	k8s.io/api v0.30.1
+	k8s.io/apimachinery v0.30.1
+	k8s.io/kube-aggregator v0.30.1
 )
 
 require (
@@ -119,14 +119,14 @@ require (
 	go.uber.org/dig v1.17.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b // indirect
-	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/oauth2 v0.16.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/term v0.19.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/term v0.20.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
