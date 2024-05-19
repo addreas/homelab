@@ -89,7 +89,7 @@ import (
 	// It requires Prometheus >= v2.43.0.
 	// +optional
 	// +mapType:=atomic
-	proxyConnectHeader?: {[string]: v1.#SecretKeySelector} @go(ProxyConnectHeader,map[string]v1.SecretKeySelector)
+	proxyConnectHeader?: {[string]: [...v1.#SecretKeySelector]} @go(ProxyConnectHeader,map[string][]v1.SecretKeySelector)
 }
 
 // ObjectReference references a PodMonitor, ServiceMonitor, Probe or PrometheusRule object.
@@ -454,7 +454,7 @@ import (
 	// samples before ingestion.
 	//
 	// +optional
-	metricRelabelings?: [...null | #RelabelConfig] @go(MetricRelabelConfigs,[]*RelabelConfig)
+	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelConfigs,[]RelabelConfig)
 
 	// `relabelings` configures the relabeling rules to apply the target's
 	// metadata labels.
@@ -466,7 +466,7 @@ import (
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
 	//
 	// +optional
-	relabelings?: [...null | #RelabelConfig] @go(RelabelConfigs,[]*RelabelConfig)
+	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 
 	// `proxyURL` configures the HTTP Proxy URL (e.g.
 	// "http://proxyserver:2195") to go through when scraping the target.
@@ -568,10 +568,12 @@ import (
 	keySecret?: null | v1.#SecretKeySelector @go(KeySecret,*v1.SecretKeySelector)
 
 	// Used to verify the hostname for the targets.
-	serverName?: string @go(ServerName)
+	//+optional
+	serverName?: null | string @go(ServerName,*string)
 
 	// Disable target certificate validation.
-	insecureSkipVerify?: bool @go(InsecureSkipVerify)
+	//+optional
+	insecureSkipVerify?: null | bool @go(InsecureSkipVerify,*bool)
 }
 
 // TLSConfig extends the safe TLS configuration with file parameters.

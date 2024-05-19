@@ -52,6 +52,9 @@ import (
 	additionalLabelSelectors?: null | #AdditionalLabelSelectors @go(AdditionalLabelSelectors,*AdditionalLabelSelectors)
 }
 
+// +kubebuilder:validation:MinLength:=1
+#EnableFeature: string
+
 // CommonPrometheusFields are the options available to both the Prometheus server and agent.
 // +k8s:deepcopy-gen=true
 #CommonPrometheusFields: {
@@ -276,7 +279,10 @@ import (
 	// that this behaviour may break at any time without notice.
 	//
 	// For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
-	enableFeatures?: [...string] @go(EnableFeatures,[]string)
+	//
+	// +listType:=set
+	// +optional
+	enableFeatures?: [...#EnableFeature] @go(EnableFeatures,[]EnableFeature)
 
 	// The external URL under which the Prometheus service is externally
 	// available. This is necessary to generate correct URLs (for instance if
@@ -325,6 +331,14 @@ import (
 	// ServiceAccountName is the name of the ServiceAccount to use to run the
 	// Prometheus Pods.
 	serviceAccountName?: string @go(ServiceAccountName)
+
+	// AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod.
+	// If the field isn't set, the operator mounts the service account token by default.
+	//
+	// **Warning:** be aware that by default, Prometheus requires the service account token for Kubernetes service discovery.
+	// It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+	// +optional
+	automountServiceAccountToken?: null | bool @go(AutomountServiceAccountToken,*bool)
 
 	// Secrets is a list of Secrets in the same namespace as the Prometheus
 	// object, which shall be mounted into the Prometheus Pods.
@@ -458,7 +472,7 @@ import (
 	// object.
 	ignoreNamespaceSelectors?: bool @go(IgnoreNamespaceSelectors)
 
-	// When not empty, a label will be added to
+	// When not empty, a label will be added to:
 	//
 	// 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects.
 	// 2. All metrics generated from recording rules defined in `PrometheusRule` objects.
@@ -469,7 +483,7 @@ import (
 	//
 	// The label's name is this field's value.
 	// The label's value is the namespace of the `ServiceMonitor`,
-	// `PodMonitor`, `Probe` or `PrometheusRule` object.
+	// `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
 	enforcedNamespaceLabel?: string @go(EnforcedNamespaceLabel)
 
 	// When defined, enforcedSampleLimit specifies a global limit on the number
@@ -1374,17 +1388,25 @@ import (
 	cloud?: null | string @go(Cloud,*string)
 
 	// ManagedIdentity defines the Azure User-assigned Managed identity.
-	// Cannot be set at the same time as `oauth`.
+	// Cannot be set at the same time as `oauth` or `sdk`.
 	// +optional
 	managedIdentity?: null | #ManagedIdentity @go(ManagedIdentity,*ManagedIdentity)
 
 	// OAuth defines the oauth config that is being used to authenticate.
-	// Cannot be set at the same time as `managedIdentity`.
+	// Cannot be set at the same time as `managedIdentity` or `sdk`.
 	//
 	// It requires Prometheus >= v2.48.0.
 	//
 	// +optional
 	oauth?: null | #AzureOAuth @go(OAuth,*AzureOAuth)
+
+	// SDK defines the Azure SDK config that is being used to authenticate.
+	// See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+	// Cannot be set at the same time as `oauth` or `managedIdentity`.
+	//
+	// It requires Prometheus >= 2.52.0.
+	// +optional
+	sdk?: null | #AzureSDK @go(SDK,*AzureSDK)
 }
 
 // AzureOAuth defines the Azure OAuth settings.
@@ -1399,7 +1421,7 @@ import (
 	// +required
 	clientSecret: v1.#SecretKeySelector @go(ClientSecret)
 
-	// `tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+	// `tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:Pattern:=^[0-9a-zA-Z-.]+$
@@ -1412,6 +1434,14 @@ import (
 	// The client id
 	// +required
 	clientId: string @go(ClientID)
+}
+
+// AzureSDK is used to store azure SDK config values.
+#AzureSDK: {
+	// `tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.
+	// +optional
+	// +kubebuilder:validation:Pattern:=^[0-9a-zA-Z-.]+$
+	tenantId?: null | string @go(TenantID,*string)
 }
 
 // RemoteReadSpec defines the configuration for Prometheus to read back samples
@@ -1542,7 +1572,9 @@ import (
 	// regular expression matches.
 	//
 	// Regex capture groups are available.
-	replacement?: string @go(Replacement)
+	//
+	//+optional
+	replacement?: null | string @go(Replacement,*string)
 
 	// Action to perform based on the regex matching.
 	//
@@ -1668,6 +1700,17 @@ import (
 	//
 	// +optional
 	enableHttp2?: null | bool @go(EnableHttp2,*bool)
+
+	// Relabel configuration applied to the discovered Alertmanagers.
+	//
+	// +optional
+	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
+
+	// Relabeling configs applied before sending alerts to a specific Alertmanager.
+	// It requires Prometheus >= v2.51.0.
+	//
+	// +optional
+	alertRelabelings?: [...#RelabelConfig] @go(AlertRelabelConfigs,[]RelabelConfig)
 }
 
 // +k8s:openapi-gen=true
@@ -1779,17 +1822,25 @@ import (
 
 #ScrapeClass: {
 	// Name of the scrape class.
+	//
 	// +kubebuilder:validation:MinLength=1
 	// +required
 	name: string @go(Name)
 
-	// Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.
+	// Default indicates that the scrape applies to all scrape objects that
+	// don't configure an explicit scrape class name.
 	//
-	// Only one scrape class can be set as default.
+	// Only one scrape class can be set as the default.
+	//
 	// +optional
 	default?: null | bool @go(Default,*bool)
 
-	// TLSConfig section for scrapes.
+	// TLSConfig defines the TLS settings to use for the scrape. When the
+	// scrape objects define their own CA, certificate and/or key, they take
+	// precedence over the corresponding scrape class fields.
+	//
+	// For now only the `caFile`, `certFile` and `keyFile` fields are supported.
+	//
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 
@@ -1803,5 +1854,5 @@ import (
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
 	//
 	// +optional
-	relabelings?: [...null | #RelabelConfig] @go(Relabelings,[]*RelabelConfig)
+	relabelings?: [...#RelabelConfig] @go(Relabelings,[]RelabelConfig)
 }

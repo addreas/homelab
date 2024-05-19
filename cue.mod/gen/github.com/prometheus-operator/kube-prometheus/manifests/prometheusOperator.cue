@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -97,7 +97,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -119,7 +119,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -2094,9 +2094,8 @@ prometheusOperator: {
 																		}
 																		type: {
 																			description: "Type of responder."
-																			enum: ["team", "teams", "user", "escalation", "schedule"]
-																			minLength: 1
-																			type:      "string"
+																			minLength:   1
+																			type:        "string"
 																		}
 																		username: {
 																			description: "Username of the responder."
@@ -6842,7 +6841,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -16114,7 +16113,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -17135,7 +17134,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -18107,7 +18106,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -19596,6 +19595,17 @@ prometheusOperator: {
 														"""
 										properties: deny: type: "boolean"
 										type: "object"
+									}
+									automountServiceAccountToken: {
+										description: """
+														AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod.
+														If the field isn't set, the operator mounts the service account token by default.
+
+
+														**Warning:** be aware that by default, Prometheus requires the service account token for Kubernetes service discovery.
+														It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+														"""
+										type: "boolean"
 									}
 									bodySizeLimit: {
 										description: """
@@ -21352,7 +21362,7 @@ prometheusOperator: {
 									}
 									enforcedNamespaceLabel: {
 										description: """
-														When not empty, a label will be added to
+														When not empty, a label will be added to:
 
 
 														1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects.
@@ -21366,7 +21376,7 @@ prometheusOperator: {
 
 														The label's name is this field's value.
 														The label's value is the namespace of the `ServiceMonitor`,
-														`PodMonitor`, `Probe` or `PrometheusRule` object.
+														`PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
 														"""
 										type: "string"
 									}
@@ -29219,7 +29229,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -31227,6 +31237,17 @@ prometheusOperator: {
 										properties: deny: type: "boolean"
 										type: "object"
 									}
+									automountServiceAccountToken: {
+										description: """
+														AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod.
+														If the field isn't set, the operator mounts the service account token by default.
+
+
+														**Warning:** be aware that by default, Prometheus requires the service account token for Kubernetes service discovery.
+														It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+														"""
+										type: "boolean"
+									}
 									baseImage: {
 										description: "Deprecated: use 'spec.image' instead."
 										type:        "string"
@@ -33006,7 +33027,7 @@ prometheusOperator: {
 									}
 									enforcedNamespaceLabel: {
 										description: """
-														When not empty, a label will be added to
+														When not empty, a label will be added to:
 
 
 														1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects.
@@ -33020,7 +33041,7 @@ prometheusOperator: {
 
 														The label's name is this field's value.
 														The label's value is the namespace of the `ServiceMonitor`,
-														`PodMonitor`, `Probe` or `PrometheusRule` object.
+														`PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
 														"""
 										type: "string"
 									}
@@ -42207,7 +42228,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -42367,7 +42388,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -42415,6 +42436,477 @@ prometheusOperator: {
 							spec: {
 								description: "ScrapeConfigSpec is a specification of the desired configuration for a scrape configuration."
 								properties: {
+									NomadSDConfigs: {
+										description: "NomadSDConfigs defines a list of Nomad service discovery configurations."
+										items: {
+											description: """
+															NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+															"""
+											properties: {
+												allowStale: {
+													description: """
+																	The information to access the Nomad API. It is to be defined
+																	as the Nomad documentation requires.
+																	"""
+													type: "boolean"
+												}
+												authorization: {
+													description: "Authorization header to use on every scrape request."
+													properties: {
+														credentials: {
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: """
+																					Name of the referent.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: {
+															description: """
+																			Defines the authentication type. The value is case-insensitive.
+
+
+																			"Basic" is not a supported value.
+
+
+																			Default: "Bearer"
+																			"""
+															type: "string"
+														}
+													}
+													type: "object"
+												}
+												basicAuth: {
+													description: "BasicAuth information to use on every scrape request."
+													properties: {
+														password: {
+															description: """
+																			`password` specifies a key of a Secret containing the password for
+																			authentication.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: """
+																					Name of the referent.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														username: {
+															description: """
+																			`username` specifies a key of a Secret containing the username for
+																			authentication.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: """
+																					Name of the referent.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												enableHTTP2: {
+													description: "Whether to enable HTTP2."
+													type:        "boolean"
+												}
+												followRedirects: {
+													description: "Configure whether HTTP requests follow HTTP 3xx redirects."
+													type:        "boolean"
+												}
+												namespace: type: "string"
+												noProxy: {
+													description: """
+																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																	that should be excluded from proxying. IP and domain names can
+																	contain port numbers.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type: "string"
+												}
+												oauth2: {
+													description: """
+																	Optional OAuth 2.0 configuration.
+																	Cannot be set at the same time as `authorization` or `basic_auth`.
+																	"""
+													properties: {
+														clientId: {
+															description: """
+																			`clientId` specifies a key of a Secret or ConfigMap containing the
+																			OAuth2 client's ID.
+																			"""
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														clientSecret: {
+															description: """
+																			`clientSecret` specifies a key of a Secret containing the OAuth2
+																			client's secret.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: """
+																					Name of the referent.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														endpointParams: {
+															additionalProperties: type: "string"
+															description: """
+																			`endpointParams` configures the HTTP parameters to append to the token
+																			URL.
+																			"""
+															type: "object"
+														}
+														scopes: {
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
+															items: type: "string"
+															type: "array"
+														}
+														tokenUrl: {
+															description: "`tokenURL` configures the URL to fetch the token from."
+															minLength:   1
+															type:        "string"
+														}
+													}
+													required: ["clientId", "clientSecret", "tokenUrl"]
+													type: "object"
+												}
+												proxyConnectHeader: {
+													additionalProperties: {
+														description: "SecretKeySelector selects a key of a Secret."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																description: """
+																				Name of the referent.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				TODO: Add other useful fields. apiVersion, kind, uid?
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													description: """
+																	ProxyConnectHeader optionally specifies headers to send to
+																	proxies during CONNECT requests.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxyFromEnvironment: {
+													description: """
+																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+																	If unset, Prometheus uses its default value.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type: "boolean"
+												}
+												proxyUrl: {
+													description: """
+																	`proxyURL` defines the HTTP proxy server to use.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													pattern: "^http(s)?://.+$"
+													type:    "string"
+												}
+												refreshInterval: {
+													description: """
+																	Duration is a valid time duration that can be parsed by Prometheus model.ParseDuration() function.
+																	Supported units: y, w, d, h, m, s, ms
+																	Examples: `30s`, `1m`, `1h20m15s`, `15d`
+																	"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
+												}
+												region: type: "string"
+												server: {
+													minLength: 1
+													type:      "string"
+												}
+												tagSeparator: type: "string"
+												tlsConfig: {
+													description: "TLS configuration applying to the target HTTP endpoint."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			description: """
+																							Name of the referent.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	description: """
+																					Name of the referent.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+											}
+											required: ["server"]
+											type: "object"
+										}
+										type: "array"
+									}
 									authorization: {
 										description: "Authorization header to use on every scrape request."
 										properties: {
@@ -47413,7 +47905,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -48463,7 +48955,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.14.0"
-					"operator.prometheus.io/version":        "0.73.1"
+					"operator.prometheus.io/version":        "0.73.2"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -57376,7 +57868,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -57395,18 +57887,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.73.1"
+						"app.kubernetes.io/version":   "0.73.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.73.1"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.73.2"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.73.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.73.2"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -57429,7 +57921,7 @@ prometheusOperator: {
 						}
 					}, {
 						args: ["--secure-listen-address=:8443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:8080/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.16.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.17.1"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 8443
@@ -57474,7 +57966,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -57617,7 +58109,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -57645,7 +58137,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -57659,7 +58151,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -57676,7 +58168,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.73.1"
+				"app.kubernetes.io/version":   "0.73.2"
 			}
 		}
 	}

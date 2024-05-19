@@ -4548,7 +4548,8 @@ import (
 // pod's hosts file.
 #HostAlias: {
 	// IP address of the host file entry.
-	ip?: string @go(IP) @protobuf(1,bytes,opt)
+	// +required
+	ip: string @go(IP) @protobuf(1,bytes,opt)
 
 	// Hostnames for the above IP address.
 	// +listType=atomic
@@ -5861,6 +5862,8 @@ import (
 	// not set, the implementation will apply its default routing strategy. If set
 	// to "PreferClose", implementations should prioritize endpoints that are
 	// topologically close (e.g., same zone).
+	// This is an alpha field and requires enabling ServiceTrafficDistribution feature.
+	// +featureGate=ServiceTrafficDistribution
 	// +optional
 	trafficDistribution?: null | string @go(TrafficDistribution,*string) @protobuf(23,bytes,opt)
 }
@@ -7083,9 +7086,15 @@ import (
 // +structType=atomic
 #LocalObjectReference: {
 	// Name of the referent.
-	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+	// This field is effectively required, but due to backwards compatibility is
+	// allowed to be empty. Instances of this type with an empty value here are
+	// almost certainly wrong.
 	// TODO: Add other useful fields. apiVersion, kind, uid?
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	// +optional
+	// +default=""
+	// +kubebuilder:default=""
+	// TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 }
 
