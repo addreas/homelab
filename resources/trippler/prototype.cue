@@ -81,6 +81,7 @@ let baseContainer = {
 		{secretRef: name: "nextauth"},
 		{secretRef: name: "trippler-secrets"},
 		{secretRef: name: "google-oauth"},
+		{secretRef: name: "sendgrid"},
 	]
 	env: [{
 		name:  "DATABASE_URL"
