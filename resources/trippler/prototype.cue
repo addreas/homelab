@@ -71,7 +71,7 @@ let baseContainer = {
 
 k: Deployment: "prototyp": {
 	spec: {
-		replicas: 1
+		replicas: 2
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
