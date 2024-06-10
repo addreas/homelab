@@ -63,6 +63,9 @@ let baseContainer = {
 	}, {
 		name:  "PERSIST_EMAILS_DIRECTORY"
 		value: "/emails"
+	}, {
+		name:  "LOG_LEVEL"
+		value: "info"
 	}, ...]
 }
 
