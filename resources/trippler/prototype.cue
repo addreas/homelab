@@ -100,18 +100,18 @@ k: StatefulSet: "prototyp-postgres": spec: {
 				mountPath: "/var/lib/postgresql"
 				subPath:   "data"
 			}]
-			// readinessProbe: {
-			// 	exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
-			// 	initialDelaySeconds: 20
-			// 	failureThreshold:    6
-			// 	periodSeconds:       10
-			// }
-			// livenessProbe: {
-			// 	exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
-			// 	initialDelaySeconds: 30
-			// 	failureThreshold:    3
-			// 	periodSeconds:       10
-			// }
+			readinessProbe: {
+				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				initialDelaySeconds: 20
+				failureThreshold:    6
+				periodSeconds:       10
+			}
+			livenessProbe: {
+				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				initialDelaySeconds: 30
+				failureThreshold:    3
+				periodSeconds:       10
+			}
 		}]
 	}
 	volumeClaimTemplates: [{
