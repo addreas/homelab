@@ -101,13 +101,13 @@ k: StatefulSet: "prototyp-postgres": spec: {
 				subPath:   "data"
 			}]
 			readinessProbe: {
-				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				exec: command: ["/bin/sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
 				initialDelaySeconds: 20
 				failureThreshold:    6
 				periodSeconds:       10
 			}
 			livenessProbe: {
-				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				exec: command: ["/bin/sh", "-c", "pg_isready -U $(POSTGRES_USER)"]
 				initialDelaySeconds: 30
 				failureThreshold:    3
 				periodSeconds:       10
