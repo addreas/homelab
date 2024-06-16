@@ -5,18 +5,9 @@ kubeProxyReplacement: strict
 k8sServiceHost: nucles.localdomain
 k8sServicePort: 6443
 
-bgpControlPlane:
-  enabled: true
-
-l2announcements:
-  enabled: true
-
-ingressController:
-  enabled: false
-  loadbalancerMode: shared
-  secretsNamespace:
-    name: kube-system
-    create: false
+bpf:
+  masquerade: true
+  tproxy: true
 
 l7proxy: true
 
@@ -36,6 +27,12 @@ gatewayAPI:
     name: kube-system
     create: false
 
+bgpControlPlane:
+  enabled: true
+
+l2announcements:
+  enabled: true
+
 externalIPs:
   enabled: true
 
@@ -44,6 +41,3 @@ hubble:
     enabled: true
   ui:
     enabled: true
-
-endpointRoutes:
-  enabled: true

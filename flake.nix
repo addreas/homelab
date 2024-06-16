@@ -7,11 +7,20 @@
   inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
   inputs.flakefiles.inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, flakefiles, ... }:
-    let
-      system = "x86_64-linux";
+  inputs.raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
+  nixConfig = {
+    extra-substituters = [ "https://raspberry-pi-nix.cachix.org" ];
+    extra-trusted-public-keys = [
+      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
+    ];
+  };
 
-      machine = name: extraModules: nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, flakefiles, raspberry-pi-nix, ... }:
+    let
+      x86 = "x86_64-linux";
+      arm64 = "aarch64-linux";
+
+      machine = system: name: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
           "${self}/nix/machines/${name}"
@@ -23,8 +32,8 @@
       };
     in
     {
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
-      apps.${system} = flakefiles.apps.${system};
+      formatter.${x86} = nixpkgs.legacyPackages.${x86}.nixpkgs-fmt;
+      apps.${x86} = flakefiles.apps.${x86};
 
       # nix build .#nixosConfigurations.frr-test.config.system.build.vm
       # QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset
@@ -33,7 +42,7 @@
       #   modules = [ ./nix/machines/frr-test/configuration.nix ];
       # };
 
-      nixosConfigurations.sergio = machine "sergio" [
+      nixosConfigurations.sergio = machine x86 "sergio" [
         flakefiles.nixosModules.nix-builder
 
         # "${self}/nix/packages/pixie-api/module.nix"
@@ -57,7 +66,10 @@
       # nixosConfigurations.nucle-installer = machine "nucle-installer" [];
 
       # nixosConfigurations.nucle2 = machine "nucles/nucle2" [];
-      nixosConfigurations.nucle3 = machine "nucles/nucle3" [];
-      nixosConfigurations.nucle4 = machine "nucles/nucle4" [];
+      nixosConfigurations.nucle3 = machine x86 "nucles/nucle3" [];
+      nixosConfigurations.nucle4 = machine x86 "nucles/nucle4" [];
+
+      nixosConfigurations.radnas = machine arm64 "radxa-penta-sata" [];
+      nixosConfigurations.pinas = machine arm64 "pi5-quad-nvme" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
     };
 }
