@@ -13,6 +13,7 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 		imagePullPolicy: "Always"
 		command: ["sh", "-c", """
 			tail --follow=name "/config/Library/Logs/Plex Media Server/Plex Media Server.log" &
+			rm -f "/config/Library/Application Support/Plex Media Server/plexmediaserver.pid"
 			exec "/usr/lib/plexmediaserver/Plex Media Server"
 			"""]
 		env: [{
