@@ -89,6 +89,7 @@ let _cue_agent_yaml = {
 				node:      "{{ kubernetes.pod_node_name }}"
 				container: "{{ kubernetes.container_name }}"
 				namespace: "{{ kubernetes.pod_namespace }}"
+				app:       "{{ kubernetes.pod_labels.app }}"
 			}
 		}
 		loki_haproxy: loki & {
