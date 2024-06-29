@@ -4,4 +4,4 @@
 
 package net
 
-_#cacheMaxAge: int & 5000000000
+_#cgoAddrInfoFlags: 26

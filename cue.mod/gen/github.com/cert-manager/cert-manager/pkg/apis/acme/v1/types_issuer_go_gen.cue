@@ -35,8 +35,9 @@ import (
 	// endpoint.
 	// For example, for Let's Encrypt's DST crosssign you would use:
 	// "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA.
-	// This value picks the first certificate bundle in the ACME alternative
-	// chains that has a certificate with this value as its issuer's CN
+	// This value picks the first certificate bundle in the combined set of
+	// ACME default and alternative chains that has a root-most certificate with
+	// this value as its issuer's commonname.
 	// +optional
 	// +kubebuilder:validation:MaxLength=64
 	preferredChain?: string @go(PreferredChain)
@@ -96,7 +97,7 @@ import (
 	// Enables requesting a Not After date on certificates that matches the
 	// duration of the certificate. This is not supported by all ACME servers
 	// like Let's Encrypt. If set to true when the ACME server does not support
-	// it it will create an error on the Order.
+	// it, it will create an error on the Order.
 	// Defaults to false.
 	// +optional
 	enableDurationFeature?: bool @go(EnableDurationFeature)
@@ -466,6 +467,10 @@ import (
 // ACMEIssuerDNS01ProviderRoute53 is a structure containing the Route 53
 // configuration for AWS
 #ACMEIssuerDNS01ProviderRoute53: {
+	// Auth configures how cert-manager authenticates.
+	// +optional
+	auth?: null | #Route53Auth @go(Auth,*Route53Auth)
+
 	// The AccessKeyID is used for authentication.
 	// Cannot be set when SecretAccessKeyID is set.
 	// If neither the Access Key nor Key ID are set, we fall-back to using env
@@ -501,6 +506,36 @@ import (
 
 	// Always set the region when using AccessKeyID and SecretAccessKey
 	region: string @go(Region)
+}
+
+// Route53Auth is configuration used to authenticate with a Route53.
+#Route53Auth: {
+	// Kubernetes authenticates with Route53 using AssumeRoleWithWebIdentity
+	// by passing a bound ServiceAccount token.
+	kubernetes?: null | #Route53KubernetesAuth @go(Kubernetes,*Route53KubernetesAuth)
+}
+
+// Route53KubernetesAuth is a configuration to authenticate against Route53
+// using a bound Kubernetes ServiceAccount token.
+#Route53KubernetesAuth: {
+	// A reference to a service account that will be used to request a bound
+	// token (also known as "projected token"). To use this field, you must
+	// configure an RBAC rule to let cert-manager request a token.
+	serviceAccountRef?: null | #ServiceAccountRef @go(ServiceAccountRef,*ServiceAccountRef)
+}
+
+// ServiceAccountRef is a service account used by cert-manager to request a
+// token. The expiration of the token is also set by cert-manager to 10 minutes.
+#ServiceAccountRef: {
+	// Name of the ServiceAccount used to request a token.
+	name: string @go(Name)
+
+	// TokenAudiences is an optional list of audiences to include in the
+	// token passed to AWS. The default token consisting of the issuer's namespace
+	// and name is always included.
+	// If unset the audience defaults to `sts.amazonaws.com`.
+	// +optional
+	audiences?: [...string] @go(TokenAudiences,[]string)
 }
 
 // ACMEIssuerDNS01ProviderAzureDNS is a structure containing the

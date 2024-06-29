@@ -108,8 +108,7 @@ package net
 
 // canceledError lets us return the same error string we have always
 // returned, while still being Is context.Canceled.
-_#canceledError: {
-}
+_#canceledError: {}
 
 // OpError is the error type usually returned by functions in the net
 // package. It describes the operation, network type, and address of
@@ -164,8 +163,7 @@ _#temporary: _
 
 #InvalidAddrError: string
 
-_#timeoutError: {
-}
+_#timeoutError: {}
 
 // DNSConfigError represents an error reading the machine's DNS configuration.
 // (No longer used; kept for compatibility.)
@@ -189,13 +187,11 @@ _#timeoutError: {
 
 // noReadFrom can be embedded alongside another type to
 // hide the ReadFrom method of that other type.
-_#noReadFrom: {
-}
+_#noReadFrom: {}
 
 // noWriteTo can be embedded alongside another type to
 // hide the WriteTo method of that other type.
-_#noWriteTo: {
-}
+_#noWriteTo: {}
 
 // buffersWriter is the interface implemented by Conns that support a
 // "writev"-like batch write optimization.

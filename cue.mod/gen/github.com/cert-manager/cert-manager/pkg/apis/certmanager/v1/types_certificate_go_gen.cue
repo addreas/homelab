@@ -114,9 +114,6 @@ import (
 	// More info: https://github.com/cert-manager/cert-manager/issues/4424
 	//
 	// Cannot be set if the `subject` or `commonName` field is set.
-	// This is an Alpha Feature and is only enabled with the
-	// `--feature-gates=LiteralCertificateSubject=true` option set on both
-	// the controller and webhook components.
 	// +optional
 	literalSubject?: string @go(LiteralSubject)
 
@@ -251,8 +248,8 @@ import (
 	// Defines extra output formats of the private key and signed certificate chain
 	// to be written to this Certificate's target Secret.
 	//
-	// This is an Alpha Feature and is only enabled with the
-	// `--feature-gates=AdditionalCertificateOutputFormats=true` option set on both
+	// This is a Beta Feature enabled by default. It can be disabled with the
+	// `--feature-gates=AdditionalCertificateOutputFormats=false` option set on both
 	// the controller and webhook components.
 	// +optional
 	additionalOutputFormats?: [...#CertificateAdditionalOutputFormat] @go(AdditionalOutputFormats,[]CertificateAdditionalOutputFormat)
@@ -443,6 +440,11 @@ import (
 	// PasswordSecretRef is a reference to a key in a Secret resource
 	// containing the password used to encrypt the JKS keystore.
 	passwordSecretRef: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
+
+	// Alias specifies the alias of the key in the keystore, required by the JKS format.
+	// If not provided, the default alias `certificate` will be used.
+	// +optional
+	alias?: null | string @go(Alias,*string)
 }
 
 // PKCS12 configures options for storing a PKCS12 keystore in the
