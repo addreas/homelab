@@ -130,6 +130,10 @@ package v1
 // set to either the configured value or the empty string.
 #IngressClassAnnotationKey: "kubernetes.io/ingress.class"
 
+// IngressSecretTemplate can be used to set the secretTemplate field in the generated Certificate.
+// The value is a JSON representation of secretTemplate and must not have any unknown fields.
+#IngressSecretTemplate: "cert-manager.io/secret-template"
+
 // Annotation added to CertificateRequest resources to denote the name of
 // a Secret resource containing the private key used to sign the CSR stored
 // on the resource.

@@ -57,6 +57,69 @@ import (
 	forwardedProto?: string @go(ForwardedProto)
 }
 
+// TokenLifespans defines the desired token durations by grant type for OAuth2Client
+#TokenLifespans: {
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// AuthorizationCodeGrantAccessTokenLifespan is the access token lifespan
+	// issued on an authorization_code grant.
+	authorization_code_grant_access_token_lifespan?: string @go(AuthorizationCodeGrantAccessTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// AuthorizationCodeGrantIdTokenLifespan is the id token lifespan
+	// issued on an authorization_code grant.
+	authorization_code_grant_id_token_lifespan?: string @go(AuthorizationCodeGrantIdTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// AuthorizationCodeGrantRefreshTokenLifespan is the refresh token lifespan
+	// issued on an authorization_code grant.
+	authorization_code_grant_refresh_token_lifespan?: string @go(AuthorizationCodeGrantRefreshTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// AuthorizationCodeGrantRefreshTokenLifespan is the access token lifespan
+	// issued on a client_credentials grant.
+	client_credentials_grant_access_token_lifespan?: string @go(ClientCredentialsGrantAccessTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// ImplicitGrantAccessTokenLifespan is the access token lifespan
+	// issued on an implicit grant.
+	implicit_grant_access_token_lifespan?: string @go(ImplicitGrantAccessTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// ImplicitGrantIdTokenLifespan is the id token lifespan
+	// issued on an implicit grant.
+	implicit_grant_id_token_lifespan?: string @go(ImplicitGrantIdTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// JwtBearerGrantAccessTokenLifespan is the access token lifespan
+	// issued on a jwt_bearer grant.
+	jwt_bearer_grant_access_token_lifespan?: string @go(JwtBearerGrantAccessTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// RefreshTokenGrantAccessTokenLifespan is the access token lifespan
+	// issued on a refresh_token grant.
+	refresh_token_grant_access_token_lifespan?: string @go(RefreshTokenGrantAccessTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// RefreshTokenGrantIdTokenLifespan is the id token lifespan
+	// issued on a refresh_token grant.
+	refresh_token_grant_id_token_lifespan?: string @go(RefreshTokenGrantIdTokenLifespan)
+
+	// +kubebuilder:validation:Pattern=[0-9]+(ns|us|ms|s|m|h)
+	//
+	// RefreshTokenGrantRefreshTokenLifespan is the refresh token lifespan
+	// issued on a refresh_token grant.
+	refresh_token_grant_refresh_token_lifespan?: string @go(RefreshTokenGrantRefreshTokenLifespan)
+}
+
 // OAuth2ClientSpec defines the desired state of OAuth2Client
 #OAuth2ClientSpec: {
 	// ClientName is the human-readable string name of the client to be presented to the end-user during authorization.
@@ -114,6 +177,10 @@ import (
 	//
 	// Indication which authentication method shoud be used for the token endpoint
 	tokenEndpointAuthMethod?: #TokenEndpointAuthMethod @go(TokenEndpointAuthMethod)
+
+	// TokenLifespans is the configuration to use for managing different token lifespans
+	// depending on the used grant type.
+	tokenLifespans?: #TokenLifespans @go(TokenLifespans)
 
 	// +kubebuilder:validation:Type=object
 	// +nullable

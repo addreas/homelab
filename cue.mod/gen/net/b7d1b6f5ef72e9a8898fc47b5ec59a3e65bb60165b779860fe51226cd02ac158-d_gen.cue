@@ -4,4 +4,4 @@
 
 package net
 
-_#cacheMaxAge: int & 5000000000
+_#_C_struct___res_state: {}

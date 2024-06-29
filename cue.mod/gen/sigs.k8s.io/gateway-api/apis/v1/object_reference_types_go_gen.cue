@@ -133,3 +133,36 @@ package v1
 	// +optional
 	port?: null | #PortNumber @go(Port,*PortNumber)
 }
+
+// ObjectReference identifies an API object including its namespace.
+//
+// The API object must be valid in the cluster; the Group and Kind must
+// be registered in the cluster for this reference to be valid.
+//
+// References to objects with invalid Group and Kind are not valid, and must
+// be rejected by the implementation, with appropriate Conditions set
+// on the containing object.
+#ObjectReference: {
+	// Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	// When unspecified or empty string, core API group is inferred.
+	group: #Group @go(Group)
+
+	// Kind is kind of the referent. For example "ConfigMap" or "Service".
+	kind: #Kind @go(Kind)
+
+	// Name is the name of the referent.
+	name: #ObjectName @go(Name)
+
+	// Namespace is the namespace of the referenced object. When unspecified, the local
+	// namespace is inferred.
+	//
+	// Note that when a namespace different than the local namespace is specified,
+	// a ReferenceGrant object is required in the referent namespace to allow that
+	// namespace's owner to accept the reference. See the ReferenceGrant
+	// documentation for details.
+	//
+	// Support: Core
+	//
+	// +optional
+	namespace?: null | #Namespace @go(Namespace,*Namespace)
+}
