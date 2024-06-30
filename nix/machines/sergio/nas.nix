@@ -1,52 +1,42 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 let
-  btrfsDataHDD = {
+  btrfsDataHDD = options: {
     device = "/dev/disk/by-uuid/d5f05d68-2761-4262-af48-af7b221daea5";
     fsType = "btrfs";
+    options = options ++ [ "nofail" ];
   };
-  btrfsDataSSD = {
+  btrfsDataSSD = options: {
     device = "/dev/disk/by-uuid/660b83df-c44d-4265-b293-272127aabf22";
     fsType = "btrfs";
+    options = options ++ [ "nofail" ];
   };
-  btrfsDataSSD2 = {
+  btrfsDataSSD2 = options: {
     device = "/dev/disk/by-uuid/b6df7c6f-d5fd-4f14-b02c-d57727db5a23";
     fsType = "btrfs";
+    options = options ++ [ "nofail" ];
+  };
+  bind = source: subpath: {
+    depends = [ source ];
+    device = "${source}/${subpath}";
+    fsType = "none";
+    options = [ "bind" "nofail" ];
   };
 in
 {
-  fileSystems."/mnt/data" = btrfsDataHDD // { };
-  fileSystems."/mnt/solid-data" = btrfsDataSSD2 // { };
+  fileSystems."/mnt/data" = btrfsDataHDD [];
+  fileSystems."/mnt/solid-data" = btrfsDataSSD2 [];
+  fileSystems."/mnt/plex-config" = btrfsDataSSD [ "subvol=plex-config" ];
 
-  fileSystems."/mnt/videos" = btrfsDataHDD // {
-    options = [ "subvol=videos" ];
-  };
-  fileSystems."/mnt/pictures" = btrfsDataHDD // {
-    options = [ "subvol=pictures" ];
-  };
-  fileSystems."/mnt/longhorn-backup" = btrfsDataHDD // {
-    options = [ "subvol=longhorn-backup" ];
-  };
-  fileSystems."/mnt/backups" = btrfsDataHDD // {
-    options = [ "subvol=backups" ];
-  };
+  fileSystems."/mnt/videos" = bind "/mnt/data" "videos";
+  fileSystems."/mnt/pictures" = bind "/mnt/data" "pictures";
+  fileSystems."/mnt/longhorn-backup" = bind "/mnt/data" "longhorn-backup";
+  fileSystems."/mnt/backups" = bind "/mnt/data" "backups";
 
-  fileSystems."/export/pictures" = btrfsDataHDD // {
-    options = [ "subvol=pictures" ];
-  };
-  fileSystems."/export/backups" = btrfsDataHDD // {
-    options = [ "subvol=backups" ];
-  };
-  fileSystems."/export/longhorn-backup" = btrfsDataHDD // {
-    options = [ "subvol=longhorn-backup" ];
-  };
-  fileSystems."/export/videos" = btrfsDataHDD // {
-    options = [ "subvol=videos" ];
-  };
-
-  fileSystems."/mnt/plex-config" = btrfsDataSSD // {
-    options = [ "subvol=plex-config" ];
-  };
+  fileSystems."/export/pictures" = bind "/mnt/data" "pictures";
+  fileSystems."/export/backups" = bind "/mnt/data" "backups";
+  fileSystems."/export/longhorn-backup" = bind "/mnt/data" "longhorn-backup";
+  fileSystems."/export/videos" = bind "/mnt/data" "videos";
 
 
   services.rpcbind.enable = true;
