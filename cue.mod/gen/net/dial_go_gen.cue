@@ -8,7 +8,7 @@ import "time"
 
 // defaultTCPKeepAlive is a default constant value for TCPKeepAlive times
 // See go.dev/issue/31510
-_#defaultTCPKeepAlive: time.#Duration & 15000000000
+_#defaultTCPKeepAlive: int & 15000000000
 
 // For the moment, MultiPath TCP is not used by default
 // See go.dev/issue/56539
@@ -42,7 +42,7 @@ _#mptcpDisabled:   _#mptcpStatus & 2
 	// With or without a timeout, the operating system may impose
 	// its own earlier timeout. For instance, TCP timeouts are
 	// often around 3 minutes.
-	Timeout: time.#Duration
+	Timeout: int @go(,time.Duration)
 
 	// Deadline is the absolute point in time after which dials
 	// will fail. If Timeout is set, it may fail earlier.
@@ -73,7 +73,7 @@ _#mptcpDisabled:   _#mptcpStatus & 2
 	//
 	// If zero, a default delay of 300ms is used.
 	// A negative value disables Fast Fallback support.
-	FallbackDelay: time.#Duration
+	FallbackDelay: int @go(,time.Duration)
 
 	// KeepAlive specifies the interval between keep-alive
 	// probes for an active network connection.
@@ -82,7 +82,7 @@ _#mptcpDisabled:   _#mptcpStatus & 2
 	// system. Network protocols or operating systems that do
 	// not support keep-alives ignore this field.
 	// If negative, keep-alive probes are disabled.
-	KeepAlive: time.#Duration
+	KeepAlive: int @go(,time.Duration)
 
 	// Resolver optionally specifies an alternate resolver to use.
 	Resolver?: null | #Resolver @go(,*Resolver)
@@ -101,7 +101,7 @@ _#sysDialer: {
 	// and operating system. Network protocols or operating systems
 	// that do not support keep-alives ignore this field.
 	// If negative, keep-alives are disabled.
-	KeepAlive: time.#Duration
+	KeepAlive: int @go(,time.Duration)
 }
 
 // sysListener contains a Listen's parameters and configuration.

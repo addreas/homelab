@@ -69,6 +69,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// If the referent cannot be found, the GatewayClass's "InvalidParameters"
 	// status condition will be true.
 	//
+	// A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
+	// the merging behavior is implementation specific.
+	// It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+	//
 	// Support: Implementation-specific
 	//
 	// +optional

@@ -85,7 +85,7 @@ import (
 	serviceMonitorSelector?: null | metav1.#LabelSelector @go(ServiceMonitorSelector,*metav1.LabelSelector)
 
 	// Namespaces to match for ServicedMonitors discovery. An empty label selector
-	// matches all namespaces. A null label selector matches the current
+	// matches all namespaces. A null label selector (default value) matches the current
 	// namespace only.
 	serviceMonitorNamespaceSelector?: null | metav1.#LabelSelector @go(ServiceMonitorNamespaceSelector,*metav1.LabelSelector)
 
@@ -103,7 +103,7 @@ import (
 	podMonitorSelector?: null | metav1.#LabelSelector @go(PodMonitorSelector,*metav1.LabelSelector)
 
 	// Namespaces to match for PodMonitors discovery. An empty label selector
-	// matches all namespaces. A null label selector matches the current
+	// matches all namespaces. A null label selector (default value) matches the current
 	// namespace only.
 	podMonitorNamespaceSelector?: null | metav1.#LabelSelector @go(PodMonitorNamespaceSelector,*metav1.LabelSelector)
 
@@ -455,10 +455,11 @@ import (
 	// `spec.bearerTokenSecret` field.
 	arbitraryFSAccessThroughSMs?: #ArbitraryFSAccessThroughSMsConfig @go(ArbitraryFSAccessThroughSMs)
 
-	// When true, Prometheus resolves label conflicts by renaming the labels in
-	// the scraped data to "exported_<label value>" for all targets created
-	// from service and pod monitors.
-	// Otherwise the HonorLabels field of the service or pod monitor applies.
+	// When true, Prometheus resolves label conflicts by renaming the labels in the scraped data
+	//  to “exported_” for all targets created from ServiceMonitor, PodMonitor and
+	// ScrapeConfig objects. Otherwise the HonorLabels field of the service or pod monitor applies.
+	// In practice,`overrideHonorLaels:true` enforces `honorLabels:false`
+	// for all ServiceMonitor, PodMonitor and ScrapeConfig objects.
 	overrideHonorLabels?: bool @go(OverrideHonorLabels)
 
 	// When true, Prometheus ignores the timestamps for all the targets created
@@ -495,6 +496,13 @@ import (
 	// It is meant to be used by admins to keep the overall number of
 	// samples/series under a desired limit.
 	//
+	// When both `enforcedSampleLimit` and `sampleLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined sampleLimit value will inherit the global sampleLimit value (Prometheus >= 2.45.0) or the enforcedSampleLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedSampleLimit` is greater than the `sampleLimit`, the `sampleLimit` will be set to `enforcedSampleLimit`.
+	// * Scrape objects with a sampleLimit value less than or equal to enforcedSampleLimit keep their specific value.
+	// * Scrape objects with a sampleLimit value greater than enforcedSampleLimit are set to enforcedSampleLimit.
+	//
+	//
 	// +optional
 	enforcedSampleLimit?: null | uint64 @go(EnforcedSampleLimit,*uint64)
 
@@ -506,6 +514,13 @@ import (
 	// It is meant to be used by admins to to keep the overall number of
 	// targets under a desired limit.
 	//
+	// When both `enforcedTargetLimit` and `targetLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined targetLimit value will inherit the global targetLimit value (Prometheus >= 2.45.0) or the enforcedTargetLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedTargetLimit` is greater than the `targetLimit`, the `targetLimit` will be set to `enforcedTargetLimit`.
+	// * Scrape objects with a targetLimit value less than or equal to enforcedTargetLimit keep their specific value.
+	// * Scrape objects with a targetLimit value greater than enforcedTargetLimit are set to enforcedTargetLimit.
+	//
+	//
 	// +optional
 	enforcedTargetLimit?: null | uint64 @go(EnforcedTargetLimit,*uint64)
 
@@ -515,6 +530,13 @@ import (
 	// greater than zero and less than `spec.enforcedLabelLimit`.
 	//
 	// It requires Prometheus >= v2.27.0.
+	//
+	// When both `enforcedLabelLimit` and `labelLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined labelLimit value will inherit the global labelLimit value (Prometheus >= 2.45.0) or the enforcedLabelLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedLabelLimit` is greater than the `labelLimit`, the `labelLimit` will be set to `enforcedLabelLimit`.
+	// * Scrape objects with a labelLimit value less than or equal to enforcedLabelLimit keep their specific value.
+	// * Scrape objects with a labelLimit value greater than enforcedLabelLimit are set to enforcedLabelLimit.
+	//
 	//
 	// +optional
 	enforcedLabelLimit?: null | uint64 @go(EnforcedLabelLimit,*uint64)
@@ -526,6 +548,13 @@ import (
 	//
 	// It requires Prometheus >= v2.27.0.
 	//
+	// When both `enforcedLabelNameLengthLimit` and `labelNameLengthLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined labelNameLengthLimit value will inherit the global labelNameLengthLimit value (Prometheus >= 2.45.0) or the enforcedLabelNameLengthLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedLabelNameLengthLimit` is greater than the `labelNameLengthLimit`, the `labelNameLengthLimit` will be set to `enforcedLabelNameLengthLimit`.
+	// * Scrape objects with a labelNameLengthLimit value less than or equal to enforcedLabelNameLengthLimit keep their specific value.
+	// * Scrape objects with a labelNameLengthLimit value greater than enforcedLabelNameLengthLimit are set to enforcedLabelNameLengthLimit.
+	//
+	//
 	// +optional
 	enforcedLabelNameLengthLimit?: null | uint64 @go(EnforcedLabelNameLengthLimit,*uint64)
 
@@ -535,6 +564,13 @@ import (
 	// greater than zero and less than `spec.enforcedLabelValueLengthLimit`.
 	//
 	// It requires Prometheus >= v2.27.0.
+	//
+	// When both `enforcedLabelValueLengthLimit` and `labelValueLengthLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined labelValueLengthLimit value will inherit the global labelValueLengthLimit value (Prometheus >= 2.45.0) or the enforcedLabelValueLengthLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedLabelValueLengthLimit` is greater than the `labelValueLengthLimit`, the `labelValueLengthLimit` will be set to `enforcedLabelValueLengthLimit`.
+	// * Scrape objects with a labelValueLengthLimit value less than or equal to enforcedLabelValueLengthLimit keep their specific value.
+	// * Scrape objects with a labelValueLengthLimit value greater than enforcedLabelValueLengthLimit are set to enforcedLabelValueLengthLimit.
+	//
 	//
 	// +optional
 	enforcedLabelValueLengthLimit?: null | uint64 @go(EnforcedLabelValueLengthLimit,*uint64)
@@ -547,6 +583,13 @@ import (
 	//
 	// It requires Prometheus >= v2.47.0.
 	//
+	// When both `enforcedKeepDroppedTargets` and `keepDroppedTargets` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined keepDroppedTargets value will inherit the global keepDroppedTargets value (Prometheus >= 2.45.0) or the enforcedKeepDroppedTargets value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedKeepDroppedTargets` is greater than the `keepDroppedTargets`, the `keepDroppedTargets` will be set to `enforcedKeepDroppedTargets`.
+	// * Scrape objects with a keepDroppedTargets value less than or equal to enforcedKeepDroppedTargets keep their specific value.
+	// * Scrape objects with a keepDroppedTargets value greater than enforcedKeepDroppedTargets are set to enforcedKeepDroppedTargets.
+	//
+	//
 	// +optional
 	enforcedKeepDroppedTargets?: null | uint64 @go(EnforcedKeepDroppedTargets,*uint64)
 
@@ -556,6 +599,13 @@ import (
 	// the scrape to fail.
 	//
 	// It requires Prometheus >= v2.28.0.
+	//
+	// When both `enforcedBodySizeLimit` and `bodySizeLimit` are defined and greater than zero, the following rules apply:
+	// * Scrape objects without a defined bodySizeLimit value will inherit the global bodySizeLimit value (Prometheus >= 2.45.0) or the enforcedBodySizeLimit value (Prometheus < v2.45.0).
+	//   If Prometheus version is >= 2.45.0 and the `enforcedBodySizeLimit` is greater than the `bodySizeLimit`, the `bodySizeLimit` will be set to `enforcedBodySizeLimit`.
+	// * Scrape objects with a bodySizeLimit value less than or equal to enforcedBodySizeLimit keep their specific value.
+	// * Scrape objects with a bodySizeLimit value greater than enforcedBodySizeLimit are set to enforcedBodySizeLimit.
+	//
 	enforcedBodySizeLimit?: #ByteSize @go(EnforcedBodySizeLimit)
 
 	// Minimum number of seconds for which a newly created Pod should be ready
@@ -633,11 +683,17 @@ import (
 	// BodySizeLimit defines per-scrape on response body size.
 	// Only valid in Prometheus versions 2.45.0 and newer.
 	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedBodySizeLimit.
+	//
 	// +optional
 	bodySizeLimit?: null | #ByteSize @go(BodySizeLimit,*ByteSize)
 
 	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
 	// Only valid in Prometheus versions 2.45.0 and newer.
+	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedSampleLimit.
 	//
 	// +optional
 	sampleLimit?: null | uint64 @go(SampleLimit,*uint64)
@@ -645,11 +701,17 @@ import (
 	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
 	// Only valid in Prometheus versions 2.45.0 and newer.
 	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedTargetLimit.
+	//
 	// +optional
 	targetLimit?: null | uint64 @go(TargetLimit,*uint64)
 
 	// Per-scrape limit on number of labels that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.45.0 and newer.
+	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelLimit.
 	//
 	// +optional
 	labelLimit?: null | uint64 @go(LabelLimit,*uint64)
@@ -657,11 +719,17 @@ import (
 	// Per-scrape limit on length of labels name that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.45.0 and newer.
 	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelNameLengthLimit.
+	//
 	// +optional
 	labelNameLengthLimit?: null | uint64 @go(LabelNameLengthLimit,*uint64)
 
 	// Per-scrape limit on length of labels value that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.45.0 and newer.
+	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelValueLengthLimit.
 	//
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
@@ -670,6 +738,9 @@ import (
 	// that will be kept in memory. 0 means no limit.
 	//
 	// It requires Prometheus >= v2.47.0.
+	//
+	// Note that the global limit only applies to scrape objects that don't specify an explicit limit value.
+	// If you want to enforce a maximum limit for all scrape objects, refer to enforcedKeepDroppedTargets.
 	//
 	// +optional
 	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
@@ -1294,8 +1365,14 @@ import (
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 
-	// Optional ProxyURL.
-	proxyUrl?: string @go(ProxyURL)
+	#ProxyConfig
+
+	// Configure whether HTTP requests follow HTTP 3xx redirects.
+	//
+	// It requires Prometheus >= v2.26.0.
+	//
+	// +optional
+	followRedirects?: null | bool @go(FollowRedirects,*bool)
 
 	// QueueConfig allows tuning of the remote write queue parameters.
 	// +optional
@@ -1517,8 +1594,7 @@ import (
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 
-	// Optional ProxyURL.
-	proxyUrl?: string @go(ProxyURL)
+	#ProxyConfig
 
 	// Configure whether HTTP requests follow HTTP 3xx redirects.
 	//
@@ -1855,4 +1931,15 @@ import (
 	//
 	// +optional
 	relabelings?: [...#RelabelConfig] @go(Relabelings,[]RelabelConfig)
+
+	// MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.
+	//
+	// The Operator adds the scrape class metric relabelings defined here.
+	// Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs.
+	// Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.
+	//
+	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
+	//
+	// +optional
+	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelings,[]RelabelConfig)
 }
