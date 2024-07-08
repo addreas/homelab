@@ -15,18 +15,8 @@ k: Deployment: "authproxy": spec: template: spec: containers: [{
 		name:          "http"
 		containerPort: 4180
 	}]
-	env: [{
-		name: "CLIENT_ID"
-		valueFrom: secretKeyRef: {
-			name: "authproxy-oauth2-client-credentials"
-			key:  "client_id"
-		}
-	}, {
-		name: "CLIENT_SECRET"
-		valueFrom: secretKeyRef: {
-			name: "authproxy-oauth2-client-credentials"
-			key:  "client_secret"
-		}
+	envFrom: [{
+		secretRef: name: "authproxy-oauth2-client-credentials"
 	}]
 	args: [
 		"--http-address=0.0.0.0:4180",

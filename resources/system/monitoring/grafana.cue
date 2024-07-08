@@ -29,8 +29,8 @@ k: Grafana: grafana: spec: {
 		"auth.anonymous": enabled: "false"
 		"auth.generic_oauth": {
 			enabled:             "true"
-			client_id:           "$__file{/etc/grafana/oauth-creds/client_id}"
-			client_secret:       "$__file{/etc/grafana/oauth-creds/client_secret}"
+			client_id:           "$__file{/etc/grafana/oauth-creds/CLIENT_ID}"
+			client_secret:       "$__file{/etc/grafana/oauth-creds/CLIENT_SECRET}"
 			scopes:              "openid email"
 			auth_url:            "https://auth.addem.se/hydra/oauth2/auth"
 			token_url:           "https://auth.addem.se/hydra/oauth2/token"
