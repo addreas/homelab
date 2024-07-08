@@ -1,21 +1,6 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 let
-  btrfsDataHDD = options: {
-    device = "/dev/disk/by-uuid/d5f05d68-2761-4262-af48-af7b221daea5";
-    fsType = "btrfs";
-    options = options ++ [ "nofail" ];
-  };
-  btrfsDataSSD = options: {
-    device = "/dev/disk/by-uuid/660b83df-c44d-4265-b293-272127aabf22";
-    fsType = "btrfs";
-    options = options ++ [ "nofail" ];
-  };
-  btrfsDataSSD2 = options: {
-    device = "/dev/disk/by-uuid/b6df7c6f-d5fd-4f14-b02c-d57727db5a23";
-    fsType = "btrfs";
-    options = options ++ [ "nofail" ];
-  };
   bind = source: subpath: {
     depends = [ source ];
     device = "${source}/${subpath}";
@@ -24,9 +9,21 @@ let
   };
 in
 {
-  fileSystems."/mnt/data" = btrfsDataHDD [];
-  fileSystems."/mnt/solid-data" = btrfsDataSSD2 [];
-  fileSystems."/mnt/plex-config" = btrfsDataSSD [ "subvol=plex-config" ];
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/d5f05d68-2761-4262-af48-af7b221daea5";
+    fsType = "btrfs";
+    options = [ "nofail" ];
+  };
+  fileSystems."/mnt/solid-data" = {
+    device = "/dev/disk/by-uuid/b6df7c6f-d5fd-4f14-b02c-d57727db5a23";
+    fsType = "btrfs";
+    options = [ "nofail" "discard" ];
+  };
+  fileSystems."/mnt/plex-config" = {
+    device = "/dev/disk/by-uuid/660b83df-c44d-4265-b293-272127aabf22";
+    fsType = "btrfs";
+    options = [ "subvol=plex-config" "nofail" "discard" ];
+  };
 
   fileSystems."/mnt/videos" = bind "/mnt/data" "videos";
   fileSystems."/mnt/pictures" = bind "/mnt/data" "pictures";
@@ -91,7 +88,6 @@ in
 
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.fileSystems = [ "/" "/mnt/data" ];
-
 
   networking.firewall.allowedTCPPorts = [
     111 # rpcbind

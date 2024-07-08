@@ -1,11 +1,11 @@
-{ modulesPath, config, lib,  pkgs, ... }:
+{ modulesPath, config, lib, pkgs, ... }:
 with lib;
 let
   uboot = pkgs.buildUBoot {
-      defconfig = "rock-4se-rk3399_defconfig";
-      extraMeta.platforms = ["aarch64-linux"];
-      BL31 = "${pkgs.armTrustedFirmwareRK3399}/bl31.elf";
-      filesToInstall = ["idbloader.img" "u-boot.itb" ".config"];
+    defconfig = "rock-4se-rk3399_defconfig";
+    extraMeta.platforms = [ "aarch64-linux" ];
+    BL31 = "${pkgs.armTrustedFirmwareRK3399}/bl31.elf";
+    filesToInstall = [ "idbloader.img" "u-boot.itb" ".config" ];
   };
 
   rootfsImage = pkgs.callPackage "${modulesPath}/../lib/make-ext4-fs.nix" ({
@@ -111,10 +111,10 @@ in
 
           inherit (config.sdImage) compressImage;
 
-          diskUUID  = "992DF2C2-0170-4F66-9492-FBF320673EEF";
+          diskUUID = "992DF2C2-0170-4F66-9492-FBF320673EEF";
           load1UUID = "95D89D52-CA00-42D6-883F-50F5720EF37E";
           load2UUID = "78BE2786-ACB9-4885-BB6C-77DDDEF5AAC9";
-          rootUUID  = "B921B045-1DF0-41C3-AF44-4C6F280D3FAE";
+          rootUUID = "B921B045-1DF0-41C3-AF44-4C6F280D3FAE";
 
           buildCommand = ''
             mkdir -p $out/nix-support $out/sd-image
@@ -164,7 +164,8 @@ in
                 zstd -T$NIX_BUILD_CORES --rm $img
             fi
           '';
-        }) { };
+        })
+      { };
 
     boot.postBootCommands = lib.mkIf config.sdImage.expandOnBoot ''
       # On the first boot do some maintenance tasks

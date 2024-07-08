@@ -15,7 +15,7 @@ let
   );
 
   kubeadmUpgradeConfig = pkgs.writeText "kubeadm-upgrade.yaml" (
-      builtins.toJSON
+    builtins.toJSON
       cfg.upgrade.upgradeConfig
   );
 in

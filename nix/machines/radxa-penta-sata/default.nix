@@ -5,7 +5,7 @@
   ];
 
   system.stateVersion = "24.05";
-  
+
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 

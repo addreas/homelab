@@ -15,7 +15,7 @@ in
     package = pkgs.kubernetes;
     kubelet.enable = true;
 
-    init.initConfig = {};
+    init.initConfig = { };
 
     init.clusterConfig = {
       clusterName = "nucles";
@@ -46,7 +46,7 @@ in
     };
 
     upgrade.enable = true;
-    upgrade.upgradeConfig = {};
+    upgrade.upgradeConfig = { };
   };
 
   environment.systemPackages = [ pkgs.kubernetes ];

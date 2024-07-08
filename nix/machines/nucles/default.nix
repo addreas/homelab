@@ -18,7 +18,7 @@
     enable = true;
     flake = "/home/addem/homelab";
     dates = "Sat,Sun 05:40";
-    flags = [];
+    flags = [ ];
     operation = "boot";
   };
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''

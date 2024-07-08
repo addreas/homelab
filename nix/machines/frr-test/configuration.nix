@@ -15,7 +15,7 @@
   # };
 
   system.stateVersion = "23.11";
-  
+
   services.getty.autologinUser = lib.mkForce "root";
 
   services.frr.bgp = {
@@ -25,6 +25,6 @@
        neighbor 192.168.0.64 remote-as 64512
        neighbor 192.168.0.106 remote-as 64512
        neighbor 192.168.0.192 remote-as 64512
-      '';
+    '';
   };
 }

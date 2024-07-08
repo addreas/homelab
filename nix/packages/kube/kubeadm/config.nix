@@ -33,7 +33,7 @@
     };
   };
 
-  options.services.kubeadm.upgrade= with lib; {
+  options.services.kubeadm.upgrade = with lib; {
     enable = mkEnableOption "kubeadm upgrade";
 
     upgradeConfig = mkOption {
@@ -56,7 +56,7 @@
     kubeProxyConfig.kind = "KubeProxyConfiguration";
   };
 
-  config.services.kubeadm.upgrade= {
+  config.services.kubeadm.upgrade = {
     upgradeConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     upgradeConfig.kind = "UpgradeConfiguration";
     upgradeConfig.apply.forceUpgrade = true; # non-interactive upgrade is required

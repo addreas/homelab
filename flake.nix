@@ -66,10 +66,10 @@
       # nixosConfigurations.nucle-installer = machine "nucle-installer" [];
 
       # nixosConfigurations.nucle2 = machine "nucles/nucle2" [];
-      nixosConfigurations.nucle3 = machine x86 "nucles/nucle3" [];
-      nixosConfigurations.nucle4 = machine x86 "nucles/nucle4" [];
+      nixosConfigurations.nucle3 = machine x86 "nucles/nucle3" [ ];
+      nixosConfigurations.nucle4 = machine x86 "nucles/nucle4" [ ];
 
-      nixosConfigurations.radnas = machine arm64 "radxa-penta-sata" [];
+      nixosConfigurations.radnas = machine arm64 "radxa-penta-sata" [ ];
       nixosConfigurations.pinas = machine arm64 "pi5-quad-nvme" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
     };
 }
