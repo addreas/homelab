@@ -24,7 +24,10 @@
         inherit system;
         modules = [
           "${self}/nix/machines/${name}"
-          { environment.etc."nixos-source".source = self; }
+          {
+            environment.etc."nixos-source".source = self;
+            networking.hostName = name;
+          }
           flakefiles.nixosModules.addem-basic
           flakefiles.nixosModules.base
           flakefiles.nixosModules.services
@@ -69,7 +72,11 @@
       nixosConfigurations.nucle3 = machine x86 "nucles/nucle3" [ ];
       nixosConfigurations.nucle4 = machine x86 "nucles/nucle4" [ ];
 
-      nixosConfigurations.radnas = machine arm64 "radxa-penta-sata" [ ];
-      nixosConfigurations.pinas = machine arm64 "pi5-quad-nvme" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
+
+      # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5
+      # nix build .#nixosConfigurations.pinas.config.system.build.sdImage
+      # zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress
+      nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
+      nixosConfigurations.radnas = machine arm64 "radnas" [ ];
     };
 }
