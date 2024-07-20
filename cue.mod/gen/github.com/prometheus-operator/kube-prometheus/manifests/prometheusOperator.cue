@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -97,7 +97,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -119,7 +119,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -7675,7 +7675,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -7729,7 +7729,15 @@ prometheusOperator: {
 					}]
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "Alertmanager describes an Alertmanager cluster."
+						description: """
+										The `Alertmanager` custom resource definition (CRD) defines a desired [Alertmanager](https://prometheus.io/docs/alerting) setup to run in a Kubernetes cluster. It allows to specify many options such as the number of replicas, persistent storage and many more.
+
+
+										For each `Alertmanager` resource, the Operator deploys a `StatefulSet` in the same namespace. When there are two or more configured replicas, the Operator runs the Alertmanager instances in high-availability mode.
+
+
+										The resource defines via label and namespace selectors which `AlertmanagerConfig` objects should be associated to the deployed Alertmanager instances.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -17444,7 +17452,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -17464,7 +17472,17 @@ prometheusOperator: {
 				versions: [{
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "PodMonitor defines monitoring for a set of pods."
+						description: """
+										The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods.
+										Among other things, it allows to specify:
+										* The pods to scrape via label selectors.
+										* The container ports to scrape.
+										* Authentication credentials to use.
+										* Target and metric relabeling.
+
+
+										`Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -17577,8 +17595,8 @@ prometheusOperator: {
 									}
 									namespaceSelector: {
 										description: """
-														Selector to select which namespaces the Kubernetes `Pods` objects
-														are discovered from.
+														`namespaceSelector` defines in which namespace(s) Prometheus should discover the pods.
+														By default, the pods are discovered in the same namespace as the `PodMonitor` object but it is possible to select pods across different/all namespaces.
 														"""
 										properties: {
 											any: {
@@ -17597,7 +17615,7 @@ prometheusOperator: {
 										type: "object"
 									}
 									podMetricsEndpoints: {
-										description: "List of endpoints part of this PodMonitor."
+										description: "Defines how to scrape metrics from the selected pods."
 										items: {
 											description: """
 															PodMetricsEndpoint defines an endpoint serving Prometheus metrics to be scraped by
@@ -18448,7 +18466,7 @@ prometheusOperator: {
 										"x-kubernetes-list-type": "set"
 									}
 									selector: {
-										description: "Label selector to select the Kubernetes `Pod` objects."
+										description: "Label selector to select the Kubernetes `Pod` objects to scrape metrics from."
 										properties: {
 											matchExpressions: {
 												description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -18527,7 +18545,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -18547,7 +18565,17 @@ prometheusOperator: {
 				versions: [{
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "Probe defines monitoring for a set of static targets or ingresses."
+						description: """
+										The `Probe` custom resource definition (CRD) defines how to scrape metrics from prober exporters such as the [blackbox exporter](https://github.com/prometheus/blackbox_exporter).
+
+
+										The `Probe` resource needs 2 pieces of information:
+										* The list of probed addresses which can be defined statically or by discovering Kubernetes Ingress objects.
+										* The prober which exposes the availability of probed endpoints (over various protocols such HTTP, TCP, ICMP, ...) as Prometheus metrics.
+
+
+										`Prometheus` and `PrometheusAgent` objects select `Probe` objects using label and namespace selectors.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -19561,7 +19589,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -19613,7 +19641,12 @@ prometheusOperator: {
 					}]
 					name: "v1alpha1"
 					schema: openAPIV3Schema: {
-						description: "PrometheusAgent defines a Prometheus agent deployment."
+						description: """
+										The `PrometheusAgent` custom resource definition (CRD) defines a desired [Prometheus Agent](https://prometheus.io/blog/2021/11/16/agent/) setup to run in a Kubernetes cluster.
+
+
+										The CRD is very similar to the `Prometheus` CRD except for features which aren't available in agent mode like rule evaluation, persistent storage and Thanos sidecar.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -31553,7 +31586,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -31607,7 +31640,18 @@ prometheusOperator: {
 					}]
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "Prometheus defines a Prometheus deployment."
+						description: """
+										The `Prometheus` custom resource definition (CRD) defines a desired [Prometheus](https://prometheus.io/docs/prometheus) setup to run in a Kubernetes cluster. It allows to specify many options such as the number of replicas, persistent storage, and Alertmanagers where firing alerts should be sent and many more.
+
+
+										For each `Prometheus` resource, the Operator deploys one or several `StatefulSet` objects in the same namespace. The number of StatefulSets is equal to the number of shards which is 1 by default.
+
+
+										The resource defines via label and namespace selectors which `ServiceMonitor`, `PodMonitor`, `Probe` and `PrometheusRule` objects should be associated to the deployed Prometheus instances.
+
+
+										The Operator continuously reconciles the scrape and rules configuration and a sidecar container running in the Prometheus pods triggers a reload of the configuration when needed.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -45840,7 +45884,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -45858,7 +45902,12 @@ prometheusOperator: {
 				versions: [{
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "PrometheusRule defines recording and alerting rules for a Prometheus instance"
+						description: """
+										The `PrometheusRule` custom resource definition (CRD) defines [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) and [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) rules to be evaluated by `Prometheus` or `ThanosRuler` objects.
+
+
+										`Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -46000,7 +46049,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -48031,18 +48080,25 @@ prometheusOperator: {
 												filters: {
 													description: "Optional filters to limit the discovery process to a subset of the available resources."
 													items: {
-														description: "DockerFilter is the configuration to limit the discovery process to a subset of available resources."
+														description: "Filter name and value pairs to limit the discovery process to a subset of available resources."
 														properties: {
-															name: type: "string"
+															name: {
+																description: "Name of the Filter."
+																type:        "string"
+															}
 															values: {
+																description: "Value to filter on."
 																items: type: "string"
-																type: "array"
+																minItems: 1
+																type:     "array"
 															}
 														}
 														required: ["name", "values"]
 														type: "object"
 													}
 													type: "array"
+													"x-kubernetes-list-map-keys": ["name"]
+													"x-kubernetes-list-type": "map"
 												}
 												followRedirects: {
 													description: "Configure whether HTTP requests follow HTTP 3xx redirects."
@@ -48447,6 +48503,10 @@ prometheusOperator: {
 									dockerSwarmSDConfigs: {
 										description: "DockerswarmSDConfigs defines a list of Dockerswarm service discovery configurations."
 										items: {
+											description: """
+															DockerSwarmSDConfig configurations allow retrieving scrape targets from Docker Swarm engine.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dockerswarm_sd_config
+															"""
 											properties: {
 												authorization: {
 													description: "Authorization header configuration to authenticate against the target HTTP endpoint."
@@ -48579,14 +48639,14 @@ prometheusOperator: {
 																	Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
 																	"""
 													items: {
-														description: "Filter is the configuration to limit the discovery process to a subset of available resources."
+														description: "Filter name and value pairs to limit the discovery process to a subset of available resources."
 														properties: {
 															name: {
-																description: "Name is the key of the field to check against."
+																description: "Name of the Filter."
 																type:        "string"
 															}
 															values: {
-																description: "Values is the value or set of values to check for a match."
+																description: "Value to filter on."
 																items: type: "string"
 																minItems: 1
 																type:     "array"
@@ -48596,6 +48656,8 @@ prometheusOperator: {
 														type: "object"
 													}
 													type: "array"
+													"x-kubernetes-list-map-keys": ["name"]
+													"x-kubernetes-list-type": "map"
 												}
 												followRedirects: {
 													description: "Configure whether HTTP requests follow HTTP 3xx redirects."
@@ -49051,18 +49113,25 @@ prometheusOperator: {
 																	Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html
 																	"""
 													items: {
-														description: "EC2Filter is the configuration for filtering EC2 instances."
+														description: "Filter name and value pairs to limit the discovery process to a subset of available resources."
 														properties: {
-															name: type: "string"
+															name: {
+																description: "Name of the Filter."
+																type:        "string"
+															}
 															values: {
+																description: "Value to filter on."
 																items: type: "string"
-																type: "array"
+																minItems: 1
+																type:     "array"
 															}
 														}
 														required: ["name", "values"]
 														type: "object"
 													}
 													type: "array"
+													"x-kubernetes-list-map-keys": ["name"]
+													"x-kubernetes-list-type": "map"
 												}
 												port: {
 													description: """
@@ -51847,7 +51916,11 @@ prometheusOperator: {
 									lightSailSDConfigs: {
 										description: "LightsailSDConfigs defines a list of Lightsail service discovery configurations."
 										items: {
-											description: "TODO: Need to document that we will not be supporting the `_file` fields."
+											description: """
+															LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+															TODO: Need to document that we will not be supporting the `_file` fields.
+															"""
 											properties: {
 												accessKey: {
 													description: "AccessKey is the AWS API key."
@@ -52447,6 +52520,10 @@ prometheusOperator: {
 									linodeSDConfigs: {
 										description: "LinodeSDConfigs defines a list of Linode service discovery configurations."
 										items: {
+											description: """
+															LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+															"""
 											properties: {
 												authorization: {
 													description: "Authorization header configuration."
@@ -53345,6 +53422,102 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									ovhcloudSDConfigs: {
+										description: "OVHCloudSDConfigs defines a list of OVHcloud service discovery configurations."
+										items: {
+											description: """
+															OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+															"""
+											properties: {
+												applicationKey: {
+													description: "Access key to use. https://api.ovh.com."
+													minLength:   1
+													type:        "string"
+												}
+												applicationSecret: {
+													description: "SecretKeySelector selects a key of a Secret."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															default: ""
+															description: """
+																			Name of the referent.
+																			This field is effectively required, but due to backwards compatibility is
+																			allowed to be empty. Instances of this type with an empty value here are
+																			almost certainly wrong.
+																			TODO: Add other useful fields. apiVersion, kind, uid?
+																			More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																			TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																			"""
+															type: "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												consumerKey: {
+													description: "SecretKeySelector selects a key of a Secret."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															default: ""
+															description: """
+																			Name of the referent.
+																			This field is effectively required, but due to backwards compatibility is
+																			allowed to be empty. Instances of this type with an empty value here are
+																			almost certainly wrong.
+																			TODO: Add other useful fields. apiVersion, kind, uid?
+																			More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																			TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																			"""
+															type: "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												endpoint: {
+													description: "Custom endpoint to be used."
+													minLength:   1
+													type:        "string"
+												}
+												refreshInterval: {
+													description: "Refresh interval to re-read the resources list."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												service: {
+													allOf: [{
+														enum: ["VPS", "DedicatedServer"]
+													}, {
+														enum: ["VPS", "DedicatedServer"]
+													}]
+													description: "Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`."
+													type:        "string"
+												}
+											}
+											required: ["applicationKey", "applicationSecret", "consumerKey", "service"]
+											type: "object"
+										}
+										type: "array"
+									}
 									params: {
 										additionalProperties: {
 											items: type: "string"
@@ -53420,6 +53593,10 @@ prometheusOperator: {
 									puppetDBSDConfigs: {
 										description: "PuppetDBSDConfigs defines a list of PuppetDB service discovery configurations."
 										items: {
+											description: """
+															PuppetDBSDConfig configurations allow retrieving scrape targets from PuppetDB resources.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#puppetdb_sd_config
+															"""
 											properties: {
 												authorization: {
 													description: """
@@ -54062,6 +54239,351 @@ prometheusOperator: {
 										format:      "int64"
 										type:        "integer"
 									}
+									scalewaySDConfigs: {
+										description: "ScalewaySDConfigs defines a list of Scaleway instances and baremetal service discovery configurations."
+										items: {
+											description: """
+															ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services.
+															See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+															TODO: Need to document that we will not be supporting the `_file` fields.
+															"""
+											properties: {
+												accessKey: {
+													description: "Access key to use. https://console.scaleway.com/project/credentials"
+													minLength:   1
+													type:        "string"
+												}
+												apiURL: {
+													description: "API URL to use when doing the server listing requests."
+													pattern:     "^http(s)?://.+$"
+													type:        "string"
+												}
+												enableHTTP2: {
+													description: "Whether to enable HTTP2."
+													type:        "boolean"
+												}
+												followRedirects: {
+													description: "Configure whether HTTP requests follow HTTP 3xx redirects."
+													type:        "boolean"
+												}
+												nameFilter: {
+													description: "NameFilter specify a name filter (works as a LIKE) to apply on the server listing request."
+													minLength:   1
+													type:        "string"
+												}
+												noProxy: {
+													description: """
+																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																	that should be excluded from proxying. IP and domain names can
+																	contain port numbers.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type: "string"
+												}
+												port: {
+													description: "The port to scrape metrics from."
+													format:      "int32"
+													maximum:     65535
+													minimum:     0
+													type:        "integer"
+												}
+												projectID: {
+													description: "Project ID of the targets."
+													minLength:   1
+													type:        "string"
+												}
+												proxyConnectHeader: {
+													additionalProperties: {
+														items: {
+															description: "SecretKeySelector selects a key of a Secret."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: "array"
+													}
+													description: """
+																	ProxyConnectHeader optionally specifies headers to send to
+																	proxies during CONNECT requests.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxyFromEnvironment: {
+													description: """
+																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+																	If unset, Prometheus uses its default value.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													type: "boolean"
+												}
+												proxyUrl: {
+													description: """
+																	`proxyURL` defines the HTTP proxy server to use.
+
+
+																	It requires Prometheus >= v2.43.0.
+																	"""
+													pattern: "^http(s)?://.+$"
+													type:    "string"
+												}
+												refreshInterval: {
+													description: "Refresh interval to re-read the list of instances."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												role: {
+													description: "Service of the targets to retrieve. Must be `Instance` or `Baremetal`."
+													enum: ["Instance", "Baremetal"]
+													type: "string"
+												}
+												secretKey: {
+													description: "Secret key to use when listing targets."
+													properties: {
+														key: {
+															description: "The key of the secret to select from.  Must be a valid secret key."
+															type:        "string"
+														}
+														name: {
+															default: ""
+															description: """
+																			Name of the referent.
+																			This field is effectively required, but due to backwards compatibility is
+																			allowed to be empty. Instances of this type with an empty value here are
+																			almost certainly wrong.
+																			TODO: Add other useful fields. apiVersion, kind, uid?
+																			More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																			TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																			"""
+															type: "string"
+														}
+														optional: {
+															description: "Specify whether the Secret or its key must be defined"
+															type:        "boolean"
+														}
+													}
+													required: ["key"]
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												tagsFilter: {
+													description: "TagsFilter specify a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request."
+													items: type: "string"
+													minItems: 1
+													type:     "array"
+												}
+												tlsConfig: {
+													description: "TLS configuration to use on every scrape request"
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							TODO: Add other useful fields. apiVersion, kind, uid?
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					TODO: Add other useful fields. apiVersion, kind, uid?
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												zone: {
+													description: "Zone is the availability zone of your targets (e.g. fr-par-1)."
+													minLength:   1
+													type:        "string"
+												}
+											}
+											required: ["accessKey", "projectID", "role", "secretKey"]
+											type: "object"
+										}
+										type: "array"
+									}
 									scheme: {
 										description: """
 														Configures the protocol scheme used for requests.
@@ -54341,7 +54863,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -54361,7 +54883,17 @@ prometheusOperator: {
 				versions: [{
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "ServiceMonitor defines monitoring for a set of services."
+						description: """
+										The `ServiceMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of services.
+										Among other things, it allows to specify:
+										* The services to scrape via label selectors.
+										* The container ports to scrape.
+										* Authentication credentials to use.
+										* Target and metric relabeling.
+
+
+										`Prometheus` and `PrometheusAgent` objects select `ServiceMonitor` objects using label and namespace selectors.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -54418,7 +54950,11 @@ prometheusOperator: {
 										type:    "string"
 									}
 									endpoints: {
-										description: "List of endpoints part of this ServiceMonitor."
+										description: """
+														List of endpoints part of this ServiceMonitor.
+														Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects.
+														In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
+														"""
 										items: {
 											description: """
 															Endpoint defines an endpoint serving Prometheus metrics to be scraped by
@@ -55299,8 +55835,8 @@ prometheusOperator: {
 									}
 									namespaceSelector: {
 										description: """
-														Selector to select which namespaces the Kubernetes `Endpoints` objects
-														are discovered from.
+														`namespaceSelector` defines in which namespace(s) Prometheus should discover the services.
+														By default, the services are discovered in the same namespace as the `ServiceMonitor` object but it is possible to select pods across different/all namespaces.
 														"""
 										properties: {
 											any: {
@@ -55366,7 +55902,7 @@ prometheusOperator: {
 										"x-kubernetes-list-type": "set"
 									}
 									selector: {
-										description: "Label selector to select the Kubernetes `Endpoints` objects."
+										description: "Label selector to select the Kubernetes `Endpoints` objects to scrape metrics from."
 										properties: {
 											matchExpressions: {
 												description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -55435,7 +55971,7 @@ prometheusOperator: {
 										type:   "integer"
 									}
 								}
-								required: ["selector"]
+								required: ["endpoints", "selector"]
 								type: "object"
 							}
 						}
@@ -55453,7 +55989,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.15.0"
-					"operator.prometheus.io/version":        "0.74.0"
+					"operator.prometheus.io/version":        "0.75.1"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -55507,7 +56043,15 @@ prometheusOperator: {
 					}]
 					name: "v1"
 					schema: openAPIV3Schema: {
-						description: "ThanosRuler defines a ThanosRuler deployment."
+						description: """
+										The `ThanosRuler` custom resource definition (CRD) defines a desired [Thanos Ruler](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md) setup to run in a Kubernetes cluster.
+
+
+										A `ThanosRuler` instance requires at least one compatible Prometheus API endpoint (either Thanos Querier or Prometheus services).
+
+
+										The resource defines via label and namespace selectors which `PrometheusRule` objects should be associated to the deployed Thanos Ruler instances.
+										"""
 						properties: {
 							apiVersion: {
 								description: """
@@ -64818,7 +65362,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -64837,18 +65381,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.74.0"
+						"app.kubernetes.io/version":   "0.75.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.74.0"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.75.1"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.74.0"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.75.1"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -64917,7 +65461,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -65060,7 +65604,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -65088,7 +65632,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -65102,7 +65646,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -65119,7 +65663,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.74.0"
+				"app.kubernetes.io/version":   "0.75.1"
 			}
 		}
 	}
