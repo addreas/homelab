@@ -10,7 +10,7 @@
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
     options = [ "discard" "nofail" ];
-  }
+  };
 
   environment.systemPackages = with pkgs; [ btrfs-progs ];
 

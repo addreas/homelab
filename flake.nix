@@ -4,8 +4,8 @@
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
-  inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.flakefiles.inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  # inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
+  # inputs.flakefiles.inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
   inputs.raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
   nixConfig = {
@@ -26,7 +26,6 @@
           "${self}/nix/machines/${name}"
           {
             environment.etc."nixos-source".source = self;
-            networking.hostName = name;
           }
           flakefiles.nixosModules.addem-basic
           flakefiles.nixosModules.base
@@ -76,11 +75,11 @@
       # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5
       # nix build .#nixosConfigurations.pinas.config.system.build.sdImage
       # zstdcat result/sd-image/nixos-sd-image-*-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress oflag=sync
-      nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
-      nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
-        system = arm64;
-        modules = [ "${self}/nix/machines/radnas" ];
-      };
+      # nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
+      # nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
+      #   system = arm64;
+      #   modules = [ "${self}/nix/machines/radnas" ];
+      # };
       # nixosConfigurations.radnas = machine arm64 "radnas" [ ];
 
     };
