@@ -9,10 +9,11 @@ k: HelmRelease: kured: spec: {
 	values: {
 		metrics: create: true
 		configuration: {
+			forceReboot:  true
+			drainTimeout: "5m"
 			rebootDays: ["sa"]
 			startTime:    "08:00"
 			endTime:      "22:00"
-			notifyUrl:    "generic+http://hass.default.svc.cluster.local:8123/api/webhook/kured-reboot"
 			rebootMethod: "signal"
 		}
 		containerSecurityContext: {
