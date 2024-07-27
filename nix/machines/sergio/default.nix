@@ -77,6 +77,7 @@
   systemd.network.networks.lan.DHCP = "yes";
   networking.dhcpcd.enable = false;
   services.resolved.dnssec = "false"; # dnssec fails for localdomain and breaks stuff
+  services.resolved.fallbackDns = [];
   networking.dhcpcd.allowInterfaces = [ "eno1" ];
   systemd.network.wait-online.anyInterface = true;
 
