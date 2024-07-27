@@ -87,7 +87,49 @@ in
     };
 
   services.btrfs.autoScrub.enable = true;
-  services.btrfs.autoScrub.fileSystems = [ "/" "/mnt/data" ];
+  services.btrfs.autoScrub.fileSystems = [ "/" "/mnt/data" "/mnt/solid-data" ];
+
+  services.btrbk.instances.btrbk.onCalendar = "hourly";
+  services.btrbk.instances.btrbk.settings = {
+    snapshot_preserve_min = "1d";
+
+    target_preserve_min = "1d";
+    target_preserve = "30d";
+
+    snapshot_dir = ".snapshots";
+    snapshot_create = "onchange";
+
+    ssh_user = "btrbk";
+
+    volume = {
+      "/mnt/data" = {
+        target = {
+          "ssh://pinas.localdomain/mnt/data/sergio/mnt/data" = { };
+          "ssh://radnas.localdomain/mnt/data/sergio/mnt/data" = { };
+        };
+        subvolume = {
+          "pictures" = { };
+          "backups" = { };
+          "longhorn-backup" = { };
+        };
+      };
+
+      "/mnt/solid-data" = {
+        target = {
+          "ssh://pinas.localdomain/mnt/data/sergio/mnt/solid-data" = { };
+          "ssh://radnas.localdomain/mnt/data/sergio/mnt/solid-data" = { };
+        };
+        subvolume = {
+          "victoriametrics" = { };
+          "loki" = { };
+          "plex-config" = { };
+          "sonarr-config" = { };
+          "radarr-config" = { };
+          "jackett-config" = { };
+        };
+      };
+    };
+  };
 
   networking.firewall.allowedTCPPorts = [
     111 # rpcbind

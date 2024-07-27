@@ -75,8 +75,13 @@
 
       # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5
       # nix build .#nixosConfigurations.pinas.config.system.build.sdImage
-      # zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress
+      # zstdcat result/sd-image/nixos-sd-image-*-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress oflag=sync
       nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
-      nixosConfigurations.radnas = machine arm64 "radnas" [ ];
+      nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
+        system = arm64;
+        modules = [ "${self}/nix/machines/radnas" ];
+      };
+      # nixosConfigurations.radnas = machine arm64 "radnas" [ ];
+
     };
 }
