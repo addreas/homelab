@@ -105,7 +105,7 @@ in
       "/mnt/data" = {
         target = {
           "ssh://pinas.localdomain/mnt/data/sergio/mnt/data" = { };
-          "ssh://radnas.localdomain/mnt/data/sergio/mnt/data" = { };
+          # "ssh://radnas.localdomain/mnt/data/sergio/mnt/data" = { };
         };
         subvolume = {
           "pictures" = { };
@@ -117,7 +117,7 @@ in
       "/mnt/solid-data" = {
         target = {
           "ssh://pinas.localdomain/mnt/data/sergio/mnt/solid-data" = { };
-          "ssh://radnas.localdomain/mnt/data/sergio/mnt/solid-data" = { };
+          # "ssh://radnas.localdomain/mnt/data/sergio/mnt/solid-data" = { };
         };
         subvolume = {
           "victoriametrics" = { };
