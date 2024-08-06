@@ -8,7 +8,7 @@ require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	github.com/bitnami-labs/sealed-secrets v0.24.5
 	github.com/cert-manager/cert-manager v1.15.1
-	github.com/cilium/cilium v1.15.6
+	github.com/cilium/cilium v1.15.7
 	github.com/fluxcd/helm-controller/api v1.0.1
 	github.com/fluxcd/kustomize-controller/api v1.3.0
 	github.com/fluxcd/notification-controller/api v1.3.0
@@ -16,10 +16,10 @@ require (
 	github.com/grafana-operator/grafana-operator/v5 v5.6.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.0
 	github.com/ory/hydra-maester v0.0.34
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.75.0
-	k8s.io/api v0.30.2
-	k8s.io/apimachinery v0.30.2
-	k8s.io/kube-aggregator v0.30.2
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.75.1
+	k8s.io/api v0.30.3
+	k8s.io/apimachinery v0.30.3
+	k8s.io/kube-aggregator v0.30.3
 )
 
 require (
