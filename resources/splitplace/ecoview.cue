@@ -1,31 +1,6 @@
 package kube
 
-k: Ingress: ecoview: {
-	_authproxy: true
-	spec: {
-		rules: [{
-			host: "ecoview.jdahl.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "ecoview"
-					port: name: "http"
-				}
-			}]
-		}, {
-			host: "ecoview.addem.se"
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "ecoview"
-					port: name: "http"
-				}
-			}]
-		}]
-	}
-}
+k: Ingress: ecoview: _authproxy: true
 
 k: Service: ecoview: spec: ports: [{
 	name: "http"
