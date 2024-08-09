@@ -13,6 +13,16 @@ k: Ingress: ecoview: {
 					port: name: "http"
 				}
 			}]
+		}, {
+			host: "ecoview.addem.se"
+			http: paths: [{
+				path:     "/"
+				pathType: "Prefix"
+				backend: service: {
+					name: "ecoview"
+					port: name: "http"
+				}
+			}]
 		}]
 	}
 }

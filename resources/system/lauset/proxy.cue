@@ -22,6 +22,7 @@ k: Deployment: "authproxy": spec: template: spec: containers: [{
 		"--http-address=0.0.0.0:4180",
 		"--client-id=$(CLIENT_ID)",
 		"--client-secret=$(CLIENT_SECRET)",
+		"--cookie-domain=.addem.se",
 		"--cookie-secret=$(CLIENT_SECRET)234567",
 		"--cookie-secure",
 		"--cookie-samesite=strict",
