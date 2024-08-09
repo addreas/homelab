@@ -32,7 +32,7 @@ k: Deployment: "authproxy": spec: template: spec: containers: [{
 		"--prompt=login",
 		"--provider=oidc",
 		"--upstream=static://202",
-		"--whitelist-domain=.addem.se",
+		"--whitelist-domain=.addem.se,.jdahl.se",
 	]
 }]
 
