@@ -1,6 +1,7 @@
 package kube
 
 k: Ingress: ecoview: {
+	_authproxy: true
 	spec: {
 		rules: [{
 			host: "ecoview.jdahl.se"
