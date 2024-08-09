@@ -23,6 +23,20 @@ k: Service: ecoview: spec: ports: [{
 k: StatefulSet: "ecoview": spec: {
 	template: spec: {
 		imagePullSecrets: [{name: "regcred"}]
+		initContainers: [{
+			name:            "migrations"
+			image:           "ghcr.io/jonasdahl/ecoview:main"
+			imagePullPolicy: "Always"
+			command: ["npm", "run", "prisma", "migrate", "deploy"]
+			volumeMounts: [{
+				name:      "data"
+				mountPath: "/var/lib/data"
+			}]
+			env: [{
+				name:  "DATABASE_URL"
+				value: "file:/var/lib/data/prod.db"
+			}]
+		}]
 		containers: [{
 			image:           "ghcr.io/jonasdahl/ecoview:main"
 			imagePullPolicy: "Always"
