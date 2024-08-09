@@ -46,9 +46,9 @@ k: StatefulSet: "ecoview": spec: {
 					path: "/"
 					port: 3000
 				}
-				initialDelaySeconds: 10
+				initialDelaySeconds: 2
 				failureThreshold:    6
-				periodSeconds:       10
+				periodSeconds:       5
 			}
 			livenessProbe: {
 				httpGet: {
