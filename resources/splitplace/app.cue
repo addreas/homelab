@@ -26,8 +26,7 @@ let baseContainer = {
 	envFrom: [
 		{secretRef: name: "splitplace-postgres-secrets"},
 		{secretRef: name: "splitplace-app-secrets"},
-		{secretRef: name: "splitplace-github-oauth-secrets"},
-		{secretRef: name: "splitplace-google-oauth-secrets"},
+		{secretRef: name: "auth0"},
 	]
 	env: [{
 		name:  "DATABASE_URL"
