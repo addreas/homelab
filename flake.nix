@@ -2,6 +2,7 @@
   description = "Just a bunch of stuff";
 
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs.nixpkgs-git.url = "github:NixOS/nixpkgs";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
   # inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +16,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, flakefiles, raspberry-pi-nix, ... }:
+  outputs = { self, nixpkgs, nixpkgs-git, flakefiles, raspberry-pi-nix, ... }:
     let
       x86 = "x86_64-linux";
       arm64 = "aarch64-linux";
@@ -46,6 +47,9 @@
 
       nixosConfigurations.sergio = machine x86 "sergio" [
         flakefiles.nixosModules.nix-builder
+        {
+          services.harmonia.package =  nixpkgs-git.legacyPackages.${x86}.harmonia;
+        }
 
         # "${self}/nix/packages/pixie-api/module.nix"
         # {

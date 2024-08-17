@@ -217,13 +217,28 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs-git": {
       "locked": {
-        "lastModified": 1723175592,
-        "narHash": "sha256-M0xJ3FbDUc4fRZ84dPGx5VvgFsOzds77KiBMW/mMTnI=",
+        "lastModified": 1723888913,
+        "narHash": "sha256-SvxqjhzwX6Hwyaa7TsxDOoUJ1itC/jYrk0m+veYhECI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5e0ca22929f3342b19569b21b2f3462f053e497b",
+        "rev": "b71fed44d1adbeb55873c3e0327be9526df7663a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1723637854,
+        "narHash": "sha256-med8+5DSWa2UnOqtdICndjDAEjxr5D7zaIiK4pn0Q7c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c3aa7b8938b17aebd2deecf7be0636000d62a2b9",
         "type": "github"
       },
       "original": {
@@ -262,11 +277,11 @@
         "u-boot-src": "u-boot-src"
       },
       "locked": {
-        "lastModified": 1722041481,
-        "narHash": "sha256-MEEXEZNYqtpds75ZnrMZiTA3KlTvpxftOaSnhjUFAJI=",
+        "lastModified": 1723755330,
+        "narHash": "sha256-kmJPdoDIhbGz6J7mIUPK6JYJLY6YDkeZPdtzpWPCk0I=",
         "owner": "tstat",
         "repo": "raspberry-pi-nix",
-        "rev": "953aca9361ca8b29ccc5bc897fd569f3f28069dd",
+        "rev": "6d61a9b18b1d3786ebd1cc73b7a3b37959bf4557",
         "type": "github"
       },
       "original": {
@@ -279,6 +294,7 @@
       "inputs": {
         "flakefiles": "flakefiles",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-git": "nixpkgs-git",
         "raspberry-pi-nix": "raspberry-pi-nix"
       }
     },
