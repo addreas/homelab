@@ -21,6 +21,11 @@ let _cue_agent_yaml = {
 			type:            "journald"
 			journalctl_path: "/host/run/current-system/sw/bin/journalctl"
 		}
+		syslog: {
+			type:    "syslog"
+			address: "0.0.0.0:6514"
+			mode:    "tcp"
+		}
 		host_metrics: {
 			filesystem: {
 				devices: excludes: ["binfmt_misc"]
@@ -112,6 +117,13 @@ let _cue_agent_yaml = {
 				stream:            "{{ _TRANSPORT }}"
 				exe:               "{{ _EXE }}"
 				syslog_identifier: "{{ SYSLOG_IDENTIFIER }}"
+			}
+		}
+		loki_syslog: loki & {
+			inputs: ["syslog"]
+			encoding: codec: "json"
+			labels: {
+				job: "vector/syslog"
 			}
 		}
 	}
