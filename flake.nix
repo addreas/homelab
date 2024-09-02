@@ -2,27 +2,39 @@
   description = "Just a bunch of stuff";
 
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-  inputs.nixpkgs-git.url = "github:NixOS/nixpkgs";
+  # inputs.nixpkgs-git.url = "github:NixOS/nixpkgs";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
   # inputs.flakefiles.inputs.nixpkgs.follows = "nixpkgs";
   # inputs.flakefiles.inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs.raspberry-pi-nix.url = "github:tstat/raspberry-pi-nix";
+  inputs.raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+  inputs.rockchip.url = "github:nabam/nixos-rockchip";
+
   nixConfig = {
-    extra-substituters = [ "https://raspberry-pi-nix.cachix.org" ];
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+      "https://nabam-nixos-rockchip.cachix.org"
+    ];
     extra-trusted-public-keys = [
-      "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM"
     ];
   };
 
-  outputs = { self, nixpkgs, nixpkgs-git, flakefiles, raspberry-pi-nix, ... }:
+  outputs = { self, nixpkgs, flakefiles, raspberry-pi-nix, rockchip, ... }:
     let
       x86 = "x86_64-linux";
       arm64 = "aarch64-linux";
 
       machine = system: name: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {
+          pkgsCrossArm = import nixpkgs {
+            localSystem = x86;
+            crossSystem = arm64;
+          };
+        };
         modules = [
           "${self}/nix/machines/${name}"
           {
@@ -47,9 +59,6 @@
 
       nixosConfigurations.sergio = machine x86 "sergio" [
         flakefiles.nixosModules.nix-builder
-        {
-          services.harmonia.package =  nixpkgs-git.legacyPackages.${x86}.harmonia;
-        }
 
         # "${self}/nix/packages/pixie-api/module.nix"
         # {
@@ -79,12 +88,23 @@
       # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5
       # nix build .#nixosConfigurations.pinas.config.system.build.sdImage
       # zstdcat result/sd-image/nixos-sd-image-*-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress oflag=sync
-      # nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
-      # nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
-      #   system = arm64;
-      #   modules = [ "${self}/nix/machines/radnas" ];
-      # };
-      # nixosConfigurations.radnas = machine arm64 "radnas" [ ];
+      nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
+
+      # https://github.com/ryan4yin/nixos-rk3588?tab=readme-ov-file#references
+      nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
+        system = arm64;
+        modules = [
+          rockchip.nixosModules.sdImageRockchip
+          "${self}/nix/machines/radnas"
+        ];
+        specialArgs = {
+          pkgsCrossArm = import nixpkgs {
+            localSystem = x86;
+            crossSystem = arm64;
+          };
+        };
+      };
+      # nixosConfigurations.radnas = machine arm64 "radnas" [ rockchip.nixosModules.sdImageRockchip ];
 
     };
 }

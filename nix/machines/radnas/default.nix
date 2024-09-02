@@ -3,26 +3,37 @@
   imports = [
     ./minimal.nix
     ./sd-image.nix
+    # ./rockchip.nix
   ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "arm-trusted-firmware-rk3399" ];
+
+  # boot.initrd.kernelModules = [
+  #   "rockchip_rga"
+  #   "rockchip_saradc"
+  #   "rockchip_thermal"
+  #   "rockchipdrm"
+  # ];
+
+  # boot.kernelParams = [
+  #   "console=tty0"
+  #   "console=ttyFIQ0,1500000n8"
+  #   "console=ttyAML0,115200n8"
+  #   "console=ttyS2,1500000n8"
+  #   "console=ttyS0,1500000n8"
+  #   "coherent_pool=2M"
+  #   "irqchip.gicv3_pseudo_nmi=0"
+  #   "cgroup_enable=cpuset"
+  #   "cgroup_memory=1"
+  #   "cgroup_enable=memory"
+  #   "swapaccount=1"
+  # ];
+
+  # hardware.enableRedistributableFirmware = true;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   system.stateVersion = "24.05";
   security.sudo.wheelNeedsPassword = false;
-
-  boot.kernelParams = [
-    "console=tty0"
-    "console=ttyFIQ0,1500000n8"
-    "console=ttyAML0,115200n8"
-    "console=ttyS2,1500000n8"
-    "console=ttyS0,1500000n8"
-    "coherent_pool=2M"
-    "irqchip.gicv3_pseudo_nmi=0"
-    "cgroup_enable=cpuset"
-    "cgroup_memory=1"
-    "cgroup_enable=memory"
-    "swapaccount=1"
-  ];
-  
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   fileSystems."/mnt/data" = {
     # sudo mkfs.btrfs -L data -d raid1 -m raid1 /dev/sd{a,b}

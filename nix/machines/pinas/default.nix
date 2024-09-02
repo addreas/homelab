@@ -3,6 +3,11 @@
   system.stateVersion = "24.05";
   security.sudo.wheelNeedsPassword = false;
 
+  raspberry-pi-nix.board = "bcm2712";
+
+  networking.hostName = "pinas";
+  networking.domain = "localdomain";
+
   services.tailscale.enable = true;
 
   fileSystems."/mnt/data" = {

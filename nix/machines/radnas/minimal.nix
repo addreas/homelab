@@ -1,5 +1,5 @@
-{modulesPath, ...}: {
-  
+{ modulesPath, ... }: {
+
   imports = [
     "${modulesPath}/profiles/headless.nix"
     "${modulesPath}/profiles/minimal.nix"
@@ -9,13 +9,14 @@
   # boot.initrd.includeDefaultModules = false;
   # boot.initrd.kernelModules = [ "ext4" ... ];
   disabledModules =
-    [ "${modulesPath}/profiles/all-hardware.nix"
+    [
+      "${modulesPath}/profiles/all-hardware.nix"
       "${modulesPath}/profiles/base.nix"
     ];
 
   # disable useless software
-  environment.defaultPackages = [];
-  xdg.icons.enable  = false;
-  xdg.mime.enable   = false;
+  environment.defaultPackages = [ ];
+  xdg.icons.enable = false;
+  xdg.mime.enable = false;
   xdg.sounds.enable = false;
 }
