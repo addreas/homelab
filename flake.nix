@@ -27,14 +27,14 @@
       x86 = "x86_64-linux";
       arm64 = "aarch64-linux";
 
+      pkgsCrossArm = import nixpkgs {
+        localSystem = x86;
+        crossSystem = arm64;
+      };
+
       machine = system: name: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {
-          pkgsCrossArm = import nixpkgs {
-            localSystem = x86;
-            crossSystem = arm64;
-          };
-        };
+        specialArgs = { inherit pkgsCrossArm; };
         modules = [
           "${self}/nix/machines/${name}"
           {
@@ -55,6 +55,32 @@
       # nixosConfigurations.frr-test = nixpkgs.lib.nixosSystem {
       #   inherit system;
       #   modules = [ ./nix/machines/frr-test/configuration.nix ];
+      # };
+
+      # packages.${x86}.rkbinTools = let
+      #   pkgs = import nixpkgs { system = x86; };
+      # in
+      # pkgs.stdenvNoCC.mkDerivation {
+      #   name = "rkbin-tools";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "rockchip-linux";
+      #     repo = "rkbin";
+      #     rev = "b4558da0860ca48bf1a571dd33ccba580b9abe23";
+      #     sha256 = "KUZQaQ+IZ0OynawlYGW99QGAOmOrGt2CZidI3NTxFw8=";
+      #   };
+
+      #   nativeBuildInputs = with pkgs; [
+      #     autoPatchelfHook
+      #     gcc-unwrapped
+      #     libusb
+      #   ];
+
+      #   # buildInputs = [ python3 ];
+
+      #   installPhase = ''
+      #     mkdir $out
+      #     cp -r tools/* $out
+      #   '';
       # };
 
       nixosConfigurations.sergio = machine x86 "sergio" [
@@ -91,6 +117,9 @@
       nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
 
       # https://github.com/ryan4yin/nixos-rk3588?tab=readme-ov-file#references
+      # nix build .#nixosConfigurations.radnas.config.system.build.sdImage
+      # sudo dd if=$(echo result/sd-image/nixos-sd-image-*.img) of=/dev/sda bs=10M status=progress conv=fsync oflag=sync
+
       nixosConfigurations.radnas = nixpkgs.lib.nixosSystem {
         system = arm64;
         modules = [
@@ -98,10 +127,8 @@
           "${self}/nix/machines/radnas"
         ];
         specialArgs = {
-          pkgsCrossArm = import nixpkgs {
-            localSystem = x86;
-            crossSystem = arm64;
-          };
+          inherit pkgsCrossArm;
+          # rkbinTools = self.packages.${x86}.rkbinTools;
         };
       };
       # nixosConfigurations.radnas = machine arm64 "radnas" [ rockchip.nixosModules.sdImageRockchip ];
