@@ -14,9 +14,10 @@ k: StatefulSet: "yanzi-gateway": spec: {
 				name:      "dev-tun"
 			}]
 			securityContext: {
-				capabilities: add: ["NET_ADMIN"]
-				runAsGroup: 0
-				runAsUser:  0
+				privileged:               true
+				allowPrivilegeEscalation: true
+				runAsGroup:               0
+				runAsUser:                0
 			}
 			resources: limits: "addem.se/dev_yanzi_serial_radio": "1"
 		}, {

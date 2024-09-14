@@ -30,11 +30,11 @@ in {
     # https://docs.u-boot.org/en/latest/board/rockchip/rockchip.html
     # https://github.com/Kwiboo/u-boot-rockchip/blob/73f8efaab35d9302c2b43b4546030da85c6d6a81/doc/board/rockchip/rockchip.rst
     # BL31 = "${rkbin}/bin/rk33/rk3399_bl31_v1.36.elf";
-    # ROCKCHIP_TPL = "${rkbin}/bin/rk33/rk3399_ddr_666MHz_v1.30.bin";
+    ROCKCHIP_TPL = "${rkbin}/bin/rk33/rk3399_ddr_800MHz_v1.30.bin";
 
     # https://github.com/nabam/nixos-rockchip/blob/main/pkgs/uboot-rockchip.nix
     filesToInstall = [ "u-boot-rockchip.bin" ];
-    extraPatches = [ ./ramdisk_addr_r.patch ];
+    # extraPatches = [ ./ramdisk_addr_r.patch ];
     extraConfig = ''
       CONFIG_LOG=y
       CONFIG_LOG_MAX_LEVEL=7
@@ -56,6 +56,16 @@ in {
     #   dd if=u-boot.img of=u-boot-rockchip.bin bs=512 seek=16384
     #   dd if=trust.img of=u-boot-rockchip.bin bs=512 seek=24576
     # '';
+
+    # https://opensource.rock-chips.com/images/d/d7/Rockchip_RK3399_Datasheet_V2.1-20200323.pdf
+    # http://cholla.mmto.org/rk3399/really_bare.html
+    # https://stikonas.eu/wordpress/tag/rk3399/
+    # https://opensource.rock-chips.com/wiki_U-Boot
+    # https://opensource.rock-chips.com/wiki_Boot_option
+    # https://opensource.rock-chips.com/wiki_Rockusb#Maskrom_mode
+    # https://opensource.rock-chips.com/wiki_Partitions
+    # https://docs.u-boot.org/en/latest/board/rockchip/rockchip.html#flashing
+
   };
   boot.loader.generic-extlinux-compatible.enable = true;
   # boot.kernelPackages = with pkgsCrossArm.linuxKernel; packagesFor
