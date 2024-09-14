@@ -51,12 +51,7 @@ in
   services.samba.enable = true;
   services.samba-wsdd.enable = true;
   services.samba.openFirewall = true;
-  services.samba.extraConfig = ''
-    guest account = nobody
-    map to guest = Bad User
-  '';
-
-  services.samba.shares =
+  services.samba.settings =
     let
       simpleShare = path: {
         "path" = path;
@@ -67,6 +62,10 @@ in
       };
     in
     {
+      global = {
+        "guest account" = "nobody";
+        "map to guest" = "Bad User";
+      };
       videos = simpleShare "/mnt/videos";
       pictures = simpleShare "/mnt/pictures";
       backups = simpleShare "/mnt/backups";

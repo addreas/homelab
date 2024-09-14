@@ -34,7 +34,7 @@
 
       machine = system: name: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit pkgsCrossArm; };
+        specialArgs = { inherit pkgsCrossArm nixpkgs; };
         modules = [
           "${self}/nix/machines/${name}"
           {
