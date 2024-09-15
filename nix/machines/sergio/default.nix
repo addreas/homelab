@@ -50,7 +50,7 @@
     cd /home/addem/github.com/addreas/homelab
     ${pkgs.git}/bin/git restore .
     ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
-    ${pkgs.nix} flake update
+    ${pkgs.nix}/bin/nix flake update
   '';
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPost = pkgs.writeShellScript "flake-push" ''
     cd /home/addem/github.com/addreas/homelab
