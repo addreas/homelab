@@ -44,13 +44,13 @@
     enable = true;
     flake = "/home/addem/github.com/addreas/homelab";
     dates = "Sat,Sun 04:40";
-    flags = [ "--update-input" "nixpkgs" ];
     operation = "boot";
   };
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
     cd /home/addem/github.com/addreas/homelab
     ${pkgs.git}/bin/git restore .
     ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
+    ${pkgs.nix} flake update
   '';
   systemd.services."nixos-upgrade".serviceConfig.ExecStartPost = pkgs.writeShellScript "flake-push" ''
     cd /home/addem/github.com/addreas/homelab
