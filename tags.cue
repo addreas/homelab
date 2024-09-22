@@ -4,7 +4,7 @@ goModVersions: {
 	"github.com/addreas/cue-controller/api":                                  "v1.0.0-rc1-cue"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.24.5"
 	"github.com/cert-manager/cert-manager":                                   "v1.15.1"
-	"github.com/cilium/cilium":                                               "v1.15.6"
+	"github.com/cilium/cilium":                                               "v1.16.1"
 	"github.com/fluxcd/helm-controller/api":                                  "v1.0.1"
 	"github.com/fluxcd/kustomize-controller/api":                             "v1.3.0"
 	"github.com/fluxcd/notification-controller/api":                          "v1.3.0"

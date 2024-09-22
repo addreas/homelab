@@ -52,6 +52,13 @@ _#annoNs: "sealedsecrets.bitnami.com/"
 	// +optional
 	type?: apiv1.#SecretType @go(Type) @protobuf(3,bytes,opt,casttype=SecretType)
 
+	// Immutable, if set to true, ensures that data stored in the Secret cannot
+	// be updated (only object metadata can be modified).
+	// If not set to true, the field can be modified at any time.
+	// Defaulted to nil.
+	// +optional
+	immutable?: null | bool @go(Immutable,*bool) @protobuf(5,varint,opt)
+
 	// Keys that should be templated using decrypted data.
 	// +optional
 	// +nullable

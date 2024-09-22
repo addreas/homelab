@@ -189,7 +189,6 @@ package v1
 	"x-kubernetes-map-type"?: null | string @go(XMapType,*string) @protobuf(43,bytes,opt,name=xKubernetesMapType)
 
 	// x-kubernetes-validations describes a list of validation rules written in the CEL expression language.
-	// This field is an alpha-level. Using this field requires the feature gate `CustomResourceValidationExpressions` to be enabled.
 	// +patchMergeKey=rule
 	// +patchStrategy=merge
 	// +listType=map

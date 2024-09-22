@@ -31,6 +31,7 @@ package runtime
 #ContentTypeJSON:     "application/json"
 #ContentTypeYAML:     "application/yaml"
 #ContentTypeProtobuf: "application/vnd.kubernetes.protobuf"
+#ContentTypeCBOR:     "application/cbor"
 
 // RawExtension is used to hold extensions in external versions.
 //

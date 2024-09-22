@@ -16,8 +16,6 @@ import (
 // EndpointPolicyState defines the state of the Policy mode: "enforcing", "non-enforcing", "disabled"
 #EndpointPolicyState: string
 
-#EndpointStatusLogEntries: 5
-
 // ControllerStatusStatus is the detailed status section of a controller.
 #ControllerStatusStatus: {
 	"consecutive-failure-count"?: int64  @go(ConsecutiveFailureCount)

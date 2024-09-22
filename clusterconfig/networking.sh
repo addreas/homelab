@@ -6,7 +6,7 @@ helm repo update
 #    --namespace kube-system \
 #    -f cilium-values.yaml
 
-# helm upgrade cilium cilium/cilium --version 1.15.2 --namespace kube-system -f cilium-values.yaml
+# helm upgrade cilium cilium/cilium --version 1.16.1 --namespace kube-system -f cilium-values.yaml
 
 helm upgrade cilium cilium/cilium --version $(helm show chart cilium/cilium | yq -r .version) --namespace kube-system -f cilium-values.yaml
 

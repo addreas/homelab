@@ -45,16 +45,19 @@
 // listed in /etc/resolv.conf, or it can use a cgo-based resolver that calls C
 // library routines such as getaddrinfo and getnameinfo.
 //
-// By default the pure Go resolver is used, because a blocked DNS request consumes
-// only a goroutine, while a blocked C call consumes an operating system thread.
+// On Unix the pure Go resolver is preferred over the cgo resolver, because a blocked DNS
+// request consumes only a goroutine, while a blocked C call consumes an operating system thread.
 // When cgo is available, the cgo-based resolver is used instead under a variety of
 // conditions: on systems that do not let programs make direct DNS requests (OS X),
 // when the LOCALDOMAIN environment variable is present (even if empty),
 // when the RES_OPTIONS or HOSTALIASES environment variable is non-empty,
 // when the ASR_CONFIG environment variable is non-empty (OpenBSD only),
 // when /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the
-// Go resolver does not implement, and when the name being looked up ends in .local
-// or is an mDNS name.
+// Go resolver does not implement.
+//
+// On all systems (except Plan 9), when the cgo resolver is being used
+// this package applies a concurrent cgo lookup limit to prevent the system
+// from running out of system threads. Currently, it is limited to 500 concurrent lookups.
 //
 // The resolver decision can be overridden by setting the netdns value of the
 // GODEBUG environment variable (see package runtime) to go or cgo, as in:
@@ -69,6 +72,12 @@
 // to print debugging information about its decisions.
 // To force a particular resolver while also printing debugging information,
 // join the two settings by a plus sign, as in GODEBUG=netdns=go+1.
+//
+// The Go resolver will send an EDNS0 additional header with a DNS request,
+// to signal a willingness to accept a larger DNS packet size.
+// This can reportedly cause sporadic failures with the DNS server run
+// by some modems and routers. Setting GODEBUG=netedns0=0 will disable
+// sending the additional header.
 //
 // On macOS, if Go code that uses the net package is built with
 // -buildmode=c-archive, linking the resulting archive into a C program
@@ -173,6 +182,7 @@ _#timeoutError: {}
 
 // DNSError represents a DNS lookup error.
 #DNSError: {
+	UnwrapErr:   _ @go(,error)
 	Err:         string
 	Name:        string
 	Server:      string

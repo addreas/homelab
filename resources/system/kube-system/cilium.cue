@@ -5,7 +5,7 @@ let dummyMatch = {
 }
 
 k: CiliumLoadBalancerIPPool: "main": spec: {
-	cidrs: [{
+	blocks: [{
 		cidr: "192.168.10.0/24"
 	}]
 	serviceSelector: dummyMatch

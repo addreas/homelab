@@ -501,6 +501,7 @@ import (
 }
 
 // ServiceBackendPort is the service port being referenced.
+// +structType=atomic
 #ServiceBackendPort: {
 	// name is the name of the port on the Service.
 	// This is a mutually exclusive setting with "Number".

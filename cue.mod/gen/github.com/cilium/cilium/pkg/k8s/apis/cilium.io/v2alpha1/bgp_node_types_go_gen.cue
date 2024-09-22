@@ -18,6 +18,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	spec: #CiliumBGPNodeSpec @go(Spec)
 
 	// Status is the most recently observed status of the CiliumBGPNodeConfig.
+	// +kubebuilder:validation:Optional
 	status: #CiliumBGPNodeStatus @go(Status)
 }
 
@@ -123,10 +124,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #CiliumBGPNodeStatus: {
 	// BGPInstances is the status of the BGP instances on the node.
 	//
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	// +listType=map
 	// +listMapKey=name
-	bgpInstances: [...#CiliumBGPNodeInstanceStatus] @go(BGPInstances,[]CiliumBGPNodeInstanceStatus)
+	bgpInstances?: [...#CiliumBGPNodeInstanceStatus] @go(BGPInstances,[]CiliumBGPNodeInstanceStatus)
 }
 
 #CiliumBGPNodeInstanceStatus: {

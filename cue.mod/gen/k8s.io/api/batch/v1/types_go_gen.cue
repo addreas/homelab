@@ -334,8 +334,6 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// checked against the backoffLimit. This field cannot be used in combination
 	// with restartPolicy=OnFailure.
 	//
-	// This field is beta-level. It can be used when the `JobPodFailurePolicy`
-	// feature gate is enabled (enabled by default).
 	// +optional
 	podFailurePolicy?: null | #PodFailurePolicy @go(PodFailurePolicy,*PodFailurePolicy) @protobuf(11,bytes,opt)
 
@@ -345,8 +343,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// When the field is specified, it must be immutable and works only for the Indexed Jobs.
 	// Once the Job meets the SuccessPolicy, the lingering pods are terminated.
 	//
-	// This field  is alpha-level. To use this field, you must enable the
-	// `JobSuccessPolicy` feature gate (disabled by default).
+	// This field is beta-level. To use this field, you must enable the
+	// `JobSuccessPolicy` feature gate (enabled by default).
 	// +optional
 	successPolicy?: null | #SuccessPolicy @go(SuccessPolicy,*SuccessPolicy) @protobuf(16,bytes,opt)
 
@@ -470,7 +468,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// The value must be a valid domain-prefixed path (e.g. acme.io/foo) -
 	// all characters before the first "/" must be a valid subdomain as defined
 	// by RFC 1123. All characters trailing the first "/" must be valid HTTP Path
-	// characters as defined by RFC 3986. The value cannot exceed 64 characters.
+	// characters as defined by RFC 3986. The value cannot exceed 63 characters.
+	// This field is immutable.
 	//
 	// This field is alpha-level. The job controller accepts setting the field
 	// when the feature gate JobManagedBy is enabled (disabled by default).
@@ -587,8 +586,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// +optional
 	uncountedTerminatedPods?: null | #UncountedTerminatedPods @go(UncountedTerminatedPods,*UncountedTerminatedPods) @protobuf(8,bytes,opt)
 
-	// The number of pods which have a Ready condition.
-	// +optional
+	// The number of active pods which have a Ready condition and are not
+	// terminating (without a deletionTimestamp).
 	ready?: null | int32 @go(Ready,*int32) @protobuf(9,varint,opt)
 }
 
@@ -633,7 +632,6 @@ _#labelPrefix: "batch.kubernetes.io/"
 // JobReasonPodFailurePolicy reason indicates a job failure condition is added due to
 // a failed pod matching a pod failure policy rule
 // https://kep.k8s.io/3329
-// This is currently a beta field.
 #JobReasonPodFailurePolicy: "PodFailurePolicy"
 
 // JobReasonBackOffLimitExceeded reason indicates that pods within a job have failed a number of
@@ -654,8 +652,14 @@ _#labelPrefix: "batch.kubernetes.io/"
 // JobReasonSuccessPolicy reason indicates a SuccessCriteriaMet condition is added due to
 // a Job met successPolicy.
 // https://kep.k8s.io/3998
-// This is currently an alpha field.
+// This is currently a beta field.
 #JobReasonSuccessPolicy: "SuccessPolicy"
+
+// JobReasonCompletionsReached reason indicates a SuccessCriteriaMet condition is added due to
+// a number of succeeded Job pods met completions.
+// - https://kep.k8s.io/3998
+// This is currently a beta field.
+#JobReasonCompletionsReached: "CompletionsReached"
 
 // JobCondition describes current state of a job.
 #JobCondition: {

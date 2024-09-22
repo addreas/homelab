@@ -6,8 +6,10 @@ package v2alpha1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-// CiliumBGPNodeConfigOverride is used to overrides some of the BGP configurations which are node local.
-// Users can user this resource to override auto-generated BGP settings for the node.
+// CiliumBGPNodeConfigOverride specifies configuration overrides for a CiliumBGPNodeConfig.
+// It allows fine-tuning of BGP behavior on a per-node basis. For the override to be effective,
+// the names in CiliumBGPNodeConfigOverride and CiliumBGPNodeConfig must match exactly. This
+// matching ensures that specific node configurations are applied correctly and only where intended.
 #CiliumBGPNodeConfigOverride: {
 	metav1.#TypeMeta
 
@@ -28,11 +30,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 #CiliumBGPNodeConfigOverrideSpec: {
-	// NodeRef is the name of the node for which the BGP configuration is overridden.
-	//
-	// +kubebuilder:validation:Required
-	nodeRef: string @go(NodeRef)
-
 	// BGPInstances is a list of BGP instances to override.
 	//
 	// +kubebuilder:validation:Required

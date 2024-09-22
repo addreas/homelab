@@ -195,6 +195,24 @@ import (
 	//
 	// +optional
 	ephemeral?: null | #EphemeralVolumeSource @go(Ephemeral,*EphemeralVolumeSource) @protobuf(29,bytes,opt)
+
+	// image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet's host machine.
+	// The volume is resolved at pod startup depending on which PullPolicy value is provided:
+	//
+	// - Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	// - Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	// - IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+	//
+	// The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation.
+	// A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message.
+	// The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
+	// The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
+	// The volume will be mounted read-only (ro) and non-executable files (noexec).
+	// Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+	// The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+	// +featureGate=ImageVolume
+	// +optional
+	image?: null | #ImageVolumeSource @go(Image,*ImageVolumeSource) @protobuf(30,bytes,opt)
 }
 
 // PersistentVolumeClaimVolumeSource references the user's PVC in the same namespace.
@@ -410,7 +428,7 @@ import (
 	// after a volume has been updated successfully to a new class.
 	// For an unbound PersistentVolume, the volumeAttributesClassName will be matched with unbound
 	// PersistentVolumeClaims during the binding process.
-	// This is an alpha field and requires enabling VolumeAttributesClass feature.
+	// This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 	// +featureGate=VolumeAttributesClass
 	// +optional
 	volumeAttributesClassName?: null | string @go(VolumeAttributesClassName,*string) @protobuf(10,bytes,opt)
@@ -475,8 +493,6 @@ import (
 
 	// lastPhaseTransitionTime is the time the phase transitioned from one to another
 	// and automatically resets to current time everytime a volume phase transitions.
-	// This is a beta field and requires the PersistentVolumeLastPhaseTransitionTime feature to be enabled (enabled by default).
-	// +featureGate=PersistentVolumeLastPhaseTransitionTime
 	// +optional
 	lastPhaseTransitionTime?: null | metav1.#Time @go(LastPhaseTransitionTime,*metav1.Time) @protobuf(4,bytes,opt)
 }
@@ -613,7 +629,7 @@ import (
 	// set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 	// exists.
 	// More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-	// (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+	// (Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 	// +featureGate=VolumeAttributesClass
 	// +optional
 	volumeAttributesClassName?: null | string @go(VolumeAttributesClassName,*string) @protobuf(9,bytes,opt)
@@ -640,12 +656,22 @@ import (
 	namespace?: null | string @go(Namespace,*string) @protobuf(4,bytes,opt)
 }
 
-// PersistentVolumeClaimConditionType is a valid value of PersistentVolumeClaimCondition.Type
+// PersistentVolumeClaimConditionType defines the condition of PV claim.
+// Valid values are:
+//   - "Resizing", "FileSystemResizePending"
+//
+// If RecoverVolumeExpansionFailure feature gate is enabled, then following additional values can be expected:
+//   - "ControllerResizeError", "NodeResizeError"
+//
+// If VolumeAttributesClass feature gate is enabled, then following additional values can be expected:
+//   - "ModifyVolumeError", "ModifyingVolume"
 #PersistentVolumeClaimConditionType: string // #enumPersistentVolumeClaimConditionType
 
 #enumPersistentVolumeClaimConditionType:
 	#PersistentVolumeClaimResizing |
 	#PersistentVolumeClaimFileSystemResizePending |
+	#PersistentVolumeClaimControllerResizeError |
+	#PersistentVolumeClaimNodeResizeError |
 	#PersistentVolumeClaimVolumeModifyVolumeError |
 	#PersistentVolumeClaimVolumeModifyingVolume
 
@@ -654,6 +680,12 @@ import (
 
 // PersistentVolumeClaimFileSystemResizePending - controller resize is finished and a file system resize is pending on node
 #PersistentVolumeClaimFileSystemResizePending: #PersistentVolumeClaimConditionType & "FileSystemResizePending"
+
+// PersistentVolumeClaimControllerResizeError indicates an error while resizing volume for size in the controller
+#PersistentVolumeClaimControllerResizeError: #PersistentVolumeClaimConditionType & "ControllerResizeError"
+
+// PersistentVolumeClaimNodeResizeError indicates an error while resizing volume for size in the node.
+#PersistentVolumeClaimNodeResizeError: #PersistentVolumeClaimConditionType & "NodeResizeError"
 
 // Applying the target VolumeAttributesClass encountered an error
 #PersistentVolumeClaimVolumeModifyVolumeError: #PersistentVolumeClaimConditionType & "ModifyVolumeError"
@@ -669,18 +701,18 @@ import (
 
 #enumClaimResourceStatus:
 	#PersistentVolumeClaimControllerResizeInProgress |
-	#PersistentVolumeClaimControllerResizeFailed |
+	#PersistentVolumeClaimControllerResizeInfeasible |
 	#PersistentVolumeClaimNodeResizePending |
 	#PersistentVolumeClaimNodeResizeInProgress |
-	#PersistentVolumeClaimNodeResizeFailed
+	#PersistentVolumeClaimNodeResizeInfeasible
 
 // State set when resize controller starts resizing the volume in control-plane.
 #PersistentVolumeClaimControllerResizeInProgress: #ClaimResourceStatus & "ControllerResizeInProgress"
 
-// State set when resize has failed in resize controller with a terminal error.
+// State set when resize has failed in resize controller with a terminal unrecoverable error.
 // Transient errors such as timeout should not set this status and should leave allocatedResourceStatus
 // unmodified, so as resize controller can resume the volume expansion.
-#PersistentVolumeClaimControllerResizeFailed: #ClaimResourceStatus & "ControllerResizeFailed"
+#PersistentVolumeClaimControllerResizeInfeasible: #ClaimResourceStatus & "ControllerResizeInfeasible"
 
 // State set when resize controller has finished resizing the volume but further resizing of volume
 // is needed on the node.
@@ -689,8 +721,9 @@ import (
 // State set when kubelet starts resizing the volume.
 #PersistentVolumeClaimNodeResizeInProgress: #ClaimResourceStatus & "NodeResizeInProgress"
 
-// State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed
-#PersistentVolumeClaimNodeResizeFailed: #ClaimResourceStatus & "NodeResizeFailed"
+// State set when resizing has failed in kubelet with a terminal unrecoverable error. Transient errors
+// shouldn't set this status
+#PersistentVolumeClaimNodeResizeInfeasible: #ClaimResourceStatus & "NodeResizeInfeasible"
 
 // +enum
 // New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately
@@ -847,14 +880,14 @@ import (
 
 	// currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
 	// When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
-	// This is an alpha field and requires enabling VolumeAttributesClass feature.
+	// This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 	// +featureGate=VolumeAttributesClass
 	// +optional
 	currentVolumeAttributesClassName?: null | string @go(CurrentVolumeAttributesClassName,*string) @protobuf(8,bytes,opt)
 
 	// ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
 	// When this is unset, there is no ModifyVolume operation being attempted.
-	// This is an alpha field and requires enabling VolumeAttributesClass feature.
+	// This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 	// +featureGate=VolumeAttributesClass
 	// +optional
 	modifyVolumeStatus?: null | #ModifyVolumeStatus @go(ModifyVolumeStatus,*ModifyVolumeStatus) @protobuf(9,bytes,opt)
@@ -1069,18 +1102,21 @@ import (
 	// Default is rbd.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="rbd"
 	pool?: string @go(RBDPool) @protobuf(4,bytes,opt)
 
 	// user is the rados user name.
 	// Default is admin.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="admin"
 	user?: string @go(RadosUser) @protobuf(5,bytes,opt)
 
 	// keyring is the path to key ring for RBDUser.
 	// Default is /etc/ceph/keyring.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="/etc/ceph/keyring"
 	keyring?: string @go(Keyring) @protobuf(6,bytes,opt)
 
 	// secretRef is name of the authentication secret for RBDUser. If provided
@@ -1121,18 +1157,21 @@ import (
 	// Default is rbd.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="rbd"
 	pool?: string @go(RBDPool) @protobuf(4,bytes,opt)
 
 	// user is the rados user name.
 	// Default is admin.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="admin"
 	user?: string @go(RadosUser) @protobuf(5,bytes,opt)
 
 	// keyring is the path to key ring for RBDUser.
 	// Default is /etc/ceph/keyring.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
+	// +default="/etc/ceph/keyring"
 	keyring?: string @go(Keyring) @protobuf(6,bytes,opt)
 
 	// secretRef is name of the authentication secret for RBDUser. If provided
@@ -1612,6 +1651,7 @@ import (
 	// iscsiInterface is the interface Name that uses an iSCSI transport.
 	// Defaults to 'default' (tcp).
 	// +optional
+	// +default="default"
 	iscsiInterface?: string @go(ISCSIInterface) @protobuf(4,bytes,opt)
 
 	// fsType is the filesystem type of the volume that you want to mount.
@@ -1669,6 +1709,7 @@ import (
 	// iscsiInterface is the interface Name that uses an iSCSI transport.
 	// Defaults to 'default' (tcp).
 	// +optional
+	// +default="default"
 	iscsiInterface?: string @go(ISCSIInterface) @protobuf(4,bytes,opt)
 
 	// fsType is the filesystem type of the volume that you want to mount.
@@ -1838,20 +1879,24 @@ import (
 
 	// cachingMode is the Host Caching mode: None, Read Only, Read Write.
 	// +optional
+	// +default=ref(AzureDataDiskCachingReadWrite)
 	cachingMode?: null | #AzureDataDiskCachingMode @go(CachingMode,*AzureDataDiskCachingMode) @protobuf(3,bytes,opt,casttype=AzureDataDiskCachingMode)
 
 	// fsType is Filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// +optional
+	// +default="ext4"
 	fsType?: null | string @go(FSType,*string) @protobuf(4,bytes,opt)
 
 	// readOnly Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
+	// +default=false
 	readOnly?: null | bool @go(ReadOnly,*bool) @protobuf(5,varint,opt)
 
 	// kind expected values are Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared
+	// +default=ref(AzureSharedBlobDisk)
 	kind?: null | #AzureDataDiskKind @go(Kind,*AzureDataDiskKind) @protobuf(6,bytes,opt,casttype=AzureDataDiskKind)
 }
 
@@ -1898,6 +1943,7 @@ import (
 	// storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	// Default is ThinProvisioned.
 	// +optional
+	// +default="ThinProvisioned"
 	storageMode?: string @go(StorageMode) @protobuf(7,bytes,opt)
 
 	// volumeName is the name of a volume already created in the ScaleIO system
@@ -1909,6 +1955,7 @@ import (
 	// Ex. "ext4", "xfs", "ntfs".
 	// Default is "xfs".
 	// +optional
+	// +default="xfs"
 	fsType?: string @go(FSType) @protobuf(9,bytes,opt)
 
 	// readOnly Defaults to false (read/write). ReadOnly here will force
@@ -1944,6 +1991,7 @@ import (
 	// storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	// Default is ThinProvisioned.
 	// +optional
+	// +default="ThinProvisioned"
 	storageMode?: string @go(StorageMode) @protobuf(7,bytes,opt)
 
 	// volumeName is the name of a volume already created in the ScaleIO system
@@ -1955,6 +2003,7 @@ import (
 	// Ex. "ext4", "xfs", "ntfs".
 	// Default is "xfs"
 	// +optional
+	// +default="xfs"
 	fsType?: string @go(FSType) @protobuf(9,bytes,opt)
 
 	// readOnly defaults to false (read/write). ReadOnly here will force
@@ -2152,7 +2201,8 @@ import (
 
 // Represents a projected volume source
 #ProjectedVolumeSource: {
-	// sources is the list of volume projections
+	// sources is the list of volume projections. Each entry in this list
+	// handles one source.
 	// +optional
 	// +listType=atomic
 	sources?: [...#VolumeProjection] @go(Sources,[]VolumeProjection) @protobuf(1,bytes,rep)
@@ -2167,7 +2217,8 @@ import (
 	defaultMode?: null | int32 @go(DefaultMode,*int32) @protobuf(2,varint,opt)
 }
 
-// Projection that may be projected along with other supported volume types
+// Projection that may be projected along with other supported volume types.
+// Exactly one of these fields must be set.
 #VolumeProjection: {
 	// secret information about the secret data to project
 	// +optional
@@ -2945,6 +2996,13 @@ import (
 	// the Pod where this field is used. It makes that resource available
 	// inside a container.
 	name: string @go(Name) @protobuf(1,bytes,opt)
+
+	// Request is the name chosen for a request in the referenced claim.
+	// If empty, everything from the claim is made available, otherwise
+	// only the result of this request.
+	//
+	// +optional
+	request?: string @go(Request) @protobuf(2,bytes,opt)
 }
 
 // TerminationMessagePathDefault means the default path to capture the application termination message running in a container
@@ -3386,6 +3444,98 @@ import (
 	// +listMapKey=mountPath
 	// +featureGate=RecursiveReadOnlyMounts
 	volumeMounts?: [...#VolumeMountStatus] @go(VolumeMounts,[]VolumeMountStatus) @protobuf(12,bytes,rep)
+
+	// User represents user identity information initially attached to the first process of the container
+	// +featureGate=SupplementalGroupsPolicy
+	// +optional
+	user?: null | #ContainerUser @go(User,*ContainerUser) @protobuf(13,bytes,opt,casttype=ContainerUser)
+
+	// AllocatedResourcesStatus represents the status of various resources
+	// allocated for this Pod.
+	// +featureGate=ResourceHealthStatus
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
+	allocatedResourcesStatus?: [...#ResourceStatus] @go(AllocatedResourcesStatus,[]ResourceStatus) @protobuf(14,bytes,rep)
+}
+
+#ResourceStatus: {
+	// Name of the resource. Must be unique within the pod and match one of the resources from the pod spec.
+	// +required
+	name: #ResourceName @go(Name) @protobuf(1,bytes,opt)
+
+	// List of unique Resources health. Each element in the list contains an unique resource ID and resource health.
+	// At a minimum, ResourceID must uniquely identify the Resource
+	// allocated to the Pod on the Node for the lifetime of a Pod.
+	// See ResourceID type for it's definition.
+	// +listType=map
+	// +listMapKey=resourceID
+	resources?: [...#ResourceHealth] @go(Resources,[]ResourceHealth) @protobuf(2,bytes,rep)
+}
+
+#ResourceHealthStatus: string // #enumResourceHealthStatus
+
+#enumResourceHealthStatus:
+	#ResourceHealthStatusHealthy |
+	#ResourceHealthStatusUnhealthy |
+	#ResourceHealthStatusUnknown
+
+#ResourceHealthStatusHealthy:   #ResourceHealthStatus & "Healthy"
+#ResourceHealthStatusUnhealthy: #ResourceHealthStatus & "Unhealthy"
+#ResourceHealthStatusUnknown:   #ResourceHealthStatus & "Unknown"
+
+// ResourceID is calculated based on the source of this resource health information.
+// For DevicePlugin:
+//
+//	deviceplugin:DeviceID, where DeviceID is from the Device structure of DevicePlugin's ListAndWatchResponse type: https://github.com/kubernetes/kubernetes/blob/eda1c780543a27c078450e2f17d674471e00f494/staging/src/k8s.io/kubelet/pkg/apis/deviceplugin/v1alpha/api.proto#L61-L73
+//
+// DevicePlugin ID is usually a constant for the lifetime of a Node and typically can be used to uniquely identify the device on the node.
+// For DRA:
+//
+//	dra:<driver name>/<pool name>/<device name>: such a device can be looked up in the information published by that DRA driver to learn more about it. It is designed to be globally unique in a cluster.
+#ResourceID: string
+
+// ResourceHealth represents the health of a resource. It has the latest device health information.
+// This is a part of KEP https://kep.k8s.io/4680 and historical health changes are planned to be added in future iterations of a KEP.
+#ResourceHealth: {
+	// ResourceID is the unique identifier of the resource. See the ResourceID type for more information.
+	resourceID: #ResourceID @go(ResourceID) @protobuf(1,bytes,opt)
+
+	// Health of the resource.
+	// can be one of:
+	//  - Healthy: operates as normal
+	//  - Unhealthy: reported unhealthy. We consider this a temporary health issue
+	//               since we do not have a mechanism today to distinguish
+	//               temporary and permanent issues.
+	//  - Unknown: The status cannot be determined.
+	//             For example, Device Plugin got unregistered and hasn't been re-registered since.
+	//
+	// In future we may want to introduce the PermanentlyUnhealthy Status.
+	health?: #ResourceHealthStatus @go(Health) @protobuf(2,bytes)
+}
+
+// ContainerUser represents user identity information
+#ContainerUser: {
+	// Linux holds user identity information initially attached to the first process of the containers in Linux.
+	// Note that the actual running identity can be changed if the process has enough privilege to do so.
+	// +optional
+	linux?: null | #LinuxContainerUser @go(Linux,*LinuxContainerUser) @protobuf(1,bytes,opt,casttype=LinuxContainerUser)
+}
+
+// LinuxContainerUser represents user identity information in Linux containers
+#LinuxContainerUser: {
+	// UID is the primary uid initially attached to the first process in the container
+	uid: int64 @go(UID) @protobuf(1,varint)
+
+	// GID is the primary gid initially attached to the first process in the container
+	gid: int64 @go(GID) @protobuf(2,varint)
+
+	// SupplementalGroups are the supplemental groups initially attached to the first process in the container
+	// +optional
+	// +listType=atomic
+	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64) @protobuf(3,varint,rep)
 }
 
 // PodPhase is a label for the condition of a pod at the current time.
@@ -3813,7 +3963,8 @@ import (
 	// pod labels will be ignored. The default value is empty.
 	// The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	// Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	// This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	// This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
+	//
 	// +listType=atomic
 	// +optional
 	matchLabelKeys?: [...string] @go(MatchLabelKeys,[]string) @protobuf(5,bytes,opt)
@@ -3826,7 +3977,8 @@ import (
 	// pod labels will be ignored. The default value is empty.
 	// The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	// Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	// This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	// This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
+	//
 	// +listType=atomic
 	// +optional
 	mismatchLabelKeys?: [...string] @go(MismatchLabelKeys,[]string) @protobuf(6,bytes,opt)
@@ -4066,9 +4218,11 @@ import (
 	// +optional
 	automountServiceAccountToken?: null | bool @go(AutomountServiceAccountToken,*bool) @protobuf(21,varint,opt)
 
-	// NodeName is a request to schedule this pod onto a specific node. If it is non-empty,
-	// the scheduler simply schedules this pod onto that node, assuming that it fits resource
-	// requirements.
+	// NodeName indicates in which node this pod is scheduled.
+	// If empty, this pod is a candidate for scheduling by the scheduler defined in schedulerName.
+	// Once this field is set, the kubelet for this node becomes responsible for the lifecycle of this pod.
+	// This field should not be used to express a desire for the pod to be scheduled on a specific node.
+	// https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodename
 	// +optional
 	nodeName?: string @go(NodeName) @protobuf(10,bytes,opt)
 
@@ -4248,6 +4402,7 @@ import (
 	// - spec.securityContext.runAsUser
 	// - spec.securityContext.runAsGroup
 	// - spec.securityContext.supplementalGroups
+	// - spec.securityContext.supplementalGroupsPolicy
 	// - spec.containers[*].securityContext.appArmorProfile
 	// - spec.containers[*].securityContext.seLinuxOptions
 	// - spec.containers[*].securityContext.seccompProfile
@@ -4306,7 +4461,10 @@ import (
 	resourceClaims?: [...#PodResourceClaim] @go(ResourceClaims,[]PodResourceClaim) @protobuf(39,bytes,rep)
 }
 
-// PodResourceClaim references exactly one ResourceClaim through a ClaimSource.
+// PodResourceClaim references exactly one ResourceClaim, either directly
+// or by naming a ResourceClaimTemplate which is then turned into a ResourceClaim
+// for the pod.
+//
 // It adds a name to it that uniquely identifies the ResourceClaim inside the Pod.
 // Containers that need access to the ResourceClaim reference it with this name.
 #PodResourceClaim: {
@@ -4314,18 +4472,12 @@ import (
 	// This must be a DNS_LABEL.
 	name: string @go(Name) @protobuf(1,bytes)
 
-	// Source describes where to find the ResourceClaim.
-	source?: #ClaimSource @go(Source) @protobuf(2,bytes)
-}
-
-// ClaimSource describes a reference to a ResourceClaim.
-//
-// Exactly one of these fields should be set.  Consumers of this type must
-// treat an empty object as if it has an unknown value.
-#ClaimSource: {
 	// ResourceClaimName is the name of a ResourceClaim object in the same
 	// namespace as this pod.
-	resourceClaimName?: null | string @go(ResourceClaimName,*string) @protobuf(1,bytes,opt)
+	//
+	// Exactly one of ResourceClaimName and ResourceClaimTemplateName must
+	// be set.
+	resourceClaimName?: null | string @go(ResourceClaimName,*string) @protobuf(3,bytes,opt)
 
 	// ResourceClaimTemplateName is the name of a ResourceClaimTemplate
 	// object in the same namespace as this pod.
@@ -4339,7 +4491,10 @@ import (
 	// This field is immutable and no changes will be made to the
 	// corresponding ResourceClaim by the control plane after creating the
 	// ResourceClaim.
-	resourceClaimTemplateName?: null | string @go(ResourceClaimTemplateName,*string) @protobuf(2,bytes,opt)
+	//
+	// Exactly one of ResourceClaimName and ResourceClaimTemplateName must
+	// be set.
+	resourceClaimTemplateName?: null | string @go(ResourceClaimTemplateName,*string) @protobuf(4,bytes,opt)
 }
 
 // PodResourceClaimStatus is stored in the PodStatus for each PodResourceClaim
@@ -4352,7 +4507,7 @@ import (
 	name: string @go(Name) @protobuf(1,bytes)
 
 	// ResourceClaimName is the name of the ResourceClaim that was
-	// generated for the Pod in the namespace of the Pod. It this is
+	// generated for the Pod in the namespace of the Pod. If this is
 	// unset, then generating a ResourceClaim was not necessary. The
 	// pod.spec.resourceClaims entry can be ignored in this case.
 	//
@@ -4576,6 +4731,26 @@ import (
 // behavior.
 #FSGroupChangeAlways: #PodFSGroupChangePolicy & "Always"
 
+// SupplementalGroupsPolicy defines how supplemental groups
+// of the first container processes are calculated.
+// +enum
+#SupplementalGroupsPolicy: string // #enumSupplementalGroupsPolicy
+
+#enumSupplementalGroupsPolicy:
+	#SupplementalGroupsPolicyMerge |
+	#SupplementalGroupsPolicyStrict
+
+// SupplementalGroupsPolicyMerge means that the container's provided
+// SupplementalGroups and FsGroup (specified in SecurityContext) will be
+// merged with the primary user's groups as defined in the container image
+// (in /etc/group).
+#SupplementalGroupsPolicyMerge: #SupplementalGroupsPolicy & "Merge"
+
+// SupplementalGroupsPolicyStrict means that the container's provided
+// SupplementalGroups and FsGroup (specified in SecurityContext) will be
+// used instead of any groups defined in the container image.
+#SupplementalGroupsPolicyStrict: #SupplementalGroupsPolicy & "Strict"
+
 // PodSecurityContext holds pod-level security attributes and common container settings.
 // Some fields are also present in container.securityContext.  Field values of
 // container.securityContext take precedence over field values of PodSecurityContext.
@@ -4623,16 +4798,28 @@ import (
 	// +optional
 	runAsNonRoot?: null | bool @go(RunAsNonRoot,*bool) @protobuf(3,varint,opt)
 
-	// A list of groups applied to the first process run in each container, in addition
-	// to the container's primary GID, the fsGroup (if specified), and group memberships
-	// defined in the container image for the uid of the container process. If unspecified,
-	// no additional groups are added to any container. Note that group memberships
-	// defined in the container image for the uid of the container process are still effective,
-	// even if they are not included in this list.
+	// A list of groups applied to the first process run in each container, in
+	// addition to the container's primary GID and fsGroup (if specified).  If
+	// the SupplementalGroupsPolicy feature is enabled, the
+	// supplementalGroupsPolicy field determines whether these are in addition
+	// to or instead of any group memberships defined in the container image.
+	// If unspecified, no additional groups are added, though group memberships
+	// defined in the container image may still be used, depending on the
+	// supplementalGroupsPolicy field.
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	// +listType=atomic
 	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64) @protobuf(4,varint,rep)
+
+	// Defines how supplemental groups of the first container processes are calculated.
+	// Valid values are "Merge" and "Strict". If not specified, "Merge" is used.
+	// (Alpha) Using the field requires the SupplementalGroupsPolicy feature gate to be enabled
+	// and the container runtime must implement support for this feature.
+	// Note that this field cannot be set when spec.os.name is windows.
+	// TODO: update the default value to "Merge" when spec.os.name is not windows in v1.34
+	// +featureGate=SupplementalGroupsPolicy
+	// +optional
+	supplementalGroupsPolicy?: null | #SupplementalGroupsPolicy @go(SupplementalGroupsPolicy,*SupplementalGroupsPolicy) @protobuf(12,bytes,opt)
 
 	// A special supplemental group that applies to all containers in a pod.
 	// Some volume types allow the Kubelet to change the ownership of that volume
@@ -4808,13 +4995,15 @@ import (
 // PodIP represents a single IP address allocated to the pod.
 #PodIP: {
 	// IP is the IP address assigned to the pod
-	ip?: string @go(IP) @protobuf(1,bytes,opt)
+	// +required
+	ip: string @go(IP) @protobuf(1,bytes,opt)
 }
 
 // HostIP represents a single IP address allocated to the host.
 #HostIP: {
 	// IP is the IP address assigned to the host
-	ip?: string @go(IP) @protobuf(1,bytes,opt)
+	// +required
+	ip: string @go(IP) @protobuf(1,bytes,opt)
 }
 
 // EphemeralContainerCommon is a copy of all fields in Container to be inlined in
@@ -6244,12 +6433,17 @@ import (
 	kubeletEndpoint?: #DaemonEndpoint @go(KubeletEndpoint) @protobuf(1,bytes,opt)
 }
 
-// NodeRuntimeHandlerFeatures is a set of runtime features.
+// NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handler.
 #NodeRuntimeHandlerFeatures: {
 	// RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts.
 	// +featureGate=RecursiveReadOnlyMounts
 	// +optional
 	recursiveReadOnlyMounts?: null | bool @go(RecursiveReadOnlyMounts,*bool) @protobuf(1,varint,opt)
+
+	// UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes.
+	// +featureGate=UserNamespacesSupport
+	// +optional
+	userNamespaces?: null | bool @go(UserNamespaces,*bool) @protobuf(2,varint,opt)
 }
 
 // NodeRuntimeHandler is a set of runtime handler information.
@@ -6262,6 +6456,15 @@ import (
 	// Supported features.
 	// +optional
 	features?: null | #NodeRuntimeHandlerFeatures @go(Features,*NodeRuntimeHandlerFeatures) @protobuf(2,bytes,opt)
+}
+
+// NodeFeatures describes the set of features implemented by the CRI implementation.
+// The features contained in the NodeFeatures should depend only on the cri implementation
+// independent of runtime handlers.
+#NodeFeatures: {
+	// SupplementalGroupsPolicy is set to true if the runtime supports SupplementalGroupsPolicy and ContainerUser.
+	// +optional
+	supplementalGroupsPolicy?: null | bool @go(SupplementalGroupsPolicy,*bool) @protobuf(1,varint,opt)
 }
 
 // NodeSystemInfo is a set of ids/uuids to uniquely identify the node.
@@ -6291,7 +6494,7 @@ import (
 	// Kubelet Version reported by the node.
 	kubeletVersion: string @go(KubeletVersion) @protobuf(7,bytes,opt)
 
-	// KubeProxy Version reported by the node.
+	// Deprecated: KubeProxy Version reported by the node.
 	kubeProxyVersion: string @go(KubeProxyVersion) @protobuf(8,bytes,opt)
 
 	// The Operating System reported by the node
@@ -6354,7 +6557,7 @@ import (
 // NodeStatus is information about the current status of a node.
 #NodeStatus: {
 	// Capacity represents the total resources of a node.
-	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity
+	// More info: https://kubernetes.io/docs/reference/node/node-status/#capacity
 	// +optional
 	capacity?: #ResourceList @go(Capacity) @protobuf(1,bytes,rep,casttype=ResourceList,castkey=ResourceName)
 
@@ -6425,9 +6628,15 @@ import (
 
 	// The available runtime handlers.
 	// +featureGate=RecursiveReadOnlyMounts
+	// +featureGate=UserNamespacesSupport
 	// +optional
 	// +listType=atomic
 	runtimeHandlers?: [...#NodeRuntimeHandler] @go(RuntimeHandlers,[]NodeRuntimeHandler) @protobuf(12,bytes,rep)
+
+	// Features describes the set of features implemented by the CRI implementation.
+	// +featureGate=SupplementalGroupsPolicy
+	// +optional
+	features?: null | #NodeFeatures @go(Features,*NodeFeatures) @protobuf(13,bytes,rep)
 }
 
 #UniqueVolumeName: string
@@ -7367,6 +7576,9 @@ import (
 // Local ephemeral storage limit, in bytes. (500Gi = 500GiB = 500 * 1024 * 1024 * 1024)
 #ResourceLimitsEphemeralStorage: #ResourceName & "limits.ephemeral-storage"
 
+// resource.k8s.io devices requested with a certain DeviceClass, number
+#ResourceClaimsPerClass: ".deviceclass.resource.k8s.io/devices"
+
 // HugePages request, in bytes. (500Gi = 500GiB = 500 * 1024 * 1024 * 1024)
 // As burst is not supported for HugePages, we would only quota its request, and ignore the limit.
 #ResourceRequestsHugePagesPrefix: "requests.hugepages-"
@@ -7910,7 +8122,7 @@ import (
 	allowPrivilegeEscalation?: null | bool @go(AllowPrivilegeEscalation,*bool) @protobuf(7,varint,opt)
 
 	// procMount denotes the type of proc mount to use for the containers.
-	// The default is DefaultProcMount which uses the container runtime defaults for
+	// The default value is Default which uses the container runtime defaults for
 	// readonly paths and masked paths.
 	// This requires the ProcMountType feature flag to be enabled.
 	// Note that this field cannot be set when spec.os.name is windows.
@@ -8113,3 +8325,23 @@ import (
 // LoadBalancerIPModeProxy indicates that traffic is delivered to the node or pod with
 // the destination set to the node's IP and port or the pod's IP and port.
 #LoadBalancerIPModeProxy: #LoadBalancerIPMode & "Proxy"
+
+// ImageVolumeSource represents a image volume resource.
+#ImageVolumeSource: {
+	// Required: Image or artifact reference to be used.
+	// Behaves in the same way as pod.spec.containers[*].image.
+	// Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets.
+	// More info: https://kubernetes.io/docs/concepts/containers/images
+	// This field is optional to allow higher level config management to default or override
+	// container images in workload controllers like Deployments and StatefulSets.
+	// +optional
+	reference?: string @go(Reference) @protobuf(1,bytes,opt)
+
+	// Policy for pulling OCI objects. Possible values are:
+	// Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	// Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	// IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+	// Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+	// +optional
+	pullPolicy?: #PullPolicy @go(PullPolicy) @protobuf(2,bytes,opt,casttype=PullPolicy)
+}

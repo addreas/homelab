@@ -1285,6 +1285,39 @@ import (
 #LabelSelectorOpExists:       #LabelSelectorOperator & "Exists"
 #LabelSelectorOpDoesNotExist: #LabelSelectorOperator & "DoesNotExist"
 
+// FieldSelectorRequirement is a selector that contains values, a key, and an operator that
+// relates the key and values.
+#FieldSelectorRequirement: {
+	// key is the field selector key that the requirement applies to.
+	key: string @go(Key) @protobuf(1,bytes,opt)
+
+	// operator represents a key's relationship to a set of values.
+	// Valid operators are In, NotIn, Exists, DoesNotExist.
+	// The list of operators may grow in the future.
+	operator: #FieldSelectorOperator @go(Operator) @protobuf(2,bytes,opt,casttype=FieldSelectorOperator)
+
+	// values is an array of string values.
+	// If the operator is In or NotIn, the values array must be non-empty.
+	// If the operator is Exists or DoesNotExist, the values array must be empty.
+	// +optional
+	// +listType=atomic
+	values?: [...string] @go(Values,[]string) @protobuf(3,bytes,rep)
+}
+
+// A field selector operator is the set of operators that can be used in a selector requirement.
+#FieldSelectorOperator: string // #enumFieldSelectorOperator
+
+#enumFieldSelectorOperator:
+	#FieldSelectorOpIn |
+	#FieldSelectorOpNotIn |
+	#FieldSelectorOpExists |
+	#FieldSelectorOpDoesNotExist
+
+#FieldSelectorOpIn:           #FieldSelectorOperator & "In"
+#FieldSelectorOpNotIn:        #FieldSelectorOperator & "NotIn"
+#FieldSelectorOpExists:       #FieldSelectorOperator & "Exists"
+#FieldSelectorOpDoesNotExist: #FieldSelectorOperator & "DoesNotExist"
+
 // ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource
 // that the fieldset applies to.
 #ManagedFieldsEntry: {

@@ -14,27 +14,54 @@ import (
 // Note list of supported advertisements is not exhaustive and can be extended in the future.
 // Consumer of this API should be able to handle unknown values.
 //
-// +kubebuilder:validation:Enum=PodCIDR;CiliumPodIPPool;CiliumLoadBalancerIP
+// +kubebuilder:validation:Enum=PodCIDR;CiliumPodIPPool;Service
 #BGPAdvertisementType: string // #enumBGPAdvertisementType
 
 #enumBGPAdvertisementType:
-	#PodCIDRAdvert |
-	#CiliumPodIPPoolAdvert |
-	#CiliumLoadBalancerIPAdvert
+	#BGPPodCIDRAdvert |
+	#BGPCiliumPodIPPoolAdvert |
+	#BGPServiceAdvert
 
-// PodCIDRAdvert when configured, Cilium will advertise pod CIDRs to BGP peers.
-#PodCIDRAdvert: #BGPAdvertisementType & "PodCIDR"
+// BGPPodCIDRAdvert when configured, Cilium will advertise pod CIDRs to BGP peers.
+#BGPPodCIDRAdvert: #BGPAdvertisementType & "PodCIDR"
 
-// CiliumPodIPPoolAdvert when configured, Cilium will advertise prefixes from CiliumPodIPPools to BGP peers.
-#CiliumPodIPPoolAdvert: #BGPAdvertisementType & "CiliumPodIPPool"
+// BGPCiliumPodIPPoolAdvert when configured, Cilium will advertise prefixes from CiliumPodIPPools to BGP peers.
+#BGPCiliumPodIPPoolAdvert: #BGPAdvertisementType & "CiliumPodIPPool"
 
-// CiliumLoadBalancerIPAdvert when configured, Cilium will advertise load balancer services IPs to BGP peers.
+// BGPServiceAdvert when configured, Cilium will advertise service related routes to BGP peers.
+//
+#BGPServiceAdvert: #BGPAdvertisementType & "Service"
+
+// BGPServiceAddressType defines type of service address to be advertised.
+//
+// Note list of supported service addresses is not exhaustive and can be extended in the future.
+// Consumer of this API should be able to handle unknown values.
+//
+// +kubebuilder:validation:Enum=LoadBalancerIP;ClusterIP;ExternalIP
+#BGPServiceAddressType: string // #enumBGPServiceAddressType
+
+#enumBGPServiceAddressType:
+	#BGPLoadBalancerIPAddr |
+	#BGPClusterIPAddr |
+	#BGPExternalIPAddr
+
+// BGPLoadBalancerIPAddr when configured, Cilium will advertise load balancer services IPs to BGP peers.
 // The loadBalancerClass for a service must be nil or specify a class supported by Cilium,
 // e.g. "io.cilium/bgp-control-plane".
 //
 // Refer to the following document for additional details regarding load balancer
 // classes: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-class
-#CiliumLoadBalancerIPAdvert: #BGPAdvertisementType & "CiliumLoadBalancerIP"
+#BGPLoadBalancerIPAddr: #BGPServiceAddressType & "LoadBalancerIP"
+
+// BGPClusterIPAddr when configured, Cilium will advertise cluster IP prefix of a service to BGP peers.
+// Cluster IP for a service is defined here
+// https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip
+#BGPClusterIPAddr: #BGPServiceAddressType & "ClusterIP"
+
+// BGPExternalIPAddr when configured, Cilium will advertise external IP prefix of a service to BGP peers.
+// External IP for a service is defined here
+// https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+#BGPExternalIPAddr: #BGPServiceAddressType & "ExternalIP"
 
 // CiliumBGPAdvertisement is the Schema for the ciliumbgpadvertisements API
 #CiliumBGPAdvertisement: {
@@ -58,20 +85,24 @@ import (
 	// Advertisements is a list of BGP advertisements.
 	//
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:MinItems=1
-	advertisements: [...#Advertisement] @go(Advertisements,[]Advertisement)
+	advertisements: [...#BGPAdvertisement] @go(Advertisements,[]BGPAdvertisement)
 }
 
-// Advertisement defines which routes Cilium should advertise to BGP peers. Optionally, additional attributes can be
+// BGPAdvertisement defines which routes Cilium should advertise to BGP peers. Optionally, additional attributes can be
 // set to the advertised routes.
-#Advertisement: {
+#BGPAdvertisement: {
 	// AdvertisementType defines type of advertisement which has to be advertised.
 	//
 	// +kubebuilder:validation:Required
 	advertisementType: #BGPAdvertisementType @go(AdvertisementType)
 
+	// Service defines configuration options for advertisementType service.
+	//
+	// +kubebuilder:validation:Optional
+	service?: null | #BGPServiceOptions @go(Service,*BGPServiceOptions)
+
 	// Selector is a label selector to select objects of the type specified by AdvertisementType.
-	// If not specified, all objects of the type specified by AdvertisementType are selected for advertisement.
+	// If not specified, no objects of the type specified by AdvertisementType are selected for advertisement.
 	//
 	// +kubebuilder:validation:Optional
 	selector?: null | slimv1.#LabelSelector @go(Selector,*slimv1.LabelSelector)
@@ -80,16 +111,25 @@ import (
 	// If not specified, no additional attributes are set.
 	//
 	// +kubebuilder:validation:Optional
-	attributes?: null | #CiliumBGPAttributes @go(Attributes,*CiliumBGPAttributes)
+	attributes?: null | #BGPAttributes @go(Attributes,*BGPAttributes)
 }
 
-// CiliumBGPAttributes defines additional attributes to set to the advertised NLRIs.
-#CiliumBGPAttributes: {
-	// Community sets the community attribute in the route.
+// BGPServiceOptions defines the configuration for Service advertisement type.
+#BGPServiceOptions: {
+	// Addresses is a list of service address types which needs to be advertised via BGP.
+	//
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MinItems=1
+	addresses?: [...#BGPServiceAddressType] @go(Addresses,[]BGPServiceAddressType)
+}
+
+// BGPAttributes defines additional attributes to set to the advertised NLRIs.
+#BGPAttributes: {
+	// Communities sets the community attributes in the route.
 	// If not specified, no community attribute is set.
 	//
 	// +kubebuilder:validation:Optional
-	community?: null | #BGPCommunities @go(Community,*BGPCommunities)
+	communities?: null | #BGPCommunities @go(Communities,*BGPCommunities)
 
 	// LocalPreference sets the local preference attribute in the route.
 	// If not specified, no local preference attribute is set.

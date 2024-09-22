@@ -60,13 +60,6 @@ import (
 	// +kubebuilder:validation:Optional
 	allowFirstLastIPs?: #AllowFirstLastIPType @go(AllowFirstLastIPs)
 
-	// Cidrs is a list of CIDRs comprising this IP Pool
-	// Deprecated: please use the `blocks` field instead. This field will be removed in a future release.
-	// https://github.com/cilium/cilium/issues/28590
-	//
-	// +kubebuilder:validation:Optional
-	cidrs?: [...#CiliumLoadBalancerIPPoolIPBlock] @go(Cidrs,[]CiliumLoadBalancerIPPoolIPBlock)
-
 	// Blocks is a list of CIDRs comprising this IP Pool
 	//
 	// +kubebuilder:validation:Optional

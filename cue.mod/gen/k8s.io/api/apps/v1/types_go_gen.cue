@@ -248,14 +248,13 @@ import (
 	// policy allows the lifecycle to be altered, for example by deleting persistent
 	// volume claims when their stateful set is deleted, or when their pod is scaled
 	// down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled,
-	// which is alpha.  +optional
+	// which is beta.
+	// +optional
 	persistentVolumeClaimRetentionPolicy?: null | #StatefulSetPersistentVolumeClaimRetentionPolicy @go(PersistentVolumeClaimRetentionPolicy,*StatefulSetPersistentVolumeClaimRetentionPolicy) @protobuf(10,bytes,opt)
 
 	// ordinals controls the numbering of replica indices in a StatefulSet. The
 	// default ordinals behavior assigns a "0" index to the first replica and
-	// increments the index by one for each additional replica requested. Using
-	// the ordinals field requires the StatefulSetStartOrdinal feature gate to be
-	// enabled, which is beta.
+	// increments the index by one for each additional replica requested.
 	// +optional
 	ordinals?: null | #StatefulSetOrdinals @go(Ordinals,*StatefulSetOrdinals) @protobuf(11,bytes,opt)
 }

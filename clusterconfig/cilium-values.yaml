@@ -1,7 +1,7 @@
 cni:
   exclusive: false
 
-kubeProxyReplacement: strict
+kubeProxyReplacement: true
 k8sServiceHost: nucles.localdomain
 k8sServicePort: 6443
 

@@ -60,7 +60,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Defaults to "" for ServiceAccount subjects.
 	// Defaults to "rbac.authorization.k8s.io" for User and Group subjects.
 	// +optional
-	apiGroup?: string @go(APIGroup) @protobuf(2,bytes,opt.name=apiGroup)
+	apiGroup?: string @go(APIGroup) @protobuf(2,bytes,opt)
 
 	// Name of the object being referenced.
 	name: string @go(Name) @protobuf(3,bytes,opt)
