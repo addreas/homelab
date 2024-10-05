@@ -92,3 +92,6 @@ package v1
 // PatchOperationFailedReason signals a failure in patching a kubernetes API
 // object.
 #PatchOperationFailedReason: "PatchOperationFailed"
+
+// InvalidSTSConfigurationReason signals that the STS configurtion is invalid.
+#InvalidSTSConfigurationReason: "InvalidSTSConfiguration"

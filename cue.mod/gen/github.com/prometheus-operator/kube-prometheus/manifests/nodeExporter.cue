@@ -9,7 +9,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name: "node-exporter"
 		}
@@ -31,7 +31,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name: "node-exporter"
 		}
@@ -54,7 +54,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -72,14 +72,14 @@ nodeExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "node-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "1.8.1"
+						"app.kubernetes.io/version":   "1.8.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
-						image: "quay.io/prometheus/node-exporter:v1.8.1"
+						image: "quay.io/prometheus/node-exporter:v1.8.2"
 						name:  "node-exporter"
 						resources: {
 							limits: {
@@ -119,7 +119,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.18.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.18.1"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100
@@ -185,7 +185,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -703,7 +703,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -731,7 +731,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -745,7 +745,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.1"
+				"app.kubernetes.io/version":   "1.8.2"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"

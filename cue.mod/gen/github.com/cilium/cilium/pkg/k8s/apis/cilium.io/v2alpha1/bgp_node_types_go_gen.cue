@@ -176,20 +176,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:Optional
 	timers?: null | #CiliumBGPTimersState @go(Timers,*CiliumBGPTimersState)
 
-	// Uptime is the time since the last peering session was established.
+	// EstablishedTime is the time when the peering session was established.
+	// It is represented in RFC3339 form and is in UTC.
 	//
 	// +kubebuilder:validation:Optional
-	uptime?: null | string @go(Uptime,*string)
+	establishedTime?: null | string @go(EstablishedTime,*string)
 
-	// RoutesReceived is the number of routes received from this peer.
+	// RouteCount is the number of routes exchanged with this peer per AFI/SAFI.
 	//
 	// +kubebuilder:validation:Optional
-	routesReceived?: null | int32 @go(RoutesReceived,*int32)
-
-	// RoutesAdvertised is the number of routes advertised to this peer.
-	//
-	// +kubebuilder:validation:Optional
-	routesAdvertised?: null | int32 @go(RoutesAdvertised,*int32)
+	routeCount?: [...#BGPFamilyRouteCount] @go(RouteCount,[]BGPFamilyRouteCount)
 }
 
 // CiliumBGPTimersState is the state of the negotiated BGP timers for a peer.
@@ -203,4 +199,28 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +kubebuilder:validation:Optional
 	appliedKeepaliveSeconds?: null | int32 @go(AppliedKeepaliveSeconds,*int32)
+}
+
+#BGPFamilyRouteCount: {
+	// Afi is the Address Family Identifier (AFI) of the family.
+	//
+	// +kubebuilder:validation:Enum=ipv4;ipv6;l2vpn;ls;opaque
+	// +kubebuilder:validation:Required
+	afi: string @go(Afi)
+
+	// Safi is the Subsequent Address Family Identifier (SAFI) of the family.
+	//
+	// +kubebuilder:validation:Enum=unicast;multicast;mpls_label;encapsulation;vpls;evpn;ls;sr_policy;mup;mpls_vpn;mpls_vpn_multicast;route_target_constraints;flowspec_unicast;flowspec_vpn;key_value
+	// +kubebuilder:validation:Required
+	safi: string @go(Safi)
+
+	// Received is the number of routes received from this peer.
+	//
+	// +kubebuilder:validation:Optional
+	received?: null | int32 @go(Received,*int32)
+
+	// Advertised is the number of routes advertised to this peer.
+	//
+	// +kubebuilder:validation:Optional
+	advertised?: null | int32 @go(Advertised,*int32)
 }

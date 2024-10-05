@@ -12,6 +12,14 @@ import (
 // GitRepositoryKind is the string representation of a GitRepository.
 #GitRepositoryKind: "GitRepository"
 
+// GitProviderGeneric provides support for authentication using
+// credentials specified in secretRef.
+#GitProviderGeneric: "generic"
+
+// GitProviderAzure provides support for authentication to azure
+// repositories using Managed Identity.
+#GitProviderAzure: "azure"
+
 // IncludeUnavailableCondition indicates one of the includes is not
 // available. For example, because it does not exist, or does not have an
 // Artifact.
@@ -55,6 +63,12 @@ import (
 	// and 'known_hosts' fields.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
+
+	// Provider used for authentication, can be 'azure', 'generic'.
+	// When not specified, defaults to 'generic'.
+	// +kubebuilder:validation:Enum=generic;azure
+	// +optional
+	provider?: string @go(Provider)
 
 	// Interval at which the GitRepository URL is checked for updates.
 	// This interval is approximate and may be subject to jitter to ensure

@@ -204,7 +204,7 @@ import (
 	message?: string @go(Message)
 }
 
-// CertificateRequestConditionType represents an Certificate condition value.
+// CertificateRequestConditionType represents a Certificate condition value.
 #CertificateRequestConditionType: string // #enumCertificateRequestConditionType
 
 #enumCertificateRequestConditionType:

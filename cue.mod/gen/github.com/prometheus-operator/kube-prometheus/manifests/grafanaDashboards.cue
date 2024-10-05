@@ -476,6 +476,15 @@ grafanaDashboards: {
 	}
 	"apiserver.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -1179,6 +1188,15 @@ grafanaDashboards: {
 	}
 	"cluster-total.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -1211,7 +1229,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Current Rate of Bytes Received"
@@ -1248,7 +1276,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Current Rate of Bytes Transmitted"
@@ -1302,7 +1340,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1310,7 +1358,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1318,7 +1376,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "avg by (namespace) (rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					avg by (namespace) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1326,7 +1394,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "avg by (namespace) (rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					avg by (namespace) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1334,7 +1412,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1342,7 +1430,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1350,7 +1448,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -1358,7 +1466,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum by (namespace) (rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}]
@@ -1448,7 +1566,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "avg by (namespace) (rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					avg by (namespace) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Average Rate of Bytes Received"
@@ -1485,7 +1613,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "avg by (namespace) (rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					avg by (namespace) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Average Rate of Bytes Transmitted"
@@ -1522,7 +1660,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Receive Bandwidth"
@@ -1559,7 +1707,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Transmit Bandwidth"
@@ -1596,7 +1754,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Received Packets"
@@ -1633,7 +1801,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Transmitted Packets"
@@ -1670,7 +1848,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Received Packets Dropped"
@@ -1707,7 +1895,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (namespace) (
+					    rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Transmitted Packets Dropped"
@@ -1744,7 +1942,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (instance) (rate(node_netstat_Tcp_RetransSegs{cluster=\"$cluster\"}[$__rate_interval]) / rate(node_netstat_Tcp_OutSegs{cluster=\"$cluster\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (instance) (
+					    rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval]) / rate(node_netstat_Tcp_OutSegs{cluster="$cluster"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of TCP Retransmits out of all sent segments"
@@ -1781,7 +1989,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (instance) (rate(node_netstat_TcpExt_TCPSynRetrans{cluster=\"$cluster\"}[$__rate_interval]) / rate(node_netstat_Tcp_RetransSegs{cluster=\"$cluster\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (instance) (
+					    rate(node_netstat_TcpExt_TCPSynRetrans{cluster="$cluster"}[$__rate_interval]) / rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of TCP SYN Retransmits out of all retransmits"
@@ -1827,6 +2045,15 @@ grafanaDashboards: {
 	}
 	"controller-manager.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -2306,12 +2533,21 @@ grafanaDashboards: {
 	}
 	"k8s-resources-cluster.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
 				uid:  "-- Mixed --"
 			}
-			fieldConfig: defaults: unit: "none"
+			fieldConfig: defaults: unit: "percentunit"
 			gridPos: {
 				h: 3
 				w: 4
@@ -3593,6 +3829,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-multicluster.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -4088,6 +4333,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-namespace.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -5321,6 +5575,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-node.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -5776,6 +6039,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-pod.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -6933,6 +7205,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-workload.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -7980,6 +8261,15 @@ grafanaDashboards: {
 	}
 	"k8s-resources-workloads-namespace.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -8067,14 +8357,14 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})"
+				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.cpu|cpu\"})"
 				legendFormat: "quota - requests"
 			}, {
 				datasource: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})"
+				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.cpu\"})"
 				legendFormat: "quota - limits"
 			}]
 			title: "CPU Usage"
@@ -8365,14 +8655,14 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})"
+				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.memory|memory\"})"
 				legendFormat: "quota - requests"
 			}, {
 				datasource: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})"
+				expr:         "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.memory\"})"
 				legendFormat: "quota - limits"
 			}]
 			title: "Memory Usage"
@@ -9187,6 +9477,15 @@ grafanaDashboards: {
 	}
 	"kubelet.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -10187,6 +10486,15 @@ grafanaDashboards: {
 	}
 	"namespace-by-pod.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -10224,7 +10532,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Current Rate of Bytes Received"
@@ -10266,7 +10584,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Current Rate of Bytes Transmitted"
@@ -10320,7 +10648,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -10328,7 +10666,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -10336,7 +10684,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_packets_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -10344,7 +10702,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_packets_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -10352,7 +10720,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}, {
@@ -10360,7 +10738,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				format:  "table"
 				instant: true
 			}]
@@ -10442,7 +10830,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Receive Bandwidth"
@@ -10479,7 +10877,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_bytes_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Transmit Bandwidth"
@@ -10516,7 +10924,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_packets_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Received Packets"
@@ -10553,7 +10971,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_packets_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Transmitted Packets"
@@ -10590,7 +11018,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum by (namespace) (rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"})"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Received Packets Dropped"
@@ -10627,7 +11065,17 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]) * on (cluster,namespace,pod) kube_pod_info{host_network=\"false\"}) by (pod)"
+				expr: """
+					sum by (pod) (
+					    rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace=~"$namespace"}[$__rate_interval])
+					  * on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
+					)
+
+					"""
 				legendFormat: "__auto"
 			}]
 			title: "Rate of Transmitted Packets Dropped"
@@ -10692,6 +11140,15 @@ grafanaDashboards: {
 	}
 	"namespace-by-workload.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -10723,7 +11180,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -10763,7 +11224,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11038,7 +11503,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11086,7 +11555,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11134,7 +11607,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(avg(rate(container_network_receive_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11182,7 +11659,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(avg(rate(container_network_transmit_bytes_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11230,7 +11711,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_receive_packets_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11278,7 +11763,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_transmit_packets_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11326,7 +11815,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -11374,7 +11867,11 @@ grafanaDashboards: {
 				}
 				expr: """
 					sort_desc(sum(rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace="$namespace"}[$__rate_interval])
-					* on (cluster,namespace,pod) kube_pod_info{host_network="false"}
+					* on (cluster,namespace,pod) group_left ()
+					    topk by (cluster,namespace,pod) (
+					      1,
+					      max by (cluster,namespace,pod) (kube_pod_info{host_network="false"})
+					    )
 					* on (cluster,namespace,pod)
 					group_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace", workload=~".+", workload_type=~"$type"}) by (workload))
 
@@ -12313,6 +12810,7 @@ grafanaDashboards: {
 		}
 		timezone: "utc"
 		title:    "Node Exporter / USE Method / Cluster"
+		uid:      "3e97d1d02672cdd0861f4c97c64f89b2"
 		version:  0
 	}
 	"node-rsrc-use.json": {
@@ -13162,6 +13660,844 @@ grafanaDashboards: {
 		}
 		timezone: "utc"
 		title:    "Node Exporter / USE Method / Node"
+		uid:      "fac67cfbe174d3ef53eb473d73d9212f"
+		version:  0
+	}
+	"nodes-aix.json": {
+		"__inputs": []
+		"__requires": []
+		annotations: list: []
+		editable:     false
+		gnetId:       null
+		graphTooltip: 1
+		hideControls: false
+		id:           null
+		links: []
+		refresh: "30s"
+		rows: [{
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 2
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       true
+				steppedLine: false
+				targets: [{
+					expr: """
+						(
+						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
+						/ ignoring(cpu) group_left
+						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
+						)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 5
+					legendFormat:   "{{cpu}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "CPU Usage"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "percentunit"
+					label:   null
+					logBase: 1
+					max:     1
+					min:     0
+					show:    true
+				}, {
+					format:  "percentunit"
+					label:   null
+					logBase: 1
+					max:     1
+					min:     0
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         0
+				fillGradient: 0
+				gridPos: {}
+				id: 3
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "1m load average"
+					refId:          "A"
+				}, {
+					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "5m load average"
+					refId:          "B"
+				}, {
+					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "15m load average"
+					refId:          "C"
+				}, {
+					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "logical cores"
+					refId:          "D"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Load Average"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "short"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "CPU"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         1
+				fillGradient: 0
+				gridPos: {}
+				id: 4
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        9
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "Physical Memory"
+					refId:          "A"
+				}, {
+					expr: """
+						(
+						    node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+						    node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+						)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   "Memory Used"
+					refId:          "B"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Memory Usage"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "bytes"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "bytes"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}]
+			}, {
+				datasource: "$datasource"
+				fieldConfig: defaults: {
+					max: 100
+					min: 0
+					thresholds: {
+						mode: "absolute"
+						steps: [{
+							color: "rgba(50, 172, 45, 0.97)"
+						}, {
+							color: "rgba(237, 129, 40, 0.89)"
+							value: 80
+						}, {
+							color: "rgba(245, 54, 54, 0.9)"
+							value: 90
+						}]
+					}
+					unit: "percent"
+				}
+				gridPos: {}
+				id:   5
+				span: 3
+				targets: [{
+					expr: """
+						100 -
+						(
+						  avg(node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
+						  avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
+						  * 100
+						)
+
+						"""
+					format:         "time_series"
+					intervalFactor: 2
+					legendFormat:   ""
+				}]
+				title:       "Memory Usage"
+				transparent: false
+				type:        "gauge"
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Memory"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				fill:         0
+				fillGradient: 0
+				gridPos: {}
+				id: 6
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: [{
+					alias: "/ read| written/"
+					yaxis: 1
+				}, {
+					alias: "/ io time/"
+					yaxis: 2
+				}]
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					format:         "time_series"
+					intervalFactor: 1
+					legendFormat:   "{{device}} read"
+					refId:          "A"
+				}, {
+					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					format:         "time_series"
+					intervalFactor: 1
+					legendFormat:   "{{device}} written"
+					refId:          "B"
+				}, {
+					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+					format:         "time_series"
+					intervalFactor: 1
+					legendFormat:   "{{device}} io time"
+					refId:          "C"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Disk I/O"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "Bps"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}, {
+					format:  "percentunit"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     null
+					show:    true
+				}]
+			}, {
+				datasource: "$datasource"
+				fieldConfig: {
+					defaults: {
+						custom: {}
+						thresholds: {
+							mode: "absolute"
+							steps: [{
+								color: "green"
+							}, {
+								color: "yellow"
+								value: 0.80000000000000004
+							}, {
+								color: "red"
+								value: 0.90000000000000002
+							}]
+						}
+						unit: "decbytes"
+					}
+					overrides: [{
+						matcher: {
+							id:      "byName"
+							options: "Mounted on"
+						}
+						properties: [{
+							id:    "custom.width"
+							value: 260
+						}]
+					}, {
+						matcher: {
+							id:      "byName"
+							options: "Size"
+						}
+						properties: [{
+							id:    "custom.width"
+							value: 93
+						}]
+					}, {
+						matcher: {
+							id:      "byName"
+							options: "Used"
+						}
+						properties: [{
+							id:    "custom.width"
+							value: 72
+						}]
+					}, {
+						matcher: {
+							id:      "byName"
+							options: "Available"
+						}
+						properties: [{
+							id:    "custom.width"
+							value: 88
+						}]
+					}, {
+						matcher: {
+							id:      "byName"
+							options: "Used, %"
+						}
+						properties: [{
+							id:    "unit"
+							value: "percentunit"
+						}, {
+							id:    "custom.displayMode"
+							value: "gradient-gauge"
+						}, {
+							id:    "max"
+							value: 1
+						}, {
+							id:    "min"
+							value: 0
+						}]
+					}]
+				}
+				gridPos: {}
+				id:   7
+				span: 6
+				targets: [{
+					expr: """
+						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+						"""
+					format:         "table"
+					instant:        true
+					intervalFactor: 2
+					legendFormat:   ""
+				}, {
+					expr: """
+						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+						"""
+					format:         "table"
+					instant:        true
+					intervalFactor: 2
+					legendFormat:   ""
+				}]
+				title: "Disk Space Usage"
+				transformations: [{
+					id: "groupBy"
+					options: fields: {
+						"Value #A": {
+							aggregations: ["lastNotNull"]
+							operation: "aggregate"
+						}
+						"Value #B": {
+							aggregations: ["lastNotNull"]
+							operation: "aggregate"
+						}
+						mountpoint: {
+							aggregations: []
+							operation: "groupby"
+						}
+					}
+				}, {
+					id: "merge"
+					options: {}
+				}, {
+					id: "calculateField"
+					options: {
+						alias: "Used"
+						binary: {
+							left:     "Value #A (lastNotNull)"
+							operator: "-"
+							reducer:  "sum"
+							right:    "Value #B (lastNotNull)"
+						}
+						mode: "binary"
+						reduce: reducer: "sum"
+					}
+				}, {
+					id: "calculateField"
+					options: {
+						alias: "Used, %"
+						binary: {
+							left:     "Used"
+							operator: "/"
+							reducer:  "sum"
+							right:    "Value #A (lastNotNull)"
+						}
+						mode: "binary"
+						reduce: reducer: "sum"
+					}
+				}, {
+					id: "organize"
+					options: {
+						excludeByName: {}
+						indexByName: {}
+						renameByName: {
+							"Value #A (lastNotNull)": "Size"
+							"Value #B (lastNotNull)": "Available"
+							mountpoint:               "Mounted on"
+						}
+					}
+				}, {
+					id: "sortBy"
+					options: {
+						fields: {}
+						sort: [{
+							field: "Mounted on"
+						}]
+					}
+				}]
+				transparent: false
+				type:        "table"
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Disk"
+			titleSize:       "h6"
+			type:            "row"
+		}, {
+			collapse:  false
+			collapsed: false
+			panels: [{
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "Network received (bits/s)"
+				fill:         0
+				fillGradient: 0
+				gridPos: {}
+				id: 8
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+					format:         "time_series"
+					intervalFactor: 1
+					legendFormat:   "{{device}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Network Received"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "bps"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "bps"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}]
+			}, {
+				aliasColors: {}
+				bars:         false
+				dashLength:   10
+				dashes:       false
+				datasource:   "$datasource"
+				description:  "Network transmitted (bits/s)"
+				fill:         0
+				fillGradient: 0
+				gridPos: {}
+				id: 9
+				legend: {
+					alignAsTable: false
+					avg:          false
+					current:      false
+					max:          false
+					min:          false
+					rightSide:    false
+					show:         true
+					sideWidth:    null
+					total:        false
+					values:       false
+				}
+				lines:     true
+				linewidth: 1
+				links: []
+				nullPointMode: "null"
+				percentage:    false
+				pointradius:   5
+				points:        false
+				renderer:      "flot"
+				repeat:        null
+				seriesOverrides: []
+				spaceLength: 10
+				span:        6
+				stack:       false
+				steppedLine: false
+				targets: [{
+					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+					format:         "time_series"
+					intervalFactor: 1
+					legendFormat:   "{{device}}"
+					refId:          "A"
+				}]
+				thresholds: []
+				timeFrom:  null
+				timeShift: null
+				title:     "Network Transmitted"
+				tooltip: {
+					shared:     true
+					sort:       0
+					value_type: "individual"
+				}
+				type: "graph"
+				xaxis: {
+					buckets: null
+					mode:    "time"
+					name:    null
+					show:    true
+					values: []
+				}
+				yaxes: [{
+					format:  "bps"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}, {
+					format:  "bps"
+					label:   null
+					logBase: 1
+					max:     null
+					min:     0
+					show:    true
+				}]
+			}]
+			repeat:          null
+			repeatIteration: null
+			repeatRowId:     null
+			showTitle:       true
+			title:           "Network"
+			titleSize:       "h6"
+			type:            "row"
+		}]
+		schemaVersion: 14
+		style:         "dark"
+		tags: [
+			"node-exporter-mixin",
+		]
+		templating: list: [{
+			current: {
+				text:  "default"
+				value: "default"
+			}
+			hide:  0
+			label: "Data Source"
+			name:  "datasource"
+			options: []
+			query:   "prometheus"
+			refresh: 1
+			regex:   ""
+			type:    "datasource"
+		}, {
+			allValue: null
+			current: {}
+			datasource: "$datasource"
+			hide:       2
+			includeAll: false
+			label:      "Cluster"
+			multi:      false
+			name:       "cluster"
+			options: []
+			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}, {
+			allValue: null
+			current: {}
+			datasource: "$datasource"
+			hide:       0
+			includeAll: false
+			label:      "Instance"
+			multi:      false
+			name:       "instance"
+			options: []
+			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
+			refresh:        2
+			regex:          ""
+			sort:           0
+			tagValuesQuery: ""
+			tags: []
+			tagsQuery: ""
+			type:      "query"
+			useTags:   false
+		}]
+		time: {
+			from: "now-1h"
+			to:   "now"
+		}
+		timepicker: {
+			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+		}
+		timezone: "utc"
+		title:    "Node Exporter / AIX"
+		uid:      "7e0a61e486f727d763fb1d86fdd629c2"
 		version:  0
 	}
 	"nodes-darwin.json": {
@@ -14029,6 +15365,7 @@ grafanaDashboards: {
 		}
 		timezone: "utc"
 		title:    "Node Exporter / MacOS"
+		uid:      "629701ea43bf69291922ea45f4a87d37"
 		version:  0
 	}
 	"nodes.json": {
@@ -14882,10 +16219,20 @@ grafanaDashboards: {
 		}
 		timezone: "utc"
 		title:    "Node Exporter / Nodes"
+		uid:      "7d57716318ee0dddbac5a7f451fb7753"
 		version:  0
 	}
 	"persistentvolumesusage.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -15168,6 +16515,15 @@ grafanaDashboards: {
 	}
 	"pod-total.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -17851,6 +19207,15 @@ grafanaDashboards: {
 	}
 	"proxy.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -18372,6 +19737,15 @@ grafanaDashboards: {
 	}
 	"scheduler.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"
@@ -18851,6 +20225,15 @@ grafanaDashboards: {
 	}
 	"workload-total.json": {
 		editable: false
+		links: [{
+			asDropdown:  true
+			includeVars: true
+			keepTime:    true
+			tags: ["kubernetes-mixin"]
+			targetBlank: false
+			title:       "Kubernetes"
+			type:        "dashboards"
+		}]
 		panels: [{
 			datasource: {
 				type: "datasource"

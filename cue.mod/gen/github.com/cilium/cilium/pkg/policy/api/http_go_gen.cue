@@ -82,7 +82,10 @@ package api
 	method?: string @go(Method)
 
 	// Host is an extended POSIX regex matched against the host header of a
-	// request, e.g. "foo.com"
+	// request. Examples:
+	//
+	// - foo.bar.com will match the host fooXbar.com or foo-bar.com
+	// - foo\.bar\.com will only match the host foo.bar.com
 	//
 	// If omitted or empty, the value of the host header is ignored.
 	//
