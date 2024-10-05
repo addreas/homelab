@@ -4,4 +4,5 @@
 
 package v1
 
-#ACMEFinalizer: "finalizer.acme.cert-manager.io"
+#ACMELegacyFinalizer:          "finalizer.acme.cert-manager.io"
+#ACMEDomainQualifiedFinalizer: "acme.cert-manager.io/finalizer"

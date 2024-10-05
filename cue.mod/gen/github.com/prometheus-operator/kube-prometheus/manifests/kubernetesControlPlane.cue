@@ -143,7 +143,7 @@ kubernetesControlPlane: {
 				}
 				expr: """
 					(
-					  max without (revision) (
+					  max by(namespace, statefulset, job, cluster) (
 					    kube_statefulset_status_current_revision{job="kube-state-metrics"}
 					      unless
 					    kube_statefulset_status_update_revision{job="kube-state-metrics"}
@@ -317,7 +317,7 @@ kubernetesControlPlane: {
 					summary:     "Cluster has overcommitted CPU resource requests."
 				}
 				expr: """
-					sum(namespace_cpu:kube_pod_container_resource_requests:sum{job="kube-state-metrics",}) by (cluster) - (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) - max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
+					sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster) - (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) - max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
 					and
 					(sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) - max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
 
@@ -590,9 +590,9 @@ kubernetesControlPlane: {
 					summary:     "The API server is burning too much error budget."
 				}
 				expr: """
-					sum(apiserver_request:burnrate1h) > (14.40 * 0.01000)
-					and
-					sum(apiserver_request:burnrate5m) > (14.40 * 0.01000)
+					sum by(cluster) (apiserver_request:burnrate1h) > (14.40 * 0.01000)
+					and on(cluster)
+					sum by(cluster) (apiserver_request:burnrate5m) > (14.40 * 0.01000)
 
 					"""
 				for: "2m"
@@ -609,9 +609,9 @@ kubernetesControlPlane: {
 					summary:     "The API server is burning too much error budget."
 				}
 				expr: """
-					sum(apiserver_request:burnrate6h) > (6.00 * 0.01000)
-					and
-					sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)
+					sum by(cluster) (apiserver_request:burnrate6h) > (6.00 * 0.01000)
+					and on(cluster)
+					sum by(cluster) (apiserver_request:burnrate30m) > (6.00 * 0.01000)
 
 					"""
 				for: "15m"
@@ -628,9 +628,9 @@ kubernetesControlPlane: {
 					summary:     "The API server is burning too much error budget."
 				}
 				expr: """
-					sum(apiserver_request:burnrate1d) > (3.00 * 0.01000)
-					and
-					sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)
+					sum by(cluster) (apiserver_request:burnrate1d) > (3.00 * 0.01000)
+					and on(cluster)
+					sum by(cluster) (apiserver_request:burnrate2h) > (3.00 * 0.01000)
 
 					"""
 				for: "1h"
@@ -647,9 +647,9 @@ kubernetesControlPlane: {
 					summary:     "The API server is burning too much error budget."
 				}
 				expr: """
-					sum(apiserver_request:burnrate3d) > (1.00 * 0.01000)
-					and
-					sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)
+					sum by(cluster) (apiserver_request:burnrate3d) > (1.00 * 0.01000)
+					and on(cluster)
+					sum by(cluster) (apiserver_request:burnrate6h) > (1.00 * 0.01000)
 
 					"""
 				for: "3h"
@@ -669,7 +669,7 @@ kubernetesControlPlane: {
 					summary:     "Client certificate is about to expire."
 				}
 				expr: """
-					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
+					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(cluster, job) histogram_quantile(0.01, sum by (cluster, job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
 
 					"""
 				for: "5m"
@@ -682,7 +682,7 @@ kubernetesControlPlane: {
 					summary:     "Client certificate is about to expire."
 				}
 				expr: """
-					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(cluster, job) histogram_quantile(0.01, sum by (cluster, job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
 
 					"""
 				for: "5m"
@@ -733,7 +733,7 @@ kubernetesControlPlane: {
 					summary:     "The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests."
 				}
 				expr: """
-					sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m]))  / (  sum(rate(apiserver_request_total{job="apiserver"}[10m])) + sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
+					sum by(cluster) (rate(apiserver_request_terminations_total{job="apiserver"}[10m])) / ( sum by(cluster) (rate(apiserver_request_total{job="apiserver"}[10m])) + sum by(cluster) (rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
 
 					"""
 				for: "5m"
@@ -1528,7 +1528,7 @@ kubernetesControlPlane: {
 				record: "node_namespace_pod_container:container_memory_swap"
 			}]
 		}, {
-			name: "k8s.rules.container_resource"
+			name: "k8s.rules.container_memory_requests"
 			rules: [{
 				expr: """
 					kube_pod_container_resource_requests{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
@@ -1552,7 +1552,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "namespace_memory:kube_pod_container_resource_requests:sum"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_cpu_requests"
+			rules: [{
 				expr: """
 					kube_pod_container_resource_requests{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
 					group_left() max by (namespace, pod, cluster) (
@@ -1575,7 +1578,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "namespace_cpu:kube_pod_container_resource_requests:sum"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_memory_limits"
+			rules: [{
 				expr: """
 					kube_pod_container_resource_limits{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
 					group_left() max by (namespace, pod, cluster) (
@@ -1598,7 +1604,10 @@ kubernetesControlPlane: {
 
 					"""
 				record: "namespace_memory:kube_pod_container_resource_limits:sum"
-			}, {
+			}]
+		}, {
+			name: "k8s.rules.container_cpu_limits"
+			rules: [{
 				expr: """
 					kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
 					group_left() max by (namespace, pod, cluster) (
@@ -1879,7 +1888,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes|flowcontrol_request_concurrency_limit|flowcontrol_request_concurrency_in_use)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
@@ -1924,6 +1933,21 @@ kubernetesControlPlane: {
 						caFile:     "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 						serverName: "kubernetes"
 					}
+				}, {
+					bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+					interval:        "5s"
+					metricRelabelings: [{
+						action: "drop"
+						regex:  "process_start_time_seconds"
+						sourceLabels: ["__name__"]
+					}]
+					path:   "/metrics/slis"
+					port:   "https"
+					scheme: "https"
+					tlsConfig: {
+						caFile:     "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+						serverName: "kubernetes"
+					}
 				}]
 				jobLabel: "component"
 				namespaceSelector: matchNames: ["default"]
@@ -1958,7 +1982,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes|flowcontrol_request_concurrency_limit|flowcontrol_request_concurrency_in_use)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
@@ -1988,6 +2012,18 @@ kubernetesControlPlane: {
 					port:   "https-metrics"
 					scheme: "https"
 					tlsConfig: insecureSkipVerify: true
+				}, {
+					bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+					interval:        "5s"
+					metricRelabelings: [{
+						action: "drop"
+						regex:  "process_start_time_seconds"
+						sourceLabels: ["__name__"]
+					}]
+					path:   "/metrics/slis"
+					port:   "https-metrics"
+					scheme: "https"
+					tlsConfig: insecureSkipVerify: true
 				}]
 				jobLabel: "app.kubernetes.io/name"
 				namespaceSelector: matchNames: ["kube-system"]
@@ -2011,6 +2047,18 @@ kubernetesControlPlane: {
 					interval:        "30s"
 					port:            "https-metrics"
 					scheme:          "https"
+					tlsConfig: insecureSkipVerify: true
+				}, {
+					bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+					interval:        "5s"
+					metricRelabelings: [{
+						action: "drop"
+						regex:  "process_start_time_seconds"
+						sourceLabels: ["__name__"]
+					}]
+					path:   "/metrics/slis"
+					port:   "https-metrics"
+					scheme: "https"
 					tlsConfig: insecureSkipVerify: true
 				}]
 				jobLabel: "app.kubernetes.io/name"
@@ -2044,7 +2092,7 @@ kubernetesControlPlane: {
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
-						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)"
+						regex:  "apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes|flowcontrol_request_concurrency_limit|flowcontrol_request_concurrency_in_use)"
 						sourceLabels: ["__name__"]
 					}, {
 						action: "drop"
@@ -2108,6 +2156,24 @@ kubernetesControlPlane: {
 					interval:        "30s"
 					path:            "/metrics/probes"
 					port:            "https-metrics"
+					relabelings: [{
+						action: "replace"
+						sourceLabels: ["__metrics_path__"]
+						targetLabel: "metrics_path"
+					}]
+					scheme: "https"
+					tlsConfig: insecureSkipVerify: true
+				}, {
+					bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+					honorLabels:     true
+					interval:        "5s"
+					metricRelabelings: [{
+						action: "drop"
+						regex:  "process_start_time_seconds"
+						sourceLabels: ["__name__"]
+					}]
+					path: "/metrics/slis"
+					port: "https-metrics"
 					relabelings: [{
 						action: "replace"
 						sourceLabels: ["__metrics_path__"]

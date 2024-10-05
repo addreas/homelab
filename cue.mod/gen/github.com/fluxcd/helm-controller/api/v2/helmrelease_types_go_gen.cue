@@ -357,6 +357,11 @@ _#defaultMaxHistory: 5
 	// +optional
 	disableOpenAPIValidation?: bool @go(DisableOpenAPIValidation)
 
+	// DisableSchemaValidation prevents the Helm install action from validating
+	// the values against the JSON Schema.
+	// +optional
+	disableSchemaValidation?: bool @go(DisableSchemaValidation)
+
 	// Replace tells the Helm install action to re-use the 'ReleaseName', but only
 	// if that name is a deleted release which remains in the history.
 	// +optional
@@ -473,6 +478,11 @@ _#defaultMaxHistory: 5
 	// rendered templates against the Kubernetes OpenAPI Schema.
 	// +optional
 	disableOpenAPIValidation?: bool @go(DisableOpenAPIValidation)
+
+	// DisableSchemaValidation prevents the Helm upgrade action from validating
+	// the values against the JSON Schema.
+	// +optional
+	disableSchemaValidation?: bool @go(DisableSchemaValidation)
 
 	// Force forces resource updates through a replacement strategy.
 	// +optional

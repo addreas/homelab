@@ -98,6 +98,11 @@ import (
 	// +optional
 	certSecretRef?: null | meta.#LocalObjectReference @go(CertSecretRef,*meta.LocalObjectReference)
 
+	// ProxySecretRef specifies the Secret containing the proxy configuration
+	// to use while communicating with the container registry.
+	// +optional
+	proxySecretRef?: null | meta.#LocalObjectReference @go(ProxySecretRef,*meta.LocalObjectReference)
+
 	// Interval at which the OCIRepository URL is checked for updates.
 	// This interval is approximate and may be subject to jitter to ensure
 	// efficient use of resources.

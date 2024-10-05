@@ -23,3 +23,8 @@ package v1
 // (/v1/auth/kubernetes). The endpoint will then be called at `/login`, so
 // left as the default, `/v1/auth/kubernetes/login` will be called.
 #DefaultVaultKubernetesAuthMountPath: "/v1/auth/kubernetes"
+
+// Default mount path location for client certificate authentication
+// (/v1/auth/cert). The endpoint will then be called at `/login`, so
+// left as the default, `/v1/auth/cert/login` will be called.
+#DefaultVaultClientCertificateAuthMountPath: "/v1/auth/cert"
