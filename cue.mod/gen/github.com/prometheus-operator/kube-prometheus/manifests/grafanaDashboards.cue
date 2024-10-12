@@ -499,7 +499,7 @@ grafanaDashboards: {
 			}
 			id: 1
 			options: content: "The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only."
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			title:         "Notice"
 			type:          "text"
 		}, {
@@ -520,7 +520,7 @@ grafanaDashboards: {
 			}
 			id:            2
 			interval:      "1m"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -557,7 +557,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -586,7 +586,7 @@ grafanaDashboards: {
 			}
 			id:            4
 			interval:      "1m"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -664,7 +664,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -701,7 +701,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -735,7 +735,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -764,7 +764,7 @@ grafanaDashboards: {
 			}
 			id:            8
 			interval:      "1m"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -842,7 +842,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -879,7 +879,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -913,7 +913,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -949,7 +949,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -985,7 +985,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1022,7 +1022,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1055,7 +1055,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1091,7 +1091,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1124,7 +1124,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1223,7 +1223,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1270,7 +1270,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1334,7 +1334,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1560,7 +1560,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1607,7 +1607,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1654,7 +1654,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1701,7 +1701,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1748,7 +1748,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1795,7 +1795,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1842,7 +1842,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1889,7 +1889,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1936,7 +1936,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1983,7 +1983,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2069,7 +2069,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2111,7 +2111,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2153,7 +2153,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2195,7 +2195,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2237,7 +2237,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2300,7 +2300,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2342,7 +2342,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2384,7 +2384,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2426,7 +2426,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2468,7 +2468,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2557,7 +2557,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2583,7 +2583,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2609,7 +2609,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2635,7 +2635,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2661,7 +2661,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2687,7 +2687,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2726,7 +2726,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2771,7 +2771,7 @@ grafanaDashboards: {
 				y: 12
 			}
 			id:            8
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2910,7 +2910,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2982,7 +2982,7 @@ grafanaDashboards: {
 				y: 24
 			}
 			id:            10
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3133,7 +3133,7 @@ grafanaDashboards: {
 				y: 30
 			}
 			id:            11
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3260,7 +3260,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3302,7 +3302,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3344,7 +3344,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3386,7 +3386,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3428,7 +3428,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3470,7 +3470,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3512,7 +3512,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3554,7 +3554,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3596,7 +3596,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3638,7 +3638,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3692,7 +3692,7 @@ grafanaDashboards: {
 				y: 96
 			}
 			id:            22
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3853,7 +3853,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3879,7 +3879,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3905,7 +3905,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3931,7 +3931,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3957,7 +3957,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3983,7 +3983,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4017,7 +4017,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4062,7 +4062,7 @@ grafanaDashboards: {
 				y: 2
 			}
 			id:            8
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4172,7 +4172,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4220,7 +4220,7 @@ grafanaDashboards: {
 				y: 4
 			}
 			id:            10
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4357,7 +4357,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4383,7 +4383,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4409,7 +4409,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4435,7 +4435,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4513,7 +4513,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4572,7 +4572,7 @@ grafanaDashboards: {
 				y: 14
 			}
 			id:            6
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4726,7 +4726,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4788,7 +4788,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            8
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4951,7 +4951,7 @@ grafanaDashboards: {
 				y: 35
 			}
 			id:            9
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5078,7 +5078,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5120,7 +5120,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5162,7 +5162,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5204,7 +5204,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5246,7 +5246,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5288,7 +5288,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5330,7 +5330,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5372,7 +5372,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5426,7 +5426,7 @@ grafanaDashboards: {
 				y: 70
 			}
 			id:            18
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5644,13 +5644,13 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"cpu\"})"
+				expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"cpu\"})"
 				legendFormat: "max capacity"
 			}, {
 				datasource: {
@@ -5696,7 +5696,7 @@ grafanaDashboards: {
 				y: 6
 			}
 			id:            2
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5830,13 +5830,13 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", node=~\"$node\", resource=\"memory\"})"
+				expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})"
 				legendFormat: "max capacity"
 			}, {
 				datasource: {
@@ -5885,7 +5885,7 @@ grafanaDashboards: {
 				y: 18
 			}
 			id:            4
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6115,7 +6115,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6212,7 +6212,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6245,7 +6245,7 @@ grafanaDashboards: {
 				y: 14
 			}
 			id:            3
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6399,7 +6399,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6459,7 +6459,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6610,7 +6610,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6652,7 +6652,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6694,7 +6694,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6736,7 +6736,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6778,7 +6778,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6820,7 +6820,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6862,7 +6862,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6911,7 +6911,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6960,7 +6960,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7002,7 +7002,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7044,7 +7044,7 @@ grafanaDashboards: {
 				y: 70
 			}
 			id:            16
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7242,7 +7242,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7294,7 +7294,7 @@ grafanaDashboards: {
 				y: 7
 			}
 			id:            2
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7454,7 +7454,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7509,7 +7509,7 @@ grafanaDashboards: {
 				y: 21
 			}
 			id:            4
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7681,7 +7681,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7838,7 +7838,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7885,7 +7885,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7932,7 +7932,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7979,7 +7979,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8026,7 +8026,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8073,7 +8073,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8120,7 +8120,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8167,7 +8167,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8337,7 +8337,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8412,7 +8412,7 @@ grafanaDashboards: {
 				y: 7
 			}
 			id:            2
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8635,7 +8635,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8713,7 +8713,7 @@ grafanaDashboards: {
 				y: 21
 			}
 			id:            4
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8909,7 +8909,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9066,7 +9066,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9113,7 +9113,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9160,7 +9160,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9207,7 +9207,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9254,7 +9254,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9301,7 +9301,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9348,7 +9348,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9395,7 +9395,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9501,7 +9501,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9527,7 +9527,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9553,7 +9553,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9579,7 +9579,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9605,7 +9605,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9631,7 +9631,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9673,7 +9673,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9715,7 +9715,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9757,7 +9757,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9799,7 +9799,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9848,7 +9848,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9897,7 +9897,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9939,7 +9939,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9981,7 +9981,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10023,7 +10023,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10065,7 +10065,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10107,7 +10107,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10149,7 +10149,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10191,7 +10191,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10233,7 +10233,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10296,7 +10296,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10338,7 +10338,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10380,7 +10380,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10422,7 +10422,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10526,7 +10526,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10578,7 +10578,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10642,7 +10642,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10824,7 +10824,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10871,7 +10871,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10918,7 +10918,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10965,7 +10965,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11012,7 +11012,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11059,7 +11059,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11172,7 +11172,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11216,7 +11216,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11280,7 +11280,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11495,7 +11495,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11547,7 +11547,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11599,7 +11599,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11651,7 +11651,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11703,7 +11703,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11755,7 +11755,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11807,7 +11807,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11859,7 +11859,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16263,7 +16263,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16323,7 +16323,7 @@ grafanaDashboards: {
 			}
 			id:            2
 			interval:      "1m"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16375,7 +16375,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16432,7 +16432,7 @@ grafanaDashboards: {
 			}
 			id:            4
 			interval:      "1m"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16555,7 +16555,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16597,7 +16597,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16634,7 +16634,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16671,7 +16671,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16708,7 +16708,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16745,7 +16745,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16782,7 +16782,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16819,7 +16819,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19231,7 +19231,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19273,7 +19273,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19315,7 +19315,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19357,7 +19357,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19399,7 +19399,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19441,7 +19441,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19504,7 +19504,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19546,7 +19546,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19588,7 +19588,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19630,7 +19630,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19672,7 +19672,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19761,7 +19761,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19803,7 +19803,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19866,7 +19866,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19929,7 +19929,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19992,7 +19992,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20034,7 +20034,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20076,7 +20076,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20118,7 +20118,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20160,7 +20160,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20257,7 +20257,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20296,7 +20296,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20335,7 +20335,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20374,7 +20374,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20421,7 +20421,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20468,7 +20468,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20515,7 +20515,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20562,7 +20562,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20609,7 +20609,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20656,7 +20656,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.0.0"
+			pluginVersion: "v11.1.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"

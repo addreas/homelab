@@ -15310,6 +15310,68 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									dnsConfig: {
+										description: "Defines the DNS configuration for the pods."
+										properties: {
+											nameservers: {
+												description: """
+																A list of DNS name server IP addresses.
+																This will be appended to the base nameservers generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+											options: {
+												description: """
+																A list of DNS resolver options.
+																This will be merged with the base options generated from DNSPolicy.
+																Resolution options given in Options
+																will override those that appear in the base DNSPolicy.
+																"""
+												items: {
+													description: "PodDNSConfigOption defines DNS resolver options of a pod."
+													properties: {
+														name: {
+															description: "Name is required and must be unique."
+															minLength:   1
+															type:        "string"
+														}
+														value: {
+															description: "Value is optional."
+															type:        "string"
+														}
+													}
+													required: ["name"]
+													type: "object"
+												}
+												type: "array"
+												"x-kubernetes-list-map-keys": ["name"]
+												"x-kubernetes-list-type": "map"
+											}
+											searches: {
+												description: """
+																A list of DNS search domains for host-name lookup.
+																This will be appended to the base search paths generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+										}
+										type: "object"
+									}
+									dnsPolicy: {
+										description: "Defines the DNS policy for the pods."
+										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
+										type: "string"
+									}
 									enableFeatures: {
 										description: """
 														Enable access to Alertmanager feature flags. By default, no features are enabled.
@@ -27163,6 +27225,68 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									dnsConfig: {
+										description: "Defines the DNS configuration for the pods."
+										properties: {
+											nameservers: {
+												description: """
+																A list of DNS name server IP addresses.
+																This will be appended to the base nameservers generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+											options: {
+												description: """
+																A list of DNS resolver options.
+																This will be merged with the base options generated from DNSPolicy.
+																Resolution options given in Options
+																will override those that appear in the base DNSPolicy.
+																"""
+												items: {
+													description: "PodDNSConfigOption defines DNS resolver options of a pod."
+													properties: {
+														name: {
+															description: "Name is required and must be unique."
+															minLength:   1
+															type:        "string"
+														}
+														value: {
+															description: "Value is optional."
+															type:        "string"
+														}
+													}
+													required: ["name"]
+													type: "object"
+												}
+												type: "array"
+												"x-kubernetes-list-map-keys": ["name"]
+												"x-kubernetes-list-type": "map"
+											}
+											searches: {
+												description: """
+																A list of DNS search domains for host-name lookup.
+																This will be appended to the base search paths generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+										}
+										type: "object"
+									}
+									dnsPolicy: {
+										description: "Defines the DNS policy for the pods."
+										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
+										type: "string"
 									}
 									enableFeatures: {
 										description: """
@@ -40114,6 +40238,68 @@ prometheusOperator: {
 										description: "When true, the Prometheus compaction is disabled."
 										type:        "boolean"
 									}
+									dnsConfig: {
+										description: "Defines the DNS configuration for the pods."
+										properties: {
+											nameservers: {
+												description: """
+																A list of DNS name server IP addresses.
+																This will be appended to the base nameservers generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+											options: {
+												description: """
+																A list of DNS resolver options.
+																This will be merged with the base options generated from DNSPolicy.
+																Resolution options given in Options
+																will override those that appear in the base DNSPolicy.
+																"""
+												items: {
+													description: "PodDNSConfigOption defines DNS resolver options of a pod."
+													properties: {
+														name: {
+															description: "Name is required and must be unique."
+															minLength:   1
+															type:        "string"
+														}
+														value: {
+															description: "Value is optional."
+															type:        "string"
+														}
+													}
+													required: ["name"]
+													type: "object"
+												}
+												type: "array"
+												"x-kubernetes-list-map-keys": ["name"]
+												"x-kubernetes-list-type": "map"
+											}
+											searches: {
+												description: """
+																A list of DNS search domains for host-name lookup.
+																This will be appended to the base search paths generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+										}
+										type: "object"
+									}
+									dnsPolicy: {
+										description: "Defines the DNS policy for the pods."
+										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
+										type: "string"
+									}
 									enableAdminAPI: {
 										description: """
 														Enables access to the Prometheus web admin API.
@@ -44967,6 +45153,14 @@ prometheusOperator: {
 										}
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									ruleQueryOffset: {
+										description: """
+														Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+														It requires Prometheus >= v2.53.0.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
 									}
 									ruleSelector: {
 										description: """
@@ -50786,6 +50980,16 @@ prometheusOperator: {
 																	More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 																	"""
 												pattern: "^(?i)(abort|warn)?$"
+												type:    "string"
+											}
+											query_offset: {
+												description: """
+																	Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+
+																	It requires Prometheus >= v2.53.0.
+																	It is not supported for ThanosRuler.
+																	"""
+												pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:    "string"
 											}
 											rules: {
@@ -68053,6 +68257,68 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									dnsConfig: {
+										description: "Defines the DNS configuration for the pods."
+										properties: {
+											nameservers: {
+												description: """
+																A list of DNS name server IP addresses.
+																This will be appended to the base nameservers generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+											options: {
+												description: """
+																A list of DNS resolver options.
+																This will be merged with the base options generated from DNSPolicy.
+																Resolution options given in Options
+																will override those that appear in the base DNSPolicy.
+																"""
+												items: {
+													description: "PodDNSConfigOption defines DNS resolver options of a pod."
+													properties: {
+														name: {
+															description: "Name is required and must be unique."
+															minLength:   1
+															type:        "string"
+														}
+														value: {
+															description: "Value is optional."
+															type:        "string"
+														}
+													}
+													required: ["name"]
+													type: "object"
+												}
+												type: "array"
+												"x-kubernetes-list-map-keys": ["name"]
+												"x-kubernetes-list-type": "map"
+											}
+											searches: {
+												description: """
+																A list of DNS search domains for host-name lookup.
+																This will be appended to the base search paths generated from DNSPolicy.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
+										}
+										type: "object"
+									}
+									dnsPolicy: {
+										description: "Defines the DNS policy for the pods."
+										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
+										type: "string"
 									}
 									enforcedNamespaceLabel: {
 										description: """
