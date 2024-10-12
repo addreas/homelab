@@ -7,7 +7,7 @@ toolchain go1.23.1
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	// github.com/bitnami-labs/sealed-secrets v0.24.5
-	github.com/cert-manager/cert-manager v1.16.0
+	github.com/cert-manager/cert-manager v1.16.1
 	github.com/fluxcd/helm-controller/api v1.1.0
 	github.com/fluxcd/kustomize-controller/api v1.4.0
 	github.com/fluxcd/notification-controller/api v1.4.0
@@ -22,8 +22,8 @@ require (
 
 require (
 	github.com/bitnami-labs/sealed-secrets v0.27.1
-	github.com/cilium/cilium v1.16.2
-	github.com/grafana-operator/grafana-operator/v5 v5.13.0
+	github.com/cilium/cilium v1.16.3
+	github.com/grafana-operator/grafana-operator/v5 v5.14.0
 )
 
 require (
