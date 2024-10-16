@@ -47,6 +47,9 @@ k: StatefulSet: hass: spec: {
 				env: [{
 					name:  "DB_URL"
 					value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
+				}, {
+					name:  "HOME"
+					value: "/config"
 				}]
 				ports: [{
 					name:          "http"
