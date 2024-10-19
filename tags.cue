@@ -19,16 +19,16 @@ goModVersions: {
 }
 githubReleases: {
 	"cloudflare/cloudflared":     "2024.10.0"
-	"dani-garcia/vaultwarden":    "1.32.1"
-	"esphome/esphome":            "2024.9.2"
+	"dani-garcia/vaultwarden":    "1.32.2"
+	"esphome/esphome":            "2024.10.0"
 	"grafana/grafana":            "v11.2.2"
-	"home-assistant/core":        "2024.10.2"
+	"home-assistant/core":        "2024.10.3"
 	"jcmoraisjr/haproxy-ingress": "v0.14.7"
 	"kubereboot/charts":          "kured-5.5.0"
-	"longhorn/longhorn":          "v1.7.1"
+	"longhorn/longhorn":          "v1.7.2"
 	"ory/hydra":                  "v2.2.0"
 	"ory/kratos":                 "v1.3.0"
-	"zwave-js/zwave-js-ui":       "v9.22.0"
+	"zwave-js/zwave-js-ui":       "v9.24.0"
 }
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"
