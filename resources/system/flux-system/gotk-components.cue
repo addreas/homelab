@@ -22,7 +22,7 @@ k: Kustomization: "cue-controller": spec: {
 	prune: false // dont prune this either
 	images: [{
 		name:   "ghcr.io/addreas/cue-controller"
-		newTag: "v1.0.0-rc.cue1"
+		newTag: "v1.4.0"
 	}]
 	patches: [{
 		patch: yaml.Marshal({
