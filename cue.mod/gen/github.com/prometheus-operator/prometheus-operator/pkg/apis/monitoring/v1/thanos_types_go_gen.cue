@@ -13,7 +13,11 @@ import (
 #ThanosRulerName:    "thanosrulers"
 #ThanosRulerKindKey: "thanosrulers"
 
-// ThanosRuler defines a ThanosRuler deployment.
+// The `ThanosRuler` custom resource definition (CRD) defines a desired [Thanos Ruler](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md) setup to run in a Kubernetes cluster.
+//
+// A `ThanosRuler` instance requires at least one compatible Prometheus API endpoint (either Thanos Querier or Prometheus services).
+//
+// The resource defines via label and namespace selectors which `PrometheusRule` objects should be associated to the deployed Thanos Ruler instances.
 #ThanosRuler: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -326,7 +330,7 @@ import (
 	// Total number of unavailable pods targeted by this ThanosRuler deployment.
 	unavailableReplicas: int32 @go(UnavailableReplicas)
 
-	// The current state of the Alertmanager object.
+	// The current state of the ThanosRuler object.
 	// +listType=map
 	// +listMapKey=type
 	// +optional

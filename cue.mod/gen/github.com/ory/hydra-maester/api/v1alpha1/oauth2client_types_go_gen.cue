@@ -150,12 +150,18 @@ import (
 	// Audience is a whitelist defining the audiences this client is allowed to request tokens for
 	audience?: [...string] @go(Audience,[]string)
 
-	// +kubebuilder:validation:Pattern=([a-zA-Z0-9\.\*]+\s?)+
+	// +kubebuilder:validation:Pattern=([a-zA-Z0-9\.\*]+\s?)*
+	// +kubebuilder:deprecatedversion:warning="Property scope is deprecated. Use scopeArray instead."
 	//
 	// Scope is a string containing a space-separated list of scope values (as
 	// described in Section 3.3 of OAuth 2.0 [RFC6749]) that the client
 	// can use when requesting access tokens.
-	scope: string @go(Scope)
+	// Use scopeArray instead.
+	scope?: string @go(Scope)
+
+	// Scope is an array of scope values (as described in Section 3.3 of OAuth 2.0 [RFC6749])
+	// that the client can use when requesting access tokens.
+	scopeArray?: [...string] @go(ScopeArray,[]string)
 
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253

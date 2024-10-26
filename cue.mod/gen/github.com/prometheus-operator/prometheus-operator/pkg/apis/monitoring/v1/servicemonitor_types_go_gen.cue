@@ -10,7 +10,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #ServiceMonitorName:    "servicemonitors"
 #ServiceMonitorKindKey: "servicemonitor"
 
-// ServiceMonitor defines monitoring for a set of services.
+// The `ServiceMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of services.
+// Among other things, it allows to specify:
+// * The services to scrape via label selectors.
+// * The container ports to scrape.
+// * Authentication credentials to use.
+// * Target and metric relabeling.
+//
+// `Prometheus` and `PrometheusAgent` objects select `ServiceMonitor` objects using label and namespace selectors.
 #ServiceMonitor: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -48,15 +55,15 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 
 	// List of endpoints part of this ServiceMonitor.
-	//
-	// +optional
-	endpoints?: [...#Endpoint] @go(Endpoints,[]Endpoint)
+	// Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects.
+	// In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
+	endpoints: [...#Endpoint] @go(Endpoints,[]Endpoint)
 
-	// Label selector to select the Kubernetes `Endpoints` objects.
+	// Label selector to select the Kubernetes `Endpoints` objects to scrape metrics from.
 	selector: metav1.#LabelSelector @go(Selector)
 
-	// Selector to select which namespaces the Kubernetes `Endpoints` objects
-	// are discovered from.
+	// `namespaceSelector` defines in which namespace(s) Prometheus should discover the services.
+	// By default, the services are discovered in the same namespace as the `ServiceMonitor` object but it is possible to select pods across different/all namespaces.
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
 	// `sampleLimit` defines a per-scrape limit on the number of scraped samples
