@@ -14,7 +14,14 @@ import (
 #PodMonitorName:    "podmonitors"
 #PodMonitorKindKey: "podmonitor"
 
-// PodMonitor defines monitoring for a set of pods.
+// The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods.
+// Among other things, it allows to specify:
+// * The pods to scrape via label selectors.
+// * The container ports to scrape.
+// * Authentication credentials to use.
+// * Target and metric relabeling.
+//
+// `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
 #PodMonitor: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -43,16 +50,16 @@ import (
 	//
 	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 
-	// List of endpoints part of this PodMonitor.
+	// Defines how to scrape metrics from the selected pods.
 	//
 	// +optional
 	podMetricsEndpoints?: [...#PodMetricsEndpoint] @go(PodMetricsEndpoints,[]PodMetricsEndpoint)
 
-	// Label selector to select the Kubernetes `Pod` objects.
+	// Label selector to select the Kubernetes `Pod` objects to scrape metrics from.
 	selector: metav1.#LabelSelector @go(Selector)
 
-	// Selector to select which namespaces the Kubernetes `Pods` objects
-	// are discovered from.
+	// `namespaceSelector` defines in which namespace(s) Prometheus should discover the pods.
+	// By default, the pods are discovered in the same namespace as the `PodMonitor` object but it is possible to select pods across different/all namespaces.
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
 	// `sampleLimit` defines a per-scrape limit on the number of scraped samples
@@ -110,7 +117,7 @@ import (
 	// `attachMetadata` defines additional metadata which is added to the
 	// discovered targets.
 	//
-	// It requires Prometheus >= v2.37.0.
+	// It requires Prometheus >= v2.35.0.
 	//
 	// +optional
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)

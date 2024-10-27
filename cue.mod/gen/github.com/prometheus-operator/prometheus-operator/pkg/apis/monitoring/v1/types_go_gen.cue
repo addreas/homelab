@@ -63,7 +63,6 @@ import (
 #ProxyConfig: {
 	// `proxyURL` defines the HTTP proxy server to use.
 	//
-	// It requires Prometheus >= v2.43.0.
 	// +kubebuilder:validation:Pattern:="^http(s)?://.+$"
 	// +optional
 	proxyUrl?: null | string @go(ProxyURL,*string)
@@ -72,21 +71,20 @@ import (
 	// that should be excluded from proxying. IP and domain names can
 	// contain port numbers.
 	//
-	// It requires Prometheus >= v2.43.0.
+	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 	// +optional
 	noProxy?: null | string @go(NoProxy,*string)
 
 	// Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
-	// If unset, Prometheus uses its default value.
 	//
-	// It requires Prometheus >= v2.43.0.
+	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 	// +optional
 	proxyFromEnvironment?: null | bool @go(ProxyFromEnvironment,*bool)
 
 	// ProxyConnectHeader optionally specifies headers to send to
 	// proxies during CONNECT requests.
 	//
-	// It requires Prometheus >= v2.43.0.
+	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 	// +optional
 	// +mapType:=atomic
 	proxyConnectHeader?: {[string]: [...v1.#SecretKeySelector]} @go(ProxyConnectHeader,map[string][]v1.SecretKeySelector)
@@ -299,19 +297,19 @@ import (
 // WebTLSConfig defines the TLS parameters for HTTPS.
 // +k8s:openapi-gen=true
 #WebTLSConfig: {
-	// Secret containing the TLS key for the server.
-	keySecret: v1.#SecretKeySelector @go(KeySecret)
-
 	// Contains the TLS certificate for the server.
-	cert: #SecretOrConfigMap @go(Cert)
+	cert?: #SecretOrConfigMap @go(Cert)
+
+	// Contains the CA certificate for client certificate authentication to the server.
+	client_ca?: #SecretOrConfigMap @go(ClientCA)
+
+	// Secret containing the TLS key for the server.
+	keySecret?: v1.#SecretKeySelector @go(KeySecret)
 
 	// Server policy for client authentication. Maps to ClientAuth Policies.
 	// For more detail on clientAuth options:
 	// https://golang.org/pkg/crypto/tls/#ClientAuthType
 	clientAuthType?: string @go(ClientAuthType)
-
-	// Contains the CA certificate for client certificate authentication to the server.
-	client_ca?: #SecretOrConfigMap @go(ClientCA)
 
 	// Minimum TLS version that is acceptable. Defaults to TLS12.
 	minVersion?: string @go(MinVersion)
@@ -334,6 +332,18 @@ import (
 	// order. Available curves are documented in the go documentation:
 	// https://golang.org/pkg/crypto/tls/#CurveID
 	curvePreferences?: [...string] @go(CurvePreferences,[]string)
+
+	// Path to the TLS key file in the Prometheus container for the server.
+	// Mutually exclusive with `keySecret`.
+	keyFile?: string @go(KeyFile)
+
+	// Path to the TLS certificate file in the Prometheus container for the server.
+	// Mutually exclusive with `cert`.
+	certFile?: string @go(CertFile)
+
+	// Path to the CA certificate file for client certificate authentication to the server.
+	// Mutually exclusive with `client_ca`.
+	clientCAFile?: string @go(ClientCAFile)
 }
 
 // LabelName is a valid Prometheus label name which may only contain ASCII
@@ -497,8 +507,11 @@ import (
 }
 
 #AttachMetadata: {
-	// When set to true, Prometheus must have the `get` permission on the
-	// `Nodes` objects.
+	// When set to true, Prometheus attaches node metadata to the discovered
+	// targets.
+	//
+	// The Prometheus service account must have the `list` and `watch`
+	// permissions on the `Nodes` objects.
 	//
 	// +optional
 	node?: null | bool @go(Node,*bool)
@@ -531,6 +544,14 @@ import (
 	//
 	// +optional
 	endpointParams?: {[string]: string} @go(EndpointParams,map[string]string)
+
+	// TLS configuration to use when connecting to the OAuth2 server.
+	// It requires Prometheus >= v2.43.0.
+	//
+	// +optional
+	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
+
+	#ProxyConfig
 }
 
 // BasicAuth configures HTTP Basic Authentication settings.
@@ -555,6 +576,20 @@ import (
 	configMap?: null | v1.#ConfigMapKeySelector @go(ConfigMap,*v1.ConfigMapKeySelector)
 }
 
+// +kubebuilder:validation:Enum=TLS10;TLS11;TLS12;TLS13
+#TLSVersion: string // #enumTLSVersion
+
+#enumTLSVersion:
+	#TLSVersion10 |
+	#TLSVersion11 |
+	#TLSVersion12 |
+	#TLSVersion13
+
+#TLSVersion10: #TLSVersion & "TLS10"
+#TLSVersion11: #TLSVersion & "TLS11"
+#TLSVersion12: #TLSVersion & "TLS12"
+#TLSVersion13: #TLSVersion & "TLS13"
+
 // SafeTLSConfig specifies safe TLS configuration parameters.
 // +k8s:openapi-gen=true
 #SafeTLSConfig: {
@@ -568,12 +603,24 @@ import (
 	keySecret?: null | v1.#SecretKeySelector @go(KeySecret,*v1.SecretKeySelector)
 
 	// Used to verify the hostname for the targets.
-	//+optional
+	// +optional
 	serverName?: null | string @go(ServerName,*string)
 
 	// Disable target certificate validation.
-	//+optional
+	// +optional
 	insecureSkipVerify?: null | bool @go(InsecureSkipVerify,*bool)
+
+	// Minimum acceptable TLS version.
+	//
+	// It requires Prometheus >= v2.35.0.
+	// +optional
+	minVersion?: null | #TLSVersion @go(MinVersion,*TLSVersion)
+
+	// Maximum acceptable TLS version.
+	//
+	// It requires Prometheus >= v2.41.0.
+	// +optional
+	maxVersion?: null | #TLSVersion @go(MaxVersion,*TLSVersion)
 }
 
 // TLSConfig extends the safe TLS configuration with file parameters.

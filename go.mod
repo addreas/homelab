@@ -1,8 +1,6 @@
 module github.com/addreas/cuebernetes
 
-go 1.23
-
-toolchain go1.23.1
+go 1.23.2
 
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
@@ -12,12 +10,12 @@ require (
 	github.com/fluxcd/kustomize-controller/api v1.4.0
 	github.com/fluxcd/notification-controller/api v1.4.0
 	github.com/fluxcd/source-controller/api v1.4.1
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4
-	github.com/ory/hydra-maester v0.0.34
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.1
-	k8s.io/api v0.31.1
-	k8s.io/apimachinery v0.31.1
-	k8s.io/kube-aggregator v0.31.1
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
+	github.com/ory/hydra-maester v0.0.35
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.2
+	k8s.io/api v0.31.2
+	k8s.io/apimachinery v0.31.2
+	k8s.io/kube-aggregator v0.31.2
 )
 
 require (

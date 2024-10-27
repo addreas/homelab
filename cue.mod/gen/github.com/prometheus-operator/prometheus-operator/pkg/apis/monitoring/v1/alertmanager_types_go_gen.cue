@@ -13,7 +13,11 @@ import (
 #AlertmanagerName:    "alertmanagers"
 #AlertManagerKindKey: "alertmanager"
 
-// Alertmanager describes an Alertmanager cluster.
+// The `Alertmanager` custom resource definition (CRD) defines a desired [Alertmanager](https://prometheus.io/docs/alerting) setup to run in a Kubernetes cluster. It allows to specify many options such as the number of replicas, persistent storage and many more.
+//
+// For each `Alertmanager` resource, the Operator deploys a `StatefulSet` in the same namespace. When there are two or more configured replicas, the Operator runs the Alertmanager instances in high-availability mode.
+//
+// The resource defines via label and namespace selectors which `AlertmanagerConfig` objects should be associated to the deployed Alertmanager instances.
 #Alertmanager: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -235,13 +239,13 @@ import (
 	// AlertmanagerConfigs to be selected for to merge and configure Alertmanager with.
 	alertmanagerConfigSelector?: null | metav1.#LabelSelector @go(AlertmanagerConfigSelector,*metav1.LabelSelector)
 
-	// The AlertmanagerConfigMatcherStrategy defines how AlertmanagerConfig objects match the alerts.
-	// In the future more options may be added.
-	alertmanagerConfigMatcherStrategy?: #AlertmanagerConfigMatcherStrategy @go(AlertmanagerConfigMatcherStrategy)
-
 	// Namespaces to be selected for AlertmanagerConfig discovery. If nil, only
 	// check own namespace.
 	alertmanagerConfigNamespaceSelector?: null | metav1.#LabelSelector @go(AlertmanagerConfigNamespaceSelector,*metav1.LabelSelector)
+
+	// AlertmanagerConfigMatcherStrategy defines how AlertmanagerConfig objects
+	// process incoming alerts.
+	alertmanagerConfigMatcherStrategy?: #AlertmanagerConfigMatcherStrategy @go(AlertmanagerConfigMatcherStrategy)
 
 	// Minimum number of seconds for which a newly created pod should be ready
 	// without any of its container crashing for it to be considered available.
@@ -283,15 +287,32 @@ import (
 	enableFeatures?: [...string] @go(EnableFeatures,[]string)
 }
 
-// AlertmanagerConfigMatcherStrategy defines the strategy used by AlertmanagerConfig objects to match alerts.
 #AlertmanagerConfigMatcherStrategy: {
-	// If set to `OnNamespace`, the operator injects a label matcher matching the namespace of the AlertmanagerConfig object for all its routes and inhibition rules.
-	// `None` will not add any additional matchers other than the ones specified in the AlertmanagerConfig.
-	// Default is `OnNamespace`.
+	// AlertmanagerConfigMatcherStrategyType defines the strategy used by
+	// AlertmanagerConfig objects to match alerts in the routes and inhibition
+	// rules.
+	//
+	// The default value is `OnNamespace`.
+	//
 	// +kubebuilder:validation:Enum="OnNamespace";"None"
 	// +kubebuilder:default:="OnNamespace"
-	type?: string @go(Type)
+	type?: #AlertmanagerConfigMatcherStrategyType @go(Type)
 }
+
+#AlertmanagerConfigMatcherStrategyType: string // #enumAlertmanagerConfigMatcherStrategyType
+
+#enumAlertmanagerConfigMatcherStrategyType:
+	#OnNamespaceConfigMatcherStrategyType |
+	#NoneConfigMatcherStrategyType
+
+// With `OnNamespace`, the route and inhibition rules of an
+// AlertmanagerConfig object only process alerts that have a `namespace`
+// label equal to the namespace of the object.
+#OnNamespaceConfigMatcherStrategyType: #AlertmanagerConfigMatcherStrategyType & "OnNamespace"
+
+// With `None`, the route and inhbition rules of an AlertmanagerConfig
+// object process all incoming alerts.
+#NoneConfigMatcherStrategyType: #AlertmanagerConfigMatcherStrategyType & "None"
 
 // AlertmanagerConfiguration defines the Alertmanager configuration.
 // +k8s:openapi-gen=true
@@ -362,6 +383,9 @@ import (
 
 	// Total number of unavailable pods targeted by this Alertmanager object.
 	unavailableReplicas: int32 @go(UnavailableReplicas)
+
+	// The selector used to match the pods targeted by this Alertmanager object.
+	selector?: string @go(Selector)
 
 	// The current state of the Alertmanager object.
 	// +listType=map
@@ -462,9 +486,7 @@ import (
 	// +optional
 	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
 
-	// Optional proxy URL.
-	// +optional
-	proxyURL?: string @go(ProxyURL)
+	#ProxyConfig
 
 	// FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
 	// +optional

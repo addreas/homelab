@@ -344,6 +344,7 @@ import (
 	// object, which shall be mounted into the Prometheus Pods.
 	// Each Secret is added to the StatefulSet definition as a volume named `secret-<secret-name>`.
 	// The Secrets are mounted into /etc/prometheus/secrets/<secret-name> in the 'prometheus' container.
+	// +listType:=set
 	secrets?: [...string] @go(Secrets,[]string)
 
 	// ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus
@@ -367,6 +368,12 @@ import (
 	// Defines the list of remote write configurations.
 	// +optional
 	remoteWrite?: [...#RemoteWriteSpec] @go(RemoteWrite,[]RemoteWriteSpec)
+
+	// Settings related to the OTLP receiver feature.
+	// It requires Prometheus >= v2.54.0.
+	//
+	// +optional
+	otlp?: null | #OTLPConfig @go(OTLP,*OTLPConfig)
 
 	// SecurityContext holds pod-level security attributes and common container settings.
 	// This defaults to the default PodSecurityContext.
@@ -765,6 +772,21 @@ import (
 	// +listType=map
 	// +listMapKey=name
 	scrapeClasses?: [...#ScrapeClass] @go(ScrapeClasses,[]ScrapeClass)
+
+	// Defines the service discovery role used to discover targets from
+	// `ServiceMonitor` objects and Alertmanager endpoints.
+	//
+	// If set, the value should be either "Endpoints" or "EndpointSlice".
+	// If unset, the operator assumes the "Endpoints" role.
+	//
+	// +optional
+	serviceDiscoveryRole?: null | #ServiceDiscoveryRole @go(ServiceDiscoveryRole,*ServiceDiscoveryRole)
+
+	// Defines the runtime reloadable configuration of the timeseries database(TSDB).
+	// It requires Prometheus >= v2.39.0 or PrometheusAgent >= v2.54.0.
+	//
+	// +optional
+	tsdb?: null | #TSDBSpec @go(TSDB,*TSDBSpec)
 }
 
 // +kubebuilder:validation:Enum=HTTP;ProcessSignal
@@ -780,7 +802,23 @@ import (
 // ProcessSignalReloadStrategyType reloads the configuration by sending a SIGHUP signal to the process.
 #ProcessSignalReloadStrategyType: #ReloadStrategyType & "ProcessSignal"
 
-// Prometheus defines a Prometheus deployment.
+// +kubebuilder:validation:Enum=Endpoints;EndpointSlice
+#ServiceDiscoveryRole: string // #enumServiceDiscoveryRole
+
+#enumServiceDiscoveryRole:
+	#EndpointsRole |
+	#EndpointSliceRole
+
+#EndpointsRole:     #ServiceDiscoveryRole & "Endpoints"
+#EndpointSliceRole: #ServiceDiscoveryRole & "EndpointSlice"
+
+// The `Prometheus` custom resource definition (CRD) defines a desired [Prometheus](https://prometheus.io/docs/prometheus) setup to run in a Kubernetes cluster. It allows to specify many options such as the number of replicas, persistent storage, and Alertmanagers where firing alerts should be sent and many more.
+//
+// For each `Prometheus` resource, the Operator deploys one or several `StatefulSet` objects in the same namespace. The number of StatefulSets is equal to the number of shards which is 1 by default.
+//
+// The resource defines via label and namespace selectors which `ServiceMonitor`, `PodMonitor`, `Probe` and `PrometheusRule` objects should be associated to the deployed Prometheus instances.
+//
+// The Operator continuously reconciles the scrape and rules configuration and a sidecar container running in the Prometheus pods triggers a reload of the configuration when needed.
 #Prometheus: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
@@ -946,10 +984,6 @@ import (
 	// For more information:
 	// https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
 	enableAdminAPI?: bool @go(EnableAdminAPI)
-
-	// Defines the runtime reloadable configuration of the timeseries database
-	// (TSDB).
-	tsdb?: #TSDBSpec @go(TSDB)
 }
 
 #PrometheusTracingConfig: {
@@ -1035,7 +1069,7 @@ import (
 // AlertingSpec defines parameters for alerting configuration of Prometheus servers.
 // +k8s:openapi-gen=true
 #AlertingSpec: {
-	// AlertmanagerEndpoints Prometheus should fire alerts against.
+	// Alertmanager endpoints where Prometheus should send alerts to.
 	alertmanagers: [...#AlertmanagerEndpoints] @go(Alertmanagers,[]AlertmanagerEndpoints)
 }
 
@@ -1714,9 +1748,18 @@ import (
 // +k8s:openapi-gen=true
 #AlertmanagerEndpoints: {
 	// Namespace of the Endpoints object.
-	namespace: string @go(Namespace)
+	//
+	// If not set, the object will be discovered in the namespace of the
+	// Prometheus object.
+	//
+	// +kubebuilder:validation:MinLength:=1
+	// +optional
+	namespace?: null | string @go(Namespace,*string)
 
 	// Name of the Endpoints object in the namespace.
+	//
+	// +kubebuilder:validation:MinLength:=1
+	// +required
 	name: string @go(Name)
 
 	// Port on which the Alertmanager API is exposed.
@@ -1855,7 +1898,7 @@ import (
 	// This is an *experimental feature*, it may change in any upcoming release
 	// in a breaking way.
 	//
-	// It requires Prometheus >= v2.39.0.
+	// It requires Prometheus >= v2.39.0 or PrometheusAgent >= v2.54.0.
 	outOfOrderTimeWindow?: #Duration @go(OutOfOrderTimeWindow)
 }
 
@@ -1942,4 +1985,24 @@ import (
 	//
 	// +optional
 	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelings,[]RelabelConfig)
+
+	// AttachMetadata configures additional metadata to the discovered targets.
+	// When the scrape object defines its own configuration, it takes
+	// precedence over the scrape class configuration.
+	//
+	// +optional
+	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
+}
+
+// OTLPConfig is the configuration for writing to the OTLP endpoint.
+//
+// +k8s:openapi-gen=true
+#OTLPConfig: {
+	// List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+	//
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:items:MinLength=1
+	// +listType=set
+	// +optional
+	promoteResourceAttributes?: [...string] @go(PromoteResourceAttributes,[]string)
 }

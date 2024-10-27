@@ -13,7 +13,9 @@ import (
 #PrometheusRuleName:    "prometheusrules"
 #PrometheusRuleKindKey: "prometheusrule"
 
-// PrometheusRule defines recording and alerting rules for a Prometheus instance
+// The `PrometheusRule` custom resource definition (CRD) defines [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) and [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) rules to be evaluated by `Prometheus` or `ThanosRuler` objects.
+//
+// `Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
 #PrometheusRule: {
 	metav1.#TypeMeta
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
