@@ -147,4 +147,6 @@ in
     3702 # services.samba-wsdd // covered by services.samba.enable?
   ];
 
+  services.fstrim.enable = false;
+
 }

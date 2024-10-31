@@ -18,6 +18,23 @@ let
     builtins.toJSON
       cfg.upgrade.upgradeConfig
   );
+
+  kubeadm-path = with pkgs; [
+      gitMinimal
+      openssh
+      docker
+      utillinux
+      iproute2
+      ethtool
+      thin-provisioning-tools
+      iptables
+      nftables
+      socat
+      cni
+      cri-tools
+      conntrack-tools
+      cfg.package
+  ];
 in
 {
   imports = [
@@ -65,22 +82,7 @@ in
     systemd.services.kubeadm-init = lib.mkIf (cfg.init.enable && cfg.controlPlane) {
       description = "kubeadm init";
 
-      path = with pkgs; [
-        gitMinimal
-        openssh
-        docker
-        utillinux
-        iproute
-        ethtool
-        thin-provisioning-tools
-        iptables
-        nftables
-        socat
-        cni
-        cri-tools
-        conntrack-tools
-        cfg.package
-      ];
+      path = kubeadm-path;
 
       serviceConfig.Type = "oneshot";
       unitConfig.ConditionPathExists = "!/etc/kubernetes";
@@ -99,22 +101,7 @@ in
     systemd.services.kubeadm-join = lib.mkIf cfg.init.enable {
       description = "kubeadm join";
 
-      path = with pkgs; [
-        gitMinimal
-        openssh
-        docker
-        utillinux
-        iproute
-        ethtool
-        thin-provisioning-tools
-        iptables
-        nftables
-        socat
-        cni
-        cri-tools
-        conntrack-tools
-        cfg.package
-      ];
+      path = kubeadm-path;
 
       serviceConfig = {
         Type = "oneshot";
@@ -146,22 +133,7 @@ in
     systemd.services.kubeadm-upgrade = lib.mkIf cfg.upgrade.enable {
       description = "kubeadm upgrade";
 
-      path = with pkgs; [
-        gitMinimal
-        openssh
-        docker
-        utillinux
-        iproute
-        ethtool
-        thin-provisioning-tools
-        iptables
-        nftables
-        socat
-        cni
-        cri-tools
-        conntrack-tools
-        cfg.package
-      ];
+      path = kubeadm-path;
 
       serviceConfig.Type = "oneshot";
       unitConfig.ConditionPathExists = "/etc/kubernetes";

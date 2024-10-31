@@ -18,7 +18,7 @@ in
         openssh
         docker
         utillinux
-        iproute
+        iproute2
         ethtool
         thin-provisioning-tools
         iptables
