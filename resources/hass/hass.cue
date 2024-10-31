@@ -46,7 +46,7 @@ k: StatefulSet: hass: spec: {
 				envFrom: [{secretRef: name: "hass-postgres-credentials"}]
 				env: [{
 					name:  "DB_URL"
-					value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres/hass"
+					value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres-new/hass"
 				}, {
 					name:  "HOME"
 					value: "/config"
