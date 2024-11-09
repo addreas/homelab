@@ -102,6 +102,16 @@ import (
 	// This defaults to the default PodSecurityContext.
 	securityContext?: null | v1.#PodSecurityContext @go(SecurityContext,*v1.PodSecurityContext)
 
+	// Defines the DNS policy for the pods.
+	//
+	// +optional
+	dnsPolicy?: null | #DNSPolicy @go(DNSPolicy,*DNSPolicy)
+
+	// Defines the DNS configuration for the pods.
+	//
+	// +optional
+	dnsConfig?: null | #PodDNSConfig @go(DNSConfig,*PodDNSConfig)
+
 	// Priority class assigned to the Pods
 	priorityClassName?: string @go(PriorityClassName)
 

@@ -173,6 +173,16 @@ import (
 	// This defaults to the default PodSecurityContext.
 	securityContext?: null | v1.#PodSecurityContext @go(SecurityContext,*v1.PodSecurityContext)
 
+	// Defines the DNS policy for the pods.
+	//
+	// +optional
+	dnsPolicy?: null | #DNSPolicy @go(DNSPolicy,*DNSPolicy)
+
+	// Defines the DNS configuration for the pods.
+	//
+	// +optional
+	dnsConfig?: null | #PodDNSConfig @go(DNSConfig,*PodDNSConfig)
+
 	// ServiceAccountName is the name of the ServiceAccount to use to run the
 	// Prometheus Pods.
 	serviceAccountName?: string @go(ServiceAccountName)

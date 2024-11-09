@@ -44,6 +44,13 @@ import (
 	// +optional
 	interval?: null | #Duration @go(Interval,*Duration)
 
+	// Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+	//
+	// It requires Prometheus >= v2.53.0.
+	// It is not supported for ThanosRuler.
+	// +optional
+	query_offset?: null | #Duration @go(QueryOffset,*Duration)
+
 	// List of alerting and recording rules.
 	// +optional
 	rules?: [...#Rule] @go(Rules,[]Rule)

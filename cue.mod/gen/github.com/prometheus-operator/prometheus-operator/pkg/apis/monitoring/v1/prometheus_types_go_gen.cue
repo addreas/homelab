@@ -25,6 +25,15 @@ import (
 // +kubebuilder:validation:Enum=PrometheusProto;OpenMetricsText0.0.1;OpenMetricsText1.0.0;PrometheusText0.0.4
 #ScrapeProtocol: string
 
+// RuntimeConfig configures the values for the process behavior.
+#RuntimeConfig: {
+	// The Go garbage collection target percentage. Lowering this number may increase the CPU usage.
+	// See: https://tip.golang.org/doc/gc-guide#GOGC
+	// +optional
+	// +kubebuilder:validation:Minimum=-1
+	goGC?: null | int32 @go(GoGC,*int32)
+}
+
 // PrometheusInterface is used by Prometheus and PrometheusAgent to share common methods, e.g. config generation.
 // +k8s:deepcopy-gen=false
 #PrometheusInterface: _
@@ -272,6 +281,16 @@ import (
 	// It requires Prometheus >= v2.33.0.
 	enableRemoteWriteReceiver?: bool @go(EnableRemoteWriteReceiver)
 
+	// List of the protobuf message versions to accept when receiving the
+	// remote writes.
+	//
+	// It requires Prometheus >= v2.54.0.
+	//
+	// +kubebuilder:validation:MinItems=1
+	// +listType:=set
+	// +optional
+	remoteWriteReceiverMessageVersions?: [...#RemoteWriteMessageVersion] @go(RemoteWriteReceiverMessageVersions,[]RemoteWriteMessageVersion)
+
 	// Enable access to Prometheus feature flags. By default, no features are enabled.
 	//
 	// Enabling features which are disabled by default is entirely outside the
@@ -370,7 +389,7 @@ import (
 	remoteWrite?: [...#RemoteWriteSpec] @go(RemoteWrite,[]RemoteWriteSpec)
 
 	// Settings related to the OTLP receiver feature.
-	// It requires Prometheus >= v2.54.0.
+	// It requires Prometheus >= v2.55.0.
 	//
 	// +optional
 	otlp?: null | #OTLPConfig @go(OTLP,*OTLPConfig)
@@ -379,6 +398,16 @@ import (
 	// This defaults to the default PodSecurityContext.
 	// +optional
 	securityContext?: null | v1.#PodSecurityContext @go(SecurityContext,*v1.PodSecurityContext)
+
+	// Defines the DNS policy for the pods.
+	//
+	// +optional
+	dnsPolicy?: null | #DNSPolicy @go(DNSPolicy,*DNSPolicy)
+
+	// Defines the DNS configuration for the pods.
+	//
+	// +optional
+	dnsConfig?: null | #PodDNSConfig @go(DNSConfig,*PodDNSConfig)
 
 	// When true, the Prometheus server listens on the loopback address
 	// instead of the Pod IP's address.
@@ -670,7 +699,8 @@ import (
 	// it (https://kubernetes.io/docs/concepts/configuration/overview/).
 	//
 	// When hostNetwork is enabled, this will set the DNS policy to
-	// `ClusterFirstWithHostNet` automatically.
+	// `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
+	// to a different value).
 	hostNetwork?: bool @go(HostNetwork)
 
 	// PodTargetLabels are appended to the `spec.podTargetLabels` field of all
@@ -852,6 +882,10 @@ import (
 #PrometheusSpec: {
 	#CommonPrometheusFields
 
+	// RuntimeConfig configures the values for the Prometheus process behavior
+	// +optional
+	runtime?: null | #RuntimeConfig @go(Runtime,*RuntimeConfig)
+
 	// Deprecated: use 'spec.image' instead.
 	baseImage?: string @go(BaseImage)
 
@@ -973,6 +1007,11 @@ import (
 	// Default: "30s"
 	// +kubebuilder:default:="30s"
 	evaluationInterval?: #Duration @go(EvaluationInterval)
+
+	// Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+	// It requires Prometheus >= v2.53.0.
+	// +optional
+	ruleQueryOffset?: null | #Duration @go(RuleQueryOffset,*Duration)
 
 	// Enables access to the Prometheus web admin API.
 	//
@@ -1301,6 +1340,8 @@ import (
 // +k8s:openapi-gen=true
 #RemoteWriteSpec: {
 	// The URL of the endpoint to send samples to.
+	// +kubebuilder:validation:MinLength=1
+	// +required
 	url: string @go(URL)
 
 	// The name of the remote write queue, it must be unique if specified. The
@@ -1308,10 +1349,27 @@ import (
 	//
 	// It requires Prometheus >= v2.15.0.
 	//
-	name?: string @go(Name)
+	//+optional
+	name?: null | string @go(Name,*string)
+
+	// The Remote Write message's version to use when writing to the endpoint.
+	//
+	// `Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0.
+	// `Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.
+	//
+	// When `Version2.0` is selected, Prometheus will automatically be
+	// configured to append the metadata of scraped metrics to the WAL.
+	//
+	// Before setting this field, consult with your remote storage provider
+	// what message version it supports.
+	//
+	// It requires Prometheus >= v2.54.0.
+	//
+	// +optional
+	messageVersion?: null | #RemoteWriteMessageVersion @go(MessageVersion,*RemoteWriteMessageVersion)
 
 	// Enables sending of exemplars over remote write. Note that
-	// exemplar-storage itself must be enabled using the `spec.enableFeature`
+	// exemplar-storage itself must be enabled using the `spec.enableFeatures`
 	// option for exemplars to be scraped in the first place.
 	//
 	// It requires Prometheus >= v2.27.0.
@@ -1328,7 +1386,8 @@ import (
 	sendNativeHistograms?: null | bool @go(SendNativeHistograms,*bool)
 
 	// Timeout for requests to the remote write endpoint.
-	remoteTimeout?: #Duration @go(RemoteTimeout)
+	// +optional
+	remoteTimeout?: null | #Duration @go(RemoteTimeout,*Duration)
 
 	// Custom HTTP headers to be sent along with each remote write request.
 	// Be aware that headers that are set by Prometheus itself can't be overwritten.
@@ -1420,6 +1479,19 @@ import (
 	// +optional
 	enableHTTP2?: null | bool @go(EnableHttp2,*bool)
 }
+
+// +kubebuilder:validation:Enum=V1.0;V2.0
+#RemoteWriteMessageVersion: string // #enumRemoteWriteMessageVersion
+
+#enumRemoteWriteMessageVersion:
+	#RemoteWriteMessageVersion1_0 |
+	#RemoteWriteMessageVersion2_0
+
+// Remote Write message's version 1.0.
+#RemoteWriteMessageVersion1_0: #RemoteWriteMessageVersion & "V1.0"
+
+// Remote Write message's version 2.0.
+#RemoteWriteMessageVersion2_0: #RemoteWriteMessageVersion & "V2.0"
 
 // QueueConfig allows the tuning of remote write's queue_config parameters.
 // This object is referenced in the RemoteWriteSpec object.
@@ -1576,7 +1648,8 @@ import (
 	requiredMatchers?: {[string]: string} @go(RequiredMatchers,map[string]string)
 
 	// Timeout for requests to the remote read endpoint.
-	remoteTimeout?: #Duration @go(RemoteTimeout)
+	// +optional
+	remoteTimeout?: null | #Duration @go(RemoteTimeout,*Duration)
 
 	// Custom HTTP headers to be sent along with each remote read request.
 	// Be aware that headers that are set by Prometheus itself can't be overwritten.
@@ -1899,7 +1972,8 @@ import (
 	// in a breaking way.
 	//
 	// It requires Prometheus >= v2.39.0 or PrometheusAgent >= v2.54.0.
-	outOfOrderTimeWindow?: #Duration @go(OutOfOrderTimeWindow)
+	// +optional
+	outOfOrderTimeWindow?: null | #Duration @go(OutOfOrderTimeWindow,*Duration)
 }
 
 #Exemplars: {
