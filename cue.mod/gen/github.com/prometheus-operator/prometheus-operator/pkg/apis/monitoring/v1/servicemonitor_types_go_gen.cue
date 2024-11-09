@@ -110,6 +110,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
 
+	#NativeHistogramConfig
+
 	// Per-scrape limit on the number of targets dropped by relabeling
 	// that will be kept in memory. 0 means no limit.
 	//

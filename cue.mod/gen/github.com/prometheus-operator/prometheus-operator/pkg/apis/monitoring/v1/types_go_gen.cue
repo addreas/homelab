@@ -8,6 +8,7 @@ import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 #Version: "v1"
@@ -670,3 +671,27 @@ import (
 #RoleEndpoint:      "endpoints"
 #RoleEndpointSlice: "endpointslice"
 #RoleIngress:       "ingress"
+
+// NativeHistogramConfig extends the native histogram configuration settings.
+// +k8s:openapi-gen=true
+#NativeHistogramConfig: {
+	// Whether to scrape a classic histogram that is also exposed as a native histogram.
+	// It requires Prometheus >= v2.45.0.
+	//
+	// +optional
+	scrapeClassicHistograms?: null | bool @go(ScrapeClassicHistograms,*bool)
+
+	// If there are more than this many buckets in a native histogram,
+	// buckets will be merged to stay within the limit.
+	// It requires Prometheus >= v2.45.0.
+	//
+	// +optional
+	nativeHistogramBucketLimit?: null | uint64 @go(NativeHistogramBucketLimit,*uint64)
+
+	// If the growth factor of one bucket to the next is smaller than this,
+	// buckets will be merged to increase the factor sufficiently.
+	// It requires Prometheus >= v2.50.0.
+	//
+	// +optional
+	nativeHistogramMinBucketFactor?: null | resource.#Quantity @go(NativeHistogramMinBucketFactor,*resource.Quantity)
+}
