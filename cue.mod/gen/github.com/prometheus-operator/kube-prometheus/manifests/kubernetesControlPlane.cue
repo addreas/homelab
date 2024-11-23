@@ -201,12 +201,12 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeContainerWaiting"
 				annotations: {
-					description: "pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour."
+					description: "pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour. (reason: \"{{ $labels.reason }}\")."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontainerwaiting"
 					summary:     "Pod container waiting longer than 1 hour"
 				}
 				expr: """
-					sum by (namespace, pod, container, cluster) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+					kube_pod_container_status_waiting_reason{reason!="CrashLoopBackOff", job="kube-state-metrics"} > 0
 
 					"""
 				for: "1h"
@@ -427,9 +427,9 @@ kubernetesControlPlane: {
 					summary:     "Processes experience elevated CPU throttling."
 				}
 				expr: """
-					sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (cluster, container, pod, namespace)
+					sum(increase(container_cpu_cfs_throttled_periods_total{container!="", job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
 					  /
-					sum(increase(container_cpu_cfs_periods_total{}[5m])) by (cluster, container, pod, namespace)
+					sum(increase(container_cpu_cfs_periods_total{job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
 					  > ( 25 / 100 )
 
 					"""
@@ -669,7 +669,9 @@ kubernetesControlPlane: {
 					summary:     "Client certificate is about to expire."
 				}
 				expr: """
-					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(cluster, job) histogram_quantile(0.01, sum by (cluster, job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
+					histogram_quantile(0.01, sum without (namespace, service, endpoint) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 604800
+					and
+					on(job, cluster, instance) apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0
 
 					"""
 				for: "5m"
@@ -682,7 +684,9 @@ kubernetesControlPlane: {
 					summary:     "Client certificate is about to expire."
 				}
 				expr: """
-					apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(cluster, job) histogram_quantile(0.01, sum by (cluster, job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+					histogram_quantile(0.01, sum without (namespace, service, endpoint) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+					and
+					on(job, cluster, instance) apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0
 
 					"""
 				for: "5m"
@@ -970,18 +974,6 @@ kubernetesControlPlane: {
 				record: "code:apiserver_request_total:increase30d"
 			}, {
 				expr: """
-					sum by (cluster, verb, scope) (increase(apiserver_request_sli_duration_seconds_count{job="apiserver"}[1h]))
-
-					"""
-				record: "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h"
-			}, {
-				expr: """
-					sum by (cluster, verb, scope) (avg_over_time(cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h[30d]) * 24 * 30)
-
-					"""
-				record: "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d"
-			}, {
-				expr: """
 					sum by (cluster, verb, scope, le) (increase(apiserver_request_sli_duration_seconds_bucket[1h]))
 
 					"""
@@ -992,6 +984,18 @@ kubernetesControlPlane: {
 
 					"""
 				record: "cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d"
+			}, {
+				expr: """
+					sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h{le="+Inf"})
+
+					"""
+				record: "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h"
+			}, {
+				expr: """
+					sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{le="+Inf"} * 24 * 30)
+
+					"""
+				record: "cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d"
 			}, {
 				expr: """
 					1 - (
