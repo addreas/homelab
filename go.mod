@@ -5,22 +5,22 @@ go 1.23.2
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	// github.com/bitnami-labs/sealed-secrets v0.24.5
-	github.com/cert-manager/cert-manager v1.16.1
+	github.com/cert-manager/cert-manager v1.16.2
 	github.com/fluxcd/helm-controller/api v1.1.0
 	github.com/fluxcd/kustomize-controller/api v1.4.0
 	github.com/fluxcd/notification-controller/api v1.4.0
 	github.com/fluxcd/source-controller/api v1.4.1
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/ory/hydra-maester v0.0.35
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.78.1
-	k8s.io/api v0.31.2
-	k8s.io/apimachinery v0.31.2
-	k8s.io/kube-aggregator v0.31.2
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.78.2
+	k8s.io/api v0.31.3
+	k8s.io/apimachinery v0.31.3
+	k8s.io/kube-aggregator v0.31.3
 )
 
 require (
 	github.com/bitnami-labs/sealed-secrets v0.27.2
-	github.com/cilium/cilium v1.16.3
+	github.com/cilium/cilium v1.16.4
 	github.com/grafana-operator/grafana-operator/v5 v5.15.1
 )
 
@@ -108,7 +108,7 @@ require (
 	github.com/spf13/pflag v1.0.6-0.20210604193023-d5e0c0615ace // indirect
 	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/vishvananda/netlink v1.2.1-beta.2.0.20240524165444-4d4ba1473f21 // indirect
+	github.com/vishvananda/netlink v1.3.1-0.20241022031324-976bd8de7d81 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect

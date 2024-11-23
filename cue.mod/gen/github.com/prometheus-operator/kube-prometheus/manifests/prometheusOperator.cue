@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -124,8 +124,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -7745,6 +7745,14 @@ prometheusOperator: {
 																description: "Message template"
 																type:        "string"
 															}
+															messageThreadID: {
+																description: """
+																				The Telegram Group Topic ID.
+																				It requires Alertmanager >= 0.26.0.
+																				"""
+																format: "int64"
+																type:   "integer"
+															}
 															parseMode: {
 																description: "Parse mode for telegram message"
 																enum: ["MarkdownV2", "Markdown", "HTML"]
@@ -11211,8 +11219,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -21289,10 +21297,12 @@ prometheusOperator: {
 												}
 												status: {
 													description: "Status of the condition."
+													minLength:   1
 													type:        "string"
 												}
 												type: {
 													description: "Type of the condition being reported."
+													minLength:   1
 													type:        "string"
 												}
 											}
@@ -21361,8 +21371,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -21517,6 +21527,29 @@ prometheusOperator: {
 											}
 										}
 										type: "object"
+									}
+									nativeHistogramBucketLimit: {
+										description: """
+														If there are more than this many buckets in a native histogram,
+														buckets will be merged to stay within the limit.
+														It requires Prometheus >= v2.45.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
+									nativeHistogramMinBucketFactor: {
+										anyOf: [{
+											type: "integer"
+										}, {
+											type: "string"
+										}]
+										description: """
+														If the growth factor of one bucket to the next is smaller than this,
+														buckets will be merged to increase the factor sufficiently.
+														It requires Prometheus >= v2.50.0.
+														"""
+										pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+										"x-kubernetes-int-or-string": true
 									}
 									podMetricsEndpoints: {
 										description: "Defines how to scrape metrics from the selected pods."
@@ -22548,6 +22581,13 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+														It requires Prometheus >= v2.45.0.
+														"""
+										type: "boolean"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -22565,8 +22605,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										type:                     "array"
@@ -22651,8 +22692,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -22982,6 +23023,29 @@ prometheusOperator: {
 														https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
 														"""
 										type: "string"
+									}
+									nativeHistogramBucketLimit: {
+										description: """
+														If there are more than this many buckets in a native histogram,
+														buckets will be merged to stay within the limit.
+														It requires Prometheus >= v2.45.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
+									nativeHistogramMinBucketFactor: {
+										anyOf: [{
+											type: "integer"
+										}, {
+											type: "string"
+										}]
+										description: """
+														If the growth factor of one bucket to the next is smaller than this,
+														buckets will be merged to increase the factor sufficiently.
+														It requires Prometheus >= v2.50.0.
+														"""
+										pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+										"x-kubernetes-int-or-string": true
 									}
 									oauth2: {
 										description: "OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer."
@@ -23391,6 +23455,13 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+														It requires Prometheus >= v2.45.0.
+														"""
+										type: "boolean"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -23408,8 +23479,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										type:                     "array"
@@ -23906,8 +23978,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -27560,7 +27632,8 @@ prometheusOperator: {
 														it (https://kubernetes.io/docs/concepts/configuration/overview/).
 
 														When hostNetwork is enabled, this will set the DNS policy to
-														`ClusterFirstWithHostNet` automatically.
+														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
+														to a different value).
 														"""
 										type: "boolean"
 									}
@@ -29448,7 +29521,7 @@ prometheusOperator: {
 									otlp: {
 										description: """
 														Settings related to the OTLP receiver feature.
-														It requires Prometheus >= v2.54.0.
+														It requires Prometheus >= v2.55.0.
 														"""
 										properties: promoteResourceAttributes: {
 											description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
@@ -30112,6 +30185,24 @@ prometheusOperator: {
 																	"""
 													type: "object"
 												}
+												messageVersion: {
+													description: """
+																	The Remote Write message's version to use when writing to the endpoint.
+
+																	`Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0.
+																	`Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.
+
+																	When `Version2.0` is selected, Prometheus will automatically be
+																	configured to append the metadata of scraped metrics to the WAL.
+
+																	Before setting this field, consult with your remote storage provider
+																	what message version it supports.
+
+																	It requires Prometheus >= v2.54.0.
+																	"""
+													enum: ["V1.0", "V2.0"]
+													type: "string"
+												}
 												metadataConfig: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
@@ -30637,7 +30728,7 @@ prometheusOperator: {
 												sendExemplars: {
 													description: """
 																	Enables sending of exemplars over remote write. Note that
-																	exemplar-storage itself must be enabled using the `spec.enableFeature`
+																	exemplar-storage itself must be enabled using the `spec.enableFeatures`
 																	option for exemplars to be scraped in the first place.
 
 																	It requires Prometheus >= v2.27.0.
@@ -30930,6 +31021,7 @@ prometheusOperator: {
 												}
 												url: {
 													description: "The URL of the endpoint to send samples to."
+													minLength:   1
 													type:        "string"
 												}
 												writeRelabelConfigs: {
@@ -31018,6 +31110,21 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									remoteWriteReceiverMessageVersions: {
+										description: """
+														List of the protobuf message versions to accept when receiving the
+														remote writes.
+
+														It requires Prometheus >= v2.54.0.
+														"""
+										items: {
+											enum: ["V1.0", "V2.0"]
+											type: "string"
+										}
+										minItems:                 1
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									replicaExternalLabelName: {
 										description: """
@@ -31127,6 +31234,19 @@ prometheusOperator: {
 														for use with `kubectl proxy`.
 														"""
 										type: "string"
+									}
+									runtime: {
+										description: "RuntimeConfig configures the values for the Prometheus process behavior"
+										properties: goGC: {
+											description: """
+																The Go garbage collection target percentage. Lowering this number may increase the CPU usage.
+																See: https://tip.golang.org/doc/gc-guide#GOGC
+																"""
+											format:  "int32"
+											minimum: -1
+											type:    "integer"
+										}
+										type: "object"
 									}
 									sampleLimit: {
 										description: """
@@ -31709,6 +31829,8 @@ prometheusOperator: {
 														If unset, Prometheus uses its default value.
 
 														It requires Prometheus >= v2.49.0.
+
+														`PrometheusText1.0.0` requires Prometheus >= v3.0.0.
 														"""
 										items: {
 											description: """
@@ -31718,8 +31840,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										type:                     "array"
@@ -36058,10 +36181,12 @@ prometheusOperator: {
 												}
 												status: {
 													description: "Status of the condition."
+													minLength:   1
 													type:        "string"
 												}
 												type: {
 													description: "Type of the condition being reported."
+													minLength:   1
 													type:        "string"
 												}
 											}
@@ -36177,8 +36302,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -40615,7 +40740,8 @@ prometheusOperator: {
 														it (https://kubernetes.io/docs/concepts/configuration/overview/).
 
 														When hostNetwork is enabled, this will set the DNS policy to
-														`ClusterFirstWithHostNet` automatically.
+														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
+														to a different value).
 														"""
 										type: "boolean"
 									}
@@ -42493,7 +42619,7 @@ prometheusOperator: {
 									otlp: {
 										description: """
 														Settings related to the OTLP receiver feature.
-														It requires Prometheus >= v2.54.0.
+														It requires Prometheus >= v2.55.0.
 														"""
 										properties: promoteResourceAttributes: {
 											description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
@@ -44067,6 +44193,24 @@ prometheusOperator: {
 																	"""
 													type: "object"
 												}
+												messageVersion: {
+													description: """
+																	The Remote Write message's version to use when writing to the endpoint.
+
+																	`Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0.
+																	`Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.
+
+																	When `Version2.0` is selected, Prometheus will automatically be
+																	configured to append the metadata of scraped metrics to the WAL.
+
+																	Before setting this field, consult with your remote storage provider
+																	what message version it supports.
+
+																	It requires Prometheus >= v2.54.0.
+																	"""
+													enum: ["V1.0", "V2.0"]
+													type: "string"
+												}
 												metadataConfig: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
@@ -44592,7 +44736,7 @@ prometheusOperator: {
 												sendExemplars: {
 													description: """
 																	Enables sending of exemplars over remote write. Note that
-																	exemplar-storage itself must be enabled using the `spec.enableFeature`
+																	exemplar-storage itself must be enabled using the `spec.enableFeatures`
 																	option for exemplars to be scraped in the first place.
 
 																	It requires Prometheus >= v2.27.0.
@@ -44885,6 +45029,7 @@ prometheusOperator: {
 												}
 												url: {
 													description: "The URL of the endpoint to send samples to."
+													minLength:   1
 													type:        "string"
 												}
 												writeRelabelConfigs: {
@@ -44973,6 +45118,21 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									remoteWriteReceiverMessageVersions: {
+										description: """
+														List of the protobuf message versions to accept when receiving the
+														remote writes.
+
+														It requires Prometheus >= v2.54.0.
+														"""
+										items: {
+											enum: ["V1.0", "V2.0"]
+											type: "string"
+										}
+										minItems:                 1
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									replicaExternalLabelName: {
 										description: """
@@ -45253,6 +45413,19 @@ prometheusOperator: {
 												}
 											}
 											type: "object"
+										}
+										type: "object"
+									}
+									runtime: {
+										description: "RuntimeConfig configures the values for the Prometheus process behavior"
+										properties: goGC: {
+											description: """
+																The Go garbage collection target percentage. Lowering this number may increase the CPU usage.
+																See: https://tip.golang.org/doc/gc-guide#GOGC
+																"""
+											format:  "int32"
+											minimum: -1
+											type:    "integer"
 										}
 										type: "object"
 									}
@@ -45837,6 +46010,8 @@ prometheusOperator: {
 														If unset, Prometheus uses its default value.
 
 														It requires Prometheus >= v2.49.0.
+
+														`PrometheusText1.0.0` requires Prometheus >= v3.0.0.
 														"""
 										items: {
 											description: """
@@ -45846,8 +46021,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										type:                     "array"
@@ -50784,10 +50960,12 @@ prometheusOperator: {
 												}
 												status: {
 													description: "Status of the condition."
+													minLength:   1
 													type:        "string"
 												}
 												type: {
 													description: "Type of the condition being reported."
+													minLength:   1
 													type:        "string"
 												}
 											}
@@ -50903,8 +51081,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -51077,8 +51255,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -54885,6 +55063,10 @@ prometheusOperator: {
 														If unset, Prometheus uses true by default.
 														"""
 										type: "boolean"
+									}
+									enableHTTP2: {
+										description: "Whether to enable HTTP2."
+										type:        "boolean"
 									}
 									eurekaSDConfigs: {
 										description: "EurekaSDConfigs defines a list of Eureka service discovery configurations."
@@ -60833,6 +61015,29 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									nativeHistogramBucketLimit: {
+										description: """
+														If there are more than this many buckets in a native histogram,
+														buckets will be merged to stay within the limit.
+														It requires Prometheus >= v2.45.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
+									nativeHistogramMinBucketFactor: {
+										anyOf: [{
+											type: "integer"
+										}, {
+											type: "string"
+										}]
+										description: """
+														If the growth factor of one bucket to the next is smaller than this,
+														buckets will be merged to increase the factor sufficiently.
+														It requires Prometheus >= v2.50.0.
+														"""
+										pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+										"x-kubernetes-int-or-string": true
+									}
 									noProxy: {
 										description: """
 														`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
@@ -63693,6 +63898,13 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+														It requires Prometheus >= v2.45.0.
+														"""
+										type: "boolean"
+									}
 									scrapeInterval: {
 										description: "ScrapeInterval is the interval between consecutive scrapes."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -63715,8 +63927,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										minItems:                 1
@@ -63745,12 +63958,18 @@ prometheusOperator: {
 												targets: {
 													description: "List of targets for this static configuration."
 													items: {
-														description: "Target represents a target for Prometheus to scrape"
-														type:        "string"
+														description: """
+																		Target represents a target for Prometheus to scrape
+																		kubebuilder:validation:MinLength:=1
+																		"""
+														type: "string"
 													}
-													type: "array"
+													minItems:                 1
+													type:                     "array"
+													"x-kubernetes-list-type": "set"
 												}
 											}
+											required: ["targets"]
 											type: "object"
 										}
 										type: "array"
@@ -63965,8 +64184,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -65156,6 +65375,29 @@ prometheusOperator: {
 										}
 										type: "object"
 									}
+									nativeHistogramBucketLimit: {
+										description: """
+														If there are more than this many buckets in a native histogram,
+														buckets will be merged to stay within the limit.
+														It requires Prometheus >= v2.45.0.
+														"""
+										format: "int64"
+										type:   "integer"
+									}
+									nativeHistogramMinBucketFactor: {
+										anyOf: [{
+											type: "integer"
+										}, {
+											type: "string"
+										}]
+										description: """
+														If the growth factor of one bucket to the next is smaller than this,
+														buckets will be merged to increase the factor sufficiently.
+														It requires Prometheus >= v2.50.0.
+														"""
+										pattern:                      "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+										"x-kubernetes-int-or-string": true
+									}
 									podTargetLabels: {
 										description: """
 														`podTargetLabels` defines the labels which are transferred from the
@@ -65177,6 +65419,13 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+														It requires Prometheus >= v2.45.0.
+														"""
+										type: "boolean"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -65194,8 +65443,9 @@ prometheusOperator: {
 															* `OpenMetricsText1.0.0`
 															* `PrometheusProto`
 															* `PrometheusText0.0.4`
+															* `PrometheusText1.0.0`
 															"""
-											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4"]
+											enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
 											type: "string"
 										}
 										type:                     "array"
@@ -65288,8 +65538,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.3"
-					"operator.prometheus.io/version":        "0.77.1"
+					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"operator.prometheus.io/version":        "0.78.1"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -74674,10 +74924,12 @@ prometheusOperator: {
 												}
 												status: {
 													description: "Status of the condition."
+													minLength:   1
 													type:        "string"
 												}
 												type: {
 													description: "Type of the condition being reported."
+													minLength:   1
 													type:        "string"
 												}
 											}
@@ -74739,7 +74991,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -74758,18 +75010,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.77.1"
+						"app.kubernetes.io/version":   "0.78.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.77.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.78.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.77.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.78.1"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -74838,7 +75090,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -74981,7 +75233,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75009,7 +75261,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75023,7 +75275,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75040,7 +75292,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.77.1"
+				"app.kubernetes.io/version":   "0.78.1"
 			}
 		}
 	}
