@@ -4,12 +4,13 @@ namespace: "default"
 
 k: Deployment: "nixery": spec: template: spec: {
 	containers: [{
-		image: "ghcr.io/addreas/nixery:latest"
+		image: "ghcr.io/addreas/nixery@sha256:2d026095e5968a7cdbc42339f7e17f8c264fd5d372c76439cacb2759025a3602"
 		_env: {
 			PORT: value:                   "8080"
 			NIXERY_FLAKE: value:           "nixpkgs"
 			NIXERY_STORAGE_BACKEND: value: "filesystem"
-			STORAGE_PATH: value:           "/var/storage"
+			NIXERY_STORAGE_PATH: value:    "/nixery/storage"
+			NIXERY_CACHE_URL: value:       "/nixery/cache"
 			NIXPKGS_ALLOW_INSECURE: value: "1"
 		}
 		env: [for key, value in _env {value & {name: key}}]
@@ -19,16 +20,8 @@ k: Deployment: "nixery": spec: template: spec: {
 		}]
 		volumeMounts: [{
 			name:      "storage"
-			mountPath: "/var/storage"
-			subPath:   "storage"
-		}, {
-			name:      "storage"
 			mountPath: "/nixery"
 			subPath:   "nixery"
-		}, {
-			name:      "storage"
-			mountPath: "/nix/var/log"
-			subPath:   "nix/var/log"
 		}]
 	}]
 	volumes: [{
