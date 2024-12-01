@@ -10,6 +10,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			NIXERY_FLAKE: value:           "nixpkgs"
 			NIXERY_STORAGE_BACKEND: value: "filesystem"
 			STORAGE_PATH: value:           "/var/storage"
+			NIXPKGS_ALLOW_INSECURE: value: "1"
 		}
 		env: [for key, value in _env {value & {name: key}}]
 		ports: [{
@@ -41,3 +42,6 @@ k: PersistentVolume: "sergio-nixery": spec: local: path: "/mnt/solid-data/nixery
 
 k: Service: "nixery": {}
 k: Ingress: "nixery": {}
+
+k: Ingress: "nixery": metadata: annotations:
+	"haproxy-ingress.github.io/timeout-server": "300s"
