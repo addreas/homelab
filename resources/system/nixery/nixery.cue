@@ -21,7 +21,6 @@ k: Deployment: "nixery": spec: template: spec: {
 		volumeMounts: [{
 			name:      "storage"
 			mountPath: "/nixery"
-			subPath:   "nixery"
 		}]
 	}]
 	volumes: [{
