@@ -4,7 +4,7 @@ namespace: "default"
 
 k: Deployment: "nixery": spec: template: spec: {
 	containers: [{
-		image: "ghcr.io/addreas/nixery@sha256:371a5cc5078138b550ac0d3190443d1d0b871a8b2ef27b3e7a87501f5f63b100"
+		image: "ghcr.io/addreas/nixery@sha256:50ddbb4c0bb88920a722926145b148461a6e54f59076be91b1ef1d9d205f7e0c"
 		_env: {
 			PORT: value:                   "8080"
 			NIXERY_FLAKE: value:           "nixpkgs"
@@ -19,7 +19,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			name:          "http"
 			containerPort: 8080
 		}]
-		resources: limits: memory: "2Gi"
+		resources: limits: memory: "4Gi"
 		volumeMounts: [{
 			name:      "storage"
 			mountPath: "/nixery"
