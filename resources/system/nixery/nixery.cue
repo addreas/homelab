@@ -4,7 +4,7 @@ namespace: "default"
 
 k: Deployment: "nixery": spec: template: spec: {
 	containers: [{
-		image: "ghcr.io/addreas/nixery@sha256:371a5cc5078138b550ac0d3190443d1d0b871a8b2ef27b3e7a87501f5f63b100 "
+		image: "ghcr.io/addreas/nixery@sha256:371a5cc5078138b550ac0d3190443d1d0b871a8b2ef27b3e7a87501f5f63b100"
 		_env: {
 			PORT: value:                   "8080"
 			NIXERY_FLAKE: value:           "nixpkgs"
