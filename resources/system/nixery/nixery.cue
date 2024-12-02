@@ -10,7 +10,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			NIXERY_FLAKE: value:           "nixpkgs"
 			NIXERY_STORAGE_BACKEND: value: "filesystem"
 			NIXERY_STORAGE_PATH: value:    "/nixery/storage"
-			NIXERY_CACHE_URL: value:       "file:///nixery/cache"
+			NIXERY_CACHE_URL: value:       "file:///nixery/cache?trusted=true"
 			NIXERY_TIMEOUT: value:         "300"
 			NIXPKGS_ALLOW_INSECURE: value: "1"
 		}
@@ -19,7 +19,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			name:          "http"
 			containerPort: 8080
 		}]
-		resources: limits: memory: "4Gi"
+		resources: limits: memory: "2Gi"
 		volumeMounts: [{
 			name:      "storage"
 			mountPath: "/nixery"
