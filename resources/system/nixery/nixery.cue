@@ -10,7 +10,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			NIXERY_FLAKE: value:           "nixpkgs"
 			NIXERY_STORAGE_BACKEND: value: "filesystem"
 			NIXERY_STORAGE_PATH: value:    "/nixery/storage"
-			NIXERY_CACHE_URL: value:       "/nixery/cache"
+			NIXERY_CACHE_URL: value:       "file:///nixery/cache"
 			NIXERY_TIMEOUT: value:         "300"
 			NIXPKGS_ALLOW_INSECURE: value: "1"
 		}
