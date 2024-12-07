@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -125,7 +125,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -1000,6 +1000,14 @@ prometheusOperator: {
 																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 																						"""
 																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
@@ -2109,6 +2117,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -3003,6 +3019,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -3883,6 +3907,14 @@ prometheusOperator: {
 																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 																						"""
 																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
@@ -4795,6 +4827,14 @@ prometheusOperator: {
 																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 																						"""
 																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
@@ -5804,6 +5844,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -6609,6 +6657,14 @@ prometheusOperator: {
 																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 																						"""
 																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
@@ -7554,6 +7610,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -8410,6 +8474,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -9216,6 +9288,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -10004,6 +10084,14 @@ prometheusOperator: {
 																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
 																						"""
 																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
@@ -10870,6 +10958,14 @@ prometheusOperator: {
 																						"""
 																		type: "boolean"
 																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
 																		pattern:     "^http(s)?://.+$"
@@ -11220,7 +11316,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -21372,7 +21468,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -22227,11 +22323,18 @@ prometheusOperator: {
 												}
 												port: {
 													description: """
-																	Name of the Pod port which this endpoint refers to.
+																	The `Pod` port name which exposes the endpoint.
 
-																	It takes precedence over `targetPort`.
+																	It takes precedence over the `portNumber` and `targetPort` fields.
 																	"""
 													type: "string"
+												}
+												portNumber: {
+													description: "The `Pod` port number which exposes the endpoint."
+													format:      "int32"
+													maximum:     65535
+													minimum:     1
+													type:        "integer"
 												}
 												proxyUrl: {
 													description: """
@@ -22362,7 +22465,7 @@ prometheusOperator: {
 																	Name or number of the target port of the `Pod` object behind the Service, the
 																	port must be specified with container port property.
 
-																	Deprecated: use 'port' instead.
+																	Deprecated: use 'port' or 'portNumber' instead.
 																	"""
 													"x-kubernetes-int-or-string": true
 												}
@@ -22588,6 +22691,15 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -22693,7 +22805,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -23462,6 +23574,15 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -23979,7 +24100,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -27377,6 +27498,16 @@ prometheusOperator: {
 										type:                     "array"
 										"x-kubernetes-list-type": "set"
 									}
+									enableOTLPReceiver: {
+										description: """
+														Enable Prometheus to be used as a receiver for the OTLP Metrics protocol.
+
+														Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.
+
+														It requires Prometheus >= v2.47.0.
+														"""
+										type: "boolean"
+									}
 									enableRemoteWriteReceiver: {
 										description: """
 														Enable Prometheus to be used as a receiver for the Prometheus remote
@@ -29513,6 +29644,11 @@ prometheusOperator: {
 										enum: ["StatefulSet", "DaemonSet"]
 										type: "string"
 									}
+									nameValidationScheme: {
+										description: "Specifies the validation scheme for metric and label names."
+										enum: ["UTF8", "Legacy"]
+										type: "string"
+									}
 									nodeSelector: {
 										additionalProperties: type: "string"
 										description: "Defines on which Nodes the Pods are scheduled."
@@ -29523,15 +29659,27 @@ prometheusOperator: {
 														Settings related to the OTLP receiver feature.
 														It requires Prometheus >= v2.55.0.
 														"""
-										properties: promoteResourceAttributes: {
-											description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
-											items: {
-												minLength: 1
-												type:      "string"
+										properties: {
+											promoteResourceAttributes: {
+												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												minItems:                 1
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
 											}
-											minItems:                 1
-											type:                     "array"
-											"x-kubernetes-list-type": "set"
+											translationStrategy: {
+												description: """
+																Configures how the OTLP receiver endpoint translates the incoming metrics.
+																If unset, Prometheus uses its default value.
+
+																It requires Prometheus >= v3.0.0.
+																"""
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												type: "string"
+											}
 										}
 										type: "object"
 									}
@@ -31811,6 +31959,15 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeInterval: {
 										default: "30s"
 										description: """
@@ -32260,19 +32417,28 @@ prometheusOperator: {
 									}
 									shards: {
 										description: """
-														Number of shards to distribute targets onto. `spec.replicas`
-														multiplied by `spec.shards` is the total number of Pods created.
+														Number of shards to distribute scraped targets onto.
 
-														Note that scaling down shards will not reshard data onto remaining
+														`spec.replicas` multiplied by `spec.shards` is the total number of Pods
+														being created.
+
+														When not defined, the operator assumes only one shard.
+
+														Note that scaling down shards will not reshard data onto the remaining
 														instances, it must be manually moved. Increasing shards will not reshard
 														data either but it will continue to be available from the same
 														instances. To query globally, use Thanos sidecar and Thanos querier or
 														remote write data to a central location.
+														Alerting and recording rules
 
-														Sharding is performed on the content of the `__address__` target meta-label
-														for PodMonitors and ServiceMonitors and `__param_target__` for Probes.
+														By default, the sharding is performed on:
+														* The `__address__` target's metadata label for PodMonitor,
+														ServiceMonitor and ScrapeConfig resources.
+														* The `__param_target__` label for Probe resources.
 
-														Default: 1
+														Users can define their own sharding implementation by setting the
+														`__tmp_hash` label during the target discovery with relabeling
+														configuration (either in the monitoring resources or via scrape class).
 														"""
 										format: "int32"
 										type:   "integer"
@@ -36303,7 +36469,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -37685,8 +37851,10 @@ prometheusOperator: {
 													apiVersion: {
 														description: """
 																			Version of the Alertmanager API that Prometheus uses to send alerts.
-																			It can be "v1" or "v2".
+																			It can be "V1" or "V2".
+																			The field has no effect for Prometheus >= v3.0.0 because only the v2 API is supported.
 																			"""
+														enum: ["v1", "V1", "v2", "V2"]
 														type: "string"
 													}
 													authorization: {
@@ -40360,8 +40528,12 @@ prometheusOperator: {
 										type: "array"
 									}
 									disableCompaction: {
-										description: "When true, the Prometheus compaction is disabled."
-										type:        "boolean"
+										description: """
+														When true, the Prometheus compaction is disabled.
+														When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically
+														disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
+														"""
+										type: "boolean"
 									}
 									dnsConfig: {
 										description: "Defines the DNS configuration for the pods."
@@ -40455,6 +40627,16 @@ prometheusOperator: {
 										}
 										type:                     "array"
 										"x-kubernetes-list-type": "set"
+									}
+									enableOTLPReceiver: {
+										description: """
+														Enable Prometheus to be used as a receiver for the OTLP Metrics protocol.
+
+														Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.
+
+														It requires Prometheus >= v2.47.0.
+														"""
+										type: "boolean"
 									}
 									enableRemoteWriteReceiver: {
 										description: """
@@ -42611,6 +42793,11 @@ prometheusOperator: {
 										format: "int32"
 										type:   "integer"
 									}
+									nameValidationScheme: {
+										description: "Specifies the validation scheme for metric and label names."
+										enum: ["UTF8", "Legacy"]
+										type: "string"
+									}
 									nodeSelector: {
 										additionalProperties: type: "string"
 										description: "Defines on which Nodes the Pods are scheduled."
@@ -42621,15 +42808,27 @@ prometheusOperator: {
 														Settings related to the OTLP receiver feature.
 														It requires Prometheus >= v2.55.0.
 														"""
-										properties: promoteResourceAttributes: {
-											description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
-											items: {
-												minLength: 1
-												type:      "string"
+										properties: {
+											promoteResourceAttributes: {
+												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												minItems:                 1
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
 											}
-											minItems:                 1
-											type:                     "array"
-											"x-kubernetes-list-type": "set"
+											translationStrategy: {
+												description: """
+																Configures how the OTLP receiver endpoint translates the incoming metrics.
+																If unset, Prometheus uses its default value.
+
+																It requires Prometheus >= v3.0.0.
+																"""
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												type: "string"
+											}
 										}
 										type: "object"
 									}
@@ -45992,6 +46191,15 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeInterval: {
 										default: "30s"
 										description: """
@@ -46445,19 +46653,28 @@ prometheusOperator: {
 									}
 									shards: {
 										description: """
-														Number of shards to distribute targets onto. `spec.replicas`
-														multiplied by `spec.shards` is the total number of Pods created.
+														Number of shards to distribute scraped targets onto.
 
-														Note that scaling down shards will not reshard data onto remaining
+														`spec.replicas` multiplied by `spec.shards` is the total number of Pods
+														being created.
+
+														When not defined, the operator assumes only one shard.
+
+														Note that scaling down shards will not reshard data onto the remaining
 														instances, it must be manually moved. Increasing shards will not reshard
 														data either but it will continue to be available from the same
 														instances. To query globally, use Thanos sidecar and Thanos querier or
 														remote write data to a central location.
+														Alerting and recording rules
 
-														Sharding is performed on the content of the `__address__` target meta-label
-														for PodMonitors and ServiceMonitors and `__param_target__` for Probes.
+														By default, the sharding is performed on:
+														* The `__address__` target's metadata label for PodMonitor,
+														ServiceMonitor and ScrapeConfig resources.
+														* The `__param_target__` label for Probe resources.
 
-														Default: 1
+														Users can define their own sharding implementation by setting the
+														`__tmp_hash` label during the target discovery with relabeling
+														configuration (either in the monitoring resources or via scrape class).
 														"""
 										format: "int32"
 										type:   "integer"
@@ -51082,7 +51299,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -51256,7 +51473,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -51513,7 +51730,10 @@ prometheusOperator: {
 													type: "boolean"
 												}
 												authorization: {
-													description: "Authorization header configuration to authenticate against the Consul Server."
+													description: """
+																	Optional Authorization header configuration to authenticate against the Consul Server.
+																	Cannot be set at the same time as `basicAuth`, or `oauth2`.
+																	"""
 													properties: {
 														credentials: {
 															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -51557,8 +51777,9 @@ prometheusOperator: {
 												}
 												basicAuth: {
 													description: """
-																	BasicAuth information to authenticate against the Consul Server.
+																	Optional BasicAuth information to authenticate against the Consul Server.
 																	More info: https://prometheus.io/docs/operating/configuration/#endpoints
+																	Cannot be set at the same time as `authorization`, or `oauth2`.
 																	"""
 													properties: {
 														password: {
@@ -51626,6 +51847,7 @@ prometheusOperator: {
 												}
 												datacenter: {
 													description: "Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter."
+													minLength:   1
 													type:        "string"
 												}
 												enableHTTP2: {
@@ -51635,6 +51857,15 @@ prometheusOperator: {
 																	"""
 													type: "boolean"
 												}
+												filter: {
+													description: """
+																	Filter expression used to filter the catalog results.
+																	See https://www.consul.io/api-docs/catalog#list-services
+																	It requires Prometheus >= 3.0.0.
+																	"""
+													minLength: 1
+													type:      "string"
+												}
 												followRedirects: {
 													description: """
 																	Configure whether HTTP requests follow HTTP 3xx redirects.
@@ -51643,8 +51874,13 @@ prometheusOperator: {
 													type: "boolean"
 												}
 												namespace: {
-													description: "Namespaces are only supported in Consul Enterprise."
-													type:        "string"
+													description: """
+																	Namespaces are only supported in Consul Enterprise.
+
+																	It requires Prometheus >= 2.28.0.
+																	"""
+													minLength: 1
+													type:      "string"
 												}
 												noProxy: {
 													description: """
@@ -51658,12 +51894,18 @@ prometheusOperator: {
 												}
 												nodeMeta: {
 													additionalProperties: type: "string"
-													description:             "Node metadata key/value pairs to filter nodes for a given service."
+													description: """
+																	Node metadata key/value pairs to filter nodes for a given service.
+																	Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
+																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
 												}
 												oauth2: {
-													description: "Optional OAuth 2.0 configuration."
+													description: """
+																	Optional OAuth2.0 configuration.
+																	Cannot be set at the same time as `basicAuth`, or `authorization`.
+																	"""
 													properties: {
 														clientId: {
 															description: """
@@ -52027,7 +52269,17 @@ prometheusOperator: {
 												}
 												partition: {
 													description: "Admin Partitions are only supported in Consul Enterprise."
+													minLength:   1
 													type:        "string"
+												}
+												pathPrefix: {
+													description: """
+																	Prefix for URIs for when consul is behind an API gateway (reverse proxy).
+
+																	It requires Prometheus >= 2.45.0.
+																	"""
+													minLength: 1
+													type:      "string"
 												}
 												proxyConnectHeader: {
 													additionalProperties: {
@@ -52097,7 +52349,7 @@ prometheusOperator: {
 													type: "string"
 												}
 												server: {
-													description: "A valid string consisting of a hostname or IP followed by an optional port number."
+													description: "Consul server address. A valid string consisting of a hostname or IP followed by an optional port number."
 													minLength:   1
 													type:        "string"
 												}
@@ -52105,23 +52357,27 @@ prometheusOperator: {
 													description: "A list of services for which targets are retrieved. If omitted, all services are scraped."
 													items: type: "string"
 													type:                     "array"
-													"x-kubernetes-list-type": "atomic"
+													"x-kubernetes-list-type": "set"
 												}
 												tagSeparator: {
 													description: """
 																	The string by which Consul tags are joined into the tag label.
 																	If unset, Prometheus uses its default value.
 																	"""
-													type: "string"
+													minLength: 1
+													type:      "string"
 												}
 												tags: {
-													description: "An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list."
+													description: """
+																	An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list.
+																	Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
+																	"""
 													items: type: "string"
 													type:                     "array"
-													"x-kubernetes-list-type": "atomic"
+													"x-kubernetes-list-type": "set"
 												}
 												tlsConfig: {
-													description: "TLS Config"
+													description: "TLS configuration to connect to the Consul API."
 													properties: {
 														ca: {
 															description: "Certificate authority used when verifying server certificates."
@@ -52773,6 +53029,9 @@ prometheusOperator: {
 												}
 												port: {
 													description: "The port to scrape metrics from."
+													format:      "int32"
+													maximum:     65535
+													minimum:     0
 													type:        "integer"
 												}
 												proxyConnectHeader: {
@@ -63905,6 +64164,15 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeInterval: {
 										description: "ScrapeInterval is the interval between consecutive scrapes."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -64185,7 +64453,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -65426,6 +65694,15 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
+									scrapeFallbackProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -65539,7 +65816,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.1"
+					"operator.prometheus.io/version":        "0.78.2"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -66699,8 +66976,10 @@ prometheusOperator: {
 									}
 									alertDropLabels: {
 										description: """
-														AlertDropLabels configure the label names which should be dropped in ThanosRuler alerts.
-														The replica label `thanos_ruler_replica` will always be dropped in alerts.
+														Configures the label names which should be dropped in Thanos Ruler
+														alerts.
+
+														The replica label `thanos_ruler_replica` will always be dropped from the alerts.
 														"""
 										items: type: "string"
 										type: "array"
@@ -66715,17 +66994,29 @@ prometheusOperator: {
 									}
 									alertRelabelConfigFile: {
 										description: """
-														AlertRelabelConfigFile specifies the path of the alert relabeling configuration file.
-														When used alongside with AlertRelabelConfigs, alertRelabelConfigFile takes precedence.
+														Configures the path to the alert relabeling configuration file.
+
+														Alert relabel configuration must have the form as specified in the
+														official Prometheus documentation:
+														https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs
+
+														The operator performs no validation of the configuration file.
+
+														This field takes precedence over `alertRelabelConfig`.
 														"""
 										type: "string"
 									}
 									alertRelabelConfigs: {
 										description: """
-														AlertRelabelConfigs configures alert relabeling in ThanosRuler.
-														Alert relabel configurations must have the form as specified in the official Prometheus documentation:
+														Configures alert relabeling in Thanos Ruler.
+
+														Alert relabel configuration must have the form as specified in the
+														official Prometheus documentation:
 														https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs
-														Alternative to AlertRelabelConfigFile, and lower order priority.
+
+														The operator performs no validation of the configuration.
+
+														`alertRelabelConfigFile` takes precedence over this field.
 														"""
 										properties: {
 											key: {
@@ -66754,8 +67045,15 @@ prometheusOperator: {
 									}
 									alertmanagersConfig: {
 										description: """
-														Define configuration for connecting to alertmanager.  Only available with thanos v0.10.0
-														and higher.  Maps to the `alertmanagers.config` arg.
+														Configures the list of Alertmanager endpoints to send alerts to.
+
+														The configuration format is defined at https://thanos.io/tip/components/rule.md/#alertmanager.
+
+														It requires Thanos >= v0.10.0.
+
+														The operator performs no validation of the configuration.
+
+														This field takes precedence over `alertmanagersUrl`.
 														"""
 										properties: {
 											key: {
@@ -66784,10 +67082,11 @@ prometheusOperator: {
 									}
 									alertmanagersUrl: {
 										description: """
-														Define URLs to send alerts to Alertmanager.  For Thanos v0.10.0 and higher,
-														AlertManagersConfig should be used instead.  Note: this field will be ignored
-														if AlertManagersConfig is specified.
-														Maps to the `alertmanagers.url` arg.
+														Configures the list of Alertmanager endpoints to send alerts to.
+
+														For Thanos >= v0.10.0, it is recommended to use `alertmanagersConfig` instead.
+
+														`alertmanagersConfig` takes precedence over this field.
 														"""
 										items: type: "string"
 										type: "array"
@@ -70609,8 +70908,10 @@ prometheusOperator: {
 									labels: {
 										additionalProperties: type: "string"
 										description: """
-														Labels configure the external label pairs to ThanosRuler. A default replica label
-														`thanos_ruler_replica` will be always added  as a label with the value of the pod's name and it will be dropped in the alerts.
+														Configures the external label pairs of the ThanosRuler resource.
+
+														A default replica label `thanos_ruler_replica` will be always added as a
+														label with the value of the pod's name.
 														"""
 										type: "object"
 									}
@@ -70648,8 +70949,13 @@ prometheusOperator: {
 									}
 									objectStorageConfig: {
 										description: """
-														ObjectStorageConfig configures object storage in Thanos.
-														Alternative to ObjectStorageConfigFile, and lower order priority.
+														Configures object storage.
+
+														The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage
+
+														The operator performs no validation of the configuration.
+
+														`objectStorageConfigFile` takes precedence over this field.
 														"""
 										properties: {
 											key: {
@@ -70678,8 +70984,13 @@ prometheusOperator: {
 									}
 									objectStorageConfigFile: {
 										description: """
-														ObjectStorageConfigFile specifies the path of the object storage configuration file.
-														When used alongside with ObjectStorageConfig, ObjectStorageConfigFile takes precedence.
+														Configures the path of the object storage configuration file.
+
+														The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage
+
+														The operator performs no validation of the configuration file.
+
+														This field takes precedence over `objectStorageConfig`.
 														"""
 										type: "string"
 									}
@@ -70778,10 +71089,15 @@ prometheusOperator: {
 									}
 									queryConfig: {
 										description: """
-														Define configuration for connecting to thanos query instances.
-														If this is defined, the QueryEndpoints field will be ignored.
-														Maps to the `query.config` CLI argument.
-														Only available with thanos v0.11.0 and higher.
+														Configures the list of Thanos Query endpoints from which to query metrics.
+
+														The configuration format is defined at https://thanos.io/tip/components/rule.md/#query-api
+
+														It requires Thanos >= v0.11.0.
+
+														The operator performs no validation of the configuration.
+
+														This field takes precedence over `queryEndpoints`.
 														"""
 										properties: {
 											key: {
@@ -70810,8 +71126,11 @@ prometheusOperator: {
 									}
 									queryEndpoints: {
 										description: """
-														QueryEndpoints defines Thanos querier endpoints from which to query metrics.
-														Maps to the --query flag of thanos ruler.
+														Configures the list of Thanos Query endpoints from which to query metrics.
+
+														For Thanos >= v0.11.0, it is recommended to use `queryConfig` instead.
+
+														`queryConfig` takes precedence over this field.
 														"""
 										items: type: "string"
 										type: "array"
@@ -70972,8 +71291,9 @@ prometheusOperator: {
 									}
 									ruleSelector: {
 										description: """
-														A label selector to select which PrometheusRules to mount for alerting and
-														recording.
+														PrometheusRule objects to be selected for rule evaluation. An empty
+														label selector matches all objects. A null label selector matches no
+														objects.
 														"""
 										properties: {
 											matchExpressions: {
@@ -72386,12 +72706,16 @@ prometheusOperator: {
 									}
 									tracingConfig: {
 										description: """
-														TracingConfig configures tracing in Thanos.
+														Configures tracing.
 
-														`tracingConfigFile` takes precedence over this field.
+														The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration
 
 														This is an *experimental feature*, it may change in any upcoming release
 														in a breaking way.
+
+														The operator performs no validation of the configuration.
+
+														`tracingConfigFile` takes precedence over this field.
 														"""
 										properties: {
 											key: {
@@ -72420,12 +72744,16 @@ prometheusOperator: {
 									}
 									tracingConfigFile: {
 										description: """
-														TracingConfig specifies the path of the tracing configuration file.
+														Configures the path of the tracing configuration file.
 
-														This field takes precedence over `tracingConfig`.
+														The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration
 
 														This is an *experimental feature*, it may change in any upcoming release
 														in a breaking way.
+
+														The operator performs no validation of the configuration file.
+
+														This field takes precedence over `tracingConfig`.
 														"""
 										type: "string"
 									}
@@ -74991,7 +75319,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75010,18 +75338,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.78.1"
+						"app.kubernetes.io/version":   "0.78.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.78.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.78.2", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.78.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.78.2"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -75044,7 +75372,7 @@ prometheusOperator: {
 						}
 					}, {
 						args: ["--secure-listen-address=:8443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:8080/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.18.1"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.18.2"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 8443
@@ -75090,7 +75418,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -75233,7 +75561,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75261,7 +75589,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75275,7 +75603,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75292,7 +75620,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.1"
+				"app.kubernetes.io/version":   "0.78.2"
 			}
 		}
 	}
