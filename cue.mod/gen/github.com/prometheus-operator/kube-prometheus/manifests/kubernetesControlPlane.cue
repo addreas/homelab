@@ -166,7 +166,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDaemonSetRolloutStuck"
 				annotations: {
-					description: "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15 minutes."
+					description: "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15m."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedaemonsetrolloutstuck"
 					summary:     "DaemonSet rollout is stuck."
 				}
@@ -664,7 +664,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubeClientCertificateExpiration"
 				annotations: {
-					description: "A client certificate used to authenticate to kubernetes apiserver is expiring in less than 7.0 days."
+					description: "A client certificate used to authenticate to kubernetes apiserver is expiring in less than 7.0 days on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration"
 					summary:     "Client certificate is about to expire."
 				}
@@ -679,7 +679,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeClientCertificateExpiration"
 				annotations: {
-					description: "A client certificate used to authenticate to kubernetes apiserver is expiring in less than 24.0 hours."
+					description: "A client certificate used to authenticate to kubernetes apiserver is expiring in less than 24.0 hours on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration"
 					summary:     "Client certificate is about to expire."
 				}
