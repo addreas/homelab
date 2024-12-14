@@ -134,7 +134,7 @@ import (
 // will not be deleted.
 #RetainPersistentVolumeClaimRetentionPolicyType: #PersistentVolumeClaimRetentionPolicyType & "Retain"
 
-// RetentionPersistentVolumeClaimRetentionPolicyType specifies that
+// DeletePersistentVolumeClaimRetentionPolicyType specifies that
 // PersistentVolumeClaims associated with StatefulSet VolumeClaimTemplates
 // will be deleted in the scenario specified in
 // StatefulSetPersistentVolumeClaimRetentionPolicy.
@@ -247,8 +247,7 @@ import (
 	// volume claims are created as needed and retained until manually deleted. This
 	// policy allows the lifecycle to be altered, for example by deleting persistent
 	// volume claims when their stateful set is deleted, or when their pod is scaled
-	// down. This requires the StatefulSetAutoDeletePVC feature gate to be enabled,
-	// which is beta.
+	// down.
 	// +optional
 	persistentVolumeClaimRetentionPolicy?: null | #StatefulSetPersistentVolumeClaimRetentionPolicy @go(PersistentVolumeClaimRetentionPolicy,*StatefulSetPersistentVolumeClaimRetentionPolicy) @protobuf(10,bytes,opt)
 

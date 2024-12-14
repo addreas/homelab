@@ -16,7 +16,6 @@ _#labelPrefix: "batch.kubernetes.io/"
 
 // CronJobScheduledTimestampAnnotation is the scheduled timestamp annotation for the Job.
 // It records the original/expected scheduled timestamp for the running job, represented in RFC3339.
-// The CronJob controller adds this annotation if the CronJobsScheduledAnnotation feature gate (beta in 1.28) is enabled.
 #CronJobScheduledTimestampAnnotation: "batch.kubernetes.io/cronjob-scheduled-timestamp"
 #JobCompletionIndexAnnotation:        "batch.kubernetes.io/job-completion-index"
 
@@ -471,8 +470,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// characters as defined by RFC 3986. The value cannot exceed 63 characters.
 	// This field is immutable.
 	//
-	// This field is alpha-level. The job controller accepts setting the field
-	// when the feature gate JobManagedBy is enabled (disabled by default).
+	// This field is beta-level. The job controller accepts setting the field
+	// when the feature gate JobManagedBy is enabled (enabled by default).
 	// +optional
 	managedBy?: null | string @go(ManagedBy,*string) @protobuf(15,bytes,opt)
 }

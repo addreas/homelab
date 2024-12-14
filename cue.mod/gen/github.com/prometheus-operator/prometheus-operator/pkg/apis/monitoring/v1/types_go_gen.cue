@@ -159,6 +159,7 @@ import (
 	observedGeneration?: int64 @go(ObservedGeneration)
 }
 
+// +kubebuilder:validation:MinLength=1
 #ConditionType: string // #enumConditionType
 
 #enumConditionType:
@@ -182,6 +183,7 @@ import (
 // - Unknown: the operator couldn't determine the condition status.
 #Reconciled: #ConditionType & "Reconciled"
 
+// +kubebuilder:validation:MinLength=1
 #ConditionStatus: string // #enumConditionStatus
 
 #enumConditionStatus:
@@ -695,3 +697,13 @@ import (
 	// +optional
 	nativeHistogramMinBucketFactor?: null | resource.#Quantity @go(NativeHistogramMinBucketFactor,*resource.Quantity)
 }
+
+// +kubebuilder:validation:Enum=RelabelConfig;RoleSelector
+#SelectorMechanism: string // #enumSelectorMechanism
+
+#enumSelectorMechanism:
+	#SelectorMechanismRelabel |
+	#SelectorMechanismRole
+
+#SelectorMechanismRelabel: #SelectorMechanism & "RelabelConfig"
+#SelectorMechanismRole:    #SelectorMechanism & "RoleSelector"

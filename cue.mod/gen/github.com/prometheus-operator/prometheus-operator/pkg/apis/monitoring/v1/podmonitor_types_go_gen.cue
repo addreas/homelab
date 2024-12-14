@@ -58,6 +58,16 @@ import (
 	// Label selector to select the Kubernetes `Pod` objects to scrape metrics from.
 	selector: metav1.#LabelSelector @go(Selector)
 
+	// Mechanism used to select the endpoints to scrape.
+	// By default, the selection process relies on relabel configurations to filter the discovered targets.
+	// Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters.
+	// Which strategy is best for your use case needs to be carefully evaluated.
+	//
+	// It requires Prometheus >= v2.17.0.
+	//
+	// +optional
+	selectorMechanism?: null | #SelectorMechanism @go(SelectorMechanism,*SelectorMechanism)
+
 	// `namespaceSelector` defines in which namespace(s) Prometheus should discover the pods.
 	// By default, the pods are discovered in the same namespace as the `PodMonitor` object but it is possible to select pods across different/all namespaces.
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
@@ -84,6 +94,12 @@ import (
 	// +listType=set
 	// +optional
 	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
+
+	// The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+	//
+	// It requires Prometheus >= v3.0.0.
+	// +optional
+	scrapeFallbackProtocol?: null | #ScrapeProtocol @go(ScrapeFallbackProtocol,*ScrapeProtocol)
 
 	// Per-scrape limit on number of labels that will be accepted for a sample.
 	//
@@ -156,15 +172,22 @@ import (
 //
 // +k8s:openapi-gen=true
 #PodMetricsEndpoint: {
-	// Name of the Pod port which this endpoint refers to.
+	// The `Pod` port name which exposes the endpoint.
 	//
-	// It takes precedence over `targetPort`.
-	port?: string @go(Port)
+	// It takes precedence over the `portNumber` and `targetPort` fields.
+	// +optional
+	port?: null | string @go(Port,*string)
+
+	// The `Pod` port number which exposes the endpoint.
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
+	// +optional
+	portNumber?: null | int32 @go(PortNumber,*int32)
 
 	// Name or number of the target port of the `Pod` object behind the Service, the
 	// port must be specified with container port property.
 	//
-	// Deprecated: use 'port' instead.
+	// Deprecated: use 'port' or 'portNumber' instead.
 	targetPort?: null | intstr.#IntOrString @go(TargetPort,*intstr.IntOrString)
 
 	// HTTP path from which to scrape for metrics.
