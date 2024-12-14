@@ -50,7 +50,8 @@ import (
 // +k8s:openapi-gen=true
 #ThanosRulerSpec: {
 	// Version of Thanos to be deployed.
-	version?: string @go(Version)
+	// +optional
+	version?: null | string @go(Version,*string)
 
 	// PodMetadata configures labels and annotations which are propagated to the ThanosRuler pods.
 	//
@@ -60,6 +61,7 @@ import (
 	// * "app.kubernetes.io/instance" label, set to the name of the ThanosRuler instance.
 	// * "thanos-ruler" label, set to the name of the ThanosRuler instance.
 	// * "kubectl.kubernetes.io/default-container" annotation, set to "thanos-ruler".
+	// +optional
 	podMetadata?: null | #EmbeddedObjectMetadata @go(PodMetadata,*EmbeddedObjectMetadata)
 
 	// Thanos container image URL.
@@ -73,6 +75,7 @@ import (
 	// An optional list of references to secrets in the same namespace
 	// to use for pulling thanos images from registries
 	// see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+	// +optional
 	imagePullSecrets?: [...v1.#LocalObjectReference] @go(ImagePullSecrets,[]v1.LocalObjectReference)
 
 	// When a ThanosRuler deployment is paused, no actions except for deletion
@@ -80,9 +83,11 @@ import (
 	paused?: bool @go(Paused)
 
 	// Number of thanos ruler instances to deploy.
+	// +optional
 	replicas?: null | int32 @go(Replicas,*int32)
 
 	// Define which Nodes the Pods are scheduled on.
+	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 
 	// Resources defines the resource requirements for single Pods.
@@ -90,16 +95,20 @@ import (
 	resources?: v1.#ResourceRequirements @go(Resources)
 
 	// If specified, the pod's scheduling constraints.
+	// +optional
 	affinity?: null | v1.#Affinity @go(Affinity,*v1.Affinity)
 
 	// If specified, the pod's tolerations.
+	// +optional
 	tolerations?: [...v1.#Toleration] @go(Tolerations,[]v1.Toleration)
 
 	// If specified, the pod's topology spread constraints.
+	// +optional
 	topologySpreadConstraints?: [...v1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]v1.TopologySpreadConstraint)
 
 	// SecurityContext holds pod-level security attributes and common container settings.
 	// This defaults to the default PodSecurityContext.
+	// +optional
 	securityContext?: null | v1.#PodSecurityContext @go(SecurityContext,*v1.PodSecurityContext)
 
 	// Defines the DNS policy for the pods.
@@ -120,55 +129,101 @@ import (
 	serviceAccountName?: string @go(ServiceAccountName)
 
 	// Storage spec to specify how storage shall be used.
+	// +optional
 	storage?: null | #StorageSpec @go(Storage,*StorageSpec)
 
 	// Volumes allows configuration of additional volumes on the output StatefulSet definition. Volumes specified will
 	// be appended to other volumes that are generated as a result of StorageSpec objects.
+	// +optional
 	volumes?: [...v1.#Volume] @go(Volumes,[]v1.Volume)
 
 	// VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition.
 	// VolumeMounts specified will be appended to other VolumeMounts in the ruler container,
 	// that are generated as a result of StorageSpec objects.
+	// +optional
 	volumeMounts?: [...v1.#VolumeMount] @go(VolumeMounts,[]v1.VolumeMount)
 
-	// ObjectStorageConfig configures object storage in Thanos.
-	// Alternative to ObjectStorageConfigFile, and lower order priority.
+	// Configures object storage.
+	//
+	// The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage
+	//
+	// The operator performs no validation of the configuration.
+	//
+	// `objectStorageConfigFile` takes precedence over this field.
+	//
+	// +optional
 	objectStorageConfig?: null | v1.#SecretKeySelector @go(ObjectStorageConfig,*v1.SecretKeySelector)
 
-	// ObjectStorageConfigFile specifies the path of the object storage configuration file.
-	// When used alongside with ObjectStorageConfig, ObjectStorageConfigFile takes precedence.
+	// Configures the path of the object storage configuration file.
+	//
+	// The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage
+	//
+	// The operator performs no validation of the configuration file.
+	//
+	// This field takes precedence over `objectStorageConfig`.
+	//
+	// +optional
 	objectStorageConfigFile?: null | string @go(ObjectStorageConfigFile,*string)
 
 	// ListenLocal makes the Thanos ruler listen on loopback, so that it
 	// does not bind against the Pod IP.
 	listenLocal?: bool @go(ListenLocal)
 
-	// QueryEndpoints defines Thanos querier endpoints from which to query metrics.
-	// Maps to the --query flag of thanos ruler.
+	// Configures the list of Thanos Query endpoints from which to query metrics.
+	//
+	// For Thanos >= v0.11.0, it is recommended to use `queryConfig` instead.
+	//
+	// `queryConfig` takes precedence over this field.
+	//
+	// +optional
 	queryEndpoints?: [...string] @go(QueryEndpoints,[]string)
 
-	// Define configuration for connecting to thanos query instances.
-	// If this is defined, the QueryEndpoints field will be ignored.
-	// Maps to the `query.config` CLI argument.
-	// Only available with thanos v0.11.0 and higher.
+	// Configures the list of Thanos Query endpoints from which to query metrics.
+	//
+	// The configuration format is defined at https://thanos.io/tip/components/rule.md/#query-api
+	//
+	// It requires Thanos >= v0.11.0.
+	//
+	// The operator performs no validation of the configuration.
+	//
+	// This field takes precedence over `queryEndpoints`.
+	//
+	// +optional
 	queryConfig?: null | v1.#SecretKeySelector @go(QueryConfig,*v1.SecretKeySelector)
 
-	// Define URLs to send alerts to Alertmanager.  For Thanos v0.10.0 and higher,
-	// AlertManagersConfig should be used instead.  Note: this field will be ignored
-	// if AlertManagersConfig is specified.
-	// Maps to the `alertmanagers.url` arg.
+	// Configures the list of Alertmanager endpoints to send alerts to.
+	//
+	// For Thanos >= v0.10.0, it is recommended to use `alertmanagersConfig` instead.
+	//
+	// `alertmanagersConfig` takes precedence over this field.
+	//
+	// +optional
 	alertmanagersUrl?: [...string] @go(AlertManagersURL,[]string)
 
-	// Define configuration for connecting to alertmanager.  Only available with thanos v0.10.0
-	// and higher.  Maps to the `alertmanagers.config` arg.
+	// Configures the list of Alertmanager endpoints to send alerts to.
+	//
+	// The configuration format is defined at https://thanos.io/tip/components/rule.md/#alertmanager.
+	//
+	// It requires Thanos >= v0.10.0.
+	//
+	// The operator performs no validation of the configuration.
+	//
+	// This field takes precedence over `alertmanagersUrl`.
+	//
+	// +optional
 	alertmanagersConfig?: null | v1.#SecretKeySelector @go(AlertManagersConfig,*v1.SecretKeySelector)
 
-	// A label selector to select which PrometheusRules to mount for alerting and
-	// recording.
+	// PrometheusRule objects to be selected for rule evaluation. An empty
+	// label selector matches all objects. A null label selector matches no
+	// objects.
+	//
+	// +optional
 	ruleSelector?: null | metav1.#LabelSelector @go(RuleSelector,*metav1.LabelSelector)
 
 	// Namespaces to be selected for Rules discovery. If unspecified, only
 	// the same namespace as the ThanosRuler object is in is used.
+	//
+	// +optional
 	ruleNamespaceSelector?: null | metav1.#LabelSelector @go(RuleNamespaceSelector,*metav1.LabelSelector)
 
 	// EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert
@@ -179,12 +234,14 @@ import (
 	// List of references to PrometheusRule objects
 	// to be excluded from enforcing a namespace label of origin.
 	// Applies only if enforcedNamespaceLabel set to true.
+	// +optional
 	excludedFromEnforcement?: [...#ObjectReference] @go(ExcludedFromEnforcement,[]ObjectReference)
 
 	// PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing
 	// of adding namespace labels. Works only if enforcedNamespaceLabel set to true.
 	// Make sure both ruleNamespace and ruleName are set for each pair
 	// Deprecated: use excludedFromEnforcement instead.
+	// +optional
 	prometheusRulesExcludedFromEnforce?: [...#PrometheusRuleExcludeConfig] @go(PrometheusRulesExcludedFromEnforce,[]PrometheusRuleExcludeConfig)
 
 	// Log level for ThanosRuler to be configured with.
@@ -216,6 +273,7 @@ import (
 	// strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`.
 	// Overriding containers is entirely outside the scope of what the maintainers will support and by doing
 	// so, you accept that this behaviour may break at any time without notice.
+	// +optional
 	containers?: [...v1.#Container] @go(Containers,[]v1.Container)
 
 	// InitContainers allows adding initContainers to the pod definition. Those can be used to e.g.
@@ -225,34 +283,51 @@ import (
 	// Using initContainers for any use case other then secret fetching is entirely outside the scope
 	// of what the maintainers will support and by doing so, you accept that this behaviour may break
 	// at any time without notice.
+	// +optional
 	initContainers?: [...v1.#Container] @go(InitContainers,[]v1.Container)
 
-	// TracingConfig configures tracing in Thanos.
+	// Configures tracing.
 	//
-	// `tracingConfigFile` takes precedence over this field.
+	// The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration
 	//
 	// This is an *experimental feature*, it may change in any upcoming release
 	// in a breaking way.
+	//
+	// The operator performs no validation of the configuration.
+	//
+	// `tracingConfigFile` takes precedence over this field.
 	//
 	//+optional
 	tracingConfig?: null | v1.#SecretKeySelector @go(TracingConfig,*v1.SecretKeySelector)
 
-	// TracingConfig specifies the path of the tracing configuration file.
+	// Configures the path of the tracing configuration file.
 	//
-	// This field takes precedence over `tracingConfig`.
+	// The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration
 	//
 	// This is an *experimental feature*, it may change in any upcoming release
 	// in a breaking way.
 	//
+	// The operator performs no validation of the configuration file.
+	//
+	// This field takes precedence over `tracingConfig`.
+	//
 	//+optional
 	tracingConfigFile?: string @go(TracingConfigFile)
 
-	// Labels configure the external label pairs to ThanosRuler. A default replica label
-	// `thanos_ruler_replica` will be always added  as a label with the value of the pod's name and it will be dropped in the alerts.
+	// Configures the external label pairs of the ThanosRuler resource.
+	//
+	// A default replica label `thanos_ruler_replica` will be always added as a
+	// label with the value of the pod's name.
+	//
+	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string)
 
-	// AlertDropLabels configure the label names which should be dropped in ThanosRuler alerts.
-	// The replica label `thanos_ruler_replica` will always be dropped in alerts.
+	// Configures the label names which should be dropped in Thanos Ruler
+	// alerts.
+	//
+	// The replica label `thanos_ruler_replica` will always be dropped from the alerts.
+	//
+	// +optional
 	alertDropLabels?: [...string] @go(AlertDropLabels,[]string)
 
 	// The external URL the Thanos Ruler instances will be available under. This is
@@ -267,6 +342,7 @@ import (
 	// recorded rule data.
 	// Note: Currently only the CAFile, CertFile, and KeyFile fields are supported.
 	// Maps to the '--grpc-server-tls-*' CLI args.
+	// +optional
 	grpcServerTlsConfig?: null | #TLSConfig @go(GRPCServerTLSConfig,*TLSConfig)
 
 	// The external Query URL the Thanos Ruler will set in the 'Source' field
@@ -281,14 +357,30 @@ import (
 	// +optional
 	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
 
-	// AlertRelabelConfigs configures alert relabeling in ThanosRuler.
-	// Alert relabel configurations must have the form as specified in the official Prometheus documentation:
+	// Configures alert relabeling in Thanos Ruler.
+	//
+	// Alert relabel configuration must have the form as specified in the
+	// official Prometheus documentation:
 	// https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs
-	// Alternative to AlertRelabelConfigFile, and lower order priority.
+	//
+	// The operator performs no validation of the configuration.
+	//
+	// `alertRelabelConfigFile` takes precedence over this field.
+	//
+	// +optional
 	alertRelabelConfigs?: null | v1.#SecretKeySelector @go(AlertRelabelConfigs,*v1.SecretKeySelector)
 
-	// AlertRelabelConfigFile specifies the path of the alert relabeling configuration file.
-	// When used alongside with AlertRelabelConfigs, alertRelabelConfigFile takes precedence.
+	// Configures the path to the alert relabeling configuration file.
+	//
+	// Alert relabel configuration must have the form as specified in the
+	// official Prometheus documentation:
+	// https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs
+	//
+	// The operator performs no validation of the configuration file.
+	//
+	// This field takes precedence over `alertRelabelConfig`.
+	//
+	// +optional
 	alertRelabelConfigFile?: null | string @go(AlertRelabelConfigFile,*string)
 
 	// Pods' hostAliases configuration
@@ -304,9 +396,11 @@ import (
 	// In case of an argument conflict (e.g. an argument which is already set by the
 	// operator itself) or when providing an invalid argument the reconciliation will
 	// fail and an error will be logged.
+	// +optional
 	additionalArgs?: [...#Argument] @go(AdditionalArgs,[]Argument)
 
 	// Defines the configuration of the ThanosRuler web server.
+	// +optional
 	web?: null | #ThanosRulerWebSpec @go(Web,*ThanosRulerWebSpec)
 }
 

@@ -181,7 +181,7 @@ import (
 
 	// +kubebuilder:validation:Enum=client_secret_basic;client_secret_post;private_key_jwt;none
 	//
-	// Indication which authentication method shoud be used for the token endpoint
+	// Indication which authentication method should be used for the token endpoint
 	tokenEndpointAuthMethod?: #TokenEndpointAuthMethod @go(TokenEndpointAuthMethod)
 
 	// TokenLifespans is the configuration to use for managing different token lifespans
@@ -224,6 +224,12 @@ import (
 	//
 	// BackChannelLogoutURI RP URL that will cause the RP to log itself out when sent a Logout Token by the OP
 	backChannelLogoutURI?: string @go(BackChannelLogoutURI)
+
+	// +kubebuilder:validation:Enum=1;2
+	//
+	// Indicates if a deleted OAuth2Client custom resource should delete the database row or not.
+	// Value 1 means deletion of the OAuth2 client, value 2 means keep an orphan oauth2 client.
+	deletionPolicy?: #OAuth2ClientDeletionPolicy @go(DeletionPolicy)
 }
 
 // GrantType represents an OAuth 2.0 grant type
@@ -268,6 +274,12 @@ import (
 #OAuth2ClientConditionType: string
 
 #OAuth2ClientConditionReady: "Ready"
+
+// OAuth2ClientDeletionPolicy represents if a deleted oauth2 client object should delete the database row or not.
+#OAuth2ClientDeletionPolicy: int
+
+#OAuth2ClientDeletionPolicyDelete: 1
+#OAuth2ClientDeletionPolicyOrphan: 2
 
 // +kubebuilder:validation:Enum=True;False;Unknown
 #ConditionStatus: string // #enumConditionStatus

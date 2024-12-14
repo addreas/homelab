@@ -22,8 +22,22 @@ import (
 // * `OpenMetricsText1.0.0`
 // * `PrometheusProto`
 // * `PrometheusText0.0.4`
-// +kubebuilder:validation:Enum=PrometheusProto;OpenMetricsText0.0.1;OpenMetricsText1.0.0;PrometheusText0.0.4
-#ScrapeProtocol: string
+// * `PrometheusText1.0.0`
+// +kubebuilder:validation:Enum=PrometheusProto;OpenMetricsText0.0.1;OpenMetricsText1.0.0;PrometheusText0.0.4;PrometheusText1.0.0
+#ScrapeProtocol: string // #enumScrapeProtocol
+
+#enumScrapeProtocol:
+	#PrometheusProto |
+	#PrometheusText0_0_4 |
+	#PrometheusText1_0_0 |
+	#OpenMetricsText0_0_1 |
+	#OpenMetricsText1_0_0
+
+#PrometheusProto:      #ScrapeProtocol & "PrometheusProto"
+#PrometheusText0_0_4:  #ScrapeProtocol & "PrometheusText0.0.4"
+#PrometheusText1_0_0:  #ScrapeProtocol & "PrometheusText1.0.0"
+#OpenMetricsText0_0_1: #ScrapeProtocol & "OpenMetricsText0.0.1"
+#OpenMetricsText1_0_0: #ScrapeProtocol & "OpenMetricsText1.0.0"
 
 // RuntimeConfig configures the values for the process behavior.
 #RuntimeConfig: {
@@ -203,19 +217,29 @@ import (
 	// +optional
 	replicas?: null | int32 @go(Replicas,*int32)
 
-	// Number of shards to distribute targets onto. `spec.replicas`
-	// multiplied by `spec.shards` is the total number of Pods created.
+	// Number of shards to distribute scraped targets onto.
 	//
-	// Note that scaling down shards will not reshard data onto remaining
+	// `spec.replicas` multiplied by `spec.shards` is the total number of Pods
+	// being created.
+	//
+	// When not defined, the operator assumes only one shard.
+	//
+	// Note that scaling down shards will not reshard data onto the remaining
 	// instances, it must be manually moved. Increasing shards will not reshard
 	// data either but it will continue to be available from the same
 	// instances. To query globally, use Thanos sidecar and Thanos querier or
 	// remote write data to a central location.
+	// Alerting and recording rules
 	//
-	// Sharding is performed on the content of the `__address__` target meta-label
-	// for PodMonitors and ServiceMonitors and `__param_target__` for Probes.
+	// By default, the sharding is performed on:
+	// * The `__address__` target's metadata label for PodMonitor,
+	// ServiceMonitor and ScrapeConfig resources.
+	// * The `__param_target__` label for Probe resources.
 	//
-	// Default: 1
+	// Users can define their own sharding implementation by setting the
+	// `__tmp_hash` label during the target discovery with relabeling
+	// configuration (either in the monitoring resources or via scrape class).
+	//
 	// +optional
 	shards?: null | int32 @go(Shards,*int32)
 
@@ -259,9 +283,17 @@ import (
 	//
 	// It requires Prometheus >= v2.49.0.
 	//
+	// `PrometheusText1.0.0` requires Prometheus >= v3.0.0.
+	//
 	// +listType=set
 	// +optional
 	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
+
+	// The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+	//
+	// It requires Prometheus >= v3.0.0.
+	// +optional
+	scrapeFallbackProtocol?: null | #ScrapeProtocol @go(ScrapeFallbackProtocol,*ScrapeProtocol)
 
 	// The labels to add to any time series or alerts when communicating with
 	// external systems (federation, remote storage, Alertmanager).
@@ -280,6 +312,14 @@ import (
 	//
 	// It requires Prometheus >= v2.33.0.
 	enableRemoteWriteReceiver?: bool @go(EnableRemoteWriteReceiver)
+
+	// Enable Prometheus to be used as a receiver for the OTLP Metrics protocol.
+	//
+	// Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.
+	//
+	// It requires Prometheus >= v2.47.0.
+	// +optional
+	enableOTLPReceiver?: null | bool @go(EnableOTLPReceiver,*bool)
 
 	// List of the protobuf message versions to accept when receiving the
 	// remote writes.
@@ -644,6 +684,10 @@ import (
 	//
 	enforcedBodySizeLimit?: #ByteSize @go(EnforcedBodySizeLimit)
 
+	// Specifies the validation scheme for metric and label names.
+	// +optional
+	nameValidationScheme?: null | #NameValidationSchemeOptions @go(NameValidationScheme,*NameValidationSchemeOptions)
+
 	// Minimum number of seconds for which a newly created Pod should be ready
 	// without any of its container crashing for it to be considered available.
 	// Defaults to 0 (pod will be considered available as soon as it is ready)
@@ -817,7 +861,27 @@ import (
 	//
 	// +optional
 	tsdb?: null | #TSDBSpec @go(TSDB,*TSDBSpec)
+
+	// RuntimeConfig configures the values for the Prometheus process behavior
+	// +optional
+	runtime?: null | #RuntimeConfig @go(Runtime,*RuntimeConfig)
 }
+
+// Specifies the validation scheme for metric and label names.
+// Supported values are:
+// * `UTF8NameValidationScheme` for UTF-8 support.
+// * `LegacyNameValidationScheme` for letters, numbers, colons, and underscores.
+//
+// Note that `LegacyNameValidationScheme` cannot be used along with the OpenTelemetry `NoUTF8EscapingWithSuffixes` translation strategy (if enabled).
+// +kubebuilder:validation:Enum=UTF8;Legacy
+#NameValidationSchemeOptions: string // #enumNameValidationSchemeOptions
+
+#enumNameValidationSchemeOptions:
+	#UTF8NameValidationScheme |
+	#LegacyNameValidationScheme
+
+#UTF8NameValidationScheme:   #NameValidationSchemeOptions & "UTF8"
+#LegacyNameValidationScheme: #NameValidationSchemeOptions & "Legacy"
 
 // +kubebuilder:validation:Enum=HTTP;ProcessSignal
 #ReloadStrategyType: string // #enumReloadStrategyType
@@ -882,10 +946,6 @@ import (
 #PrometheusSpec: {
 	#CommonPrometheusFields
 
-	// RuntimeConfig configures the values for the Prometheus process behavior
-	// +optional
-	runtime?: null | #RuntimeConfig @go(Runtime,*RuntimeConfig)
-
 	// Deprecated: use 'spec.image' instead.
 	baseImage?: string @go(BaseImage)
 
@@ -904,6 +964,8 @@ import (
 	retentionSize?: #ByteSize @go(RetentionSize)
 
 	// When true, the Prometheus compaction is disabled.
+	// When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically
+	// disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
 	disableCompaction?: bool @go(DisableCompaction)
 
 	// Defines the configuration of the Prometheus rules' engine.
@@ -1816,6 +1878,16 @@ import (
 	bearerToken?: string @go(BearerToken)
 }
 
+// +kubebuilder:validation:Enum=v1;V1;v2;V2
+#AlertmanagerAPIVersion: string // #enumAlertmanagerAPIVersion
+
+#enumAlertmanagerAPIVersion:
+	#AlertmanagerAPIVersion1 |
+	#AlertmanagerAPIVersion2
+
+#AlertmanagerAPIVersion1: #AlertmanagerAPIVersion & "V1"
+#AlertmanagerAPIVersion2: #AlertmanagerAPIVersion & "V2"
+
 // AlertmanagerEndpoints defines a selection of a single Endpoints object
 // containing Alertmanager IPs to fire alerts against.
 // +k8s:openapi-gen=true
@@ -1879,9 +1951,14 @@ import (
 	// +optional
 	sigv4?: null | #Sigv4 @go(Sigv4,*Sigv4)
 
+	#ProxyConfig
+
 	// Version of the Alertmanager API that Prometheus uses to send alerts.
-	// It can be "v1" or "v2".
-	apiVersion?: string @go(APIVersion)
+	// It can be "V1" or "V2".
+	// The field has no effect for Prometheus >= v3.0.0 because only the v2 API is supported.
+	//
+	// +optional
+	apiVersion?: null | #AlertmanagerAPIVersion @go(APIVersion,*AlertmanagerAPIVersion)
 
 	// Timeout is a per-target Alertmanager timeout when pushing alerts.
 	//
@@ -2037,6 +2114,11 @@ import (
 	// +optional
 	tlsConfig?: null | #TLSConfig @go(TLSConfig,*TLSConfig)
 
+	// Authorization section for the ScrapeClass.
+	// It will only apply if the scrape resource doesn't specify any Authorization.
+	// +optional
+	authorization?: null | #Authorization @go(Authorization,*Authorization)
+
 	// Relabelings configures the relabeling rules to apply to all scrape targets.
 	//
 	// The Operator automatically adds relabelings for a few standard Kubernetes fields
@@ -2068,6 +2150,20 @@ import (
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
 }
 
+// TranslationStrategyOption represents a translation strategy option for the OTLP endpoint.
+// Supported values are:
+// * `NoUTF8EscapingWithSuffixes`
+// * `UnderscoreEscapingWithSuffixes`
+// +kubebuilder:validation:Enum=NoUTF8EscapingWithSuffixes;UnderscoreEscapingWithSuffixes
+#TranslationStrategyOption: string // #enumTranslationStrategyOption
+
+#enumTranslationStrategyOption:
+	#NoUTF8EscapingWithSuffixes |
+	#UnderscoreEscapingWithSuffixes
+
+#NoUTF8EscapingWithSuffixes:     #TranslationStrategyOption & "NoUTF8EscapingWithSuffixes"
+#UnderscoreEscapingWithSuffixes: #TranslationStrategyOption & "UnderscoreEscapingWithSuffixes"
+
 // OTLPConfig is the configuration for writing to the OTLP endpoint.
 //
 // +k8s:openapi-gen=true
@@ -2079,4 +2175,11 @@ import (
 	// +listType=set
 	// +optional
 	promoteResourceAttributes?: [...string] @go(PromoteResourceAttributes,[]string)
+
+	// Configures how the OTLP receiver endpoint translates the incoming metrics.
+	// If unset, Prometheus uses its default value.
+	//
+	// It requires Prometheus >= v3.0.0.
+	// +optional
+	translationStrategy?: null | #TranslationStrategyOption @go(TranslationStrategy,*TranslationStrategyOption)
 }
