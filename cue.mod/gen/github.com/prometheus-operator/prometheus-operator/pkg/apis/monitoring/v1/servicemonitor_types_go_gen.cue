@@ -97,7 +97,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// It requires Prometheus >= v3.0.0.
 	// +optional
-	scrapeFallbackProtocol?: null | #ScrapeProtocol @go(ScrapeFallbackProtocol,*ScrapeProtocol)
+	fallbackScrapeProtocol?: null | #ScrapeProtocol @go(FallbackScrapeProtocol,*ScrapeProtocol)
 
 	// `targetLimit` defines a limit on the number of scraped targets that will
 	// be accepted.

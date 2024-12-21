@@ -98,7 +98,7 @@ import (
 	//
 	// It requires Prometheus >= v3.0.0.
 	// +optional
-	scrapeFallbackProtocol?: null | #ScrapeProtocol @go(ScrapeFallbackProtocol,*ScrapeProtocol)
+	fallbackScrapeProtocol?: null | #ScrapeProtocol @go(FallbackScrapeProtocol,*ScrapeProtocol)
 
 	// Per-scrape limit on number of labels that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.

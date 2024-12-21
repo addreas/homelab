@@ -492,7 +492,7 @@ nodeExporter: {
 					summary:     "High CPU usage."
 				}
 				expr: """
-					sum without(mode) (avg without (cpu) (rate(node_cpu_seconds_total{job="node-exporter", mode!="idle"}[2m]))) * 100 > 90
+					sum without(mode) (avg without (cpu) (rate(node_cpu_seconds_total{job="node-exporter", mode!~"idle|iowait"}[2m]))) * 100 > 90
 
 					"""
 				for: "15m"
