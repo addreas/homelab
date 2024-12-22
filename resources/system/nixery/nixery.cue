@@ -20,7 +20,7 @@ k: Deployment: "nixery": spec: template: spec: {
 			containerPort: 8080
 		}]
 		resources: requests: memory: "1Gi"
-		resources: limits: memory:   "8Gi"
+		resources: limits: memory:   "7Gi"
 		volumeMounts: [{
 			name:      "storage"
 			mountPath: "/nixery"
