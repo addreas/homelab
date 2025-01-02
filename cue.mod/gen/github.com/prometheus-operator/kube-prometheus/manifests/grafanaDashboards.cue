@@ -40,7 +40,7 @@ grafanaDashboards: {
 				legend: showLegend: false
 				tooltip: mode: "multi"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -77,7 +77,7 @@ grafanaDashboards: {
 				legend: showLegend: false
 				tooltip: mode: "multi"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -134,7 +134,7 @@ grafanaDashboards: {
 				legend: showLegend: false
 				tooltip: mode: "multi"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			repeat:        "integration"
 			targets: [{
 				datasource: {
@@ -180,7 +180,7 @@ grafanaDashboards: {
 				legend: showLegend: false
 				tooltip: mode: "multi"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			repeat:        "integration"
 			targets: [{
 				datasource: {
@@ -328,7 +328,7 @@ grafanaDashboards: {
 			}
 			id: 1
 			options: content: "The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only."
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			title:         "Notice"
 			type:          "text"
 		}, {
@@ -349,7 +349,7 @@ grafanaDashboards: {
 			}
 			id:            2
 			interval:      "1m"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -386,7 +386,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -415,7 +415,7 @@ grafanaDashboards: {
 			}
 			id:            4
 			interval:      "1m"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -493,7 +493,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -530,7 +530,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -564,7 +564,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -593,7 +593,7 @@ grafanaDashboards: {
 			}
 			id:            8
 			interval:      "1m"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -671,7 +671,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -708,7 +708,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -742,7 +742,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -778,7 +778,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -814,7 +814,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -851,7 +851,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -884,7 +884,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -920,7 +920,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -953,7 +953,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1052,7 +1052,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1099,7 +1099,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1163,7 +1163,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1389,7 +1389,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1436,7 +1436,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1483,7 +1483,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1530,7 +1530,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1577,7 +1577,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1624,7 +1624,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1671,7 +1671,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1718,7 +1718,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1765,7 +1765,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1812,7 +1812,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1898,7 +1898,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1940,7 +1940,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -1982,7 +1982,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2024,7 +2024,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2066,7 +2066,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2129,7 +2129,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2171,7 +2171,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2213,7 +2213,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2255,7 +2255,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2297,7 +2297,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2386,7 +2386,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2412,7 +2412,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2438,7 +2438,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2464,7 +2464,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2490,7 +2490,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2516,7 +2516,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2555,7 +2555,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2600,7 +2600,7 @@ grafanaDashboards: {
 				y: 12
 			}
 			id:            8
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2739,7 +2739,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2811,7 +2811,7 @@ grafanaDashboards: {
 				y: 24
 			}
 			id:            10
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -2962,7 +2962,7 @@ grafanaDashboards: {
 				y: 30
 			}
 			id:            11
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3089,7 +3089,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3131,7 +3131,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3173,7 +3173,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3215,7 +3215,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3257,7 +3257,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3299,7 +3299,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3341,7 +3341,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3383,7 +3383,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3425,7 +3425,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3467,7 +3467,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3521,7 +3521,7 @@ grafanaDashboards: {
 				y: 96
 			}
 			id:            22
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3682,7 +3682,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3708,7 +3708,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3734,7 +3734,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3760,7 +3760,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3786,7 +3786,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3812,7 +3812,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3846,7 +3846,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -3891,7 +3891,7 @@ grafanaDashboards: {
 				y: 2
 			}
 			id:            8
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4001,7 +4001,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4049,7 +4049,7 @@ grafanaDashboards: {
 				y: 4
 			}
 			id:            10
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4186,7 +4186,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4212,7 +4212,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4238,7 +4238,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4264,7 +4264,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4342,7 +4342,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4401,7 +4401,7 @@ grafanaDashboards: {
 				y: 14
 			}
 			id:            6
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4555,7 +4555,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4617,7 +4617,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            8
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4780,7 +4780,7 @@ grafanaDashboards: {
 				y: 35
 			}
 			id:            9
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4907,7 +4907,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4949,7 +4949,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -4991,7 +4991,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5033,7 +5033,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5075,7 +5075,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5117,7 +5117,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5159,7 +5159,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5201,7 +5201,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5255,7 +5255,7 @@ grafanaDashboards: {
 				y: 70
 			}
 			id:            18
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5473,7 +5473,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5525,7 +5525,7 @@ grafanaDashboards: {
 				y: 6
 			}
 			id:            2
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5659,7 +5659,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5673,6 +5673,87 @@ grafanaDashboards: {
 					uid:  "${datasource}"
 				}
 				expr:         "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)"
+				legendFormat: "{{pod}}"
+			}]
+			title: "Memory Usage (w/cache)"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "datasource"
+				uid:  "-- Mixed --"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 10
+						showPoints:  "never"
+						spanNulls:   true
+						stacking: mode: "normal"
+					}
+					unit: "bytes"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byName"
+						options: "max capacity"
+					}
+					properties: [{
+						id: "color"
+						value: {
+							fixedColor: "red"
+							mode:       "fixed"
+						}
+					}, {
+						id: "custom.stacking"
+						value: mode: "none"
+					}, {
+						id: "custom.hideFrom"
+						value: {
+							legend:  false
+							tooltip: true
+							viz:     false
+						}
+					}, {
+						id: "custom.lineStyle"
+						value: {
+							dash: [10, 10]
+							fill: "dash"
+						}
+					}]
+				}]
+			}
+			gridPos: {
+				h: 6
+				w: 24
+				x: 0
+				y: 18
+			}
+			id:       4
+			interval: "1m"
+			options: {
+				legend: {
+					asTable: true
+					calcs: ["lastNotNull"]
+					displayMode: "table"
+					placement:   "right"
+					showLegend:  true
+				}
+				tooltip: mode: "single"
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})"
+				legendFormat: "max capacity"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "${datasource}"
+				}
+				expr:         "sum(node_namespace_pod_container:container_memory_rss{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)"
 				legendFormat: "{{pod}}"
 			}]
 			title: "Memory Usage (w/o cache)"
@@ -5711,10 +5792,10 @@ grafanaDashboards: {
 				h: 6
 				w: 24
 				x: 0
-				y: 18
+				y: 24
 			}
-			id:            4
-			pluginVersion: "v11.1.0"
+			id:            5
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -5944,7 +6025,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6041,7 +6122,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6074,7 +6155,7 @@ grafanaDashboards: {
 				y: 14
 			}
 			id:            3
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6228,7 +6309,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6288,7 +6369,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6439,7 +6520,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6481,7 +6562,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6523,7 +6604,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6565,7 +6646,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6607,7 +6688,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6649,7 +6730,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6691,7 +6772,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6740,7 +6821,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6789,7 +6870,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6831,7 +6912,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -6873,7 +6954,7 @@ grafanaDashboards: {
 				y: 70
 			}
 			id:            16
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7071,7 +7152,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7123,7 +7204,7 @@ grafanaDashboards: {
 				y: 7
 			}
 			id:            2
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7283,7 +7364,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7338,7 +7419,7 @@ grafanaDashboards: {
 				y: 21
 			}
 			id:            4
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7510,7 +7591,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7667,7 +7748,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7714,7 +7795,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7761,7 +7842,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7808,7 +7889,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7855,7 +7936,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7902,7 +7983,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7949,7 +8030,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -7996,7 +8077,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8166,7 +8247,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8241,7 +8322,7 @@ grafanaDashboards: {
 				y: 7
 			}
 			id:            2
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8464,7 +8545,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8542,7 +8623,7 @@ grafanaDashboards: {
 				y: 21
 			}
 			id:            4
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8738,7 +8819,7 @@ grafanaDashboards: {
 				y: 28
 			}
 			id:            5
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8895,7 +8976,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8942,7 +9023,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -8989,7 +9070,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9036,7 +9117,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9083,7 +9164,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9130,7 +9211,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9177,7 +9258,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9224,7 +9305,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9330,7 +9411,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9356,7 +9437,7 @@ grafanaDashboards: {
 			id:       2
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9382,7 +9463,7 @@ grafanaDashboards: {
 			id:       3
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9408,7 +9489,7 @@ grafanaDashboards: {
 			id:       4
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9434,7 +9515,7 @@ grafanaDashboards: {
 			id:       5
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9460,7 +9541,7 @@ grafanaDashboards: {
 			id:       6
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9502,7 +9583,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9544,7 +9625,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9586,7 +9667,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9628,7 +9709,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9677,7 +9758,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9726,7 +9807,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9768,7 +9849,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9810,7 +9891,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9852,7 +9933,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9894,7 +9975,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9936,7 +10017,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -9978,7 +10059,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10020,7 +10101,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10062,7 +10143,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10125,7 +10206,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10167,7 +10248,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10209,7 +10290,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10251,7 +10332,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10355,7 +10436,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10407,7 +10488,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10471,7 +10552,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10653,7 +10734,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10700,7 +10781,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10747,7 +10828,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10794,7 +10875,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10841,7 +10922,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -10888,7 +10969,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11001,7 +11082,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11045,7 +11126,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11109,7 +11190,7 @@ grafanaDashboards: {
 				y: 9
 			}
 			id:            3
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11324,7 +11405,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11376,7 +11457,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11428,7 +11509,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11480,7 +11561,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11532,7 +11613,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11584,7 +11665,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11636,7 +11717,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11688,7 +11769,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -11779,4277 +11860,2810 @@ grafanaDashboards: {
 		uid:      "bbb2a765a623ae38130206c7d94a160f"
 	}
 	"node-cluster-rsrc-use.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
 		graphTooltip: 1
-		hideControls: false
-		id:           null
-		links: []
-		refresh: "30s"
-		rows: [{
-			collapse:  false
+		panels: [{
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 2
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						((
-						  instance:node_cpu_utilisation:rate5m{job="node-exporter", cluster="$cluster"}
-						  *
-						  instance:node_num_cpu:sum{job="node-exporter", cluster="$cluster"}
-						) != 0 )
-						/ scalar(sum(instance:node_num_cpu:sum{job="node-exporter", cluster="$cluster"}))
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{ instance }}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Utilisation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 3
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  instance:node_load1_per_cpu:ratio{job="node-exporter", cluster="$cluster"}
-						  / scalar(count(instance:node_load1_per_cpu:ratio{job="node-exporter", cluster="$cluster"}))
-						)  != 0
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Saturation (Load1 per CPU)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "CPU"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 0
+			}
+			id: 1
+			panels: []
+			title: "CPU"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 4
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  instance:node_memory_utilisation:ratio{job="node-exporter", cluster="$cluster"}
-						  / scalar(count(instance:node_memory_utilisation:ratio{job="node-exporter", cluster="$cluster"}))
-						) != 0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 1
+			}
+			id: 2
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					((
+					  instance:node_cpu_utilisation:rate5m{job="node-exporter", cluster="$cluster"}
+					  *
+					  instance:node_num_cpu:sum{job="node-exporter", cluster="$cluster"}
+					) != 0 )
+					/ scalar(sum(instance:node_num_cpu:sum{job="node-exporter", cluster="$cluster"}))
 
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Utilisation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 5
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Saturation (Major Page Faults)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "rds"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "rds"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+					"""
+				legendFormat: "{{ instance }}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Memory"
-			titleSize:       "h6"
-			type:            "row"
+			title: "CPU Utilisation"
+			type:  "timeseries"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 6
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/Receive/"
-					stack: "A"
-				}, {
-					alias:     "/Transmit/"
-					stack:     "B"
-					transform: "negative-Y"
-				}]
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} Receive"
-					refId:          "A"
-				}, {
-					expr:           "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} Transmit"
-					refId:          "B"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Utilisation (Bytes Receive/Transmit)"
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 1
+			}
+			id: 3
+			options: {
+				legend: showLegend: false
 				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
+					mode: "multi"
+					sort: "desc"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 7
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/ Receive/"
-					stack: "A"
-				}, {
-					alias:     "/ Transmit/"
-					stack:     "B"
-					transform: "negative-Y"
-				}]
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} Receive"
-					refId:          "A"
-				}, {
-					expr:           "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} Transmit"
-					refId:          "B"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Saturation (Drops Receive/Transmit)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr: """
+					(
+					  instance:node_load1_per_cpu:ratio{job="node-exporter", cluster="$cluster"}
+					  / scalar(count(instance:node_load1_per_cpu:ratio{job="node-exporter", cluster="$cluster"}))
+					)  != 0
+
+					"""
+				legendFormat: "{{ instance }}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Network"
-			titleSize:       "h6"
-			type:            "row"
+			title: "CPU Saturation (Load1 per CPU)"
+			type:  "timeseries"
 		}, {
-			collapse:  false
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 8
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  instance_device:node_disk_io_time_seconds:rate5m{job="node-exporter", cluster="$cluster"}
-						  / scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job="node-exporter", cluster="$cluster"}))
-						) != 0
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} {{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk IO Utilisation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 9
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  instance_device:node_disk_io_time_weighted_seconds:rate5m{job="node-exporter", cluster="$cluster"}
-						  / scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job="node-exporter", cluster="$cluster"}))
-						) != 0
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}} {{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk IO Saturation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk IO"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 8
+			}
+			id: 4
+			panels: []
+			title: "Memory"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 10
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        12
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						sum without (device) (
-						  max without (fstype, mountpoint) ((
-						    node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
-						    -
-						    node_filesystem_avail_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
-						  ) != 0)
-						)
-						/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"})))
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{instance}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk Space Utilisation"
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 9
+			}
+			id: 5
+			options: {
+				legend: showLegend: false
 				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
+					mode: "multi"
+					sort: "desc"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr: """
+					(
+					  instance:node_memory_utilisation:ratio{job="node-exporter", cluster="$cluster"}
+					  / scalar(count(instance:node_memory_utilisation:ratio{job="node-exporter", cluster="$cluster"}))
+					) != 0
+
+					"""
+				legendFormat: "{{ instance }}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk Space"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Memory Utilisation"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "rds"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 9
+			}
+			id: 6
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}"
+				legendFormat: "{{ instance }}"
+			}]
+			title: "Memory Saturation (Major Page Faults)"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 16
+			}
+			id: 7
+			panels: []
+			title: "Network"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						showPoints:  "never"
+						stacking: mode: "normal"
+					}
+					unit: "Bps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/Transmit/"
+					}
+					properties: [{
+						id:    "custom.transform"
+						value: "negative-Y"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 17
+			}
+			id: 8
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{ instance }} Receive"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{ instance }} Transmit"
+			}]
+			title: "Network Utilisation (Bytes Receive/Transmit)"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						showPoints:  "never"
+						stacking: mode: "normal"
+					}
+					unit: "Bps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/Transmit/"
+					}
+					properties: [{
+						id:    "custom.transform"
+						value: "negative-Y"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 17
+			}
+			id: 9
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{ instance }} Receive"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{ instance }} Transmit"
+			}]
+			title: "Network Saturation (Drops Receive/Transmit)"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 24
+			}
+			id: 10
+			panels: []
+			title: "Disk IO"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 25
+			}
+			id: 11
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					instance_device:node_disk_io_time_seconds:rate5m{job="node-exporter", cluster="$cluster"}
+					/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job="node-exporter", cluster="$cluster"}))
+
+					"""
+				legendFormat: "{{ instance }} {{device}}"
+			}]
+			title: "Disk IO Utilisation"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 25
+			}
+			id: 12
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					instance_device:node_disk_io_time_weighted_seconds:rate5m{job="node-exporter", cluster="$cluster"}
+					/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job="node-exporter", cluster="$cluster"}))
+
+					"""
+				legendFormat: "{{ instance }} {{device}}"
+			}]
+			title: "Disk IO Saturation"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 34
+			}
+			id: 13
+			panels: []
+			title: "Disk Space"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 24
+				x: 0
+				y: 35
+			}
+			id: 14
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					sum without (device) (
+					  max without (fstype, mountpoint) ((
+					    node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
+					    -
+					    node_filesystem_avail_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"}
+					  ) != 0)
+					)
+					/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job="node-exporter", fstype!="", mountpoint!="", cluster="$cluster"})))
+
+					"""
+				legendFormat: "{{ instance }}"
+			}]
+			title: "Disk Space Utilisation"
+			type:  "timeseries"
 		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "30s"
+		schemaVersion: 39
 		tags: [
 			"node-exporter-mixin",
 		]
 		templating: list: [{
-			current: {
-				text:  "default"
-				value: "default"
-			}
-			hide:  0
-			label: "Data Source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {
-				text:  ""
-				value: ""
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
 			}
-			datasource: "$datasource"
 			hide:       2
 			includeAll: false
-			label:      null
-			multi:      false
 			name:       "cluster"
-			options: []
-			query:          "label_values(node_time_seconds, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           1
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			query:      "label_values(node_time_seconds, cluster)"
+			refresh:    2
+			sort:       1
+			type:       "query"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			refresh: 2
+			sort:    1
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
-		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 		}
 		timezone: "utc"
 		title:    "Node Exporter / USE Method / Cluster"
 		uid:      "3e97d1d02672cdd0861f4c97c64f89b2"
-		version:  0
 	}
 	"node-rsrc-use.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
 		graphTooltip: 1
-		hideControls: false
-		id:           null
-		links: []
-		refresh: "30s"
-		rows: [{
-			collapse:  false
+		panels: [{
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 2
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Utilisation"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Utilisation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 3
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_load1_per_cpu:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Saturation"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Saturation (Load1 per CPU)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "CPU"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 0
+			}
+			id: 1
+			panels: []
+			title: "CPU"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 4
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_memory_utilisation:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Utilisation"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Utilisation"
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 1
+			}
+			id: 2
+			options: {
+				legend: showLegend: false
 				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
+					mode: "multi"
+					sort: "desc"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 5
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Major page Faults"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Saturation (Major Page Faults)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "rds"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "rds"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:         "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Utilisation"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Memory"
-			titleSize:       "h6"
-			type:            "row"
+			title: "CPU Utilisation"
+			type:  "timeseries"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 6
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/Receive/"
-					stack: "A"
-				}, {
-					alias:     "/Transmit/"
-					stack:     "B"
-					transform: "negative-Y"
-				}]
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Receive"
-					refId:          "A"
-				}, {
-					expr:           "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Transmit"
-					refId:          "B"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Utilisation (Bytes Receive/Transmit)"
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 1
+			}
+			id: 3
+			options: {
+				legend: showLegend: false
 				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
+					mode: "multi"
+					sort: "desc"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 7
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/ Receive/"
-					stack: "A"
-				}, {
-					alias:     "/ Transmit/"
-					stack:     "B"
-					transform: "negative-Y"
-				}]
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Receive"
-					refId:          "A"
-				}, {
-					expr:           "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Transmit"
-					refId:          "B"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Saturation (Drops Receive/Transmit)"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:         "instance:node_load1_per_cpu:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Saturation"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Network"
-			titleSize:       "h6"
-			type:            "row"
+			title: "CPU Saturation (Load1 per CPU)"
+			type:  "timeseries"
 		}, {
-			collapse:  false
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 8
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 8
+			}
+			id: 4
+			panels: []
+			title: "Memory"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk IO Utilisation"
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 9
+			}
+			id: 5
+			options: {
+				legend: showLegend: false
 				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
+					mode: "multi"
+					sort: "desc"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 9
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr:           "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk IO Saturation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:         "instance:node_memory_utilisation:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Utilisation"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk IO"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Memory Utilisation"
+			type:  "timeseries"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         10
-				fillGradient: 0
-				gridPos: {}
-				id: 10
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         false
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        12
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						sort_desc(1 -
-						  (
-						   max without (mountpoint, fstype) (node_filesystem_avail_bytes{job="node-exporter", fstype!="", instance="$instance", cluster="$cluster"})
-						   /
-						   max without (mountpoint, fstype) (node_filesystem_size_bytes{job="node-exporter", fstype!="", instance="$instance", cluster="$cluster"})
-						  ) != 0
-						)
+				unit: "rds"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 9
+			}
+			id: 6
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Major page Faults"
+			}]
+			title: "Memory Saturation (Major Page Faults)"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 16
+			}
+			id: 7
+			panels: []
+			title: "Network"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						showPoints:  "never"
+						stacking: mode: "normal"
+					}
+					unit: "Bps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/Transmit/"
+					}
+					properties: [{
+						id:    "custom.transform"
+						value: "negative-Y"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 17
+			}
+			id: 8
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Receive"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Transmit"
+			}]
+			title: "Network Utilisation (Bytes Receive/Transmit)"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 100
+						showPoints:  "never"
+						stacking: mode: "normal"
+					}
+					unit: "Bps"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/Transmit/"
+					}
+					properties: [{
+						id:    "custom.transform"
+						value: "negative-Y"
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 17
+			}
+			id: 9
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Receive"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "Transmit"
+			}]
+			title: "Network Saturation (Drops Receive/Transmit)"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 24
+			}
+			id: 10
+			panels: []
+			title: "Disk IO"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 25
+			}
+			id: 11
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{device}}"
+			}]
+			title: "Disk IO Utilisation"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 25
+			}
+			id: 12
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0"
+				legendFormat: "{{device}}"
+			}]
+			title: "Disk IO Saturation"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 34
+			}
+			id: 13
+			panels: []
+			title: "Disk Space"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 100
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 24
+				x: 0
+				y: 35
+			}
+			id: 14
+			options: {
+				legend: showLegend: false
+				tooltip: {
+					mode: "multi"
+					sort: "desc"
+				}
+			}
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					sort_desc(1 -
+					  (
+					    max without (mountpoint, fstype) (node_filesystem_avail_bytes{job="node-exporter", fstype!="", instance="$instance", cluster="$cluster"})
+					    /
+					    max without (mountpoint, fstype) (node_filesystem_size_bytes{job="node-exporter", fstype!="", instance="$instance", cluster="$cluster"})
+					  ) != 0
+					)
 
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk Space Utilisation"
-				tooltip: {
-					shared:     true
-					sort:       2
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+					"""
+				legendFormat: "{{device}}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk Space"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Disk Space Utilisation"
+			type:  "timeseries"
 		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "30s"
+		schemaVersion: 39
 		tags: [
 			"node-exporter-mixin",
 		]
 		templating: list: [{
-			current: {
-				text:  "default"
-				value: "default"
-			}
-			hide:  0
-			label: "Data Source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {
-				text:  ""
-				value: ""
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
 			}
-			datasource: "$datasource"
 			hide:       2
 			includeAll: false
-			label:      null
-			multi:      false
 			name:       "cluster"
-			options: []
-			query:          "label_values(node_time_seconds, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           1
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			query:      "label_values(node_time_seconds, cluster)"
+			refresh:    2
+			sort:       1
+			type:       "query"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       0
-			includeAll: false
-			label:      null
-			multi:      false
-			name:       "instance"
-			options: []
-			query:          "label_values(node_exporter_build_info{job=\"node-exporter\", cluster=\"$cluster\"}, instance)"
-			refresh:        2
-			regex:          ""
-			sort:           1
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			name:    "instance"
+			query:   "label_values(node_exporter_build_info{job=\"node-exporter\", cluster=\"$cluster\"}, instance)"
+			refresh: 2
+			sort:    1
+			type:    "query"
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
-		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 		}
 		timezone: "utc"
 		title:    "Node Exporter / USE Method / Node"
 		uid:      "fac67cfbe174d3ef53eb473d73d9212f"
-		version:  0
 	}
 	"nodes-aix.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
 		graphTooltip: 1
-		hideControls: false
-		id:           null
-		links: []
-		refresh: "30s"
-		rows: [{
-			collapse:  false
+		panels: [{
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 2
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
-						/ ignoring(cpu) group_left
-						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 5
-					legendFormat:   "{{cpu}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 3
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "1m load average"
-					refId:          "A"
-				}, {
-					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "5m load average"
-					refId:          "B"
-				}, {
-					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "15m load average"
-					refId:          "C"
-				}, {
-					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "logical cores"
-					refId:          "D"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Load Average"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "CPU"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 0
+			}
+			id: 1
+			panels: []
+			title: "CPU"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 4
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        9
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Physical Memory"
-					refId:          "A"
-				}, {
-					expr: """
-						(
-						    node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
-						    node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						)
+				max:  1
+				min:  0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 1
+			}
+			id: 2
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
+					/ ignoring(cpu) group_left
+					  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
+					)
 
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Memory Used"
-					refId:          "B"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+					"""
+				intervalFactor: 5
+				legendFormat:   "{{cpu}}"
+			}]
+			title: "CPU Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+				min:  0
+				unit: "short"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 1
+			}
+			id: 3
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:         "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "1m load average"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: defaults: {
-					max: 100
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "5m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "15m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
+				legendFormat: "logical cores"
+			}]
+			title: "Load Average"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 8
+			}
+			id:    4
+			title: "Memory"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "none"
+				}
+				min:  0
+				unit: "bytes"
+			}
+			gridPos: {
+				h: 7
+				w: 18
+				x: 0
+				y: 9
+			}
+			id: 5
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "Physical Memory"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					    node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+					    node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					)
+
+					"""
+				legendFormat: "Memory Used"
+			}]
+			title: "Memory Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				max: 100
+				min: 0
+				thresholds: steps: [{
+					color: "rgba(50, 172, 45, 0.97)"
+				}, {
+					color: "rgba(237, 129, 40, 0.89)"
+					value: 80
+				}, {
+					color: "rgba(245, 54, 54, 0.9)"
+					value: 90
+				}]
+				unit: "percent"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 18
+				y: 9
+			}
+			id:            6
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					100 -
+					(
+					  avg(node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
+					  avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
+					  * 100
+					)
+
+					"""
+			}]
+			title: "Memory Usage"
+			type:  "gauge"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 18
+			}
+			id: 7
+			panels: []
+			title: "Disk"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 0
+						showPoints:  "never"
+					}
 					min: 0
-					thresholds: {
-						mode: "absolute"
-						steps: [{
-							color: "rgba(50, 172, 45, 0.97)"
-						}, {
-							color: "rgba(237, 129, 40, 0.89)"
-							value: 80
-						}, {
-							color: "rgba(245, 54, 54, 0.9)"
-							value: 90
-						}]
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/ read| written/"
 					}
-					unit: "percent"
-				}
-				gridPos: {}
-				id:   5
-				span: 3
-				targets: [{
-					expr: """
-						100 -
-						(
-						  avg(node_memory_available_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
-						  avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
-						  * 100
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title:       "Memory Usage"
-				transparent: false
-				type:        "gauge"
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Memory"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 6
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/ read| written/"
-					yaxis: 1
+					properties: [{
+						id:    "unit"
+						value: "Bps"
+					}]
 				}, {
-					alias: "/ io time/"
-					yaxis: 2
+					matcher: {
+						id:      "byRegexp"
+						options: "/ io time/"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
+					}]
 				}]
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} read"
-					refId:          "A"
-				}, {
-					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} written"
-					refId:          "B"
-				}, {
-					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} io time"
-					refId:          "C"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk I/O"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 19
+			}
+			id: 8
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} read"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: {
-					defaults: {
-						custom: {}
-						thresholds: {
-							mode: "absolute"
-							steps: [{
-								color: "green"
-							}, {
-								color: "yellow"
-								value: 0.80000000000000004
-							}, {
-								color: "red"
-								value: 0.90000000000000002
-							}]
-						}
-						unit: "decbytes"
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} written"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} io time"
+			}]
+			title: "Disk I/O"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					thresholds: steps: [{
+						color: "green"
+					}, {
+						color: "yellow"
+						value: 0.80000000000000004
+					}, {
+						color: "red"
+						value: 0.90000000000000002
+					}]
+					unit: "decbytes"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byName"
+						options: "Mounted on"
 					}
-					overrides: [{
-						matcher: {
-							id:      "byName"
-							options: "Mounted on"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 260
-						}]
+					properties: [{
+						id:    "custom.width"
+						value: 260
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Size"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 93
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 72
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Available"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 88
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used, %"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Size"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 93
-						}]
+						id: "custom.cellOptions"
+						value: type: "gauge"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 72
-						}]
+						id:    "max"
+						value: 1
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Available"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 88
-						}]
-					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used, %"
-						}
-						properties: [{
-							id:    "unit"
-							value: "percentunit"
-						}, {
-							id:    "custom.displayMode"
-							value: "gradient-gauge"
-						}, {
-							id:    "max"
-							value: 1
-						}, {
-							id:    "min"
-							value: 0
-						}]
+						id:    "min"
+						value: 0
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 19
+			}
+			id:            9
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}]
+			title: "Disk Space Usage"
+			transformations: [{
+				id: "groupBy"
+				options: fields: {
+					"Value #A": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					"Value #B": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					mountpoint: {
+						aggregations: []
+						operation: "groupby"
+					}
+				}
+			}, {
+				id: "merge"
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used"
+					binary: {
+						left:     "Value #A (lastNotNull)"
+						operator: "-"
+						reducer:  "sum"
+						right:    "Value #B (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used, %"
+					binary: {
+						left:     "Used"
+						operator: "/"
+						reducer:  "sum"
+						right:    "Value #A (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "organize"
+				options: {
+					excludeByName: {}
+					indexByName: {}
+					renameByName: {
+						"Value #A (lastNotNull)": "Size"
+						"Value #B (lastNotNull)": "Available"
+						mountpoint:               "Mounted on"
+					}
+				}
+			}, {
+				id: "sortBy"
+				options: {
+					fields: {}
+					sort: [{
+						field: "Mounted on"
 					}]
 				}
-				gridPos: {}
-				id:   7
-				span: 6
-				targets: [{
-					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}, {
-					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title: "Disk Space Usage"
-				transformations: [{
-					id: "groupBy"
-					options: fields: {
-						"Value #A": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						"Value #B": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						mountpoint: {
-							aggregations: []
-							operation: "groupby"
-						}
-					}
-				}, {
-					id: "merge"
-					options: {}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used"
-						binary: {
-							left:     "Value #A (lastNotNull)"
-							operator: "-"
-							reducer:  "sum"
-							right:    "Value #B (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used, %"
-						binary: {
-							left:     "Used"
-							operator: "/"
-							reducer:  "sum"
-							right:    "Value #A (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "organize"
-					options: {
-						excludeByName: {}
-						indexByName: {}
-						renameByName: {
-							"Value #A (lastNotNull)": "Size"
-							"Value #B (lastNotNull)": "Available"
-							mountpoint:               "Mounted on"
-						}
-					}
-				}, {
-					id: "sortBy"
-					options: {
-						fields: {}
-						sort: [{
-							field: "Mounted on"
-						}]
-					}
-				}]
-				transparent: false
-				type:        "table"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk"
-			titleSize:       "h6"
-			type:            "row"
+			type: "table"
 		}, {
-			collapse:  false
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network received (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 8
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 26
+			}
+			id: 10
+			panels: []
+			title: "Network"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network received (bits/s)"
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Received"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 27
+			}
+			id: 11
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network transmitted (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 9
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Transmitted"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Network"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Network Received"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network transmitted (bits/s)"
+			fieldConfig: defaults: {
+				custom: fillOpacity: 0
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 27
+			}
+			id: 12
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
+			}]
+			title: "Network Transmitted"
+			type:  "timeseries"
 		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "30s"
+		schemaVersion: 39
 		tags: [
 			"node-exporter-mixin",
 		]
 		templating: list: [{
-			current: {
-				text:  "default"
-				value: "default"
-			}
-			hide:  0
-			label: "Data Source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       2
-			includeAll: false
-			label:      "Cluster"
-			multi:      false
-			name:       "cluster"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			hide:    2
+			label:   "Cluster"
+			name:    "cluster"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
+			refresh: 2
+			type:    "query"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       0
-			includeAll: false
-			label:      "Instance"
-			multi:      false
-			name:       "instance"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			label:   "Instance"
+			name:    "instance"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
+			refresh: 2
+			type:    "query"
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
-		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 		}
 		timezone: "utc"
 		title:    "Node Exporter / AIX"
 		uid:      "7e0a61e486f727d763fb1d86fdd629c2"
-		version:  0
 	}
 	"nodes-darwin.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
 		graphTooltip: 1
-		hideControls: false
-		id:           null
-		links: []
-		refresh: "30s"
-		rows: [{
-			collapse:  false
+		panels: [{
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 2
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
-						/ ignoring(cpu) group_left
-						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 5
-					legendFormat:   "{{cpu}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 3
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "1m load average"
-					refId:          "A"
-				}, {
-					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "5m load average"
-					refId:          "B"
-				}, {
-					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "15m load average"
-					refId:          "C"
-				}, {
-					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "logical cores"
-					refId:          "D"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Load Average"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "CPU"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 0
+			}
+			id: 1
+			panels: []
+			title: "CPU"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 4
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        9
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Physical Memory"
-					refId:          "A"
-				}, {
-					expr: """
-						(
-						    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
-						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
-						    node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
-						    node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						)
+				max:  1
+				min:  0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 1
+			}
+			id: 2
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
+					/ ignoring(cpu) group_left
+					  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
+					)
 
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Memory Used"
-					refId:          "B"
-				}, {
-					expr: """
-						(
-						    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
-						    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "App Memory"
-					refId:          "C"
-				}, {
-					expr:           "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Wired Memory"
-					refId:          "D"
-				}, {
-					expr:           "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "Compressed"
-					refId:          "E"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+					"""
+				intervalFactor: 5
+				legendFormat:   "{{cpu}}"
+			}]
+			title: "CPU Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+				min:  0
+				unit: "short"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 1
+			}
+			id: 3
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:         "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "1m load average"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: defaults: {
-					max: 100
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "5m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "15m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
+				legendFormat: "logical cores"
+			}]
+			title: "Load Average"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 8
+			}
+			id:    4
+			title: "Memory"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "none"
+				}
+				min:  0
+				unit: "bytes"
+			}
+			gridPos: {
+				h: 7
+				w: 18
+				x: 0
+				y: 9
+			}
+			id: 5
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "Physical Memory"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+					    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
+					    node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} +
+					    node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					)
+
+					"""
+				legendFormat: "Memory Used"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					    node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"} -
+					    node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					)
+
+					"""
+				legendFormat: "App Memory"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "Wired Memory"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "Compressed"
+			}]
+			title: "Memory Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				max: 100
+				min: 0
+				thresholds: steps: [{
+					color: "rgba(50, 172, 45, 0.97)"
+				}, {
+					color: "rgba(237, 129, 40, 0.89)"
+					value: 80
+				}, {
+					color: "rgba(245, 54, 54, 0.9)"
+					value: 90
+				}]
+				unit: "percent"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 18
+				y: 9
+			}
+			id:            6
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					    (
+					      avg(node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) -
+					      avg(node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
+					      avg(node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
+					      avg(node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
+					    ) /
+					    avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
+					)
+					*
+					100
+
+					"""
+			}]
+			title: "Memory Usage"
+			type:  "gauge"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 18
+			}
+			id: 7
+			panels: []
+			title: "Disk"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 0
+						showPoints:  "never"
+					}
 					min: 0
-					thresholds: {
-						mode: "absolute"
-						steps: [{
-							color: "rgba(50, 172, 45, 0.97)"
-						}, {
-							color: "rgba(237, 129, 40, 0.89)"
-							value: 80
-						}, {
-							color: "rgba(245, 54, 54, 0.9)"
-							value: 90
-						}]
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/ read| written/"
 					}
-					unit: "percent"
-				}
-				gridPos: {}
-				id:   5
-				span: 3
-				targets: [{
-					expr: """
-						(
-						    (
-						      avg(node_memory_internal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) -
-						      avg(node_memory_purgeable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
-						      avg(node_memory_wired_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) +
-						      avg(node_memory_compressed_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
-						    ) /
-						    avg(node_memory_total_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
-						)
-						*
-						100
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title:       "Memory Usage"
-				transparent: false
-				type:        "gauge"
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Memory"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 6
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/ read| written/"
-					yaxis: 1
+					properties: [{
+						id:    "unit"
+						value: "Bps"
+					}]
 				}, {
-					alias: "/ io time/"
-					yaxis: 2
+					matcher: {
+						id:      "byRegexp"
+						options: "/ io time/"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
+					}]
 				}]
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} read"
-					refId:          "A"
-				}, {
-					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} written"
-					refId:          "B"
-				}, {
-					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} io time"
-					refId:          "C"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk I/O"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 19
+			}
+			id: 8
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} read"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: {
-					defaults: {
-						custom: {}
-						thresholds: {
-							mode: "absolute"
-							steps: [{
-								color: "green"
-							}, {
-								color: "yellow"
-								value: 0.80000000000000004
-							}, {
-								color: "red"
-								value: 0.90000000000000002
-							}]
-						}
-						unit: "decbytes"
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} written"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} io time"
+			}]
+			title: "Disk I/O"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					thresholds: steps: [{
+						color: "green"
+					}, {
+						color: "yellow"
+						value: 0.80000000000000004
+					}, {
+						color: "red"
+						value: 0.90000000000000002
+					}]
+					unit: "decbytes"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byName"
+						options: "Mounted on"
 					}
-					overrides: [{
-						matcher: {
-							id:      "byName"
-							options: "Mounted on"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 260
-						}]
+					properties: [{
+						id:    "custom.width"
+						value: 260
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Size"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 93
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 72
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Available"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 88
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used, %"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Size"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 93
-						}]
+						id: "custom.cellOptions"
+						value: type: "gauge"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 72
-						}]
+						id:    "max"
+						value: 1
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Available"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 88
-						}]
-					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used, %"
-						}
-						properties: [{
-							id:    "unit"
-							value: "percentunit"
-						}, {
-							id:    "custom.displayMode"
-							value: "gradient-gauge"
-						}, {
-							id:    "max"
-							value: 1
-						}, {
-							id:    "min"
-							value: 0
-						}]
+						id:    "min"
+						value: 0
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 19
+			}
+			id:            9
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}]
+			title: "Disk Space Usage"
+			transformations: [{
+				id: "groupBy"
+				options: fields: {
+					"Value #A": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					"Value #B": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					mountpoint: {
+						aggregations: []
+						operation: "groupby"
+					}
+				}
+			}, {
+				id: "merge"
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used"
+					binary: {
+						left:     "Value #A (lastNotNull)"
+						operator: "-"
+						reducer:  "sum"
+						right:    "Value #B (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used, %"
+					binary: {
+						left:     "Used"
+						operator: "/"
+						reducer:  "sum"
+						right:    "Value #A (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "organize"
+				options: {
+					excludeByName: {}
+					indexByName: {}
+					renameByName: {
+						"Value #A (lastNotNull)": "Size"
+						"Value #B (lastNotNull)": "Available"
+						mountpoint:               "Mounted on"
+					}
+				}
+			}, {
+				id: "sortBy"
+				options: {
+					fields: {}
+					sort: [{
+						field: "Mounted on"
 					}]
 				}
-				gridPos: {}
-				id:   7
-				span: 6
-				targets: [{
-					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}, {
-					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title: "Disk Space Usage"
-				transformations: [{
-					id: "groupBy"
-					options: fields: {
-						"Value #A": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						"Value #B": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						mountpoint: {
-							aggregations: []
-							operation: "groupby"
-						}
-					}
-				}, {
-					id: "merge"
-					options: {}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used"
-						binary: {
-							left:     "Value #A (lastNotNull)"
-							operator: "-"
-							reducer:  "sum"
-							right:    "Value #B (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used, %"
-						binary: {
-							left:     "Used"
-							operator: "/"
-							reducer:  "sum"
-							right:    "Value #A (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "organize"
-					options: {
-						excludeByName: {}
-						indexByName: {}
-						renameByName: {
-							"Value #A (lastNotNull)": "Size"
-							"Value #B (lastNotNull)": "Available"
-							mountpoint:               "Mounted on"
-						}
-					}
-				}, {
-					id: "sortBy"
-					options: {
-						fields: {}
-						sort: [{
-							field: "Mounted on"
-						}]
-					}
-				}]
-				transparent: false
-				type:        "table"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk"
-			titleSize:       "h6"
-			type:            "row"
+			type: "table"
 		}, {
-			collapse:  false
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network received (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 8
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 26
+			}
+			id: 10
+			panels: []
+			title: "Network"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network received (bits/s)"
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Received"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 27
+			}
+			id: 11
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network transmitted (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 9
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Transmitted"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Network"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Network Received"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network transmitted (bits/s)"
+			fieldConfig: defaults: {
+				custom: fillOpacity: 0
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 27
+			}
+			id: 12
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
+			}]
+			title: "Network Transmitted"
+			type:  "timeseries"
 		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "30s"
+		schemaVersion: 39
 		tags: [
 			"node-exporter-mixin",
 		]
 		templating: list: [{
-			current: {
-				text:  "default"
-				value: "default"
-			}
-			hide:  0
-			label: "Data Source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       2
-			includeAll: false
-			label:      "Cluster"
-			multi:      false
-			name:       "cluster"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"}, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			hide:    2
+			label:   "Cluster"
+			name:    "cluster"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"},  cluster)"
+			refresh: 2
+			type:    "query"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       0
-			includeAll: false
-			label:      "Instance"
-			multi:      false
-			name:       "instance"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname=\"Darwin\"}, instance)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			label:   "Instance"
+			name:    "instance"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname=\"Darwin\"}, instance)"
+			refresh: 2
+			type:    "query"
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
-		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
 		}
 		timezone: "utc"
 		title:    "Node Exporter / MacOS"
 		uid:      "629701ea43bf69291922ea45f4a87d37"
-		version:  0
 	}
 	"nodes.json": {
-		"__inputs": []
-		"__requires": []
-		annotations: list: []
-		editable:     false
-		gnetId:       null
 		graphTooltip: 1
-		hideControls: false
-		id:           null
-		links: []
-		refresh: "30s"
-		rows: [{
-			collapse:  false
+		panels: [{
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 2
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
-						/ ignoring(cpu) group_left
-						  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 5
-					legendFormat:   "{{cpu}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "CPU Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     1
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 3
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "1m load average"
-					refId:          "A"
-				}, {
-					expr:           "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "5m load average"
-					refId:          "B"
-				}, {
-					expr:           "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "15m load average"
-					refId:          "C"
-				}, {
-					expr:           "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "logical cores"
-					refId:          "D"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Load Average"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "short"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "CPU"
-			titleSize:       "h6"
-			type:            "row"
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 0
+			}
+			id: 1
+			panels: []
+			title: "CPU"
+			type:  "row"
 		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         1
-				fillGradient: 0
-				gridPos: {}
-				id: 4
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "normal"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        9
-				stack:       true
-				steppedLine: false
-				targets: [{
-					expr: """
-						(
-						  node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						-
-						  node_memory_MemFree_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						-
-						  node_memory_Buffers_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						-
-						  node_memory_Cached_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
-						)
+				max:  1
+				min:  0
+				unit: "percentunit"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 1
+			}
+			id: 2
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					  (1 - sum without (mode) (rate(node_cpu_seconds_total{job="node-exporter", mode=~"idle|iowait|steal", instance="$instance", cluster="$cluster"}[$__rate_interval])))
+					/ ignoring(cpu) group_left
+					  count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance="$instance", cluster="$cluster"})
+					)
 
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "memory used"
-					refId:          "A"
-				}, {
-					expr:           "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "memory buffers"
-					refId:          "B"
-				}, {
-					expr:           "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "memory cached"
-					refId:          "C"
-				}, {
-					expr:           "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   "memory free"
-					refId:          "D"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Memory Usage"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+					"""
+				intervalFactor: 5
+				legendFormat:   "{{cpu}}"
+			}]
+			title: "CPU Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
+				min:  0
+				unit: "short"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 1
+			}
+			id: 3
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				yaxes: [{
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bytes"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:         "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "1m load average"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: defaults: {
-					max: 100
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "5m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "15m load average"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})"
+				legendFormat: "logical cores"
+			}]
+			title: "Load Average"
+			type:  "timeseries"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 8
+			}
+			id:    4
+			title: "Memory"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 10
+					showPoints:  "never"
+					stacking: mode: "normal"
+				}
+				min:  0
+				unit: "bytes"
+			}
+			gridPos: {
+				h: 7
+				w: 18
+				x: 0
+				y: 9
+			}
+			id: 5
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					(
+					  node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					-
+					  node_memory_MemFree_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					-
+					  node_memory_Buffers_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					-
+					  node_memory_Cached_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}
+					)
+
+					"""
+				legendFormat: "memory used"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "memory buffers"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "memory cached"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:         "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}"
+				legendFormat: "memory free"
+			}]
+			title: "Memory Usage"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: defaults: {
+				max: 100
+				min: 0
+				thresholds: steps: [{
+					color: "rgba(50, 172, 45, 0.97)"
+				}, {
+					color: "rgba(237, 129, 40, 0.89)"
+					value: 80
+				}, {
+					color: "rgba(245, 54, 54, 0.9)"
+					value: 90
+				}]
+				unit: "percent"
+			}
+			gridPos: {
+				h: 7
+				w: 6
+				x: 18
+				y: 9
+			}
+			id:            6
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					100 -
+					(
+					  avg(node_memory_MemAvailable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
+					  avg(node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
+					* 100
+					)
+
+					"""
+			}]
+			title: "Memory Usage"
+			type:  "gauge"
+		}, {
+			collapsed: false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 18
+			}
+			id: 7
+			panels: []
+			title: "Disk"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					custom: {
+						fillOpacity: 0
+						showPoints:  "never"
+					}
 					min: 0
-					thresholds: {
-						mode: "absolute"
-						steps: [{
-							color: "rgba(50, 172, 45, 0.97)"
-						}, {
-							color: "rgba(237, 129, 40, 0.89)"
-							value: 80
-						}, {
-							color: "rgba(245, 54, 54, 0.9)"
-							value: 90
-						}]
+				}
+				overrides: [{
+					matcher: {
+						id:      "byRegexp"
+						options: "/ read| written/"
 					}
-					unit: "percent"
-				}
-				gridPos: {}
-				id:   5
-				span: 3
-				targets: [{
-					expr: """
-						100 -
-						(
-						  avg(node_memory_MemAvailable_bytes{job="node-exporter", instance="$instance", cluster="$cluster"}) /
-						  avg(node_memory_MemTotal_bytes{job="node-exporter", instance="$instance", cluster="$cluster"})
-						* 100
-						)
-
-						"""
-					format:         "time_series"
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title:       "Memory Usage"
-				transparent: false
-				type:        "gauge"
-			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Memory"
-			titleSize:       "h6"
-			type:            "row"
-		}, {
-			collapse:  false
-			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 6
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: [{
-					alias: "/ read| written/"
-					yaxis: 1
+					properties: [{
+						id:    "unit"
+						value: "Bps"
+					}]
 				}, {
-					alias: "/ io time/"
-					yaxis: 2
+					matcher: {
+						id:      "byRegexp"
+						options: "/ io time/"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
+					}]
 				}]
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} read"
-					refId:          "A"
-				}, {
-					expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} written"
-					refId:          "B"
-				}, {
-					expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}} io time"
-					refId:          "C"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Disk I/O"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 19
+			}
+			id: 8
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "Bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}, {
-					format:  "percentunit"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     null
-					show:    true
-				}]
+				expr:           "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} read"
 			}, {
-				datasource: "$datasource"
-				fieldConfig: {
-					defaults: {
-						custom: {}
-						thresholds: {
-							mode: "absolute"
-							steps: [{
-								color: "green"
-							}, {
-								color: "yellow"
-								value: 0.80000000000000004
-							}, {
-								color: "red"
-								value: 0.90000000000000002
-							}]
-						}
-						unit: "decbytes"
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} written"
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])"
+				intervalFactor: 1
+				legendFormat:   "{{device}} io time"
+			}]
+			title: "Disk I/O"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			fieldConfig: {
+				defaults: {
+					thresholds: steps: [{
+						color: "green"
+					}, {
+						color: "yellow"
+						value: 0.80000000000000004
+					}, {
+						color: "red"
+						value: 0.90000000000000002
+					}]
+					unit: "decbytes"
+				}
+				overrides: [{
+					matcher: {
+						id:      "byName"
+						options: "Mounted on"
 					}
-					overrides: [{
-						matcher: {
-							id:      "byName"
-							options: "Mounted on"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 260
-						}]
+					properties: [{
+						id:    "custom.width"
+						value: 260
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Size"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 93
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 72
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Available"
+					}
+					properties: [{
+						id:    "custom.width"
+						value: 88
+					}]
+				}, {
+					matcher: {
+						id:      "byName"
+						options: "Used, %"
+					}
+					properties: [{
+						id:    "unit"
+						value: "percentunit"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Size"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 93
-						}]
+						id: "custom.cellOptions"
+						value: type: "gauge"
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 72
-						}]
+						id:    "max"
+						value: 1
 					}, {
-						matcher: {
-							id:      "byName"
-							options: "Available"
-						}
-						properties: [{
-							id:    "custom.width"
-							value: 88
-						}]
-					}, {
-						matcher: {
-							id:      "byName"
-							options: "Used, %"
-						}
-						properties: [{
-							id:    "unit"
-							value: "percentunit"
-						}, {
-							id:    "custom.displayMode"
-							value: "gradient-gauge"
-						}, {
-							id:    "max"
-							value: 1
-						}, {
-							id:    "min"
-							value: 0
-						}]
+						id:    "min"
+						value: 0
+					}]
+				}]
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 19
+			}
+			id:            9
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}, {
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr: """
+					max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
+
+					"""
+				format:       "table"
+				instant:      true
+				legendFormat: ""
+			}]
+			title: "Disk Space Usage"
+			transformations: [{
+				id: "groupBy"
+				options: fields: {
+					"Value #A": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					"Value #B": {
+						aggregations: ["lastNotNull"]
+						operation: "aggregate"
+					}
+					mountpoint: {
+						aggregations: []
+						operation: "groupby"
+					}
+				}
+			}, {
+				id: "merge"
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used"
+					binary: {
+						left:     "Value #A (lastNotNull)"
+						operator: "-"
+						reducer:  "sum"
+						right:    "Value #B (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "calculateField"
+				options: {
+					alias: "Used, %"
+					binary: {
+						left:     "Used"
+						operator: "/"
+						reducer:  "sum"
+						right:    "Value #A (lastNotNull)"
+					}
+					mode: "binary"
+					reduce: reducer: "sum"
+				}
+			}, {
+				id: "organize"
+				options: {
+					excludeByName: {}
+					indexByName: {}
+					renameByName: {
+						"Value #A (lastNotNull)": "Size"
+						"Value #B (lastNotNull)": "Available"
+						mountpoint:               "Mounted on"
+					}
+				}
+			}, {
+				id: "sortBy"
+				options: {
+					fields: {}
+					sort: [{
+						field: "Mounted on"
 					}]
 				}
-				gridPos: {}
-				id:   7
-				span: 6
-				targets: [{
-					expr: """
-						max by (mountpoint) (node_filesystem_size_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}, {
-					expr: """
-						max by (mountpoint) (node_filesystem_avail_bytes{job="node-exporter", instance="$instance", cluster="$cluster", fstype!="", mountpoint!=""})
-
-						"""
-					format:         "table"
-					instant:        true
-					intervalFactor: 2
-					legendFormat:   ""
-				}]
-				title: "Disk Space Usage"
-				transformations: [{
-					id: "groupBy"
-					options: fields: {
-						"Value #A": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						"Value #B": {
-							aggregations: ["lastNotNull"]
-							operation: "aggregate"
-						}
-						mountpoint: {
-							aggregations: []
-							operation: "groupby"
-						}
-					}
-				}, {
-					id: "merge"
-					options: {}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used"
-						binary: {
-							left:     "Value #A (lastNotNull)"
-							operator: "-"
-							reducer:  "sum"
-							right:    "Value #B (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "calculateField"
-					options: {
-						alias: "Used, %"
-						binary: {
-							left:     "Used"
-							operator: "/"
-							reducer:  "sum"
-							right:    "Value #A (lastNotNull)"
-						}
-						mode: "binary"
-						reduce: reducer: "sum"
-					}
-				}, {
-					id: "organize"
-					options: {
-						excludeByName: {}
-						indexByName: {}
-						renameByName: {
-							"Value #A (lastNotNull)": "Size"
-							"Value #B (lastNotNull)": "Available"
-							mountpoint:               "Mounted on"
-						}
-					}
-				}, {
-					id: "sortBy"
-					options: {
-						fields: {}
-						sort: [{
-							field: "Mounted on"
-						}]
-					}
-				}]
-				transparent: false
-				type:        "table"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Disk"
-			titleSize:       "h6"
-			type:            "row"
+			type: "table"
 		}, {
-			collapse:  false
 			collapsed: false
-			panels: [{
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network received (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 8
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
+			gridPos: {
+				h: 1
+				w: 24
+				x: 0
+				y: 26
+			}
+			id: 10
+			panels: []
+			title: "Network"
+			type:  "row"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network received (bits/s)"
+			fieldConfig: defaults: {
+				custom: {
+					fillOpacity: 0
+					showPoints:  "never"
 				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Received"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 0
+				y: 27
+			}
+			id: 11
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
 				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
-			}, {
-				aliasColors: {}
-				bars:         false
-				dashLength:   10
-				dashes:       false
-				datasource:   "$datasource"
-				description:  "Network transmitted (bits/s)"
-				fill:         0
-				fillGradient: 0
-				gridPos: {}
-				id: 9
-				legend: {
-					alignAsTable: false
-					avg:          false
-					current:      false
-					max:          false
-					min:          false
-					rightSide:    false
-					show:         true
-					sideWidth:    null
-					total:        false
-					values:       false
-				}
-				lines:     true
-				linewidth: 1
-				links: []
-				nullPointMode: "null"
-				percentage:    false
-				pointradius:   5
-				points:        false
-				renderer:      "flot"
-				repeat:        null
-				seriesOverrides: []
-				spaceLength: 10
-				span:        6
-				stack:       false
-				steppedLine: false
-				targets: [{
-					expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
-					format:         "time_series"
-					intervalFactor: 1
-					legendFormat:   "{{device}}"
-					refId:          "A"
-				}]
-				thresholds: []
-				timeFrom:  null
-				timeShift: null
-				title:     "Network Transmitted"
-				tooltip: {
-					shared:     true
-					sort:       0
-					value_type: "individual"
-				}
-				type: "graph"
-				xaxis: {
-					buckets: null
-					mode:    "time"
-					name:    null
-					show:    true
-					values: []
-				}
-				yaxes: [{
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}, {
-					format:  "bps"
-					label:   null
-					logBase: 1
-					max:     null
-					min:     0
-					show:    true
-				}]
+				expr:           "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
 			}]
-			repeat:          null
-			repeatIteration: null
-			repeatRowId:     null
-			showTitle:       true
-			title:           "Network"
-			titleSize:       "h6"
-			type:            "row"
+			title: "Network Received"
+			type:  "timeseries"
+		}, {
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			description: "Network transmitted (bits/s)"
+			fieldConfig: defaults: {
+				custom: fillOpacity: 0
+				min:  0
+				unit: "bps"
+			}
+			gridPos: {
+				h: 7
+				w: 12
+				x: 12
+				y: 27
+			}
+			id: 12
+			options: tooltip: mode: "multi"
+			pluginVersion: "v11.4.0"
+			targets: [{
+				datasource: {
+					type: "prometheus"
+					uid:  "$datasource"
+				}
+				expr:           "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8"
+				intervalFactor: 1
+				legendFormat:   "{{device}}"
+			}]
+			title: "Network Transmitted"
+			type:  "timeseries"
 		}]
-		schemaVersion: 14
-		style:         "dark"
+		refresh:       "30s"
+		schemaVersion: 39
 		tags: [
 			"node-exporter-mixin",
 		]
 		templating: list: [{
-			current: {
-				text:  "default"
-				value: "default"
-			}
-			hide:  0
-			label: "Data Source"
 			name:  "datasource"
-			options: []
-			query:   "prometheus"
-			refresh: 1
-			regex:   ""
-			type:    "datasource"
+			query: "prometheus"
+			type:  "datasource"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       2
-			includeAll: false
-			label:      "Cluster"
-			multi:      false
-			name:       "cluster"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			hide:    2
+			label:   "Cluster"
+			name:    "cluster"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)"
+			refresh: 2
+			type:    "query"
 		}, {
-			allValue: null
-			current: {}
-			datasource: "$datasource"
-			hide:       0
-			includeAll: false
-			label:      "Instance"
-			multi:      false
-			name:       "instance"
-			options: []
-			query:          "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
-			refresh:        2
-			regex:          ""
-			sort:           0
-			tagValuesQuery: ""
-			tags: []
-			tagsQuery: ""
-			type:      "query"
-			useTags:   false
+			datasource: {
+				type: "prometheus"
+				uid:  "${datasource}"
+			}
+			label:   "Instance"
+			name:    "instance"
+			query:   "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)"
+			refresh: 2
+			type:    "query"
 		}]
 		time: {
 			from: "now-1h"
 			to:   "now"
 		}
-		timepicker: {
-			refresh_intervals: ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
-			time_options: ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
-		}
 		timezone: "utc"
 		title:    "Node Exporter / Nodes"
 		uid:      "7d57716318ee0dddbac5a7f451fb7753"
-		version:  0
 	}
 	"persistentvolumesusage.json": {
 		editable: false
@@ -16092,7 +14706,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16152,7 +14766,7 @@ grafanaDashboards: {
 			}
 			id:            2
 			interval:      "1m"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16204,7 +14818,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16261,7 +14875,7 @@ grafanaDashboards: {
 			}
 			id:            4
 			interval:      "1m"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16384,7 +14998,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16426,7 +15040,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16463,7 +15077,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16500,7 +15114,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16537,7 +15151,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16574,7 +15188,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16611,7 +15225,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -16648,7 +15262,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19060,7 +17674,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19102,7 +17716,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19144,7 +17758,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19186,7 +17800,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19228,7 +17842,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19270,7 +17884,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19333,7 +17947,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19375,7 +17989,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19417,7 +18031,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19459,7 +18073,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19501,7 +18115,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19590,7 +18204,7 @@ grafanaDashboards: {
 			id:       1
 			interval: "1m"
 			options: colorMode: "none"
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19632,7 +18246,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19695,7 +18309,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19758,7 +18372,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19821,7 +18435,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19863,7 +18477,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19905,7 +18519,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19947,7 +18561,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -19989,7 +18603,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20086,7 +18700,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20125,7 +18739,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20164,7 +18778,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20203,7 +18817,7 @@ grafanaDashboards: {
 				displayMode:  "basic"
 				showUnfilled: false
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20250,7 +18864,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20297,7 +18911,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20344,7 +18958,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20391,7 +19005,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20438,7 +19052,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"
@@ -20485,7 +19099,7 @@ grafanaDashboards: {
 				}
 				tooltip: mode: "single"
 			}
-			pluginVersion: "v11.1.0"
+			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
 					type: "prometheus"

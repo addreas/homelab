@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name: "prometheus-operator"
 		}
@@ -125,7 +125,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -11316,7 +11316,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -13983,7 +13983,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -13999,7 +13999,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -14060,7 +14060,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -14072,8 +14072,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -14114,7 +14114,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -14130,7 +14130,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -14191,7 +14191,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -14203,8 +14203,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -14243,7 +14243,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -14267,7 +14267,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -14289,7 +14289,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -14374,7 +14374,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -14501,7 +14501,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -14525,7 +14525,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -14547,7 +14547,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -14632,7 +14632,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -15063,7 +15063,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -15087,7 +15087,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -15109,7 +15109,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -15194,7 +15194,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -15859,7 +15859,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -15875,7 +15875,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -15936,7 +15936,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -15948,8 +15948,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -15990,7 +15990,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -16006,7 +16006,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -16067,7 +16067,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -16079,8 +16079,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -16119,7 +16119,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -16143,7 +16143,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -16165,7 +16165,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -16250,7 +16250,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -16377,7 +16377,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -16401,7 +16401,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -16423,7 +16423,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -16508,7 +16508,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -16939,7 +16939,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -16963,7 +16963,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -16985,7 +16985,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -17070,7 +17070,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -17329,6 +17329,36 @@ prometheusOperator: {
 														goint to be performed, except for delete actions.
 														"""
 										type: "boolean"
+									}
+									persistentVolumeClaimRetentionPolicy: {
+										description: """
+														The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet.
+														The default behavior is all PVCs are retained.
+														This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26.
+														It requires enabling the StatefulSetAutoDeletePVC feature gate.
+														"""
+										properties: {
+											whenDeleted: {
+												description: """
+																WhenDeleted specifies what happens to PVCs created from StatefulSet
+																VolumeClaimTemplates when the StatefulSet is deleted. The default policy
+																of `Retain` causes PVCs to not be affected by StatefulSet deletion. The
+																`Delete` policy causes those PVCs to be deleted.
+																"""
+												type: "string"
+											}
+											whenScaled: {
+												description: """
+																WhenScaled specifies what happens to PVCs created from StatefulSet
+																VolumeClaimTemplates when the StatefulSet is scaled down. The default
+																policy of `Retain` causes PVCs to not be affected by a scaledown. The
+																`Delete` policy causes the associated PVCs for any excess pods above
+																the replica count to be deleted.
+																"""
+												type: "string"
+											}
+										}
+										type: "object"
 									}
 									podMetadata: {
 										description: """
@@ -17600,6 +17630,34 @@ prometheusOperator: {
 																"""
 												format: "int64"
 												type:   "integer"
+											}
+											seLinuxChangePolicy: {
+												description: """
+																seLinuxChangePolicy defines how the container's SELinux label is applied to all volumes used by the Pod.
+																It has no effect on nodes that do not support SELinux or to volumes does not support SELinux.
+																Valid values are "MountOption" and "Recursive".
+
+																"Recursive" means relabeling of all files on all Pod volumes by the container runtime.
+																This may be slow for large volumes, but allows mixing privileged and unprivileged Pods sharing the same volume on the same node.
+
+																"MountOption" mounts all eligible Pod volumes with `-o context` mount option.
+																This requires all Pods that share the same volume to use the same SELinux label.
+																It is not possible to share the same volume among privileged and unprivileged Pods.
+																Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
+																whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
+																CSIDriver instance. Other volumes are always re-labelled recursively.
+																"MountOption" value is allowed only when SELinuxMount feature gate is enabled.
+
+																If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
+																If not specified and SELinuxMount feature gate is disabled, "MountOption" is used for ReadWriteOncePod volumes
+																and "Recursive" for all other volumes.
+
+																This field affects only Pods that have SELinux label set, either in PodSecurityContext or in SecurityContext of all containers.
+
+																All Pods that use the same volume should use the same seLinuxChangePolicy, otherwise some pods can get stuck in ContainerCreating state.
+																Note that this field cannot be set when spec.os.name is windows.
+																"""
+												type: "string"
 											}
 											seLinuxOptions: {
 												description: """
@@ -18550,18 +18608,18 @@ prometheusOperator: {
 																							"""
 																			type: "string"
 																		}
-																		status: type: "string"
+																		status: {
+																			description: """
+																							Status is the status of the condition.
+																							Can be True, False, Unknown.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required
+																							"""
+																			type: "string"
+																		}
 																		type: {
 																			description: """
-																							PersistentVolumeClaimConditionType defines the condition of PV claim.
-																							Valid values are:
-																							  - "Resizing", "FileSystemResizePending"
-
-																							If RecoverVolumeExpansionFailure feature gate is enabled, then following additional values can be expected:
-																							  - "ControllerResizeError", "NodeResizeError"
-
-																							If VolumeAttributesClass feature gate is enabled, then following additional values can be expected:
-																							  - "ModifyVolumeError", "ModifyingVolume"
+																							Type is the type of the condition.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about
 																							"""
 																			type: "string"
 																		}
@@ -18979,6 +19037,8 @@ prometheusOperator: {
 													description: """
 																	awsElasticBlockStore represents an AWS Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree
+																	awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 																	"""
 													properties: {
@@ -19020,7 +19080,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureDisk: {
-													description: "azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
+													description: """
+																	azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+																	Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type
+																	are redirected to the disk.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														cachingMode: {
 															description: "cachingMode is the Host Caching mode: None, Read Only, Read Write."
@@ -19060,7 +19124,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureFile: {
-													description: "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
+													description: """
+																	azureFile represents an Azure File Service mount on the host and bind mount to the pod.
+																	Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type
+																	are redirected to the file.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														readOnly: {
 															description: """
@@ -19082,7 +19150,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												cephfs: {
-													description: "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
+													description: """
+																	cephFS represents a Ceph FS mount on the host that shares a pod's lifetime.
+																	Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.
+																	"""
 													properties: {
 														monitors: {
 															description: """
@@ -19145,6 +19216,8 @@ prometheusOperator: {
 												cinder: {
 													description: """
 																	cinder represents a cinder volume attached and mounted on kubelets host machine.
+																	Deprecated: Cinder is deprecated. All operations for the in-tree cinder type
+																	are redirected to the cinder.csi.openstack.org CSI driver.
 																	More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 																	"""
 													properties: {
@@ -19276,7 +19349,7 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												csi: {
-													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
+													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers."
 													properties: {
 														driver: {
 															description: """
@@ -19815,6 +19888,7 @@ prometheusOperator: {
 													description: """
 																	flexVolume represents a generic volume resource that is
 																	provisioned/attached using an exec based plugin.
+																	Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.
 																	"""
 													properties: {
 														driver: {
@@ -19868,7 +19942,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												flocker: {
-													description: "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
+													description: """
+																	flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running.
+																	Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.
+																	"""
 													properties: {
 														datasetName: {
 															description: """
@@ -19888,6 +19965,8 @@ prometheusOperator: {
 													description: """
 																	gcePersistentDisk represents a GCE Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree
+																	gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 																	"""
 													properties: {
@@ -19933,7 +20012,7 @@ prometheusOperator: {
 												gitRepo: {
 													description: """
 																	gitRepo represents a git repository at a particular revision.
-																	DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
+																	Deprecated: GitRepo is deprecated. To provision a container with a git repo, mount an
 																	EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 																	into the Pod's container.
 																	"""
@@ -19962,6 +20041,7 @@ prometheusOperator: {
 												glusterfs: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
@@ -20220,7 +20300,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												photonPersistentDisk: {
-													description: "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
+													description: """
+																	photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine.
+																	Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -20239,7 +20322,12 @@ prometheusOperator: {
 													type: "object"
 												}
 												portworxVolume: {
-													description: "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
+													description: """
+																	portworxVolume represents a portworx volume attached and mounted on kubelets host machine.
+																	Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type
+																	are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate
+																	is on.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -20654,7 +20742,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												quobyte: {
-													description: "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
+													description: """
+																	quobyte represents a Quobyte mount on the host that shares a pod's lifetime.
+																	Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.
+																	"""
 													properties: {
 														group: {
 															description: """
@@ -20703,6 +20794,7 @@ prometheusOperator: {
 												rbd: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
@@ -20792,7 +20884,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												scaleIO: {
-													description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
+													description: """
+																	scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+																	Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															default: "xfs"
@@ -20948,7 +21043,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												storageos: {
-													description: "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
+													description: """
+																	storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
+																	Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -21006,7 +21104,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												vsphereVolume: {
-													description: "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+													description: """
+																	vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine.
+																	Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type
+																	are redirected to the csi.vsphere.vmware.com CSI driver.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -21125,7 +21227,13 @@ prometheusOperator: {
 												description: "Defines the TLS parameters for HTTPS."
 												properties: {
 													cert: {
-														description: "Contains the TLS certificate for the server."
+														description: """
+																		Secret or ConfigMap containing the TLS certificate for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `certFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -21186,23 +21294,29 @@ prometheusOperator: {
 													}
 													certFile: {
 														description: """
-																		Path to the TLS certificate file in the Prometheus container for the server.
-																		Mutually exclusive with `cert`.
+																		Path to the TLS certificate file in the container for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `cert`.
 																		"""
 														type: "string"
 													}
 													cipherSuites: {
 														description: """
-																		List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-																		Go default cipher suites are used. Available cipher suites are documented
-																		in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+																		List of supported cipher suites for TLS versions up to TLS 1.2.
+
+																		If not defined, the Go default cipher suites are used.
+																		Available cipher suites are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#pkg-constants
 																		"""
 														items: type: "string"
 														type: "array"
 													}
 													clientAuthType: {
 														description: """
-																		Server policy for client authentication. Maps to ClientAuth Policies.
+																		The server policy for client TLS authentication.
+
 																		For more detail on clientAuth options:
 																		https://golang.org/pkg/crypto/tls/#ClientAuthType
 																		"""
@@ -21210,13 +21324,20 @@ prometheusOperator: {
 													}
 													clientCAFile: {
 														description: """
-																		Path to the CA certificate file for client certificate authentication to the server.
-																		Mutually exclusive with `client_ca`.
+																		Path to the CA certificate file for client certificate authentication to
+																		the server.
+
+																		It is mutually exclusive with `client_ca`.
 																		"""
 														type: "string"
 													}
 													client_ca: {
-														description: "Contains the CA certificate for client certificate authentication to the server."
+														description: """
+																		Secret or ConfigMap containing the CA certificate for client certificate
+																		authentication to the server.
+
+																		It is mutually exclusive with `clientCAFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -21278,7 +21399,9 @@ prometheusOperator: {
 													curvePreferences: {
 														description: """
 																		Elliptic curves that will be used in an ECDHE handshake, in preference
-																		order. Available curves are documented in the go documentation:
+																		order.
+
+																		Available curves are documented in the Go documentation:
 																		https://golang.org/pkg/crypto/tls/#CurveID
 																		"""
 														items: type: "string"
@@ -21286,13 +21409,22 @@ prometheusOperator: {
 													}
 													keyFile: {
 														description: """
-																		Path to the TLS key file in the Prometheus container for the server.
-																		Mutually exclusive with `keySecret`.
+																		Path to the TLS private key file in the container for the web server.
+
+																		If defined, either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keySecret`.
 																		"""
 														type: "string"
 													}
 													keySecret: {
-														description: "Secret containing the TLS key for the server."
+														description: """
+																		Secret containing the TLS private key for the web server.
+
+																		Either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keyFile`.
+																		"""
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -21319,18 +21451,19 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													maxVersion: {
-														description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+														description: "Maximum TLS version that is acceptable."
 														type:        "string"
 													}
 													minVersion: {
-														description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+														description: "Minimum TLS version that is acceptable."
 														type:        "string"
 													}
 													preferServerCipherSuites: {
 														description: """
-																		Controls whether the server selects the
-																		client's most preferred cipher suite, or the server's most preferred
-																		cipher suite. If true then the server's preference, as expressed in
+																		Controls whether the server selects the client's most preferred cipher
+																		suite, or the server's most preferred cipher suite.
+
+																		If true then the server's preference, as expressed in
 																		the order of elements in cipherSuites, is used.
 																		"""
 														type: "boolean"
@@ -21468,7 +21601,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -21550,6 +21683,15 @@ prometheusOperator: {
 														"""
 										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 										type:    "string"
+									}
+									fallbackScrapeProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
 									}
 									jobLabel: {
 										description: """
@@ -22691,15 +22833,6 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -22778,6 +22911,18 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
+									selectorMechanism: {
+										description: """
+														Mechanism used to select the endpoints to scrape.
+														By default, the selection process relies on relabel configurations to filter the discovered targets.
+														Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters.
+														Which strategy is best for your use case needs to be carefully evaluated.
+
+														It requires Prometheus >= v2.17.0.
+														"""
+										enum: ["RelabelConfig", "RoleSelector"]
+										type: "string"
+									}
 									targetLimit: {
 										description: """
 														`targetLimit` defines a limit on the number of scraped targets that will
@@ -22805,7 +22950,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -23000,6 +23145,15 @@ prometheusOperator: {
 										required: ["key"]
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									fallbackScrapeProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
 									}
 									interval: {
 										description: """
@@ -23574,15 +23728,6 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -24100,7 +24245,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -25988,7 +26133,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -26004,7 +26149,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -26065,7 +26210,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -26077,8 +26222,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -26119,7 +26264,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -26135,7 +26280,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -26196,7 +26341,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -26208,8 +26353,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -26248,7 +26393,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -26272,7 +26417,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -26294,7 +26439,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -26379,7 +26524,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -26506,7 +26651,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -26530,7 +26675,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -26552,7 +26697,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -26637,7 +26782,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -27068,7 +27213,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -27092,7 +27237,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -27114,7 +27259,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -27199,7 +27344,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -28119,7 +28264,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -28135,7 +28280,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -28196,7 +28341,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -28208,8 +28353,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -28250,7 +28395,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -28266,7 +28411,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -28327,7 +28472,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -28339,8 +28484,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -28379,7 +28524,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -28403,7 +28548,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28425,7 +28570,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -28510,7 +28655,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -28637,7 +28782,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -28661,7 +28806,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -28683,7 +28828,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -28768,7 +28913,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -29199,7 +29344,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -29223,7 +29368,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -29245,7 +29390,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -29330,7 +29475,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -31435,6 +31580,56 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												authorization: {
+													description: """
+																	Authorization section for the ScrapeClass.
+																	It will only apply if the scrape resource doesn't specify any Authorization.
+																	"""
+													properties: {
+														credentials: {
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														credentialsFile: {
+															description: "File to read a secret from, mutually exclusive with `credentials`."
+															type:        "string"
+														}
+														type: {
+															description: """
+																			Defines the authentication type. The value is case-insensitive.
+
+																			"Basic" is not a supported value.
+
+																			Default: "Bearer"
+																			"""
+															type: "string"
+														}
+													}
+													type: "object"
+												}
 												default: {
 													description: """
 																	Default indicates that the scrape applies to all scrape objects that
@@ -31959,15 +32154,6 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeInterval: {
 										default: "30s"
 										description: """
@@ -32118,6 +32304,34 @@ prometheusOperator: {
 																"""
 												format: "int64"
 												type:   "integer"
+											}
+											seLinuxChangePolicy: {
+												description: """
+																seLinuxChangePolicy defines how the container's SELinux label is applied to all volumes used by the Pod.
+																It has no effect on nodes that do not support SELinux or to volumes does not support SELinux.
+																Valid values are "MountOption" and "Recursive".
+
+																"Recursive" means relabeling of all files on all Pod volumes by the container runtime.
+																This may be slow for large volumes, but allows mixing privileged and unprivileged Pods sharing the same volume on the same node.
+
+																"MountOption" mounts all eligible Pod volumes with `-o context` mount option.
+																This requires all Pods that share the same volume to use the same SELinux label.
+																It is not possible to share the same volume among privileged and unprivileged Pods.
+																Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
+																whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
+																CSIDriver instance. Other volumes are always re-labelled recursively.
+																"MountOption" value is allowed only when SELinuxMount feature gate is enabled.
+
+																If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
+																If not specified and SELinuxMount feature gate is disabled, "MountOption" is used for ReadWriteOncePod volumes
+																and "Recursive" for all other volumes.
+
+																This field affects only Pods that have SELinux label set, either in PodSecurityContext or in SecurityContext of all containers.
+
+																All Pods that use the same volume should use the same seLinuxChangePolicy, otherwise some pods can get stuck in ContainerCreating state.
+																Note that this field cannot be set when spec.os.name is windows.
+																"""
+												type: "string"
 											}
 											seLinuxOptions: {
 												description: """
@@ -33217,18 +33431,18 @@ prometheusOperator: {
 																							"""
 																			type: "string"
 																		}
-																		status: type: "string"
+																		status: {
+																			description: """
+																							Status is the status of the condition.
+																							Can be True, False, Unknown.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required
+																							"""
+																			type: "string"
+																		}
 																		type: {
 																			description: """
-																							PersistentVolumeClaimConditionType defines the condition of PV claim.
-																							Valid values are:
-																							  - "Resizing", "FileSystemResizePending"
-
-																							If RecoverVolumeExpansionFailure feature gate is enabled, then following additional values can be expected:
-																							  - "ControllerResizeError", "NodeResizeError"
-
-																							If VolumeAttributesClass feature gate is enabled, then following additional values can be expected:
-																							  - "ModifyVolumeError", "ModifyingVolume"
+																							Type is the type of the condition.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about
 																							"""
 																			type: "string"
 																		}
@@ -33926,6 +34140,8 @@ prometheusOperator: {
 													description: """
 																	awsElasticBlockStore represents an AWS Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree
+																	awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 																	"""
 													properties: {
@@ -33967,7 +34183,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureDisk: {
-													description: "azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
+													description: """
+																	azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+																	Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type
+																	are redirected to the disk.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														cachingMode: {
 															description: "cachingMode is the Host Caching mode: None, Read Only, Read Write."
@@ -34007,7 +34227,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureFile: {
-													description: "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
+													description: """
+																	azureFile represents an Azure File Service mount on the host and bind mount to the pod.
+																	Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type
+																	are redirected to the file.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														readOnly: {
 															description: """
@@ -34029,7 +34253,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												cephfs: {
-													description: "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
+													description: """
+																	cephFS represents a Ceph FS mount on the host that shares a pod's lifetime.
+																	Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.
+																	"""
 													properties: {
 														monitors: {
 															description: """
@@ -34092,6 +34319,8 @@ prometheusOperator: {
 												cinder: {
 													description: """
 																	cinder represents a cinder volume attached and mounted on kubelets host machine.
+																	Deprecated: Cinder is deprecated. All operations for the in-tree cinder type
+																	are redirected to the cinder.csi.openstack.org CSI driver.
 																	More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 																	"""
 													properties: {
@@ -34223,7 +34452,7 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												csi: {
-													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
+													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers."
 													properties: {
 														driver: {
 															description: """
@@ -34762,6 +34991,7 @@ prometheusOperator: {
 													description: """
 																	flexVolume represents a generic volume resource that is
 																	provisioned/attached using an exec based plugin.
+																	Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.
 																	"""
 													properties: {
 														driver: {
@@ -34815,7 +35045,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												flocker: {
-													description: "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
+													description: """
+																	flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running.
+																	Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.
+																	"""
 													properties: {
 														datasetName: {
 															description: """
@@ -34835,6 +35068,8 @@ prometheusOperator: {
 													description: """
 																	gcePersistentDisk represents a GCE Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree
+																	gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 																	"""
 													properties: {
@@ -34880,7 +35115,7 @@ prometheusOperator: {
 												gitRepo: {
 													description: """
 																	gitRepo represents a git repository at a particular revision.
-																	DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
+																	Deprecated: GitRepo is deprecated. To provision a container with a git repo, mount an
 																	EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 																	into the Pod's container.
 																	"""
@@ -34909,6 +35144,7 @@ prometheusOperator: {
 												glusterfs: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
@@ -35167,7 +35403,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												photonPersistentDisk: {
-													description: "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
+													description: """
+																	photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine.
+																	Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -35186,7 +35425,12 @@ prometheusOperator: {
 													type: "object"
 												}
 												portworxVolume: {
-													description: "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
+													description: """
+																	portworxVolume represents a portworx volume attached and mounted on kubelets host machine.
+																	Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type
+																	are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate
+																	is on.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -35601,7 +35845,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												quobyte: {
-													description: "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
+													description: """
+																	quobyte represents a Quobyte mount on the host that shares a pod's lifetime.
+																	Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.
+																	"""
 													properties: {
 														group: {
 															description: """
@@ -35650,6 +35897,7 @@ prometheusOperator: {
 												rbd: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
@@ -35739,7 +35987,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												scaleIO: {
-													description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
+													description: """
+																	scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+																	Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															default: "xfs"
@@ -35895,7 +36146,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												storageos: {
-													description: "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
+													description: """
+																	storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
+																	Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -35953,7 +36207,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												vsphereVolume: {
-													description: "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+													description: """
+																	vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine.
+																	Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type
+																	are redirected to the csi.vsphere.vmware.com CSI driver.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -36079,7 +36337,13 @@ prometheusOperator: {
 												description: "Defines the TLS parameters for HTTPS."
 												properties: {
 													cert: {
-														description: "Contains the TLS certificate for the server."
+														description: """
+																		Secret or ConfigMap containing the TLS certificate for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `certFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -36140,23 +36404,29 @@ prometheusOperator: {
 													}
 													certFile: {
 														description: """
-																		Path to the TLS certificate file in the Prometheus container for the server.
-																		Mutually exclusive with `cert`.
+																		Path to the TLS certificate file in the container for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `cert`.
 																		"""
 														type: "string"
 													}
 													cipherSuites: {
 														description: """
-																		List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-																		Go default cipher suites are used. Available cipher suites are documented
-																		in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+																		List of supported cipher suites for TLS versions up to TLS 1.2.
+
+																		If not defined, the Go default cipher suites are used.
+																		Available cipher suites are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#pkg-constants
 																		"""
 														items: type: "string"
 														type: "array"
 													}
 													clientAuthType: {
 														description: """
-																		Server policy for client authentication. Maps to ClientAuth Policies.
+																		The server policy for client TLS authentication.
+
 																		For more detail on clientAuth options:
 																		https://golang.org/pkg/crypto/tls/#ClientAuthType
 																		"""
@@ -36164,13 +36434,20 @@ prometheusOperator: {
 													}
 													clientCAFile: {
 														description: """
-																		Path to the CA certificate file for client certificate authentication to the server.
-																		Mutually exclusive with `client_ca`.
+																		Path to the CA certificate file for client certificate authentication to
+																		the server.
+
+																		It is mutually exclusive with `client_ca`.
 																		"""
 														type: "string"
 													}
 													client_ca: {
-														description: "Contains the CA certificate for client certificate authentication to the server."
+														description: """
+																		Secret or ConfigMap containing the CA certificate for client certificate
+																		authentication to the server.
+
+																		It is mutually exclusive with `clientCAFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -36232,7 +36509,9 @@ prometheusOperator: {
 													curvePreferences: {
 														description: """
 																		Elliptic curves that will be used in an ECDHE handshake, in preference
-																		order. Available curves are documented in the go documentation:
+																		order.
+
+																		Available curves are documented in the Go documentation:
 																		https://golang.org/pkg/crypto/tls/#CurveID
 																		"""
 														items: type: "string"
@@ -36240,13 +36519,22 @@ prometheusOperator: {
 													}
 													keyFile: {
 														description: """
-																		Path to the TLS key file in the Prometheus container for the server.
-																		Mutually exclusive with `keySecret`.
+																		Path to the TLS private key file in the container for the web server.
+
+																		If defined, either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keySecret`.
 																		"""
 														type: "string"
 													}
 													keySecret: {
-														description: "Secret containing the TLS key for the server."
+														description: """
+																		Secret containing the TLS private key for the web server.
+
+																		Either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keyFile`.
+																		"""
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -36273,18 +36561,19 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													maxVersion: {
-														description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+														description: "Maximum TLS version that is acceptable."
 														type:        "string"
 													}
 													minVersion: {
-														description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+														description: "Minimum TLS version that is acceptable."
 														type:        "string"
 													}
 													preferServerCipherSuites: {
 														description: """
-																		Controls whether the server selects the
-																		client's most preferred cipher suite, or the server's most preferred
-																		cipher suite. If true then the server's preference, as expressed in
+																		Controls whether the server selects the client's most preferred cipher
+																		suite, or the server's most preferred cipher suite.
+
+																		If true then the server's preference, as expressed in
 																		the order of elements in cipherSuites, is used.
 																		"""
 														type: "boolean"
@@ -36469,7 +36758,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -38003,6 +38292,16 @@ prometheusOperator: {
 														minLength: 1
 														type:      "string"
 													}
+													noProxy: {
+														description: """
+																			`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																			that should be excluded from proxying. IP and domain names can
+																			contain port numbers.
+
+																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			"""
+														type: "string"
+													}
 													pathPrefix: {
 														description: "Prefix for the HTTP path alerts are pushed to."
 														type:        "string"
@@ -38015,6 +38314,59 @@ prometheusOperator: {
 														}]
 														description:                  "Port on which the Alertmanager API is exposed."
 														"x-kubernetes-int-or-string": true
+													}
+													proxyConnectHeader: {
+														additionalProperties: {
+															items: {
+																description: "SecretKeySelector selects a key of a Secret."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															type: "array"
+														}
+														description: """
+																			ProxyConnectHeader optionally specifies headers to send to
+																			proxies during CONNECT requests.
+
+																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			"""
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													proxyFromEnvironment: {
+														description: """
+																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			"""
+														type: "boolean"
+													}
+													proxyUrl: {
+														description: "`proxyURL` defines the HTTP proxy server to use."
+														pattern:     "^http(s)?://.+$"
+														type:        "string"
 													}
 													relabelings: {
 														description: "Relabel configuration applied to the discovered Alertmanagers."
@@ -39096,7 +39448,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -39112,7 +39464,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -39173,7 +39525,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -39185,8 +39537,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -39227,7 +39579,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -39243,7 +39595,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -39304,7 +39656,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -39316,8 +39668,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -39356,7 +39708,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -39380,7 +39732,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -39402,7 +39754,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -39487,7 +39839,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -39614,7 +39966,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -39638,7 +39990,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -39660,7 +40012,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -39745,7 +40097,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -40176,7 +40528,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -40200,7 +40552,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -40222,7 +40574,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -40307,7 +40659,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -41278,7 +41630,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -41294,7 +41646,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -41355,7 +41707,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -41367,8 +41719,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -41409,7 +41761,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -41425,7 +41777,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -41486,7 +41838,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -41498,8 +41850,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -41538,7 +41890,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -41562,7 +41914,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -41584,7 +41936,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -41669,7 +42021,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -41796,7 +42148,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -41820,7 +42172,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -41842,7 +42194,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -41927,7 +42279,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -42358,7 +42710,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -42382,7 +42734,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -42404,7 +42756,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -42489,7 +42841,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -45667,6 +46019,56 @@ prometheusOperator: {
 													}
 													type: "object"
 												}
+												authorization: {
+													description: """
+																	Authorization section for the ScrapeClass.
+																	It will only apply if the scrape resource doesn't specify any Authorization.
+																	"""
+													properties: {
+														credentials: {
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														credentialsFile: {
+															description: "File to read a secret from, mutually exclusive with `credentials`."
+															type:        "string"
+														}
+														type: {
+															description: """
+																			Defines the authentication type. The value is case-insensitive.
+
+																			"Basic" is not a supported value.
+
+																			Default: "Bearer"
+																			"""
+															type: "string"
+														}
+													}
+													type: "object"
+												}
 												default: {
 													description: """
 																	Default indicates that the scrape applies to all scrape objects that
@@ -46191,15 +46593,6 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeInterval: {
 										default: "30s"
 										description: """
@@ -46350,6 +46743,34 @@ prometheusOperator: {
 																"""
 												format: "int64"
 												type:   "integer"
+											}
+											seLinuxChangePolicy: {
+												description: """
+																seLinuxChangePolicy defines how the container's SELinux label is applied to all volumes used by the Pod.
+																It has no effect on nodes that do not support SELinux or to volumes does not support SELinux.
+																Valid values are "MountOption" and "Recursive".
+
+																"Recursive" means relabeling of all files on all Pod volumes by the container runtime.
+																This may be slow for large volumes, but allows mixing privileged and unprivileged Pods sharing the same volume on the same node.
+
+																"MountOption" mounts all eligible Pod volumes with `-o context` mount option.
+																This requires all Pods that share the same volume to use the same SELinux label.
+																It is not possible to share the same volume among privileged and unprivileged Pods.
+																Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
+																whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
+																CSIDriver instance. Other volumes are always re-labelled recursively.
+																"MountOption" value is allowed only when SELinuxMount feature gate is enabled.
+
+																If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
+																If not specified and SELinuxMount feature gate is disabled, "MountOption" is used for ReadWriteOncePod volumes
+																and "Recursive" for all other volumes.
+
+																This field affects only Pods that have SELinux label set, either in PodSecurityContext or in SecurityContext of all containers.
+
+																All Pods that use the same volume should use the same seLinuxChangePolicy, otherwise some pods can get stuck in ContainerCreating state.
+																Note that this field cannot be set when spec.os.name is windows.
+																"""
+												type: "string"
 											}
 											seLinuxOptions: {
 												description: """
@@ -47453,18 +47874,18 @@ prometheusOperator: {
 																							"""
 																			type: "string"
 																		}
-																		status: type: "string"
+																		status: {
+																			description: """
+																							Status is the status of the condition.
+																							Can be True, False, Unknown.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required
+																							"""
+																			type: "string"
+																		}
 																		type: {
 																			description: """
-																							PersistentVolumeClaimConditionType defines the condition of PV claim.
-																							Valid values are:
-																							  - "Resizing", "FileSystemResizePending"
-
-																							If RecoverVolumeExpansionFailure feature gate is enabled, then following additional values can be expected:
-																							  - "ControllerResizeError", "NodeResizeError"
-
-																							If VolumeAttributesClass feature gate is enabled, then following additional values can be expected:
-																							  - "ModifyVolumeError", "ModifyingVolume"
+																							Type is the type of the condition.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about
 																							"""
 																			type: "string"
 																		}
@@ -48756,6 +49177,8 @@ prometheusOperator: {
 													description: """
 																	awsElasticBlockStore represents an AWS Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree
+																	awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 																	"""
 													properties: {
@@ -48797,7 +49220,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureDisk: {
-													description: "azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
+													description: """
+																	azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+																	Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type
+																	are redirected to the disk.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														cachingMode: {
 															description: "cachingMode is the Host Caching mode: None, Read Only, Read Write."
@@ -48837,7 +49264,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureFile: {
-													description: "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
+													description: """
+																	azureFile represents an Azure File Service mount on the host and bind mount to the pod.
+																	Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type
+																	are redirected to the file.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														readOnly: {
 															description: """
@@ -48859,7 +49290,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												cephfs: {
-													description: "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
+													description: """
+																	cephFS represents a Ceph FS mount on the host that shares a pod's lifetime.
+																	Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.
+																	"""
 													properties: {
 														monitors: {
 															description: """
@@ -48922,6 +49356,8 @@ prometheusOperator: {
 												cinder: {
 													description: """
 																	cinder represents a cinder volume attached and mounted on kubelets host machine.
+																	Deprecated: Cinder is deprecated. All operations for the in-tree cinder type
+																	are redirected to the cinder.csi.openstack.org CSI driver.
 																	More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 																	"""
 													properties: {
@@ -49053,7 +49489,7 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												csi: {
-													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
+													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers."
 													properties: {
 														driver: {
 															description: """
@@ -49592,6 +50028,7 @@ prometheusOperator: {
 													description: """
 																	flexVolume represents a generic volume resource that is
 																	provisioned/attached using an exec based plugin.
+																	Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.
 																	"""
 													properties: {
 														driver: {
@@ -49645,7 +50082,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												flocker: {
-													description: "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
+													description: """
+																	flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running.
+																	Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.
+																	"""
 													properties: {
 														datasetName: {
 															description: """
@@ -49665,6 +50105,8 @@ prometheusOperator: {
 													description: """
 																	gcePersistentDisk represents a GCE Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree
+																	gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 																	"""
 													properties: {
@@ -49710,7 +50152,7 @@ prometheusOperator: {
 												gitRepo: {
 													description: """
 																	gitRepo represents a git repository at a particular revision.
-																	DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
+																	Deprecated: GitRepo is deprecated. To provision a container with a git repo, mount an
 																	EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 																	into the Pod's container.
 																	"""
@@ -49739,6 +50181,7 @@ prometheusOperator: {
 												glusterfs: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
@@ -49997,7 +50440,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												photonPersistentDisk: {
-													description: "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
+													description: """
+																	photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine.
+																	Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -50016,7 +50462,12 @@ prometheusOperator: {
 													type: "object"
 												}
 												portworxVolume: {
-													description: "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
+													description: """
+																	portworxVolume represents a portworx volume attached and mounted on kubelets host machine.
+																	Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type
+																	are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate
+																	is on.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -50431,7 +50882,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												quobyte: {
-													description: "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
+													description: """
+																	quobyte represents a Quobyte mount on the host that shares a pod's lifetime.
+																	Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.
+																	"""
 													properties: {
 														group: {
 															description: """
@@ -50480,6 +50934,7 @@ prometheusOperator: {
 												rbd: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
@@ -50569,7 +51024,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												scaleIO: {
-													description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
+													description: """
+																	scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+																	Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															default: "xfs"
@@ -50725,7 +51183,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												storageos: {
-													description: "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
+													description: """
+																	storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
+																	Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -50783,7 +51244,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												vsphereVolume: {
-													description: "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+													description: """
+																	vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine.
+																	Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type
+																	are redirected to the csi.vsphere.vmware.com CSI driver.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -50909,7 +51374,13 @@ prometheusOperator: {
 												description: "Defines the TLS parameters for HTTPS."
 												properties: {
 													cert: {
-														description: "Contains the TLS certificate for the server."
+														description: """
+																		Secret or ConfigMap containing the TLS certificate for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `certFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -50970,23 +51441,29 @@ prometheusOperator: {
 													}
 													certFile: {
 														description: """
-																		Path to the TLS certificate file in the Prometheus container for the server.
-																		Mutually exclusive with `cert`.
+																		Path to the TLS certificate file in the container for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `cert`.
 																		"""
 														type: "string"
 													}
 													cipherSuites: {
 														description: """
-																		List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-																		Go default cipher suites are used. Available cipher suites are documented
-																		in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+																		List of supported cipher suites for TLS versions up to TLS 1.2.
+
+																		If not defined, the Go default cipher suites are used.
+																		Available cipher suites are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#pkg-constants
 																		"""
 														items: type: "string"
 														type: "array"
 													}
 													clientAuthType: {
 														description: """
-																		Server policy for client authentication. Maps to ClientAuth Policies.
+																		The server policy for client TLS authentication.
+
 																		For more detail on clientAuth options:
 																		https://golang.org/pkg/crypto/tls/#ClientAuthType
 																		"""
@@ -50994,13 +51471,20 @@ prometheusOperator: {
 													}
 													clientCAFile: {
 														description: """
-																		Path to the CA certificate file for client certificate authentication to the server.
-																		Mutually exclusive with `client_ca`.
+																		Path to the CA certificate file for client certificate authentication to
+																		the server.
+
+																		It is mutually exclusive with `client_ca`.
 																		"""
 														type: "string"
 													}
 													client_ca: {
-														description: "Contains the CA certificate for client certificate authentication to the server."
+														description: """
+																		Secret or ConfigMap containing the CA certificate for client certificate
+																		authentication to the server.
+
+																		It is mutually exclusive with `clientCAFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -51062,7 +51546,9 @@ prometheusOperator: {
 													curvePreferences: {
 														description: """
 																		Elliptic curves that will be used in an ECDHE handshake, in preference
-																		order. Available curves are documented in the go documentation:
+																		order.
+
+																		Available curves are documented in the Go documentation:
 																		https://golang.org/pkg/crypto/tls/#CurveID
 																		"""
 														items: type: "string"
@@ -51070,13 +51556,22 @@ prometheusOperator: {
 													}
 													keyFile: {
 														description: """
-																		Path to the TLS key file in the Prometheus container for the server.
-																		Mutually exclusive with `keySecret`.
+																		Path to the TLS private key file in the container for the web server.
+
+																		If defined, either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keySecret`.
 																		"""
 														type: "string"
 													}
 													keySecret: {
-														description: "Secret containing the TLS key for the server."
+														description: """
+																		Secret containing the TLS private key for the web server.
+
+																		Either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keyFile`.
+																		"""
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -51103,18 +51598,19 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													maxVersion: {
-														description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+														description: "Maximum TLS version that is acceptable."
 														type:        "string"
 													}
 													minVersion: {
-														description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+														description: "Minimum TLS version that is acceptable."
 														type:        "string"
 													}
 													preferServerCipherSuites: {
 														description: """
-																		Controls whether the server selects the
-																		client's most preferred cipher suite, or the server's most preferred
-																		cipher suite. If true then the server's preference, as expressed in
+																		Controls whether the server selects the client's most preferred cipher
+																		suite, or the server's most preferred cipher suite.
+
+																		If true then the server's preference, as expressed in
 																		the order of elements in cipherSuites, is used.
 																		"""
 														type: "boolean"
@@ -51299,7 +51795,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -51354,6 +51850,17 @@ prometheusOperator: {
 												description: "Interval determines how often rules in the group are evaluated."
 												pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 												type:        "string"
+											}
+											labels: {
+												additionalProperties: type: "string"
+												description: """
+																	Labels to add or overwrite before storing the result for its rules.
+																	The labels defined at the rule level take precedence.
+
+																	It requires Prometheus >= 3.0.0.
+																	The field is ignored for Thanos Ruler.
+																	"""
+												type: "object"
 											}
 											limit: {
 												description: """
@@ -51473,7 +51980,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -56076,6 +56583,15 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									fallbackScrapeProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
 									}
 									fileSDConfigs: {
 										description: "FileSDConfigs defines a list of file service discovery configurations."
@@ -64164,15 +64680,6 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeInterval: {
 										description: "ScrapeInterval is the interval between consecutive scrapes."
 										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
@@ -64453,7 +64960,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -65570,6 +66077,15 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									fallbackScrapeProtocol: {
+										description: """
+														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+										type: "string"
+									}
 									jobLabel: {
 										description: """
 														`jobLabel` selects the label from the associated Kubernetes `Service`
@@ -65694,15 +66210,6 @@ prometheusOperator: {
 														"""
 										type: "boolean"
 									}
-									scrapeFallbackProtocol: {
-										description: """
-														The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
-
-														It requires Prometheus >= v3.0.0.
-														"""
-										enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
-										type: "string"
-									}
 									scrapeProtocols: {
 										description: """
 														`scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
@@ -65781,6 +66288,18 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
+									selectorMechanism: {
+										description: """
+														Mechanism used to select the endpoints to scrape.
+														By default, the selection process relies on relabel configurations to filter the discovered targets.
+														Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters.
+														Which strategy is best for your use case needs to be carefully evaluated.
+
+														It requires Prometheus >= v2.17.0.
+														"""
+										enum: ["RelabelConfig", "RoleSelector"]
+										type: "string"
+									}
 									targetLabels: {
 										description: """
 														`targetLabels` defines the labels which are transferred from the
@@ -65816,7 +66335,7 @@ prometheusOperator: {
 			metadata: {
 				annotations: {
 					"controller-gen.kubebuilder.io/version": "v0.16.5"
-					"operator.prometheus.io/version":        "0.78.2"
+					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -67376,7 +67895,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -67392,7 +67911,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -67453,7 +67972,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -67465,8 +67984,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -67507,7 +68026,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -67523,7 +68042,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -67584,7 +68103,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -67596,8 +68115,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -67636,7 +68155,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -67660,7 +68179,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -67682,7 +68201,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -67767,7 +68286,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -67894,7 +68413,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -67918,7 +68437,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -67940,7 +68459,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -68025,7 +68544,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -68456,7 +68975,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -68480,7 +68999,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -68502,7 +69021,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -68587,7 +69106,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -69474,7 +69993,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -69490,7 +70009,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -69551,7 +70070,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -69563,8 +70082,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -69605,7 +70124,7 @@ prometheusOperator: {
 																			"""
 															properties: {
 																exec: {
-																	description: "Exec specifies the action to take."
+																	description: "Exec specifies a command to execute in the container."
 																	properties: command: {
 																		description: """
 																							Command is the command line to execute inside the container, the working directory for the
@@ -69621,7 +70140,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																httpGet: {
-																	description: "HTTPGet specifies the http request to perform."
+																	description: "HTTPGet specifies an HTTP GET request to perform."
 																	properties: {
 																		host: {
 																			description: """
@@ -69682,7 +70201,7 @@ prometheusOperator: {
 																	type: "object"
 																}
 																sleep: {
-																	description: "Sleep represents the duration that the container should sleep before being terminated."
+																	description: "Sleep represents a duration that the container should sleep."
 																	properties: seconds: {
 																		description: "Seconds is the number of seconds to sleep."
 																		format:      "int64"
@@ -69694,8 +70213,8 @@ prometheusOperator: {
 																tcpSocket: {
 																	description: """
 																					Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
-																					for the backward compatibility. There are no validation of this field and
-																					lifecycle hooks will fail in runtime when tcp handler is specified.
+																					for backward compatibility. There is no validation of this field and
+																					lifecycle hooks will fail at runtime when it is specified.
 																					"""
 																	properties: {
 																		host: {
@@ -69734,7 +70253,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -69758,7 +70277,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -69780,7 +70299,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -69865,7 +70384,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -69992,7 +70511,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -70016,7 +70535,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -70038,7 +70557,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -70123,7 +70642,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -70554,7 +71073,7 @@ prometheusOperator: {
 																	"""
 													properties: {
 														exec: {
-															description: "Exec specifies the action to take."
+															description: "Exec specifies a command to execute in the container."
 															properties: command: {
 																description: """
 																					Command is the command line to execute inside the container, the working directory for the
@@ -70578,7 +71097,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														grpc: {
-															description: "GRPC specifies an action involving a GRPC port."
+															description: "GRPC specifies a GRPC HealthCheckRequest."
 															properties: {
 																port: {
 																	description: "Port number of the gRPC service. Number must be in the range 1 to 65535."
@@ -70600,7 +71119,7 @@ prometheusOperator: {
 															type: "object"
 														}
 														httpGet: {
-															description: "HTTPGet specifies the http request to perform."
+															description: "HTTPGet specifies an HTTP GET request to perform."
 															properties: {
 																host: {
 																	description: """
@@ -70685,7 +71204,7 @@ prometheusOperator: {
 															type:   "integer"
 														}
 														tcpSocket: {
-															description: "TCPSocket specifies an action involving a TCP port."
+															description: "TCPSocket specifies a connection to a TCP port."
 															properties: {
 																host: {
 																	description: "Optional: Host name to connect to, defaults to the pod IP."
@@ -71443,6 +71962,34 @@ prometheusOperator: {
 																"""
 												format: "int64"
 												type:   "integer"
+											}
+											seLinuxChangePolicy: {
+												description: """
+																seLinuxChangePolicy defines how the container's SELinux label is applied to all volumes used by the Pod.
+																It has no effect on nodes that do not support SELinux or to volumes does not support SELinux.
+																Valid values are "MountOption" and "Recursive".
+
+																"Recursive" means relabeling of all files on all Pod volumes by the container runtime.
+																This may be slow for large volumes, but allows mixing privileged and unprivileged Pods sharing the same volume on the same node.
+
+																"MountOption" mounts all eligible Pod volumes with `-o context` mount option.
+																This requires all Pods that share the same volume to use the same SELinux label.
+																It is not possible to share the same volume among privileged and unprivileged Pods.
+																Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
+																whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
+																CSIDriver instance. Other volumes are always re-labelled recursively.
+																"MountOption" value is allowed only when SELinuxMount feature gate is enabled.
+
+																If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
+																If not specified and SELinuxMount feature gate is disabled, "MountOption" is used for ReadWriteOncePod volumes
+																and "Recursive" for all other volumes.
+
+																This field affects only Pods that have SELinux label set, either in PodSecurityContext or in SecurityContext of all containers.
+
+																All Pods that use the same volume should use the same seLinuxChangePolicy, otherwise some pods can get stuck in ContainerCreating state.
+																Note that this field cannot be set when spec.os.name is windows.
+																"""
+												type: "string"
 											}
 											seLinuxOptions: {
 												description: """
@@ -72381,18 +72928,18 @@ prometheusOperator: {
 																							"""
 																			type: "string"
 																		}
-																		status: type: "string"
+																		status: {
+																			description: """
+																							Status is the status of the condition.
+																							Can be True, False, Unknown.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=state%20of%20pvc-,conditions.status,-(string)%2C%20required
+																							"""
+																			type: "string"
+																		}
 																		type: {
 																			description: """
-																							PersistentVolumeClaimConditionType defines the condition of PV claim.
-																							Valid values are:
-																							  - "Resizing", "FileSystemResizePending"
-
-																							If RecoverVolumeExpansionFailure feature gate is enabled, then following additional values can be expected:
-																							  - "ControllerResizeError", "NodeResizeError"
-
-																							If VolumeAttributesClass feature gate is enabled, then following additional values can be expected:
-																							  - "ModifyVolumeError", "ModifyingVolume"
+																							Type is the type of the condition.
+																							More info: https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/#:~:text=set%20to%20%27ResizeStarted%27.-,PersistentVolumeClaimCondition,-contains%20details%20about
 																							"""
 																			type: "string"
 																		}
@@ -72854,6 +73401,8 @@ prometheusOperator: {
 													description: """
 																	awsElasticBlockStore represents an AWS Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree
+																	awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 																	"""
 													properties: {
@@ -72895,7 +73444,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureDisk: {
-													description: "azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod."
+													description: """
+																	azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+																	Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type
+																	are redirected to the disk.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														cachingMode: {
 															description: "cachingMode is the Host Caching mode: None, Read Only, Read Write."
@@ -72935,7 +73488,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												azureFile: {
-													description: "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
+													description: """
+																	azureFile represents an Azure File Service mount on the host and bind mount to the pod.
+																	Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type
+																	are redirected to the file.csi.azure.com CSI driver.
+																	"""
 													properties: {
 														readOnly: {
 															description: """
@@ -72957,7 +73514,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												cephfs: {
-													description: "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
+													description: """
+																	cephFS represents a Ceph FS mount on the host that shares a pod's lifetime.
+																	Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.
+																	"""
 													properties: {
 														monitors: {
 															description: """
@@ -73020,6 +73580,8 @@ prometheusOperator: {
 												cinder: {
 													description: """
 																	cinder represents a cinder volume attached and mounted on kubelets host machine.
+																	Deprecated: Cinder is deprecated. All operations for the in-tree cinder type
+																	are redirected to the cinder.csi.openstack.org CSI driver.
 																	More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 																	"""
 													properties: {
@@ -73151,7 +73713,7 @@ prometheusOperator: {
 													"x-kubernetes-map-type": "atomic"
 												}
 												csi: {
-													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
+													description: "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers."
 													properties: {
 														driver: {
 															description: """
@@ -73690,6 +74252,7 @@ prometheusOperator: {
 													description: """
 																	flexVolume represents a generic volume resource that is
 																	provisioned/attached using an exec based plugin.
+																	Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.
 																	"""
 													properties: {
 														driver: {
@@ -73743,7 +74306,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												flocker: {
-													description: "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
+													description: """
+																	flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running.
+																	Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.
+																	"""
 													properties: {
 														datasetName: {
 															description: """
@@ -73763,6 +74329,8 @@ prometheusOperator: {
 													description: """
 																	gcePersistentDisk represents a GCE Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
+																	Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree
+																	gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver.
 																	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 																	"""
 													properties: {
@@ -73808,7 +74376,7 @@ prometheusOperator: {
 												gitRepo: {
 													description: """
 																	gitRepo represents a git repository at a particular revision.
-																	DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
+																	Deprecated: GitRepo is deprecated. To provision a container with a git repo, mount an
 																	EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 																	into the Pod's container.
 																	"""
@@ -73837,6 +74405,7 @@ prometheusOperator: {
 												glusterfs: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
@@ -74095,7 +74664,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												photonPersistentDisk: {
-													description: "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
+													description: """
+																	photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine.
+																	Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -74114,7 +74686,12 @@ prometheusOperator: {
 													type: "object"
 												}
 												portworxVolume: {
-													description: "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
+													description: """
+																	portworxVolume represents a portworx volume attached and mounted on kubelets host machine.
+																	Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type
+																	are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate
+																	is on.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -74529,7 +75106,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												quobyte: {
-													description: "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
+													description: """
+																	quobyte represents a Quobyte mount on the host that shares a pod's lifetime.
+																	Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.
+																	"""
 													properties: {
 														group: {
 															description: """
@@ -74578,6 +75158,7 @@ prometheusOperator: {
 												rbd: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
 																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
@@ -74667,7 +75248,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												scaleIO: {
-													description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
+													description: """
+																	scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+																	Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															default: "xfs"
@@ -74823,7 +75407,10 @@ prometheusOperator: {
 													type: "object"
 												}
 												storageos: {
-													description: "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
+													description: """
+																	storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
+																	Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -74881,7 +75468,11 @@ prometheusOperator: {
 													type: "object"
 												}
 												vsphereVolume: {
-													description: "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
+													description: """
+																	vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine.
+																	Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type
+																	are redirected to the csi.vsphere.vmware.com CSI driver.
+																	"""
 													properties: {
 														fsType: {
 															description: """
@@ -74984,7 +75575,13 @@ prometheusOperator: {
 												description: "Defines the TLS parameters for HTTPS."
 												properties: {
 													cert: {
-														description: "Contains the TLS certificate for the server."
+														description: """
+																		Secret or ConfigMap containing the TLS certificate for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `certFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -75045,23 +75642,29 @@ prometheusOperator: {
 													}
 													certFile: {
 														description: """
-																		Path to the TLS certificate file in the Prometheus container for the server.
-																		Mutually exclusive with `cert`.
+																		Path to the TLS certificate file in the container for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `cert`.
 																		"""
 														type: "string"
 													}
 													cipherSuites: {
 														description: """
-																		List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-																		Go default cipher suites are used. Available cipher suites are documented
-																		in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+																		List of supported cipher suites for TLS versions up to TLS 1.2.
+
+																		If not defined, the Go default cipher suites are used.
+																		Available cipher suites are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#pkg-constants
 																		"""
 														items: type: "string"
 														type: "array"
 													}
 													clientAuthType: {
 														description: """
-																		Server policy for client authentication. Maps to ClientAuth Policies.
+																		The server policy for client TLS authentication.
+
 																		For more detail on clientAuth options:
 																		https://golang.org/pkg/crypto/tls/#ClientAuthType
 																		"""
@@ -75069,13 +75672,20 @@ prometheusOperator: {
 													}
 													clientCAFile: {
 														description: """
-																		Path to the CA certificate file for client certificate authentication to the server.
-																		Mutually exclusive with `client_ca`.
+																		Path to the CA certificate file for client certificate authentication to
+																		the server.
+
+																		It is mutually exclusive with `client_ca`.
 																		"""
 														type: "string"
 													}
 													client_ca: {
-														description: "Contains the CA certificate for client certificate authentication to the server."
+														description: """
+																		Secret or ConfigMap containing the CA certificate for client certificate
+																		authentication to the server.
+
+																		It is mutually exclusive with `clientCAFile`.
+																		"""
 														properties: {
 															configMap: {
 																description: "ConfigMap containing data to use for the targets."
@@ -75137,7 +75747,9 @@ prometheusOperator: {
 													curvePreferences: {
 														description: """
 																		Elliptic curves that will be used in an ECDHE handshake, in preference
-																		order. Available curves are documented in the go documentation:
+																		order.
+
+																		Available curves are documented in the Go documentation:
 																		https://golang.org/pkg/crypto/tls/#CurveID
 																		"""
 														items: type: "string"
@@ -75145,13 +75757,22 @@ prometheusOperator: {
 													}
 													keyFile: {
 														description: """
-																		Path to the TLS key file in the Prometheus container for the server.
-																		Mutually exclusive with `keySecret`.
+																		Path to the TLS private key file in the container for the web server.
+
+																		If defined, either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keySecret`.
 																		"""
 														type: "string"
 													}
 													keySecret: {
-														description: "Secret containing the TLS key for the server."
+														description: """
+																		Secret containing the TLS private key for the web server.
+
+																		Either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keyFile`.
+																		"""
 														properties: {
 															key: {
 																description: "The key of the secret to select from.  Must be a valid secret key."
@@ -75178,18 +75799,19 @@ prometheusOperator: {
 														"x-kubernetes-map-type": "atomic"
 													}
 													maxVersion: {
-														description: "Maximum TLS version that is acceptable. Defaults to TLS13."
+														description: "Maximum TLS version that is acceptable."
 														type:        "string"
 													}
 													minVersion: {
-														description: "Minimum TLS version that is acceptable. Defaults to TLS12."
+														description: "Minimum TLS version that is acceptable."
 														type:        "string"
 													}
 													preferServerCipherSuites: {
 														description: """
-																		Controls whether the server selects the
-																		client's most preferred cipher suite, or the server's most preferred
-																		cipher suite. If true then the server's preference, as expressed in
+																		Controls whether the server selects the client's most preferred cipher
+																		suite, or the server's most preferred cipher suite.
+
+																		If true then the server's preference, as expressed in
 																		the order of elements in cipherSuites, is used.
 																		"""
 														type: "boolean"
@@ -75319,7 +75941,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75338,18 +75960,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.78.2"
+						"app.kubernetes.io/version":   "0.79.2"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.78.2", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.79.2", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.78.2"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.79.2"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -75418,7 +76040,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -75561,7 +76183,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75589,7 +76211,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75603,7 +76225,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -75620,7 +76242,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.78.2"
+				"app.kubernetes.io/version":   "0.79.2"
 			}
 		}
 	}

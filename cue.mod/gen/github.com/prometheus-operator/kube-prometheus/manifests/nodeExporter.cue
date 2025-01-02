@@ -367,7 +367,7 @@ nodeExporter: {
 			}, {
 				alert: "NodeHighNumberConntrackEntriesUsed"
 				annotations: {
-					description: "{{ $value | humanizePercentage }} of conntrack entries are used."
+					description: "{{ $labels.instance }} {{ $value | humanizePercentage }} of conntrack entries are used."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodehighnumberconntrackentriesused"
 					summary:     "Number of conntrack are getting close to the limit."
 				}
@@ -492,7 +492,7 @@ nodeExporter: {
 					summary:     "High CPU usage."
 				}
 				expr: """
-					sum without(mode) (avg without (cpu) (rate(node_cpu_seconds_total{job="node-exporter", mode!="idle"}[2m]))) * 100 > 90
+					sum without(mode) (avg without (cpu) (rate(node_cpu_seconds_total{job="node-exporter", mode!~"idle|iowait"}[2m]))) * 100 > 90
 
 					"""
 				for: "15m"
