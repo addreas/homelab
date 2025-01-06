@@ -1,6 +1,6 @@
 package kube
 
-let hostNames = ["splitplace.jdahl.se", "splitplace.app"]
+let hostNames = ["splitplace.app", "splitplace.jdahl.se"]
 
 k: Ingress: splitplace: {
 	spec: {
