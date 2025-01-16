@@ -168,6 +168,10 @@ in
           fi
         ''
         else ''
+          until ${pkgs.curl}/bin/curl -sS --insecure https://${cfg.init.clusterConfig.controlPlaneEndpoint}; do
+            sleep 1
+          done
+
           ${kubeadm} upgrade node --config ${kubeadmUpgradeConfig}
         '';
 
