@@ -41,11 +41,11 @@
         "vscode-extensions": "vscode-extensions"
       },
       "locked": {
-        "lastModified": 1735665718,
-        "narHash": "sha256-+W/3GRPYt2x96Unc5lfxuZDKddSW4DeipGQHWgBH6RA=",
+        "lastModified": 1737030365,
+        "narHash": "sha256-80c3m9fyQq3S+pj7NUhhu2YPAUm1Wot3llf3K1vSWcA=",
         "owner": "addreas",
         "repo": "flakefiles",
-        "rev": "6c34b6b1bfb62cbcf8f630efec3648cb31fdca14",
+        "rev": "b38c4fdaf6ec1a9522c81e506c008759477fb766",
         "type": "github"
       },
       "original": {
@@ -126,11 +126,11 @@
     },
     "nixpkgsStable": {
       "locked": {
-        "lastModified": 1736061677,
-        "narHash": "sha256-DjkQPnkAfd7eB522PwnkGhOMuT9QVCZspDpJJYyOj60=",
+        "lastModified": 1736684107,
+        "narHash": "sha256-vH5mXxEvZeoGNkqKoCluhTGfoeXCZ1seYhC2pbMN0sg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cbd8ec4de4469333c82ff40d057350c30e9f7d36",
+        "rev": "635e887b48521e912a516625eee7df6cf0eba9c1",
         "type": "github"
       },
       "original": {
@@ -142,11 +142,11 @@
     },
     "nixpkgsUnstable": {
       "locked": {
-        "lastModified": 1736012469,
-        "narHash": "sha256-/qlNWm/IEVVH7GfgAIyP6EsVZI6zjAx1cV5zNyrs+rI=",
+        "lastModified": 1736701207,
+        "narHash": "sha256-jG/+MvjVY7SlTakzZ2fJ5dC3V1PrKKrUEOEE30jrOKA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8f3e1f807051e32d8c95cd12b9b421623850a34d",
+        "rev": "ed4a395ea001367c1f13d34b1e01aa10290f67d6",
         "type": "github"
       },
       "original": {
@@ -158,11 +158,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1736344531,
-        "narHash": "sha256-8YVQ9ZbSfuUk2bUf2KRj60NRraLPKPS0Q4QFTbc+c2c=",
+        "lastModified": 1737062831,
+        "narHash": "sha256-Tbk1MZbtV2s5aG+iM99U8FqwxU/YNArMcWAv6clcsBc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bffc22eb12172e6db3c5dde9e3e5628f8e3e7912",
+        "rev": "5df43628fdf08d642be8ba5b3625a6c70731c19c",
         "type": "github"
       },
       "original": {
@@ -222,11 +222,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1736187392,
-        "narHash": "sha256-fHB0cXGOVywISIpJGb1O+bVqIM6E8jkt2vQ9rs4YvE8=",
+        "lastModified": 1736792242,
+        "narHash": "sha256-XKSfG2YapbDNj81O8WfUwIzwyrPev7P4UmtidkA9KZU=",
         "owner": "nabam",
         "repo": "nixos-rockchip",
-        "rev": "1c48ef33837c39ee8e3ba002632973bada468e17",
+        "rev": "75d7a4918bf2dc4df9998556e04a056ec59b4720",
         "type": "github"
       },
       "original": {
