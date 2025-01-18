@@ -5,7 +5,7 @@ go 1.23.2
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
 	// github.com/bitnami-labs/sealed-secrets v0.24.5
-	github.com/cert-manager/cert-manager v1.16.2
+	github.com/cert-manager/cert-manager v1.16.3
 	github.com/fluxcd/helm-controller/api v1.1.0
 	github.com/fluxcd/kustomize-controller/api v1.4.0
 	github.com/fluxcd/notification-controller/api v1.4.0
@@ -13,9 +13,9 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/ory/hydra-maester v0.0.36
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.79.2
-	k8s.io/api v0.32.0
-	k8s.io/apimachinery v0.32.0
-	k8s.io/kube-aggregator v0.32.0
+	k8s.io/api v0.32.1
+	k8s.io/apimachinery v0.32.1
+	k8s.io/kube-aggregator v0.32.1
 )
 
 require (
@@ -120,7 +120,7 @@ require (
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.23.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect

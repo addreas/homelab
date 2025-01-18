@@ -19,7 +19,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubePodCrashLooping"
 				annotations: {
-					description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: \"CrashLoopBackOff\")."
+					description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: \"CrashLoopBackOff\") on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping"
 					summary:     "Pod is crash looping."
 				}
@@ -32,7 +32,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubePodNotReady"
 				annotations: {
-					description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes."
+					description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodnotready"
 					summary:     "Pod has been in a non-ready state for more than 15 minutes."
 				}
@@ -51,7 +51,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDeploymentGenerationMismatch"
 				annotations: {
-					description: "Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment }} does not match, this indicates that the Deployment has failed but has not been rolled back."
+					description: "Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment }} does not match, this indicates that the Deployment has failed but has not been rolled back on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedeploymentgenerationmismatch"
 					summary:     "Deployment generation mismatch due to possible roll-back"
 				}
@@ -66,7 +66,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDeploymentReplicasMismatch"
 				annotations: {
-					description: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than 15 minutes."
+					description: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedeploymentreplicasmismatch"
 					summary:     "Deployment has not matched the expected number of replicas."
 				}
@@ -87,7 +87,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDeploymentRolloutStuck"
 				annotations: {
-					description: "Rollout of deployment {{ $labels.namespace }}/{{ $labels.deployment }} is not progressing for longer than 15 minutes."
+					description: "Rollout of deployment {{ $labels.namespace }}/{{ $labels.deployment }} is not progressing for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedeploymentrolloutstuck"
 					summary:     "Deployment rollout is not progressing."
 				}
@@ -101,7 +101,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeStatefulSetReplicasMismatch"
 				annotations: {
-					description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes."
+					description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubestatefulsetreplicasmismatch"
 					summary:     "StatefulSet has not matched the expected number of replicas."
 				}
@@ -122,7 +122,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeStatefulSetGenerationMismatch"
 				annotations: {
-					description: "StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset }} does not match, this indicates that the StatefulSet has failed but has not been rolled back."
+					description: "StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset }} does not match, this indicates that the StatefulSet has failed but has not been rolled back on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubestatefulsetgenerationmismatch"
 					summary:     "StatefulSet generation mismatch due to possible roll-back"
 				}
@@ -137,7 +137,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeStatefulSetUpdateNotRolledOut"
 				annotations: {
-					description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} update has not been rolled out."
+					description: "StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} update has not been rolled out on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubestatefulsetupdatenotrolledout"
 					summary:     "StatefulSet update has not been rolled out."
 				}
@@ -166,7 +166,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDaemonSetRolloutStuck"
 				annotations: {
-					description: "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15m."
+					description: "DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15m on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedaemonsetrolloutstuck"
 					summary:     "DaemonSet rollout is stuck."
 				}
@@ -201,7 +201,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeContainerWaiting"
 				annotations: {
-					description: "pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour. (reason: \"{{ $labels.reason }}\")."
+					description: "pod/{{ $labels.pod }} in namespace {{ $labels.namespace }} on container {{ $labels.container}} has been in waiting state for longer than 1 hour. (reason: \"{{ $labels.reason }}\") on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontainerwaiting"
 					summary:     "Pod container waiting longer than 1 hour"
 				}
@@ -214,7 +214,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDaemonSetNotScheduled"
 				annotations: {
-					description: "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are not scheduled."
+					description: "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are not scheduled on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedaemonsetnotscheduled"
 					summary:     "DaemonSet pods are not scheduled."
 				}
@@ -229,7 +229,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeDaemonSetMisScheduled"
 				annotations: {
-					description: "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are running where they are not supposed to run."
+					description: "{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are running where they are not supposed to run on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubedaemonsetmisscheduled"
 					summary:     "DaemonSet pods are misscheduled."
 				}
@@ -242,7 +242,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeJobNotCompleted"
 				annotations: {
-					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ \"43200\" | humanizeDuration }} to complete."
+					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than {{ \"43200\" | humanizeDuration }} to complete on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobnotcompleted"
 					summary:     "Job did not complete in time"
 				}
@@ -256,7 +256,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeJobFailed"
 				annotations: {
-					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete. Removing failed job after investigation should clear this alert."
+					description: "Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete. Removing failed job after investigation should clear this alert on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobfailed"
 					summary:     "Job failed to complete."
 				}
@@ -269,7 +269,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeHpaReplicasMismatch"
 				annotations: {
-					description: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has not matched the desired number of replicas for longer than 15 minutes."
+					description: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has not matched the desired number of replicas for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpareplicasmismatch"
 					summary:     "HPA has not matched desired number of replicas."
 				}
@@ -294,7 +294,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeHpaMaxedOut"
 				annotations: {
-					description: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has been running at max replicas for longer than 15 minutes."
+					description: "HPA {{ $labels.namespace }}/{{ $labels.horizontalpodautoscaler  }} has been running at max replicas for longer than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpamaxedout"
 					summary:     "HPA is running at max replicas"
 				}
@@ -374,7 +374,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeQuotaAlmostFull"
 				annotations: {
-					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
+					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaalmostfull"
 					summary:     "Namespace quota is going to be full."
 				}
@@ -390,7 +390,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeQuotaFullyUsed"
 				annotations: {
-					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
+					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotafullyused"
 					summary:     "Namespace quota is fully used."
 				}
@@ -406,7 +406,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeQuotaExceeded"
 				annotations: {
-					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota."
+					description: "Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaexceeded"
 					summary:     "Namespace quota has exceeded the limits."
 				}
@@ -422,7 +422,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "CPUThrottlingHigh"
 				annotations: {
-					description: "{{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} for container {{ $labels.container }} in pod {{ $labels.pod }}."
+					description: "{{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} for container {{ $labels.container }} in pod {{ $labels.pod }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh"
 					summary:     "Processes experience elevated CPU throttling."
 				}
@@ -553,7 +553,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubeVersionMismatch"
 				annotations: {
-					description: "There are {{ $value }} different semantic versions of Kubernetes components running."
+					description: "There are {{ $value }} different semantic versions of Kubernetes components running on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeversionmismatch"
 					summary:     "Different semantic versions of Kubernetes components running."
 				}
@@ -566,7 +566,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeClientErrors"
 				annotations: {
-					description: "Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance }}' is experiencing {{ $value | humanizePercentage }} errors.'"
+					description: "Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance }}' is experiencing {{ $value | humanizePercentage }} errors on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclienterrors"
 					summary:     "Kubernetes API server client is experiencing errors."
 				}
@@ -585,7 +585,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubeAPIErrorBudgetBurn"
 				annotations: {
-					description: "The API server is burning too much error budget."
+					description: "The API server is burning too much error budget on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn"
 					summary:     "The API server is burning too much error budget."
 				}
@@ -604,7 +604,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeAPIErrorBudgetBurn"
 				annotations: {
-					description: "The API server is burning too much error budget."
+					description: "The API server is burning too much error budget on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn"
 					summary:     "The API server is burning too much error budget."
 				}
@@ -623,7 +623,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeAPIErrorBudgetBurn"
 				annotations: {
-					description: "The API server is burning too much error budget."
+					description: "The API server is burning too much error budget on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn"
 					summary:     "The API server is burning too much error budget."
 				}
@@ -642,7 +642,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeAPIErrorBudgetBurn"
 				annotations: {
-					description: "The API server is burning too much error budget."
+					description: "The API server is burning too much error budget on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn"
 					summary:     "The API server is burning too much error budget."
 				}
@@ -707,7 +707,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeAggregatedAPIDown"
 				annotations: {
-					description: "Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace }} has been only {{ $value | humanize }}% available over the last 10m."
+					description: "Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace }} has been only {{ $value | humanize }}% available over the last 10m on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeaggregatedapidown"
 					summary:     "Kubernetes aggregated API is down."
 				}
@@ -733,7 +733,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeAPITerminatedRequests"
 				annotations: {
-					description: "The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests."
+					description: "The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapiterminatedrequests"
 					summary:     "The kubernetes apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests."
 				}
@@ -749,7 +749,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubeNodeNotReady"
 				annotations: {
-					description: "{{ $labels.node }} has been unready for more than 15 minutes."
+					description: "{{ $labels.node }} has been unready for more than 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodenotready"
 					summary:     "Node is not ready."
 				}
@@ -762,7 +762,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeNodeUnreachable"
 				annotations: {
-					description: "{{ $labels.node }} is unreachable and some workloads may be rescheduled."
+					description: "{{ $labels.node }} is unreachable and some workloads may be rescheduled on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodeunreachable"
 					summary:     "Node is unreachable."
 				}
@@ -775,17 +775,21 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletTooManyPods"
 				annotations: {
-					description: "Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage }} of its Pod capacity."
+					description: "Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage }} of its Pod capacity on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubelettoomanypods"
 					summary:     "Kubelet is running at capacity."
 				}
 				expr: """
-					count by(cluster, node) (
-					  (kube_pod_status_phase{job="kube-state-metrics",phase="Running"} == 1) * on(instance,pod,namespace,cluster) group_left(node) topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job="kube-state-metrics"})
+					count by (cluster, node) (
+					  (kube_pod_status_phase{job="kube-state-metrics", phase="Running"} == 1)
+					  * on (cluster, namespace, pod) group_left (node)
+					  group by (cluster, namespace, pod, node) (
+					    kube_pod_info{job="kube-state-metrics"}
+					  )
 					)
 					/
-					max by(cluster, node) (
-					  kube_node_status_capacity{job="kube-state-metrics",resource="pods"} != 1
+					max by (cluster, node) (
+					  kube_node_status_capacity{job="kube-state-metrics", resource="pods"} != 1
 					) > 0.95
 
 					"""
@@ -794,7 +798,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeNodeReadinessFlapping"
 				annotations: {
-					description: "The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes."
+					description: "The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodereadinessflapping"
 					summary:     "Node readiness status is flapping."
 				}
@@ -807,7 +811,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletPlegDurationHigh"
 				annotations: {
-					description: "The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration of {{ $value }} seconds on node {{ $labels.node }}."
+					description: "The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration of {{ $value }} seconds on node {{ $labels.node }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletplegdurationhigh"
 					summary:     "Kubelet Pod Lifecycle Event Generator is taking too long to relist."
 				}
@@ -820,7 +824,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletPodStartUpLatencyHigh"
 				annotations: {
-					description: "Kubelet Pod startup 99th percentile latency is {{ $value }} seconds on node {{ $labels.node }}."
+					description: "Kubelet Pod startup 99th percentile latency is {{ $value }} seconds on node {{ $labels.node }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletpodstartuplatencyhigh"
 					summary:     "Kubelet Pod startup latency is too high."
 				}
@@ -833,7 +837,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletClientCertificateExpiration"
 				annotations: {
-					description: "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
+					description: "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletclientcertificateexpiration"
 					summary:     "Kubelet client certificate is about to expire."
 				}
@@ -845,7 +849,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletClientCertificateExpiration"
 				annotations: {
-					description: "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
+					description: "Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletclientcertificateexpiration"
 					summary:     "Kubelet client certificate is about to expire."
 				}
@@ -857,7 +861,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletServerCertificateExpiration"
 				annotations: {
-					description: "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
+					description: "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletservercertificateexpiration"
 					summary:     "Kubelet server certificate is about to expire."
 				}
@@ -869,7 +873,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletServerCertificateExpiration"
 				annotations: {
-					description: "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}."
+					description: "Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }} on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletservercertificateexpiration"
 					summary:     "Kubelet server certificate is about to expire."
 				}
@@ -881,7 +885,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletClientCertificateRenewalErrors"
 				annotations: {
-					description: "Kubelet on node {{ $labels.node }} has failed to renew its client certificate ({{ $value | humanize }} errors in the last 5 minutes)."
+					description: "Kubelet on node {{ $labels.node }} has failed to renew its client certificate ({{ $value | humanize }} errors in the last 5 minutes) on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletclientcertificaterenewalerrors"
 					summary:     "Kubelet has failed to renew its client certificate."
 				}
@@ -894,7 +898,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeletServerCertificateRenewalErrors"
 				annotations: {
-					description: "Kubelet on node {{ $labels.node }} has failed to renew its server certificate ({{ $value | humanize }} errors in the last 5 minutes)."
+					description: "Kubelet on node {{ $labels.node }} has failed to renew its server certificate ({{ $value | humanize }} errors in the last 5 minutes) on cluster {{ $labels.cluster }}."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletservercertificaterenewalerrors"
 					summary:     "Kubelet has failed to renew its server certificate."
 				}
@@ -1004,7 +1008,7 @@ kubernetesControlPlane: {
 					    # write too slow
 					    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"})
 					  ) +
 					  (
 					    # read too slow
@@ -1012,14 +1016,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
+					        sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"})
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"})
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"})
 					    )
 					  ) +
 					  # errors
@@ -1039,14 +1043,14 @@ kubernetesControlPlane: {
 					  (
 					    # too slow
 					    (
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le="1"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"})
 					      or
 					      vector(0)
 					    )
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le="5"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"})
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le="30"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"})
 					  )
 					  +
 					  # errors
@@ -1065,7 +1069,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le="1"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"})
 					  )
 					  +
 					  # errors
@@ -1127,14 +1131,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1d]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[1d]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1d]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[1d]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1d]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[1d]))
 					    )
 					  )
 					  +
@@ -1156,14 +1160,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[1h]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[1h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[1h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[1h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[1h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[1h]))
 					    )
 					  )
 					  +
@@ -1185,14 +1189,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[2h]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[2h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[2h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[2h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[2h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[2h]))
 					    )
 					  )
 					  +
@@ -1214,14 +1218,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[30m]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[30m]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[30m]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[30m]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[30m]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[30m]))
 					    )
 					  )
 					  +
@@ -1243,14 +1247,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[3d]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[3d]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[3d]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[3d]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[3d]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[3d]))
 					    )
 					  )
 					  +
@@ -1272,14 +1276,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[5m]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[5m]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[5m]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[5m]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[5m]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[5m]))
 					    )
 					  )
 					  +
@@ -1301,14 +1305,14 @@ kubernetesControlPlane: {
 					    -
 					    (
 					      (
-					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le="1"}[6h]))
+					        sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope=~"resource|",le=~"1(\\\\.0)?"}[6h]))
 					        or
 					        vector(0)
 					      )
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le="5"}[6h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="namespace",le=~"5(\\\\.0)?"}[6h]))
 					      +
-					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le="30"}[6h]))
+					      sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",subresource!~"proxy|attach|log|exec|portforward",scope="cluster",le=~"30(\\\\.0)?"}[6h]))
 					    )
 					  )
 					  +
@@ -1328,7 +1332,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1d]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1d]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[1d]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[1d]))
@@ -1346,7 +1350,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[1h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[1h]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[1h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[1h]))
@@ -1364,7 +1368,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[2h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[2h]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[2h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[2h]))
@@ -1382,7 +1386,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[30m]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[30m]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[30m]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[30m]))
@@ -1400,7 +1404,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[3d]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[3d]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[3d]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[3d]))
@@ -1418,7 +1422,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[5m]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[5m]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[5m]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[5m]))
@@ -1436,7 +1440,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_count{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward"}[6h]))
 					    -
-					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le="1"}[6h]))
+					    sum by (cluster) (rate(apiserver_request_sli_duration_seconds_bucket{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",subresource!~"proxy|attach|log|exec|portforward",le=~"1(\\\\.0)?"}[6h]))
 					  )
 					  +
 					  sum by (cluster) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE",code=~"5.."}[6h]))
