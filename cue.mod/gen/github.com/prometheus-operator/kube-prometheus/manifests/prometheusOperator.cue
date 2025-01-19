@@ -22593,6 +22593,7 @@ prometheusOperator: {
 
 																	If empty, Prometheus uses the global scrape timeout unless it is less
 																	than the target's scrape interval value in which the latter is used.
+																	The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 																	"""
 													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 													type:    "string"
@@ -23757,6 +23758,7 @@ prometheusOperator: {
 										description: """
 														Timeout for scraping metrics from the Prometheus exporter.
 														If not specified, the Prometheus global scrape timeout is used.
+														The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 														"""
 										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:    "string"
@@ -29782,7 +29784,6 @@ prometheusOperator: {
 									mode: {
 										description: """
 														Mode defines how the Prometheus operator deploys the PrometheusAgent pod(s).
-														For now this field has no effect.
 
 														(Alpha) Using this field requires the `PrometheusAgentDaemonSet` feature gate to be enabled.
 														"""
@@ -29805,6 +29806,15 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											keepIdentifyingResourceAttributes: {
+												description: """
+																Enables adding `service.name`, `service.namespace` and `service.instance.id`
+																resource attributes to the `target_info` metric, on top of converting them into the `instance` and `job` labels.
+
+																It requires Prometheus >= v3.1.0.
+																"""
+												type: "boolean"
+											}
 											promoteResourceAttributes: {
 												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
 												items: {
@@ -29818,7 +29828,6 @@ prometheusOperator: {
 											translationStrategy: {
 												description: """
 																Configures how the OTLP receiver endpoint translates the incoming metrics.
-																If unset, Prometheus uses its default value.
 
 																It requires Prometheus >= v3.0.0.
 																"""
@@ -32192,9 +32201,12 @@ prometheusOperator: {
 										"x-kubernetes-list-type": "set"
 									}
 									scrapeTimeout: {
-										description: "Number of seconds to wait until a scrape request times out."
-										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-										type:        "string"
+										description: """
+														Number of seconds to wait until a scrape request times out.
+														The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
 									}
 									secrets: {
 										description: """
@@ -43161,6 +43173,15 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											keepIdentifyingResourceAttributes: {
+												description: """
+																Enables adding `service.name`, `service.namespace` and `service.instance.id`
+																resource attributes to the `target_info` metric, on top of converting them into the `instance` and `job` labels.
+
+																It requires Prometheus >= v3.1.0.
+																"""
+												type: "boolean"
+											}
 											promoteResourceAttributes: {
 												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
 												items: {
@@ -43174,7 +43195,6 @@ prometheusOperator: {
 											translationStrategy: {
 												description: """
 																Configures how the OTLP receiver endpoint translates the incoming metrics.
-																If unset, Prometheus uses its default value.
 
 																It requires Prometheus >= v3.0.0.
 																"""
@@ -46631,9 +46651,12 @@ prometheusOperator: {
 										"x-kubernetes-list-type": "set"
 									}
 									scrapeTimeout: {
-										description: "Number of seconds to wait until a scrape request times out."
-										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-										type:        "string"
+										description: """
+														Number of seconds to wait until a scrape request times out.
+														The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
 									}
 									secrets: {
 										description: """
@@ -64712,9 +64735,12 @@ prometheusOperator: {
 										"x-kubernetes-list-type": "set"
 									}
 									scrapeTimeout: {
-										description: "ScrapeTimeout is the number of seconds to wait until a scrape request times out."
-										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
-										type:        "string"
+										description: """
+														ScrapeTimeout is the number of seconds to wait until a scrape request times out.
+														The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
 									}
 									staticConfigs: {
 										description: "StaticConfigs defines a list of static targets with a common label set."
@@ -65855,6 +65881,7 @@ prometheusOperator: {
 
 																	If empty, Prometheus uses the global scrape timeout unless it is less
 																	than the target's scrape interval value in which the latter is used.
+																	The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 																	"""
 													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 													type:    "string"
