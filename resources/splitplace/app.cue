@@ -27,6 +27,7 @@ let baseContainer = {
 		{secretRef: name: "splitplace-postgres-secrets"},
 		{secretRef: name: "splitplace-app-secrets"},
 		{secretRef: name: "auth0"},
+		{secretRef: name: "sendgrid"},
 	]
 	env: [{
 		name:  "DATABASE_URL"

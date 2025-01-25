@@ -15,7 +15,7 @@ githubBearerToken: string @tag(githubToken)
 
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
 command: "update-github-tags": {
-	let releaseKeys = list.SortStrings([for k, v in githubReleases {k}])
+	let releaseKeys = list.SortStrings([ for k, v in githubReleases {k}])
 
 	releases: {
 		for r in releaseKeys {
