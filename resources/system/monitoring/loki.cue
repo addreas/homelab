@@ -42,6 +42,9 @@ k: ConfigMap: "loki": data: "config.yaml": yaml.Marshal({
 		}
 	}]
 
+	limits_config: volume_enabled: true
+	pattern_ingester: enabled:     true
+
 	ruler: alertmanager_url: "http://alertmanager-main.monitoring.svc.cluster.local:9093"
 })
 
