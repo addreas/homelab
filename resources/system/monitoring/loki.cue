@@ -52,7 +52,7 @@ k: Deployment: loki: spec: template: {
 	metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap.loki.data["config.yaml"]))
 	spec: {
 		containers: [{
-			image: "grafana/loki:2.9.5"
+			image: "grafana/loki:3.3.2"
 			args: ["--config.file=/etc/loki/config.yaml"]
 			ports: [{name: "http", containerPort: 3100}, {name: "grcp", containerPort: 9096}]
 			volumeMounts: [{
