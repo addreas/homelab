@@ -40,6 +40,15 @@ k: ConfigMap: "loki": data: "config.yaml": yaml.Marshal({
 			prefix: "index_"
 			period: "24h"
 		}
+	}, {
+		from:         "2025-01-27"
+		store:        "tsdb"
+		object_store: "filesystem"
+		schema:       "v13"
+		index: {
+			prefix: "index_"
+			period: "24h"
+		}
 	}]
 
 	limits_config: volume_enabled: true
