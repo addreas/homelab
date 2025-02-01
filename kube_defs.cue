@@ -46,7 +46,7 @@ k: close({
 			"\(Kind)": [Name=string]: Type & {
 				apiVersion: ApiVersion
 				kind:       Kind
-				metadata:   metav1.#ObjectMeta & {
+				metadata: metav1.#ObjectMeta & {
 					name: _ | *Name
 				}
 

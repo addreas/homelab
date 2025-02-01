@@ -20,7 +20,7 @@ require (
 
 require (
 	github.com/bitnami-labs/sealed-secrets v0.27.3
-	github.com/cilium/cilium v1.16.5
+	github.com/cilium/cilium v1.16.6
 	github.com/grafana-operator/grafana-operator/v5 v5.15.1
 )
 

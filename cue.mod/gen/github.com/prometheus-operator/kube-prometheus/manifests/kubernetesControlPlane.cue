@@ -755,6 +755,8 @@ kubernetesControlPlane: {
 				}
 				expr: """
 					kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0
+					and on (cluster, node)
+					kube_node_spec_unschedulable{job="kube-state-metrics"} == 0
 
 					"""
 				for: "15m"
@@ -804,6 +806,8 @@ kubernetesControlPlane: {
 				}
 				expr: """
 					sum(changes(kube_node_status_condition{job="kube-state-metrics",status="true",condition="Ready"}[15m])) by (cluster, node) > 2
+					and on (cluster, node)
+					kube_node_spec_unschedulable{job="kube-state-metrics"} == 0
 
 					"""
 				for: "15m"
