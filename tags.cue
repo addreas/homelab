@@ -14,21 +14,21 @@ goModVersions: {
 	"k8s.io/apimachinery":                                                    "v0.32.1"
 	"k8s.io/kube-aggregator":                                                 "v0.32.1"
 	"github.com/bitnami-labs/sealed-secrets":                                 "v0.27.3"
-	"github.com/cilium/cilium":                                               "v1.16.5"
+	"github.com/cilium/cilium":                                               "v1.16.6"
 	"github.com/grafana-operator/grafana-operator/v5":                        "v5.15.1"
 }
 githubReleases: {
-	"cloudflare/cloudflared":     "2025.1.0"
-	"dani-garcia/vaultwarden":    "1.32.7"
+	"cloudflare/cloudflared":     "2025.1.1"
+	"dani-garcia/vaultwarden":    "1.33.0"
 	"esphome/esphome":            "2024.12.4"
-	"grafana/grafana":            "v11.4.0"
-	"home-assistant/core":        "2025.1.2"
+	"grafana/grafana":            "v11.5.0"
+	"home-assistant/core":        "2025.1.4"
 	"jcmoraisjr/haproxy-ingress": "v0.14.7"
 	"kubereboot/charts":          "kured-5.6.0"
-	"longhorn/longhorn":          "v1.7.2"
+	"longhorn/longhorn":          "v1.8.0"
 	"ory/hydra":                  "v2.3.0"
 	"ory/kratos":                 "v1.3.1"
-	"zwave-js/zwave-js-ui":       "v9.29.1"
+	"zwave-js/zwave-js-ui":       "v9.30.1"
 }
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"

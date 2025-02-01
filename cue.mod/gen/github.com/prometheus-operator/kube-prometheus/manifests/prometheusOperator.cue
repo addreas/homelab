@@ -124,7 +124,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
@@ -11315,7 +11315,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
@@ -21600,7 +21600,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "podmonitors.monitoring.coreos.com"
@@ -22950,7 +22950,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "probes.monitoring.coreos.com"
@@ -24246,7 +24246,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
@@ -31648,6 +31648,16 @@ prometheusOperator: {
 																	"""
 													type: "boolean"
 												}
+												fallbackScrapeProtocol: {
+													description: """
+																	The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+																	It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol
+
+																	It requires Prometheus >= v3.0.0.
+																	"""
+													enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+													type: "string"
+												}
 												metricRelabelings: {
 													description: """
 																	MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.
@@ -32640,6 +32650,18 @@ prometheusOperator: {
 										}
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									serviceName: {
+										description: """
+														The name of the service name used by the underlying StatefulSet(s) as the governing service.
+														If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels.
+														If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources,
+														or `prometheus-agent-operated` for PrometheusAgent resources.
+														When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each.
+														See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+														"""
+										minLength: 1
+										type:      "string"
 									}
 									shards: {
 										description: """
@@ -36769,7 +36791,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheuses.monitoring.coreos.com"
@@ -46098,6 +46120,16 @@ prometheusOperator: {
 																	"""
 													type: "boolean"
 												}
+												fallbackScrapeProtocol: {
+													description: """
+																	The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+																	It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol
+
+																	It requires Prometheus >= v3.0.0.
+																	"""
+													enum: ["PrometheusProto", "OpenMetricsText0.0.1", "OpenMetricsText1.0.0", "PrometheusText0.0.4", "PrometheusText1.0.0"]
+													type: "string"
+												}
 												metricRelabelings: {
 													description: """
 																	MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.
@@ -47090,6 +47122,18 @@ prometheusOperator: {
 										}
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									serviceName: {
+										description: """
+														The name of the service name used by the underlying StatefulSet(s) as the governing service.
+														If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels.
+														If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources,
+														or `prometheus-agent-operated` for PrometheusAgent resources.
+														When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each.
+														See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+														"""
+										minLength: 1
+										type:      "string"
 									}
 									sha: {
 										description: "Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name."
@@ -51817,7 +51861,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
@@ -52002,7 +52046,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
@@ -64985,7 +65029,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
@@ -66361,7 +66405,7 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.16.5"
+					"controller-gen.kubebuilder.io/version": "v0.17.1"
 					"operator.prometheus.io/version":        "0.79.2"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
