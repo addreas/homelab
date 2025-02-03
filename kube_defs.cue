@@ -17,12 +17,11 @@ import (
 	apiregistration_v1 "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 
 	source_controller_v1 "github.com/fluxcd/source-controller/api/v1"
-	source_controller_v1beta2 "github.com/fluxcd/source-controller/api/v1beta2"
-	notification_controller_v1beta1 "github.com/fluxcd/notification-controller/api/v1beta1"
+	notification_controller_v1 "github.com/fluxcd/notification-controller/api/v1"
 	kustomize_controller_v1 "github.com/fluxcd/kustomize-controller/api/v1"
 	cuebuild_controller_v1alpha2 "github.com/addreas/cuebuild-controller/api/v1alpha2"
 	cue_controller_v1beta2 "github.com/addreas/cue-controller/api/v1beta2"
-	helm_controller_v2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
+	helm_controller_v2beta2 "github.com/fluxcd/helm-controller/api/v2beta2"
 
 	sealed_secrets_v1alpha1 "github.com/bitnami-labs/sealed-secrets/pkg/apis/sealedsecrets/v1alpha1"
 
@@ -46,7 +45,7 @@ k: close({
 			"\(Kind)": [Name=string]: Type & {
 				apiVersion: ApiVersion
 				kind:       Kind
-				metadata:   metav1.#ObjectMeta & {
+				metadata: metav1.#ObjectMeta & {
 					name: _ | *Name
 				}
 
@@ -115,13 +114,15 @@ _kubernetesAPIs: {
 
 	"apiregistration.k8s.io/v1": APIService: apiregistration_v1.#APIService
 
-	"source.toolkit.fluxcd.io/v1": GitRepository:       source_controller_v1.#GitRepository
-	"source.toolkit.fluxcd.io/v1beta1": HelmRepository: source_controller_v1beta2.#HelmRepository
+	"source.toolkit.fluxcd.io/v1": {
+		GitRepository:  source_controller_v1.#GitRepository
+		HelmRepository: source_controller_v1.#HelmRepository
+	}
 
-	"notification.toolkit.fluxcd.io/v1beta1": {
-		Alert:    notification_controller_v1beta1.#Alert
-		Provider: notification_controller_v1beta1.#Provider
-		Receiver: notification_controller_v1beta1.#Receiver
+	"notification.toolkit.fluxcd.io/v1": {
+		Alert:    notification_controller_v1.#Alert
+		Provider: notification_controller_v1.#Provider
+		Receiver: notification_controller_v1.#Receiver
 	}
 
 	"kustomize.toolkit.fluxcd.io/v1": Kustomization: kustomize_controller_v1.#Kustomization
@@ -130,7 +131,7 @@ _kubernetesAPIs: {
 
 	"cue.toolkit.fluxcd.io/v1beta2": CueExport: cue_controller_v1beta2.#CueExport
 
-	"helm.toolkit.fluxcd.io/v2beta1": HelmRelease: helm_controller_v2beta1.#HelmRelease
+	"helm.toolkit.fluxcd.io/v2beta2": HelmRelease: helm_controller_v2beta2.#HelmRelease
 
 	"bitnami.com/v1alpha1": SealedSecret: sealed_secrets_v1alpha1.#SealedSecret
 

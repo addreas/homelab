@@ -441,13 +441,13 @@ import (
 	pkcs12?: null | #PKCS12Keystore @go(PKCS12,*PKCS12Keystore)
 }
 
-// JKS configures options for storing a JKS keystore in the `spec.secretName`
-// Secret resource.
+// JKS configures options for storing a JKS keystore in the target secret.
+// Either PasswordSecretRef or Password must be provided.
 #JKSKeystore: {
 	// Create enables JKS keystore creation for the Certificate.
 	// If true, a file named `keystore.jks` will be created in the target
 	// Secret resource, encrypted using the password stored in
-	// `passwordSecretRef`.
+	// `passwordSecretRef` or `password`.
 	// The keystore file will be updated immediately.
 	// If the issuer provided a CA certificate, a file named `truststore.jks`
 	// will also be created in the target Secret resource, encrypted using the
@@ -455,14 +455,23 @@ import (
 	// containing the issuing Certificate Authority
 	create: bool @go(Create)
 
-	// PasswordSecretRef is a reference to a key in a Secret resource
-	// containing the password used to encrypt the JKS keystore.
-	passwordSecretRef: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
-
 	// Alias specifies the alias of the key in the keystore, required by the JKS format.
 	// If not provided, the default alias `certificate` will be used.
 	// +optional
 	alias?: null | string @go(Alias,*string)
+
+	// PasswordSecretRef is a reference to a non-empty key in a Secret resource
+	// containing the password used to encrypt the JKS keystore.
+	// Mutually exclusive with password.
+	// One of password or passwordSecretRef must provide a password with a non-zero length.
+	// +optional
+	passwordSecretRef?: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
+
+	// Password provides a literal password used to encrypt the JKS keystore.
+	// Mutually exclusive with passwordSecretRef.
+	// One of password or passwordSecretRef must provide a password with a non-zero length.
+	// +optional
+	password?: null | string @go(Password,*string)
 }
 
 // PKCS12 configures options for storing a PKCS12 keystore in the
@@ -471,17 +480,13 @@ import (
 	// Create enables PKCS12 keystore creation for the Certificate.
 	// If true, a file named `keystore.p12` will be created in the target
 	// Secret resource, encrypted using the password stored in
-	// `passwordSecretRef`.
+	// `passwordSecretRef` or in `password`.
 	// The keystore file will be updated immediately.
 	// If the issuer provided a CA certificate, a file named `truststore.p12` will
 	// also be created in the target Secret resource, encrypted using the
 	// password stored in `passwordSecretRef` containing the issuing Certificate
 	// Authority
 	create: bool @go(Create)
-
-	// PasswordSecretRef is a reference to a key in a Secret resource
-	// containing the password used to encrypt the PKCS12 keystore.
-	passwordSecretRef: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
 
 	// Profile specifies the key and certificate encryption algorithms and the HMAC algorithm
 	// used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.
@@ -494,6 +499,19 @@ import (
 	// in reality, because the unencrypted certificate and private key are also stored in the Secret.
 	// +optional
 	profile?: #PKCS12Profile @go(Profile)
+
+	// PasswordSecretRef is a reference to a non-empty key in a Secret resource
+	// containing the password used to encrypt the PKCS#12 keystore.
+	// Mutually exclusive with password.
+	// One of password or passwordSecretRef must provide a password with a non-zero length.
+	// +optional
+	passwordSecretRef?: cmmeta.#SecretKeySelector @go(PasswordSecretRef)
+
+	// Password provides a literal password used to encrypt the PKCS#12 keystore.
+	// Mutually exclusive with passwordSecretRef.
+	// One of password or passwordSecretRef must provide a password with a non-zero length.
+	// +optional
+	password?: null | string @go(Password,*string)
 }
 
 // +kubebuilder:validation:Enum=LegacyRC2;LegacyDES;Modern2023

@@ -706,6 +706,10 @@ import (
 	// Cannot be used for Azure Managed Service Identity
 	// +optional
 	resourceID?: string @go(ResourceID)
+
+	// tenant ID of the managed identity, can not be used at the same time as resourceID
+	// +optional
+	tenantID?: string @go(TenantID)
 }
 
 // +kubebuilder:validation:Enum=AzurePublicCloud;AzureChinaCloud;AzureGermanCloud;AzureUSGovernmentCloud

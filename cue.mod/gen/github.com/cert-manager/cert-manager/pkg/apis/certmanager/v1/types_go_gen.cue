@@ -287,3 +287,6 @@ package v1
 
 // Data Entry Name in the Secret resource for JKS containing Certificate Authority
 #JKSTruststoreKey: "truststore.jks"
+
+// The password used to encrypt the keystore and truststore
+#KeystorePassword: "keystorePassword"

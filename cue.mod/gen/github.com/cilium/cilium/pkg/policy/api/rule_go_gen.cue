@@ -56,3 +56,7 @@ package api
 //
 // +deepequal-gen:private-method=true
 #Rule: _
+
+#PolicyMetrics: _
+
+_#policyMetricsNoop: {}
