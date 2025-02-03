@@ -18,9 +18,9 @@ kindfilter: string | *".*" @tag(kind)
 namefilter: string | *".*" @tag(name)
 
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
-let res = [ for kind, rs in k for r in rs if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
-let earlyResources = [ for r in res if list.Contains(earlyKinds, r.kind) {r}]
-let resources = [ for r in res if !list.Contains(earlyKinds, r.kind) {r}]
+let res = [for kind, rs in k for r in rs if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
+let earlyResources = [for r in res if list.Contains(earlyKinds, r.kind) {r}]
+let resources = [for r in res if !list.Contains(earlyKinds, r.kind) {r}]
 
 // List defined Kubernetes resources
 command: ls: cli.Print & {
@@ -56,7 +56,7 @@ osenv: os.Environ
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
 	cmd: ["kubectl", "--context", context, "diff", "-f-"]
-	env:   {for key, value in osenv if key != "$id" {(key): value}} & {KUBECTL_EXTERNAL_DIFF: "kubectl-neat-diff"}
+	env: {for key, value in osenv if key != "$id" {(key): value}} & {KUBECTL_EXTERNAL_DIFF: "kubectl-neat-diff"}
 	stdin: json.MarshalStream(resources)
 }
 
@@ -64,15 +64,15 @@ command: diff: exec.Run & {
 command: seal: {
 	scope: *"strict" | "cluster-wide" @tag(scope)
 
-	let unsealed = [ for key, value in k.Secret if k.SealedSecret[key] == _|_ {key}]
+	let unsealed = [for key, value in k.Secret if k.SealedSecret[key] == _|_ {key}]
 
 	secrets: {
 		for key in unsealed {
 			(key): exec.Run & {
 				cmd: ["kubeseal", "--context", context, "--scope", scope]
-				stdin:   yaml.Marshal(k.Secret[key])
-				stdout:  string
-				content: yaml.Unmarshal(strings.Join([ for l in strings.Split(stdout, "\n") if l !~ "null" {l}], "\n"))
+				stdin:  yaml.Marshal(k.Secret[key])
+				stdout: string
+				content: yaml.Unmarshal(strings.Join([for l in strings.Split(stdout, "\n") if l !~ "null" {l}], "\n"))
 			}
 		}
 	}
@@ -92,7 +92,7 @@ command: seal: {
 
 // Dump a yaml stream of Kubernetes resources
 command: "dump-yaml": cli.Print & {
-	text: yaml.MarshalStream(earlyResources + resources)
+	text: yaml.MarshalStream(list.Concat([earlyResources, resources]))
 }
 
 // Import all yaml from stdin

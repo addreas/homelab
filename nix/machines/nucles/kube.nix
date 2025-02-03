@@ -43,6 +43,7 @@ in
       shutdownGracePeriod = "5m";
       shutdownGracePeriodCriticalPods = "1m";
       cpuCFSQuota = false;
+      serverTLSBootstrap = true;
     };
 
     upgrade.enable = true;
