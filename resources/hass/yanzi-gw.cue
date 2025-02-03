@@ -1,6 +1,7 @@
 package kube
 
 k: StatefulSet: "yanzi-gateway": spec: {
+	replicas: 0
 	template: spec: {
 		containers: [{
 			name:  "border-router"
