@@ -1,5 +1,7 @@
 package kube
 
+import "encoding/yaml"
+
 k: HelmRepository: "prometheus-community": spec: url: "https://prometheus-community.github.io/helm-charts"
 
 k: HelmRelease: "smartctl-exporter": spec: {
@@ -14,10 +16,10 @@ k: HelmRelease: "smartctl-exporter": spec: {
 		prometheusRules: enabled: true
 	}
 	postRenderers: [{
-		kustomize: patchesJson6902: [{
+		kustomize: patches: [{
 			target: kind: "ServiceMonitor"
 			target: name: "smartctl-exporter"
-			patch: [{
+			patch: yaml.Marshal([{
 				op:   "add"
 				path: "/spec/endpoints/0/relabelings"
 				value: [{
@@ -38,7 +40,7 @@ k: HelmRelease: "smartctl-exporter": spec: {
 					sourceLabels: ["serial_number"]
 					regex: "beaf.*"
 				}]
-			}]
+			}])
 		}]
 	}]
 }

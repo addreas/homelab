@@ -2,6 +2,8 @@ package kube
 
 import "strings"
 
+import "encoding/yaml"
+
 k: Namespace: "longhorn-system": {}
 
 k: HelmRepository: longhorn: {
@@ -36,21 +38,31 @@ k: HelmRelease: longhorn: spec: {
 		defaultSettings: backupTarget: "nfs://nucles.localdomain:/export/longhorn-backup"
 	}
 	postRenderers: [{
-		kustomize: patchesStrategicMerge: [{
-			apiVersion: "apps/v1"
-			kind:       "DaemonSet"
-			metadata: {
+		kustomize: patches: [{
+			target: {
+				group:     "apps"
+				kind:      "DaemonSet"
 				name:      "longhorn-manager"
 				namespace: "longhorn-system"
 			}
-			spec: template: spec: containers: [{
-				name: "longhorn-manager"
-				env: [{
-					name:  "PATH"
-					value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+
+			patch: yaml.Marshal({
+				apiVersion: "apps/v1"
+				kind:       "DaemonSet"
+				metadata: {
+					name:      "longhorn-manager"
+					namespace: "longhorn-system"
+				}
+				spec: template: spec: containers: [{
+					name: "longhorn-manager"
+					env: [{
+						name:  "PATH"
+						value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+					}]
 				}]
-			}]
-		}]
+			})
+		},
+		]
 	}]
 }
 

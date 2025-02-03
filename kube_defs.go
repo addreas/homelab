@@ -6,7 +6,7 @@ import (
 	_ "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2"       // --exclude='HubbleStatus$,ControllerStatus(es)?$,ControllerList$,StatusResponse$,DebugInfo$,Endpoint(Status)?(Slice)?(List)?$'
 	_ "github.com/cilium/cilium/pkg/k8s/apis/cilium.io/v2alpha1" // --exclude='HubbleStatus$,ControllerStatus(es)?$,ControllerList$,StatusResponse$,DebugInfo$,Endpoint(Status)?(Slice)?(List)?$'
-	_ "github.com/fluxcd/helm-controller/api/v2beta2"
+	_ "github.com/fluxcd/helm-controller/api/v2"
 	_ "github.com/fluxcd/kustomize-controller/api/v1"
 	_ "github.com/fluxcd/notification-controller/api/v1"
 	_ "github.com/fluxcd/source-controller/api/v1"
