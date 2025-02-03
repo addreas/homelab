@@ -32,5 +32,5 @@ githubReleases: {
 }
 otherTags: {
 	"grafana/helm-charts/agent-operator": "0.2.15"
-	"fluxcd/flux2":                       "v2.2.2"
+	"fluxcd/flux2":                       "v2.4.0"
 }
