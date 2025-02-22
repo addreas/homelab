@@ -118,3 +118,35 @@ import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
 	// +required
 	target: #Selector @go(Target)
 }
+
+// CustomHealthCheck defines the health check for custom resources.
+#CustomHealthCheck: {
+	// APIVersion of the custom resource under evaluation.
+	// +required
+	apiVersion: string @go(APIVersion)
+
+	// Kind of the custom resource under evaluation.
+	// +required
+	kind: string @go(Kind)
+
+	#HealthCheckExpressions
+}
+
+// HealthCheckExpressions defines the CEL expressions for determining the health status
+// of custom resources.
+#HealthCheckExpressions: {
+	// Current is the CEL expression that determines if the status
+	// of the custom resource has reached the desired state.
+	// +required
+	current: string @go(Current)
+
+	// InProgress is the CEL expression that determines if the status
+	// of the custom resource has not yet reached the desired state.
+	// +optional
+	inProgress?: string @go(InProgress)
+
+	// Failed is the CEL expression that determines if the status
+	// of the custom resource has failed to reach the desired state.
+	// +optional
+	failed?: string @go(Failed)
+}

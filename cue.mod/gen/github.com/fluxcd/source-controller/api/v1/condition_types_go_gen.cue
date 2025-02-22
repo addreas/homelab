@@ -95,3 +95,7 @@ package v1
 
 // InvalidSTSConfigurationReason signals that the STS configurtion is invalid.
 #InvalidSTSConfigurationReason: "InvalidSTSConfiguration"
+
+// InvalidProviderConfigurationReason signals that the provider
+// configuration is invalid.
+#InvalidProviderConfigurationReason: "InvalidProviderConfiguration"

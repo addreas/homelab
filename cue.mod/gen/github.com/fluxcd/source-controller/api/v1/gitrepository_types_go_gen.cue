@@ -20,6 +20,10 @@ import (
 // repositories using Managed Identity.
 #GitProviderAzure: "azure"
 
+// GitProviderGitHub provides support for authentication to git
+// repositories using GitHub App authentication
+#GitProviderGitHub: "github"
+
 // IncludeUnavailableCondition indicates one of the includes is not
 // available. For example, because it does not exist, or does not have an
 // Artifact.
@@ -64,9 +68,9 @@ import (
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
 
-	// Provider used for authentication, can be 'azure', 'generic'.
+	// Provider used for authentication, can be 'azure', 'github', 'generic'.
 	// When not specified, defaults to 'generic'.
-	// +kubebuilder:validation:Enum=generic;azure
+	// +kubebuilder:validation:Enum=generic;azure;github
 	// +optional
 	provider?: string @go(Provider)
 

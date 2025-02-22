@@ -117,5 +117,5 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Rules
-	items: [...null | #PrometheusRule] @go(Items,[]*PrometheusRule)
+	items: [...#PrometheusRule] @go(Items,[]PrometheusRule)
 }

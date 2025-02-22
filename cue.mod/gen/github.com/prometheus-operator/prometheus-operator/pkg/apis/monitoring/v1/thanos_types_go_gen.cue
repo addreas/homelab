@@ -42,7 +42,7 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Prometheuses
-	items: [...null | #ThanosRuler] @go(Items,[]*ThanosRuler)
+	items: [...#ThanosRuler] @go(Items,[]ThanosRuler)
 }
 
 // ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info:

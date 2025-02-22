@@ -48,6 +48,16 @@ import (
 	// +required
 	resources: [...#CrossNamespaceObjectReference] @go(Resources,[]CrossNamespaceObjectReference)
 
+	// ResourceFilter is a CEL expression expected to return a boolean that is
+	// evaluated for each resource referenced in the Resources field when a
+	// webhook is received. If the expression returns false then the controller
+	// will not request a reconciliation for the resource.
+	// When the expression is specified the controller will parse it and mark
+	// the object as terminally failed if the expression is invalid or does not
+	// return a boolean.
+	// +optional
+	resourceFilter?: string @go(ResourceFilter)
+
 	// SecretRef specifies the Secret containing the token used
 	// to validate the payload authenticity.
 	// +required
