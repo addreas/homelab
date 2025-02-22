@@ -15,7 +15,7 @@ k: CueExport: "homelab-system": spec: {
 		"./resources/system/longhorn-system",
 		// "./resources/system/monitoring",
 		"./resources/system/lauset",
-		"./resources/system/nixery",
+		// "./resources/system/nixery",
 	]
 	prune:     false
 	sourceRef: _homelab

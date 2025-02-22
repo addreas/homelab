@@ -59,10 +59,7 @@ systemctl status kubelet
 
 Setup kubelet bootstap token, and rebuild
 ```sh
-# TODO: this should/could be fetched via pixie-api instead? (cant pipelike thsi because of sudo)
-ssh nucle1.localdomain -- kubeadm token create | ssh new-node.localdomain -- sudo tee /var/secret/kubeadm-bootstrap-token
-
-#for controlplane (cant pipe like this because sudo...)
+ssh nucle1.localdomain -- sudo kubeadm token create | ssh new-node.localdomain -- sudo tee /var/secret/kubeadm-bootstrap-token
 ssh nucle1.localdomain -- sudo kubeadm init phase upload-certs --upload-certs | grep -v upload-certs | ssh new-node.localdomain -- sudo tee /var/secret/kubeadm-cert-key
 
 ssh new-node.localdomain
