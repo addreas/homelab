@@ -24,7 +24,6 @@
     ./hardware-configuration.nix
     ./nas.nix
     ./monitoring.nix
-    ./kube.nix
   ];
   swapDevices = [ ];
 
