@@ -135,6 +135,8 @@
     32414 # plex
   ];
 
+  security.sudo.wheelNeedsPassword = false;
+
   environment.systemPackages = with pkgs; [
     sysstat
     smartmontools
