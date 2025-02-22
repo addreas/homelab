@@ -52,6 +52,7 @@ import (
 
 	// Timeout for scraping metrics from the Prometheus exporter.
 	// If not specified, the Prometheus global scrape timeout is used.
+	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// TLS configuration to use when scraping the endpoint.
@@ -214,5 +215,5 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Probes
-	items: [...null | #Probe] @go(Items,[]*Probe)
+	items: [...#Probe] @go(Items,[]Probe)
 }

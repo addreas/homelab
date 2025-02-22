@@ -102,6 +102,10 @@ package meta
 // the reconciliation failed.
 #ReconciliationFailedReason: "ReconciliationFailed"
 
+// InvalidCELExpressionReason represents the fact that a CEL expression
+// in the configuration is invalid.
+#InvalidCELExpressionReason: "InvalidCELExpression"
+
 // ObjectWithConditions describes a Kubernetes resource object with status conditions.
 // +k8s:deepcopy-gen=false
 #ObjectWithConditions: _

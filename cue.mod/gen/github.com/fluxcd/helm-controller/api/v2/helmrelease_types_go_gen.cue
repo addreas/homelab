@@ -5,10 +5,10 @@
 package v2
 
 import (
-	"github.com/fluxcd/pkg/apis/kustomize"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/fluxcd/pkg/apis/meta"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"github.com/fluxcd/pkg/apis/kustomize"
 )
 
 // HelmReleaseKind is the kind in string format.
@@ -20,27 +20,6 @@ import (
 
 // defaultMaxHistory is the default number of Helm release versions to keep.
 _#defaultMaxHistory: 5
-
-// Kustomize Helm PostRenderer specification.
-#Kustomize: {
-	// Strategic merge and JSON patches, defined as inline YAML objects,
-	// capable of targeting objects based on kind, label and annotation selectors.
-	// +optional
-	patches?: [...kustomize.#Patch] @go(Patches,[]kustomize.Patch)
-
-	// Images is a list of (image name, new name, new tag or digest)
-	// for changing image names, tags or digests. This can also be achieved with a
-	// patch, but this operator is simpler to specify.
-	// +optional
-	images?: [...kustomize.#Image] @go(Images,[]kustomize.Image)
-}
-
-// PostRenderer contains a Helm PostRenderer specification.
-#PostRenderer: {
-	// Kustomization to apply as PostRenderer.
-	// +optional
-	kustomize?: null | #Kustomize @go(Kustomize,*Kustomize)
-}
 
 // HelmReleaseSpec defines the desired state of a Helm release.
 // +kubebuilder:validation:XValidation:rule="(has(self.chart) && !has(self.chartRef)) || (!has(self.chart) && has(self.chartRef))", message="either chart or chartRef must be set"
@@ -168,7 +147,7 @@ _#defaultMaxHistory: 5
 
 	// ValuesFrom holds references to resources containing Helm values for this HelmRelease,
 	// and information about how they should be merged.
-	valuesFrom?: [...#ValuesReference] @go(ValuesFrom,[]ValuesReference)
+	valuesFrom?: [...meta.#ValuesReference] @go(ValuesFrom,[]meta.ValuesReference)
 
 	// Values holds the values for this Helm release.
 	// +optional
@@ -178,6 +157,30 @@ _#defaultMaxHistory: 5
 	// of their definition.
 	// +optional
 	postRenderers?: [...#PostRenderer] @go(PostRenderers,[]PostRenderer)
+}
+
+// +kubebuilder:object:generate=false
+#ValuesReference: meta.#ValuesReference
+
+// Kustomize Helm PostRenderer specification.
+#Kustomize: {
+	// Strategic merge and JSON patches, defined as inline YAML objects,
+	// capable of targeting objects based on kind, label and annotation selectors.
+	// +optional
+	patches?: [...kustomize.#Patch] @go(Patches,[]kustomize.Patch)
+
+	// Images is a list of (image name, new name, new tag or digest)
+	// for changing image names, tags or digests. This can also be achieved with a
+	// patch, but this operator is simpler to specify.
+	// +optional
+	images?: [...kustomize.#Image] @go(Images,[]kustomize.Image)
+}
+
+// PostRenderer contains a Helm PostRenderer specification.
+#PostRenderer: {
+	// Kustomization to apply as PostRenderer.
+	// +optional
+	kustomize?: null | #Kustomize @go(Kustomize,*Kustomize)
 }
 
 // DriftDetectionMode represents the modes in which a controller can detect and
@@ -338,6 +341,11 @@ _#defaultMaxHistory: 5
 	// +optional
 	remediation?: null | #InstallRemediation @go(Remediation,*InstallRemediation)
 
+	// DisableTakeOwnership disables taking ownership of existing resources
+	// during the Helm install action. Defaults to false.
+	// +optional
+	disableTakeOwnership?: bool @go(DisableTakeOwnership)
+
 	// DisableWait disables the waiting for resources to be ready after a Helm
 	// install has been performed.
 	// +optional
@@ -459,6 +467,11 @@ _#defaultMaxHistory: 5
 	// action for the HelmRelease fails. The default is to not perform any action.
 	// +optional
 	remediation?: null | #UpgradeRemediation @go(Remediation,*UpgradeRemediation)
+
+	// DisableTakeOwnership disables taking ownership of existing resources
+	// during the Helm upgrade action. Defaults to false.
+	// +optional
+	disableTakeOwnership?: bool @go(DisableTakeOwnership)
 
 	// DisableWait disables the waiting for resources to be ready after a Helm
 	// upgrade has been performed.
