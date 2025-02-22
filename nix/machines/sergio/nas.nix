@@ -19,11 +19,6 @@ in
     fsType = "btrfs";
     options = [ "nofail" "discard" ];
   };
-  fileSystems."/mnt/plex-config" = {
-    device = "/dev/disk/by-uuid/660b83df-c44d-4265-b293-272127aabf22";
-    fsType = "btrfs";
-    options = [ "subvol=plex-config" "nofail" "discard" ];
-  };
 
   fileSystems."/mnt/videos" = bind "/mnt/data" "videos";
   fileSystems."/mnt/pictures" = bind "/mnt/data" "pictures";
