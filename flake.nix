@@ -114,7 +114,11 @@
       # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5
       # nix build .#nixosConfigurations.pinas.config.system.build.sdImage
       # zstdcat result/sd-image/nixos-sd-image-*-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M status=progress oflag=sync
-      nixosConfigurations.pinas = machine arm64 "pinas" [ raspberry-pi-nix.nixosModules.raspberry-pi ];
+      nixosConfigurations.pinas = machine arm64 "pinas" [
+        raspberry-pi-nix.nixosModules.raspberry-pi
+        raspberry-pi-nix.nixosModules.sd-image
+        ./nix/packages/nas/module.nix
+      ];
 
       # https://github.com/ryan4yin/nixos-rk3588?tab=readme-ov-file#references
       # nix build .#nixosConfigurations.radnas.config.system.build.sdImage

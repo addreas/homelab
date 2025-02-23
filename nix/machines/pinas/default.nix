@@ -26,4 +26,16 @@
       roles = [ "info" "target" "delete" ];
     }
   ];
+
+  services.nas = {
+    enable = true;
+    shares = {
+      test = {
+        path = "/mnt/data/test";
+        nfs.enable = true;
+        smb.enable = true;
+        afs.enable = true;
+      };
+    };
+  };
 }

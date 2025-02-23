@@ -2,75 +2,69 @@
 let
   cfg = config.services.nas;
 
-  getEnabled = type: shares: lib.attrsets.filterAttrs (name: share: share.${type}.enabled) shares;
+  getEnabled = type: shares: lib.attrsets.filterAttrs (name: share: share.${type}.enable) shares;
   yesno = pred: if pred then "yes" else "no";
 
-  mkNFS = shares: concatStringsSep "\n" (map mkNFSShare (attrValues (getEnabled "nfs" shares)));
-  mkNFSShare = share: "${share.path} ${concatStringSep " " (mkNFSShareHost share.nfs.hosts)}";
-  mkNFSShareHosts = hosts: mapAttrs (host: options: "${host}(${concatStringsSep "," options})") hosts; 
+  mkNFS = shares: builtins.concatStringsSep "\n" (map mkNFSShare (builtins.attrValues (getEnabled "nfs" shares)));
+  mkNFSShare = share: "${share.path} ${builtins.concatStringsSep " " (builtins.map (conf: "${conf.clients}(${builtins.concatStringsSep "," conf.options})") share.nfs.configs)}";
 
-  mkSMB = shares: mapAttrs mkSMBShare (getEnabled "smb" shares);
+  mkSMB = shares: builtins.mapAttrs mkSMBShare (getEnabled "smb" shares);
   mkSMBShare = name: share: {
     "path" = share.path;
     "read only" = yesno share.smb.readonly;
     "browseable" = yesno share.smb.browseable;
     "guest ok" = yesno share.smb.guest;
-    "admin users" = concatStringsSep " " share.smb.admins;
-  }
+    "admin users" = builtins.concatStringsSep " " share.smb.admins;
+  };
 
-  mkAFS = shares: mapAttrs mkAFSShare (getEnabled "afs" shares);
-  mkAFSSHare  = name: share: {
+  mkAFSShare = name: share: {
     "path" = share.path;
     "time machine" = yesno share.afs.timemachine;
   };
+  mkAFS = shares: builtins.mapAttrs mkAFSShare (getEnabled "afs" shares);
+
+  mkSubmodule = options: lib.mkOption { type = lib.types.submodule { inherit options; }; };
 in
 {
   options.services.nas = with lib; {
     enable = mkEnableOption "NAS";
 
-    nfs = submodule {
-      options = {
-        options = mkOption { type = listOf str; default = ["rw" "sync" "all_squash"]; };
-      };
-    };
-
     shares = mkOption {
       type = with types; attrsOf (submodule {
         options = {
-          nixosSystem = mkOption { type = attrs; };
-
           path = mkOption { type = str; };
 
           # device/mount stuff?
           # backup stuff?
 
-          nfs = submodule {
-            options = {
-              enable = mkEnableOption "Enable NFS for this share";
+          nfs = mkSubmodule {
+            enable = mkEnableOption "Enable NFS for this share";
 
-              hosts = attrsOf (submodule {
+            configs = mkOption {
+              type = listOf (submodule {
                 options = {
-                  options = mkOption { type = listOf str; default = cfg.services.nas.nfs.options; };
+                  clients = mkOption { type = str; };
+                  options = mkOption {
+                    type = listOf str;
+                    default = ["rw" "sync" "all_squash"];
+                  };
                 };
               });
+              default = [{ clients = "*"; }];
             };
           };
 
-          smb = submodule {
-            options = {
-              enable = mkEnableOption "Enable SMB for this share";
-              readonly = mkEnableOption "readonly";
-              browseable = mkEnableOption "browseable";
-              guest = mkEnableOption "guest ok";
-              admins = mkOption { type = listof str; default = []; };
-            };
+          smb = mkSubmodule {
+            enable = mkEnableOption "Enable SMB for this share";
+            readonly = mkEnableOption "readonly";
+            browseable = mkEnableOption "browseable";
+            guest = mkEnableOption "guest ok";
+            admins = mkOption { type = listOf str; default = []; };
           };
 
-          afs = submodule {
-            options = {
-              enable = mkEnableOption "Enable AFS for this share";
-              timemachine = mkEnableOption "Enable Time Machine for this share";
-            };
+          afs = mkSubmodule {
+            enable = mkEnableOption "Enable AFS for this share";
+            timemachine = mkEnableOption "Enable Time Machine for this share";
           };
 
         };
@@ -85,7 +79,7 @@ in
     services.nfs.server.statdPort = lib.mkDefault 4000;
     services.nfs.server.lockdPort = lib.mkDefault 4001;
     services.nfs.server.mountdPort = lib.mkDefault 4002;
-    services.nfs.server.export = mkNFS cfg.shares;
+    services.nfs.server.exports = mkNFS cfg.shares;
 
     services.samba.enable = true;
     services.samba-wsdd.enable = true;
