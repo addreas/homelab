@@ -7,16 +7,32 @@ let
       "\n---\n"
       builtins.toJSON
       [
-        cfg.init.initConfig
-        cfg.init.clusterConfig
-        cfg.init.kubeletConfig
-        cfg.init.kubeProxyConfig
+        cfg.initConfig
+        cfg.clusterConfig
+        cfg.kubeletConfig
+        cfg.kubeProxyConfig
+      ]
+  );
+
+  kubeadmJoinConfig = pkgs.writeText "kubeadm-join.yaml" (
+    lib.strings.concatMapStringsSep
+      "\n---\n"
+      builtins.toJSON
+      [
+        cfg.joinConfig
+        cfg.clusterConfig
       ]
   );
 
   kubeadmUpgradeConfig = pkgs.writeText "kubeadm-upgrade.yaml" (
-    builtins.toJSON
-      cfg.upgrade.upgradeConfig
+    lib.strings.concatMapStringsSep
+      "\n---\n"
+      builtins.toJSON
+      [
+        cfg.upgradeConfig
+        cfg.clusterConfig
+        cfg.kubeletConfig
+      ]
   );
 
   kubeadm-path = with pkgs; [
@@ -48,7 +64,10 @@ in
       type = lib.types.package;
       default = pkgs.kubernetes;
     };
-    controlPlane = lib.mkEnableOption "control plane";
+    controlPlane.enable = lib.mkEnableOption "control plane";
+    controlPlane.advertiseAddress = lib.mkOption {
+      type = lib.types.str;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -110,17 +129,11 @@ in
       unitConfig.ConditionPathExists = "!/etc/kubernetes/.kubeadm-joined";
 
       script = ''
-        ${cfg.package}/bin/kubeadm join ${cfg.init.clusterConfig.controlPlaneEndpoint} \
+        # file replace tokens in kubeadmJoinConfig first
+        ${cfg.package}/bin/kubeadm join --config ${kubeadmJoinConfig} \
           --v=5 \
-          --token $(cat ${cfg.init.bootstrapTokenFile}) \
-          --discovery-token-unsafe-skip-ca-verification \
-          ${lib.strings.optionalString (cfg.controlPlane) ''
-            --control-plane \
-            --certificate-key $(cat ${cfg.init.certificateKeyFile})
-            ''}
 
-
-        rm ${cfg.init.bootstrapTokenFile} ${lib.strings.optionalString cfg.controlPlane cfg.init.certificateKeyFile}
+        rm ${cfg.bootstrapTokenFile} ${lib.strings.optionalString cfg.controlPlane cfg.certificateKeyFile}
         touch /etc/kubernetes/.kubeadm-joined
       '';
 

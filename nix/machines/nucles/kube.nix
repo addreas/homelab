@@ -15,12 +15,10 @@ in
     package = pkgs.kubernetes;
     kubelet.enable = true;
 
-    init.initConfig = { };
-
     init.clusterConfig = {
       clusterName = "nucles";
 
-      controlPlaneEndpoint = "nucles.localdomain:6443";
+      controlPlaneEndpoint = "100.65.139.71:6443";
 
       apiServer.certSANs = hosts;
 

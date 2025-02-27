@@ -1,7 +1,10 @@
 { pkgs, lib, config, ... }:
+let
+  cfg = config.services.kubeadm;
+in
 {
-  options.services.kubeadm.init = with lib; {
-    enable = mkEnableOption "kubeadm init";
+  options.services.kubeadm = with lib; {
+    enableInit = mkEnableOption "kubeadm init";
 
     bootstrapTokenFile = mkOption {
       type = types.path;
@@ -15,6 +18,11 @@
     initConfig = mkOption {
       type = types.attrs;
       description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-InitConfiguration";
+    };
+
+    joinConfig = mkOption {
+      type = types.attrs;
+      description = "https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-JoinConfiguration";
     };
 
     clusterConfig = mkOption {
@@ -42,9 +50,19 @@
     };
   };
 
-  config.services.kubeadm.init = {
+  config.services.kubeadm = {
     initConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     initConfig.kind = "InitConfiguration";
+    initConfig.localAPIEndpoint.advertiseAddress = cfg.controlPlane.advertiseAddress;
+
+    joinConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
+    joinConfig.kind = "JoinConfiguration";
+
+    joinConfig.discovery.bootstrapToken.apiServerEndpoint = cfg.clusterConfig.controlPlaneEndpoint;
+    joinConfig.discovery.bootstrapToken.token = cfg.bootstrapTokenFile;
+
+    joinConfig.controlPlane.localAPIEndpoint.advertiseAddress = cfg.controlPlane.advertiseAddress;
+    joinConfig.controlPlane.certificateKey = cfg.certificateKeyFile;
 
     clusterConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     clusterConfig.kind = "ClusterConfiguration";
@@ -54,9 +72,7 @@
 
     kubeProxyConfig.apiVersion = "kubeproxy.config.k8s.io/v1alpha1";
     kubeProxyConfig.kind = "KubeProxyConfiguration";
-  };
 
-  config.services.kubeadm.upgrade = {
     upgradeConfig.apiVersion = "kubeadm.k8s.io/v1beta4";
     upgradeConfig.kind = "UpgradeConfiguration";
     upgradeConfig.apply.forceUpgrade = true; # non-interactive upgrade is required
