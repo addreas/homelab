@@ -88,8 +88,12 @@ in
       global = {
         "guest account" = "nobody";
         "map to guest" = "Bad User";
+        "unix password sync" = "no";
       };
     } // mkSMB cfg.shares;
+
+    # setup smb passwords separately with 
+    # sudo smbpasswd -a <username>
 
     services.netatalk.enable = true;
     services.netatalk.settings = mkAFS cfg.shares;
