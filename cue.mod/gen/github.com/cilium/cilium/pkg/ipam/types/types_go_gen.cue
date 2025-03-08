@@ -160,6 +160,13 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +kubebuilder:validation:Minimum=0
 	"max-above-watermark"?: int @go(MaxAboveWatermark)
+
+	// StaticIPTags are used to determine the pool of IPs from which to
+	// attribute a static IP to the node. For example in AWS this is used to
+	// filter Elastic IP Addresses.
+	//
+	// +optional
+	"static-ip-tags"?: {[string]: string} @go(StaticIPTags,map[string]string)
 }
 
 // IPReleaseStatus defines the valid states in IP release handshake
@@ -212,6 +219,11 @@ import "github.com/cilium/cilium/pkg/cidr"
 	//
 	// +optional
 	"release-ipv6s"?: {[string]: #IPReleaseStatus} @go(ReleaseIPv6s,map[string]IPReleaseStatus)
+
+	// AssignedStaticIP is the static IP assigned to the node (ex: public Elastic IP address in AWS)
+	//
+	// +optional
+	"assigned-static-ip"?: string @go(AssignedStaticIP)
 }
 
 // IPAMPoolRequest is a request from the agent to the operator, indicating how

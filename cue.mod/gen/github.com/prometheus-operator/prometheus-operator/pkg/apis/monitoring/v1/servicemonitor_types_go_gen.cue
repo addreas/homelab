@@ -168,5 +168,5 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of ServiceMonitors
-	items: [...null | #ServiceMonitor] @go(Items,[]*ServiceMonitor)
+	items: [...#ServiceMonitor] @go(Items,[]ServiceMonitor)
 }

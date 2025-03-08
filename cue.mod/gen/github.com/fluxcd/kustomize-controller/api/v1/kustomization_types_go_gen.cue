@@ -18,6 +18,9 @@ import (
 #MergeValue:                "Merge"
 #IfNotPresentValue:         "IfNotPresent"
 #IgnoreValue:               "Ignore"
+#DeletionPolicyMirrorPrune: "MirrorPrune"
+#DeletionPolicyDelete:      "Delete"
+#DeletionPolicyOrphan:      "Orphan"
 
 // KustomizationSpec defines the configuration to calculate the desired state
 // from a Source using Kustomize.
@@ -78,6 +81,14 @@ import (
 	// Prune enables garbage collection.
 	// +required
 	prune: bool @go(Prune)
+
+	// DeletionPolicy can be used to control garbage collection when this
+	// Kustomization is deleted. Valid values are ('MirrorPrune', 'Delete',
+	// 'Orphan'). 'MirrorPrune' mirrors the Prune field (orphan if false,
+	// delete if true). Defaults to 'MirrorPrune'.
+	// +kubebuilder:validation:Enum=MirrorPrune;Delete;Orphan
+	// +optional
+	deletionPolicy?: string @go(DeletionPolicy)
 
 	// A list of resources to be included in the health assessment.
 	// +optional
@@ -151,6 +162,12 @@ import (
 	// Components specifies relative paths to specifications of other Components.
 	// +optional
 	components?: [...string] @go(Components,[]string)
+
+	// HealthCheckExprs is a list of healthcheck expressions for evaluating the
+	// health of custom resources using Common Expression Language (CEL).
+	// The expressions are evaluated only when Wait or HealthChecks are specified.
+	// +optional
+	healthCheckExprs?: [...kustomize.#CustomHealthCheck] @go(HealthCheckExprs,[]kustomize.CustomHealthCheck)
 }
 
 // CommonMetadata defines the common labels and annotations.
@@ -234,6 +251,14 @@ import (
 	// Equals the Revision of the applied Artifact from the referenced Source.
 	// +optional
 	lastAppliedRevision?: string @go(LastAppliedRevision)
+
+	// The last successfully applied origin revision.
+	// Equals the origin revision of the applied Artifact from the referenced Source.
+	// Usually present on the Metadata of the applied Artifact and depends on the
+	// Source type, e.g. for OCI it's the value associated with the key
+	// "org.opencontainers.image.revision".
+	// +optional
+	lastAppliedOriginRevision?: string @go(LastAppliedOriginRevision)
 
 	// LastAttemptedRevision is the revision of the last reconciliation attempt.
 	// +optional

@@ -300,53 +300,102 @@ import (
 // WebTLSConfig defines the TLS parameters for HTTPS.
 // +k8s:openapi-gen=true
 #WebTLSConfig: {
-	// Contains the TLS certificate for the server.
+	// Secret or ConfigMap containing the TLS certificate for the web server.
+	//
+	// Either `keySecret` or `keyFile` must be defined.
+	//
+	// It is mutually exclusive with `certFile`.
+	//
+	// +optional
 	cert?: #SecretOrConfigMap @go(Cert)
 
-	// Contains the CA certificate for client certificate authentication to the server.
-	client_ca?: #SecretOrConfigMap @go(ClientCA)
+	// Path to the TLS certificate file in the container for the web server.
+	//
+	// Either `keySecret` or `keyFile` must be defined.
+	//
+	// It is mutually exclusive with `cert`.
+	//
+	// +optional
+	certFile?: null | string @go(CertFile,*string)
 
-	// Secret containing the TLS key for the server.
+	// Secret containing the TLS private key for the web server.
+	//
+	// Either `cert` or `certFile` must be defined.
+	//
+	// It is mutually exclusive with `keyFile`.
+	//
+	// +optional
 	keySecret?: v1.#SecretKeySelector @go(KeySecret)
 
-	// Server policy for client authentication. Maps to ClientAuth Policies.
+	// Path to the TLS private key file in the container for the web server.
+	//
+	// If defined, either `cert` or `certFile` must be defined.
+	//
+	// It is mutually exclusive with `keySecret`.
+	//
+	// +optional
+	keyFile?: null | string @go(KeyFile,*string)
+
+	// Secret or ConfigMap containing the CA certificate for client certificate
+	// authentication to the server.
+	//
+	// It is mutually exclusive with `clientCAFile`.
+	//
+	// +optional
+	client_ca?: #SecretOrConfigMap @go(ClientCA)
+
+	// Path to the CA certificate file for client certificate authentication to
+	// the server.
+	//
+	// It is mutually exclusive with `client_ca`.
+	//
+	// +optional
+	clientCAFile?: null | string @go(ClientCAFile,*string)
+
+	// The server policy for client TLS authentication.
+	//
 	// For more detail on clientAuth options:
 	// https://golang.org/pkg/crypto/tls/#ClientAuthType
-	clientAuthType?: string @go(ClientAuthType)
+	//
+	// +optional
+	clientAuthType?: null | string @go(ClientAuthType,*string)
 
-	// Minimum TLS version that is acceptable. Defaults to TLS12.
-	minVersion?: string @go(MinVersion)
+	// Minimum TLS version that is acceptable.
+	//
+	// +optional
+	minVersion?: null | string @go(MinVersion,*string)
 
-	// Maximum TLS version that is acceptable. Defaults to TLS13.
-	maxVersion?: string @go(MaxVersion)
+	// Maximum TLS version that is acceptable.
+	//
+	// +optional
+	maxVersion?: null | string @go(MaxVersion,*string)
 
-	// List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-	// Go default cipher suites are used. Available cipher suites are documented
-	// in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+	// List of supported cipher suites for TLS versions up to TLS 1.2.
+	//
+	// If not defined, the Go default cipher suites are used.
+	// Available cipher suites are documented in the Go documentation:
+	// https://golang.org/pkg/crypto/tls/#pkg-constants
+	//
+	// +optional
 	cipherSuites?: [...string] @go(CipherSuites,[]string)
 
-	// Controls whether the server selects the
-	// client's most preferred cipher suite, or the server's most preferred
-	// cipher suite. If true then the server's preference, as expressed in
+	// Controls whether the server selects the client's most preferred cipher
+	// suite, or the server's most preferred cipher suite.
+	//
+	// If true then the server's preference, as expressed in
 	// the order of elements in cipherSuites, is used.
+	//
+	// +optional
 	preferServerCipherSuites?: null | bool @go(PreferServerCipherSuites,*bool)
 
 	// Elliptic curves that will be used in an ECDHE handshake, in preference
-	// order. Available curves are documented in the go documentation:
+	// order.
+	//
+	// Available curves are documented in the Go documentation:
 	// https://golang.org/pkg/crypto/tls/#CurveID
+	//
+	// +optional
 	curvePreferences?: [...string] @go(CurvePreferences,[]string)
-
-	// Path to the TLS key file in the Prometheus container for the server.
-	// Mutually exclusive with `keySecret`.
-	keyFile?: string @go(KeyFile)
-
-	// Path to the TLS certificate file in the Prometheus container for the server.
-	// Mutually exclusive with `cert`.
-	certFile?: string @go(CertFile)
-
-	// Path to the CA certificate file for client certificate authentication to the server.
-	// Mutually exclusive with `client_ca`.
-	clientCAFile?: string @go(ClientCAFile)
 }
 
 // LabelName is a valid Prometheus label name which may only contain ASCII
@@ -398,6 +447,7 @@ import (
 	//
 	// If empty, Prometheus uses the global scrape timeout unless it is less
 	// than the target's scrape interval value in which the latter is used.
+	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// TLS configuration to use when scraping the target.
