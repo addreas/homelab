@@ -144,7 +144,7 @@ import "github.com/cilium/proxy/pkg/policy/api/kafka"
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Maximum=100
 	// +kubebuilder:validation:Optional
-	priority: uint16 @go(Priority)
+	priority: uint8 @go(Priority)
 }
 
 // PortRule is a list of ports/protocol combinations with optional Layer 7

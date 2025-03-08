@@ -164,7 +164,7 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of PodMonitors
-	items: [...null | #PodMonitor] @go(Items,[]*PodMonitor)
+	items: [...#PodMonitor] @go(Items,[]PodMonitor)
 }
 
 // PodMetricsEndpoint defines an endpoint serving Prometheus metrics to be scraped by
@@ -217,6 +217,7 @@ import (
 	//
 	// If empty, Prometheus uses the global scrape timeout unless it is less
 	// than the target's scrape interval value in which the latter is used.
+	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// TLS configuration to use when scraping the target.
