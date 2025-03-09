@@ -9,3 +9,5 @@ k: CueExport: "homelab-plausible": spec: {
 	prune:   true
 	suspend: false
 }
+
+k: ["StatefulSet" | "Deployment"]: [string]: spec: replicas: 0

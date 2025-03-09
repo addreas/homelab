@@ -13,7 +13,7 @@ k: Deployment: [string]: spec: template: spec: containers: [...{
 		runAsUser:              1000
 	}
 }]
-
+k: ["StatefulSet" | "Deployment"]: [string]: spec: replicas: 0
 _probes: {
 	_port: ports[0].name
 	ports: [...{name: string}]
