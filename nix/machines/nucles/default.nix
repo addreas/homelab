@@ -14,25 +14,23 @@
 
   system.stateVersion = "22.11";
 
-  system.autoUpgrade = {
-    enable = true;
-    flake = "/home/addem/homelab";
-    dates = "Sat,Sun 05:40";
-    flags = [ ];
-    operation = "boot";
-  };
-  systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
-    cd /home/addem/homelab
-    ${pkgs.git}/bin/git restore .
-    ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
-  '';
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   flake = "/home/addem/homelab";
+  #   dates = "Sat,Sun 05:40";
+  #   flags = [ ];
+  #   operation = "boot";
+  # };
+  # systemd.services."nixos-upgrade".serviceConfig.ExecStartPre = pkgs.writeShellScript "flake-pull" ''
+  #   cd /home/addem/homelab
+  #   ${pkgs.git}/bin/git restore .
+  #   ${pkgs.sudo}/bin/sudo -u addem ${pkgs.git}/bin/git pull
+  # '';
 
   networking.domain = "localdomain";
   networking.useNetworkd = true;
 
   systemd.network.enable = true;
-  systemd.network.networks.lan.name = "en*";
-  systemd.network.networks.lan.DHCP = "yes";
   systemd.network.wait-online.anyInterface = true;
   services.resolved.dnssec = "false"; # dnssec fails for localdomain and breaks stuff
 
