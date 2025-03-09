@@ -8,10 +8,8 @@
   networking.hostName = "nucle4";
   services.tailscale.enable = true;
 
-  systemd.network.networks."10-lan" = {
-    matchConfig.Name = "eno1";
-    networkConfig.DHCP = "ipv4";
-    linkConfig.RequiredForOnline = "routable";
+  systemd.network.networks."00-loop" = {
+    matchConfig.Name = "lo";
     address = [ "192.168.0.192/32" ];
   };
 
