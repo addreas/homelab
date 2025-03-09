@@ -274,6 +274,7 @@ import (
 	scrapeInterval?: #Duration @go(ScrapeInterval)
 
 	// Number of seconds to wait until a scrape request times out.
+	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
 	// The protocols to negotiate during a scrape. It tells clients the
@@ -856,6 +857,29 @@ import (
 	// +optional
 	tsdb?: null | #TSDBSpec @go(TSDB,*TSDBSpec)
 
+	// File to which scrape failures are logged.
+	// Reloading the configuration will reopen the file.
+	//
+	// If the filename has an empty path, e.g. 'file.log', The Prometheus Pods
+	// will mount the file into an emptyDir volume at `/var/log/prometheus`.
+	// If a full path is provided, e.g. '/var/log/prometheus/file.log', you
+	// must mount a volume in the specified directory and it must be writable.
+	// It requires Prometheus >= v2.55.0.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +optional
+	scrapeFailureLogFile?: null | string @go(ScrapeFailureLogFile,*string)
+
+	// The name of the service name used by the underlying StatefulSet(s) as the governing service.
+	// If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels.
+	// If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources,
+	// or `prometheus-agent-operated` for PrometheusAgent resources.
+	// When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each.
+	// See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+	// +optional
+	// +kubebuilder:validation:MinLength=1
+	serviceName?: null | string @go(ServiceName,*string)
+
 	// RuntimeConfig configures the values for the Prometheus process behavior
 	// +optional
 	runtime?: null | #RuntimeConfig @go(Runtime,*RuntimeConfig)
@@ -931,7 +955,7 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Prometheuses
-	items: [...null | #Prometheus] @go(Items,[]*Prometheus)
+	items: [...#Prometheus] @go(Items,[]Prometheus)
 }
 
 // PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info:
@@ -2099,6 +2123,13 @@ import (
 	// +optional
 	default?: null | bool @go(Default,*bool)
 
+	// The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+	// It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol
+	//
+	// It requires Prometheus >= v3.0.0.
+	// +optional
+	fallbackScrapeProtocol?: null | #ScrapeProtocol @go(FallbackScrapeProtocol,*ScrapeProtocol)
+
 	// TLSConfig defines the TLS settings to use for the scrape. When the
 	// scrape objects define their own CA, certificate and/or key, they take
 	// precedence over the corresponding scrape class fields.
@@ -2171,9 +2202,15 @@ import (
 	promoteResourceAttributes?: [...string] @go(PromoteResourceAttributes,[]string)
 
 	// Configures how the OTLP receiver endpoint translates the incoming metrics.
-	// If unset, Prometheus uses its default value.
 	//
 	// It requires Prometheus >= v3.0.0.
 	// +optional
 	translationStrategy?: null | #TranslationStrategyOption @go(TranslationStrategy,*TranslationStrategyOption)
+
+	// Enables adding `service.name`, `service.namespace` and `service.instance.id`
+	// resource attributes to the `target_info` metric, on top of converting them into the `instance` and `job` labels.
+	//
+	// It requires Prometheus >= v3.1.0.
+	// +optional
+	keepIdentifyingResourceAttributes?: null | bool @go(KeepIdentifyingResourceAttributes,*bool)
 }

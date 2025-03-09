@@ -8,6 +8,7 @@ package api
 	// MatchName matches literal DNS names. A trailing "." is automatically added
 	// when missing.
 	//
+	// +kubebuilder:validation:MaxLength=255
 	// +kubebuilder:validation:Pattern=`^([-a-zA-Z0-9_]+[.]?)+$`
 	// +kubebuilder:validation:OneOf
 	matchName?: string @go(MatchName)
@@ -30,6 +31,7 @@ package api
 	//   sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
 	//   blog.cilium.io, cilium.io and google.com do not
 	//
+	// +kubebuilder:validation:MaxLength=255
 	// +kubebuilder:validation:Pattern=`^([-a-zA-Z0-9_*]+[.]?)+$`
 	// +kubebuilder:validation:OneOf
 	matchPattern?: string @go(MatchPattern)

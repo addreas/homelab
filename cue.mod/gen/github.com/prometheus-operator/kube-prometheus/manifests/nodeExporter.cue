@@ -9,7 +9,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name: "node-exporter"
 		}
@@ -31,7 +31,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name: "node-exporter"
 		}
@@ -54,7 +54,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -72,14 +72,14 @@ nodeExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "node-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "1.8.2"
+						"app.kubernetes.io/version":   "1.9.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
-						image: "quay.io/prometheus/node-exporter:v1.8.2"
+						image: "quay.io/prometheus/node-exporter:v1.9.0"
 						name:  "node-exporter"
 						resources: {
 							limits: {
@@ -119,7 +119,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.18.2"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.19.0"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100
@@ -185,7 +185,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -579,6 +579,19 @@ nodeExporter: {
 				for: "5m"
 				labels: severity: "warning"
 			}, {
+				alert: "NodeSystemdServiceCrashlooping"
+				annotations: {
+					description: "Systemd service {{ $labels.name }} has being restarted too many times at {{ $labels.instance }} for the last 15 minutes. Please check if service is crash looping."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodesystemdservicecrashlooping"
+					summary:     "Systemd service keeps restaring, possibly crash looping."
+				}
+				expr: """
+					increase(node_systemd_service_restart_total{job="node-exporter"}[5m]) > 2
+
+					"""
+				for: "15m"
+				labels: severity: "warning"
+			}, {
 				alert: "NodeBondingDegraded"
 				annotations: {
 					description: "Bonding interface {{ $labels.master }} on {{ $labels.instance }} is in degraded state due to one or more slave failures."
@@ -703,7 +716,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -731,7 +744,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"
@@ -745,7 +758,7 @@ nodeExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "node-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "1.8.2"
+				"app.kubernetes.io/version":   "1.9.0"
 			}
 			name:      "node-exporter"
 			namespace: "monitoring"

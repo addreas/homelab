@@ -10,20 +10,20 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "main"
 			namespace: "monitoring"
 		}
 		spec: {
-			image: "quay.io/prometheus/alertmanager:v0.27.0"
+			image: "quay.io/prometheus/alertmanager:v0.28.0"
 			nodeSelector: "kubernetes.io/os": "linux"
 			podMetadata: labels: {
 				"app.kubernetes.io/component": "alert-router"
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			replicas: 3
 			resources: {
@@ -43,7 +43,7 @@ alertmanager: {
 				runAsUser:    1000
 			}
 			serviceAccountName: "alertmanager-main"
-			version:            "0.27.0"
+			version:            "0.28.0"
 		}
 	}
 	PodDisruptionBudget: "alertmanager-main": {
@@ -55,7 +55,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -79,7 +79,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -246,7 +246,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -321,7 +321,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -355,7 +355,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -370,7 +370,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.27.0"
+				"app.kubernetes.io/version":   "0.28.0"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
