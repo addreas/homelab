@@ -16,13 +16,13 @@ k: StatefulSet: "\(postgresHost)": spec: {
 				subPath:   "data"
 			}]
 			readinessProbe: {
-				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				exec: command: ["/bin/sh", "-c", "pg_isready -U packlistor"]
 				initialDelaySeconds: 20
 				failureThreshold:    6
 				periodSeconds:       10
 			}
 			livenessProbe: {
-				exec: command: ["/bin/sh", "-c", "pg_isready -U postgres"]
+				exec: command: ["/bin/sh", "-c", "pg_isready -U packlistor"]
 				initialDelaySeconds: 30
 				failureThreshold:    3
 				periodSeconds:       10
