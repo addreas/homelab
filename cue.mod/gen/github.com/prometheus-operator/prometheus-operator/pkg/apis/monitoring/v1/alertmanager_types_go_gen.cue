@@ -192,6 +192,19 @@ import (
 	// +optional
 	dnsConfig?: null | #PodDNSConfig @go(DNSConfig,*PodDNSConfig)
 
+	// Indicates whether information about services should be injected into pod's environment variables
+	// +optional
+	enableServiceLinks?: null | bool @go(EnableServiceLinks,*bool)
+
+	// The name of the service name used by the underlying StatefulSet(s) as the governing service.
+	// If defined, the Service  must be created before the Alertmanager resource in the same namespace and it must define a selector that matches the pod labels.
+	// If empty, the operator will create and manage a headless service named `alertmanager-operated` for Alermanager resources.
+	// When deploying multiple Alertmanager resources in the same namespace, it is recommended to specify a different value for each.
+	// See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+	// +optional
+	// +kubebuilder:validation:MinLength=1
+	serviceName?: null | string @go(ServiceName,*string)
+
 	// ServiceAccountName is the name of the ServiceAccount to use to run the
 	// Prometheus Pods.
 	serviceAccountName?: string @go(ServiceAccountName)
@@ -281,6 +294,12 @@ import (
 	// Defines the web command line flags when starting Alertmanager.
 	web?: null | #AlertmanagerWebSpec @go(Web,*AlertmanagerWebSpec)
 
+	// Configures the mutual TLS configuration for the Alertmanager cluster's gossip protocol.
+	//
+	// It requires Alertmanager >= 0.24.0.
+	//+optional
+	clusterTLS?: null | #ClusterTLSConfig @go(ClusterTLS,*ClusterTLSConfig)
+
 	// alertmanagerConfiguration specifies the configuration of Alertmanager.
 	//
 	// If defined, it takes precedence over the `configSecret` field.
@@ -304,6 +323,24 @@ import (
 	// It requires Alertmanager >= 0.27.0.
 	// +optional
 	enableFeatures?: [...string] @go(EnableFeatures,[]string)
+
+	// AdditionalArgs allows setting additional arguments for the 'Alertmanager' container.
+	// It is intended for e.g. activating hidden flags which are not supported by
+	// the dedicated configuration options yet. The arguments are passed as-is to the
+	// Alertmanager container which may cause issues if they are invalid or not supported
+	// by the given Alertmanager version.
+	// +optional
+	additionalArgs?: [...#Argument] @go(AdditionalArgs,[]Argument)
+
+	// Optional duration in seconds the pod needs to terminate gracefully.
+	// Value must be non-negative integer. The value zero indicates stop immediately via
+	// the kill signal (no opportunity to shut down) which may lead to data corruption.
+	//
+	// Defaults to 120 seconds.
+	//
+	// +kubebuilder:validation:Minimum:=0
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 #AlertmanagerConfigMatcherStrategy: {
@@ -523,4 +560,16 @@ import (
 
 	// List of Alertmanagers
 	items: [...#Alertmanager] @go(Items,[]Alertmanager)
+}
+
+// ClusterTLSConfig defines the mutual TLS configuration for the Alertmanager cluster TLS protocol.
+// +k8s:openapi-gen=true
+#ClusterTLSConfig: {
+	// Server-side configuration for mutual TLS.
+	// +required
+	server: #WebTLSConfig @go(ServerTLS)
+
+	// Client-side configuration for mutual TLS.
+	// +required
+	client: #SafeTLSConfig @go(ClientTLS)
 }

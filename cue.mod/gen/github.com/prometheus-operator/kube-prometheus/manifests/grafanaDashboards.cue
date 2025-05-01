@@ -2561,7 +2561,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
+				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"}) by (namespace)"
 				legendFormat: "__auto"
 			}]
 			title: "CPU Usage"
@@ -2622,7 +2622,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"}) by (namespace)"
 				format:  "table"
 				instant: true
 			}, {
@@ -2638,7 +2638,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)"
 				format:  "table"
 				instant: true
 			}, {
@@ -2654,7 +2654,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)"
 				format:  "table"
 				instant: true
 			}]
@@ -3852,7 +3852,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
+				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m) by (cluster)"
 				legendFormat: "__auto"
 			}]
 			title: "CPU Usage"
@@ -3897,7 +3897,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m) by (cluster)"
 				format:  "table"
 				instant: true
 			}, {
@@ -3913,7 +3913,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m) by (cluster) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
 				format:  "table"
 				instant: true
 			}, {
@@ -3929,7 +3929,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m) by (cluster) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", resource=\"cpu\"}) by (cluster)"
 				format:  "table"
 				instant: true
 			}]
@@ -4192,7 +4192,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
 				instant: true
 			}]
 			title: "CPU Utilisation (from requests)"
@@ -4218,7 +4218,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})"
 				instant: true
 			}]
 			title: "CPU Utilisation (from limits)"
@@ -4348,7 +4348,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
 				legendFormat: "__auto"
 			}, {
 				datasource: {
@@ -4407,7 +4407,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}, {
@@ -4423,7 +4423,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}, {
@@ -4439,7 +4439,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}]
@@ -5486,7 +5486,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
 				legendFormat: "{{pod}}"
 			}]
 			title: "CPU Usage"
@@ -5531,7 +5531,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}, {
@@ -5547,7 +5547,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}, {
@@ -5563,7 +5563,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", node=~\"$node\"}) by (pod) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", node=~\"$node\"}) by (pod)"
 				format:  "table"
 				instant: true
 			}]
@@ -6031,7 +6031,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$namespace\", pod=\"$pod\", cluster=\"$cluster\", container!=\"\"}) by (container)"
+				expr:         "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=\"$namespace\", pod=\"$pod\", cluster=\"$cluster\", container!=\"\"}) by (container)"
 				legendFormat: "__auto"
 			}, {
 				datasource: {
@@ -6161,7 +6161,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
 				format:  "table"
 				instant: true
 			}, {
@@ -6177,7 +6177,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
 				format:  "table"
 				instant: true
 			}, {
@@ -6193,7 +6193,7 @@ grafanaDashboards: {
 					type: "prometheus"
 					uid:  "${datasource}"
 				}
-				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
+				expr:    "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container) / sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\"}) by (container)"
 				format:  "table"
 				instant: true
 			}]
@@ -8499,7 +8499,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					  * on(namespace,pod)
 					    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 					) by (pod)
@@ -8551,7 +8551,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					  * on(namespace,pod)
 					    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 					) by (pod)
@@ -8581,7 +8581,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					  * on(namespace,pod)
 					    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 					) by (pod)
@@ -8616,7 +8616,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					    node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					  * on(namespace,pod)
 					    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload="$workload", workload_type=~"$type"}
 					) by (pod)
@@ -9594,7 +9594,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					* on(namespace,pod)
 					  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 					) by (workload, workload_type)
@@ -9677,7 +9677,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					* on(namespace,pod)
 					  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 					) by (workload, workload_type)
@@ -9707,7 +9707,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					* on(namespace,pod)
 					  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 					) by (workload, workload_type)
@@ -9742,7 +9742,7 @@ grafanaDashboards: {
 				}
 				expr: """
 					sum(
-					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster="$cluster", namespace="$namespace"}
+					  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster", namespace="$namespace"}
 					* on(namespace,pod)
 					  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster", namespace="$namespace", workload_type=~"$type"}
 					) by (workload, workload_type)
@@ -11565,7 +11565,7 @@ grafanaDashboards: {
 			hide:    0
 			label:   "instance"
 			name:    "instance"
-			query:   "label_values(windows_system_system_up_time{cluster=\"$cluster\"}, instance)"
+			query:   "label_values(windows_system_boot_time_timestamp_seconds{cluster=\"$cluster\"}, instance)"
 			refresh: 2
 			type:    "query"
 		}]
@@ -12628,6 +12628,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
+			interval:      "1m"
 			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
@@ -12680,6 +12681,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
+			interval:      "1m"
 			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
@@ -13269,7 +13271,8 @@ grafanaDashboards: {
 				x: 0
 				y: 0
 			}
-			id: 1
+			id:       1
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false
@@ -13313,7 +13316,8 @@ grafanaDashboards: {
 				x: 12
 				y: 0
 			}
-			id: 2
+			id:       2
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false
@@ -17183,6 +17187,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            1
+			interval:      "1m"
 			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
@@ -17225,6 +17230,7 @@ grafanaDashboards: {
 				y: 0
 			}
 			id:            2
+			interval:      "1m"
 			pluginVersion: "v11.4.0"
 			targets: [{
 				datasource: {
@@ -19891,7 +19897,8 @@ grafanaDashboards: {
 				x: 0
 				y: 0
 			}
-			id: 1
+			id:       1
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false
@@ -19930,7 +19937,8 @@ grafanaDashboards: {
 				x: 12
 				y: 0
 			}
-			id: 2
+			id:       2
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false
@@ -19969,7 +19977,8 @@ grafanaDashboards: {
 				x: 0
 				y: 9
 			}
-			id: 3
+			id:       3
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false
@@ -20008,7 +20017,8 @@ grafanaDashboards: {
 				x: 12
 				y: 9
 			}
-			id: 4
+			id:       4
+			interval: "1m"
 			options: {
 				displayMode:  "basic"
 				showUnfilled: false

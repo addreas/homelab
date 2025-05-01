@@ -64,7 +64,7 @@ import (
 #ProxyConfig: {
 	// `proxyURL` defines the HTTP proxy server to use.
 	//
-	// +kubebuilder:validation:Pattern:="^http(s)?://.+$"
+	// +kubebuilder:validation:Pattern:="^(http|https|socks5)://.+$"
 	// +optional
 	proxyUrl?: null | string @go(ProxyURL,*string)
 
@@ -72,20 +72,20 @@ import (
 	// that should be excluded from proxying. IP and domain names can
 	// contain port numbers.
 	//
-	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+	// It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 	// +optional
 	noProxy?: null | string @go(NoProxy,*string)
 
 	// Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 	//
-	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+	// It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 	// +optional
 	proxyFromEnvironment?: null | bool @go(ProxyFromEnvironment,*bool)
 
 	// ProxyConnectHeader optionally specifies headers to send to
 	// proxies during CONNECT requests.
 	//
-	// It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+	// It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 	// +optional
 	// +mapType:=atomic
 	proxyConnectHeader?: {[string]: [...v1.#SecretKeySelector]} @go(ProxyConnectHeader,map[string][]v1.SecretKeySelector)
@@ -665,13 +665,13 @@ import (
 
 	// Minimum acceptable TLS version.
 	//
-	// It requires Prometheus >= v2.35.0.
+	// It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 	// +optional
 	minVersion?: null | #TLSVersion @go(MinVersion,*TLSVersion)
 
 	// Maximum acceptable TLS version.
 	//
-	// It requires Prometheus >= v2.41.0.
+	// It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 	// +optional
 	maxVersion?: null | #TLSVersion @go(MaxVersion,*TLSVersion)
 }
@@ -746,6 +746,12 @@ import (
 	//
 	// +optional
 	nativeHistogramMinBucketFactor?: null | resource.#Quantity @go(NativeHistogramMinBucketFactor,*resource.Quantity)
+
+	// Whether to convert all scraped classic histograms into a native histogram with custom buckets.
+	// It requires Prometheus >= v3.0.0.
+	//
+	// +optional
+	convertClassicHistogramsToNHCB?: null | bool @go(ConvertClassicHistogramsToNHCB,*bool)
 }
 
 // +kubebuilder:validation:Enum=RelabelConfig;RoleSelector
