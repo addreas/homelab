@@ -5,15 +5,6 @@ import "encoding/json"
 k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 	socketPrefix: "hostdevice-plugin"
 	devices: {
-		"addem.se/dev_yanzi_serial_radio": {
-			containerPath: "/dev/yanzi-serial-radio"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "Texas_Instruments"
-				ID_MODEL:  "Yanzi_Serial_Radio"
-			}
-		}
 		"addem.se/dev_deconz_conbee": {
 			containerPath: "/dev/deconz-conbee"
 			permissions:   "rw"

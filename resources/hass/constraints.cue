@@ -9,5 +9,3 @@ k: CueExport: "homelab-hass": spec: {
 	prune:   true
 	suspend: false
 }
-
-k: ["StatefulSet" | "Deployment"]: [string]: spec: replicas: 0
