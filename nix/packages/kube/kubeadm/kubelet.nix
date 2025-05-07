@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, stablePkgs, lib, config, ... }:
 let
   cfg = config.services.kubeadm;
 in
@@ -17,7 +17,8 @@ in
         gitMinimal
         openssh
         docker
-        utillinux
+        # utillinux
+        stablePkgs.util-linux
         iproute2
         ethtool
         thin-provisioning-tools

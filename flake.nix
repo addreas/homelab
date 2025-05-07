@@ -2,6 +2,7 @@
   description = "Just a bunch of stuff";
 
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs.nixpkgs-24.url = "nixpkgs/nixos-24.11";
   # inputs.nixpkgs-git.url = "github:NixOS/nixpkgs";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
@@ -22,7 +23,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, flakefiles, raspberry-pi-nix, rockchip, ... }:
+  outputs = { self, nixpkgs, nixpkgs-24, flakefiles, raspberry-pi-nix, rockchip, ... }:
     let
       x86 = "x86_64-linux";
       arm64 = "aarch64-linux";
@@ -34,7 +35,10 @@
 
       machine = system: name: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit pkgsCrossArm nixpkgs; };
+        specialArgs = {
+          inherit pkgsCrossArm nixpkgs;
+          stablePkgs = import nixpkgs-24 { inherit system; };
+        };
         modules = [
           "${self}/nix/machines/${name}"
           {
