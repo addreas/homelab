@@ -28,7 +28,7 @@ k: Deployment: esphome: spec: template: metadata:
 
 k: Deployment: esphome: spec: template: spec: {
 	initContainers: [
-		util.macvlanDefaultRouteFix,
+		// util.macvlanDefaultRouteFix,
 		util.copyStatic & {
 			volumeMounts: [{
 				name:      "config"
