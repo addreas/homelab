@@ -20,6 +20,8 @@ k: Kustomization: "esphome-configs": {
 	}
 }
 
+k: Deployment: esphome: spec: strategy: type: "Recreate"
+
 k: Deployment: esphome: spec: template: metadata:
 	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
 		name: "macvlan-conf"
