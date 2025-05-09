@@ -71,6 +71,7 @@ k: Deployment: esphome: spec: template: spec: {
 			configMap: name: "esphome-configs"
 		}]
 	}]
+	terminationGracePeriodSeconds: 0
 }
 
 k: Service: esphome: {}
