@@ -23,7 +23,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name: "blackbox-exporter"
 		}
@@ -87,7 +87,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name:      "blackbox-exporter-configuration"
 			namespace: "monitoring"
@@ -101,7 +101,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -120,14 +120,14 @@ blackboxExporter: {
 						"app.kubernetes.io/component": "exporter"
 						"app.kubernetes.io/name":      "blackbox-exporter"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.25.0"
+						"app.kubernetes.io/version":   "0.26.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
 						args: ["--config.file=/etc/blackbox_exporter/config.yml", "--web.listen-address=:19115"]
-						image: "quay.io/prometheus/blackbox-exporter:v0.25.0"
+						image: "quay.io/prometheus/blackbox-exporter:v0.26.0"
 						name:  "blackbox-exporter"
 						ports: [{
 							containerPort: 19115
@@ -158,7 +158,7 @@ blackboxExporter: {
 						}]
 					}, {
 						args: ["--webhook-url=http://localhost:19115/-/reload", "--volume-dir=/etc/blackbox_exporter/"]
-						image: "ghcr.io/jimmidyson/configmap-reload:v0.14.0"
+						image: "ghcr.io/jimmidyson/configmap-reload:v0.15.0"
 						name:  "module-configmap-reloader"
 						resources: {
 							limits: {
@@ -187,7 +187,7 @@ blackboxExporter: {
 						}]
 					}, {
 						args: ["--secure-listen-address=:9115", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:19115/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.19.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.19.1"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9115
@@ -231,7 +231,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -262,7 +262,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"
@@ -276,7 +276,7 @@ blackboxExporter: {
 				"app.kubernetes.io/component": "exporter"
 				"app.kubernetes.io/name":      "blackbox-exporter"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.25.0"
+				"app.kubernetes.io/version":   "0.26.0"
 			}
 			name:      "blackbox-exporter"
 			namespace: "monitoring"

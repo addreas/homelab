@@ -121,8 +121,21 @@ import (
 	// +optional
 	dnsConfig?: null | #PodDNSConfig @go(DNSConfig,*PodDNSConfig)
 
+	// Indicates whether information about services should be injected into pod's environment variables
+	// +optional
+	enableServiceLinks?: null | bool @go(EnableServiceLinks,*bool)
+
 	// Priority class assigned to the Pods
 	priorityClassName?: string @go(PriorityClassName)
+
+	// The name of the service name used by the underlying StatefulSet(s) as the governing service.
+	// If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels.
+	// If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources.
+	// When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each.
+	// See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+	// +optional
+	// +kubebuilder:validation:MinLength=1
+	serviceName?: null | string @go(ServiceName,*string)
 
 	// ServiceAccountName is the name of the ServiceAccount to use to run the
 	// Thanos Ruler Pods.
@@ -261,8 +274,13 @@ import (
 	// +kubebuilder:default:="15s"
 	evaluationInterval?: #Duration @go(EvaluationInterval)
 
-	// Time duration ThanosRuler shall retain data for. Default is '24h',
-	// and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+	// Time duration ThanosRuler shall retain data for. Default is '24h', and
+	// must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds
+	// seconds minutes hours days weeks years).
+	//
+	// The field has no effect when remote-write is configured since the Ruler
+	// operates in stateless mode.
+	//
 	// +kubebuilder:default:="24h"
 	retention?: #Duration @go(Retention)
 
@@ -402,6 +420,25 @@ import (
 	// Defines the configuration of the ThanosRuler web server.
 	// +optional
 	web?: null | #ThanosRulerWebSpec @go(Web,*ThanosRulerWebSpec)
+
+	// Defines the list of remote write configurations.
+	//
+	// When the list isn't empty, the ruler is configured with stateless mode.
+	//
+	// It requires Thanos >= 0.24.0.
+	//
+	// +optional
+	remoteWrite?: [...#RemoteWriteSpec] @go(RemoteWrite,[]RemoteWriteSpec)
+
+	// Optional duration in seconds the pod needs to terminate gracefully.
+	// Value must be non-negative integer. The value zero indicates stop immediately via
+	// the kill signal (no opportunity to shut down) which may lead to data corruption.
+	//
+	// Defaults to 120 seconds.
+	//
+	// +kubebuilder:validation:Minimum:=0
+	// +optional
+	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
 }
 
 // ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.

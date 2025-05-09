@@ -200,6 +200,14 @@ import (
 	// information.
 	// +optional
 	message?: string @go(Message) @protobuf(2,bytes,opt)
+
+	// errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.
+	//
+	// This is an optional, alpha field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
+	//
+	// +featureGate=MutableCSINodeAllocatableCount
+	// +optional
+	errorCode?: null | int32 @go(ErrorCode,*int32) @protobuf(3,varint,opt)
 }
 
 // CSIDriver captures information about a Container Storage Interface (CSI)
@@ -388,6 +396,20 @@ import (
 	// +featureGate=SELinuxMountReadWriteOncePod
 	// +optional
 	seLinuxMount?: null | bool @go(SELinuxMount,*bool) @protobuf(8,varint,opt)
+
+	// nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of
+	// the CSINode allocatable capacity for this driver. When set, both periodic updates and
+	// updates triggered by capacity-related failures are enabled. If not set, no updates
+	// occur (neither periodic nor upon detecting capacity-related failures), and the
+	// allocatable.count remains static. The minimum allowed value for this field is 10 seconds.
+	//
+	// This is an alpha feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.
+	//
+	// This field is mutable.
+	//
+	// +featureGate=MutableCSINodeAllocatableCount
+	// +optional
+	nodeAllocatableUpdatePeriodSeconds?: null | int64 @go(NodeAllocatableUpdatePeriodSeconds,*int64) @protobuf(9,varint,opt)
 }
 
 // FSGroupPolicy specifies if a CSI Driver supports modifying

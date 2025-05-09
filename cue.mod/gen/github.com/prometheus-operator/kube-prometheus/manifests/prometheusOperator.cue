@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -124,8 +124,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -426,6 +426,16 @@ prometheusOperator: {
 																type:                    "object"
 																"x-kubernetes-map-type": "atomic"
 															}
+															avatarURL: {
+																description: "The avatar url of the message sender."
+																pattern:     "^https?://.+$"
+																type:        "string"
+															}
+															content: {
+																description: "The template of the content's body."
+																minLength:   1
+																type:        "string"
+															}
 															httpConfig: {
 																description: "HTTP client configuration."
 																properties: {
@@ -586,7 +596,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -700,7 +710,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -739,7 +749,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -748,13 +758,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -923,7 +933,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -932,7 +942,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -988,7 +998,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -997,7 +1007,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -1011,7 +1021,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -1172,7 +1182,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -1181,7 +1191,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -1206,6 +1216,11 @@ prometheusOperator: {
 															}
 															title: {
 																description: "The template of the message's title."
+																type:        "string"
+															}
+															username: {
+																description: "The username of the message sender."
+																minLength:   1
 																type:        "string"
 															}
 														}
@@ -1501,7 +1516,7 @@ prometheusOperator: {
 																		description: """
 																						Maximum acceptable TLS version.
 
-																						It requires Prometheus >= v2.41.0.
+																						It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																						"""
 																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																		type: "string"
@@ -1510,7 +1525,7 @@ prometheusOperator: {
 																		description: """
 																						Minimum acceptable TLS version.
 
-																						It requires Prometheus >= v2.35.0.
+																						It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																						"""
 																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																		type: "string"
@@ -1702,7 +1717,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -1816,7 +1831,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -1855,7 +1870,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -1864,13 +1879,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -2039,7 +2054,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -2048,7 +2063,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -2104,7 +2119,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -2113,7 +2128,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -2127,7 +2142,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -2288,7 +2303,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -2297,7 +2312,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -2360,6 +2375,834 @@ prometheusOperator: {
 															}
 														}
 														required: ["webhookUrl"]
+														type: "object"
+													}
+													type: "array"
+												}
+												msteamsv2Configs: {
+													description: """
+																	List of MSTeamsV2 configurations.
+																	It requires Alertmanager >= 0.28.0.
+																	"""
+													items: {
+														description: """
+																		MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows
+																		See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config
+																		It requires Alertmanager >= 0.28.0.
+																		"""
+														properties: {
+															httpConfig: {
+																description: "HTTP client configuration."
+																properties: {
+																	authorization: {
+																		description: """
+																						Authorization header configuration for the client.
+																						This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+																						"""
+																		properties: {
+																			credentials: {
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			type: {
+																				description: """
+																								Defines the authentication type. The value is case-insensitive.
+
+																								"Basic" is not a supported value.
+
+																								Default: "Bearer"
+																								"""
+																				type: "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																	basicAuth: {
+																		description: """
+																						BasicAuth for the client.
+																						This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+																						"""
+																		properties: {
+																			password: {
+																				description: """
+																								`password` specifies a key of a Secret containing the password for
+																								authentication.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			username: {
+																				description: """
+																								`username` specifies a key of a Secret containing the username for
+																								authentication.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	bearerTokenSecret: {
+																		description: """
+																						The secret's key that contains the bearer token to be used by the client
+																						for authentication.
+																						The secret needs to be in the same namespace as the AlertmanagerConfig
+																						object and accessible by the Prometheus Operator.
+																						"""
+																		properties: {
+																			key: {
+																				description: "The key of the secret to select from.  Must be a valid secret key."
+																				type:        "string"
+																			}
+																			name: {
+																				default: ""
+																				description: """
+																								Name of the referent.
+																								This field is effectively required, but due to backwards compatibility is
+																								allowed to be empty. Instances of this type with an empty value here are
+																								almost certainly wrong.
+																								More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				description: "Specify whether the Secret or its key must be defined"
+																				type:        "boolean"
+																			}
+																		}
+																		required: ["key"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	followRedirects: {
+																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																		type:        "boolean"
+																	}
+																	noProxy: {
+																		description: """
+																						`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																						that should be excluded from proxying. IP and domain names can
+																						contain port numbers.
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type: "string"
+																	}
+																	oauth2: {
+																		description: "OAuth2 client credentials used to fetch a token for the targets."
+																		properties: {
+																			clientId: {
+																				description: """
+																								`clientId` specifies a key of a Secret or ConfigMap containing the
+																								OAuth2 client's ID.
+																								"""
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			clientSecret: {
+																				description: """
+																								`clientSecret` specifies a key of a Secret containing the OAuth2
+																								client's secret.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			endpointParams: {
+																				additionalProperties: type: "string"
+																				description: """
+																								`endpointParams` configures the HTTP parameters to append to the token
+																								URL.
+																								"""
+																				type: "object"
+																			}
+																			noProxy: {
+																				description: """
+																								`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																								that should be excluded from proxying. IP and domain names can
+																								contain port numbers.
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type: "string"
+																			}
+																			proxyConnectHeader: {
+																				additionalProperties: {
+																					items: {
+																						description: "SecretKeySelector selects a key of a Secret."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					type: "array"
+																				}
+																				description: """
+																								ProxyConnectHeader optionally specifies headers to send to
+																								proxies during CONNECT requests.
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			proxyFromEnvironment: {
+																				description: """
+																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type: "boolean"
+																			}
+																			proxyUrl: {
+																				description: "`proxyURL` defines the HTTP proxy server to use."
+																				pattern:     "^(http|https|socks5)://.+$"
+																				type:        "string"
+																			}
+																			scopes: {
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
+																				items: type: "string"
+																				type: "array"
+																			}
+																			tlsConfig: {
+																				description: """
+																								TLS configuration to use when connecting to the OAuth2 server.
+																								It requires Prometheus >= v2.43.0.
+																								"""
+																				properties: {
+																					ca: {
+																						description: "Certificate authority used when verifying server certificates."
+																						properties: {
+																							configMap: {
+																								description: "ConfigMap containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key to select."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the ConfigMap or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																							secret: {
+																								description: "Secret containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key of the secret to select from.  Must be a valid secret key."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the Secret or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																						}
+																						type: "object"
+																					}
+																					cert: {
+																						description: "Client certificate to present when doing client-authentication."
+																						properties: {
+																							configMap: {
+																								description: "ConfigMap containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key to select."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the ConfigMap or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																							secret: {
+																								description: "Secret containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key of the secret to select from.  Must be a valid secret key."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the Secret or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																						}
+																						type: "object"
+																					}
+																					insecureSkipVerify: {
+																						description: "Disable target certificate validation."
+																						type:        "boolean"
+																					}
+																					keySecret: {
+																						description: "Secret containing the client key file for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					maxVersion: {
+																						description: """
+																										Maximum acceptable TLS version.
+
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																										"""
+																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																						type: "string"
+																					}
+																					minVersion: {
+																						description: """
+																										Minimum acceptable TLS version.
+
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																										"""
+																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																						type: "string"
+																					}
+																					serverName: {
+																						description: "Used to verify the hostname for the targets."
+																						type:        "string"
+																					}
+																				}
+																				type: "object"
+																			}
+																			tokenUrl: {
+																				description: "`tokenURL` configures the URL to fetch the token from."
+																				minLength:   1
+																				type:        "string"
+																			}
+																		}
+																		required: ["clientId", "clientSecret", "tokenUrl"]
+																		type: "object"
+																	}
+																	proxyConnectHeader: {
+																		additionalProperties: {
+																			items: {
+																				description: "SecretKeySelector selects a key of a Secret."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			type: "array"
+																		}
+																		description: """
+																						ProxyConnectHeader optionally specifies headers to send to
+																						proxies during CONNECT requests.
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	proxyFromEnvironment: {
+																		description: """
+																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
+																	proxyUrl: {
+																		description: "`proxyURL` defines the HTTP proxy server to use."
+																		pattern:     "^(http|https|socks5)://.+$"
+																		type:        "string"
+																	}
+																	tlsConfig: {
+																		description: "TLS configuration for the client."
+																		properties: {
+																			ca: {
+																				description: "Certificate authority used when verifying server certificates."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			cert: {
+																				description: "Client certificate to present when doing client-authentication."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			insecureSkipVerify: {
+																				description: "Disable target certificate validation."
+																				type:        "boolean"
+																			}
+																			keySecret: {
+																				description: "Secret containing the client key file for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			maxVersion: {
+																				description: """
+																								Maximum acceptable TLS version.
+
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																								"""
+																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																				type: "string"
+																			}
+																			minVersion: {
+																				description: """
+																								Minimum acceptable TLS version.
+
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																								"""
+																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																				type: "string"
+																			}
+																			serverName: {
+																				description: "Used to verify the hostname for the targets."
+																				type:        "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+															sendResolved: {
+																description: "Whether to notify about resolved alerts."
+																type:        "boolean"
+															}
+															text: {
+																description: "Message body template."
+																minLength:   1
+																type:        "string"
+															}
+															title: {
+																description: "Message title template."
+																minLength:   1
+																type:        "string"
+															}
+															webhookURL: {
+																description: "MSTeams incoming webhook URL."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
 														type: "object"
 													}
 													type: "array"
@@ -2604,7 +3447,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -2718,7 +3561,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -2757,7 +3600,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -2766,13 +3609,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -2941,7 +3784,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -2950,7 +3793,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -3006,7 +3849,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -3015,7 +3858,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -3029,7 +3872,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -3190,7 +4033,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -3199,7 +4042,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -3493,7 +4336,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -3607,7 +4450,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -3646,7 +4489,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -3655,13 +4498,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -3830,7 +4673,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -3839,7 +4682,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -3895,7 +4738,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -3904,7 +4747,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -3918,7 +4761,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -4079,7 +4922,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -4088,7 +4931,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -4413,7 +5256,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -4527,7 +5370,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -4566,7 +5409,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -4575,13 +5418,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -4750,7 +5593,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -4759,7 +5602,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -4815,7 +5658,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -4824,7 +5667,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -4838,7 +5681,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -4999,7 +5842,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -5008,7 +5851,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -5429,7 +6272,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -5543,7 +6386,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -5582,7 +6425,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -5591,13 +6434,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -5766,7 +6609,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -5775,7 +6618,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -5831,7 +6674,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -5840,7 +6683,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -5854,7 +6697,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -6015,7 +6858,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -6024,7 +6867,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -6243,7 +7086,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -6357,7 +7200,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -6396,7 +7239,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -6405,13 +7248,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -6580,7 +7423,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -6589,7 +7432,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -6645,7 +7488,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -6654,7 +7497,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -6668,7 +7511,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -6829,7 +7672,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -6838,7 +7681,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -7195,7 +8038,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -7309,7 +8152,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -7348,7 +8191,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -7357,13 +8200,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -7532,7 +8375,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -7541,7 +8384,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -7597,7 +8440,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -7606,7 +8449,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -7620,7 +8463,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -7781,7 +8624,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -7790,7 +8633,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -8059,7 +8902,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -8173,7 +9016,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -8212,7 +9055,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -8221,13 +9064,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -8396,7 +9239,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -8405,7 +9248,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -8461,7 +9304,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -8470,7 +9313,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -8484,7 +9327,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -8645,7 +9488,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -8654,7 +9497,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -8873,7 +9716,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -8987,7 +9830,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -9026,7 +9869,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -9035,13 +9878,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -9210,7 +10053,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -9219,7 +10062,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -9275,7 +10118,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -9284,7 +10127,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -9298,7 +10141,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -9459,7 +10302,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -9468,7 +10311,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -9670,7 +10513,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -9784,7 +10627,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -9823,7 +10666,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -9832,13 +10675,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -10007,7 +10850,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -10016,7 +10859,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -10072,7 +10915,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -10081,7 +10924,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -10095,7 +10938,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -10256,7 +11099,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -10265,7 +11108,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -10289,6 +11132,15 @@ prometheusOperator: {
 															sendResolved: {
 																description: "Whether or not to notify about resolved alerts."
 																type:        "boolean"
+															}
+															timeout: {
+																description: """
+																				The maximum time to wait for a webhook request to complete, before failing the
+																				request and allowing it to be retried.
+																				It requires Alertmanager >= v0.28.0.
+																				"""
+																pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+																type:    "string"
 															}
 															url: {
 																description: """
@@ -10543,7 +11395,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -10657,7 +11509,7 @@ prometheusOperator: {
 																								that should be excluded from proxying. IP and domain names can
 																								contain port numbers.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "string"
 																			}
@@ -10696,7 +11548,7 @@ prometheusOperator: {
 																								ProxyConnectHeader optionally specifies headers to send to
 																								proxies during CONNECT requests.
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type:                    "object"
 																				"x-kubernetes-map-type": "atomic"
@@ -10705,13 +11557,13 @@ prometheusOperator: {
 																				description: """
 																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																								It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																								"""
 																				type: "boolean"
 																			}
 																			proxyUrl: {
 																				description: "`proxyURL` defines the HTTP proxy server to use."
-																				pattern:     "^http(s)?://.+$"
+																				pattern:     "^(http|https|socks5)://.+$"
 																				type:        "string"
 																			}
 																			scopes: {
@@ -10880,7 +11732,7 @@ prometheusOperator: {
 																						description: """
 																										Maximum acceptable TLS version.
 
-																										It requires Prometheus >= v2.41.0.
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -10889,7 +11741,7 @@ prometheusOperator: {
 																						description: """
 																										Minimum acceptable TLS version.
 
-																										It requires Prometheus >= v2.35.0.
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																										"""
 																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																						type: "string"
@@ -10945,7 +11797,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -10954,7 +11806,7 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
@@ -10968,7 +11820,7 @@ prometheusOperator: {
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	tlsConfig: {
@@ -11129,7 +11981,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -11138,7 +11990,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -11315,8 +12167,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -11404,6 +12256,32 @@ prometheusOperator: {
 												https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 												"""
 								properties: {
+									additionalArgs: {
+										description: """
+														AdditionalArgs allows setting additional arguments for the 'Alertmanager' container.
+														It is intended for e.g. activating hidden flags which are not supported by
+														the dedicated configuration options yet. The arguments are passed as-is to the
+														Alertmanager container which may cause issues if they are invalid or not supported
+														by the given Alertmanager version.
+														"""
+										items: {
+											description: "Argument as part of the AdditionalArgs list."
+											properties: {
+												name: {
+													description: "Name of the argument, e.g. \"scrape.discovery-reload-interval\"."
+													minLength:   1
+													type:        "string"
+												}
+												value: {
+													description: "Argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)"
+													type:        "string"
+												}
+											}
+											required: ["name"]
+											type: "object"
+										}
+										type: "array"
+									}
 									additionalPeers: {
 										description: "AdditionalPeers allows injecting a set of additional Alertmanagers to peer with to form a highly available cluster."
 										items: type: "string"
@@ -12751,7 +13629,7 @@ prometheusOperator: {
 																				that should be excluded from proxying. IP and domain names can
 																				contain port numbers.
 
-																				It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																				It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																				"""
 																type: "string"
 															}
@@ -12865,7 +13743,7 @@ prometheusOperator: {
 																						that should be excluded from proxying. IP and domain names can
 																						contain port numbers.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "string"
 																	}
@@ -12904,7 +13782,7 @@ prometheusOperator: {
 																						ProxyConnectHeader optionally specifies headers to send to
 																						proxies during CONNECT requests.
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
@@ -12913,13 +13791,13 @@ prometheusOperator: {
 																		description: """
 																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																						It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																						"""
 																		type: "boolean"
 																	}
 																	proxyUrl: {
 																		description: "`proxyURL` defines the HTTP proxy server to use."
-																		pattern:     "^http(s)?://.+$"
+																		pattern:     "^(http|https|socks5)://.+$"
 																		type:        "string"
 																	}
 																	scopes: {
@@ -13088,7 +13966,7 @@ prometheusOperator: {
 																				description: """
 																								Maximum acceptable TLS version.
 
-																								It requires Prometheus >= v2.41.0.
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -13097,7 +13975,7 @@ prometheusOperator: {
 																				description: """
 																								Minimum acceptable TLS version.
 
-																								It requires Prometheus >= v2.35.0.
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																								"""
 																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																				type: "string"
@@ -13153,7 +14031,7 @@ prometheusOperator: {
 																				ProxyConnectHeader optionally specifies headers to send to
 																				proxies during CONNECT requests.
 
-																				It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																				It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																				"""
 																type:                    "object"
 																"x-kubernetes-map-type": "atomic"
@@ -13162,13 +14040,13 @@ prometheusOperator: {
 																description: """
 																				Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																				It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																				It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																				"""
 																type: "boolean"
 															}
 															proxyUrl: {
 																description: "`proxyURL` defines the HTTP proxy server to use."
-																pattern:     "^http(s)?://.+$"
+																pattern:     "^(http|https|socks5)://.+$"
 																type:        "string"
 															}
 															tlsConfig: {
@@ -13329,7 +14207,7 @@ prometheusOperator: {
 																		description: """
 																						Maximum acceptable TLS version.
 
-																						It requires Prometheus >= v2.41.0.
+																						It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																						"""
 																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																		type: "string"
@@ -13338,7 +14216,7 @@ prometheusOperator: {
 																		description: """
 																						Minimum acceptable TLS version.
 
-																						It requires Prometheus >= v2.35.0.
+																						It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																						"""
 																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																		type: "string"
@@ -13669,6 +14547,444 @@ prometheusOperator: {
 										description: "Interval between pushpull attempts."
 										pattern:     "^(0|(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:        "string"
+									}
+									clusterTLS: {
+										description: """
+														Configures the mutual TLS configuration for the Alertmanager cluster's gossip protocol.
+
+														It requires Alertmanager >= 0.24.0.
+														"""
+										properties: {
+											client: {
+												description: "Client-side configuration for mutual TLS."
+												properties: {
+													ca: {
+														description: "Certificate authority used when verifying server certificates."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													cert: {
+														description: "Client certificate to present when doing client-authentication."
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													insecureSkipVerify: {
+														description: "Disable target certificate validation."
+														type:        "boolean"
+													}
+													keySecret: {
+														description: "Secret containing the client key file for the targets."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																default: ""
+																description: """
+																				Name of the referent.
+																				This field is effectively required, but due to backwards compatibility is
+																				allowed to be empty. Instances of this type with an empty value here are
+																				almost certainly wrong.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													maxVersion: {
+														description: """
+																		Maximum acceptable TLS version.
+
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																		"""
+														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+														type: "string"
+													}
+													minVersion: {
+														description: """
+																		Minimum acceptable TLS version.
+
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																		"""
+														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+														type: "string"
+													}
+													serverName: {
+														description: "Used to verify the hostname for the targets."
+														type:        "string"
+													}
+												}
+												type: "object"
+											}
+											server: {
+												description: "Server-side configuration for mutual TLS."
+												properties: {
+													cert: {
+														description: """
+																		Secret or ConfigMap containing the TLS certificate for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `certFile`.
+																		"""
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													certFile: {
+														description: """
+																		Path to the TLS certificate file in the container for the web server.
+
+																		Either `keySecret` or `keyFile` must be defined.
+
+																		It is mutually exclusive with `cert`.
+																		"""
+														type: "string"
+													}
+													cipherSuites: {
+														description: """
+																		List of supported cipher suites for TLS versions up to TLS 1.2.
+
+																		If not defined, the Go default cipher suites are used.
+																		Available cipher suites are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#pkg-constants
+																		"""
+														items: type: "string"
+														type: "array"
+													}
+													clientAuthType: {
+														description: """
+																		The server policy for client TLS authentication.
+
+																		For more detail on clientAuth options:
+																		https://golang.org/pkg/crypto/tls/#ClientAuthType
+																		"""
+														type: "string"
+													}
+													clientCAFile: {
+														description: """
+																		Path to the CA certificate file for client certificate authentication to
+																		the server.
+
+																		It is mutually exclusive with `client_ca`.
+																		"""
+														type: "string"
+													}
+													client_ca: {
+														description: """
+																		Secret or ConfigMap containing the CA certificate for client certificate
+																		authentication to the server.
+
+																		It is mutually exclusive with `clientCAFile`.
+																		"""
+														properties: {
+															configMap: {
+																description: "ConfigMap containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key to select."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the ConfigMap or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															secret: {
+																description: "Secret containing data to use for the targets."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
+													}
+													curvePreferences: {
+														description: """
+																		Elliptic curves that will be used in an ECDHE handshake, in preference
+																		order.
+
+																		Available curves are documented in the Go documentation:
+																		https://golang.org/pkg/crypto/tls/#CurveID
+																		"""
+														items: type: "string"
+														type: "array"
+													}
+													keyFile: {
+														description: """
+																		Path to the TLS private key file in the container for the web server.
+
+																		If defined, either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keySecret`.
+																		"""
+														type: "string"
+													}
+													keySecret: {
+														description: """
+																		Secret containing the TLS private key for the web server.
+
+																		Either `cert` or `certFile` must be defined.
+
+																		It is mutually exclusive with `keyFile`.
+																		"""
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																default: ""
+																description: """
+																				Name of the referent.
+																				This field is effectively required, but due to backwards compatibility is
+																				allowed to be empty. Instances of this type with an empty value here are
+																				almost certainly wrong.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													maxVersion: {
+														description: "Maximum TLS version that is acceptable."
+														type:        "string"
+													}
+													minVersion: {
+														description: "Minimum TLS version that is acceptable."
+														type:        "string"
+													}
+													preferServerCipherSuites: {
+														description: """
+																		Controls whether the server selects the client's most preferred cipher
+																		suite, or the server's most preferred cipher suite.
+
+																		If true then the server's preference, as expressed in
+																		the order of elements in cipherSuites, is used.
+																		"""
+														type: "boolean"
+													}
+												}
+												type: "object"
+											}
+										}
+										required: ["client", "server"]
+										type: "object"
 									}
 									configMaps: {
 										description: """
@@ -15488,6 +16804,10 @@ prometheusOperator: {
 										items: type: "string"
 										type: "array"
 									}
+									enableServiceLinks: {
+										description: "Indicates whether information about services should be injected into pod's environment variables"
+										type:        "boolean"
+									}
 									externalUrl: {
 										description: """
 														The external URL the Alertmanager instances will be available under. This is
@@ -17290,6 +18610,31 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									limits: {
+										description: "Defines the limits command line flags when starting Alertmanager."
+										properties: {
+											maxPerSilenceBytes: {
+												description: """
+																The maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's
+																`--silences.max-per-silence-bytes` flag.
+																It requires Alertmanager >= v0.28.0.
+																"""
+												pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+												type:    "string"
+											}
+											maxSilences: {
+												description: """
+																The maximum number active and pending silences. This corresponds to the
+																Alertmanager's `--silences.max-silences` flag.
+																It requires Alertmanager >= v0.28.0.
+																"""
+												format:  "int32"
+												minimum: 0
+												type:    "integer"
+											}
+										}
+										type: "object"
+									}
 									listenLocal: {
 										description: """
 														ListenLocal makes the Alertmanager server listen on loopback, so that it
@@ -18700,6 +20045,18 @@ prometheusOperator: {
 														Deprecated: use 'image' instead. The image tag can be specified as part of the image URL.
 														"""
 										type: "string"
+									}
+									terminationGracePeriodSeconds: {
+										description: """
+														Optional duration in seconds the pod needs to terminate gracefully.
+														Value must be non-negative integer. The value zero indicates stop immediately via
+														the kill signal (no opportunity to shut down) which may lead to data corruption.
+
+														Defaults to 120 seconds.
+														"""
+										format:  "int64"
+										minimum: 0
+										type:    "integer"
 									}
 									tolerations: {
 										description: "If specified, the pod's tolerations."
@@ -21611,8 +22968,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -21694,6 +23051,13 @@ prometheusOperator: {
 														"""
 										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 										type:    "string"
+									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native histogram with custom buckets.
+														It requires Prometheus >= v3.0.0.
+														"""
+										type: "boolean"
 									}
 									fallbackScrapeProtocol: {
 										description: """
@@ -22205,7 +23569,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -22244,7 +23608,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -22253,13 +23617,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -22428,7 +23792,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -22437,7 +23801,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -22781,7 +24145,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -22790,7 +24154,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -22961,8 +24325,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -23157,6 +24521,13 @@ prometheusOperator: {
 										required: ["key"]
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native histogram with custom buckets.
+														It requires Prometheus >= v3.0.0.
+														"""
+										type: "boolean"
 									}
 									fallbackScrapeProtocol: {
 										description: """
@@ -23435,7 +24806,7 @@ prometheusOperator: {
 																that should be excluded from proxying. IP and domain names can
 																contain port numbers.
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type: "string"
 											}
@@ -23474,7 +24845,7 @@ prometheusOperator: {
 																ProxyConnectHeader optionally specifies headers to send to
 																proxies during CONNECT requests.
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type:                    "object"
 												"x-kubernetes-map-type": "atomic"
@@ -23483,13 +24854,13 @@ prometheusOperator: {
 												description: """
 																Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type: "boolean"
 											}
 											proxyUrl: {
 												description: "`proxyURL` defines the HTTP proxy server to use."
-												pattern:     "^http(s)?://.+$"
+												pattern:     "^(http|https|socks5)://.+$"
 												type:        "string"
 											}
 											scopes: {
@@ -23658,7 +25029,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -23667,7 +25038,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -24219,7 +25590,7 @@ prometheusOperator: {
 												description: """
 																Maximum acceptable TLS version.
 
-																It requires Prometheus >= v2.41.0.
+																It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -24228,7 +25599,7 @@ prometheusOperator: {
 												description: """
 																Minimum acceptable TLS version.
 
-																It requires Prometheus >= v2.35.0.
+																It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -24257,8 +25628,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -25781,7 +27152,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -25790,7 +27161,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -27680,6 +29051,10 @@ prometheusOperator: {
 														It requires Prometheus >= v2.33.0.
 														"""
 										type: "boolean"
+									}
+									enableServiceLinks: {
+										description: "Indicates whether information about services should be injected into pod's environment variables"
+										type:        "boolean"
 									}
 									enforcedBodySizeLimit: {
 										description: """
@@ -30246,7 +31621,7 @@ prometheusOperator: {
 													description: """
 																	Authorization section for the URL.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
@@ -30299,7 +31674,7 @@ prometheusOperator: {
 													description: """
 																	AzureAD for the URL.
 
-																	It requires Prometheus >= v2.45.0.
+																	It requires Prometheus >= v2.45.0 or Thanos >= v0.31.0.
 
 																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
 																	"""
@@ -30326,7 +31701,7 @@ prometheusOperator: {
 																			OAuth defines the oauth config that is being used to authenticate.
 																			Cannot be set at the same time as `managedIdentity` or `sdk`.
 
-																			It requires Prometheus >= v2.48.0.
+																			It requires Prometheus >= v2.48.0 or Thanos >= v0.31.0.
 																			"""
 															properties: {
 																clientId: {
@@ -30377,7 +31752,7 @@ prometheusOperator: {
 																			See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
 																			Cannot be set at the same time as `oauth` or `managedIdentity`.
 
-																			It requires Prometheus >= 2.52.0.
+																			It requires Prometheus >= v2.52.0 or Thanos >= v0.36.0.
 																			"""
 															properties: tenantId: {
 																description: "`tenantId` is the tenant ID of the azure active directory application that is being used to authenticate."
@@ -30484,7 +31859,7 @@ prometheusOperator: {
 													description: """
 																	Configure whether HTTP requests follow HTTP 3xx redirects.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 																	"""
 													type: "boolean"
 												}
@@ -30494,7 +31869,7 @@ prometheusOperator: {
 																	Custom HTTP headers to be sent along with each remote write request.
 																	Be aware that headers that are set by Prometheus itself can't be overwritten.
 
-																	It requires Prometheus >= v2.25.0.
+																	It requires Prometheus >= v2.25.0 or Thanos >= v0.24.0.
 																	"""
 													type: "object"
 												}
@@ -30511,7 +31886,7 @@ prometheusOperator: {
 																	Before setting this field, consult with your remote storage provider
 																	what message version it supports.
 
-																	It requires Prometheus >= v2.54.0.
+																	It requires Prometheus >= v2.54.0 or Thanos >= v0.37.0.
 																	"""
 													enum: ["V1.0", "V2.0"]
 													type: "string"
@@ -30519,6 +31894,16 @@ prometheusOperator: {
 												metadataConfig: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
+														maxSamplesPerSend: {
+															description: """
+																			MaxSamplesPerSend is the maximum number of metadata samples per send.
+
+																			It requires Prometheus >= v2.29.0.
+																			"""
+															format:  "int32"
+															minimum: -1
+															type:    "integer"
+														}
 														send: {
 															description: "Defines whether metric metadata is sent to the remote storage or not."
 															type:        "boolean"
@@ -30536,7 +31921,7 @@ prometheusOperator: {
 																	The name of the remote write queue, it must be unique if specified. The
 																	name is used in metrics and logging in order to differentiate queues.
 
-																	It requires Prometheus >= v2.15.0.
+																	It requires Prometheus >= v2.15.0 or Thanos >= 0.24.0.
 																	"""
 													type: "string"
 												}
@@ -30546,7 +31931,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -30554,7 +31939,7 @@ prometheusOperator: {
 													description: """
 																	OAuth2 configuration for the URL.
 
-																	It requires Prometheus >= v2.27.0.
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
 																	"""
@@ -30666,7 +32051,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -30705,7 +32090,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -30714,13 +32099,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -30889,7 +32274,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -30898,7 +32283,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -30954,7 +32339,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -30963,13 +32348,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												queueConfig: {
@@ -31025,7 +32410,7 @@ prometheusOperator: {
 														sampleAgeLimit: {
 															description: """
 																			SampleAgeLimit drops samples older than the limit.
-																			It requires Prometheus >= v2.50.0.
+																			It requires Prometheus >= v2.50.0 or Thanos >= v0.32.0.
 																			"""
 															pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:    "string"
@@ -31051,7 +32436,7 @@ prometheusOperator: {
 																	Note: The connection timeout applies to the entire resolution and connection process.
 																	      If disabled, the timeout is distributed across all connection attempts.
 
-																	It requires Prometheus >= v3.1.0.
+																	It requires Prometheus >= v3.1.0 or Thanos >= v0.38.0.
 																	"""
 													type: "boolean"
 												}
@@ -31061,7 +32446,7 @@ prometheusOperator: {
 																	exemplar-storage itself must be enabled using the `spec.enableFeatures`
 																	option for exemplars to be scraped in the first place.
 
-																	It requires Prometheus >= v2.27.0.
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
 																	"""
 													type: "boolean"
 												}
@@ -31070,7 +32455,7 @@ prometheusOperator: {
 																	Enables sending of native histograms, also known as sparse histograms
 																	over remote write.
 
-																	It requires Prometheus >= v2.40.0.
+																	It requires Prometheus >= v2.40.0 or Thanos >= v0.30.0.
 																	"""
 													type: "boolean"
 												}
@@ -31078,7 +32463,7 @@ prometheusOperator: {
 													description: """
 																	Sigv4 allows to configures AWS's Signature Verification 4 for the URL.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
@@ -31328,7 +32713,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -31337,7 +32722,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -32046,7 +33431,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -32055,7 +33440,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -33592,6 +34977,18 @@ prometheusOperator: {
 										format: "int64"
 										type:   "integer"
 									}
+									terminationGracePeriodSeconds: {
+										description: """
+														Optional duration in seconds the pod needs to terminate gracefully.
+														Value must be non-negative integer. The value zero indicates stop immediately via
+														the kill signal (no opportunity to shut down) which may lead to data corruption.
+
+														Defaults to 600 seconds.
+														"""
+										format:  "int64"
+										minimum: 0
+										type:    "integer"
+									}
 									tolerations: {
 										description: "Defines the Pods' tolerations if specified."
 										items: {
@@ -34062,7 +35459,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -34071,7 +35468,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -36833,8 +38230,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -38374,7 +39771,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 														type: "string"
 													}
@@ -38426,7 +39823,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 														type:                    "object"
 														"x-kubernetes-map-type": "atomic"
@@ -38435,13 +39832,13 @@ prometheusOperator: {
 														description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 														type: "boolean"
 													}
 													proxyUrl: {
 														description: "`proxyURL` defines the HTTP proxy server to use."
-														pattern:     "^http(s)?://.+$"
+														pattern:     "^(http|https|socks5)://.+$"
 														type:        "string"
 													}
 													relabelings: {
@@ -38788,7 +40185,7 @@ prometheusOperator: {
 																description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																type: "string"
@@ -38797,7 +40194,7 @@ prometheusOperator: {
 																description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																type: "string"
@@ -39155,7 +40552,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -39164,7 +40561,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -41080,6 +42477,10 @@ prometheusOperator: {
 														It requires Prometheus >= v2.33.0.
 														"""
 										type: "boolean"
+									}
+									enableServiceLinks: {
+										description: "Indicates whether information about services should be injected into pod's environment variables"
+										type:        "boolean"
 									}
 									enforcedBodySizeLimit: {
 										description: """
@@ -43917,7 +45318,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -44037,7 +45438,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -44076,7 +45477,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -44085,13 +45486,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -44260,7 +45661,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -44269,7 +45670,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -44325,7 +45726,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -44334,13 +45735,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												readRecent: {
@@ -44533,7 +45934,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -44542,7 +45943,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -44576,7 +45977,7 @@ prometheusOperator: {
 													description: """
 																	Authorization section for the URL.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
@@ -44629,7 +46030,7 @@ prometheusOperator: {
 													description: """
 																	AzureAD for the URL.
 
-																	It requires Prometheus >= v2.45.0.
+																	It requires Prometheus >= v2.45.0 or Thanos >= v0.31.0.
 
 																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
 																	"""
@@ -44656,7 +46057,7 @@ prometheusOperator: {
 																			OAuth defines the oauth config that is being used to authenticate.
 																			Cannot be set at the same time as `managedIdentity` or `sdk`.
 
-																			It requires Prometheus >= v2.48.0.
+																			It requires Prometheus >= v2.48.0 or Thanos >= v0.31.0.
 																			"""
 															properties: {
 																clientId: {
@@ -44707,7 +46108,7 @@ prometheusOperator: {
 																			See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
 																			Cannot be set at the same time as `oauth` or `managedIdentity`.
 
-																			It requires Prometheus >= 2.52.0.
+																			It requires Prometheus >= v2.52.0 or Thanos >= v0.36.0.
 																			"""
 															properties: tenantId: {
 																description: "`tenantId` is the tenant ID of the azure active directory application that is being used to authenticate."
@@ -44814,7 +46215,7 @@ prometheusOperator: {
 													description: """
 																	Configure whether HTTP requests follow HTTP 3xx redirects.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 																	"""
 													type: "boolean"
 												}
@@ -44824,7 +46225,7 @@ prometheusOperator: {
 																	Custom HTTP headers to be sent along with each remote write request.
 																	Be aware that headers that are set by Prometheus itself can't be overwritten.
 
-																	It requires Prometheus >= v2.25.0.
+																	It requires Prometheus >= v2.25.0 or Thanos >= v0.24.0.
 																	"""
 													type: "object"
 												}
@@ -44841,7 +46242,7 @@ prometheusOperator: {
 																	Before setting this field, consult with your remote storage provider
 																	what message version it supports.
 
-																	It requires Prometheus >= v2.54.0.
+																	It requires Prometheus >= v2.54.0 or Thanos >= v0.37.0.
 																	"""
 													enum: ["V1.0", "V2.0"]
 													type: "string"
@@ -44849,6 +46250,16 @@ prometheusOperator: {
 												metadataConfig: {
 													description: "MetadataConfig configures the sending of series metadata to the remote storage."
 													properties: {
+														maxSamplesPerSend: {
+															description: """
+																			MaxSamplesPerSend is the maximum number of metadata samples per send.
+
+																			It requires Prometheus >= v2.29.0.
+																			"""
+															format:  "int32"
+															minimum: -1
+															type:    "integer"
+														}
 														send: {
 															description: "Defines whether metric metadata is sent to the remote storage or not."
 															type:        "boolean"
@@ -44866,7 +46277,7 @@ prometheusOperator: {
 																	The name of the remote write queue, it must be unique if specified. The
 																	name is used in metrics and logging in order to differentiate queues.
 
-																	It requires Prometheus >= v2.15.0.
+																	It requires Prometheus >= v2.15.0 or Thanos >= 0.24.0.
 																	"""
 													type: "string"
 												}
@@ -44876,7 +46287,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -44884,7 +46295,7 @@ prometheusOperator: {
 													description: """
 																	OAuth2 configuration for the URL.
 
-																	It requires Prometheus >= v2.27.0.
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
 																	"""
@@ -44996,7 +46407,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -45035,7 +46446,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -45044,13 +46455,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -45219,7 +46630,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -45228,7 +46639,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -45284,7 +46695,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -45293,13 +46704,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												queueConfig: {
@@ -45355,7 +46766,7 @@ prometheusOperator: {
 														sampleAgeLimit: {
 															description: """
 																			SampleAgeLimit drops samples older than the limit.
-																			It requires Prometheus >= v2.50.0.
+																			It requires Prometheus >= v2.50.0 or Thanos >= v0.32.0.
 																			"""
 															pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 															type:    "string"
@@ -45381,7 +46792,7 @@ prometheusOperator: {
 																	Note: The connection timeout applies to the entire resolution and connection process.
 																	      If disabled, the timeout is distributed across all connection attempts.
 
-																	It requires Prometheus >= v3.1.0.
+																	It requires Prometheus >= v3.1.0 or Thanos >= v0.38.0.
 																	"""
 													type: "boolean"
 												}
@@ -45391,7 +46802,7 @@ prometheusOperator: {
 																	exemplar-storage itself must be enabled using the `spec.enableFeatures`
 																	option for exemplars to be scraped in the first place.
 
-																	It requires Prometheus >= v2.27.0.
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
 																	"""
 													type: "boolean"
 												}
@@ -45400,7 +46811,7 @@ prometheusOperator: {
 																	Enables sending of native histograms, also known as sparse histograms
 																	over remote write.
 
-																	It requires Prometheus >= v2.40.0.
+																	It requires Prometheus >= v2.40.0 or Thanos >= v0.30.0.
 																	"""
 													type: "boolean"
 												}
@@ -45408,7 +46819,7 @@ prometheusOperator: {
 													description: """
 																	Sigv4 allows to configures AWS's Signature Verification 4 for the URL.
 
-																	It requires Prometheus >= v2.26.0.
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
 
 																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
 																	"""
@@ -45658,7 +47069,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -45667,7 +47078,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -46549,7 +47960,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -46558,7 +47969,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -47211,6 +48622,47 @@ prometheusOperator: {
 									sha: {
 										description: "Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name."
 										type:        "string"
+									}
+									shardRetentionPolicy: {
+										description: """
+														ShardRetentionPolicy defines the retention policy for the Prometheus shards.
+														(Alpha) Using this field requires the 'PrometheusShardRetentionPolicy' feature gate to be enabled.
+
+														The final goals for this feature can be seen at https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/proposals/202310-shard-autoscaling.md#graceful-scale-down-of-prometheus-servers,
+														however, the feature is not yet fully implemented in this PR. The limitation being:
+														* Retention duration is not settable, for now, shards are retained forever.
+														"""
+										properties: {
+											retain: {
+												description: """
+																Defines the config for retention when the retention policy is set to `Retain`.
+																This field is ineffective as of now.
+																"""
+												properties: retentionPeriod: {
+													description: """
+																		Duration is a valid time duration that can be parsed by Prometheus model.ParseDuration() function.
+																		Supported units: y, w, d, h, m, s, ms
+																		Examples: `30s`, `1m`, `1h20m15s`, `15d`
+																		"""
+													pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:    "string"
+												}
+												required: ["retentionPeriod"]
+												type: "object"
+											}
+											whenScaled: {
+												description: """
+																Defines the retention policy when the Prometheus shards are scaled down.
+																* `Delete`, the operator will delete the pods from the scaled-down shard(s).
+																* `Retain`, the operator will keep the pods from the scaled-down shard(s), so the data can still be queried.
+
+																If not defined, the operator assumes the `Delete` value.
+																"""
+												enum: ["Retain", "Delete"]
+												type: "string"
+											}
+										}
+										type: "object"
 									}
 									shards: {
 										description: """
@@ -48103,6 +49555,18 @@ prometheusOperator: {
 										format: "int64"
 										type:   "integer"
 									}
+									terminationGracePeriodSeconds: {
+										description: """
+														Optional duration in seconds the pod needs to terminate gracefully.
+														Value must be non-negative integer. The value zero indicates stop immediately via
+														the kill signal (no opportunity to shut down) which may lead to data corruption.
+
+														Defaults to 600 seconds.
+														"""
+										format:  "int64"
+										minimum: 0
+										type:    "integer"
+									}
 									thanos: {
 										description: "Defines the configuration of the optional Thanos sidecar."
 										properties: {
@@ -48345,7 +49809,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -48354,7 +49818,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -49163,7 +50627,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -49172,7 +50636,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -51934,8 +53398,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -52119,8 +53583,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -52396,7 +53860,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -52513,7 +53977,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -52552,7 +54016,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -52561,13 +54025,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -52736,7 +54200,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -52745,7 +54209,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -52811,7 +54275,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -52820,13 +54284,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -53010,7 +54474,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -53019,7 +54483,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -53277,7 +54741,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -53403,7 +54867,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -53442,7 +54906,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -53451,13 +54915,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -53626,7 +55090,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -53635,7 +55099,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -53705,7 +55169,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -53714,13 +55178,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -53923,7 +55387,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -53932,7 +55396,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -53976,6 +55440,13 @@ prometheusOperator: {
 											type: "object"
 										}
 										type: "array"
+									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native histogram with custom buckets.
+														It requires Prometheus >= v3.0.0.
+														"""
+										type: "boolean"
 									}
 									digitalOceanSDConfigs: {
 										description: "DigitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations."
@@ -54046,7 +55517,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -54163,7 +55634,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -54202,7 +55673,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -54211,13 +55682,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -54386,7 +55857,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -54395,7 +55866,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -54458,7 +55929,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -54467,13 +55938,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -54639,7 +56110,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -54648,7 +56119,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -54898,7 +56369,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -55015,7 +56486,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -55054,7 +56525,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -55063,13 +56534,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -55238,7 +56709,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -55247,7 +56718,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -55307,7 +56778,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -55316,13 +56787,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -55488,7 +56959,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -55497,7 +56968,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -55685,7 +57156,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -55802,7 +57273,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -55841,7 +57312,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -55850,13 +57321,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -56025,7 +57496,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -56034,7 +57505,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -56100,7 +57571,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -56109,13 +57580,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -56286,7 +57757,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -56295,7 +57766,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -56406,7 +57877,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -56455,7 +57926,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -56464,13 +57935,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -56676,7 +58147,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -56685,7 +58156,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -56848,7 +58319,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -56965,7 +58436,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -57004,7 +58475,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -57013,13 +58484,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -57188,7 +58659,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -57197,7 +58668,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -57253,7 +58724,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -57262,13 +58733,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -57439,7 +58910,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -57448,7 +58919,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -57712,7 +59183,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -57829,7 +59300,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -57868,7 +59339,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -57877,13 +59348,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -58052,7 +59523,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -58061,7 +59532,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -58121,7 +59592,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -58130,13 +59601,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -58307,7 +59778,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -58316,7 +59787,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -58480,7 +59951,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -58597,7 +60068,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -58636,7 +60107,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -58645,13 +60116,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -58820,7 +60291,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -58829,7 +60300,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -58885,7 +60356,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -58894,13 +60365,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -59069,7 +60540,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -59078,7 +60549,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -59172,7 +60643,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -59286,7 +60757,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -59325,7 +60796,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -59334,13 +60805,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -59509,7 +60980,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -59518,7 +60989,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -59581,7 +61052,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -59590,13 +61061,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -59762,7 +61233,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -59771,7 +61242,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -59994,7 +61465,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -60111,7 +61582,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -60150,7 +61621,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -60159,13 +61630,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -60334,7 +61805,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -60343,7 +61814,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -60399,7 +61870,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -60408,13 +61879,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												role: {
@@ -60623,7 +62094,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -60632,7 +62103,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -60790,7 +62261,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -60907,7 +62378,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -60946,7 +62417,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -60955,13 +62426,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -61130,7 +62601,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -61139,7 +62610,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -61195,7 +62666,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -61204,13 +62675,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -61381,7 +62852,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -61390,7 +62861,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -61601,7 +63072,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -61718,7 +63189,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -61757,7 +63228,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -61766,13 +63237,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -61941,7 +63412,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -61950,7 +63421,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -62016,7 +63487,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -62025,13 +63496,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -62233,7 +63704,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -62242,7 +63713,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -62324,7 +63795,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -62441,7 +63912,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -62480,7 +63951,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -62489,13 +63960,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -62664,7 +64135,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -62673,7 +64144,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -62736,7 +64207,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -62745,13 +64216,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -62927,7 +64398,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -62936,7 +64407,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -63069,7 +64540,7 @@ prometheusOperator: {
 														that should be excluded from proxying. IP and domain names can
 														contain port numbers.
 
-														It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+														It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 														"""
 										type: "string"
 									}
@@ -63212,7 +64683,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -63329,7 +64800,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -63368,7 +64839,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -63377,13 +64848,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -63552,7 +65023,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -63561,7 +65032,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -63617,7 +65088,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -63626,13 +65097,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -63808,7 +65279,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -63817,7 +65288,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -63945,7 +65416,7 @@ prometheusOperator: {
 																that should be excluded from proxying. IP and domain names can
 																contain port numbers.
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type: "string"
 											}
@@ -63984,7 +65455,7 @@ prometheusOperator: {
 																ProxyConnectHeader optionally specifies headers to send to
 																proxies during CONNECT requests.
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type:                    "object"
 												"x-kubernetes-map-type": "atomic"
@@ -63993,13 +65464,13 @@ prometheusOperator: {
 												description: """
 																Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																"""
 												type: "boolean"
 											}
 											proxyUrl: {
 												description: "`proxyURL` defines the HTTP proxy server to use."
-												pattern:     "^http(s)?://.+$"
+												pattern:     "^(http|https|socks5)://.+$"
 												type:        "string"
 											}
 											scopes: {
@@ -64168,7 +65639,7 @@ prometheusOperator: {
 														description: """
 																		Maximum acceptable TLS version.
 
-																		It requires Prometheus >= v2.41.0.
+																		It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -64177,7 +65648,7 @@ prometheusOperator: {
 														description: """
 																		Minimum acceptable TLS version.
 
-																		It requires Prometheus >= v2.35.0.
+																		It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																		"""
 														enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 														type: "string"
@@ -64349,8 +65820,12 @@ prometheusOperator: {
 													type:        "string"
 												}
 												role: {
-													description: "The OpenStack role of entities that should be discovered."
-													enum: ["Instance", "instance", "Hypervisor", "hypervisor"]
+													description: """
+																	The OpenStack role of entities that should be discovered.
+
+																	Note: The `LoadBalancer` role requires Prometheus >= v3.2.0.
+																	"""
+													enum: ["Instance", "Hypervisor", "LoadBalancer"]
 													type: "string"
 												}
 												tlsConfig: {
@@ -64511,7 +65986,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -64520,7 +65995,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -64689,7 +66164,7 @@ prometheusOperator: {
 														ProxyConnectHeader optionally specifies headers to send to
 														proxies during CONNECT requests.
 
-														It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+														It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 														"""
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
@@ -64698,13 +66173,13 @@ prometheusOperator: {
 										description: """
 														Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-														It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+														It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 														"""
 										type: "boolean"
 									}
 									proxyUrl: {
 										description: "`proxyURL` defines the HTTP proxy server to use."
-										pattern:     "^http(s)?://.+$"
+										pattern:     "^(http|https|socks5)://.+$"
 										type:        "string"
 									}
 									puppetDBSDConfigs: {
@@ -64852,7 +66327,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -64969,7 +66444,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -65008,7 +66483,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -65017,13 +66492,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -65192,7 +66667,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -65201,7 +66676,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -65264,7 +66739,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -65273,13 +66748,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												query: {
@@ -65453,7 +66928,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -65462,7 +66937,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -65615,7 +67090,7 @@ prometheusOperator: {
 																	that should be excluded from proxying. IP and domain names can
 																	contain port numbers.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "string"
 												}
@@ -65666,7 +67141,7 @@ prometheusOperator: {
 																	ProxyConnectHeader optionally specifies headers to send to
 																	proxies during CONNECT requests.
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type:                    "object"
 													"x-kubernetes-map-type": "atomic"
@@ -65675,13 +67150,13 @@ prometheusOperator: {
 													description: """
 																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																	It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
 													type: "boolean"
 												}
 												proxyUrl: {
 													description: "`proxyURL` defines the HTTP proxy server to use."
-													pattern:     "^http(s)?://.+$"
+													pattern:     "^(http|https|socks5)://.+$"
 													type:        "string"
 												}
 												refreshInterval: {
@@ -65889,7 +67364,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -65898,7 +67373,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -66176,7 +67651,7 @@ prometheusOperator: {
 												description: """
 																Maximum acceptable TLS version.
 
-																It requires Prometheus >= v2.41.0.
+																It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -66185,7 +67660,7 @@ prometheusOperator: {
 												description: """
 																Minimum acceptable TLS version.
 
-																It requires Prometheus >= v2.35.0.
+																It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -66223,8 +67698,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -66309,6 +67784,13 @@ prometheusOperator: {
 														"""
 										pattern: "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
 										type:    "string"
+									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native histogram with custom buckets.
+														It requires Prometheus >= v3.0.0.
+														"""
+										type: "boolean"
 									}
 									endpoints: {
 										description: """
@@ -66727,7 +68209,7 @@ prometheusOperator: {
 																			that should be excluded from proxying. IP and domain names can
 																			contain port numbers.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "string"
 														}
@@ -66766,7 +68248,7 @@ prometheusOperator: {
 																			ProxyConnectHeader optionally specifies headers to send to
 																			proxies during CONNECT requests.
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type:                    "object"
 															"x-kubernetes-map-type": "atomic"
@@ -66775,13 +68257,13 @@ prometheusOperator: {
 															description: """
 																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
 
-																			It requires Prometheus >= v2.43.0 or Alertmanager >= 0.25.0.
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																			"""
 															type: "boolean"
 														}
 														proxyUrl: {
 															description: "`proxyURL` defines the HTTP proxy server to use."
-															pattern:     "^http(s)?://.+$"
+															pattern:     "^(http|https|socks5)://.+$"
 															type:        "string"
 														}
 														scopes: {
@@ -66950,7 +68432,7 @@ prometheusOperator: {
 																	description: """
 																					Maximum acceptable TLS version.
 
-																					It requires Prometheus >= v2.41.0.
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -66959,7 +68441,7 @@ prometheusOperator: {
 																	description: """
 																					Minimum acceptable TLS version.
 
-																					It requires Prometheus >= v2.35.0.
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																					"""
 																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 																	type: "string"
@@ -67306,7 +68788,7 @@ prometheusOperator: {
 															description: """
 																			Maximum acceptable TLS version.
 
-																			It requires Prometheus >= v2.41.0.
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -67315,7 +68797,7 @@ prometheusOperator: {
 															description: """
 																			Minimum acceptable TLS version.
 
-																			It requires Prometheus >= v2.35.0.
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																			"""
 															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 															type: "string"
@@ -67599,8 +69081,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.2"
-					"operator.prometheus.io/version":        "0.80.0"
+					"controller-gen.kubebuilder.io/version": "v0.17.3"
+					"operator.prometheus.io/version":        "0.82.0"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -70653,6 +72135,10 @@ prometheusOperator: {
 										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
 										type: "string"
 									}
+									enableServiceLinks: {
+										description: "Indicates whether information about services should be injected into pod's environment variables"
+										type:        "boolean"
+									}
 									enforcedNamespaceLabel: {
 										description: """
 														EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert
@@ -70888,7 +72374,7 @@ prometheusOperator: {
 												description: """
 																Maximum acceptable TLS version.
 
-																It requires Prometheus >= v2.41.0.
+																It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -70897,7 +72383,7 @@ prometheusOperator: {
 												description: """
 																Minimum acceptable TLS version.
 
-																It requires Prometheus >= v2.35.0.
+																It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
 																"""
 												enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
 												type: "string"
@@ -72919,6 +74405,1229 @@ prometheusOperator: {
 										items: type: "string"
 										type: "array"
 									}
+									remoteWrite: {
+										description: """
+														Defines the list of remote write configurations.
+
+														When the list isn't empty, the ruler is configured with stateless mode.
+
+														It requires Thanos >= 0.24.0.
+														"""
+										items: {
+											description: """
+															RemoteWriteSpec defines the configuration to write samples from Prometheus
+															to a remote endpoint.
+															"""
+											properties: {
+												authorization: {
+													description: """
+																	Authorization section for the URL.
+
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
+
+																	Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
+																	"""
+													properties: {
+														credentials: {
+															description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														credentialsFile: {
+															description: "File to read a secret from, mutually exclusive with `credentials`."
+															type:        "string"
+														}
+														type: {
+															description: """
+																			Defines the authentication type. The value is case-insensitive.
+
+																			"Basic" is not a supported value.
+
+																			Default: "Bearer"
+																			"""
+															type: "string"
+														}
+													}
+													type: "object"
+												}
+												azureAd: {
+													description: """
+																	AzureAD for the URL.
+
+																	It requires Prometheus >= v2.45.0 or Thanos >= v0.31.0.
+
+																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
+																	"""
+													properties: {
+														cloud: {
+															description: "The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'."
+															enum: ["AzureChina", "AzureGovernment", "AzurePublic"]
+															type: "string"
+														}
+														managedIdentity: {
+															description: """
+																			ManagedIdentity defines the Azure User-assigned Managed identity.
+																			Cannot be set at the same time as `oauth` or `sdk`.
+																			"""
+															properties: clientId: {
+																description: "The client id"
+																type:        "string"
+															}
+															required: ["clientId"]
+															type: "object"
+														}
+														oauth: {
+															description: """
+																			OAuth defines the oauth config that is being used to authenticate.
+																			Cannot be set at the same time as `managedIdentity` or `sdk`.
+
+																			It requires Prometheus >= v2.48.0 or Thanos >= v0.31.0.
+																			"""
+															properties: {
+																clientId: {
+																	description: "`clientID` is the clientId of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	type:        "string"
+																}
+																clientSecret: {
+																	description: "`clientSecret` specifies a key of a Secret containing the client secret of the Azure Active Directory application that is being used to authenticate."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																tenantId: {
+																	description: "`tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate."
+																	minLength:   1
+																	pattern:     "^[0-9a-zA-Z-.]+$"
+																	type:        "string"
+																}
+															}
+															required: ["clientId", "clientSecret", "tenantId"]
+															type: "object"
+														}
+														sdk: {
+															description: """
+																			SDK defines the Azure SDK config that is being used to authenticate.
+																			See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+																			Cannot be set at the same time as `oauth` or `managedIdentity`.
+
+																			It requires Prometheus >= v2.52.0 or Thanos >= v0.36.0.
+																			"""
+															properties: tenantId: {
+																description: "`tenantId` is the tenant ID of the azure active directory application that is being used to authenticate."
+																pattern:     "^[0-9a-zA-Z-.]+$"
+																type:        "string"
+															}
+															type: "object"
+														}
+													}
+													type: "object"
+												}
+												basicAuth: {
+													description: """
+																	BasicAuth configuration for the URL.
+
+																	Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
+																	"""
+													properties: {
+														password: {
+															description: """
+																			`password` specifies a key of a Secret containing the password for
+																			authentication.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														username: {
+															description: """
+																			`username` specifies a key of a Secret containing the username for
+																			authentication.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												bearerToken: {
+													description: """
+																	*Warning: this field shouldn't be used because the token value appears
+																	in clear-text. Prefer using `authorization`.*
+
+																	Deprecated: this will be removed in a future release.
+																	"""
+													type: "string"
+												}
+												bearerTokenFile: {
+													description: """
+																	File from which to read bearer token for the URL.
+
+																	Deprecated: this will be removed in a future release. Prefer using `authorization`.
+																	"""
+													type: "string"
+												}
+												enableHTTP2: {
+													description: "Whether to enable HTTP2."
+													type:        "boolean"
+												}
+												followRedirects: {
+													description: """
+																	Configure whether HTTP requests follow HTTP 3xx redirects.
+
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
+																	"""
+													type: "boolean"
+												}
+												headers: {
+													additionalProperties: type: "string"
+													description: """
+																	Custom HTTP headers to be sent along with each remote write request.
+																	Be aware that headers that are set by Prometheus itself can't be overwritten.
+
+																	It requires Prometheus >= v2.25.0 or Thanos >= v0.24.0.
+																	"""
+													type: "object"
+												}
+												messageVersion: {
+													description: """
+																	The Remote Write message's version to use when writing to the endpoint.
+
+																	`Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0.
+																	`Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.
+
+																	When `Version2.0` is selected, Prometheus will automatically be
+																	configured to append the metadata of scraped metrics to the WAL.
+
+																	Before setting this field, consult with your remote storage provider
+																	what message version it supports.
+
+																	It requires Prometheus >= v2.54.0 or Thanos >= v0.37.0.
+																	"""
+													enum: ["V1.0", "V2.0"]
+													type: "string"
+												}
+												metadataConfig: {
+													description: "MetadataConfig configures the sending of series metadata to the remote storage."
+													properties: {
+														maxSamplesPerSend: {
+															description: """
+																			MaxSamplesPerSend is the maximum number of metadata samples per send.
+
+																			It requires Prometheus >= v2.29.0.
+																			"""
+															format:  "int32"
+															minimum: -1
+															type:    "integer"
+														}
+														send: {
+															description: "Defines whether metric metadata is sent to the remote storage or not."
+															type:        "boolean"
+														}
+														sendInterval: {
+															description: "Defines how frequently metric metadata is sent to the remote storage."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												name: {
+													description: """
+																	The name of the remote write queue, it must be unique if specified. The
+																	name is used in metrics and logging in order to differentiate queues.
+
+																	It requires Prometheus >= v2.15.0 or Thanos >= 0.24.0.
+																	"""
+													type: "string"
+												}
+												noProxy: {
+													description: """
+																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																	that should be excluded from proxying. IP and domain names can
+																	contain port numbers.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "string"
+												}
+												oauth2: {
+													description: """
+																	OAuth2 configuration for the URL.
+
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
+
+																	Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
+																	"""
+													properties: {
+														clientId: {
+															description: """
+																			`clientId` specifies a key of a Secret or ConfigMap containing the
+																			OAuth2 client's ID.
+																			"""
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														clientSecret: {
+															description: """
+																			`clientSecret` specifies a key of a Secret containing the OAuth2
+																			client's secret.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														endpointParams: {
+															additionalProperties: type: "string"
+															description: """
+																			`endpointParams` configures the HTTP parameters to append to the token
+																			URL.
+																			"""
+															type: "object"
+														}
+														noProxy: {
+															description: """
+																			`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																			that should be excluded from proxying. IP and domain names can
+																			contain port numbers.
+
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																			"""
+															type: "string"
+														}
+														proxyConnectHeader: {
+															additionalProperties: {
+																items: {
+																	description: "SecretKeySelector selects a key of a Secret."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																type: "array"
+															}
+															description: """
+																			ProxyConnectHeader optionally specifies headers to send to
+																			proxies during CONNECT requests.
+
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																			"""
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														proxyFromEnvironment: {
+															description: """
+																			Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																			It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																			"""
+															type: "boolean"
+														}
+														proxyUrl: {
+															description: "`proxyURL` defines the HTTP proxy server to use."
+															pattern:     "^(http|https|socks5)://.+$"
+															type:        "string"
+														}
+														scopes: {
+															description: "`scopes` defines the OAuth2 scopes used for the token request."
+															items: type: "string"
+															type: "array"
+														}
+														tlsConfig: {
+															description: """
+																			TLS configuration to use when connecting to the OAuth2 server.
+																			It requires Prometheus >= v2.43.0.
+																			"""
+															properties: {
+																ca: {
+																	description: "Certificate authority used when verifying server certificates."
+																	properties: {
+																		configMap: {
+																			description: "ConfigMap containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key to select."
+																					type:        "string"
+																				}
+																				name: {
+																					default: ""
+																					description: """
+																									Name of the referent.
+																									This field is effectively required, but due to backwards compatibility is
+																									allowed to be empty. Instances of this type with an empty value here are
+																									almost certainly wrong.
+																									More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																									"""
+																					type: "string"
+																				}
+																				optional: {
+																					description: "Specify whether the ConfigMap or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																		secret: {
+																			description: "Secret containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					default: ""
+																					description: """
+																									Name of the referent.
+																									This field is effectively required, but due to backwards compatibility is
+																									allowed to be empty. Instances of this type with an empty value here are
+																									almost certainly wrong.
+																									More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																									"""
+																					type: "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																	}
+																	type: "object"
+																}
+																cert: {
+																	description: "Client certificate to present when doing client-authentication."
+																	properties: {
+																		configMap: {
+																			description: "ConfigMap containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key to select."
+																					type:        "string"
+																				}
+																				name: {
+																					default: ""
+																					description: """
+																									Name of the referent.
+																									This field is effectively required, but due to backwards compatibility is
+																									allowed to be empty. Instances of this type with an empty value here are
+																									almost certainly wrong.
+																									More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																									"""
+																					type: "string"
+																				}
+																				optional: {
+																					description: "Specify whether the ConfigMap or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																		secret: {
+																			description: "Secret containing data to use for the targets."
+																			properties: {
+																				key: {
+																					description: "The key of the secret to select from.  Must be a valid secret key."
+																					type:        "string"
+																				}
+																				name: {
+																					default: ""
+																					description: """
+																									Name of the referent.
+																									This field is effectively required, but due to backwards compatibility is
+																									allowed to be empty. Instances of this type with an empty value here are
+																									almost certainly wrong.
+																									More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																									"""
+																					type: "string"
+																				}
+																				optional: {
+																					description: "Specify whether the Secret or its key must be defined"
+																					type:        "boolean"
+																				}
+																			}
+																			required: ["key"]
+																			type:                    "object"
+																			"x-kubernetes-map-type": "atomic"
+																		}
+																	}
+																	type: "object"
+																}
+																insecureSkipVerify: {
+																	description: "Disable target certificate validation."
+																	type:        "boolean"
+																}
+																keySecret: {
+																	description: "Secret containing the client key file for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																maxVersion: {
+																	description: """
+																					Maximum acceptable TLS version.
+
+																					It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																					"""
+																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																	type: "string"
+																}
+																minVersion: {
+																	description: """
+																					Minimum acceptable TLS version.
+
+																					It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																					"""
+																	enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																	type: "string"
+																}
+																serverName: {
+																	description: "Used to verify the hostname for the targets."
+																	type:        "string"
+																}
+															}
+															type: "object"
+														}
+														tokenUrl: {
+															description: "`tokenURL` configures the URL to fetch the token from."
+															minLength:   1
+															type:        "string"
+														}
+													}
+													required: ["clientId", "clientSecret", "tokenUrl"]
+													type: "object"
+												}
+												proxyConnectHeader: {
+													additionalProperties: {
+														items: {
+															description: "SecretKeySelector selects a key of a Secret."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: "array"
+													}
+													description: """
+																	ProxyConnectHeader optionally specifies headers to send to
+																	proxies during CONNECT requests.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxyFromEnvironment: {
+													description: """
+																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "boolean"
+												}
+												proxyUrl: {
+													description: "`proxyURL` defines the HTTP proxy server to use."
+													pattern:     "^(http|https|socks5)://.+$"
+													type:        "string"
+												}
+												queueConfig: {
+													description: "QueueConfig allows tuning of the remote write queue parameters."
+													properties: {
+														batchSendDeadline: {
+															description: "BatchSendDeadline is the maximum time a sample will wait in buffer."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
+														}
+														capacity: {
+															description: """
+																			Capacity is the number of samples to buffer per shard before we start
+																			dropping them.
+																			"""
+															type: "integer"
+														}
+														maxBackoff: {
+															description: "MaxBackoff is the maximum retry delay."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
+														}
+														maxRetries: {
+															description: "MaxRetries is the maximum number of times to retry a batch on recoverable errors."
+															type:        "integer"
+														}
+														maxSamplesPerSend: {
+															description: "MaxSamplesPerSend is the maximum number of samples per send."
+															type:        "integer"
+														}
+														maxShards: {
+															description: "MaxShards is the maximum number of shards, i.e. amount of concurrency."
+															type:        "integer"
+														}
+														minBackoff: {
+															description: "MinBackoff is the initial retry delay. Gets doubled for every retry."
+															pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:        "string"
+														}
+														minShards: {
+															description: "MinShards is the minimum number of shards, i.e. amount of concurrency."
+															type:        "integer"
+														}
+														retryOnRateLimit: {
+															description: """
+																			Retry upon receiving a 429 status code from the remote-write storage.
+
+																			This is an *experimental feature*, it may change in any upcoming release
+																			in a breaking way.
+																			"""
+															type: "boolean"
+														}
+														sampleAgeLimit: {
+															description: """
+																			SampleAgeLimit drops samples older than the limit.
+																			It requires Prometheus >= v2.50.0 or Thanos >= v0.32.0.
+																			"""
+															pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+															type:    "string"
+														}
+													}
+													type: "object"
+												}
+												remoteTimeout: {
+													description: "Timeout for requests to the remote write endpoint."
+													pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+													type:        "string"
+												}
+												roundRobinDNS: {
+													description: """
+																	When enabled:
+																	    - The remote-write mechanism will resolve the hostname via DNS.
+																	    - It will randomly select one of the resolved IP addresses and connect to it.
+
+																	When disabled (default behavior):
+																	    - The Go standard library will handle hostname resolution.
+																	    - It will attempt connections to each resolved IP address sequentially.
+
+																	Note: The connection timeout applies to the entire resolution and connection process.
+																	      If disabled, the timeout is distributed across all connection attempts.
+
+																	It requires Prometheus >= v3.1.0 or Thanos >= v0.38.0.
+																	"""
+													type: "boolean"
+												}
+												sendExemplars: {
+													description: """
+																	Enables sending of exemplars over remote write. Note that
+																	exemplar-storage itself must be enabled using the `spec.enableFeatures`
+																	option for exemplars to be scraped in the first place.
+
+																	It requires Prometheus >= v2.27.0 or Thanos >= v0.24.0.
+																	"""
+													type: "boolean"
+												}
+												sendNativeHistograms: {
+													description: """
+																	Enables sending of native histograms, also known as sparse histograms
+																	over remote write.
+
+																	It requires Prometheus >= v2.40.0 or Thanos >= v0.30.0.
+																	"""
+													type: "boolean"
+												}
+												sigv4: {
+													description: """
+																	Sigv4 allows to configures AWS's Signature Verification 4 for the URL.
+
+																	It requires Prometheus >= v2.26.0 or Thanos >= v0.24.0.
+
+																	Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
+																	"""
+													properties: {
+														accessKey: {
+															description: """
+																			AccessKey is the AWS API key. If not specified, the environment variable
+																			`AWS_ACCESS_KEY_ID` is used.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														profile: {
+															description: "Profile is the named AWS profile used to authenticate."
+															type:        "string"
+														}
+														region: {
+															description: "Region is the AWS region. If blank, the region from the default credentials chain used."
+															type:        "string"
+														}
+														roleArn: {
+															description: "RoleArn is the named AWS profile used to authenticate."
+															type:        "string"
+														}
+														secretKey: {
+															description: """
+																			SecretKey is the AWS API secret. If not specified, the environment
+																			variable `AWS_SECRET_ACCESS_KEY` is used.
+																			"""
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+													}
+													type: "object"
+												}
+												tlsConfig: {
+													description: "TLS Config to use for the URL."
+													properties: {
+														ca: {
+															description: "Certificate authority used when verifying server certificates."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														caFile: {
+															description: "Path to the CA cert in the Prometheus container to use for the targets."
+															type:        "string"
+														}
+														cert: {
+															description: "Client certificate to present when doing client-authentication."
+															properties: {
+																configMap: {
+																	description: "ConfigMap containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key to select."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the ConfigMap or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+																secret: {
+																	description: "Secret containing data to use for the targets."
+																	properties: {
+																		key: {
+																			description: "The key of the secret to select from.  Must be a valid secret key."
+																			type:        "string"
+																		}
+																		name: {
+																			default: ""
+																			description: """
+																							Name of the referent.
+																							This field is effectively required, but due to backwards compatibility is
+																							allowed to be empty. Instances of this type with an empty value here are
+																							almost certainly wrong.
+																							More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																							"""
+																			type: "string"
+																		}
+																		optional: {
+																			description: "Specify whether the Secret or its key must be defined"
+																			type:        "boolean"
+																		}
+																	}
+																	required: ["key"]
+																	type:                    "object"
+																	"x-kubernetes-map-type": "atomic"
+																}
+															}
+															type: "object"
+														}
+														certFile: {
+															description: "Path to the client cert file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														insecureSkipVerify: {
+															description: "Disable target certificate validation."
+															type:        "boolean"
+														}
+														keyFile: {
+															description: "Path to the client key file in the Prometheus container for the targets."
+															type:        "string"
+														}
+														keySecret: {
+															description: "Secret containing the client key file for the targets."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														maxVersion: {
+															description: """
+																			Maximum acceptable TLS version.
+
+																			It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																			"""
+															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+															type: "string"
+														}
+														minVersion: {
+															description: """
+																			Minimum acceptable TLS version.
+
+																			It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																			"""
+															enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+															type: "string"
+														}
+														serverName: {
+															description: "Used to verify the hostname for the targets."
+															type:        "string"
+														}
+													}
+													type: "object"
+												}
+												url: {
+													description: "The URL of the endpoint to send samples to."
+													minLength:   1
+													type:        "string"
+												}
+												writeRelabelConfigs: {
+													description: "The list of remote write relabel configurations."
+													items: {
+														description: """
+																		RelabelConfig allows dynamic rewriting of the label set for targets, alerts,
+																		scraped samples and remote write samples.
+
+																		More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+																		"""
+														properties: {
+															action: {
+																default: "replace"
+																description: """
+																				Action to perform based on the regex matching.
+
+																				`Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0.
+																				`DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0.
+
+																				Default: "Replace"
+																				"""
+																enum: ["replace", "Replace", "keep", "Keep", "drop", "Drop", "hashmod", "HashMod", "labelmap", "LabelMap", "labeldrop", "LabelDrop", "labelkeep", "LabelKeep", "lowercase", "Lowercase", "uppercase", "Uppercase", "keepequal", "KeepEqual", "dropequal", "DropEqual"]
+																type: "string"
+															}
+															modulus: {
+																description: """
+																				Modulus to take of the hash of the source label values.
+
+																				Only applicable when the action is `HashMod`.
+																				"""
+																format: "int64"
+																type:   "integer"
+															}
+															regex: {
+																description: "Regular expression against which the extracted value is matched."
+																type:        "string"
+															}
+															replacement: {
+																description: """
+																				Replacement value against which a Replace action is performed if the
+																				regular expression matches.
+
+																				Regex capture groups are available.
+																				"""
+																type: "string"
+															}
+															separator: {
+																description: "Separator is the string between concatenated SourceLabels."
+																type:        "string"
+															}
+															sourceLabels: {
+																description: """
+																				The source labels select values from existing labels. Their content is
+																				concatenated using the configured Separator and matched against the
+																				configured regular expression.
+																				"""
+																items: {
+																	description: """
+																					LabelName is a valid Prometheus label name which may only contain ASCII
+																					letters, numbers, as well as underscores.
+																					"""
+																	pattern: "^[a-zA-Z_][a-zA-Z0-9_]*$"
+																	type:    "string"
+																}
+																type: "array"
+															}
+															targetLabel: {
+																description: """
+																				Label to which the resulting string is written in a replacement.
+
+																				It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`,
+																				`KeepEqual` and `DropEqual` actions.
+
+																				Regex capture groups are available.
+																				"""
+																type: "string"
+															}
+														}
+														type: "object"
+													}
+													type: "array"
+												}
+											}
+											required: ["url"]
+											type: "object"
+										}
+										type: "array"
+									}
 									replicas: {
 										description: "Number of thanos ruler instances to deploy."
 										format:      "int32"
@@ -73007,8 +75716,12 @@ prometheusOperator: {
 									retention: {
 										default: "24h"
 										description: """
-														Time duration ThanosRuler shall retain data for. Default is '24h',
-														and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+														Time duration ThanosRuler shall retain data for. Default is '24h', and
+														must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds
+														seconds minutes hours days weeks years).
+
+														The field has no effect when remote-write is configured since the Ruler
+														operates in stateless mode.
 														"""
 										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 										type:    "string"
@@ -74277,6 +76990,18 @@ prometheusOperator: {
 											}
 										}
 										type: "object"
+									}
+									terminationGracePeriodSeconds: {
+										description: """
+														Optional duration in seconds the pod needs to terminate gracefully.
+														Value must be non-negative integer. The value zero indicates stop immediately via
+														the kill signal (no opportunity to shut down) which may lead to data corruption.
+
+														Defaults to 120 seconds.
+														"""
+										format:  "int64"
+										minimum: 0
+										type:    "integer"
 									}
 									tolerations: {
 										description: "If specified, the pod's tolerations."
@@ -77217,7 +79942,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -77236,18 +79961,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.80.1"
+						"app.kubernetes.io/version":   "0.82.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.80.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.82.0", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.80.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.82.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -77270,7 +79995,7 @@ prometheusOperator: {
 						}
 					}, {
 						args: ["--secure-listen-address=:8443", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:8080/"]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.19.0"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.19.1"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 8443
@@ -77316,7 +80041,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -77459,7 +80184,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -77487,7 +80212,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -77501,7 +80226,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -77518,7 +80243,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.80.1"
+				"app.kubernetes.io/version":   "0.82.0"
 			}
 		}
 	}

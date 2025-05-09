@@ -10,20 +10,20 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "main"
 			namespace: "monitoring"
 		}
 		spec: {
-			image: "quay.io/prometheus/alertmanager:v0.28.0"
+			image: "quay.io/prometheus/alertmanager:v0.28.1"
 			nodeSelector: "kubernetes.io/os": "linux"
 			podMetadata: labels: {
 				"app.kubernetes.io/component": "alert-router"
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			replicas: 3
 			resources: {
@@ -43,7 +43,7 @@ alertmanager: {
 				runAsUser:    1000
 			}
 			serviceAccountName: "alertmanager-main"
-			version:            "0.28.0"
+			version:            "0.28.1"
 		}
 	}
 	PodDisruptionBudget: "alertmanager-main": {
@@ -55,7 +55,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -79,7 +79,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -129,9 +129,9 @@ alertmanager: {
 				}
 				expr: """
 					(
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[5m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[15m])
 					)
 					> 0.01
 
@@ -147,9 +147,9 @@ alertmanager: {
 				}
 				expr: """
 					min by (namespace,service, integration) (
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[15m])
 					)
 					> 0.01
 
@@ -165,9 +165,9 @@ alertmanager: {
 				}
 				expr: """
 					min by (namespace,service, integration) (
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[15m])
 					)
 					> 0.01
 
@@ -246,7 +246,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -321,7 +321,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -355,7 +355,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"
@@ -370,7 +370,7 @@ alertmanager: {
 				"app.kubernetes.io/instance":  "main"
 				"app.kubernetes.io/name":      "alertmanager"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.28.0"
+				"app.kubernetes.io/version":   "0.28.1"
 			}
 			name:      "alertmanager-main"
 			namespace: "monitoring"

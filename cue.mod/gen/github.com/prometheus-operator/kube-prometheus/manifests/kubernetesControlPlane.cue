@@ -312,7 +312,7 @@ kubernetesControlPlane: {
 			rules: [{
 				alert: "KubeCPUOvercommit"
 				annotations: {
-					description: "Cluster {{ $labels.cluster }} has overcommitted CPU resource requests for Pods by {{ $value }} CPU shares and cannot tolerate node failure."
+					description: "Cluster {{ $labels.cluster }} has overcommitted CPU resource requests for Pods by {{ printf \"%.2f\" $value }} CPU shares and cannot tolerate node failure."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuovercommit"
 					summary:     "Cluster has overcommitted CPU resource requests."
 				}
@@ -358,7 +358,7 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeMemoryQuotaOvercommit"
 				annotations: {
-					description: "Cluster {{ $labels.cluster }}  has overcommitted memory resource requests for Namespaces."
+					description: "Cluster {{ $labels.cluster }} has overcommitted memory resource requests for Namespaces."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryquotaovercommit"
 					summary:     "Cluster has overcommitted memory resource requests."
 				}
@@ -428,7 +428,7 @@ kubernetesControlPlane: {
 				}
 				expr: """
 					sum(increase(container_cpu_cfs_throttled_periods_total{container!="", job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
-					  /
+					  / on (cluster, namespace, pod, container, instance) group_left
 					sum(increase(container_cpu_cfs_periods_total{job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
 					  > ( 25 / 100 )
 
@@ -762,6 +762,21 @@ kubernetesControlPlane: {
 				for: "15m"
 				labels: severity: "warning"
 			}, {
+				alert: "KubeNodePressure"
+				annotations: {
+					description: "{{ $labels.node }} on cluster {{ $labels.cluster }} has active Condition {{ $labels.condition }}. This is caused by resource usage exceeding eviction thresholds."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodepressure"
+					summary:     "Node has as active Condition."
+				}
+				expr: """
+					kube_node_status_condition{job="kube-state-metrics",condition=~"(MemoryPressure|DiskPressure|PIDPressure)",status="true"} == 1
+					and on (cluster, node)
+					kube_node_spec_unschedulable{job="kube-state-metrics"} == 0
+
+					"""
+				for: "10m"
+				labels: severity: "info"
+			}, {
 				alert: "KubeNodeUnreachable"
 				annotations: {
 					description: "{{ $labels.node }} is unreachable and some workloads may be rescheduled on cluster {{ $labels.cluster }}."
@@ -814,6 +829,24 @@ kubernetesControlPlane: {
 					"""
 				for: "15m"
 				labels: severity: "warning"
+			}, {
+				alert: "KubeNodeEviction"
+				annotations: {
+					description: "Node {{ $labels.node }} on {{ $labels.cluster }} is evicting Pods due to {{ $labels.eviction_signal }}.  Eviction occurs when eviction thresholds are crossed, typically caused by Pods exceeding RAM/ephemeral-storage limits."
+					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodeeviction"
+					summary:     "Node is evicting pods."
+				}
+				expr: """
+					sum(rate(kubelet_evictions{job="kubelet", metrics_path="/metrics"}[15m])) by(cluster, eviction_signal, instance)
+					* on (cluster, instance) group_left(node)
+					max by (cluster, instance, node) (
+					  kubelet_node_name{job="kubelet", metrics_path="/metrics"}
+					)
+					> 0
+
+					"""
+				for: "0s"
+				labels: severity: "info"
 			}, {
 				alert: "KubeletPlegDurationHigh"
 				annotations: {
@@ -1014,22 +1047,18 @@ kubernetesControlPlane: {
 					    # write too slow
 					    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"} or vector(0))
 					  ) +
 					  (
 					    # read too slow
 					    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"LIST|GET"})
 					    -
 					    (
-					      (
-					        sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"})
-					        or
-					        vector(0)
-					      )
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"} or vector(0))
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"} or vector(0))
 					      +
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"})
+					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"} or vector(0))
 					    )
 					  ) +
 					  # errors
@@ -1048,15 +1077,11 @@ kubernetesControlPlane: {
 					  -
 					  (
 					    # too slow
-					    (
-					      sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"})
-					      or
-					      vector(0)
-					    )
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\\\.0)?"} or vector(0))
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\\\.0)?"} or vector(0))
 					    +
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\\\.0)?"} or vector(0))
 					  )
 					  +
 					  # errors
@@ -1075,7 +1100,7 @@ kubernetesControlPlane: {
 					    # too slow
 					    sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
 					    -
-					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"})
+					    sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\\\.0)?"} or vector(0))
 					  )
 					  +
 					  # errors
@@ -1486,6 +1511,16 @@ kubernetesControlPlane: {
 			rules: [{
 				expr: """
 					sum by (cluster, namespace, pod, container) (
+					  rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}[5m])
+					) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
+					  1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
+					)
+
+					"""
+				record: "node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m"
+			}, {
+				expr: """
+					sum by (cluster, namespace, pod, container) (
 					  irate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}[5m])
 					) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
 					  1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
@@ -1853,7 +1888,7 @@ kubernetesControlPlane: {
 			rules: [{
 				expr: """
 					count by (cluster) (
-					  windows_system_system_up_time{job="kubernetes-windows-exporter"}
+					  windows_system_boot_time_timestamp_seconds{job="kubernetes-windows-exporter"}
 					)
 
 					"""
