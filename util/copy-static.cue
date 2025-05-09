@@ -5,7 +5,8 @@ copyStatic: {
 	image: "ghcr.io/kinvolk/busybox:latest"
 	command: [
 		"cp",
-		"-r",
+		"--recursive",
+		"--dereference",
 		"--no-target-directory",
 		"/static",
 		"/",
