@@ -15,7 +15,7 @@ k: StatefulSet: "tailscale-subnet-router": spec: template: spec: {
 			value: "true"
 		}, {
 			name:  "TS_ROUTES"
-			value: "10.96.0.0/12,10.0.0.0/16"
+			value: "10.96.0.0/12,10.48.0.0/16"
 		}]
 	}]
 }
