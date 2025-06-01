@@ -78,7 +78,7 @@ nodeExporter: {
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--web.listen-address=127.0.0.1:9100", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
+						args: ["--web.listen-address=127.0.0.1:9101", "--path.sysfs=/host/sys", "--path.rootfs=/host/root", "--path.procfs=/host/root/proc", "--path.udev.data=/host/root/run/udev/data", "--no-collector.wifi", "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)", "--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$", "--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$", "--collector.systemd"]
 						image: "quay.io/prometheus/node-exporter:v1.9.1"
 						name:  "node-exporter"
 						resources: {
@@ -114,7 +114,7 @@ nodeExporter: {
 							name:      "systemd-dbus"
 						}]
 					}, {
-						args: ["--secure-listen-address=[$(IP)]:9100", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:9100/"]
+						args: ["--secure-listen-address=[$(IP)]:9100", "--tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305", "--upstream=http://127.0.0.1:9101/"]
 						env: [{
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"

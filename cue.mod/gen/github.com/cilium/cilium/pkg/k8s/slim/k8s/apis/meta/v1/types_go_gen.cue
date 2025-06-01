@@ -250,7 +250,7 @@ import "k8s.io/apimachinery/pkg/types"
 	// operator is "In", and the values array contains only "value". The requirements are ANDed.
 	//
 	// +kubebuilder:validation:Optional
-	matchLabels?: {[string]: string} @go(MatchLabels,map[string]string) @protobuf(1,bytes,rep)
+	matchLabels?: {[string]: string} @go(MatchLabels,map[string]MatchLabelsValue) @protobuf(1,bytes,rep)
 
 	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
 	// +kubebuilder:validation:Optional

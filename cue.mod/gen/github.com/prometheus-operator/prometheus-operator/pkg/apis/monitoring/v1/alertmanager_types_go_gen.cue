@@ -294,6 +294,9 @@ import (
 	// Defines the web command line flags when starting Alertmanager.
 	web?: null | #AlertmanagerWebSpec @go(Web,*AlertmanagerWebSpec)
 
+	// Defines the limits command line flags when starting Alertmanager.
+	limits?: null | #AlertmanagerLimitsSpec @go(Limits,*AlertmanagerLimitsSpec)
+
 	// Configures the mutual TLS configuration for the Alertmanager cluster's gossip protocol.
 	//
 	// It requires Alertmanager >= 0.24.0.
@@ -466,6 +469,25 @@ import (
 	timeout?: null | uint32 @go(Timeout,*uint32)
 }
 
+// AlertmanagerLimitsSpec defines the limits command line flags when starting Alertmanager.
+// +k8s:openapi-gen=true
+#AlertmanagerLimitsSpec: {
+	// The maximum number active and pending silences. This corresponds to the
+	// Alertmanager's `--silences.max-silences` flag.
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +kubebuilder:validation:Minimum:=0
+	// +optional
+	maxSilences?: null | int32 @go(MaxSilences,*int32)
+
+	// The maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's
+	// `--silences.max-per-silence-bytes` flag.
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +optional
+	maxPerSilenceBytes?: null | #ByteSize @go(MaxPerSilenceBytes,*ByteSize)
+}
+
 // GlobalSMTPConfig configures global SMTP parameters.
 // See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
 #GlobalSMTPConfig: {
@@ -501,6 +523,10 @@ import (
 	// Note that Go does not support unencrypted connections to remote SMTP endpoints.
 	// +optional
 	requireTLS?: null | bool @go(RequireTLS,*bool)
+
+	// The default TLS configuration for SMTP receivers
+	// +optional
+	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
 }
 
 // HostPort represents a "host:port" network address.

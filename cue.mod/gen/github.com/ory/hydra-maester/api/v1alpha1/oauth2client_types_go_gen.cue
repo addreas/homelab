@@ -26,7 +26,7 @@ import (
 
 // HydraAdmin defines the desired hydra admin instance to use for OAuth2Client
 #HydraAdmin: {
-	// +kubebuilder:validation:MaxLength=64
+	// +kubebuilder:validation:MaxLength=256
 	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
 	//
 	// URL is the URL for the hydra instance on
@@ -225,10 +225,10 @@ import (
 	// BackChannelLogoutURI RP URL that will cause the RP to log itself out when sent a Logout Token by the OP
 	backChannelLogoutURI?: string @go(BackChannelLogoutURI)
 
-	// +kubebuilder:validation:Enum=1;2
+	// +kubebuilder:validation:Enum=delete;orphan
 	//
 	// Indicates if a deleted OAuth2Client custom resource should delete the database row or not.
-	// Value 1 means deletion of the OAuth2 client, value 2 means keep an orphan oauth2 client.
+	// Values can be 'delete' to delete the OAuth2 client, value 'orphan' to keep an orphan oauth2 client.
 	deletionPolicy?: #OAuth2ClientDeletionPolicy @go(DeletionPolicy)
 }
 
@@ -276,10 +276,10 @@ import (
 #OAuth2ClientConditionReady: "Ready"
 
 // OAuth2ClientDeletionPolicy represents if a deleted oauth2 client object should delete the database row or not.
-#OAuth2ClientDeletionPolicy: int
+#OAuth2ClientDeletionPolicy: string
 
-#OAuth2ClientDeletionPolicyDelete: 1
-#OAuth2ClientDeletionPolicyOrphan: 2
+#OAuth2ClientDeletionPolicyDelete: "delete"
+#OAuth2ClientDeletionPolicyOrphan: "orphan"
 
 // +kubebuilder:validation:Enum=True;False;Unknown
 #ConditionStatus: string // #enumConditionStatus
