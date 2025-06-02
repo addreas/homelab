@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name: "prometheus-operator"
 		}
@@ -79942,7 +79942,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -79961,18 +79961,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.82.0"
+						"app.kubernetes.io/version":   "0.82.1"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.82.0", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.82.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.82.0"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.82.1"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -80041,7 +80041,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -80184,7 +80184,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80212,7 +80212,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80226,7 +80226,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80243,7 +80243,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.0"
+				"app.kubernetes.io/version":   "0.82.1"
 			}
 		}
 	}

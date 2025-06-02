@@ -10,17 +10,18 @@ import (
 	"github.com/fluxcd/pkg/apis/kustomize"
 )
 
-#KustomizationKind:         "Kustomization"
-#KustomizationFinalizer:    "finalizers.fluxcd.io"
-#MaxConditionMessageLength: 20000
-#EnabledValue:              "enabled"
-#DisabledValue:             "disabled"
-#MergeValue:                "Merge"
-#IfNotPresentValue:         "IfNotPresent"
-#IgnoreValue:               "Ignore"
-#DeletionPolicyMirrorPrune: "MirrorPrune"
-#DeletionPolicyDelete:      "Delete"
-#DeletionPolicyOrphan:      "Orphan"
+#KustomizationKind:                "Kustomization"
+#KustomizationFinalizer:           "finalizers.fluxcd.io"
+#MaxConditionMessageLength:        20000
+#EnabledValue:                     "enabled"
+#DisabledValue:                    "disabled"
+#MergeValue:                       "Merge"
+#IfNotPresentValue:                "IfNotPresent"
+#IgnoreValue:                      "Ignore"
+#DeletionPolicyMirrorPrune:        "MirrorPrune"
+#DeletionPolicyDelete:             "Delete"
+#DeletionPolicyWaitForTermination: "WaitForTermination"
+#DeletionPolicyOrphan:             "Orphan"
 
 // KustomizationSpec defines the configuration to calculate the desired state
 // from a Source using Kustomize.
@@ -84,9 +85,9 @@ import (
 
 	// DeletionPolicy can be used to control garbage collection when this
 	// Kustomization is deleted. Valid values are ('MirrorPrune', 'Delete',
-	// 'Orphan'). 'MirrorPrune' mirrors the Prune field (orphan if false,
-	// delete if true). Defaults to 'MirrorPrune'.
-	// +kubebuilder:validation:Enum=MirrorPrune;Delete;Orphan
+	// 'WaitForTermination', 'Orphan'). 'MirrorPrune' mirrors the Prune field
+	// (orphan if false, delete if true). Defaults to 'MirrorPrune'.
+	// +kubebuilder:validation:Enum=MirrorPrune;Delete;WaitForTermination;Orphan
 	// +optional
 	deletionPolicy?: string @go(DeletionPolicy)
 
@@ -188,7 +189,18 @@ import (
 	// +required
 	provider: string @go(Provider)
 
+	// ServiceAccountName is the name of the service account used to
+	// authenticate with KMS services from cloud providers. If a
+	// static credential for a given cloud provider is defined
+	// inside the Secret referenced by SecretRef, that static
+	// credential takes priority.
+	// +optional
+	serviceAccountName?: string @go(ServiceAccountName)
+
 	// The secret name containing the private OpenPGP keys used for decryption.
+	// A static credential for a cloud provider defined inside the Secret
+	// takes priority to secret-less authentication with the ServiceAccountName
+	// field.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
 }

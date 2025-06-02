@@ -147,7 +147,7 @@ _#defaultMaxHistory: 5
 
 	// ValuesFrom holds references to resources containing Helm values for this HelmRelease,
 	// and information about how they should be merged.
-	valuesFrom?: [...meta.#ValuesReference] @go(ValuesFrom,[]meta.ValuesReference)
+	valuesFrom?: [...meta.#ValuesReference] @go(ValuesFrom,[]ValuesReference)
 
 	// Values holds the values for this Helm release.
 	// +optional

@@ -124,6 +124,12 @@ import (
 	// should be included in the Artifact produced for this GitRepository.
 	// +optional
 	include?: [...#GitRepositoryInclude] @go(Include,[]GitRepositoryInclude)
+
+	// SparseCheckout specifies a list of directories to checkout when cloning
+	// the repository. If specified, only these directories are included in the
+	// Artifact produced for this GitRepository.
+	// +optional
+	sparseCheckout?: [...string] @go(SparseCheckout,[]string)
 }
 
 // GitRepositoryInclude specifies a local reference to a GitRepository which
@@ -227,6 +233,11 @@ import (
 	// produce the current Artifact.
 	// +optional
 	observedInclude?: [...#GitRepositoryInclude] @go(ObservedInclude,[]GitRepositoryInclude)
+
+	// ObservedSparseCheckout is the observed list of directories used to
+	// produce the current Artifact.
+	// +optional
+	observedSparseCheckout?: [...string] @go(ObservedSparseCheckout,[]string)
 
 	// SourceVerificationMode is the last used verification mode indicating
 	// which Git object(s) have been verified.

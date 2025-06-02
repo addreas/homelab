@@ -19,13 +19,13 @@ package v1
 	// Name of the referent
 	// If multiple resources are targeted `*` may be set.
 	// +kubebuilder:validation:MinLength=1
-	// +kubebuilder:validation:MaxLength=53
+	// +kubebuilder:validation:MaxLength=253
 	// +required
 	name: string @go(Name)
 
 	// Namespace of the referent
 	// +kubebuilder:validation:MinLength=1
-	// +kubebuilder:validation:MaxLength=53
+	// +kubebuilder:validation:MaxLength=253
 	// +kubebuilder:validation:Optional
 	// +optional
 	namespace?: string @go(Namespace)
