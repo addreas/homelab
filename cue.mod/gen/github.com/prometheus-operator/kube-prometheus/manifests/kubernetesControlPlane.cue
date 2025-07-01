@@ -6,10 +6,11 @@ kubernetesControlPlane: {
 		kind:       "PrometheusRule"
 		metadata: {
 			labels: {
-				"app.kubernetes.io/name":    "kube-prometheus"
-				"app.kubernetes.io/part-of": "kube-prometheus"
-				prometheus:                  "k8s"
-				role:                        "alert-rules"
+				"app.kubernetes.io/component": "kubernetes"
+				"app.kubernetes.io/name":      "kube-prometheus"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+				prometheus:                    "k8s"
+				role:                          "alert-rules"
 			}
 			name:      "kubernetes-monitoring-rules"
 			namespace: "monitoring"
@@ -1708,9 +1709,28 @@ kubernetesControlPlane: {
 					    label_replace(
 					      kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
 					      "replicaset", "$1", "owner_name", "(.*)"
-					    ) * on(replicaset, namespace) group_left(owner_name) topk by(replicaset, namespace) (
-					      1, max by (replicaset, namespace, owner_name) (
-					        kube_replicaset_owner{job="kube-state-metrics"}
+					    ) * on (cluster, replicaset, namespace) group_left(owner_name) topk by(cluster, replicaset, namespace) (
+					      1, max by (cluster, replicaset, namespace, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind=""}
+					      )
+					    ),
+					    "workload", "$1", "replicaset", "(.*)"
+					  )
+					)
+
+					"""
+				labels: workload_type: "replicaset"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    label_replace(
+					      kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
+					      "replicaset", "$1", "owner_name", "(.*)"
+					    ) * on(replicaset, namespace, cluster) group_left(owner_name) topk by(cluster, replicaset, namespace) (
+					      1, max by (cluster, replicaset, namespace, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind="Deployment"}
 					      )
 					    ),
 					    "workload", "$1", "owner_name", "(.*)"
@@ -1737,8 +1757,7 @@ kubernetesControlPlane: {
 					max by (cluster, namespace, workload, pod) (
 					  label_replace(
 					    kube_pod_owner{job="kube-state-metrics", owner_kind="StatefulSet"},
-					    "workload", "$1", "owner_name", "(.*)"
-					  )
+					  "workload", "$1", "owner_name", "(.*)")
 					)
 
 					"""
@@ -1746,15 +1765,86 @@ kubernetesControlPlane: {
 				record: "namespace_workload_pod:kube_pod_owner:relabel"
 			}, {
 				expr: """
-					max by (cluster, namespace, workload, pod) (
-					  label_replace(
-					    kube_pod_owner{job="kube-state-metrics", owner_kind="Job"},
-					    "workload", "$1", "owner_name", "(.*)"
-					  )
+					group by (cluster, namespace, workload, pod) (
+					  label_join(
+					    group by (cluster, namespace, job_name, pod, owner_name) (
+					      label_join(
+					        kube_pod_owner{job="kube-state-metrics", owner_kind="Job"}
+					      , "job_name", "", "owner_name")
+					    )
+					    * on (cluster, namespace, job_name) group_left()
+					    group by (cluster, namespace, job_name) (
+					      kube_job_owner{job="kube-state-metrics", owner_kind=~"Pod|"}
+					    )
+					  , "workload", "", "owner_name")
 					)
 
 					"""
 				labels: workload_type: "job"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    kube_pod_owner{job="kube-state-metrics", owner_kind="", owner_name=""},
+					  "workload", "$1", "pod", "(.+)")
+					)
+
+					"""
+				labels: workload_type: "barepod"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    kube_pod_owner{job="kube-state-metrics", owner_kind="Node"},
+					  "workload", "$1", "pod", "(.+)")
+					)
+
+					"""
+				labels: workload_type: "staticpod"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					group by (cluster, namespace, workload, workload_type, pod) (
+					  label_join(
+					    label_join(
+					      group by (cluster, namespace, job_name, pod) (
+					        label_join(
+					          kube_pod_owner{job="kube-state-metrics", owner_kind="Job"}
+					        , "job_name", "", "owner_name")
+					      )
+					      * on (cluster, namespace, job_name) group_left(owner_kind, owner_name)
+					      group by (cluster, namespace, job_name, owner_kind, owner_name) (
+					        kube_job_owner{job="kube-state-metrics", owner_kind!="Pod", owner_kind!=""}
+					      )
+					    , "workload", "", "owner_name")
+					  , "workload_type", "", "owner_kind")
+					  
+					  OR
+
+					  label_replace(
+					    label_replace(
+					      label_replace(
+					        kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"}
+					        , "replicaset", "$1", "owner_name", "(.+)"
+					      )
+					      * on(cluster, namespace, replicaset) group_left(owner_kind, owner_name)
+					      group by (cluster, namespace, replicaset, owner_kind, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind!="Deployment", owner_kind!=""}
+					      )
+					    , "workload", "$1", "owner_name", "(.+)")
+					    OR
+					    label_replace(
+					      group by (cluster, namespace, pod, owner_name, owner_kind) (
+					        kube_pod_owner{job="kube-state-metrics", owner_kind!="ReplicaSet", owner_kind!="DaemonSet", owner_kind!="StatefulSet", owner_kind!="Job", owner_kind!="Node", owner_kind!=""}
+					      )
+					      , "workload", "$1", "owner_name", "(.+)"
+					    )
+					  , "workload_type", "$1", "owner_kind", "(.+)")
+					)
+
+					"""
 				record: "namespace_workload_pod:kube_pod_owner:relabel"
 			}]
 		}, {
@@ -1909,8 +1999,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "coredns"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "coredns"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "coredns"
 				namespace: "monitoring"
@@ -1936,8 +2027,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "apiserver"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "apiserver"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-apiserver"
 				namespace: "monitoring"
@@ -2034,8 +2126,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kube-controller-manager"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kube-controller-manager"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-controller-manager"
 				namespace: "monitoring"
@@ -2107,8 +2200,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kube-scheduler"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kube-scheduler"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-scheduler"
 				namespace: "monitoring"
@@ -2143,8 +2237,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kubelet"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kubelet"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kubelet"
 				namespace: "monitoring"

@@ -4,7 +4,15 @@ blackboxExporter: {
 	ClusterRole: "blackbox-exporter": {
 		apiVersion: "rbac.authorization.k8s.io/v1"
 		kind:       "ClusterRole"
-		metadata: name: "blackbox-exporter"
+		metadata: {
+			labels: {
+				"app.kubernetes.io/component": "exporter"
+				"app.kubernetes.io/name":      "blackbox-exporter"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+				"app.kubernetes.io/version":   "0.26.0"
+			}
+			name: "blackbox-exporter"
+		}
 		rules: [{
 			apiGroups: ["authentication.k8s.io"]
 			resources: ["tokenreviews"]

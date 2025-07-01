@@ -1,27 +1,25 @@
 module github.com/addreas/cuebernetes
 
-go 1.24.0
-
-toolchain go1.24.2
+go 1.24.4
 
 require (
 	github.com/addreas/cue-controller/api v1.0.0-rc1-cue
-	github.com/cert-manager/cert-manager v1.17.2
+	github.com/cert-manager/cert-manager v1.18.1
 	github.com/fluxcd/helm-controller/api v1.3.0
 	github.com/fluxcd/kustomize-controller/api v1.6.0
 	github.com/fluxcd/notification-controller/api v1.6.0
-	github.com/fluxcd/source-controller/api v1.6.0
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.6
+	github.com/fluxcd/source-controller/api v1.6.2
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/ory/hydra-maester v0.0.37
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.83.0
-	k8s.io/api v0.33.1
-	k8s.io/apimachinery v0.33.1
-	k8s.io/kube-aggregator v0.33.1
+	k8s.io/api v0.33.2
+	k8s.io/apimachinery v0.33.2
+	k8s.io/kube-aggregator v0.33.2
 )
 
 require (
-	github.com/bitnami-labs/sealed-secrets v0.29.0
-	github.com/cilium/cilium v1.17.4
+	github.com/bitnami-labs/sealed-secrets v0.30.0
+	github.com/cilium/cilium v1.17.5
 	github.com/grafana-operator/grafana-operator/v5 v5.18.0
 )
 
@@ -36,9 +34,9 @@ require (
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cilium/ebpf v0.17.1 // indirect
-	github.com/cilium/hive v0.0.0-20250121145729-e67f66eb0375 // indirect
+	github.com/cilium/hive v0.0.0-20250522145610-0734675df148 // indirect
 	github.com/cilium/proxy v0.0.0-20250408103314-d3be7c547203 // indirect
-	github.com/cilium/statedb v0.3.6 // indirect
+	github.com/cilium/statedb v0.4.0 // indirect
 	github.com/cilium/stream v0.0.0-20241203114243-53c3e5d79744 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
@@ -123,14 +121,14 @@ require (
 	go.uber.org/dig v1.17.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
-	golang.org/x/crypto v0.38.0 // indirect
+	golang.org/x/crypto v0.39.0 // indirect
 	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67 // indirect
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
-	golang.org/x/sync v0.14.0 // indirect
+	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.32.0 // indirect
-	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
