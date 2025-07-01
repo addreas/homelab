@@ -9,7 +9,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -124,8 +124,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -12167,8 +12167,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -12600,7 +12600,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -12616,7 +12615,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -12807,7 +12805,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -12823,7 +12820,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -13006,7 +13002,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -13022,7 +13017,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -13213,7 +13207,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -13229,7 +13222,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -14422,6 +14414,185 @@ prometheusOperator: {
 																required: ["host", "port"]
 																type: "object"
 															}
+															tlsConfig: {
+																description: "The default TLS configuration for SMTP receivers"
+																properties: {
+																	ca: {
+																		description: "Certificate authority used when verifying server certificates."
+																		properties: {
+																			configMap: {
+																				description: "ConfigMap containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key to select."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the ConfigMap or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			secret: {
+																				description: "Secret containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	cert: {
+																		description: "Client certificate to present when doing client-authentication."
+																		properties: {
+																			configMap: {
+																				description: "ConfigMap containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key to select."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the ConfigMap or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			secret: {
+																				description: "Secret containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	insecureSkipVerify: {
+																		description: "Disable target certificate validation."
+																		type:        "boolean"
+																	}
+																	keySecret: {
+																		description: "Secret containing the client key file for the targets."
+																		properties: {
+																			key: {
+																				description: "The key of the secret to select from.  Must be a valid secret key."
+																				type:        "string"
+																			}
+																			name: {
+																				default: ""
+																				description: """
+																								Name of the referent.
+																								This field is effectively required, but due to backwards compatibility is
+																								allowed to be empty. Instances of this type with an empty value here are
+																								almost certainly wrong.
+																								More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				description: "Specify whether the Secret or its key must be defined"
+																				type:        "boolean"
+																			}
+																		}
+																		required: ["key"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	maxVersion: {
+																		description: """
+																						Maximum acceptable TLS version.
+
+																						It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																						"""
+																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																		type: "string"
+																	}
+																	minVersion: {
+																		description: """
+																						Minimum acceptable TLS version.
+
+																						It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																						"""
+																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																		type: "string"
+																	}
+																	serverName: {
+																		description: "Used to verify the hostname for the targets."
+																		type:        "string"
+																	}
+																}
+																type: "object"
+															}
 														}
 														type: "object"
 													}
@@ -15209,7 +15380,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -15234,7 +15405,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -15546,6 +15717,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -16869,7 +17048,7 @@ prometheusOperator: {
 										description: """
 														An optional list of references to secrets in the same namespace
 														to use for pulling prometheus and alertmanager images from registries
-														see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+														see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 														"""
 										items: {
 											description: """
@@ -17089,7 +17268,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -17114,7 +17293,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -17426,6 +17605,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -18724,7 +18911,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -18734,7 +18921,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -18745,7 +18932,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -19556,7 +19743,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -19566,7 +19753,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -19577,7 +19764,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -20246,7 +20433,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -20259,7 +20445,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -21482,7 +21667,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -22968,8 +23153,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -24325,8 +24510,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -25628,8 +25813,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -26096,7 +26281,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26112,7 +26296,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26303,7 +26486,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26319,7 +26501,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26502,7 +26683,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26518,7 +26698,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26709,7 +26888,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26725,7 +26903,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -27427,7 +27604,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -27452,7 +27629,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -27764,6 +27941,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -28948,6 +29133,15 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native
+														histogram with custom buckets.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										type: "boolean"
+									}
 									dnsConfig: {
 										description: "Defines the DNS configuration for the pods."
 										properties: {
@@ -29293,7 +29487,7 @@ prometheusOperator: {
 														Use the host's network namespace if true.
 
 														Make sure to understand the security implications if you want to enable
-														it (https://kubernetes.io/docs/concepts/configuration/overview/).
+														it (https://kubernetes.io/docs/concepts/configuration/overview/ ).
 
 														When hostNetwork is enabled, this will set the DNS policy to
 														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
@@ -29562,7 +29756,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -29587,7 +29781,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -29899,6 +30093,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -31176,8 +31378,23 @@ prometheusOperator: {
 										enum: ["StatefulSet", "DaemonSet"]
 										type: "string"
 									}
+									nameEscapingScheme: {
+										description: """
+														Specifies the character escaping scheme that will be requested when scraping
+														for metric and label names that do not conform to the legacy Prometheus
+														character set.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
+									}
 									nameValidationScheme: {
-										description: "Specifies the validation scheme for metric and label names."
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v2.55.0.
+														"""
 										enum: ["UTF8", "Legacy"]
 										type: "string"
 									}
@@ -31192,6 +31409,13 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											convertHistogramsToNHCB: {
+												description: """
+																Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets.
+																It requires Prometheus >= v3.4.0.
+																"""
+												type: "boolean"
+											}
 											keepIdentifyingResourceAttributes: {
 												description: """
 																Enables adding `service.name`, `service.namespace` and `service.instance.id`
@@ -31217,7 +31441,7 @@ prometheusOperator: {
 
 																It requires Prometheus >= v3.0.0.
 																"""
-												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes", "NoTranslation"]
 												type: "string"
 											}
 										}
@@ -31299,7 +31523,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -31309,7 +31533,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -31320,7 +31544,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -34114,6 +34338,10 @@ prometheusOperator: {
 														Users can define their own sharding implementation by setting the
 														`__tmp_hash` label during the target discovery with relabeling
 														configuration (either in the monitoring resources or via scrape class).
+
+														You can also disable sharding on a specific target by setting the
+														`__tmp_disable_sharding` label with relabeling configuration. When
+														the label value isn't empty, all Prometheus shards will scrape the target.
 														"""
 										format: "int32"
 										type:   "integer"
@@ -34484,7 +34712,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -34494,7 +34722,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -34505,7 +34733,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -35181,7 +35409,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -35194,7 +35421,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -36690,7 +36916,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -38230,8 +38456,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -38788,7 +39014,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -38804,7 +39029,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -38995,7 +39219,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39011,7 +39234,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39194,7 +39416,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -39210,7 +39431,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -39401,7 +39621,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39417,7 +39636,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -40831,7 +41049,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -40856,7 +41074,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -41168,6 +41386,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -42352,6 +42578,15 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native
+														histogram with custom buckets.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										type: "boolean"
+									}
 									disableCompaction: {
 										description: """
 														When true, the Prometheus compaction is disabled.
@@ -42748,7 +42983,7 @@ prometheusOperator: {
 														Use the host's network namespace if true.
 
 														Make sure to understand the security implications if you want to enable
-														it (https://kubernetes.io/docs/concepts/configuration/overview/).
+														it (https://kubernetes.io/docs/concepts/configuration/overview/ ).
 
 														When hostNetwork is enabled, this will set the DNS policy to
 														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
@@ -43017,7 +43252,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -43042,7 +43277,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -43354,6 +43589,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -44622,8 +44865,23 @@ prometheusOperator: {
 										format: "int32"
 										type:   "integer"
 									}
+									nameEscapingScheme: {
+										description: """
+														Specifies the character escaping scheme that will be requested when scraping
+														for metric and label names that do not conform to the legacy Prometheus
+														character set.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
+									}
 									nameValidationScheme: {
-										description: "Specifies the validation scheme for metric and label names."
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v2.55.0.
+														"""
 										enum: ["UTF8", "Legacy"]
 										type: "string"
 									}
@@ -44638,6 +44896,13 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											convertHistogramsToNHCB: {
+												description: """
+																Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets.
+																It requires Prometheus >= v3.4.0.
+																"""
+												type: "boolean"
+											}
 											keepIdentifyingResourceAttributes: {
 												description: """
 																Enables adding `service.name`, `service.namespace` and `service.instance.id`
@@ -44663,7 +44928,7 @@ prometheusOperator: {
 
 																It requires Prometheus >= v3.0.0.
 																"""
-												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes", "NoTranslation"]
 												type: "string"
 											}
 										}
@@ -44745,7 +45010,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -44755,7 +45020,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -44766,7 +45031,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -48688,6 +48953,10 @@ prometheusOperator: {
 														Users can define their own sharding implementation by setting the
 														`__tmp_hash` label during the target discovery with relabeling
 														configuration (either in the monitoring resources or via scrape class).
+
+														You can also disable sharding on a specific target by setting the
+														`__tmp_disable_sharding` label with relabeling configuration. When
+														the label value isn't empty, all Prometheus shards will scrape the target.
 														"""
 										format: "int32"
 										type:   "integer"
@@ -49058,7 +49327,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -49068,7 +49337,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -49079,7 +49348,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -50349,7 +50618,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -50362,7 +50630,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -51858,7 +52125,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -53398,8 +53665,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -53583,8 +53850,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -64511,6 +64778,24 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									nameEscapingScheme: {
+										description: """
+														Metric name escaping mode to request through content negotiation.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
+									}
+									nameValidationScheme: {
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["UTF8", "Legacy"]
+										type: "string"
+									}
 									nativeHistogramBucketLimit: {
 										description: """
 														If there are more than this many buckets in a native histogram,
@@ -67698,8 +67983,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -69081,8 +69366,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.83.0"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -69512,7 +69797,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69528,7 +69812,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69719,7 +70002,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -69735,7 +70017,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -69918,7 +70199,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69934,7 +70214,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -70125,7 +70404,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -70141,7 +70419,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -70552,7 +70829,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -70577,7 +70854,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -70889,6 +71166,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -72654,7 +72939,7 @@ prometheusOperator: {
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -72679,7 +72964,7 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
+																description: "Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER."
 																type:        "string"
 															}
 															secretRef: {
@@ -72991,6 +73276,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -74289,7 +74582,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -74299,7 +74592,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -74310,7 +74603,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -75786,6 +76079,14 @@ prometheusOperator: {
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
 									}
+									ruleQueryOffset: {
+										description: """
+														The default rule group's query offset duration to use.
+														It requires Thanos >= v0.38.0.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
+									}
 									ruleSelector: {
 										description: """
 														PrometheusRule objects to be selected for rule evaluation. An empty
@@ -76509,7 +76810,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -76519,7 +76820,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -76530,7 +76831,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -77191,7 +77492,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -77204,7 +77504,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -78479,7 +78778,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -79942,7 +80241,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -79961,18 +80260,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.82.1"
+						"app.kubernetes.io/version":   "0.83.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.82.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.83.0", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.82.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.83.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -80041,7 +80340,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -80184,7 +80483,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80212,7 +80511,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80226,7 +80525,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80243,7 +80542,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.83.0"
 			}
 		}
 	}
