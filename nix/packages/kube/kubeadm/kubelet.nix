@@ -17,18 +17,7 @@ in
         gitMinimal
         openssh
         docker
-        # Until https://github.com/util-linux/util-linux/issues/3474 is available in a nixpkgs-unstable
-        # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ut/util-linux/package.nix
-        # util-linux
-        (util-linux.overrideAttrs {
-          patches = util-linux.patches ++ [
-            (fetchpatch {
-              url = "https://github.com/util-linux/util-linux/commit/7dbfe31a83f45d5aef2b508697e9511c569ffbc8.patch";
-              hash = "sha256-bJqpZiPli5Pm/XpDA445Ab5jesXrlcnaO6e4V0B3rSw=";
-              name = "fix-libmount-regression.patch";
-            })
-          ];
-        })
+        util-linux
         iproute2
         ethtool
         thin-provisioning-tools
