@@ -1,4 +1,4 @@
-{ pkgs, stablePkgs, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   cfg = config.services.kubeadm;
 in
@@ -17,9 +17,9 @@ in
         gitMinimal
         openssh
         docker
-        # Until https://github.com/util-linux/util-linux/issues/3474 is available in a released verion
+        # Until https://github.com/util-linux/util-linux/issues/3474 is available in a nixpkgs-unstable
+        # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ut/util-linux/package.nix
         # util-linux
-        # stablePkgs.util-linux
         (util-linux.overrideAttrs {
           patches = util-linux.patches ++ [
             (fetchpatch {

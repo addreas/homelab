@@ -6,6 +6,5 @@
   ];
 
   networking.hostName = "nucle4";
-  services.tailscale.enable = true;
 }
 
