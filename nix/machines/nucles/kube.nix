@@ -10,6 +10,8 @@ in
     ../../packages/kube
   ];
 
+  boot.supportedFilesystems = [ "nfs" ]; # fix for nfs mounts
+
   services.kubeadm = {
     enable = true;
     package = pkgs.kubernetes;
