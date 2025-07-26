@@ -46,7 +46,7 @@ in
       shutdownGracePeriodCriticalPods = "1m";
       cpuCFSQuota = false;
       serverTLSBootstrap = true;
-      resolvConf = "/etc/resolv.conf";
+      # resolvConf = "/etc/resolv.conf";
     };
 
     upgrade.enable = true;
