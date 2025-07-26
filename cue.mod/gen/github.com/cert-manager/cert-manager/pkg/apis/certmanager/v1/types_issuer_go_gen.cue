@@ -143,7 +143,7 @@ import (
 // VenafiCloud defines connection configuration details for Venafi Cloud
 #VenafiCloud: {
 	// URL is the base URL for Venafi Cloud.
-	// Defaults to "https://api.venafi.cloud/v1".
+	// Defaults to "https://api.venafi.cloud/".
 	// +optional
 	url?: string @go(URL)
 
@@ -169,6 +169,11 @@ import (
 
 	// Server is the connection address for the Vault server, e.g: "https://vault.example.com:8200".
 	server: string @go(Server)
+
+	// ServerName is used to verify the hostname on the returned certificates
+	// by the Vault server.
+	// +optional
+	serverName?: string @go(ServerName)
 
 	// Path is the mount path of the Vault PKI backend's `sign` endpoint, e.g:
 	// "my_pki_mount/sign/my-role-name".
