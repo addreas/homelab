@@ -7,12 +7,13 @@ k: StatefulSet: jackett: {
 			spec: {
 				containers: [{
 					name:            "jackett"
-					image:           "ghcr.io/hotio/jackett"
+					image:           "lscr.io/linuxserver/jackett:latest"
 					imagePullPolicy: "Always"
-					command: ["sh", "-c"]
-					args: ["""
-						exec $APP_DIR/jackett --NoRestart --ListenPublic --NoUpdates --DataFolder="$CONFIG_DIR"
-						"""]
+					command: ["/app/Jackett/jackett", "--NoUpdates"]
+					env: [{
+						name: "TMPDIR"
+						value: "/tmp"
+					}]
 					ports: [{
 						name:          "http"
 						containerPort: 9117
@@ -31,15 +32,14 @@ k: StatefulSet: jackett: {
 				}]
 				volumes: [{
 					name: "config"
-					persistentVolumeClaim: claimName: "sergio-jackett-config"
+					persistentVolumeClaim: claimName: "jackett-config"
 				}]
 			}
 		}
 	}
 }
 
-k: PersistentVolumeClaim: "sergio-jackett-config": spec: resources: requests: storage: "1Gi"
-k: PersistentVolume: "sergio-jackett-config": spec: local: path: "/mnt/solid-data/jackett-config"
+k: PersistentVolumeClaim: "jackett-config": spec: resources: requests: storage: "1Gi"
 
 k: Service: jackett: {}
 

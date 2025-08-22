@@ -7,9 +7,6 @@ k: StatefulSet: qbittorrent: {
 		template: {
 			metadata: labels: "vpn-egress": "gateway"
 			spec: {
-				nodeSelector: {
-					"kubernetes.io/hostname": "sergio"
-				}
 				securityContext: {
 					sysctls: [{
 						name:  "net.ipv4.conf.all.src_valid_mark"
@@ -18,26 +15,21 @@ k: StatefulSet: qbittorrent: {
 				}
 				initContainers: [{
 					name:  "wg-quick"
-					image: "nixery.dev/shell/iproute/wireguard-tools"
+					image: "nixery.dev/shell/iproute2/wireguard-tools"
 					command: ["sh", "-c"]
 					args: ["""
 						wg-quick up /config/wg0.conf
 						ip route add 10.96.0.0/12 dev eth0
-						ip route add 10.0.0.0/16 dev eth0
-						ip route add 10.0.0.1/32 dev wg0
+						ip route add 10.48.0.0/16 dev eth0
 						"""]
-
-					securityContext: {
-						privileged: true // not sure which cap is required for sysctl
-						capabilities: add: ["NET_ADMIN", "NET_RAW"]
-					}
+					securityContext: privileged: true 
 					volumeMounts: [{
 						name:      "wg0-conf"
 						mountPath: "/config"
 					}]
 				}, util.copyStatic & {
 					volumeMounts: [{
-						mountPath: "/static/config/qBittorrent/config"
+						mountPath: "/static/config/qBittorrent"
 						name:      "static-config"
 					}, {
 						mountPath: "/config/qBittorrent"
@@ -46,12 +38,9 @@ k: StatefulSet: qbittorrent: {
 				}]
 				containers: [{
 					name:            "qbittorrent"
-					image:           "ghcr.io/hotio/qbittorrent"
+					image:           "lscr.io/linuxserver/qbittorrent:latest"
 					imagePullPolicy: "Always"
-					command: ["sh", "-c"]
-					args: ["""
-						exec /$APP_DIR/qbittorrent-nox --profile="$CONFIG_DIR" --webui-port=8080
-						"""]
+					command: ["/usr/bin/qbittorrent-nox"]
 					ports: [{
 						containerPort: 8080
 					}]
@@ -59,8 +48,11 @@ k: StatefulSet: qbittorrent: {
 						mountPath: "/config/qBittorrent"
 						name:      "config"
 					}, {
+						mountPath: "/config/.cache"
+						name: "cache"
+					},{
 						mountPath: "/videos"
-						name:      "sergio-videos"
+						name:      "videos"
 					}]
 					resources: {
 						limits: {
@@ -110,19 +102,21 @@ k: StatefulSet: qbittorrent: {
 					name: "static-config"
 					configMap: name: "qbittorrent-static-config"
 				}, {
-					name: "sergio-videos"
-					persistentVolumeClaim: claimName: "sergio-videos"
+					name: "videos"
+					persistentVolumeClaim: claimName: "videos"
 				}, {
 					name: "config"
-					persistentVolumeClaim: claimName: "sergio-qbittorrent-config"
+					persistentVolumeClaim: claimName: "qbittorrent-config"
+				}, {
+					name: "cache"
+					emptyDir: {}
 				}]
 			}
 		}
 	}
 }
 
-k: PersistentVolumeClaim: "sergio-qbittorrent-config": spec: resources: requests: storage: "5Gi"
-k: PersistentVolume: "sergio-qbittorrent-config": spec: local: path: "/mnt/solid-data/qbittorrent-config"
+k: PersistentVolumeClaim: "qbittorrent-config": spec: resources: requests: storage: "5Gi"
 
 k: Service: qbittorrent: spec: ports: [{
 	name: "http"
@@ -162,13 +156,14 @@ k: ConfigMap: "qbittorrent-static-config": data: {
 		Downloads\SavePath=/videos/downloads/
 		General\UseRandomPort=true
 		WebUI\AlternativeUIEnabled=false
-		WebUI\AuthSubnetWhitelist=10.0.0.0/8
+		WebUI\AuthSubnetWhitelist=10.48.0.0/16
 		WebUI\AuthSubnetWhitelistEnabled=true
 		WebUI\CSRFProtection=true
 		WebUI\ClickjackingProtection=true
 		WebUI\HostHeaderValidation=true
 		WebUI\LocalHostAuth=false
 		WebUI\MaxAuthenticationFailCount=5
+		WebUI\Address=0.0.0.0
 		WebUI\Port=8080
 		WebUI\ReverseProxySupportEnabled=true
 		WebUI\SecureCookie=true

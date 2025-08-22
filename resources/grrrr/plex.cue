@@ -1,13 +1,13 @@
 package kube
 
-k: StatefulSet: "sergio-plex": spec: template: {
+k: StatefulSet: "plex": spec: template: {
 	metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
 	spec: {
 		dnsPolicy: "None"
-		dnsConfig: nameservers: ["192.168.0.1"]
+		dnsConfig: nameservers: ["10.0.2.1"]
 	}
 }
-k: StatefulSet: "sergio-plex": spec: template: spec: {
+k: StatefulSet: "plex": spec: template: spec: {
 	containers: [{
 		image:           "plexinc/pms-docker"
 		imagePullPolicy: "Always"
@@ -39,15 +39,14 @@ k: StatefulSet: "sergio-plex": spec: template: spec: {
 	}]
 	volumes: [{
 		name: "config"
-		persistentVolumeClaim: claimName: "sergio-plex-config"
+		persistentVolumeClaim: claimName: "plex-config"
 	}, {
 		name: "data"
-		persistentVolumeClaim: claimName: "sergio-videos"
+		persistentVolumeClaim: claimName: "videos"
 	}, {
 		name: "transcode"
 		emptyDir: {}
 	}]
 }
 
-k: PersistentVolumeClaim: "sergio-plex-config": spec: resources: requests: storage: "20Gi"
-k: PersistentVolume: "sergio-plex-config": spec: local: path: "/mnt/plex-config"
+k: PersistentVolumeClaim: "plex-config": spec: resources: requests: storage: "20Gi"

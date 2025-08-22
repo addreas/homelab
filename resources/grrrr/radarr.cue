@@ -7,13 +7,9 @@ k: StatefulSet: radarr: {
 			spec: {
 				containers: [{
 					name:            "radarr"
-					image:           "nixery.addem.se/shell/radarr"
+					image:           "lscr.io/linuxserver/radarr:latest"
 					imagePullPolicy: "Always"
-					command: ["Radarr", "--nobrowser", "--data=/config"]
-					env: [{
-						name:  "COMPlus_EnableDiagnostics"
-						value: "0"
-					}]
+					command: ["/app/radarr/bin/Radarr", "-nobrowser", "-data=/config"]
 					ports: [{
 						containerPort: 7878
 					}]
@@ -22,7 +18,7 @@ k: StatefulSet: radarr: {
 						name:      "config"
 					}, {
 						mountPath: "/videos"
-						name:      "sergio-videos"
+						name:      "videos"
 					}]
 					resources: {
 						limits: {
@@ -34,45 +30,20 @@ k: StatefulSet: radarr: {
 							memory: "512Mi"
 						}
 					}
-				}, {
-					name:  "exportarr"
-					image: "nixery.addem.se/exportarr"
-					command: ["exportarr", "radarr"]
-					env: [{
-						name:  "PORT"
-						value: "9707"
-					}, {
-						name:  "URL"
-						value: "http://localhost:7878"
-					}, {
-						name: "APIKEY"
-						valueFrom: secretKeyRef: {
-							name: "radarr-apikey"
-							key:  "apikey"
-						}
-					}]
-					ports: [{
-						containerPort: 9707
-					}]
-					resources: limits: {
-						cpu:    "200m"
-						memory: "128Mi"
-					}
 				}]
 				volumes: [{
-					name: "sergio-videos"
-					persistentVolumeClaim: claimName: "sergio-videos"
+					name: "videos"
+					persistentVolumeClaim: claimName: "videos"
 				}, {
 					name: "config"
-					persistentVolumeClaim: claimName: "sergio-radarr-config"
+					persistentVolumeClaim: claimName: "radarr-config"
 				}]
 			}
 		}
 	}
 }
 
-k: PersistentVolumeClaim: "sergio-radarr-config": spec: resources: requests: storage: "5Gi"
-k: PersistentVolume: "sergio-radarr-config": spec: local: path: "/mnt/solid-data/radarr-config"
+k: PersistentVolumeClaim: "radarr-config": spec: resources: requests: storage: "5Gi"
 
 k: Service: radarr: spec: ports: [{
 	name: "http"

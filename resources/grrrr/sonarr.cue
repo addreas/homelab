@@ -7,13 +7,9 @@ k: StatefulSet: sonarr: {
 			spec: {
 				containers: [{
 					name:            "sonarr"
-					image:           "nixery.addem.se/shell/sonarr:113f56a42130941612fe7f56246d7ff3da27dbe1"
+					image:           "lscr.io/linuxserver/sonarr:latest"
 					imagePullPolicy: "Always"
-					command: ["NzbDrone", "--nobrowser", "--data=/config"]
-					env: [{
-						name:  "COMPlus_EnableDiagnostics"
-						value: "0"
-					}]
+					command: ["/app/sonarr/bin/Sonarr", "-nobrowser", "-data=/config"]
 					ports: [{
 						name:          "http"
 						containerPort: 8989
@@ -23,7 +19,7 @@ k: StatefulSet: sonarr: {
 						name:      "config"
 					}, {
 						mountPath: "/videos"
-						name:      "sergio-videos"
+						name:      "videos"
 					}]
 					resources: {
 						limits: {
@@ -35,47 +31,20 @@ k: StatefulSet: sonarr: {
 							memory: "512Mi"
 						}
 					}
-				}, {
-					name:            "exportarr"
-					image:           "nixery.addem.se/exportarr"
-					imagePullPolicy: "IfNotPresent"
-					command: ["exportarr", "sonarr"]
-					env: [{
-						name:  "PORT"
-						value: "9707"
-					}, {
-						name:  "URL"
-						value: "http://localhost:8989"
-					}, {
-						name: "APIKEY"
-						valueFrom: secretKeyRef: {
-							name: "sonarr-apikey"
-							key:  "apikey"
-						}
-					}]
-					ports: [{
-						name:          "metrics"
-						containerPort: 9707
-					}]
-					resources: limits: {
-						cpu:    "200m"
-						memory: "64Mi"
-					}
 				}]
 				volumes: [{
-					name: "sergio-videos"
-					persistentVolumeClaim: claimName: "sergio-videos"
+					name: "videos"
+					persistentVolumeClaim: claimName: "videos"
 				}, {
 					name: "config"
-					persistentVolumeClaim: claimName: "sergio-sonarr-config"
+					persistentVolumeClaim: claimName: "sonarr-config"
 				}]
 			}
 		}
 	}
 }
 
-k: PersistentVolumeClaim: "sergio-sonarr-config": spec: resources: requests: storage: "1Gi"
-k: PersistentVolume: "sergio-sonarr-config": spec: local: path: "/mnt/solid-data/sonarr-config"
+k: PersistentVolumeClaim: "sonarr-config": spec: resources: requests: storage: "1Gi"
 
 k: Service: sonarr: {}
 
