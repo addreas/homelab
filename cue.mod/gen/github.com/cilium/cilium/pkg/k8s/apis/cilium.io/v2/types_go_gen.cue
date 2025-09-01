@@ -13,6 +13,9 @@ import (
 	ipamTypes "github.com/cilium/cilium/pkg/ipam/types"
 )
 
+// +kubebuilder:validation:Format=cidr
+#IPv4orIPv6CIDR: string
+
 // EndpointPolicyState defines the state of the Policy mode: "enforcing", "non-enforcing", "disabled"
 #EndpointPolicyState: string
 

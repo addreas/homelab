@@ -79,7 +79,7 @@ import (
 
 	// An optional list of references to secrets in the same namespace
 	// to use for pulling prometheus and alertmanager images from registries
-	// see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+	// see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 	imagePullSecrets?: [...v1.#LocalObjectReference] @go(ImagePullSecrets,[]v1.LocalObjectReference)
 
 	// Secrets is a list of Secrets in the same namespace as the Alertmanager
@@ -160,7 +160,7 @@ import (
 	routePrefix?: string @go(RoutePrefix)
 
 	// If set to true all actions on the underlying managed objects are not
-	// goint to be performed, except for delete actions.
+	// going to be performed, except for delete actions.
 	paused?: bool @go(Paused)
 
 	// Define which Nodes the Pods are scheduled on.
@@ -281,10 +281,12 @@ import (
 
 	// Minimum number of seconds for which a newly created pod should be ready
 	// without any of its container crashing for it to be considered available.
-	// Defaults to 0 (pod will be considered available as soon as it is ready)
-	// This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+	//
+	// If unset, pods will be considered available as soon as they are ready.
+	//
+	// +kubebuilder:validation:Minimum:=0
 	// +optional
-	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
+	minReadySeconds?: null | int32 @go(MinReadySeconds,*int32)
 
 	// Pods' hostAliases configuration
 	// +listType=map
@@ -344,6 +346,17 @@ import (
 	// +kubebuilder:validation:Minimum:=0
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// HostUsers supports the user space in Kubernetes.
+	//
+	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+	//
+	//
+	// The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+	// Starting Kubernetes 1.33, the feature is enabled by default.
+	//
+	// +optional
+	hostUsers?: null | bool @go(HostUsers,*bool)
 }
 
 #AlertmanagerConfigMatcherStrategy: {
@@ -353,7 +366,7 @@ import (
 	//
 	// The default value is `OnNamespace`.
 	//
-	// +kubebuilder:validation:Enum="OnNamespace";"None"
+	// +kubebuilder:validation:Enum="OnNamespace";"OnNamespaceExceptForAlertmanagerNamespace";"None"
 	// +kubebuilder:default:="OnNamespace"
 	type?: #AlertmanagerConfigMatcherStrategyType @go(Type)
 }
@@ -362,12 +375,19 @@ import (
 
 #enumAlertmanagerConfigMatcherStrategyType:
 	#OnNamespaceConfigMatcherStrategyType |
+	#OnNamespaceExceptForAlertmanagerNamespaceConfigMatcherStrategyType |
 	#NoneConfigMatcherStrategyType
 
 // With `OnNamespace`, the route and inhibition rules of an
 // AlertmanagerConfig object only process alerts that have a `namespace`
 // label equal to the namespace of the object.
 #OnNamespaceConfigMatcherStrategyType: #AlertmanagerConfigMatcherStrategyType & "OnNamespace"
+
+// With `OnNamespaceExceptForAlertmanagerNamespace`, the route and inhibition rules of an
+// AlertmanagerConfig object only process alerts that have a `namespace`
+// label equal to the namespace of the object, unless the AlertmanagerConfig object
+// is in the same namespace as the Alertmanager object, where it will process all alerts.
+#OnNamespaceExceptForAlertmanagerNamespaceConfigMatcherStrategyType: #AlertmanagerConfigMatcherStrategyType & "OnNamespaceExceptForAlertmanagerNamespace"
 
 // With `None`, the route and inhbition rules of an AlertmanagerConfig
 // object process all incoming alerts.
@@ -417,6 +437,25 @@ import (
 
 	// The default Pagerduty URL.
 	pagerdutyUrl?: null | string @go(PagerdutyURL,*string)
+
+	// The default Telegram config
+	telegram?: null | #GlobalTelegramConfig @go(TelegramConfig,*GlobalTelegramConfig)
+
+	// The default configuration for Jira.
+	jira?: null | #GlobalJiraConfig @go(JiraConfig,*GlobalJiraConfig)
+
+	// The default configuration for VictorOps.
+	victorops?: null | #GlobalVictorOpsConfig @go(VictorOpsConfig,*GlobalVictorOpsConfig)
+
+	// The default configuration for Rocket Chat.
+	rocketChat?: null | #GlobalRocketChatConfig @go(RocketChatConfig,*GlobalRocketChatConfig)
+
+	// The default configuration for Jira.
+	webex?: null | #GlobalWebexConfig @go(WebexConfig,*GlobalWebexConfig)
+
+	// The default WeChat Config
+	// +optional
+	wechat?: null | #GlobalWeChatConfig @go(WeChatConfig,*GlobalWeChatConfig)
 }
 
 // AlertmanagerStatus is the most recent observed status of the Alertmanager cluster. Read-only.
@@ -529,6 +568,89 @@ import (
 	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
 }
 
+// GlobalTelegramConfig configures global Telegram parameters.
+#GlobalTelegramConfig: {
+	// The default Telegram API URL.
+	//
+	// It requires Alertmanager >= v0.24.0.
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+}
+
+// GlobalJiraConfig configures global Jira parameters.
+#GlobalJiraConfig: {
+	// The default Jira API URL.
+	//
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+}
+
+// GlobalRocketChatConfig configures global Rocket Chat parameters.
+#GlobalRocketChatConfig: {
+	// The default Rocket Chat API URL.
+	//
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+
+	// The default Rocket Chat token.
+	//
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +optional
+	token?: null | v1.#SecretKeySelector @go(Token,*v1.SecretKeySelector)
+
+	// The default Rocket Chat Token ID.
+	//
+	// It requires Alertmanager >= v0.28.0.
+	//
+	// +optional
+	tokenID?: null | v1.#SecretKeySelector @go(TokenID,*v1.SecretKeySelector)
+}
+
+// GlobalWebexConfig configures global Webex parameters.
+// See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+#GlobalWebexConfig: {
+	// The default Webex API URL.
+	//
+	// It requires Alertmanager >= v0.25.0.
+	//
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+}
+
+#GlobalWeChatConfig: {
+	// The default WeChat API URL.
+	// The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+
+	// The default WeChat API Secret.
+	// +optional
+	apiSecret?: null | v1.#SecretKeySelector @go(APISecret,*v1.SecretKeySelector)
+
+	// The default WeChat API Corporate ID.
+	// +optional
+	// +kubebuilder:validation:MinLength=1
+	apiCorpID?: null | string @go(APICorpID,*string)
+}
+
+// GlobalVictorOpsConfig configures global VictorOps parameters.
+#GlobalVictorOpsConfig: {
+	// The default VictorOps API URL.
+	//
+	// +optional
+	apiURL?: null | #URL @go(APIURL,*URL)
+
+	// The default VictorOps API Key.
+	//
+	// +optional
+	apiKey?: null | v1.#SecretKeySelector @go(APIKey,*v1.SecretKeySelector)
+}
+
 // HostPort represents a "host:port" network address.
 #HostPort: {
 	// Defines the host's address, it can be a DNS name or a literal IP address.
@@ -599,3 +721,7 @@ import (
 	// +required
 	client: #SafeTLSConfig @go(ClientTLS)
 }
+
+// URL represents a valid URL
+// +kubebuilder:validation:Pattern:="^(http|https)://.+$"
+#URL: string

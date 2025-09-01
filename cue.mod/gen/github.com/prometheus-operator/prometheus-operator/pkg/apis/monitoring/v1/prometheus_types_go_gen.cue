@@ -709,15 +709,23 @@ import (
 	// +optional
 	convertClassicHistogramsToNHCB?: null | bool @go(ConvertClassicHistogramsToNHCB,*bool)
 
-	// Minimum number of seconds for which a newly created Pod should be ready
-	// without any of its container crashing for it to be considered available.
-	// Defaults to 0 (pod will be considered available as soon as it is ready)
+	// Whether to scrape a classic histogram that is also exposed as a native histogram.
 	//
-	// This is an alpha field from kubernetes 1.22 until 1.24 which requires
-	// enabling the StatefulSetMinReadySeconds feature gate.
+	// Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+	//
+	// It requires Prometheus >= v3.5.0.
 	//
 	// +optional
-	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
+	scrapeClassicHistograms?: null | bool @go(ScrapeClassicHistograms,*bool)
+
+	// Minimum number of seconds for which a newly created Pod should be ready
+	// without any of its container crashing for it to be considered available.
+	//
+	// If unset, pods will be considered available as soon as they are ready.
+	//
+	// +kubebuilder:validation:Minimum:=0
+	// +optional
+	minReadySeconds?: null | int32 @go(MinReadySeconds,*int32)
 
 	// Optional list of hosts and IPs that will be injected into the Pod's
 	// hosts file if specified.
@@ -761,7 +769,7 @@ import (
 	// Use the host's network namespace if true.
 	//
 	// Make sure to understand the security implications if you want to enable
-	// it (https://kubernetes.io/docs/concepts/configuration/overview/).
+	// it (https://kubernetes.io/docs/concepts/configuration/overview/ ).
 	//
 	// When hostNetwork is enabled, this will set the DNS policy to
 	// `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
@@ -919,6 +927,17 @@ import (
 	// +kubebuilder:validation:Minimum:=0
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// HostUsers supports the user space in Kubernetes.
+	//
+	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+	//
+	//
+	// The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+	// Starting Kubernetes 1.33, the feature is enabled by default.
+	//
+	// +optional
+	hostUsers?: null | bool @go(HostUsers,*bool)
 }
 
 // Specifies the validation scheme for metric and label names.
@@ -2010,6 +2029,8 @@ import (
 	//
 	// Deprecated: this will be removed in a future release.
 	bearerToken?: string @go(BearerToken)
+
+	#ProxyConfig
 }
 
 // +kubebuilder:validation:Enum=v1;V1;v2;V2
@@ -2322,7 +2343,25 @@ import (
 //
 // +k8s:openapi-gen=true
 #OTLPConfig: {
+	// Promote all resource attributes to metric labels except the ones defined in `ignoreResourceAttributes`.
+	//
+	// Cannot be true when `promoteResourceAttributes` is defined.
+	// It requires Prometheus >= v3.5.0.
+	// +optional
+	promoteAllResourceAttributes?: null | bool @go(PromoteAllResourceAttributes,*bool)
+
+	// List of OpenTelemetry resource attributes to ignore when `promoteAllResourceAttributes` is true.
+	//
+	// It requires `promoteAllResourceAttributes` to be true.
+	// It requires Prometheus >= v3.5.0.
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:items:MinLength=1
+	// +listType=set
+	// +optional
+	ignoreResourceAttributes?: [...string] @go(IgnoreResourceAttributes,[]string)
+
 	// List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+	// Cannot be defined when `promoteAllResourceAttributes` is true.
 	//
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:items:MinLength=1

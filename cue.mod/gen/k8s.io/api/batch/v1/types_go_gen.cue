@@ -254,7 +254,7 @@ _#labelPrefix: "batch.kubernetes.io/"
 #SuccessPolicy: {
 	// rules represents the list of alternative rules for the declaring the Jobs
 	// as successful before `.status.succeeded >= .spec.completions`. Once any of the rules are met,
-	// the "SucceededCriteriaMet" condition is added, and the lingering pods are removed.
+	// the "SuccessCriteriaMet" condition is added, and the lingering pods are removed.
 	// The terminal state for such a Job has the "Complete" condition.
 	// Additionally, these rules are evaluated in order; Once the Job meets one of the rules,
 	// other rules are ignored. At most 20 elements are allowed.
@@ -343,7 +343,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	successPolicy?: null | #SuccessPolicy @go(SuccessPolicy,*SuccessPolicy) @protobuf(16,bytes,opt)
 
 	// Specifies the number of retries before marking this job failed.
-	// Defaults to 6
+	// Defaults to 6, unless backoffLimitPerIndex (only Indexed Job) is specified.
+	// When backoffLimitPerIndex is specified, backoffLimit defaults to 2147483647.
 	// +optional
 	backoffLimit?: null | int32 @go(BackoffLimit,*int32) @protobuf(7,varint,opt)
 
@@ -446,8 +447,6 @@ _#labelPrefix: "batch.kubernetes.io/"
 	//
 	// When using podFailurePolicy, Failed is the the only allowed value.
 	// TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use.
-	// This is an beta field. To use this, enable the JobPodReplacementPolicy feature toggle.
-	// This is on by default.
 	// +optional
 	podReplacementPolicy?: null | #PodReplacementPolicy @go(PodReplacementPolicy,*PodReplacementPolicy) @protobuf(14,bytes,opt,casttype=podReplacementPolicy)
 

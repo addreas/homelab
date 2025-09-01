@@ -164,7 +164,8 @@ import (
 
 #enumConditionType:
 	#Available |
-	#Reconciled
+	#Reconciled |
+	#Accepted
 
 // Available indicates whether enough pods are ready to provide the
 // service.
@@ -182,6 +183,14 @@ import (
 // - False: the reconciliation failed.
 // - Unknown: the operator couldn't determine the condition status.
 #Reconciled: #ConditionType & "Reconciled"
+
+// Accepted indicates whether the workload controller has successfully accepted
+// the configuration resource and updated the configuration of the workload accordingly.
+// The possible status values for this condition type are:
+// - True: the configuration resource was successfully accepted by the controller and written to the configuration secret.
+// - False: the controller rejected the configuration due to an error.
+// - Unknown: the operator couldn't determine the condition status.
+#Accepted: #ConditionType & "Accepted"
 
 // +kubebuilder:validation:MinLength=1
 #ConditionStatus: string // #enumConditionStatus
@@ -223,21 +232,21 @@ import (
 	// automatically. Name is primarily intended for creation idempotence and configuration
 	// definition.
 	// Cannot be updated.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 	// +optional
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 
 	// Map of string keys and values that can be used to organize and categorize
 	// (scope and select) objects. May match selectors of replication controllers
 	// and services.
-	// More info: http://kubernetes.io/docs/user-guide/labels
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string) @protobuf(11,bytes,rep)
 
 	// Annotations is an unstructured key value map stored with a resource that may be
 	// set by external tools to store and retrieve arbitrary metadata. They are not
 	// queryable and should be preserved when modifying objects.
-	// More info: http://kubernetes.io/docs/user-guide/annotations
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 	// +optional
 	annotations?: {[string]: string} @go(Annotations,map[string]string) @protobuf(12,bytes,rep)
 }
@@ -531,11 +540,7 @@ import (
 	// +optional
 	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 
-	// `proxyURL` configures the HTTP Proxy URL (e.g.
-	// "http://proxyserver:2195") to go through when scraping the target.
-	//
-	// +optional
-	proxyUrl?: null | string @go(ProxyURL,*string)
+	#ProxyConfig
 
 	// `followRedirects` defines whether the scrape requests should follow HTTP
 	// 3xx redirects.
@@ -730,6 +735,8 @@ import (
 	// Whether to scrape a classic histogram that is also exposed as a native histogram.
 	// It requires Prometheus >= v2.45.0.
 	//
+	// Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+	//
 	// +optional
 	scrapeClassicHistograms?: null | bool @go(ScrapeClassicHistograms,*bool)
 
@@ -763,3 +770,75 @@ import (
 
 #SelectorMechanismRelabel: #SelectorMechanism & "RelabelConfig"
 #SelectorMechanismRole:    #SelectorMechanism & "RoleSelector"
+
+// ConfigResourceStatus is the most recent observed status of the Configuration Resource (ServiceMonitor, PodMonitor and Probes). Read-only.
+// More info:
+// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+// +k8s:openapi-gen=true
+#ConfigResourceStatus: {
+	// The list of workload resources (Prometheus or PrometheusAgent) which select the configuration resource.
+	// +optional
+	bindings?: [...#WorkloadBinding] @go(Bindings,[]WorkloadBinding)
+}
+
+// WorkloadBinding is a link between a configuration resource and a workload resource.
+// +k8s:openapi-gen=true
+#WorkloadBinding: {
+	// The group of the referenced resource.
+	// +kubebuilder:validation:Enum=monitoring.coreos.com
+	// +required
+	group: string @go(Group)
+
+	// The type of resource being referenced (e.g. Prometheus or PrometheusAgent).
+	// +kubebuilder:validation:Enum=prometheuses;prometheusagents
+	// +required
+	resource: string @go(Resource)
+
+	// The name of the referenced object.
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	name: string @go(Name)
+
+	// The namespace of the referenced object.
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	namespace: string @go(Namespace)
+
+	// The current state of the configuration resource when bound to the referenced Prometheus object.
+	// +listType=map
+	// +listMapKey=type
+	// +optional
+	conditions?: [...#ConfigResourceCondition] @go(Conditions,[]ConfigResourceCondition)
+}
+
+// ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager, or ThanosRuler.
+// +k8s:deepcopy-gen=true
+#ConfigResourceCondition: {
+	// Type of the condition being reported.
+	// Currently, only "Accepted" is supported.
+	// +kubebuilder:validation:Enum=Accepted
+	// +required
+	type: #ConditionType @go(Type)
+
+	// Status of the condition.
+	// +required
+	status: #ConditionStatus @go(Status)
+
+	// LastTransitionTime is the time of the last update to the current status property.
+	// +required
+	lastTransitionTime: metav1.#Time @go(LastTransitionTime)
+
+	// Reason for the condition's last transition.
+	// +optional
+	reason?: string @go(Reason)
+
+	// Human-readable message indicating details for the condition's last transition.
+	// +optional
+	message?: string @go(Message)
+
+	// ObservedGeneration represents the .metadata.generation that the
+	// condition was set based upon. For instance, if `.metadata.generation` is
+	// currently 12, but the `.status.conditions[].observedGeneration` is 9, the
+	// condition is out of date with respect to the current state of the object.
+	observedGeneration?: int64 @go(ObservedGeneration)
+}

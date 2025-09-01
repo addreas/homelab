@@ -9,13 +9,13 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name: "prometheus-operator"
 		}
 		rules: [{
 			apiGroups: ["monitoring.coreos.com"]
-			resources: ["alertmanagers", "alertmanagers/finalizers", "alertmanagers/status", "alertmanagerconfigs", "prometheuses", "prometheuses/finalizers", "prometheuses/status", "prometheusagents", "prometheusagents/finalizers", "prometheusagents/status", "thanosrulers", "thanosrulers/finalizers", "thanosrulers/status", "scrapeconfigs", "servicemonitors", "podmonitors", "probes", "prometheusrules"]
+			resources: ["alertmanagers", "alertmanagers/finalizers", "alertmanagers/status", "alertmanagerconfigs", "prometheuses", "prometheuses/finalizers", "prometheuses/status", "prometheusagents", "prometheusagents/finalizers", "prometheusagents/status", "thanosrulers", "thanosrulers/finalizers", "thanosrulers/status", "scrapeconfigs", "servicemonitors", "servicemonitors/status", "podmonitors", "probes", "prometheusrules"]
 			verbs: [
 				"*",
 			]
@@ -103,7 +103,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name: "prometheus-operator"
 		}
@@ -124,8 +124,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "alertmanagerconfigs.monitoring.coreos.com"
 			}
@@ -5988,6 +5988,963 @@ prometheusOperator: {
 																type: "string"
 															}
 														}
+														type: "object"
+													}
+													type: "array"
+												}
+												rocketchatConfigs: {
+													description: """
+																	List of RocketChat configurations.
+																	It requires Alertmanager >= 0.28.0.
+																	"""
+													items: {
+														description: """
+																		RocketChatConfig configures notifications via RocketChat.
+																		It requires Alertmanager >= 0.28.0.
+																		"""
+														properties: {
+															actions: {
+																description: "Actions to include in the message."
+																items: {
+																	description: "RocketChatActionConfig defines actions for RocketChat messages."
+																	properties: {
+																		msg: {
+																			description: "The message to send when the button is clicked."
+																			minLength:   1
+																			type:        "string"
+																		}
+																		text: {
+																			description: "The button text."
+																			minLength:   1
+																			type:        "string"
+																		}
+																		url: {
+																			description: "The URL the button links to."
+																			pattern:     "^https?://.+$"
+																			type:        "string"
+																		}
+																	}
+																	type: "object"
+																}
+																minItems: 1
+																type:     "array"
+															}
+															apiURL: {
+																description: """
+																				The API URL for RocketChat.
+																				Defaults to https://open.rocket.chat/ if not specified.
+																				"""
+																pattern: "^https?://.+$"
+																type:    "string"
+															}
+															channel: {
+																description: "The channel to send alerts to."
+																minLength:   1
+																type:        "string"
+															}
+															color: {
+																description: "The message color."
+																minLength:   1
+																type:        "string"
+															}
+															emoji: {
+																description: "If provided, the avatar will be displayed as an emoji."
+																minLength:   1
+																type:        "string"
+															}
+															fields: {
+																description: "Additional fields for the message."
+																items: {
+																	description: "RocketChatFieldConfig defines additional fields for RocketChat messages."
+																	properties: {
+																		short: {
+																			description: "Whether this field should be a short field."
+																			type:        "boolean"
+																		}
+																		title: {
+																			description: "The title of this field."
+																			minLength:   1
+																			type:        "string"
+																		}
+																		value: {
+																			description: "The value of this field, displayed underneath the title value."
+																			minLength:   1
+																			type:        "string"
+																		}
+																	}
+																	type: "object"
+																}
+																minItems: 1
+																type:     "array"
+															}
+															httpConfig: {
+																description: "HTTP client configuration."
+																properties: {
+																	authorization: {
+																		description: """
+																						Authorization header configuration for the client.
+																						This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+																						"""
+																		properties: {
+																			credentials: {
+																				description: "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			type: {
+																				description: """
+																								Defines the authentication type. The value is case-insensitive.
+
+																								"Basic" is not a supported value.
+
+																								Default: "Bearer"
+																								"""
+																				type: "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																	basicAuth: {
+																		description: """
+																						BasicAuth for the client.
+																						This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+																						"""
+																		properties: {
+																			password: {
+																				description: """
+																								`password` specifies a key of a Secret containing the password for
+																								authentication.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			username: {
+																				description: """
+																								`username` specifies a key of a Secret containing the username for
+																								authentication.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	bearerTokenSecret: {
+																		description: """
+																						The secret's key that contains the bearer token to be used by the client
+																						for authentication.
+																						The secret needs to be in the same namespace as the AlertmanagerConfig
+																						object and accessible by the Prometheus Operator.
+																						"""
+																		properties: {
+																			key: {
+																				description: "The key of the secret to select from.  Must be a valid secret key."
+																				type:        "string"
+																			}
+																			name: {
+																				default: ""
+																				description: """
+																								Name of the referent.
+																								This field is effectively required, but due to backwards compatibility is
+																								allowed to be empty. Instances of this type with an empty value here are
+																								almost certainly wrong.
+																								More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				description: "Specify whether the Secret or its key must be defined"
+																				type:        "boolean"
+																			}
+																		}
+																		required: ["key"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	followRedirects: {
+																		description: "FollowRedirects specifies whether the client should follow HTTP 3xx redirects."
+																		type:        "boolean"
+																	}
+																	noProxy: {
+																		description: """
+																						`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																						that should be excluded from proxying. IP and domain names can
+																						contain port numbers.
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type: "string"
+																	}
+																	oauth2: {
+																		description: "OAuth2 client credentials used to fetch a token for the targets."
+																		properties: {
+																			clientId: {
+																				description: """
+																								`clientId` specifies a key of a Secret or ConfigMap containing the
+																								OAuth2 client's ID.
+																								"""
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			clientSecret: {
+																				description: """
+																								`clientSecret` specifies a key of a Secret containing the OAuth2
+																								client's secret.
+																								"""
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			endpointParams: {
+																				additionalProperties: type: "string"
+																				description: """
+																								`endpointParams` configures the HTTP parameters to append to the token
+																								URL.
+																								"""
+																				type: "object"
+																			}
+																			noProxy: {
+																				description: """
+																								`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																								that should be excluded from proxying. IP and domain names can
+																								contain port numbers.
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type: "string"
+																			}
+																			proxyConnectHeader: {
+																				additionalProperties: {
+																					items: {
+																						description: "SecretKeySelector selects a key of a Secret."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					type: "array"
+																				}
+																				description: """
+																								ProxyConnectHeader optionally specifies headers to send to
+																								proxies during CONNECT requests.
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			proxyFromEnvironment: {
+																				description: """
+																								Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																								It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																								"""
+																				type: "boolean"
+																			}
+																			proxyUrl: {
+																				description: "`proxyURL` defines the HTTP proxy server to use."
+																				pattern:     "^(http|https|socks5)://.+$"
+																				type:        "string"
+																			}
+																			scopes: {
+																				description: "`scopes` defines the OAuth2 scopes used for the token request."
+																				items: type: "string"
+																				type: "array"
+																			}
+																			tlsConfig: {
+																				description: """
+																								TLS configuration to use when connecting to the OAuth2 server.
+																								It requires Prometheus >= v2.43.0.
+																								"""
+																				properties: {
+																					ca: {
+																						description: "Certificate authority used when verifying server certificates."
+																						properties: {
+																							configMap: {
+																								description: "ConfigMap containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key to select."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the ConfigMap or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																							secret: {
+																								description: "Secret containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key of the secret to select from.  Must be a valid secret key."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the Secret or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																						}
+																						type: "object"
+																					}
+																					cert: {
+																						description: "Client certificate to present when doing client-authentication."
+																						properties: {
+																							configMap: {
+																								description: "ConfigMap containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key to select."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the ConfigMap or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																							secret: {
+																								description: "Secret containing data to use for the targets."
+																								properties: {
+																									key: {
+																										description: "The key of the secret to select from.  Must be a valid secret key."
+																										type:        "string"
+																									}
+																									name: {
+																										default: ""
+																										description: """
+																														Name of the referent.
+																														This field is effectively required, but due to backwards compatibility is
+																														allowed to be empty. Instances of this type with an empty value here are
+																														almost certainly wrong.
+																														More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																														"""
+																										type: "string"
+																									}
+																									optional: {
+																										description: "Specify whether the Secret or its key must be defined"
+																										type:        "boolean"
+																									}
+																								}
+																								required: ["key"]
+																								type:                    "object"
+																								"x-kubernetes-map-type": "atomic"
+																							}
+																						}
+																						type: "object"
+																					}
+																					insecureSkipVerify: {
+																						description: "Disable target certificate validation."
+																						type:        "boolean"
+																					}
+																					keySecret: {
+																						description: "Secret containing the client key file for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					maxVersion: {
+																						description: """
+																										Maximum acceptable TLS version.
+
+																										It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																										"""
+																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																						type: "string"
+																					}
+																					minVersion: {
+																						description: """
+																										Minimum acceptable TLS version.
+
+																										It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																										"""
+																						enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																						type: "string"
+																					}
+																					serverName: {
+																						description: "Used to verify the hostname for the targets."
+																						type:        "string"
+																					}
+																				}
+																				type: "object"
+																			}
+																			tokenUrl: {
+																				description: "`tokenURL` configures the URL to fetch the token from."
+																				minLength:   1
+																				type:        "string"
+																			}
+																		}
+																		required: ["clientId", "clientSecret", "tokenUrl"]
+																		type: "object"
+																	}
+																	proxyConnectHeader: {
+																		additionalProperties: {
+																			items: {
+																				description: "SecretKeySelector selects a key of a Secret."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			type: "array"
+																		}
+																		description: """
+																						ProxyConnectHeader optionally specifies headers to send to
+																						proxies during CONNECT requests.
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	proxyFromEnvironment: {
+																		description: """
+																						Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																						It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																						"""
+																		type: "boolean"
+																	}
+																	proxyURL: {
+																		description: """
+																						Optional proxy URL.
+
+																						If defined, this field takes precedence over `proxyUrl`.
+																						"""
+																		type: "string"
+																	}
+																	proxyUrl: {
+																		description: "`proxyURL` defines the HTTP proxy server to use."
+																		pattern:     "^(http|https|socks5)://.+$"
+																		type:        "string"
+																	}
+																	tlsConfig: {
+																		description: "TLS configuration for the client."
+																		properties: {
+																			ca: {
+																				description: "Certificate authority used when verifying server certificates."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			cert: {
+																				description: "Client certificate to present when doing client-authentication."
+																				properties: {
+																					configMap: {
+																						description: "ConfigMap containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key to select."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the ConfigMap or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																					secret: {
+																						description: "Secret containing data to use for the targets."
+																						properties: {
+																							key: {
+																								description: "The key of the secret to select from.  Must be a valid secret key."
+																								type:        "string"
+																							}
+																							name: {
+																								default: ""
+																								description: """
+																												Name of the referent.
+																												This field is effectively required, but due to backwards compatibility is
+																												allowed to be empty. Instances of this type with an empty value here are
+																												almost certainly wrong.
+																												More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																												"""
+																								type: "string"
+																							}
+																							optional: {
+																								description: "Specify whether the Secret or its key must be defined"
+																								type:        "boolean"
+																							}
+																						}
+																						required: ["key"]
+																						type:                    "object"
+																						"x-kubernetes-map-type": "atomic"
+																					}
+																				}
+																				type: "object"
+																			}
+																			insecureSkipVerify: {
+																				description: "Disable target certificate validation."
+																				type:        "boolean"
+																			}
+																			keySecret: {
+																				description: "Secret containing the client key file for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			maxVersion: {
+																				description: """
+																								Maximum acceptable TLS version.
+
+																								It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																								"""
+																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																				type: "string"
+																			}
+																			minVersion: {
+																				description: """
+																								Minimum acceptable TLS version.
+
+																								It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																								"""
+																				enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																				type: "string"
+																			}
+																			serverName: {
+																				description: "Used to verify the hostname for the targets."
+																				type:        "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+															iconURL: {
+																description: "Icon URL for the message."
+																pattern:     "^https?://.+$"
+																type:        "string"
+															}
+															imageURL: {
+																description: "Image URL for the message."
+																pattern:     "^https?://.+$"
+																type:        "string"
+															}
+															linkNames: {
+																description: "Whether to enable link names."
+																type:        "boolean"
+															}
+															sendResolved: {
+																description: "Whether to notify about resolved alerts."
+																type:        "boolean"
+															}
+															shortFields: {
+																description: "Whether to use short fields."
+																type:        "boolean"
+															}
+															text: {
+																description: "The message text to send, it is optional because of attachments."
+																minLength:   1
+																type:        "string"
+															}
+															thumbURL: {
+																description: "Thumbnail URL for the message."
+																pattern:     "^https?://.+$"
+																type:        "string"
+															}
+															title: {
+																description: "The message title."
+																minLength:   1
+																type:        "string"
+															}
+															titleLink: {
+																description: "The title link for the message."
+																minLength:   1
+																type:        "string"
+															}
+															token: {
+																description: "The sender token."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															tokenID: {
+																description: "The sender token ID."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														required: ["token", "tokenID"]
 														type: "object"
 													}
 													type: "array"
@@ -12167,8 +13124,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "alertmanagers.monitoring.coreos.com"
 			}
@@ -12600,7 +13557,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -12616,7 +13572,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -12807,7 +13762,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -12823,7 +13777,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -12930,8 +13883,8 @@ prometheusOperator: {
 																		most preferred is the one with the greatest sum of weights, i.e.
 																		for each node that meets all of the scheduling requirements (resource
 																		request, requiredDuringScheduling anti-affinity expressions, etc.),
-																		compute a sum by iterating through the elements of this field and adding
-																		"weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+																		compute a sum by iterating through the elements of this field and subtracting
+																		"weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
 																		node(s) with the highest sum are the most preferred.
 																		"""
 														items: {
@@ -13006,7 +13959,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -13022,7 +13974,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -13213,7 +14164,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -13229,7 +14179,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -13342,7 +14291,7 @@ prometheusOperator: {
 
 																The default value is `OnNamespace`.
 																"""
-											enum: ["OnNamespace", "None"]
+											enum: ["OnNamespace", "OnNamespaceExceptForAlertmanagerNamespace", "None"]
 											type: "string"
 										}
 										type: "object"
@@ -14231,6 +15180,19 @@ prometheusOperator: {
 														}
 														type: "object"
 													}
+													jira: {
+														description: "The default configuration for Jira."
+														properties: apiURL: {
+															description: """
+																				The default Jira API URL.
+
+																				It requires Alertmanager >= v0.28.0.
+																				"""
+															pattern: "^(http|https)://.+$"
+															type:    "string"
+														}
+														type: "object"
+													}
 													opsGenieApiKey: {
 														description: "The default OpsGenie API Key."
 														properties: {
@@ -14297,6 +15259,83 @@ prometheusOperator: {
 																		"""
 														pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
 														type:    "string"
+													}
+													rocketChat: {
+														description: "The default configuration for Rocket Chat."
+														properties: {
+															apiURL: {
+																description: """
+																				The default Rocket Chat API URL.
+
+																				It requires Alertmanager >= v0.28.0.
+																				"""
+																pattern: "^(http|https)://.+$"
+																type:    "string"
+															}
+															token: {
+																description: """
+																				The default Rocket Chat token.
+
+																				It requires Alertmanager >= v0.28.0.
+																				"""
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															tokenID: {
+																description: """
+																				The default Rocket Chat Token ID.
+
+																				It requires Alertmanager >= v0.28.0.
+																				"""
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+														}
+														type: "object"
 													}
 													slackApiUrl: {
 														description: "The default Slack API URL."
@@ -14421,6 +15460,295 @@ prometheusOperator: {
 																}
 																required: ["host", "port"]
 																type: "object"
+															}
+															tlsConfig: {
+																description: "The default TLS configuration for SMTP receivers"
+																properties: {
+																	ca: {
+																		description: "Certificate authority used when verifying server certificates."
+																		properties: {
+																			configMap: {
+																				description: "ConfigMap containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key to select."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the ConfigMap or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			secret: {
+																				description: "Secret containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	cert: {
+																		description: "Client certificate to present when doing client-authentication."
+																		properties: {
+																			configMap: {
+																				description: "ConfigMap containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key to select."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the ConfigMap or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																			secret: {
+																				description: "Secret containing data to use for the targets."
+																				properties: {
+																					key: {
+																						description: "The key of the secret to select from.  Must be a valid secret key."
+																						type:        "string"
+																					}
+																					name: {
+																						default: ""
+																						description: """
+																										Name of the referent.
+																										This field is effectively required, but due to backwards compatibility is
+																										allowed to be empty. Instances of this type with an empty value here are
+																										almost certainly wrong.
+																										More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																										"""
+																						type: "string"
+																					}
+																					optional: {
+																						description: "Specify whether the Secret or its key must be defined"
+																						type:        "boolean"
+																					}
+																				}
+																				required: ["key"]
+																				type:                    "object"
+																				"x-kubernetes-map-type": "atomic"
+																			}
+																		}
+																		type: "object"
+																	}
+																	insecureSkipVerify: {
+																		description: "Disable target certificate validation."
+																		type:        "boolean"
+																	}
+																	keySecret: {
+																		description: "Secret containing the client key file for the targets."
+																		properties: {
+																			key: {
+																				description: "The key of the secret to select from.  Must be a valid secret key."
+																				type:        "string"
+																			}
+																			name: {
+																				default: ""
+																				description: """
+																								Name of the referent.
+																								This field is effectively required, but due to backwards compatibility is
+																								allowed to be empty. Instances of this type with an empty value here are
+																								almost certainly wrong.
+																								More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				description: "Specify whether the Secret or its key must be defined"
+																				type:        "boolean"
+																			}
+																		}
+																		required: ["key"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	maxVersion: {
+																		description: """
+																						Maximum acceptable TLS version.
+
+																						It requires Prometheus >= v2.41.0 or Thanos >= v0.31.0.
+																						"""
+																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																		type: "string"
+																	}
+																	minVersion: {
+																		description: """
+																						Minimum acceptable TLS version.
+
+																						It requires Prometheus >= v2.35.0 or Thanos >= v0.28.0.
+																						"""
+																		enum: ["TLS10", "TLS11", "TLS12", "TLS13"]
+																		type: "string"
+																	}
+																	serverName: {
+																		description: "Used to verify the hostname for the targets."
+																		type:        "string"
+																	}
+																}
+																type: "object"
+															}
+														}
+														type: "object"
+													}
+													telegram: {
+														description: "The default Telegram config"
+														properties: apiURL: {
+															description: """
+																				The default Telegram API URL.
+
+																				It requires Alertmanager >= v0.24.0.
+																				"""
+															pattern: "^(http|https)://.+$"
+															type:    "string"
+														}
+														type: "object"
+													}
+													victorops: {
+														description: "The default configuration for VictorOps."
+														properties: {
+															apiKey: {
+																description: "The default VictorOps API Key."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															apiURL: {
+																description: "The default VictorOps API URL."
+																pattern:     "^(http|https)://.+$"
+																type:        "string"
+															}
+														}
+														type: "object"
+													}
+													webex: {
+														description: "The default configuration for Jira."
+														properties: apiURL: {
+															description: """
+																				The default Webex API URL.
+
+																				It requires Alertmanager >= v0.25.0.
+																				"""
+															pattern: "^(http|https)://.+$"
+															type:    "string"
+														}
+														type: "object"
+													}
+													wechat: {
+														description: "The default WeChat Config"
+														properties: {
+															apiCorpID: {
+																description: "The default WeChat API Corporate ID."
+																minLength:   1
+																type:        "string"
+															}
+															apiSecret: {
+																description: "The default WeChat API Secret."
+																properties: {
+																	key: {
+																		description: "The key of the secret to select from.  Must be a valid secret key."
+																		type:        "string"
+																	}
+																	name: {
+																		default: ""
+																		description: """
+																						Name of the referent.
+																						This field is effectively required, but due to backwards compatibility is
+																						allowed to be empty. Instances of this type with an empty value here are
+																						almost certainly wrong.
+																						More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																						"""
+																		type: "string"
+																	}
+																	optional: {
+																		description: "Specify whether the Secret or its key must be defined"
+																		type:        "boolean"
+																	}
+																}
+																required: ["key"]
+																type:                    "object"
+																"x-kubernetes-map-type": "atomic"
+															}
+															apiURL: {
+																description: """
+																				The default WeChat API URL.
+																				The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
+																				"""
+																pattern: "^(http|https)://.+$"
+																type:    "string"
 															}
 														}
 														type: "object"
@@ -15066,8 +16394,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -15129,6 +16460,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -15202,14 +16576,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -15234,8 +16608,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -15546,6 +16923,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -16037,7 +17422,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -16109,10 +17494,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -16125,6 +17510,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -16848,6 +18295,17 @@ prometheusOperator: {
 										"x-kubernetes-list-map-keys": ["ip"]
 										"x-kubernetes-list-type": "map"
 									}
+									hostUsers: {
+										description: """
+														HostUsers supports the user space in Kubernetes.
+
+														More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+
+														The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+														Starting Kubernetes 1.33, the feature is enabled by default.
+														"""
+										type: "boolean"
+									}
 									image: {
 										description: """
 														Image if specified has precedence over baseImage, tag and sha
@@ -16869,7 +18327,7 @@ prometheusOperator: {
 										description: """
 														An optional list of references to secrets in the same namespace
 														to use for pulling prometheus and alertmanager images from registries
-														see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+														see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 														"""
 										items: {
 											description: """
@@ -16946,8 +18404,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -17009,6 +18470,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -17082,14 +18586,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -17114,8 +18618,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -17426,6 +18933,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -17917,7 +19432,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -17989,10 +19504,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -18005,6 +19520,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -18657,11 +20234,12 @@ prometheusOperator: {
 										description: """
 														Minimum number of seconds for which a newly created pod should be ready
 														without any of its container crashing for it to be considered available.
-														Defaults to 0 (pod will be considered available as soon as it is ready)
-														This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+
+														If unset, pods will be considered available as soon as they are ready.
 														"""
-										format: "int32"
-										type:   "integer"
+										format:  "int32"
+										minimum: 0
+										type:    "integer"
 									}
 									nodeSelector: {
 										additionalProperties: type: "string"
@@ -18671,7 +20249,7 @@ prometheusOperator: {
 									paused: {
 										description: """
 														If set to true all actions on the underlying managed objects are not
-														goint to be performed, except for delete actions.
+														going to be performed, except for delete actions.
 														"""
 										type: "boolean"
 									}
@@ -18724,7 +20302,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -18734,7 +20312,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -18745,7 +20323,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -18781,7 +20359,7 @@ prometheusOperator: {
 																Claims lists the names of resources, defined in spec.resourceClaims,
 																that are used by this container.
 
-																This is an alpha field and requires enabling the
+																This field depends on the
 																DynamicResourceAllocation feature gate.
 
 																This field is immutable. It can only be set for containers.
@@ -19489,15 +21067,13 @@ prometheusOperator: {
 																						volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																						If specified, the CSI driver will create or update the volume with the attributes defined
 																						in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																						it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																						will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																						If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																						will be set by the persistentvolume controller if it exists.
+																						it can be changed after the claim is created. An empty string or nil value indicates that no
+																						VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																						this field can be reset to its previous value (including nil) to cancel the modification.
 																						If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																						set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																						exists.
 																						More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																						(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																						"""
 																	type: "string"
 																}
@@ -19556,7 +21132,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -19566,7 +21142,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -19577,7 +21153,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -19798,15 +21374,13 @@ prometheusOperator: {
 																				volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																				If specified, the CSI driver will create or update the volume with the attributes defined
 																				in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																				it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																				will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																				If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																				will be set by the persistentvolume controller if it exists.
+																				it can be changed after the claim is created. An empty string or nil value indicates that no
+																				VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																				this field can be reset to its previous value (including nil) to cancel the modification.
 																				If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																				set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																				exists.
 																				More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																				(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																				"""
 																type: "string"
 															}
@@ -19991,7 +21565,6 @@ prometheusOperator: {
 																description: """
 																				currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
 																				When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																type: "string"
 															}
@@ -19999,7 +21572,6 @@ prometheusOperator: {
 																description: """
 																				ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
 																				When this is unset, there is no ModifyVolume operation being attempted.
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																properties: {
 																	status: {
@@ -20246,7 +21818,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -20259,7 +21830,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -21179,15 +22749,13 @@ prometheusOperator: {
 																							volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																							If specified, the CSI driver will create or update the volume with the attributes defined
 																							in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																							it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																							will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																							If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																							will be set by the persistentvolume controller if it exists.
+																							it can be changed after the claim is created. An empty string or nil value indicates that no
+																							VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																							this field can be reset to its previous value (including nil) to cancel the modification.
 																							If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																							set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																							exists.
 																							More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																							(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																							"""
 																		type: "string"
 																	}
@@ -21410,15 +22978,11 @@ prometheusOperator: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
 																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
 														endpoints: {
-															description: """
-																			endpoints is the endpoint name that details Glusterfs topology.
-																			More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
-																			"""
-															type: "string"
+															description: "endpoints is the endpoint name that details Glusterfs topology."
+															type:        "string"
 														}
 														path: {
 															description: """
@@ -21482,7 +23046,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -21514,7 +23078,7 @@ prometheusOperator: {
 													description: """
 																	iscsi represents an ISCSI Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
-																	More info: https://examples.k8s.io/volumes/iscsi/README.md
+																	More info: https://kubernetes.io/docs/concepts/storage/volumes/#iscsi
 																	"""
 													properties: {
 														chapAuthDiscovery: {
@@ -21998,6 +23562,122 @@ prometheusOperator: {
 																		}
 																		type: "object"
 																	}
+																	podCertificate: {
+																		description: """
+																						Projects an auto-rotating credential bundle (private key and certificate
+																						chain) that the pod can use either as a TLS client or server.
+
+																						Kubelet generates a private key and uses it to send a
+																						PodCertificateRequest to the named signer.  Once the signer approves the
+																						request and issues a certificate chain, Kubelet writes the key and
+																						certificate chain to the pod filesystem.  The pod does not start until
+																						certificates have been issued for each podCertificate projected volume
+																						source in its spec.
+
+																						Kubelet will begin trying to rotate the certificate at the time indicated
+																						by the signer using the PodCertificateRequest.Status.BeginRefreshAt
+																						timestamp.
+
+																						Kubelet can write a single file, indicated by the credentialBundlePath
+																						field, or separate files, indicated by the keyPath and
+																						certificateChainPath fields.
+
+																						The credential bundle is a single file in PEM format.  The first PEM
+																						entry is the private key (in PKCS#8 format), and the remaining PEM
+																						entries are the certificate chain issued by the signer (typically,
+																						signers will return their certificate chain in leaf-to-root order).
+
+																						Prefer using the credential bundle format, since your application code
+																						can read it atomically.  If you use keyPath and certificateChainPath,
+																						your application must make two separate file reads. If these coincide
+																						with a certificate rotation, it is possible that the private key and leaf
+																						certificate you read may not correspond to each other.  Your application
+																						will need to check for this condition, and re-read until they are
+																						consistent.
+
+																						The named signer controls chooses the format of the certificate it
+																						issues; consult the signer implementation's documentation to learn how to
+																						use the certificates it issues.
+																						"""
+																		properties: {
+																			certificateChainPath: {
+																				description: """
+																								Write the certificate chain at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			credentialBundlePath: {
+																				description: """
+																								Write the credential bundle at this path in the projected volume.
+
+																								The credential bundle is a single file that contains multiple PEM blocks.
+																								The first PEM block is a PRIVATE KEY block, containing a PKCS#8 private
+																								key.
+
+																								The remaining blocks are CERTIFICATE blocks, containing the issued
+																								certificate chain from the signer (leaf and any intermediates).
+
+																								Using credentialBundlePath lets your Pod's application code make a single
+																								atomic read that retrieves a consistent key and certificate chain.  If you
+																								project them to separate files, your application code will need to
+																								additionally check that the leaf certificate was issued to the key.
+																								"""
+																				type: "string"
+																			}
+																			keyPath: {
+																				description: """
+																								Write the key at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			keyType: {
+																				description: """
+																								The type of keypair Kubelet will generate for the pod.
+
+																								Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384",
+																								"ECDSAP521", and "ED25519".
+																								"""
+																				type: "string"
+																			}
+																			maxExpirationSeconds: {
+																				description: """
+																								maxExpirationSeconds is the maximum lifetime permitted for the
+																								certificate.
+
+																								Kubelet copies this value verbatim into the PodCertificateRequests it
+																								generates for this projection.
+
+																								If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver
+																								will reject values shorter than 3600 (1 hour).  The maximum allowable
+																								value is 7862400 (91 days).
+
+																								The signer implementation is then free to issue a certificate with any
+																								lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600
+																								seconds (1 hour).  This constraint is enforced by kube-apiserver.
+																								`kubernetes.io` signers will never issue certificates with a lifetime
+																								longer than 24 hours.
+																								"""
+																				format: "int32"
+																				type:   "integer"
+																			}
+																			signerName: {
+																				description: "Kubelet's generated CSRs will be addressed to this signer."
+																				type:        "string"
+																			}
+																		}
+																		required: ["keyType", "signerName"]
+																		type: "object"
+																	}
 																	secret: {
 																		description: "secret information about the secret data to project"
 																		properties: {
@@ -22163,7 +23843,6 @@ prometheusOperator: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
 														fsType: {
@@ -22968,8 +24647,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "podmonitors.monitoring.coreos.com"
 			}
@@ -23453,6 +25132,16 @@ prometheusOperator: {
 													}
 													type: "array"
 												}
+												noProxy: {
+													description: """
+																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																	that should be excluded from proxying. IP and domain names can
+																	contain port numbers.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "string"
+												}
 												oauth2: {
 													description: """
 																	`oauth2` configures the OAuth2 settings to use when scraping the target.
@@ -23853,12 +25542,58 @@ prometheusOperator: {
 													minimum:     1
 													type:        "integer"
 												}
-												proxyUrl: {
+												proxyConnectHeader: {
+													additionalProperties: {
+														items: {
+															description: "SecretKeySelector selects a key of a Secret."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: "array"
+													}
 													description: """
-																	`proxyURL` configures the HTTP Proxy URL (e.g.
-																	"http://proxyserver:2195") to go through when scraping the target.
+																	ProxyConnectHeader optionally specifies headers to send to
+																	proxies during CONNECT requests.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
-													type: "string"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxyFromEnvironment: {
+													description: """
+																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "boolean"
+												}
+												proxyUrl: {
+													description: "`proxyURL` defines the HTTP proxy server to use."
+													pattern:     "^(http|https|socks5)://.+$"
+													type:        "string"
 												}
 												relabelings: {
 													description: """
@@ -24206,6 +25941,8 @@ prometheusOperator: {
 										description: """
 														Whether to scrape a classic histogram that is also exposed as a native histogram.
 														It requires Prometheus >= v2.45.0.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
 														"""
 										type: "boolean"
 									}
@@ -24325,8 +26062,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "probes.monitoring.coreos.com"
 			}
@@ -25059,12 +26796,54 @@ prometheusOperator: {
 										required: ["clientId", "clientSecret", "tokenUrl"]
 										type: "object"
 									}
+									params: {
+										description: """
+														The list of HTTP query parameters for the scrape.
+														Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined.
+														The module name must be added using Module under ProbeSpec.
+														"""
+										items: {
+											description: "ProbeParam defines specification of extra parameters for a Probe."
+											properties: {
+												name: {
+													description: "The parameter name"
+													minLength:   1
+													type:        "string"
+												}
+												values: {
+													description: "The parameter values"
+													items: {
+														minLength: 1
+														type:      "string"
+													}
+													minItems: 1
+													type:     "array"
+												}
+											}
+											required: ["name"]
+											type: "object"
+										}
+										minItems: 1
+										type:     "array"
+										"x-kubernetes-list-map-keys": ["name"]
+										"x-kubernetes-list-type": "map"
+									}
 									prober: {
 										description: """
 														Specification for the prober to use for probing targets.
 														The prober.URL parameter is required. Targets cannot be probed if left empty.
 														"""
 										properties: {
+											noProxy: {
+												description: """
+																`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																that should be excluded from proxying. IP and domain names can
+																contain port numbers.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "string"
+											}
 											path: {
 												default: "/probe"
 												description: """
@@ -25073,8 +26852,57 @@ prometheusOperator: {
 																"""
 												type: "string"
 											}
+											proxyConnectHeader: {
+												additionalProperties: {
+													items: {
+														description: "SecretKeySelector selects a key of a Secret."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																default: ""
+																description: """
+																				Name of the referent.
+																				This field is effectively required, but due to backwards compatibility is
+																				allowed to be empty. Instances of this type with an empty value here are
+																				almost certainly wrong.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													type: "array"
+												}
+												description: """
+																ProxyConnectHeader optionally specifies headers to send to
+																proxies during CONNECT requests.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											proxyFromEnvironment: {
+												description: """
+																Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "boolean"
+											}
 											proxyUrl: {
-												description: "Optional ProxyURL."
+												description: "`proxyURL` defines the HTTP proxy server to use."
+												pattern:     "^(http|https|socks5)://.+$"
 												type:        "string"
 											}
 											scheme: {
@@ -25108,6 +26936,8 @@ prometheusOperator: {
 										description: """
 														Whether to scrape a classic histogram that is also exposed as a native histogram.
 														It requires Prometheus >= v2.45.0.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
 														"""
 										type: "boolean"
 									}
@@ -25628,8 +27458,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "prometheusagents.monitoring.coreos.com"
 			}
@@ -26096,7 +27926,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26112,7 +27941,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26303,7 +28131,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26319,7 +28146,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26426,8 +28252,8 @@ prometheusOperator: {
 																		most preferred is the one with the greatest sum of weights, i.e.
 																		for each node that meets all of the scheduling requirements (resource
 																		request, requiredDuringScheduling anti-affinity expressions, etc.),
-																		compute a sum by iterating through the elements of this field and adding
-																		"weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+																		compute a sum by iterating through the elements of this field and subtracting
+																		"weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
 																		node(s) with the highest sum are the most preferred.
 																		"""
 														items: {
@@ -26502,7 +28328,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26518,7 +28343,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -26709,7 +28533,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26725,7 +28548,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -26981,6 +28803,69 @@ prometheusOperator: {
 																by an optional port number.
 																"""
 												type: "string"
+											}
+											noProxy: {
+												description: """
+																`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																that should be excluded from proxying. IP and domain names can
+																contain port numbers.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "string"
+											}
+											proxyConnectHeader: {
+												additionalProperties: {
+													items: {
+														description: "SecretKeySelector selects a key of a Secret."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																default: ""
+																description: """
+																				Name of the referent.
+																				This field is effectively required, but due to backwards compatibility is
+																				allowed to be empty. Instances of this type with an empty value here are
+																				almost certainly wrong.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													type: "array"
+												}
+												description: """
+																ProxyConnectHeader optionally specifies headers to send to
+																proxies during CONNECT requests.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											proxyFromEnvironment: {
+												description: """
+																Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "boolean"
+											}
+											proxyUrl: {
+												description: "`proxyURL` defines the HTTP proxy server to use."
+												pattern:     "^(http|https|socks5)://.+$"
+												type:        "string"
 											}
 											tlsConfig: {
 												description: "TLS Config to use for the API server."
@@ -27284,8 +29169,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -27347,6 +29235,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -27420,14 +29351,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -27452,8 +29383,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -27764,6 +29698,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -28255,7 +30197,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -28327,10 +30269,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -28343,6 +30285,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -28948,6 +30952,15 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native
+														histogram with custom buckets.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										type: "boolean"
+									}
 									dnsConfig: {
 										description: "Defines the DNS configuration for the pods."
 										properties: {
@@ -29293,11 +31306,22 @@ prometheusOperator: {
 														Use the host's network namespace if true.
 
 														Make sure to understand the security implications if you want to enable
-														it (https://kubernetes.io/docs/concepts/configuration/overview/).
+														it (https://kubernetes.io/docs/concepts/configuration/overview/ ).
 
 														When hostNetwork is enabled, this will set the DNS policy to
 														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
 														to a different value).
+														"""
+										type: "boolean"
+									}
+									hostUsers: {
+										description: """
+														HostUsers supports the user space in Kubernetes.
+
+														More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+
+														The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+														Starting Kubernetes 1.33, the feature is enabled by default.
 														"""
 										type: "boolean"
 									}
@@ -29419,8 +31443,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -29482,6 +31509,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -29555,14 +31625,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -29587,8 +31657,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -29899,6 +31972,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -30390,7 +32471,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -30462,10 +32543,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -30478,6 +32559,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -31159,13 +33302,12 @@ prometheusOperator: {
 										description: """
 														Minimum number of seconds for which a newly created Pod should be ready
 														without any of its container crashing for it to be considered available.
-														Defaults to 0 (pod will be considered available as soon as it is ready)
 
-														This is an alpha field from kubernetes 1.22 until 1.24 which requires
-														enabling the StatefulSetMinReadySeconds feature gate.
+														If unset, pods will be considered available as soon as they are ready.
 														"""
-										format: "int32"
-										type:   "integer"
+										format:  "int32"
+										minimum: 0
+										type:    "integer"
 									}
 									mode: {
 										description: """
@@ -31176,8 +33318,23 @@ prometheusOperator: {
 										enum: ["StatefulSet", "DaemonSet"]
 										type: "string"
 									}
+									nameEscapingScheme: {
+										description: """
+														Specifies the character escaping scheme that will be requested when scraping
+														for metric and label names that do not conform to the legacy Prometheus
+														character set.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
+									}
 									nameValidationScheme: {
-										description: "Specifies the validation scheme for metric and label names."
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v2.55.0.
+														"""
 										enum: ["UTF8", "Legacy"]
 										type: "string"
 									}
@@ -31192,6 +33349,28 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											convertHistogramsToNHCB: {
+												description: """
+																Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets.
+																It requires Prometheus >= v3.4.0.
+																"""
+												type: "boolean"
+											}
+											ignoreResourceAttributes: {
+												description: """
+																List of OpenTelemetry resource attributes to ignore when `promoteAllResourceAttributes` is true.
+
+																It requires `promoteAllResourceAttributes` to be true.
+																It requires Prometheus >= v3.5.0.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												minItems:                 1
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
 											keepIdentifyingResourceAttributes: {
 												description: """
 																Enables adding `service.name`, `service.namespace` and `service.instance.id`
@@ -31201,8 +33380,20 @@ prometheusOperator: {
 																"""
 												type: "boolean"
 											}
+											promoteAllResourceAttributes: {
+												description: """
+																Promote all resource attributes to metric labels except the ones defined in `ignoreResourceAttributes`.
+
+																Cannot be true when `promoteResourceAttributes` is defined.
+																It requires Prometheus >= v3.5.0.
+																"""
+												type: "boolean"
+											}
 											promoteResourceAttributes: {
-												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
+												description: """
+																List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+																Cannot be defined when `promoteAllResourceAttributes` is true.
+																"""
 												items: {
 													minLength: 1
 													type:      "string"
@@ -31217,7 +33408,7 @@ prometheusOperator: {
 
 																It requires Prometheus >= v3.0.0.
 																"""
-												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes", "NoTranslation"]
 												type: "string"
 											}
 										}
@@ -31299,7 +33490,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -31309,7 +33500,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -31320,7 +33511,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -32870,7 +35061,7 @@ prometheusOperator: {
 																Claims lists the names of resources, defined in spec.resourceClaims,
 																that are used by this container.
 
-																This is an alpha field and requires enabling the
+																This field depends on the
 																DynamicResourceAllocation feature gate.
 
 																This field is immutable. It can only be set for containers.
@@ -33459,6 +35650,16 @@ prometheusOperator: {
 										type: "array"
 										"x-kubernetes-list-map-keys": ["name"]
 										"x-kubernetes-list-type": "map"
+									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+
+														It requires Prometheus >= v3.5.0.
+														"""
+										type: "boolean"
 									}
 									scrapeConfigNamespaceSelector: {
 										description: """
@@ -34114,6 +36315,10 @@ prometheusOperator: {
 														Users can define their own sharding implementation by setting the
 														`__tmp_hash` label during the target discovery with relabeling
 														configuration (either in the monitoring resources or via scrape class).
+
+														You can also disable sharding on a specific target by setting the
+														`__tmp_disable_sharding` label with relabeling configuration. When
+														the label value isn't empty, all Prometheus shards will scrape the target.
 														"""
 										format: "int32"
 										type:   "integer"
@@ -34417,15 +36622,13 @@ prometheusOperator: {
 																						volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																						If specified, the CSI driver will create or update the volume with the attributes defined
 																						in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																						it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																						will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																						If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																						will be set by the persistentvolume controller if it exists.
+																						it can be changed after the claim is created. An empty string or nil value indicates that no
+																						VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																						this field can be reset to its previous value (including nil) to cancel the modification.
 																						If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																						set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																						exists.
 																						More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																						(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																						"""
 																	type: "string"
 																}
@@ -34484,7 +36687,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -34494,7 +36697,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -34505,7 +36708,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -34726,15 +36929,13 @@ prometheusOperator: {
 																				volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																				If specified, the CSI driver will create or update the volume with the attributes defined
 																				in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																				it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																				will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																				If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																				will be set by the persistentvolume controller if it exists.
+																				it can be changed after the claim is created. An empty string or nil value indicates that no
+																				VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																				this field can be reset to its previous value (including nil) to cancel the modification.
 																				If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																				set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																				exists.
 																				More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																				(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																				"""
 																type: "string"
 															}
@@ -34919,7 +37120,6 @@ prometheusOperator: {
 																description: """
 																				currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
 																				When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																type: "string"
 															}
@@ -34927,7 +37127,6 @@ prometheusOperator: {
 																description: """
 																				ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
 																				When this is unset, there is no ModifyVolume operation being attempted.
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																properties: {
 																	status: {
@@ -35181,7 +37380,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -35194,7 +37392,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -36387,15 +38584,13 @@ prometheusOperator: {
 																							volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																							If specified, the CSI driver will create or update the volume with the attributes defined
 																							in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																							it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																							will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																							If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																							will be set by the persistentvolume controller if it exists.
+																							it can be changed after the claim is created. An empty string or nil value indicates that no
+																							VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																							this field can be reset to its previous value (including nil) to cancel the modification.
 																							If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																							set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																							exists.
 																							More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																							(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																							"""
 																		type: "string"
 																	}
@@ -36618,15 +38813,11 @@ prometheusOperator: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
 																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
 														endpoints: {
-															description: """
-																			endpoints is the endpoint name that details Glusterfs topology.
-																			More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
-																			"""
-															type: "string"
+															description: "endpoints is the endpoint name that details Glusterfs topology."
+															type:        "string"
 														}
 														path: {
 															description: """
@@ -36690,7 +38881,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -36722,7 +38913,7 @@ prometheusOperator: {
 													description: """
 																	iscsi represents an ISCSI Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
-																	More info: https://examples.k8s.io/volumes/iscsi/README.md
+																	More info: https://kubernetes.io/docs/concepts/storage/volumes/#iscsi
 																	"""
 													properties: {
 														chapAuthDiscovery: {
@@ -37206,6 +39397,122 @@ prometheusOperator: {
 																		}
 																		type: "object"
 																	}
+																	podCertificate: {
+																		description: """
+																						Projects an auto-rotating credential bundle (private key and certificate
+																						chain) that the pod can use either as a TLS client or server.
+
+																						Kubelet generates a private key and uses it to send a
+																						PodCertificateRequest to the named signer.  Once the signer approves the
+																						request and issues a certificate chain, Kubelet writes the key and
+																						certificate chain to the pod filesystem.  The pod does not start until
+																						certificates have been issued for each podCertificate projected volume
+																						source in its spec.
+
+																						Kubelet will begin trying to rotate the certificate at the time indicated
+																						by the signer using the PodCertificateRequest.Status.BeginRefreshAt
+																						timestamp.
+
+																						Kubelet can write a single file, indicated by the credentialBundlePath
+																						field, or separate files, indicated by the keyPath and
+																						certificateChainPath fields.
+
+																						The credential bundle is a single file in PEM format.  The first PEM
+																						entry is the private key (in PKCS#8 format), and the remaining PEM
+																						entries are the certificate chain issued by the signer (typically,
+																						signers will return their certificate chain in leaf-to-root order).
+
+																						Prefer using the credential bundle format, since your application code
+																						can read it atomically.  If you use keyPath and certificateChainPath,
+																						your application must make two separate file reads. If these coincide
+																						with a certificate rotation, it is possible that the private key and leaf
+																						certificate you read may not correspond to each other.  Your application
+																						will need to check for this condition, and re-read until they are
+																						consistent.
+
+																						The named signer controls chooses the format of the certificate it
+																						issues; consult the signer implementation's documentation to learn how to
+																						use the certificates it issues.
+																						"""
+																		properties: {
+																			certificateChainPath: {
+																				description: """
+																								Write the certificate chain at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			credentialBundlePath: {
+																				description: """
+																								Write the credential bundle at this path in the projected volume.
+
+																								The credential bundle is a single file that contains multiple PEM blocks.
+																								The first PEM block is a PRIVATE KEY block, containing a PKCS#8 private
+																								key.
+
+																								The remaining blocks are CERTIFICATE blocks, containing the issued
+																								certificate chain from the signer (leaf and any intermediates).
+
+																								Using credentialBundlePath lets your Pod's application code make a single
+																								atomic read that retrieves a consistent key and certificate chain.  If you
+																								project them to separate files, your application code will need to
+																								additionally check that the leaf certificate was issued to the key.
+																								"""
+																				type: "string"
+																			}
+																			keyPath: {
+																				description: """
+																								Write the key at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			keyType: {
+																				description: """
+																								The type of keypair Kubelet will generate for the pod.
+
+																								Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384",
+																								"ECDSAP521", and "ED25519".
+																								"""
+																				type: "string"
+																			}
+																			maxExpirationSeconds: {
+																				description: """
+																								maxExpirationSeconds is the maximum lifetime permitted for the
+																								certificate.
+
+																								Kubelet copies this value verbatim into the PodCertificateRequests it
+																								generates for this projection.
+
+																								If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver
+																								will reject values shorter than 3600 (1 hour).  The maximum allowable
+																								value is 7862400 (91 days).
+
+																								The signer implementation is then free to issue a certificate with any
+																								lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600
+																								seconds (1 hour).  This constraint is enforced by kube-apiserver.
+																								`kubernetes.io` signers will never issue certificates with a lifetime
+																								longer than 24 hours.
+																								"""
+																				format: "int32"
+																				type:   "integer"
+																			}
+																			signerName: {
+																				description: "Kubelet's generated CSRs will be addressed to this signer."
+																				type:        "string"
+																			}
+																		}
+																		required: ["keyType", "signerName"]
+																		type: "object"
+																	}
 																	secret: {
 																		description: "secret information about the secret data to project"
 																		properties: {
@@ -37371,7 +39678,6 @@ prometheusOperator: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
 														fsType: {
@@ -38059,6 +40365,25 @@ prometheusOperator: {
 									}
 								}
 								type: "object"
+								"x-kubernetes-validations": [{
+									message: "replicas cannot be set when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.replicas))"
+								}, {
+									message: "storage cannot be set when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.storage))"
+								}, {
+									message: "shards cannot be greater than 1 when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.shards) && self.shards > 1)"
+								}, {
+									message: "persistentVolumeClaimRetentionPolicy cannot be set when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.persistentVolumeClaimRetentionPolicy))"
+								}, {
+									message: "scrapeConfigSelector cannot be set when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.scrapeConfigSelector))"
+								}, {
+									message: "probeSelector cannot be set when mode is DaemonSet"
+									rule:    "!(has(self.mode) && self.mode == 'DaemonSet' && has(self.probeSelector))"
+								}]
 							}
 							status: {
 								description: """
@@ -38230,8 +40555,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "prometheuses.monitoring.coreos.com"
 			}
@@ -38788,7 +41113,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -38804,7 +41128,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -38995,7 +41318,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39011,7 +41333,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39118,8 +41439,8 @@ prometheusOperator: {
 																		most preferred is the one with the greatest sum of weights, i.e.
 																		for each node that meets all of the scheduling requirements (resource
 																		request, requiredDuringScheduling anti-affinity expressions, etc.),
-																		compute a sum by iterating through the elements of this field and adding
-																		"weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+																		compute a sum by iterating through the elements of this field and subtracting
+																		"weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
 																		node(s) with the highest sum are the most preferred.
 																		"""
 														items: {
@@ -39194,7 +41515,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -39210,7 +41530,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -39401,7 +41720,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -39417,7 +41735,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -40382,6 +42699,69 @@ prometheusOperator: {
 																"""
 												type: "string"
 											}
+											noProxy: {
+												description: """
+																`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																that should be excluded from proxying. IP and domain names can
+																contain port numbers.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "string"
+											}
+											proxyConnectHeader: {
+												additionalProperties: {
+													items: {
+														description: "SecretKeySelector selects a key of a Secret."
+														properties: {
+															key: {
+																description: "The key of the secret to select from.  Must be a valid secret key."
+																type:        "string"
+															}
+															name: {
+																default: ""
+																description: """
+																				Name of the referent.
+																				This field is effectively required, but due to backwards compatibility is
+																				allowed to be empty. Instances of this type with an empty value here are
+																				almost certainly wrong.
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																				"""
+																type: "string"
+															}
+															optional: {
+																description: "Specify whether the Secret or its key must be defined"
+																type:        "boolean"
+															}
+														}
+														required: ["key"]
+														type:                    "object"
+														"x-kubernetes-map-type": "atomic"
+													}
+													type: "array"
+												}
+												description: """
+																ProxyConnectHeader optionally specifies headers to send to
+																proxies during CONNECT requests.
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type:                    "object"
+												"x-kubernetes-map-type": "atomic"
+											}
+											proxyFromEnvironment: {
+												description: """
+																Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																"""
+												type: "boolean"
+											}
+											proxyUrl: {
+												description: "`proxyURL` defines the HTTP proxy server to use."
+												pattern:     "^(http|https|socks5)://.+$"
+												type:        "string"
+											}
 											tlsConfig: {
 												description: "TLS Config to use for the API server."
 												properties: {
@@ -40688,8 +43068,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -40751,6 +43134,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -40824,14 +43250,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -40856,8 +43282,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -41168,6 +43597,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -41659,7 +44096,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -41731,10 +44168,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -41747,6 +44184,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -42352,6 +44851,15 @@ prometheusOperator: {
 										}
 										type: "array"
 									}
+									convertClassicHistogramsToNHCB: {
+										description: """
+														Whether to convert all scraped classic histograms into a native
+														histogram with custom buckets.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										type: "boolean"
+									}
 									disableCompaction: {
 										description: """
 														When true, the Prometheus compaction is disabled.
@@ -42748,11 +45256,22 @@ prometheusOperator: {
 														Use the host's network namespace if true.
 
 														Make sure to understand the security implications if you want to enable
-														it (https://kubernetes.io/docs/concepts/configuration/overview/).
+														it (https://kubernetes.io/docs/concepts/configuration/overview/ ).
 
 														When hostNetwork is enabled, this will set the DNS policy to
 														`ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
 														to a different value).
+														"""
+										type: "boolean"
+									}
+									hostUsers: {
+										description: """
+														HostUsers supports the user space in Kubernetes.
+
+														More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+
+														The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+														Starting Kubernetes 1.33, the feature is enabled by default.
 														"""
 										type: "boolean"
 									}
@@ -42874,8 +45393,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -42937,6 +45459,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -43010,14 +45575,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -43042,8 +45607,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -43354,6 +45922,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -43845,7 +46421,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -43917,10 +46493,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -43933,6 +46509,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -44614,16 +47252,30 @@ prometheusOperator: {
 										description: """
 														Minimum number of seconds for which a newly created Pod should be ready
 														without any of its container crashing for it to be considered available.
-														Defaults to 0 (pod will be considered available as soon as it is ready)
 
-														This is an alpha field from kubernetes 1.22 until 1.24 which requires
-														enabling the StatefulSetMinReadySeconds feature gate.
+														If unset, pods will be considered available as soon as they are ready.
 														"""
-										format: "int32"
-										type:   "integer"
+										format:  "int32"
+										minimum: 0
+										type:    "integer"
+									}
+									nameEscapingScheme: {
+										description: """
+														Specifies the character escaping scheme that will be requested when scraping
+														for metric and label names that do not conform to the legacy Prometheus
+														character set.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
 									}
 									nameValidationScheme: {
-										description: "Specifies the validation scheme for metric and label names."
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v2.55.0.
+														"""
 										enum: ["UTF8", "Legacy"]
 										type: "string"
 									}
@@ -44638,6 +47290,28 @@ prometheusOperator: {
 														It requires Prometheus >= v2.55.0.
 														"""
 										properties: {
+											convertHistogramsToNHCB: {
+												description: """
+																Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets.
+																It requires Prometheus >= v3.4.0.
+																"""
+												type: "boolean"
+											}
+											ignoreResourceAttributes: {
+												description: """
+																List of OpenTelemetry resource attributes to ignore when `promoteAllResourceAttributes` is true.
+
+																It requires `promoteAllResourceAttributes` to be true.
+																It requires Prometheus >= v3.5.0.
+																"""
+												items: {
+													minLength: 1
+													type:      "string"
+												}
+												minItems:                 1
+												type:                     "array"
+												"x-kubernetes-list-type": "set"
+											}
 											keepIdentifyingResourceAttributes: {
 												description: """
 																Enables adding `service.name`, `service.namespace` and `service.instance.id`
@@ -44647,8 +47321,20 @@ prometheusOperator: {
 																"""
 												type: "boolean"
 											}
+											promoteAllResourceAttributes: {
+												description: """
+																Promote all resource attributes to metric labels except the ones defined in `ignoreResourceAttributes`.
+
+																Cannot be true when `promoteResourceAttributes` is defined.
+																It requires Prometheus >= v3.5.0.
+																"""
+												type: "boolean"
+											}
 											promoteResourceAttributes: {
-												description: "List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none."
+												description: """
+																List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+																Cannot be defined when `promoteAllResourceAttributes` is true.
+																"""
 												items: {
 													minLength: 1
 													type:      "string"
@@ -44663,7 +47349,7 @@ prometheusOperator: {
 
 																It requires Prometheus >= v3.0.0.
 																"""
-												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes"]
+												enum: ["NoUTF8EscapingWithSuffixes", "UnderscoreEscapingWithSuffixes", "NoTranslation"]
 												type: "string"
 											}
 										}
@@ -44745,7 +47431,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -44755,7 +47441,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -44766,7 +47452,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -47226,7 +49912,7 @@ prometheusOperator: {
 																Claims lists the names of resources, defined in spec.resourceClaims,
 																that are used by this container.
 
-																This is an alpha field and requires enabling the
+																This field depends on the
 																DynamicResourceAllocation feature gate.
 
 																This field is immutable. It can only be set for containers.
@@ -47989,6 +50675,16 @@ prometheusOperator: {
 										"x-kubernetes-list-map-keys": ["name"]
 										"x-kubernetes-list-type": "map"
 									}
+									scrapeClassicHistograms: {
+										description: """
+														Whether to scrape a classic histogram that is also exposed as a native histogram.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+
+														It requires Prometheus >= v3.5.0.
+														"""
+										type: "boolean"
+									}
 									scrapeConfigNamespaceSelector: {
 										description: """
 														Namespaces to match for ScrapeConfig discovery. An empty label selector
@@ -48688,6 +51384,10 @@ prometheusOperator: {
 														Users can define their own sharding implementation by setting the
 														`__tmp_hash` label during the target discovery with relabeling
 														configuration (either in the monitoring resources or via scrape class).
+
+														You can also disable sharding on a specific target by setting the
+														`__tmp_disable_sharding` label with relabeling configuration. When
+														the label value isn't empty, all Prometheus shards will scrape the target.
 														"""
 										format: "int32"
 										type:   "integer"
@@ -48991,15 +51691,13 @@ prometheusOperator: {
 																						volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																						If specified, the CSI driver will create or update the volume with the attributes defined
 																						in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																						it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																						will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																						If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																						will be set by the persistentvolume controller if it exists.
+																						it can be changed after the claim is created. An empty string or nil value indicates that no
+																						VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																						this field can be reset to its previous value (including nil) to cancel the modification.
 																						If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																						set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																						exists.
 																						More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																						(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																						"""
 																	type: "string"
 																}
@@ -49058,7 +51756,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -49068,7 +51766,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -49079,7 +51777,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -49300,15 +51998,13 @@ prometheusOperator: {
 																				volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																				If specified, the CSI driver will create or update the volume with the attributes defined
 																				in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																				it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																				will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																				If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																				will be set by the persistentvolume controller if it exists.
+																				it can be changed after the claim is created. An empty string or nil value indicates that no
+																				VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																				this field can be reset to its previous value (including nil) to cancel the modification.
 																				If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																				set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																				exists.
 																				More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																				(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																				"""
 																type: "string"
 															}
@@ -49493,7 +52189,6 @@ prometheusOperator: {
 																description: """
 																				currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
 																				When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																type: "string"
 															}
@@ -49501,7 +52196,6 @@ prometheusOperator: {
 																description: """
 																				ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
 																				When this is unset, there is no ModifyVolume operation being attempted.
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																properties: {
 																	status: {
@@ -49936,7 +52630,7 @@ prometheusOperator: {
 																		Claims lists the names of resources, defined in spec.resourceClaims,
 																		that are used by this container.
 
-																		This is an alpha field and requires enabling the
+																		This field depends on the
 																		DynamicResourceAllocation feature gate.
 
 																		This field is immutable. It can only be set for containers.
@@ -50349,7 +53043,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -50362,7 +53055,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -51555,15 +54247,13 @@ prometheusOperator: {
 																							volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																							If specified, the CSI driver will create or update the volume with the attributes defined
 																							in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																							it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																							will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																							If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																							will be set by the persistentvolume controller if it exists.
+																							it can be changed after the claim is created. An empty string or nil value indicates that no
+																							VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																							this field can be reset to its previous value (including nil) to cancel the modification.
 																							If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																							set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																							exists.
 																							More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																							(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																							"""
 																		type: "string"
 																	}
@@ -51786,15 +54476,11 @@ prometheusOperator: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
 																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
 														endpoints: {
-															description: """
-																			endpoints is the endpoint name that details Glusterfs topology.
-																			More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
-																			"""
-															type: "string"
+															description: "endpoints is the endpoint name that details Glusterfs topology."
+															type:        "string"
 														}
 														path: {
 															description: """
@@ -51858,7 +54544,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -51890,7 +54576,7 @@ prometheusOperator: {
 													description: """
 																	iscsi represents an ISCSI Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
-																	More info: https://examples.k8s.io/volumes/iscsi/README.md
+																	More info: https://kubernetes.io/docs/concepts/storage/volumes/#iscsi
 																	"""
 													properties: {
 														chapAuthDiscovery: {
@@ -52374,6 +55060,122 @@ prometheusOperator: {
 																		}
 																		type: "object"
 																	}
+																	podCertificate: {
+																		description: """
+																						Projects an auto-rotating credential bundle (private key and certificate
+																						chain) that the pod can use either as a TLS client or server.
+
+																						Kubelet generates a private key and uses it to send a
+																						PodCertificateRequest to the named signer.  Once the signer approves the
+																						request and issues a certificate chain, Kubelet writes the key and
+																						certificate chain to the pod filesystem.  The pod does not start until
+																						certificates have been issued for each podCertificate projected volume
+																						source in its spec.
+
+																						Kubelet will begin trying to rotate the certificate at the time indicated
+																						by the signer using the PodCertificateRequest.Status.BeginRefreshAt
+																						timestamp.
+
+																						Kubelet can write a single file, indicated by the credentialBundlePath
+																						field, or separate files, indicated by the keyPath and
+																						certificateChainPath fields.
+
+																						The credential bundle is a single file in PEM format.  The first PEM
+																						entry is the private key (in PKCS#8 format), and the remaining PEM
+																						entries are the certificate chain issued by the signer (typically,
+																						signers will return their certificate chain in leaf-to-root order).
+
+																						Prefer using the credential bundle format, since your application code
+																						can read it atomically.  If you use keyPath and certificateChainPath,
+																						your application must make two separate file reads. If these coincide
+																						with a certificate rotation, it is possible that the private key and leaf
+																						certificate you read may not correspond to each other.  Your application
+																						will need to check for this condition, and re-read until they are
+																						consistent.
+
+																						The named signer controls chooses the format of the certificate it
+																						issues; consult the signer implementation's documentation to learn how to
+																						use the certificates it issues.
+																						"""
+																		properties: {
+																			certificateChainPath: {
+																				description: """
+																								Write the certificate chain at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			credentialBundlePath: {
+																				description: """
+																								Write the credential bundle at this path in the projected volume.
+
+																								The credential bundle is a single file that contains multiple PEM blocks.
+																								The first PEM block is a PRIVATE KEY block, containing a PKCS#8 private
+																								key.
+
+																								The remaining blocks are CERTIFICATE blocks, containing the issued
+																								certificate chain from the signer (leaf and any intermediates).
+
+																								Using credentialBundlePath lets your Pod's application code make a single
+																								atomic read that retrieves a consistent key and certificate chain.  If you
+																								project them to separate files, your application code will need to
+																								additionally check that the leaf certificate was issued to the key.
+																								"""
+																				type: "string"
+																			}
+																			keyPath: {
+																				description: """
+																								Write the key at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			keyType: {
+																				description: """
+																								The type of keypair Kubelet will generate for the pod.
+
+																								Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384",
+																								"ECDSAP521", and "ED25519".
+																								"""
+																				type: "string"
+																			}
+																			maxExpirationSeconds: {
+																				description: """
+																								maxExpirationSeconds is the maximum lifetime permitted for the
+																								certificate.
+
+																								Kubelet copies this value verbatim into the PodCertificateRequests it
+																								generates for this projection.
+
+																								If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver
+																								will reject values shorter than 3600 (1 hour).  The maximum allowable
+																								value is 7862400 (91 days).
+
+																								The signer implementation is then free to issue a certificate with any
+																								lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600
+																								seconds (1 hour).  This constraint is enforced by kube-apiserver.
+																								`kubernetes.io` signers will never issue certificates with a lifetime
+																								longer than 24 hours.
+																								"""
+																				format: "int32"
+																				type:   "integer"
+																			}
+																			signerName: {
+																				description: "Kubelet's generated CSRs will be addressed to this signer."
+																				type:        "string"
+																			}
+																		}
+																		required: ["keyType", "signerName"]
+																		type: "object"
+																	}
 																	secret: {
 																		description: "secret information about the secret data to project"
 																		properties: {
@@ -52539,7 +55341,6 @@ prometheusOperator: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
 														fsType: {
@@ -53398,8 +56199,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "prometheusrules.monitoring.coreos.com"
 			}
@@ -53583,8 +56384,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "scrapeconfigs.monitoring.coreos.com"
 			}
@@ -56353,6 +59154,7 @@ prometheusOperator: {
 												}
 												hostNetworkingHost: {
 													description: "The host to use if the container is in host networking mode."
+													minLength:   1
 													type:        "string"
 												}
 												matchFirstNetwork: {
@@ -56741,6 +59543,9 @@ prometheusOperator: {
 												}
 												port: {
 													description: "The port to scrape metrics from."
+													format:      "int32"
+													maximum:     65535
+													minimum:     0
 													type:        "integer"
 												}
 												proxyConnectHeader: {
@@ -59177,6 +61982,14 @@ prometheusOperator: {
 													description: "Configure whether HTTP requests follow HTTP 3xx redirects."
 													type:        "boolean"
 												}
+												labelSelector: {
+													description: """
+																	Label selector used to filter the servers when fetching them from the API.
+																	It requires Prometheus >= v3.5.0.
+																	"""
+													minLength: 1
+													type:      "string"
+												}
 												noProxy: {
 													description: """
 																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
@@ -59555,6 +62368,9 @@ prometheusOperator: {
 												}
 												port: {
 													description: "The port to scrape metrics from."
+													format:      "int32"
+													maximum:     65535
+													minimum:     0
 													type:        "integer"
 												}
 												proxyConnectHeader: {
@@ -64511,6 +67327,24 @@ prometheusOperator: {
 										minLength:   1
 										type:        "string"
 									}
+									nameEscapingScheme: {
+										description: """
+														Metric name escaping mode to request through content negotiation.
+
+														It requires Prometheus >= v3.4.0.
+														"""
+										enum: ["AllowUTF8", "Underscores", "Dots", "Values"]
+										type: "string"
+									}
+									nameValidationScheme: {
+										description: """
+														Specifies the validation scheme for metric and label names.
+
+														It requires Prometheus >= v3.0.0.
+														"""
+										enum: ["UTF8", "Legacy"]
+										type: "string"
+									}
 									nativeHistogramBucketLimit: {
 										description: """
 														If there are more than this many buckets in a native histogram,
@@ -67413,6 +70247,8 @@ prometheusOperator: {
 										description: """
 														Whether to scrape a classic histogram that is also exposed as a native histogram.
 														It requires Prometheus >= v2.45.0.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
 														"""
 										type: "boolean"
 									}
@@ -67698,8 +70534,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "servicemonitors.monitoring.coreos.com"
 			}
@@ -68092,6 +70928,16 @@ prometheusOperator: {
 														type: "object"
 													}
 													type: "array"
+												}
+												noProxy: {
+													description: """
+																	`noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+																	that should be excluded from proxying. IP and domain names can
+																	contain port numbers.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "string"
 												}
 												oauth2: {
 													description: """
@@ -68486,12 +71332,58 @@ prometheusOperator: {
 																	"""
 													type: "string"
 												}
-												proxyUrl: {
+												proxyConnectHeader: {
+													additionalProperties: {
+														items: {
+															description: "SecretKeySelector selects a key of a Secret."
+															properties: {
+																key: {
+																	description: "The key of the secret to select from.  Must be a valid secret key."
+																	type:        "string"
+																}
+																name: {
+																	default: ""
+																	description: """
+																					Name of the referent.
+																					This field is effectively required, but due to backwards compatibility is
+																					allowed to be empty. Instances of this type with an empty value here are
+																					almost certainly wrong.
+																					More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+																					"""
+																	type: "string"
+																}
+																optional: {
+																	description: "Specify whether the Secret or its key must be defined"
+																	type:        "boolean"
+																}
+															}
+															required: ["key"]
+															type:                    "object"
+															"x-kubernetes-map-type": "atomic"
+														}
+														type: "array"
+													}
 													description: """
-																	`proxyURL` configures the HTTP Proxy URL (e.g.
-																	"http://proxyserver:2195") to go through when scraping the target.
+																	ProxyConnectHeader optionally specifies headers to send to
+																	proxies during CONNECT requests.
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
 																	"""
-													type: "string"
+													type:                    "object"
+													"x-kubernetes-map-type": "atomic"
+												}
+												proxyFromEnvironment: {
+													description: """
+																	Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+
+																	It requires Prometheus >= v2.43.0, Alertmanager >= v0.25.0 or Thanos >= v0.32.0.
+																	"""
+													type: "boolean"
+												}
+												proxyUrl: {
+													description: "`proxyURL` defines the HTTP proxy server to use."
+													pattern:     "^(http|https|socks5)://.+$"
+													type:        "string"
 												}
 												relabelings: {
 													description: """
@@ -68954,6 +71846,8 @@ prometheusOperator: {
 										description: """
 														Whether to scrape a classic histogram that is also exposed as a native histogram.
 														It requires Prometheus >= v2.45.0.
+
+														Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
 														"""
 										type: "boolean"
 									}
@@ -69067,12 +71961,107 @@ prometheusOperator: {
 								required: ["endpoints", "selector"]
 								type: "object"
 							}
+							status: {
+								description: """
+												This Status subresource is under active development and is updated only when the
+												"StatusForConfigurationResources" feature gate is enabled.
+
+												Most recent observed status of the ServiceMonitor. Read-only.
+												More info:
+												https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+												"""
+								properties: bindings: {
+									description: "The list of workload resources (Prometheus or PrometheusAgent) which select the configuration resource."
+									items: {
+										description: "WorkloadBinding is a link between a configuration resource and a workload resource."
+										properties: {
+											conditions: {
+												description: "The current state of the configuration resource when bound to the referenced Prometheus object."
+												items: {
+													description: "ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager, or ThanosRuler."
+													properties: {
+														lastTransitionTime: {
+															description: "LastTransitionTime is the time of the last update to the current status property."
+															format:      "date-time"
+															type:        "string"
+														}
+														message: {
+															description: "Human-readable message indicating details for the condition's last transition."
+															type:        "string"
+														}
+														observedGeneration: {
+															description: """
+																				ObservedGeneration represents the .metadata.generation that the
+																				condition was set based upon. For instance, if `.metadata.generation` is
+																				currently 12, but the `.status.conditions[].observedGeneration` is 9, the
+																				condition is out of date with respect to the current state of the object.
+																				"""
+															format: "int64"
+															type:   "integer"
+														}
+														reason: {
+															description: "Reason for the condition's last transition."
+															type:        "string"
+														}
+														status: {
+															description: "Status of the condition."
+															minLength:   1
+															type:        "string"
+														}
+														type: {
+															description: """
+																				Type of the condition being reported.
+																				Currently, only "Accepted" is supported.
+																				"""
+															enum: ["Accepted"]
+															minLength: 1
+															type:      "string"
+														}
+													}
+													required: ["lastTransitionTime", "status", "type"]
+													type: "object"
+												}
+												type: "array"
+												"x-kubernetes-list-map-keys": ["type"]
+												"x-kubernetes-list-type": "map"
+											}
+											group: {
+												description: "The group of the referenced resource."
+												enum: ["monitoring.coreos.com"]
+												type: "string"
+											}
+											name: {
+												description: "The name of the referenced object."
+												minLength:   1
+												type:        "string"
+											}
+											namespace: {
+												description: "The namespace of the referenced object."
+												minLength:   1
+												type:        "string"
+											}
+											resource: {
+												description: "The type of resource being referenced (e.g. Prometheus or PrometheusAgent)."
+												enum: ["prometheuses", "prometheusagents"]
+												type: "string"
+											}
+										}
+										required: ["group", "name", "namespace", "resource"]
+										type: "object"
+									}
+									type: "array"
+									"x-kubernetes-list-map-keys": ["group", "resource", "name", "namespace"]
+									"x-kubernetes-list-type": "map"
+								}
+								type: "object"
+							}
 						}
 						required: ["spec"]
 						type: "object"
 					}
 					served:  true
 					storage: true
+					subresources: status: {}
 				}]
 			}
 		}
@@ -69081,8 +72070,8 @@ prometheusOperator: {
 			kind:       "CustomResourceDefinition"
 			metadata: {
 				annotations: {
-					"controller-gen.kubebuilder.io/version": "v0.17.3"
-					"operator.prometheus.io/version":        "0.82.0"
+					"controller-gen.kubebuilder.io/version": "v0.18.0"
+					"operator.prometheus.io/version":        "0.85.0"
 				}
 				name: "thanosrulers.monitoring.coreos.com"
 			}
@@ -69512,7 +72501,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69528,7 +72516,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69719,7 +72706,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -69735,7 +72721,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -69842,8 +72827,8 @@ prometheusOperator: {
 																		most preferred is the one with the greatest sum of weights, i.e.
 																		for each node that meets all of the scheduling requirements (resource
 																		request, requiredDuringScheduling anti-affinity expressions, etc.),
-																		compute a sum by iterating through the elements of this field and adding
-																		"weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+																		compute a sum by iterating through the elements of this field and subtracting
+																		"weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
 																		node(s) with the highest sum are the most preferred.
 																		"""
 														items: {
@@ -69918,7 +72903,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																							Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -69934,7 +72918,6 @@ prometheusOperator: {
 																							pod labels will be ignored. The default value is empty.
 																							The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																							Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																							This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																							"""
 																			items: type: "string"
 																			type:                     "array"
@@ -70125,7 +73108,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 																					Also, matchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -70141,7 +73123,6 @@ prometheusOperator: {
 																					pod labels will be ignored. The default value is empty.
 																					The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 																					Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-																					This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 																					"""
 																	items: type: "string"
 																	type:                     "array"
@@ -70409,8 +73390,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -70472,6 +73456,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -70545,14 +73572,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -70577,8 +73604,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -70889,6 +73919,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -71380,7 +74418,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -71452,10 +74490,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -71468,6 +74506,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -72135,6 +75235,25 @@ prometheusOperator: {
 										enum: ["ClusterFirstWithHostNet", "ClusterFirst", "Default", "None"]
 										type: "string"
 									}
+									enableFeatures: {
+										description: """
+														Enable access to Thanos Ruler feature flags. By default, no features are enabled.
+
+														Enabling features which are disabled by default is entirely outside the
+														scope of what the maintainers will support and by doing so, you accept
+														that this behaviour may break at any time without notice.
+
+														For more information see https://thanos.io/tip/components/rule.md/
+
+														It requires Thanos >= 0.39.0.
+														"""
+										items: {
+											minLength: 1
+											type:      "string"
+										}
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
+									}
 									enableServiceLinks: {
 										description: "Indicates whether information about services should be injected into pod's environment variables"
 										type:        "boolean"
@@ -72420,6 +75539,17 @@ prometheusOperator: {
 										"x-kubernetes-list-map-keys": ["ip"]
 										"x-kubernetes-list-type": "map"
 									}
+									hostUsers: {
+										description: """
+														HostUsers supports the user space in Kubernetes.
+
+														More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+
+														The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+														Starting Kubernetes 1.33, the feature is enabled by default.
+														"""
+										type: "boolean"
+									}
 									image: {
 										description: "Thanos container image URL."
 										type:        "string"
@@ -72511,8 +75641,11 @@ prometheusOperator: {
 														description: "EnvVar represents an environment variable present in a Container."
 														properties: {
 															name: {
-																description: "Name of the environment variable. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Name of the environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															value: {
 																description: """
@@ -72574,6 +75707,49 @@ prometheusOperator: {
 																			}
 																		}
 																		required: ["fieldPath"]
+																		type:                    "object"
+																		"x-kubernetes-map-type": "atomic"
+																	}
+																	fileKeyRef: {
+																		description: """
+																						FileKeyRef selects a key of the env file.
+																						Requires the EnvFiles feature gate to be enabled.
+																						"""
+																		properties: {
+																			key: {
+																				description: """
+																								The key within the env file. An invalid key will prevent the pod from starting.
+																								The keys defined within a source may consist of any printable ASCII characters except '='.
+																								During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+																								"""
+																				type: "string"
+																			}
+																			optional: {
+																				default: false
+																				description: """
+																								Specify whether the file or its key must be defined. If the file or key
+																								does not exist, then the env var is not published.
+																								If optional is set to true and the specified key does not exist,
+																								the environment variable will not be set in the Pod's containers.
+
+																								If optional is set to false and the specified key does not exist,
+																								an error will be returned during Pod creation.
+																								"""
+																				type: "boolean"
+																			}
+																			path: {
+																				description: """
+																								The path within the volume from which to select the file.
+																								Must be relative and may not contain the '..' path or start with '..'.
+																								"""
+																				type: "string"
+																			}
+																			volumeName: {
+																				description: "The name of the volume mount containing the env file."
+																				type:        "string"
+																			}
+																		}
+																		required: ["key", "path", "volumeName"]
 																		type:                    "object"
 																		"x-kubernetes-map-type": "atomic"
 																	}
@@ -72647,14 +75823,14 @@ prometheusOperator: {
 												envFrom: {
 													description: """
 																	List of sources to populate environment variables in the container.
-																	The keys defined within a source must be a C_IDENTIFIER. All invalid keys
-																	will be reported as an event when the container is starting. When a key exists in multiple
+																	The keys defined within a source may consist of any printable ASCII characters except '='.
+																	When a key exists in multiple
 																	sources, the value associated with the last source will take precedence.
 																	Values defined by an Env with a duplicate key will take precedence.
 																	Cannot be updated.
 																	"""
 													items: {
-														description: "EnvFromSource represents the source of a set of ConfigMaps"
+														description: "EnvFromSource represents the source of a set of ConfigMaps or Secrets"
 														properties: {
 															configMapRef: {
 																description: "The ConfigMap to select from"
@@ -72679,8 +75855,11 @@ prometheusOperator: {
 																"x-kubernetes-map-type": "atomic"
 															}
 															prefix: {
-																description: "An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER."
-																type:        "string"
+																description: """
+																				Optional text to prepend to the name of each environment variable.
+																				May consist of any printable ASCII characters except '='.
+																				"""
+																type: "string"
 															}
 															secretRef: {
 																description: "The Secret to select from"
@@ -72991,6 +76170,14 @@ prometheusOperator: {
 																}
 															}
 															type: "object"
+														}
+														stopSignal: {
+															description: """
+																			StopSignal defines which signal will be sent to a container when it is being stopped.
+																			If not specified, the default is defined by the container runtime in use.
+																			StopSignal can only be set for Pods with a non-empty .spec.os.name
+																			"""
+															type: "string"
 														}
 													}
 													type: "object"
@@ -73482,7 +76669,7 @@ prometheusOperator: {
 																			Claims lists the names of resources, defined in spec.resourceClaims,
 																			that are used by this container.
 
-																			This is an alpha field and requires enabling the
+																			This field depends on the
 																			DynamicResourceAllocation feature gate.
 
 																			This field is immutable. It can only be set for containers.
@@ -73554,10 +76741,10 @@ prometheusOperator: {
 												restartPolicy: {
 													description: """
 																	RestartPolicy defines the restart behavior of individual containers in a pod.
-																	This field may only be set for init containers, and the only allowed value is "Always".
-																	For non-init containers or when this field is not specified,
+																	This overrides the pod-level restart policy. When this field is not specified,
 																	the restart behavior is defined by the Pod's restart policy and the container type.
-																	Setting the RestartPolicy as "Always" for the init container will have the following effect:
+																	Additionally, setting the RestartPolicy as "Always" for the init container will
+																	have the following effect:
 																	this init container will be continually restarted on
 																	exit until all regular containers have terminated. Once all regular
 																	containers have completed, all init containers with restartPolicy "Always"
@@ -73570,6 +76757,68 @@ prometheusOperator: {
 																	completed.
 																	"""
 													type: "string"
+												}
+												restartPolicyRules: {
+													description: """
+																	Represents a list of rules to be checked to determine if the
+																	container should be restarted on exit. The rules are evaluated in
+																	order. Once a rule matches a container exit condition, the remaining
+																	rules are ignored. If no rule matches the container exit condition,
+																	the Container-level restart policy determines the whether the container
+																	is restarted or not. Constraints on the rules:
+																	- At most 20 rules are allowed.
+																	- Rules can have the same action.
+																	- Identical rules are not forbidden in validations.
+																	When rules are specified, container MUST set RestartPolicy explicitly
+																	even it if matches the Pod's RestartPolicy.
+																	"""
+													items: {
+														description: "ContainerRestartRule describes how a container exit is handled."
+														properties: {
+															action: {
+																description: """
+																				Specifies the action taken on a container exit if the requirements
+																				are satisfied. The only possible value is "Restart" to restart the
+																				container.
+																				"""
+																type: "string"
+															}
+															exitCodes: {
+																description: "Represents the exit codes to check on container exits."
+																properties: {
+																	operator: {
+																		description: """
+																						Represents the relationship between the container exit code(s) and the
+																						specified values. Possible values are:
+																						- In: the requirement is satisfied if the container exit code is in the
+																						  set of specified values.
+																						- NotIn: the requirement is satisfied if the container exit code is
+																						  not in the set of specified values.
+																						"""
+																		type: "string"
+																	}
+																	values: {
+																		description: """
+																						Specifies the set of values to check for container exit codes.
+																						At most 255 elements are allowed.
+																						"""
+																		items: {
+																			format: "int32"
+																			type:   "integer"
+																		}
+																		type:                     "array"
+																		"x-kubernetes-list-type": "set"
+																	}
+																}
+																required: ["operator"]
+																type: "object"
+															}
+														}
+														required: ["action"]
+														type: "object"
+													}
+													type:                     "array"
+													"x-kubernetes-list-type": "atomic"
 												}
 												securityContext: {
 													description: """
@@ -74206,11 +77455,12 @@ prometheusOperator: {
 										description: """
 														Minimum number of seconds for which a newly created pod should be ready
 														without any of its container crashing for it to be considered available.
-														Defaults to 0 (pod will be considered available as soon as it is ready)
-														This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+
+														If unset, pods will be considered available as soon as they are ready.
 														"""
-										format: "int32"
-										type:   "integer"
+										format:  "int32"
+										minimum: 0
+										type:    "integer"
 									}
 									nodeSelector: {
 										additionalProperties: type: "string"
@@ -74289,7 +77539,7 @@ prometheusOperator: {
 																Annotations is an unstructured key value map stored with a resource that may be
 																set by external tools to store and retrieve arbitrary metadata. They are not
 																queryable and should be preserved when modifying objects.
-																More info: http://kubernetes.io/docs/user-guide/annotations
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																"""
 												type: "object"
 											}
@@ -74299,7 +77549,7 @@ prometheusOperator: {
 																Map of string keys and values that can be used to organize and categorize
 																(scope and select) objects. May match selectors of replication controllers
 																and services.
-																More info: http://kubernetes.io/docs/user-guide/labels
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																"""
 												type: "object"
 											}
@@ -74310,7 +77560,7 @@ prometheusOperator: {
 																automatically. Name is primarily intended for creation idempotence and configuration
 																definition.
 																Cannot be updated.
-																More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																"""
 												type: "string"
 											}
@@ -75633,6 +78883,11 @@ prometheusOperator: {
 										format:      "int32"
 										type:        "integer"
 									}
+									resendDelay: {
+										description: "Minimum amount of time to wait before resending an alert to Alertmanager."
+										pattern:     "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:        "string"
+									}
 									resources: {
 										description: """
 														Resources defines the resource requirements for single Pods.
@@ -75644,7 +78899,7 @@ prometheusOperator: {
 																Claims lists the names of resources, defined in spec.resourceClaims,
 																that are used by this container.
 
-																This is an alpha field and requires enabling the
+																This field depends on the
 																DynamicResourceAllocation feature gate.
 
 																This field is immutable. It can only be set for containers.
@@ -75730,6 +78985,24 @@ prometheusOperator: {
 										description: "The route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path."
 										type:        "string"
 									}
+									ruleConcurrentEval: {
+										description: """
+														How many rules can be evaluated concurrently.
+														It requires Thanos >= v0.37.0.
+														"""
+										format:  "int32"
+										minimum: 1
+										type:    "integer"
+									}
+									ruleGracePeriod: {
+										description: """
+														Minimum duration between alert and restored "for" state.
+														This is maintained only for alerts with configured "for" time greater than grace period.
+														It requires Thanos >= v0.30.0.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
+									}
 									ruleNamespaceSelector: {
 										description: """
 														Namespaces to be selected for Rules discovery. If unspecified, only
@@ -75785,6 +79058,22 @@ prometheusOperator: {
 										}
 										type:                    "object"
 										"x-kubernetes-map-type": "atomic"
+									}
+									ruleOutageTolerance: {
+										description: """
+														Max time to tolerate prometheus outage for restoring "for" state of alert.
+														It requires Thanos >= v0.30.0.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
+									}
+									ruleQueryOffset: {
+										description: """
+														The default rule group's query offset duration to use.
+														It requires Thanos >= v0.38.0.
+														"""
+										pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:    "string"
 									}
 									ruleSelector: {
 										description: """
@@ -76442,15 +79731,13 @@ prometheusOperator: {
 																						volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																						If specified, the CSI driver will create or update the volume with the attributes defined
 																						in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																						it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																						will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																						If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																						will be set by the persistentvolume controller if it exists.
+																						it can be changed after the claim is created. An empty string or nil value indicates that no
+																						VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																						this field can be reset to its previous value (including nil) to cancel the modification.
 																						If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																						set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																						exists.
 																						More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																						(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																						"""
 																	type: "string"
 																}
@@ -76509,7 +79796,7 @@ prometheusOperator: {
 																				Annotations is an unstructured key value map stored with a resource that may be
 																				set by external tools to store and retrieve arbitrary metadata. They are not
 																				queryable and should be preserved when modifying objects.
-																				More info: http://kubernetes.io/docs/user-guide/annotations
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 																				"""
 																type: "object"
 															}
@@ -76519,7 +79806,7 @@ prometheusOperator: {
 																				Map of string keys and values that can be used to organize and categorize
 																				(scope and select) objects. May match selectors of replication controllers
 																				and services.
-																				More info: http://kubernetes.io/docs/user-guide/labels
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 																				"""
 																type: "object"
 															}
@@ -76530,7 +79817,7 @@ prometheusOperator: {
 																				automatically. Name is primarily intended for creation idempotence and configuration
 																				definition.
 																				Cannot be updated.
-																				More info: http://kubernetes.io/docs/user-guide/identifiers#names
+																				More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 																				"""
 																type: "string"
 															}
@@ -76751,15 +80038,13 @@ prometheusOperator: {
 																				volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																				If specified, the CSI driver will create or update the volume with the attributes defined
 																				in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																				it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																				will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																				If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																				will be set by the persistentvolume controller if it exists.
+																				it can be changed after the claim is created. An empty string or nil value indicates that no
+																				VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																				this field can be reset to its previous value (including nil) to cancel the modification.
 																				If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																				set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																				exists.
 																				More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																				(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																				"""
 																type: "string"
 															}
@@ -76944,7 +80229,6 @@ prometheusOperator: {
 																description: """
 																				currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
 																				When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																type: "string"
 															}
@@ -76952,7 +80236,6 @@ prometheusOperator: {
 																description: """
 																				ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
 																				When this is unset, there is no ModifyVolume operation being attempted.
-																				This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
 																				"""
 																properties: {
 																	status: {
@@ -77191,7 +80474,6 @@ prometheusOperator: {
 																	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
 																	If this value is nil, the behavior is equivalent to the Honor policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -77204,7 +80486,6 @@ prometheusOperator: {
 																	- Ignore: node taints are ignored. All nodes are included.
 
 																	If this value is nil, the behavior is equivalent to the Ignore policy.
-																	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 																	"""
 													type: "string"
 												}
@@ -78176,15 +81457,13 @@ prometheusOperator: {
 																							volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
 																							If specified, the CSI driver will create or update the volume with the attributes defined
 																							in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
-																							it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
-																							will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
-																							If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
-																							will be set by the persistentvolume controller if it exists.
+																							it can be changed after the claim is created. An empty string or nil value indicates that no
+																							VolumeAttributesClass will be applied to the claim. If the claim enters an Infeasible error state,
+																							this field can be reset to its previous value (including nil) to cancel the modification.
 																							If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
 																							set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 																							exists.
 																							More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-																							(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 																							"""
 																		type: "string"
 																	}
@@ -78407,15 +81686,11 @@ prometheusOperator: {
 													description: """
 																	glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
 																	Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/glusterfs/README.md
 																	"""
 													properties: {
 														endpoints: {
-															description: """
-																			endpoints is the endpoint name that details Glusterfs topology.
-																			More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
-																			"""
-															type: "string"
+															description: "endpoints is the endpoint name that details Glusterfs topology."
+															type:        "string"
 														}
 														path: {
 															description: """
@@ -78479,7 +81754,7 @@ prometheusOperator: {
 																	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
 																	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
 																	The volume will be mounted read-only (ro) and non-executable files (noexec).
-																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+																	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath) before 1.33.
 																	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
 																	"""
 													properties: {
@@ -78511,7 +81786,7 @@ prometheusOperator: {
 													description: """
 																	iscsi represents an ISCSI Disk resource that is attached to a
 																	kubelet's host machine and then exposed to the pod.
-																	More info: https://examples.k8s.io/volumes/iscsi/README.md
+																	More info: https://kubernetes.io/docs/concepts/storage/volumes/#iscsi
 																	"""
 													properties: {
 														chapAuthDiscovery: {
@@ -78995,6 +82270,122 @@ prometheusOperator: {
 																		}
 																		type: "object"
 																	}
+																	podCertificate: {
+																		description: """
+																						Projects an auto-rotating credential bundle (private key and certificate
+																						chain) that the pod can use either as a TLS client or server.
+
+																						Kubelet generates a private key and uses it to send a
+																						PodCertificateRequest to the named signer.  Once the signer approves the
+																						request and issues a certificate chain, Kubelet writes the key and
+																						certificate chain to the pod filesystem.  The pod does not start until
+																						certificates have been issued for each podCertificate projected volume
+																						source in its spec.
+
+																						Kubelet will begin trying to rotate the certificate at the time indicated
+																						by the signer using the PodCertificateRequest.Status.BeginRefreshAt
+																						timestamp.
+
+																						Kubelet can write a single file, indicated by the credentialBundlePath
+																						field, or separate files, indicated by the keyPath and
+																						certificateChainPath fields.
+
+																						The credential bundle is a single file in PEM format.  The first PEM
+																						entry is the private key (in PKCS#8 format), and the remaining PEM
+																						entries are the certificate chain issued by the signer (typically,
+																						signers will return their certificate chain in leaf-to-root order).
+
+																						Prefer using the credential bundle format, since your application code
+																						can read it atomically.  If you use keyPath and certificateChainPath,
+																						your application must make two separate file reads. If these coincide
+																						with a certificate rotation, it is possible that the private key and leaf
+																						certificate you read may not correspond to each other.  Your application
+																						will need to check for this condition, and re-read until they are
+																						consistent.
+
+																						The named signer controls chooses the format of the certificate it
+																						issues; consult the signer implementation's documentation to learn how to
+																						use the certificates it issues.
+																						"""
+																		properties: {
+																			certificateChainPath: {
+																				description: """
+																								Write the certificate chain at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			credentialBundlePath: {
+																				description: """
+																								Write the credential bundle at this path in the projected volume.
+
+																								The credential bundle is a single file that contains multiple PEM blocks.
+																								The first PEM block is a PRIVATE KEY block, containing a PKCS#8 private
+																								key.
+
+																								The remaining blocks are CERTIFICATE blocks, containing the issued
+																								certificate chain from the signer (leaf and any intermediates).
+
+																								Using credentialBundlePath lets your Pod's application code make a single
+																								atomic read that retrieves a consistent key and certificate chain.  If you
+																								project them to separate files, your application code will need to
+																								additionally check that the leaf certificate was issued to the key.
+																								"""
+																				type: "string"
+																			}
+																			keyPath: {
+																				description: """
+																								Write the key at this path in the projected volume.
+
+																								Most applications should use credentialBundlePath.  When using keyPath
+																								and certificateChainPath, your application needs to check that the key
+																								and leaf certificate are consistent, because it is possible to read the
+																								files mid-rotation.
+																								"""
+																				type: "string"
+																			}
+																			keyType: {
+																				description: """
+																								The type of keypair Kubelet will generate for the pod.
+
+																								Valid values are "RSA3072", "RSA4096", "ECDSAP256", "ECDSAP384",
+																								"ECDSAP521", and "ED25519".
+																								"""
+																				type: "string"
+																			}
+																			maxExpirationSeconds: {
+																				description: """
+																								maxExpirationSeconds is the maximum lifetime permitted for the
+																								certificate.
+
+																								Kubelet copies this value verbatim into the PodCertificateRequests it
+																								generates for this projection.
+
+																								If omitted, kube-apiserver will set it to 86400(24 hours). kube-apiserver
+																								will reject values shorter than 3600 (1 hour).  The maximum allowable
+																								value is 7862400 (91 days).
+
+																								The signer implementation is then free to issue a certificate with any
+																								lifetime *shorter* than MaxExpirationSeconds, but no shorter than 3600
+																								seconds (1 hour).  This constraint is enforced by kube-apiserver.
+																								`kubernetes.io` signers will never issue certificates with a lifetime
+																								longer than 24 hours.
+																								"""
+																				format: "int32"
+																				type:   "integer"
+																			}
+																			signerName: {
+																				description: "Kubelet's generated CSRs will be addressed to this signer."
+																				type:        "string"
+																			}
+																		}
+																		required: ["keyType", "signerName"]
+																		type: "object"
+																	}
 																	secret: {
 																		description: "secret information about the secret data to project"
 																		properties: {
@@ -79160,7 +82551,6 @@ prometheusOperator: {
 													description: """
 																	rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 																	Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported.
-																	More info: https://examples.k8s.io/volumes/rbd/README.md
 																	"""
 													properties: {
 														fsType: {
@@ -79942,7 +83332,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -79961,18 +83351,18 @@ prometheusOperator: {
 						"app.kubernetes.io/component": "controller"
 						"app.kubernetes.io/name":      "prometheus-operator"
 						"app.kubernetes.io/part-of":   "kube-prometheus"
-						"app.kubernetes.io/version":   "0.82.1"
+						"app.kubernetes.io/version":   "0.85.0"
 					}
 				}
 				spec: {
 					automountServiceAccountToken: true
 					containers: [{
-						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.82.1", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
+						args: ["--kubelet-service=kube-system/kubelet", "--prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.85.0", "--kubelet-endpoints=true", "--kubelet-endpointslice=false"]
 						env: [{
 							name:  "GOGC"
 							value: "30"
 						}]
-						image: "quay.io/prometheus-operator/prometheus-operator:v0.82.1"
+						image: "quay.io/prometheus-operator/prometheus-operator:v0.85.0"
 						name:  "prometheus-operator"
 						ports: [{
 							containerPort: 8080
@@ -80041,7 +83431,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 				prometheus:                    "k8s"
 				role:                          "alert-rules"
 			}
@@ -80184,7 +83574,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80212,7 +83602,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80226,7 +83616,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 			name:      "prometheus-operator"
 			namespace: "monitoring"
@@ -80243,7 +83633,7 @@ prometheusOperator: {
 				"app.kubernetes.io/component": "controller"
 				"app.kubernetes.io/name":      "prometheus-operator"
 				"app.kubernetes.io/part-of":   "kube-prometheus"
-				"app.kubernetes.io/version":   "0.82.1"
+				"app.kubernetes.io/version":   "0.85.0"
 			}
 		}
 	}

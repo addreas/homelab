@@ -130,6 +130,29 @@ import (
 	// +optional
 	// +kubebuilder:validation:MinLength=1
 	scrapeClass?: null | string @go(ScrapeClassName,*string)
+
+	// The list of HTTP query parameters for the scrape.
+	// Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined.
+	// The module name must be added using Module under ProbeSpec.
+	// +optional
+	// +kubebuilder:validation:MinItems=1
+	// +listType=map
+	// +listMapKey=name
+	params?: [...#ProbeParam] @go(Params,[]ProbeParam)
+}
+
+// ProbeParam defines specification of extra parameters for a Probe.
+// +k8s:openapi-gen=true
+#ProbeParam: {
+	// The parameter name
+	// +kubebuilder:validation:MinLength=1
+	// +required
+	name?: string @go(Name)
+
+	// The parameter values
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:items:MinLength=1
+	values?: [...string] @go(Values,[]string)
 }
 
 // ProbeTargets defines how to discover the probed targets.
@@ -201,8 +224,7 @@ import (
 	// +kubebuilder:default:="/probe"
 	path?: string @go(Path)
 
-	// Optional ProxyURL.
-	proxyUrl?: string @go(ProxyURL)
+	#ProxyConfig
 }
 
 // ProbeList is a list of Probes.

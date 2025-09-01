@@ -70,6 +70,15 @@ import (
 	// +kubebuilder:validation:Maximum=4294967295
 	localASN?: null | int64 @go(LocalASN,*int64)
 
+	// LocalPort is the port on which the BGP daemon listens for incoming connections.
+	//
+	// If not specified, BGP instance will not listen for incoming connections.
+	//
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
+	localPort?: null | int32 @go(LocalPort,*int32)
+
 	// Peers is a list of neighboring BGP peers for this virtual router
 	//
 	// +kubebuilder:validation:Optional

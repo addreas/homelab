@@ -22,8 +22,8 @@ package api
 #MismatchActionReplace: #MismatchAction & "REPLACE"
 
 // HeaderMatch extends the HeaderValue for matching requirement of a
-// named header field against an immediate string, a secret value, or
-// a regex.  If none of the optional fields is present, then the
+// named header field against an immediate string or a secret value.
+// If none of the optional fields is present, then the
 // header value is not matched, only presence of the header is enough.
 #HeaderMatch: {
 	// Mismatch identifies what to do in case there is no match. The default is
