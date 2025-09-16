@@ -47,6 +47,8 @@ k: StatefulSet: "plex": spec: template: spec: {
 		name: "transcode"
 		emptyDir: {}
 	}]
+	securityContext: fsGroupChangePolicy: "OnRootMismatch"
+
 }
 
 k: PersistentVolumeClaim: "plex-config": spec: resources: requests: storage: "20Gi"
