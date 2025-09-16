@@ -18504,7 +18504,7 @@ grafanaDashboards: {
 					stacking: mode: "normal"
 				}
 				min:  0
-				unit: "ms"
+				unit: "short"
 			}
 			gridPos: {
 				h: 7
@@ -18849,6 +18849,7 @@ grafanaDashboards: {
 		]
 		timezone: "utc"
 		title:    "Prometheus / Overview"
+		uid:      "9fa0d141-d019-4ad7-8bc5-42196ee308bd"
 	}
 	"proxy.json": {
 		editable: false

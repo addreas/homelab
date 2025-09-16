@@ -154,6 +154,9 @@ import (
 	peerPort?: null | int32 @go(PeerPort,*int32)
 }
 
+// CiliumBGPTimers defines timers configuration for a BGP peer.
+//
+// +kubebuilder:validation:XValidation:rule="self.keepAliveTimeSeconds <= self.holdTimeSeconds", message="keepAliveTimeSeconds can not be larger than holdTimeSeconds"
 #CiliumBGPTimers: {
 	// ConnectRetryTimeSeconds defines the initial value for the BGP ConnectRetryTimer (RFC 4271, Section 8).
 	//

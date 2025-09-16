@@ -6,10 +6,11 @@ kubernetesControlPlane: {
 		kind:       "PrometheusRule"
 		metadata: {
 			labels: {
-				"app.kubernetes.io/name":    "kube-prometheus"
-				"app.kubernetes.io/part-of": "kube-prometheus"
-				prometheus:                  "k8s"
-				role:                        "alert-rules"
+				"app.kubernetes.io/component": "kubernetes"
+				"app.kubernetes.io/name":      "kube-prometheus"
+				"app.kubernetes.io/part-of":   "kube-prometheus"
+				prometheus:                    "k8s"
+				role:                          "alert-rules"
 			}
 			name:      "kubernetes-monitoring-rules"
 			namespace: "monitoring"
@@ -148,13 +149,13 @@ kubernetesControlPlane: {
 					      unless
 					    kube_statefulset_status_update_revision{job="kube-state-metrics"}
 					  )
-					    *
+					    * on(namespace, statefulset, job, cluster)
 					  (
 					    kube_statefulset_replicas{job="kube-state-metrics"}
 					      !=
 					    kube_statefulset_status_replicas_updated{job="kube-state-metrics"}
 					  )
-					)  and (
+					)  and on(namespace, statefulset, job, cluster) (
 					  changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[5m])
 					    ==
 					  0
@@ -174,19 +175,19 @@ kubernetesControlPlane: {
 					(
 					  (
 					    kube_daemonset_status_current_number_scheduled{job="kube-state-metrics"}
-					     !=
+					      !=
 					    kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
 					  ) or (
 					    kube_daemonset_status_number_misscheduled{job="kube-state-metrics"}
-					     !=
+					      !=
 					    0
 					  ) or (
 					    kube_daemonset_status_updated_number_scheduled{job="kube-state-metrics"}
-					     !=
+					      !=
 					    kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
 					  ) or (
 					    kube_daemonset_status_number_available{job="kube-state-metrics"}
-					     !=
+					      !=
 					    kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"}
 					  )
 					) and (
@@ -335,9 +336,30 @@ kubernetesControlPlane: {
 					summary:     "Cluster has overcommitted CPU resource requests."
 				}
 				expr: """
-					sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster) - (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) - max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
-					and
-					(sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) - max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
+					# Non-HA clusters.
+					(
+					  (
+					    sum by(cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})
+					    -
+					    sum by(cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) > 0
+					  )
+					  and
+					  count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3
+					)
+					or
+					# HA clusters.
+					(
+					  sum by(cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})
+					  -
+					  (
+					    # Skip clusters with only one allocatable node.
+					    (
+					      sum by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+					      -
+					      max by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+					    ) > 0
+					  ) > 0
+					)
 
 					"""
 				for: "10m"
@@ -350,9 +372,30 @@ kubernetesControlPlane: {
 					summary:     "Cluster has overcommitted memory resource requests."
 				}
 				expr: """
-					sum(namespace_memory:kube_pod_container_resource_requests:sum{}) by (cluster) - (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster) - max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster)) > 0
-					and
-					(sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster) - max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster)) > 0
+					# Non-HA clusters.
+					(
+					  (
+					    sum by(cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})
+					    -
+					    sum by(cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"}) > 0
+					  )
+					  and
+					  count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3
+					)
+					or
+					# HA clusters.
+					(
+					  sum by(cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})
+					  -
+					  (
+					    # Skip clusters with only one allocatable node.
+					    (
+					      sum by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+					      -
+					      max by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+					    ) > 0
+					  ) > 0
+					)
 
 					"""
 				for: "10m"
@@ -360,15 +403,18 @@ kubernetesControlPlane: {
 			}, {
 				alert: "KubeCPUQuotaOvercommit"
 				annotations: {
-					description: "Cluster {{ $labels.cluster }}  has overcommitted CPU resource requests for Namespaces."
+					description: "Cluster {{ $labels.cluster }} has overcommitted CPU resource requests for Namespaces."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuquotaovercommit"
 					summary:     "Cluster has overcommitted CPU resource requests."
 				}
 				expr: """
-					sum(min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(cpu|requests.cpu)"})) by (cluster)
-					  /
-					sum(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"}) by (cluster)
-					  > 1.5
+					sum by(cluster) (
+					  min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(cpu|requests.cpu)"})
+					)
+					/
+					sum by(cluster) (
+					  kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"}
+					) > 1.5
 
 					"""
 				for: "5m"
@@ -381,10 +427,13 @@ kubernetesControlPlane: {
 					summary:     "Cluster has overcommitted memory resource requests."
 				}
 				expr: """
-					sum(min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(memory|requests.memory)"})) by (cluster)
-					  /
-					sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster)
-					  > 1.5
+					sum by(cluster) (
+					  min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(memory|requests.memory)"})
+					)
+					/
+					sum by(cluster) (
+					  kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}
+					) > 1.5
 
 					"""
 				for: "5m"
@@ -886,7 +935,18 @@ kubernetesControlPlane: {
 					summary:     "Kubelet Pod startup latency is too high."
 				}
 				expr: """
-					histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
+					histogram_quantile(0.99,
+					  sum by (cluster, instance, le) (
+					    topk by (cluster, instance, le, operation_type) (1,
+					      rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])
+					    )
+					  )
+					)
+					* on(cluster, instance) group_left(node)
+					topk by (cluster, instance, node) (1,
+					  kubelet_node_name{job="kubelet", metrics_path="/metrics"}
+					)
+					> 60
 
 					"""
 				for: "15m"
@@ -1679,8 +1739,8 @@ kubernetesControlPlane: {
 				expr: """
 					kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
 					group_left() max by (namespace, pod, cluster) (
-					 (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
-					 )
+					  (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
+					)
 
 					"""
 				record: "cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits"
@@ -1708,9 +1768,28 @@ kubernetesControlPlane: {
 					    label_replace(
 					      kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
 					      "replicaset", "$1", "owner_name", "(.*)"
-					    ) * on(replicaset, namespace) group_left(owner_name) topk by(replicaset, namespace) (
-					      1, max by (replicaset, namespace, owner_name) (
-					        kube_replicaset_owner{job="kube-state-metrics"}
+					    ) * on (cluster, replicaset, namespace) group_left(owner_name) topk by(cluster, replicaset, namespace) (
+					      1, max by (cluster, replicaset, namespace, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind=""}
+					      )
+					    ),
+					    "workload", "$1", "replicaset", "(.*)"
+					  )
+					)
+
+					"""
+				labels: workload_type: "replicaset"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    label_replace(
+					      kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
+					      "replicaset", "$1", "owner_name", "(.*)"
+					    ) * on(replicaset, namespace, cluster) group_left(owner_name) topk by(cluster, replicaset, namespace) (
+					      1, max by (cluster, replicaset, namespace, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind="Deployment"}
 					      )
 					    ),
 					    "workload", "$1", "owner_name", "(.*)"
@@ -1737,8 +1816,7 @@ kubernetesControlPlane: {
 					max by (cluster, namespace, workload, pod) (
 					  label_replace(
 					    kube_pod_owner{job="kube-state-metrics", owner_kind="StatefulSet"},
-					    "workload", "$1", "owner_name", "(.*)"
-					  )
+					  "workload", "$1", "owner_name", "(.*)")
 					)
 
 					"""
@@ -1746,15 +1824,86 @@ kubernetesControlPlane: {
 				record: "namespace_workload_pod:kube_pod_owner:relabel"
 			}, {
 				expr: """
-					max by (cluster, namespace, workload, pod) (
-					  label_replace(
-					    kube_pod_owner{job="kube-state-metrics", owner_kind="Job"},
-					    "workload", "$1", "owner_name", "(.*)"
-					  )
+					group by (cluster, namespace, workload, pod) (
+					  label_join(
+					    group by (cluster, namespace, job_name, pod, owner_name) (
+					      label_join(
+					        kube_pod_owner{job="kube-state-metrics", owner_kind="Job"}
+					      , "job_name", "", "owner_name")
+					    )
+					    * on (cluster, namespace, job_name) group_left()
+					    group by (cluster, namespace, job_name) (
+					      kube_job_owner{job="kube-state-metrics", owner_kind=~"Pod|"}
+					    )
+					  , "workload", "", "owner_name")
 					)
 
 					"""
 				labels: workload_type: "job"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    kube_pod_owner{job="kube-state-metrics", owner_kind="", owner_name=""},
+					  "workload", "$1", "pod", "(.+)")
+					)
+
+					"""
+				labels: workload_type: "barepod"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					max by (cluster, namespace, workload, pod) (
+					  label_replace(
+					    kube_pod_owner{job="kube-state-metrics", owner_kind="Node"},
+					  "workload", "$1", "pod", "(.+)")
+					)
+
+					"""
+				labels: workload_type: "staticpod"
+				record: "namespace_workload_pod:kube_pod_owner:relabel"
+			}, {
+				expr: """
+					group by (cluster, namespace, workload, workload_type, pod) (
+					  label_join(
+					    label_join(
+					      group by (cluster, namespace, job_name, pod) (
+					        label_join(
+					          kube_pod_owner{job="kube-state-metrics", owner_kind="Job"}
+					        , "job_name", "", "owner_name")
+					      )
+					      * on (cluster, namespace, job_name) group_left(owner_kind, owner_name)
+					      group by (cluster, namespace, job_name, owner_kind, owner_name) (
+					        kube_job_owner{job="kube-state-metrics", owner_kind!="Pod", owner_kind!=""}
+					      )
+					    , "workload", "", "owner_name")
+					  , "workload_type", "", "owner_kind")
+
+					  OR
+
+					  label_replace(
+					    label_replace(
+					      label_replace(
+					        kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"}
+					        , "replicaset", "$1", "owner_name", "(.+)"
+					      )
+					      * on(cluster, namespace, replicaset) group_left(owner_kind, owner_name)
+					      group by (cluster, namespace, replicaset, owner_kind, owner_name) (
+					        kube_replicaset_owner{job="kube-state-metrics", owner_kind!="Deployment", owner_kind!=""}
+					      )
+					    , "workload", "$1", "owner_name", "(.+)")
+					    OR
+					    label_replace(
+					      group by (cluster, namespace, pod, owner_name, owner_kind) (
+					        kube_pod_owner{job="kube-state-metrics", owner_kind!="ReplicaSet", owner_kind!="DaemonSet", owner_kind!="StatefulSet", owner_kind!="Job", owner_kind!="Node", owner_kind!=""}
+					      )
+					      , "workload", "$1", "owner_name", "(.+)"
+					    )
+					  , "workload_type", "$1", "owner_kind", "(.+)")
+					)
+
+					"""
 				record: "namespace_workload_pod:kube_pod_owner:relabel"
 			}]
 		}, {
@@ -1881,21 +2030,36 @@ kubernetesControlPlane: {
 			name: "kubelet.rules"
 			rules: [{
 				expr: """
-					histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(
+					  0.99,
+					  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)
+					  * on(cluster, instance) group_left (node)
+					  max by (cluster, instance, node) (kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					)
 
 					"""
 				labels: quantile: "0.99"
 				record: "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
 			}, {
 				expr: """
-					histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(
+					  0.9,
+					  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)
+					  * on(cluster, instance) group_left (node)
+					  max by (cluster, instance, node) (kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					)
 
 					"""
 				labels: quantile: "0.9"
 				record: "node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile"
 			}, {
 				expr: """
-					histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					histogram_quantile(
+					  0.5,
+					  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)
+					  * on(cluster, instance) group_left (node)
+					  max by (cluster, instance, node) (kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+					)
 
 					"""
 				labels: quantile: "0.5"
@@ -1909,8 +2073,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "coredns"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "coredns"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "coredns"
 				namespace: "monitoring"
@@ -1936,8 +2101,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "apiserver"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "apiserver"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-apiserver"
 				namespace: "monitoring"
@@ -2034,8 +2200,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kube-controller-manager"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kube-controller-manager"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-controller-manager"
 				namespace: "monitoring"
@@ -2107,8 +2274,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kube-scheduler"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kube-scheduler"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kube-scheduler"
 				namespace: "monitoring"
@@ -2143,8 +2311,9 @@ kubernetesControlPlane: {
 			kind:       "ServiceMonitor"
 			metadata: {
 				labels: {
-					"app.kubernetes.io/name":    "kubelet"
-					"app.kubernetes.io/part-of": "kube-prometheus"
+					"app.kubernetes.io/component": "kubernetes"
+					"app.kubernetes.io/name":      "kubelet"
+					"app.kubernetes.io/part-of":   "kube-prometheus"
 				}
 				name:      "kubelet"
 				namespace: "monitoring"

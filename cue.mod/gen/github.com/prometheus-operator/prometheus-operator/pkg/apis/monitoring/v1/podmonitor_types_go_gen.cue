@@ -296,11 +296,7 @@ import (
 	// +optional
 	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 
-	// `proxyURL` configures the HTTP Proxy URL (e.g.
-	// "http://proxyserver:2195") to go through when scraping the target.
-	//
-	// +optional
-	proxyUrl?: null | string @go(ProxyURL,*string)
+	#ProxyConfig
 
 	// `followRedirects` defines whether the scrape requests should follow HTTP
 	// 3xx redirects.

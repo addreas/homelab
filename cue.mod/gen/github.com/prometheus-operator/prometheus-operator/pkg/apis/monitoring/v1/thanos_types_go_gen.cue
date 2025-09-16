@@ -274,6 +274,34 @@ import (
 	// +kubebuilder:default:="15s"
 	evaluationInterval?: #Duration @go(EvaluationInterval)
 
+	// Minimum amount of time to wait before resending an alert to Alertmanager.
+	// +optional
+	resendDelay?: null | #Duration @go(ResendDelay,*Duration)
+
+	// Max time to tolerate prometheus outage for restoring "for" state of alert.
+	// It requires Thanos >= v0.30.0.
+	// +optional
+	ruleOutageTolerance?: null | #Duration @go(RuleOutageTolerance,*Duration)
+
+	// The default rule group's query offset duration to use.
+	// It requires Thanos >= v0.38.0.
+	// +optional
+	ruleQueryOffset?: null | #Duration @go(RuleQueryOffset,*Duration)
+
+	// How many rules can be evaluated concurrently.
+	// It requires Thanos >= v0.37.0.
+	// +kubebuilder:validation:Minimum=1
+	//
+	// +optional
+	ruleConcurrentEval?: null | int32 @go(RuleConcurrentEval,*int32)
+
+	// Minimum duration between alert and restored "for" state.
+	// This is maintained only for alerts with configured "for" time greater than grace period.
+	// It requires Thanos >= v0.30.0.
+	//
+	// +optional
+	ruleGracePeriod?: null | #Duration @go(RuleGracePeriod,*Duration)
+
 	// Time duration ThanosRuler shall retain data for. Default is '24h', and
 	// must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds
 	// seconds minutes hours days weeks years).
@@ -370,10 +398,12 @@ import (
 
 	// Minimum number of seconds for which a newly created pod should be ready
 	// without any of its container crashing for it to be considered available.
-	// Defaults to 0 (pod will be considered available as soon as it is ready)
-	// This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+	//
+	// If unset, pods will be considered available as soon as they are ready.
+	//
+	// +kubebuilder:validation:Minimum:=0
 	// +optional
-	minReadySeconds?: null | uint32 @go(MinReadySeconds,*uint32)
+	minReadySeconds?: null | int32 @go(MinReadySeconds,*int32)
 
 	// Configures alert relabeling in Thanos Ruler.
 	//
@@ -439,6 +469,30 @@ import (
 	// +kubebuilder:validation:Minimum:=0
 	// +optional
 	terminationGracePeriodSeconds?: null | int64 @go(TerminationGracePeriodSeconds,*int64)
+
+	// Enable access to Thanos Ruler feature flags. By default, no features are enabled.
+	//
+	// Enabling features which are disabled by default is entirely outside the
+	// scope of what the maintainers will support and by doing so, you accept
+	// that this behaviour may break at any time without notice.
+	//
+	// For more information see https://thanos.io/tip/components/rule.md/
+	//
+	// It requires Thanos >= 0.39.0.
+	// +listType:=set
+	// +optional
+	enableFeatures?: [...#EnableFeature] @go(EnableFeatures,[]EnableFeature)
+
+	// HostUsers supports the user space in Kubernetes.
+	//
+	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/
+	//
+	//
+	// The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled.
+	// Starting Kubernetes 1.33, the feature is enabled by default.
+	//
+	// +optional
+	hostUsers?: null | bool @go(HostUsers,*bool)
 }
 
 // ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.

@@ -128,6 +128,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +listType=map
 	// +listMapKey=name
 	bgpInstances?: [...#CiliumBGPNodeInstanceStatus] @go(BGPInstances,[]CiliumBGPNodeInstanceStatus)
+
+	// The current conditions of the CiliumBGPNodeConfig
+	//
+	// +optional
+	// +listType=map
+	// +listMapKey=type
+	// +deepequal-gen=false
+	conditions?: [...metav1.#Condition] @go(Conditions,[]metav1.Condition)
 }
 
 #CiliumBGPNodeInstanceStatus: {
@@ -224,3 +232,5 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:Optional
 	advertised?: null | int32 @go(Advertised,*int32)
 }
+
+#BGPInstanceConditionReconcileError: "cilium.io/BGPReconcileError"

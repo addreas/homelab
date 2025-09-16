@@ -25,6 +25,15 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Specification of desired Service selection for target discovery by
 	// Prometheus.
 	spec: #ServiceMonitorSpec @go(Spec)
+
+	// This Status subresource is under active development and is updated only when the
+	// "StatusForConfigurationResources" feature gate is enabled.
+	//
+	// Most recent observed status of the ServiceMonitor. Read-only.
+	// More info:
+	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	status?: #ConfigResourceStatus @go(Status)
 }
 
 // ServiceMonitorSpec defines the specification parameters for a ServiceMonitor.

@@ -42,12 +42,13 @@ import (
 // NetworkPolicySpec provides the specification of a NetworkPolicy
 #NetworkPolicySpec: {
 	// podSelector selects the pods to which this NetworkPolicy object applies.
-	// The array of ingress rules is applied to any pods selected by this field.
+	// The array of rules is applied to any pods selected by this field. An empty
+	// selector matches all pods in the policy's namespace.
 	// Multiple network policies can select the same set of pods. In this case,
 	// the ingress rules for each are combined additively.
-	// This field is NOT optional and follows standard label selector semantics.
-	// An empty podSelector matches all pods in this namespace.
-	podSelector: metav1.#LabelSelector @go(PodSelector) @protobuf(1,bytes,opt)
+	// This field is optional. If it is not specified, it defaults to an empty selector.
+	// +optional
+	podSelector?: metav1.#LabelSelector @go(PodSelector) @protobuf(1,bytes,opt)
 
 	// ingress is a list of ingress rules to be applied to the selected pods.
 	// Traffic is allowed to a pod if there are no NetworkPolicies selecting the pod
