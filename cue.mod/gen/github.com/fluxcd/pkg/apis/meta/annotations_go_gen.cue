@@ -5,9 +5,18 @@
 package meta
 
 // ReconcileRequestAnnotation is the annotation used for triggering a reconciliation
-// outside of a defined schedule. The value is interpreted as a token, and any change
+// outside of a defined interval. The value is interpreted as a token, and any change
 // in value SHOULD trigger a reconciliation.
 #ReconcileRequestAnnotation: "reconcile.fluxcd.io/requestedAt"
+
+// ForceRequestAnnotation is the annotation used for triggering a one-off forced
+// reconciliation, for example, of a HelmRelease when there are no new changes,
+// or of something that runs on a schedule when the schedule is not due at the moment.
+// The specific conditions for triggering a forced reconciliation depend on the
+// specific controller implementation, but the annotation is used to standardize
+// the mechanism across controllers. The value is interpreted as a token, and must
+// equal the value of ReconcileRequestAnnotation in order to trigger a release.
+#ForceRequestAnnotation: "reconcile.fluxcd.io/forceAt"
 
 // ReconcileRequestStatus is a struct to embed in a status type, so that all types using the mechanism have the same
 // field. Use it like this:
@@ -32,3 +41,23 @@ package meta
 // StatusWithHandledReconcileRequestSetter describes a status with a setter for the most ReconcileAnnotationValue.
 // +k8s:deepcopy-gen=false
 #StatusWithHandledReconcileRequestSetter: _
+
+// ForceRequestStatus is a struct to embed in a status type, so that all types using the mechanism have the same
+// field. Use it like this:
+//
+//		type FooStatus struct {
+//	 	meta.ForceRequestStatus `json:",inline"`
+//	 	// other status fields...
+//		}
+#ForceRequestStatus: {
+	// LastHandledForceAt holds the value of the most recent
+	// force request value, so a change of the annotation value
+	// can be detected.
+	// +optional
+	lastHandledForceAt?: string @go(LastHandledForceAt)
+}
+
+// ObjectWithAnnotationRequests is an interface that describes an object
+// that has annotations and a status with a last handled reconcile request.
+// +k8s:deepcopy-gen=false
+#ObjectWithAnnotationRequests: _

@@ -119,7 +119,7 @@ nodeExporter: {
 							name: "IP"
 							valueFrom: fieldRef: fieldPath: "status.podIP"
 						}]
-						image: "quay.io/brancz/kube-rbac-proxy:v0.19.1"
+						image: "quay.io/brancz/kube-rbac-proxy:v0.20.0"
 						name:  "kube-rbac-proxy"
 						ports: [{
 							containerPort: 9100
@@ -596,10 +596,10 @@ nodeExporter: {
 				annotations: {
 					description: "Bonding interface {{ $labels.master }} on {{ $labels.instance }} is in degraded state due to one or more slave failures."
 					runbook_url: "https://runbooks.prometheus-operator.dev/runbooks/node/nodebondingdegraded"
-					summary:     "Bonding interface is degraded"
+					summary:     "Bonding interface is degraded."
 				}
 				expr: """
-					(node_bonding_slaves - node_bonding_active) != 0
+					(node_bonding_slaves{job="node-exporter"} - node_bonding_active{job="node-exporter"}) != 0
 
 					"""
 				for: "5m"

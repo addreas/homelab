@@ -17580,9 +17580,9 @@ grafanaDashboards: {
 				}
 				expr: """
 					(
-					  prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"}
+					  prometheus_remote_storage_queue_highest_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}
 					-
-					  ignoring(remote_name, url) group_right(instance) (prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"} != 0)
+					  prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}
 					)
 
 					"""
@@ -17590,7 +17590,7 @@ grafanaDashboards: {
 				intervalFactor: 2
 				legendFormat:   "{{cluster}}::{{instance}} {{remote_name}}:{{url}}"
 			}]
-			title: "Highest Timestamp In vs. Highest Timestamp Sent"
+			title: "Highest Enqueued Timestamp vs. Highest Timestamp Sent"
 			type:  "timeseries"
 		}, {
 			datasource: {
@@ -17620,9 +17620,9 @@ grafanaDashboards: {
 				}
 				expr: """
 					clamp_min(
-					  rate(prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~"$cluster", instance=~"$instance"}[5m])
+					  rate(prometheus_remote_storage_queue_highest_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m])
 					-
-					  ignoring (remote_name, url) group_right(instance) rate(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m])
+					  rate(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~"$cluster", instance=~"$instance", url=~"$url"}[5m])
 					, 0)
 
 					"""

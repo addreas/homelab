@@ -136,7 +136,7 @@ import (
 
 	// Artifact represents the last successful HelmRepository reconciliation.
 	// +optional
-	artifact?: null | #Artifact @go(Artifact,*Artifact)
+	artifact?: null | meta.#Artifact @go(Artifact,*meta.Artifact)
 
 	meta.#ReconcileRequestStatus
 }

@@ -79,11 +79,11 @@ _#defaultMaxHistory: 5
 	// +optional
 	storageNamespace?: string @go(StorageNamespace)
 
-	// DependsOn may contain a meta.NamespacedObjectReference slice with
+	// DependsOn may contain a DependencyReference slice with
 	// references to HelmRelease resources that must be ready before this HelmRelease
 	// can be reconciled.
 	// +optional
-	dependsOn?: [...meta.#NamespacedObjectReference] @go(DependsOn,[]meta.NamespacedObjectReference)
+	dependsOn?: [...#DependencyReference] @go(DependsOn,[]DependencyReference)
 
 	// Timeout is the time to wait for any individual Kubernetes operation (like Jobs
 	// for hooks) during the performance of a Helm action. Defaults to '5m0s'.
@@ -153,13 +153,18 @@ _#defaultMaxHistory: 5
 	// +optional
 	values?: null | apiextensionsv1.#JSON @go(Values,*apiextensionsv1.JSON)
 
+	// CommonMetadata specifies the common labels and annotations that are
+	// applied to all resources. Any existing label or annotation will be
+	// overridden if its key matches a common one.
+	// +optional
+	commonMetadata?: null | #CommonMetadata @go(CommonMetadata,*CommonMetadata)
+
 	// PostRenderers holds an array of Helm PostRenderers, which will be applied in order
 	// of their definition.
 	// +optional
 	postRenderers?: [...#PostRenderer] @go(PostRenderers,[]PostRenderer)
 }
 
-// +kubebuilder:object:generate=false
 #ValuesReference: meta.#ValuesReference
 
 // Kustomize Helm PostRenderer specification.
@@ -174,6 +179,17 @@ _#defaultMaxHistory: 5
 	// patch, but this operator is simpler to specify.
 	// +optional
 	images?: [...kustomize.#Image] @go(Images,[]kustomize.Image)
+}
+
+// CommonMetadata defines the common labels and annotations.
+#CommonMetadata: {
+	// Annotations to be added to the object's metadata.
+	// +optional
+	annotations?: {[string]: string} @go(Annotations,map[string]string)
+
+	// Labels to be added to the object's metadata.
+	// +optional
+	labels?: {[string]: string} @go(Labels,map[string]string)
 }
 
 // PostRenderer contains a Helm PostRenderer specification.
@@ -325,6 +341,16 @@ _#defaultMaxHistory: 5
 // +kubebuilder:object:generate=false
 #Remediation: _
 
+// Strategy defines a consistent interface for InstallStrategy and
+// UpgradeStrategy.
+// +kubebuilder:object:generate=false
+#Strategy: _
+
+// Retry defines a consistent interface for retry strategies from
+// InstallStrategy and UpgradeStrategy.
+// +kubebuilder:object:generate=false
+#Retry: _
+
 // Install holds the configuration for Helm install actions performed for this
 // HelmRelease.
 #Install: {
@@ -335,6 +361,11 @@ _#defaultMaxHistory: 5
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+
+	// Strategy defines the install strategy to use for this HelmRelease.
+	// Defaults to 'RemediateOnFailure'.
+	// +optional
+	strategy?: null | #InstallStrategy @go(Strategy,*InstallStrategy)
 
 	// Remediation holds the remediation configuration for when the Helm install
 	// action for the HelmRelease fails. The default is to not perform any action.
@@ -412,6 +443,23 @@ _#defaultMaxHistory: 5
 	createNamespace?: bool @go(CreateNamespace)
 }
 
+// InstallStrategy holds the configuration for Helm install strategy.
+// +kubebuilder:validation:XValidation:rule="!has(self.retryInterval) || self.name != 'RemediateOnFailure'", message=".retryInterval cannot be set when .name is 'RemediateOnFailure'"
+#InstallStrategy: {
+	// Name of the install strategy.
+	// +kubebuilder:validation:Enum=RemediateOnFailure;RetryOnFailure
+	// +required
+	name: string @go(Name)
+
+	// RetryInterval is the interval at which to retry a failed install.
+	// Can be used only when Name is set to RetryOnFailure.
+	// Defaults to '5m'.
+	// +kubebuilder:validation:Type=string
+	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+	// +optional
+	retryInterval?: null | metav1.#Duration @go(RetryInterval,*metav1.Duration)
+}
+
 // InstallRemediation holds the configuration for Helm install remediation.
 #InstallRemediation: {
 	// Retries is the number of retries that should be attempted on failures before
@@ -462,6 +510,11 @@ _#defaultMaxHistory: 5
 	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+
+	// Strategy defines the upgrade strategy to use for this HelmRelease.
+	// Defaults to 'RemediateOnFailure'.
+	// +optional
+	strategy?: null | #UpgradeStrategy @go(Strategy,*UpgradeStrategy)
 
 	// Remediation holds the remediation configuration for when the Helm upgrade
 	// action for the HelmRelease fails. The default is to not perform any action.
@@ -533,6 +586,23 @@ _#defaultMaxHistory: 5
 	crds?: #CRDsPolicy @go(CRDs)
 }
 
+// UpgradeStrategy holds the configuration for Helm upgrade strategy.
+// +kubebuilder:validation:XValidation:rule="!has(self.retryInterval) || self.name == 'RetryOnFailure'", message=".retryInterval can only be set when .name is 'RetryOnFailure'"
+#UpgradeStrategy: {
+	// Name of the upgrade strategy.
+	// +kubebuilder:validation:Enum=RemediateOnFailure;RetryOnFailure
+	// +required
+	name: string @go(Name)
+
+	// RetryInterval is the interval at which to retry a failed upgrade.
+	// Can be used only when Name is set to RetryOnFailure.
+	// Defaults to '5m'.
+	// +kubebuilder:validation:Type=string
+	// +kubebuilder:validation:Pattern="^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$"
+	// +optional
+	retryInterval?: null | metav1.#Duration @go(RetryInterval,*metav1.Duration)
+}
+
 // UpgradeRemediation holds the configuration for Helm upgrade remediation.
 #UpgradeRemediation: {
 	// Retries is the number of retries that should be attempted on failures before
@@ -557,6 +627,21 @@ _#defaultMaxHistory: 5
 	// +optional
 	strategy?: null | #RemediationStrategy @go(Strategy,*RemediationStrategy)
 }
+
+// ActionStrategyName is a valid name for an action strategy.
+#ActionStrategyName: string // #enumActionStrategyName
+
+#enumActionStrategyName:
+	#ActionStrategyRemediateOnFailure |
+	#ActionStrategyRetryOnFailure
+
+// ActionStrategyRemediateOnFailure is the action strategy name for
+// remediate on failure.
+#ActionStrategyRemediateOnFailure: #ActionStrategyName & "RemediateOnFailure"
+
+// ActionStrategyRetryOnFailure is the action strategy name for retry on
+// failure.
+#ActionStrategyRetryOnFailure: #ActionStrategyName & "RetryOnFailure"
 
 // RemediationStrategy returns the strategy to use to remediate a failed install
 // or upgrade.
@@ -707,6 +792,11 @@ _#defaultMaxHistory: 5
 	// +optional
 	observedPostRenderersDigest?: string @go(ObservedPostRenderersDigest)
 
+	// ObservedCommonMetadataDigest is the digest for the common metadata of
+	// the last successful reconciliation attempt.
+	// +optional
+	observedCommonMetadataDigest?: string @go(ObservedCommonMetadataDigest)
+
 	// LastAttemptedGeneration is the last generation the controller attempted
 	// to reconcile.
 	// +optional
@@ -735,10 +825,17 @@ _#defaultMaxHistory: 5
 	history?: #Snapshots @go(History)
 
 	// LastAttemptedReleaseAction is the last release action performed for this
-	// HelmRelease. It is used to determine the active remediation strategy.
+	// HelmRelease. It is used to determine the active retry or remediation
+	// strategy.
 	// +kubebuilder:validation:Enum=install;upgrade
 	// +optional
 	lastAttemptedReleaseAction?: #ReleaseAction @go(LastAttemptedReleaseAction)
+
+	// LastAttemptedReleaseActionDuration is the duration of the last
+	// release action performed for this HelmRelease.
+	// +kubebuilder:validation:Type=string
+	// +optional
+	lastAttemptedReleaseActionDuration?: null | metav1.#Duration @go(LastAttemptedReleaseActionDuration,*metav1.Duration)
 
 	// Failures is the reconciliation failure count against the latest desired
 	// state. It is reset after a successful reconciliation.
@@ -768,11 +865,13 @@ _#defaultMaxHistory: 5
 
 	// LastAttemptedValuesChecksum is the SHA1 checksum for the values of the last
 	// reconciliation attempt.
+	//
 	// Deprecated: Use LastAttemptedConfigDigest instead.
 	// +optional
 	lastAttemptedValuesChecksum?: string @go(LastAttemptedValuesChecksum)
 
 	// LastReleaseRevision is the revision of the last successful Helm release.
+	//
 	// Deprecated: Use History instead.
 	// +optional
 	lastReleaseRevision?: int @go(LastReleaseRevision)
@@ -782,17 +881,14 @@ _#defaultMaxHistory: 5
 	// +optional
 	lastAttemptedConfigDigest?: string @go(LastAttemptedConfigDigest)
 
-	// LastHandledForceAt holds the value of the most recent force request
-	// value, so a change of the annotation value can be detected.
-	// +optional
-	lastHandledForceAt?: string @go(LastHandledForceAt)
-
 	// LastHandledResetAt holds the value of the most recent reset request
 	// value, so a change of the annotation value can be detected.
 	// +optional
 	lastHandledResetAt?: string @go(LastHandledResetAt)
 
 	meta.#ReconcileRequestStatus
+
+	meta.#ForceRequestStatus
 }
 
 // SourceIndexKey is the key used for indexing HelmReleases based on

@@ -16,7 +16,8 @@ import (
 #BucketProviderGeneric: "generic"
 
 // BucketProviderAmazon for an AWS S3 object storage Bucket.
-// Provides support for retrieving credentials from the AWS EC2 service.
+// Provides support for retrieving credentials from the AWS EC2 service
+// and workload identity authentication.
 #BucketProviderAmazon: "aws"
 
 // BucketProviderGoogle for a Google Cloud Storage Bucket.
@@ -35,6 +36,8 @@ import (
 // +kubebuilder:validation:XValidation:rule="self.provider != 'generic' || !has(self.sts) || self.sts.provider == 'ldap'", message="'ldap' is the only supported STS provider for the 'generic' Bucket provider"
 // +kubebuilder:validation:XValidation:rule="!has(self.sts) || self.sts.provider != 'aws' || !has(self.sts.secretRef)", message="spec.sts.secretRef is not required for the 'aws' STS provider"
 // +kubebuilder:validation:XValidation:rule="!has(self.sts) || self.sts.provider != 'aws' || !has(self.sts.certSecretRef)", message="spec.sts.certSecretRef is not required for the 'aws' STS provider"
+// +kubebuilder:validation:XValidation:rule="self.provider != 'generic' || !has(self.serviceAccountName)", message="ServiceAccountName is not supported for the 'generic' Bucket provider"
+// +kubebuilder:validation:XValidation:rule="!has(self.secretRef) || !has(self.serviceAccountName)", message="cannot set both .spec.secretRef and .spec.serviceAccountName"
 #BucketSpec: {
 	// Provider of the object storage bucket.
 	// Defaults to 'generic', which expects an S3 (API) compatible object
@@ -76,6 +79,13 @@ import (
 	// for the Bucket.
 	// +optional
 	secretRef?: null | meta.#LocalObjectReference @go(SecretRef,*meta.LocalObjectReference)
+
+	// ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
+	// the bucket. This field is only supported for the 'gcp' and 'aws' providers.
+	// For more information about workload identity:
+	// https://fluxcd.io/flux/components/source/buckets/#workload-identity
+	// +optional
+	serviceAccountName?: string @go(ServiceAccountName)
 
 	// CertSecretRef can be given the name of a Secret containing
 	// either or both of
@@ -183,7 +193,7 @@ import (
 
 	// Artifact represents the last successful Bucket reconciliation.
 	// +optional
-	artifact?: null | #Artifact @go(Artifact,*Artifact)
+	artifact?: null | meta.#Artifact @go(Artifact,*meta.Artifact)
 
 	// ObservedIgnore is the observed exclusion patterns used for constructing
 	// the source artifact.
