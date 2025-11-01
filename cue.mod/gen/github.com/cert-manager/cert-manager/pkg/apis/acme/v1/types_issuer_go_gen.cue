@@ -83,6 +83,7 @@ import (
 	// from an ACME server.
 	// For more information, see: https://cert-manager.io/docs/configuration/acme/
 	// +optional
+	// +listType=atomic
 	solvers?: [...#ACMEChallengeSolver] @go(Solvers,[]ACMEChallengeSolver)
 
 	// Enables or disables generating a new ACME account key.
@@ -186,6 +187,7 @@ import (
 	// If neither has more matches, the solver defined earlier in the list
 	// will be selected.
 	// +optional
+	// +listType=atomic
 	dnsNames?: [...string] @go(DNSNames,[]string)
 
 	// List of DNSZones that this solver will be used to solve.
@@ -198,6 +200,7 @@ import (
 	// If neither has more matches, the solver defined earlier in the list
 	// will be selected.
 	// +optional
+	// +listType=atomic
 	dnsZones?: [...string] @go(DNSZones,[]string)
 }
 
@@ -280,6 +283,8 @@ import (
 	// cert-manager needs to know which parentRefs should be used when creating
 	// the HTTPRoute. Usually, the parentRef references a Gateway. See:
 	// https://gateway-api.sigs.k8s.io/api-types/httproute/#attaching-to-gateways
+	// +optional
+	// +listType=atomic
 	parentRefs?: [...gwapi.#ParentReference] @go(ParentRefs,[]gwapi.ParentReference)
 
 	// Optional pod template used to configure the ACME challenge solver pods
@@ -326,6 +331,7 @@ import (
 
 	// If specified, the pod's tolerations.
 	// +optional
+	// +listType=atomic
 	tolerations?: [...corev1.#Toleration] @go(Tolerations,[]corev1.Toleration)
 
 	// If specified, the pod's priorityClassName.
@@ -338,11 +344,24 @@ import (
 
 	// If specified, the pod's imagePullSecrets
 	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
 	imagePullSecrets?: [...corev1.#LocalObjectReference] @go(ImagePullSecrets,[]corev1.LocalObjectReference)
 
 	// If specified, the pod's security context
 	// +optional
 	securityContext?: null | #ACMEChallengeSolverHTTP01IngressPodSecurityContext @go(SecurityContext,*ACMEChallengeSolverHTTP01IngressPodSecurityContext)
+
+	// If specified, the pod's resource requirements.
+	// These values override the global resource configuration flags.
+	// Note that when only specifying resource limits, ensure they are greater than or equal
+	// to the corresponding global resource requests configured via controller flags
+	// (--acme-http01-solver-resource-request-cpu, --acme-http01-solver-resource-request-memory).
+	// Kubernetes will reject pod creation if limits are lower than requests, causing challenge failures.
+	// +optional
+	resources?: null | #ACMEChallengeSolverHTTP01IngressPodResources @go(Resources,*ACMEChallengeSolverHTTP01IngressPodResources)
 }
 
 #ACMEChallengeSolverHTTP01IngressTemplate: {
@@ -458,6 +477,7 @@ import (
 	// even if they are not included in this list.
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
+	// +listType=atomic
 	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64)
 
 	// A special supplemental group that applies to all containers in a pod.
@@ -477,6 +497,7 @@ import (
 	// sysctls (by the container runtime) might fail to launch.
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
+	// +listType=atomic
 	sysctls?: [...corev1.#Sysctl] @go(Sysctls,[]corev1.Sysctl)
 
 	// fsGroupChangePolicy defines behavior of changing ownership and permission of the volume
@@ -493,6 +514,22 @@ import (
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	seccompProfile?: null | corev1.#SeccompProfile @go(SeccompProfile,*corev1.SeccompProfile)
+}
+
+// ACMEChallengeSolverHTTP01IngressPodResources defines resource requirements for ACME HTTP01 solver pods.
+// To keep API surface essential, this trims down the 'corev1.ResourceRequirements' type to only include the Requests and Limits fields.
+#ACMEChallengeSolverHTTP01IngressPodResources: {
+	// Limits describes the maximum amount of compute resources allowed.
+	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+	// +optional
+	limits?: corev1.#ResourceList @go(Limits)
+
+	// Requests describes the minimum amount of compute resources required.
+	// If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+	// otherwise to the global values configured via controller flags. Requests cannot exceed Limits.
+	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+	// +optional
+	requests?: corev1.#ResourceList @go(Requests)
 }
 
 // CNAMEStrategy configures how the DNS01 provider should handle CNAME records
@@ -654,6 +691,7 @@ import (
 	// and name is always included.
 	// If unset the audience defaults to `sts.amazonaws.com`.
 	// +optional
+	// +listType=atomic
 	audiences?: [...string] @go(TokenAudiences,[]string)
 }
 
@@ -763,7 +801,24 @@ import (
 	// ``HMACSHA1``, ``HMACSHA256`` or ``HMACSHA512``.
 	// +optional
 	tsigAlgorithm?: string @go(TSIGAlgorithm)
+
+	// Protocol to use for dynamic DNS update queries. Valid values are (case-sensitive) ``TCP`` and ``UDP``; ``UDP`` (default).
+	// +optional
+	protocol?: #RFC2136UpdateProtocol @go(Protocol)
 }
+
+// +kubebuilder:validation:Enum=TCP;UDP
+#RFC2136UpdateProtocol: string // #enumRFC2136UpdateProtocol
+
+#enumRFC2136UpdateProtocol:
+	#RFC2136UpdateProtocolTCP |
+	#RFC2136UpdateProtocolUDP
+
+// RFC2136UpdateProtocolTCP utilizes TCP to update queries.
+#RFC2136UpdateProtocolTCP: #RFC2136UpdateProtocol & "TCP"
+
+// RFC2136UpdateProtocolUDP utilizes UDP to update queries.
+#RFC2136UpdateProtocolUDP: #RFC2136UpdateProtocol & "UDP"
 
 // ACMEIssuerDNS01ProviderWebhook specifies configuration for a webhook DNS01
 // provider, including where to POST ChallengePayload resources.

@@ -35,12 +35,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // HTTP/1, i.e. without prior knowledge.
 #GRPCRoute: {
 	metav1.#TypeMeta
+
+	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
 	// Spec defines the desired state of GRPCRoute.
+	// +required
 	spec?: #GRPCRouteSpec @go(Spec)
 
 	// Status defines the current state of GRPCRoute.
+	// +optional
 	status?: #GRPCRouteStatus @go(Status)
 }
 
@@ -112,12 +116,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=16
 	hostnames?: [...#Hostname] @go(Hostnames,[]Hostname)
 
 	// Rules are a list of GRPC matchers, filters and actions.
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=16
 	// +kubebuilder:validation:XValidation:message="While 16 rules and 64 matches per rule are allowed, the total number of matches across all rules in a route must be less than 128",rule="(self.size() > 0 ? (has(self[0].matches) ? self[0].matches.size() : 0) : 0) + (self.size() > 1 ? (has(self[1].matches) ? self[1].matches.size() : 0) : 0) + (self.size() > 2 ? (has(self[2].matches) ? self[2].matches.size() : 0) : 0) + (self.size() > 3 ? (has(self[3].matches) ? self[3].matches.size() : 0) : 0) + (self.size() > 4 ? (has(self[4].matches) ? self[4].matches.size() : 0) : 0) + (self.size() > 5 ? (has(self[5].matches) ? self[5].matches.size() : 0) : 0) + (self.size() > 6 ? (has(self[6].matches) ? self[6].matches.size() : 0) : 0) + (self.size() > 7 ? (has(self[7].matches) ? self[7].matches.size() : 0) : 0) + (self.size() > 8 ? (has(self[8].matches) ? self[8].matches.size() : 0) : 0) + (self.size() > 9 ? (has(self[9].matches) ? self[9].matches.size() : 0) : 0) + (self.size() > 10 ? (has(self[10].matches) ? self[10].matches.size() : 0) : 0) + (self.size() > 11 ? (has(self[11].matches) ? self[11].matches.size() : 0) : 0) + (self.size() > 12 ? (has(self[12].matches) ? self[12].matches.size() : 0) : 0) + (self.size() > 13 ? (has(self[13].matches) ? self[13].matches.size() : 0) : 0) + (self.size() > 14 ? (has(self[14].matches) ? self[14].matches.size() : 0) : 0) + (self.size() > 15 ? (has(self[15].matches) ? self[15].matches.size() : 0) : 0) <= 128"
 	// <gateway:experimental:validation:XValidation:message="Rule name must be unique within the route",rule="self.all(l1, !has(l1.name) || self.exists_one(l2, has(l2.name) && l1.name == l2.name))">
@@ -132,7 +138,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Support: Extended
 	// +optional
-	// <gateway:experimental>
 	name?: null | #SectionName @go(Name,*SectionName)
 
 	// Matches define conditions used for matching the rule against incoming
@@ -186,7 +191,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// the above criteria.
 	//
 	// +optional
-	// +kubebuilder:validation:MaxItems=8
+	// +listType=atomic
+	// +kubebuilder:validation:MaxItems=64
 	matches?: [...#GRPCRouteMatch] @go(Matches,[]GRPCRouteMatch)
 
 	// Filters define the filters that are applied to requests that match
@@ -206,7 +212,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Specifying the same filter multiple times is not supported unless explicitly
 	// indicated in the filter.
 	//
-	// If an implementation can not support a combination of filters, it must clearly
+	// If an implementation cannot support a combination of filters, it must clearly
 	// document that limitation. In cases where incompatible or unsupported
 	// filters are specified and cause the `Accepted` condition to be set to status
 	// `False`, implementations may use the `IncompatibleFilters` reason to specify
@@ -215,6 +221,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=16
 	// +kubebuilder:validation:XValidation:message="RequestHeaderModifier filter cannot be repeated",rule="self.filter(f, f.type == 'RequestHeaderModifier').size() <= 1"
 	// +kubebuilder:validation:XValidation:message="ResponseHeaderModifier filter cannot be repeated",rule="self.filter(f, f.type == 'ResponseHeaderModifier').size() <= 1"
@@ -250,6 +257,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support for weight: Core
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=16
 	backendRefs?: [...#GRPCBackendRef] @go(BackendRefs,[]GRPCBackendRef)
 
@@ -383,12 +391,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// entries with an equivalent header name MUST be ignored. Due to the
 	// case-insensitivity of header names, "foo" and "Foo" are considered
 	// equivalent.
+	// +required
 	name: #GRPCHeaderName @go(Name)
 
 	// Value is the value of the gRPC Header to be matched.
 	//
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=4096
+	// +required
 	value: string @go(Value)
 }
 
@@ -504,6 +514,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +unionDiscriminator
 	// +kubebuilder:validation:Enum=ResponseHeaderModifier;RequestHeaderModifier;RequestMirror;ExtensionRef
 	// <gateway:experimental:validation:Enum=ResponseHeaderModifier;RequestHeaderModifier;RequestMirror;ExtensionRef>
+	// +required
 	type: #GRPCRouteFilterType @go(Type)
 
 	// RequestHeaderModifier defines a schema for a filter that modifies request
@@ -534,7 +545,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +optional
 	//
-	// <gateway:experimental:validation:XValidation:message="Only one of percent or fraction may be specified in HTTPRequestMirrorFilter",rule="!(has(self.percent) && has(self.fraction))">
+	// +kubebuilder:validation:XValidation:message="Only one of percent or fraction may be specified in HTTPRequestMirrorFilter",rule="!(has(self.percent) && has(self.fraction))"
 	requestMirror?: null | #HTTPRequestMirrorFilter @go(RequestMirror,*HTTPRequestMirrorFilter)
 
 	// ExtensionRef is an optional, implementation-specific extension to the
@@ -583,6 +594,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Filters field in GRPCRouteRule.)
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=16
 	// +kubebuilder:validation:XValidation:message="RequestHeaderModifier filter cannot be repeated",rule="self.filter(f, f.type == 'RequestHeaderModifier').size() <= 1"
 	// +kubebuilder:validation:XValidation:message="ResponseHeaderModifier filter cannot be repeated",rule="self.filter(f, f.type == 'ResponseHeaderModifier').size() <= 1"

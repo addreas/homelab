@@ -193,14 +193,17 @@ import (
 
 	// Requested DNS subject alternative names.
 	// +optional
+	// +listType=atomic
 	dnsNames?: [...string] @go(DNSNames,[]string)
 
 	// Requested IP address subject alternative names.
 	// +optional
+	// +listType=atomic
 	ipAddresses?: [...string] @go(IPAddresses,[]string)
 
 	// Requested URI subject alternative names.
 	// +optional
+	// +listType=atomic
 	uris?: [...string] @go(URIs,[]string)
 
 	// `otherNames` is an escape hatch for SAN that allows any type. We currently restrict the support to string like otherNames, cf RFC 5280 p 37
@@ -208,10 +211,12 @@ import (
 	// Most commonly this would be UPN set with oid: 1.3.6.1.4.1.311.20.2.3
 	// You should ensure that any OID passed is valid for the UTF8String type as we do not explicitly validate this.
 	// +optional
+	// +listType=atomic
 	otherNames?: [...#OtherName] @go(OtherNames,[]OtherName)
 
 	// Requested email subject alternative names.
 	// +optional
+	// +listType=atomic
 	emailAddresses?: [...string] @go(EmailAddresses,[]string)
 
 	// Name of the Secret resource that will be automatically created and
@@ -238,7 +243,7 @@ import (
 	// from any namespace.
 	//
 	// The `name` field of the reference must always be specified.
-	issuerRef: cmmeta.#ObjectReference @go(IssuerRef)
+	issuerRef: cmmeta.#IssuerReference @go(IssuerRef)
 
 	// Requested basic constraints isCA value.
 	// The isCA value is used to set the `isCA` field on the created CertificateRequest
@@ -257,6 +262,7 @@ import (
 	//
 	// If unset, defaults to `digital signature` and `key encipherment`.
 	// +optional
+	// +listType=atomic
 	usages?: [...#KeyUsage] @go(Usages,[]KeyUsage)
 
 	// Private key options. These include the key algorithm and size, the used
@@ -292,6 +298,7 @@ import (
 	// Defines extra output formats of the private key and signed certificate chain
 	// to be written to this Certificate's target Secret.
 	// +optional
+	// +listType=atomic
 	additionalOutputFormats?: [...#CertificateAdditionalOutputFormat] @go(AdditionalOutputFormats,[]CertificateAdditionalOutputFormat)
 
 	// x.509 certificate NameConstraint extension which MUST NOT be used in a non-CA certificate.
@@ -422,30 +429,37 @@ import (
 #X509Subject: {
 	// Organizations to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	organizations?: [...string] @go(Organizations,[]string)
 
 	// Countries to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	countries?: [...string] @go(Countries,[]string)
 
 	// Organizational Units to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	organizationalUnits?: [...string] @go(OrganizationalUnits,[]string)
 
 	// Cities to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	localities?: [...string] @go(Localities,[]string)
 
 	// State/Provinces to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	provinces?: [...string] @go(Provinces,[]string)
 
 	// Street addresses to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	streetAddresses?: [...string] @go(StreetAddresses,[]string)
 
 	// Postal codes to be used on the Certificate.
 	// +optional
+	// +listType=atomic
 	postalCodes?: [...string] @go(PostalCodes,[]string)
 
 	// Serial number to be used on the Certificate.
@@ -561,9 +575,9 @@ import (
 #CertificateStatus: {
 	// List of status conditions to indicate the status of certificates.
 	// Known condition types are `Ready` and `Issuing`.
+	// +optional
 	// +listType=map
 	// +listMapKey=type
-	// +optional
 	conditions?: [...#CertificateCondition] @go(Conditions,[]CertificateCondition)
 
 	// LastFailureTime is set only if the latest issuance for this
@@ -726,21 +740,25 @@ import (
 	// DNSDomains is a list of DNS domains that are permitted or excluded.
 	//
 	// +optional
+	// +listType=atomic
 	dnsDomains?: [...string] @go(DNSDomains,[]string)
 
 	// IPRanges is a list of IP Ranges that are permitted or excluded.
 	// This should be a valid CIDR notation.
 	//
 	// +optional
+	// +listType=atomic
 	ipRanges?: [...string] @go(IPRanges,[]string)
 
 	// EmailAddresses is a list of Email Addresses that are permitted or excluded.
 	//
 	// +optional
+	// +listType=atomic
 	emailAddresses?: [...string] @go(EmailAddresses,[]string)
 
 	// URIDomains is a list of URI domains that are permitted or excluded.
 	//
 	// +optional
+	// +listType=atomic
 	uriDomains?: [...string] @go(URIDomains,[]string)
 }

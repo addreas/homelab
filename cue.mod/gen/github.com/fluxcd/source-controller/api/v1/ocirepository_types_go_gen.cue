@@ -183,7 +183,7 @@ import (
 
 	// Artifact represents the output of the last successful OCI Repository sync.
 	// +optional
-	artifact?: null | #Artifact @go(Artifact,*Artifact)
+	artifact?: null | meta.#Artifact @go(Artifact,*meta.Artifact)
 
 	// ObservedIgnore is the observed exclusion patterns used for constructing
 	// the source artifact.

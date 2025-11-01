@@ -36,7 +36,6 @@ import (
 //
 // A CertificateRequest is a one-shot resource, meaning it represents a single
 // point in time request for a certificate and cannot be re-used.
-// +k8s:openapi-gen=true
 #CertificateRequest: {
 	metav1.#TypeMeta
 
@@ -91,7 +90,7 @@ import (
 	// from any namespace.
 	//
 	// The `name` field of the reference must always be specified.
-	issuerRef: cmmeta.#ObjectReference @go(IssuerRef)
+	issuerRef: cmmeta.#IssuerReference @go(IssuerRef)
 
 	// The PEM-encoded X.509 certificate signing request to be submitted to the
 	// issuer for signing.
@@ -124,6 +123,7 @@ import (
 	//
 	// If unset, defaults to `digital signature` and `key encipherment`.
 	// +optional
+	// +listType=atomic
 	usages?: [...#KeyUsage] @go(Usages,[]KeyUsage)
 
 	// Username contains the name of the user that created the CertificateRequest.
@@ -138,8 +138,8 @@ import (
 
 	// Groups contains group membership of the user that created the CertificateRequest.
 	// Populated by the cert-manager webhook on creation and immutable.
-	// +listType=atomic
 	// +optional
+	// +listType=atomic
 	groups?: [...string] @go(Groups,[]string)
 
 	// Extra contains extra attributes of the user that created the CertificateRequest.
@@ -153,9 +153,9 @@ import (
 #CertificateRequestStatus: {
 	// List of status conditions to indicate the status of a CertificateRequest.
 	// Known condition types are `Ready`, `InvalidRequest`, `Approved` and `Denied`.
+	// +optional
 	// +listType=map
 	// +listMapKey=type
-	// +optional
 	conditions?: [...#CertificateRequestCondition] @go(Conditions,[]CertificateRequestCondition)
 
 	// The PEM encoded X.509 certificate resulting from the certificate
