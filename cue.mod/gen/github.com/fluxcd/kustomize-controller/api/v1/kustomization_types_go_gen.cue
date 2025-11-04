@@ -5,8 +5,8 @@
 package v1
 
 import (
-	"github.com/fluxcd/pkg/apis/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/fluxcd/pkg/apis/meta"
 	"github.com/fluxcd/pkg/apis/kustomize"
 )
 
@@ -32,11 +32,11 @@ import (
 	// +optional
 	commonMetadata?: null | #CommonMetadata @go(CommonMetadata,*CommonMetadata)
 
-	// DependsOn may contain a meta.NamespacedObjectReference slice
+	// DependsOn may contain a DependencyReference slice
 	// with references to Kustomization resources that must be ready before this
 	// Kustomization can be reconciled.
 	// +optional
-	dependsOn?: [...meta.#NamespacedObjectReference] @go(DependsOn,[]meta.NamespacedObjectReference)
+	dependsOn?: [...#DependencyReference] @go(DependsOn,[]DependencyReference)
 
 	// Decrypt Kubernetes secrets before applying them on the cluster.
 	// +optional
@@ -160,9 +160,15 @@ import (
 	// +optional
 	wait?: bool @go(Wait)
 
-	// Components specifies relative paths to specifications of other Components.
+	// Components specifies relative paths to kustomize Components.
 	// +optional
 	components?: [...string] @go(Components,[]string)
+
+	// IgnoreMissingComponents instructs the controller to ignore Components paths
+	// not found in source by removing them from the generated kustomization.yaml
+	// before running kustomize build.
+	// +optional
+	ignoreMissingComponents?: bool @go(IgnoreMissingComponents)
 
 	// HealthCheckExprs is a list of healthcheck expressions for evaluating the
 	// health of custom resources using Common Expression Language (CEL).
@@ -280,6 +286,11 @@ import (
 	// have been successfully applied.
 	// +optional
 	inventory?: null | #ResourceInventory @go(Inventory,*ResourceInventory)
+
+	// History contains a set of snapshots of the last reconciliation attempts
+	// tracking the revision, the state and the duration of each attempt.
+	// +optional
+	history?: meta.#History @go(History)
 }
 
 // Kustomization is the Schema for the kustomizations API.

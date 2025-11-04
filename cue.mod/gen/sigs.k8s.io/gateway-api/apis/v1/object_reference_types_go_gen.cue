@@ -15,12 +15,15 @@ package v1
 #LocalObjectReference: {
 	// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 	// When unspecified or empty string, core API group is inferred.
+	// +required
 	group: #Group @go(Group)
 
 	// Kind is kind of the referent. For example "HTTPRoute" or "Service".
+	// +required
 	kind: #Kind @go(Kind)
 
 	// Name is the name of the referent.
+	// +required
 	name: #ObjectName @go(Name)
 }
 
@@ -48,6 +51,7 @@ package v1
 	kind?: null | #Kind @go(Kind,*Kind)
 
 	// Name is the name of the referent.
+	// +required
 	name: #ObjectName @go(Name)
 
 	// Namespace is the namespace of the referenced object. When unspecified, the local
@@ -109,6 +113,7 @@ package v1
 	kind?: null | #Kind @go(Kind,*Kind)
 
 	// Name is the name of the referent.
+	// +required
 	name: #ObjectName @go(Name)
 
 	// Namespace is the namespace of the backend. When unspecified, the local
@@ -131,7 +136,9 @@ package v1
 	// resource or this field.
 	//
 	// +optional
-	port?: null | #PortNumber @go(Port,*PortNumber)
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
+	port?: null | int32 @go(Port,*PortNumber)
 }
 
 // ObjectReference identifies an API object including its namespace.
@@ -144,13 +151,16 @@ package v1
 // on the containing object.
 #ObjectReference: {
 	// Group is the group of the referent. For example, "gateway.networking.k8s.io".
-	// When unspecified or empty string, core API group is inferred.
+	// When set to the empty string, core API group is inferred.
+	// +required
 	group: #Group @go(Group)
 
 	// Kind is kind of the referent. For example "ConfigMap" or "Service".
+	// +required
 	kind: #Kind @go(Kind)
 
 	// Name is the name of the referent.
+	// +required
 	name: #ObjectName @go(Name)
 
 	// Namespace is the namespace of the referenced object. When unspecified, the local

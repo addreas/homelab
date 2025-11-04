@@ -34,19 +34,25 @@ package v1
 	name: string @go(Name)
 }
 
-// ObjectReference is a reference to an object with a given name, kind and group.
-#ObjectReference: {
-	// Name of the resource being referred to.
+// IssuerReference is a reference to a certificate issuer object with a given name, kind and group.
+#IssuerReference: {
+	// Name of the issuer being referred to.
 	name: string @go(Name)
 
-	// Kind of the resource being referred to.
+	// Kind of the issuer being referred to.
+	// Defaults to 'Issuer'.
 	// +optional
 	kind?: string @go(Kind)
 
-	// Group of the resource being referred to.
+	// Group of the issuer being referred to.
+	// Defaults to 'cert-manager.io'.
 	// +optional
 	group?: string @go(Group)
 }
+
+// ObjectReference is a reference to an object with a given name, kind and group.
+// Deprecated: Use IssuerReference instead.
+#ObjectReference: #IssuerReference
 
 // A reference to a specific 'key' within a Secret resource.
 // In some instances, `key` is a required field.

@@ -18,29 +18,44 @@ import (
 // `Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
 #PrometheusRule: {
 	metav1.#TypeMeta
+
+	// metadata defines ObjectMeta as the metadata that all persisted resources.
+	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
-	// Specification of desired alerting rule definitions for Prometheus.
+	// spec defines the specification of desired alerting rule definitions for Prometheus.
+	// +required
 	spec: #PrometheusRuleSpec @go(Spec)
+
+	// status defines the status subresource. It is under active development and is updated only when the
+	// "StatusForConfigurationResources" feature gate is enabled.
+	//
+	// Most recent observed status of the PrometheusRule. Read-only.
+	// More info:
+	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	status?: #ConfigResourceStatus @go(Status)
 }
 
 // PrometheusRuleSpec contains specification parameters for a Rule.
 // +k8s:openapi-gen=true
 #PrometheusRuleSpec: {
-	// Content of Prometheus rule file
+	// groups defines the content of Prometheus rule file
 	// +listType=map
 	// +listMapKey=name
+	// +optional
 	groups?: [...#RuleGroup] @go(Groups,[]RuleGroup)
 }
 
 // RuleGroup is a list of sequentially evaluated recording and alerting rules.
 // +k8s:openapi-gen=true
 #RuleGroup: {
-	// Name of the rule group.
+	// name defines the name of the rule group.
 	// +kubebuilder:validation:MinLength=1
+	// +required
 	name: string @go(Name)
 
-	// Labels to add or overwrite before storing the result for its rules.
+	// labels define the labels to add or overwrite before storing the result for its rules.
 	// The labels defined at the rule level take precedence.
 	//
 	// It requires Prometheus >= 3.0.0.
@@ -48,28 +63,31 @@ import (
 	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string)
 
-	// Interval determines how often rules in the group are evaluated.
+	// interval defines how often rules in the group are evaluated.
 	// +optional
 	interval?: null | #Duration @go(Interval,*Duration)
 
-	// Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+	// query_offset defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
 	//
 	// It requires Prometheus >= v2.53.0.
 	// It is not supported for ThanosRuler.
 	// +optional
+	//nolint:kubeapilinter // The json tag doesn't meet the conventions to be compatible with Prometheus format.
 	query_offset?: null | #Duration @go(QueryOffset,*Duration)
 
-	// List of alerting and recording rules.
+	// rules defines the list of alerting and recording rules.
 	// +optional
 	rules?: [...#Rule] @go(Rules,[]Rule)
 
-	// PartialResponseStrategy is only used by ThanosRuler and will
+	// partial_response_strategy is only used by ThanosRuler and will
 	// be ignored by Prometheus instances.
 	// More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
 	// +kubebuilder:validation:Pattern="^(?i)(abort|warn)?$"
+	// +optional
+	//nolint:kubeapilinter // The json tag doesn't meet the conventions to be compatible with Prometheus format.
 	partial_response_strategy?: string @go(PartialResponseStrategy)
 
-	// Limit the number of alerts an alerting rule and series a recording
+	// limit defines the number of alerts an alerting rule and series a recording
 	// rule can produce.
 	// Limit is supported starting with Prometheus >= 2.31 and Thanos Ruler >= 0.24.
 	// +optional
@@ -79,31 +97,38 @@ import (
 // Rule describes an alerting or recording rule
 // See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
 // +k8s:openapi-gen=true
+// +kubebuilder:validation:OneOf=Record,Alert
 #Rule: {
-	// Name of the time series to output to. Must be a valid metric name.
+	// record defines the name of the time series to output to. Must be a valid metric name.
 	// Only one of `record` and `alert` must be set.
+	// +optional
 	record?: string @go(Record)
 
-	// Name of the alert. Must be a valid label value.
+	// alert defines the name of the alert. Must be a valid label value.
 	// Only one of `record` and `alert` must be set.
+	// +optional
 	alert?: string @go(Alert)
 
-	// PromQL expression to evaluate.
+	// expr defines the PromQL expression to evaluate.
+	// +required
 	expr: intstr.#IntOrString @go(Expr)
 
-	// Alerts are considered firing once they have been returned for this long.
+	// for defines how alerts are considered firing once they have been returned for this long.
 	// +optional
 	for?: null | #Duration @go(For,*Duration)
 
-	// KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+	// keep_firing_for defines how long an alert will continue firing after the condition that triggered it has cleared.
 	// +optional
+	//nolint:kubeapilinter // The json tag doesn't meet the conventions to be compatible with Prometheus format.
 	keep_firing_for?: null | #NonEmptyDuration @go(KeepFiringFor,*NonEmptyDuration)
 
-	// Labels to add or overwrite.
+	// labels defines labels to add or overwrite.
+	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string)
 
-	// Annotations to add to each alert.
+	// annotations defines annotations to add to each alert.
 	// Only valid for alerting rules.
+	// +optional
 	annotations?: {[string]: string} @go(Annotations,map[string]string)
 }
 
@@ -112,10 +137,11 @@ import (
 #PrometheusRuleList: {
 	metav1.#TypeMeta
 
-	// Standard list metadata
-	// More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// metadata defines ListMeta as metadata for collection responses.
+	// +optional
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Rules
+	// +required
 	items: [...#PrometheusRule] @go(Items,[]PrometheusRule)
 }

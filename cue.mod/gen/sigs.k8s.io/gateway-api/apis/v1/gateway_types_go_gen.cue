@@ -10,14 +10,18 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // by binding Listeners to a set of IP addresses.
 #Gateway: {
 	metav1.#TypeMeta
+
+	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
 	// Spec defines the desired state of Gateway.
+	// +required
 	spec: #GatewaySpec @go(Spec)
 
 	// Status defines the current state of Gateway.
 	//
 	// +kubebuilder:default={conditions: {{type: "Accepted", status: "Unknown", reason:"Pending", message:"Waiting for controller", lastTransitionTime: "1970-01-01T00:00:00Z"},{type: "Programmed", status: "Unknown", reason:"Pending", message:"Waiting for controller", lastTransitionTime: "1970-01-01T00:00:00Z"}}}
+	// +optional
 	status?: #GatewayStatus @go(Status)
 }
 
@@ -37,11 +41,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #GatewaySpec: {
 	// GatewayClassName used for this Gateway. This is the name of a
 	// GatewayClass resource.
+	// +required
 	gatewayClassName: #ObjectName @go(GatewayClassName)
 
 	// Listeners associated with this Gateway. Listeners define
 	// logical endpoints that are bound on this Gateway's addresses.
 	// At least one Listener MUST be specified.
+	//
+	// ## Distinct Listeners
 	//
 	// Each Listener in a set of Listeners (for example, in a single Gateway)
 	// MUST be _distinct_, in that a traffic flow MUST be able to be assigned to
@@ -54,55 +61,76 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// combination of Port, Protocol, and, if supported by the protocol, Hostname.
 	//
 	// Some combinations of port, protocol, and TLS settings are considered
-	// Core support and MUST be supported by implementations based on their
-	// targeted conformance profile:
+	// Core support and MUST be supported by implementations based on the objects
+	// they support:
 	//
-	// HTTP Profile
+	// HTTPRoute
 	//
 	// 1. HTTPRoute, Port: 80, Protocol: HTTP
 	// 2. HTTPRoute, Port: 443, Protocol: HTTPS, TLS Mode: Terminate, TLS keypair provided
 	//
-	// TLS Profile
+	// TLSRoute
 	//
 	// 1. TLSRoute, Port: 443, Protocol: TLS, TLS Mode: Passthrough
 	//
 	// "Distinct" Listeners have the following property:
 	//
-	// The implementation can match inbound requests to a single distinct
-	// Listener. When multiple Listeners share values for fields (for
+	// **The implementation can match inbound requests to a single distinct
+	// Listener**.
+	//
+	// When multiple Listeners share values for fields (for
 	// example, two Listeners with the same Port value), the implementation
 	// can match requests to only one of the Listeners using other
 	// Listener fields.
 	//
-	// For example, the following Listener scenarios are distinct:
+	// When multiple listeners have the same value for the Protocol field, then
+	// each of the Listeners with matching Protocol values MUST have different
+	// values for other fields.
 	//
-	// 1. Multiple Listeners with the same Port that all use the "HTTP"
-	//    Protocol that all have unique Hostname values.
-	// 2. Multiple Listeners with the same Port that use either the "HTTPS" or
-	//    "TLS" Protocol that all have unique Hostname values.
-	// 3. A mixture of "TCP" and "UDP" Protocol Listeners, where no Listener
-	//    with the same Protocol has the same Port value.
+	// The set of fields that MUST be different for a Listener differs per protocol.
+	// The following rules define the rules for what fields MUST be considered for
+	// Listeners to be distinct with each protocol currently defined in the
+	// Gateway API spec.
 	//
-	// Some fields in the Listener struct have possible values that affect
-	// whether the Listener is distinct. Hostname is particularly relevant
-	// for HTTP or HTTPS protocols.
+	// The set of listeners that all share a protocol value MUST have _different_
+	// values for _at least one_ of these fields to be distinct:
 	//
-	// When using the Hostname value to select between same-Port, same-Protocol
-	// Listeners, the Hostname value must be different on each Listener for the
-	// Listener to be distinct.
+	// * **HTTP, HTTPS, TLS**: Port, Hostname
+	// * **TCP, UDP**: Port
 	//
-	// When the Listeners are distinct based on Hostname, inbound request
+	// One **very** important rule to call out involves what happens when an
+	// implementation:
+	//
+	// * Supports TCP protocol Listeners, as well as HTTP, HTTPS, or TLS protocol
+	//   Listeners, and
+	// * sees HTTP, HTTPS, or TLS protocols with the same `port` as one with TCP
+	//   Protocol.
+	//
+	// In this case all the Listeners that share a port with the
+	// TCP Listener are not distinct and so MUST NOT be accepted.
+	//
+	// If an implementation does not support TCP Protocol Listeners, then the
+	// previous rule does not apply, and the TCP Listeners SHOULD NOT be
+	// accepted.
+	//
+	// Note that the `tls` field is not used for determining if a listener is distinct, because
+	// Listeners that _only_ differ on TLS config will still conflict in all cases.
+	//
+	// ### Listeners that are distinct only by Hostname
+	//
+	// When the Listeners are distinct based only on Hostname, inbound request
 	// hostnames MUST match from the most specific to least specific Hostname
 	// values to choose the correct Listener and its associated set of Routes.
 	//
-	// Exact matches must be processed before wildcard matches, and wildcard
-	// matches must be processed before fallback (empty Hostname value)
+	// Exact matches MUST be processed before wildcard matches, and wildcard
+	// matches MUST be processed before fallback (empty Hostname value)
 	// matches. For example, `"foo.example.com"` takes precedence over
 	// `"*.example.com"`, and `"*.example.com"` takes precedence over `""`.
 	//
 	// Additionally, if there are multiple wildcard entries, more specific
 	// wildcard entries must be processed before less specific wildcard entries.
 	// For example, `"*.foo.example.com"` takes precedence over `"*.example.com"`.
+	//
 	// The precise definition here is that the higher the number of dots in the
 	// hostname to the right of the wildcard character, the higher the precedence.
 	//
@@ -110,18 +138,26 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// the left, however, so `"*.example.com"` will match both
 	// `"foo.bar.example.com"` _and_ `"bar.example.com"`.
 	//
+	// ## Handling indistinct Listeners
+	//
 	// If a set of Listeners contains Listeners that are not distinct, then those
-	// Listeners are Conflicted, and the implementation MUST set the "Conflicted"
+	// Listeners are _Conflicted_, and the implementation MUST set the "Conflicted"
 	// condition in the Listener Status to "True".
+	//
+	// The words "indistinct" and "conflicted" are considered equivalent for the
+	// purpose of this documentation.
 	//
 	// Implementations MAY choose to accept a Gateway with some Conflicted
 	// Listeners only if they only accept the partial Listener set that contains
-	// no Conflicted Listeners. To put this another way, implementations may
-	// accept a partial Listener set only if they throw out *all* the conflicting
-	// Listeners. No picking one of the conflicting listeners as the winner.
-	// This also means that the Gateway must have at least one non-conflicting
-	// Listener in this case, otherwise it violates the requirement that at
-	// least one Listener must be present.
+	// no Conflicted Listeners.
+	//
+	// Specifically, an implementation MAY accept a partial Listener set subject to
+	// the following rules:
+	//
+	// * The implementation MUST NOT pick one conflicting Listener as the winner.
+	//   ALL indistinct Listeners must not be accepted for processing.
+	// * At least one distinct Listener MUST be present, or else the Gateway effectively
+	//   contains _no_ Listeners, and must be rejected from processing as a whole.
 	//
 	// The implementation MUST set a "ListenersNotValid" condition on the
 	// Gateway Status when the Gateway contains Conflicted Listeners whether or
@@ -130,7 +166,25 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Accepted. Additionally, the Listener status for those listeners SHOULD
 	// indicate which Listeners are conflicted and not Accepted.
 	//
-	// A Gateway's Listeners are considered "compatible" if:
+	// ## General Listener behavior
+	//
+	// Note that, for all distinct Listeners, requests SHOULD match at most one Listener.
+	// For example, if Listeners are defined for "foo.example.com" and "*.example.com", a
+	// request to "foo.example.com" SHOULD only be routed using routes attached
+	// to the "foo.example.com" Listener (and not the "*.example.com" Listener).
+	//
+	// This concept is known as "Listener Isolation", and it is an Extended feature
+	// of Gateway API. Implementations that do not support Listener Isolation MUST
+	// clearly document this, and MUST NOT claim support for the
+	// `GatewayHTTPListenerIsolation` feature.
+	//
+	// Implementations that _do_ support Listener Isolation SHOULD claim support
+	// for the Extended `GatewayHTTPListenerIsolation` feature and pass the associated
+	// conformance tests.
+	//
+	// ## Compatible Listeners
+	//
+	// A Gateway's Listeners are considered _compatible_ if:
 	//
 	// 1. They are distinct.
 	// 2. The implementation can serve them in compliance with the Addresses
@@ -145,15 +199,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// on the same address, or cannot mix HTTPS and generic TLS listens on the same port
 	// would not consider those cases compatible, even though they are distinct.
 	//
-	// Note that requests SHOULD match at most one Listener. For example, if
-	// Listeners are defined for "foo.example.com" and "*.example.com", a
-	// request to "foo.example.com" SHOULD only be routed using routes attached
-	// to the "foo.example.com" Listener (and not the "*.example.com" Listener).
-	// This concept is known as "Listener Isolation". Implementations that do
-	// not support Listener Isolation MUST clearly document this.
-	//
 	// Implementations MAY merge separate Gateways onto a single set of
 	// Addresses if all Listeners across all Gateways are compatible.
+	//
+	// In a future release the MinItems=1 requirement MAY be dropped.
 	//
 	// Support: Core
 	//
@@ -166,12 +215,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:XValidation:message="hostname must not be specified for protocols ['TCP', 'UDP']",rule="self.all(l, l.protocol in ['TCP', 'UDP']  ? (!has(l.hostname) || l.hostname == '') : true)"
 	// +kubebuilder:validation:XValidation:message="Listener name must be unique within the Gateway",rule="self.all(l1, self.exists_one(l2, l1.name == l2.name))"
 	// +kubebuilder:validation:XValidation:message="Combination of port, protocol and hostname must be unique for each listener",rule="self.all(l1, self.exists_one(l2, l1.port == l2.port && l1.protocol == l2.protocol && (has(l1.hostname) && has(l2.hostname) ? l1.hostname == l2.hostname : !has(l1.hostname) && !has(l2.hostname))))"
+	// +required
 	listeners: [...#Listener] @go(Listeners,[]Listener)
 
 	// Addresses requested for this Gateway. This is optional and behavior can
 	// depend on the implementation. If a value is set in the spec and the
 	// requested address is invalid or unavailable, the implementation MUST
-	// indicate this in the associated entry in GatewayStatus.Addresses.
+	// indicate this in an associated entry in GatewayStatus.Conditions.
 	//
 	// The Addresses field represents a request for the address(es) on the
 	// "outside of the Gateway", that traffic bound for this Gateway will use.
@@ -190,11 +240,12 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Extended
 	//
 	// +optional
+	// +listType=atomic
 	// <gateway:validateIPAddress>
 	// +kubebuilder:validation:MaxItems=16
-	// +kubebuilder:validation:XValidation:message="IPAddress values must be unique",rule="self.all(a1, a1.type == 'IPAddress' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
-	// +kubebuilder:validation:XValidation:message="Hostname values must be unique",rule="self.all(a1, a1.type == 'Hostname' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
-	addresses?: [...#GatewayAddress] @go(Addresses,[]GatewayAddress)
+	// +kubebuilder:validation:XValidation:message="IPAddress values must be unique",rule="self.all(a1, a1.type == 'IPAddress' && has(a1.value) ? self.exists_one(a2, a2.type == a1.type && has(a2.value) && a2.value == a1.value) : true )"
+	// +kubebuilder:validation:XValidation:message="Hostname values must be unique",rule="self.all(a1, a1.type == 'Hostname'  && has(a1.value) ? self.exists_one(a2, a2.type == a1.type && has(a2.value) && a2.value == a1.value) : true )"
+	addresses?: [...#GatewaySpecAddress] @go(Addresses,[]GatewaySpecAddress)
 
 	// Infrastructure defines infrastructure level attributes about this Gateway instance.
 	//
@@ -203,14 +254,79 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	infrastructure?: null | #GatewayInfrastructure @go(Infrastructure,*GatewayInfrastructure)
 
-	// BackendTLS configures TLS settings for when this Gateway is connecting to
-	// backends with TLS.
+	// AllowedListeners defines which ListenerSets can be attached to this Gateway.
+	// While this feature is experimental, the default value is to allow no ListenerSets.
 	//
-	// Support: Core
+	// <gateway:experimental>
+	//
+	// +optional
+	allowedListeners?: null | #AllowedListeners @go(AllowedListeners,*AllowedListeners)
+
+	//
+	// TLS specifies frontend and backend tls configuration for entire gateway.
+	//
+	// Support: Extended
 	//
 	// +optional
 	// <gateway:experimental>
-	backendTLS?: null | #GatewayBackendTLS @go(BackendTLS,*GatewayBackendTLS)
+	tls?: null | #GatewayTLSConfig @go(TLS,*GatewayTLSConfig)
+
+	// DefaultScope, when set, configures the Gateway as a default Gateway,
+	// meaning it will dynamically and implicitly have Routes (e.g. HTTPRoute)
+	// attached to it, according to the scope configured here.
+	//
+	// If unset (the default) or set to None, the Gateway will not act as a
+	// default Gateway; if set, the Gateway will claim any Route with a
+	// matching scope set in its UseDefaultGateway field, subject to the usual
+	// rules about which routes the Gateway can attach to.
+	//
+	// Think carefully before using this functionality! While the normal rules
+	// about which Route can apply are still enforced, it is simply easier for
+	// the wrong Route to be accidentally attached to this Gateway in this
+	// configuration. If the Gateway operator is not also the operator in
+	// control of the scope (e.g. namespace) with tight controls and checks on
+	// what kind of workloads and Routes get added in that scope, we strongly
+	// recommend not using this just because it seems convenient, and instead
+	// stick to direct Route attachment.
+	//
+	// +optional
+	// <gateway:experimental>
+	defaultScope?: #GatewayDefaultScope @go(DefaultScope)
+}
+
+// AllowedListeners defines which ListenerSets can be attached to this Gateway.
+#AllowedListeners: {
+	// Namespaces defines which namespaces ListenerSets can be attached to this Gateway.
+	// While this feature is experimental, the default value is to allow no ListenerSets.
+	//
+	// +optional
+	// +kubebuilder:default={from: None}
+	namespaces?: null | #ListenerNamespaces @go(Namespaces,*ListenerNamespaces)
+}
+
+// ListenerNamespaces indicate which namespaces ListenerSets should be selected from.
+#ListenerNamespaces: {
+	// From indicates where ListenerSets can attach to this Gateway. Possible
+	// values are:
+	//
+	// * Same: Only ListenerSets in the same namespace may be attached to this Gateway.
+	// * Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway.
+	// * All: ListenerSets in all namespaces may be attached to this Gateway.
+	// * None: Only listeners defined in the Gateway's spec are allowed
+	//
+	// While this feature is experimental, the default value None
+	//
+	// +optional
+	// +kubebuilder:default=None
+	// +kubebuilder:validation:Enum=All;Selector;Same;None
+	from?: null | #FromNamespaces @go(From,*FromNamespaces)
+
+	// Selector must be specified when From is set to "Selector". In that case,
+	// only ListenerSets in Namespaces matching this Selector will be selected by this
+	// Gateway. This field is ignored for other values of "From".
+	//
+	// +optional
+	selector?: null | metav1.#LabelSelector @go(Selector,*metav1.LabelSelector)
 }
 
 // Listener embodies the concept of a logical endpoint where a Gateway accepts
@@ -220,6 +336,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Gateway.
 	//
 	// Support: Core
+	// +required
 	name: #SectionName @go(Name)
 
 	// Hostname specifies the virtual hostname to match for protocol types that
@@ -232,10 +349,31 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// * TLS: The Listener Hostname MUST match the SNI.
 	// * HTTP: The Listener Hostname MUST match the Host header of the request.
-	// * HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP
-	//   protocol layers as described above. If an implementation does not
-	//   ensure that both the SNI and Host header match the Listener hostname,
-	//   it MUST clearly document that.
+	// * HTTPS: The Listener Hostname SHOULD match both the SNI and Host header.
+	//   Note that this does not require the SNI and Host header to be the same.
+	//   The semantics of this are described in more detail below.
+	//
+	// To ensure security, Section 11.1 of RFC-6066 emphasizes that server
+	// implementations that rely on SNI hostname matching MUST also verify
+	// hostnames within the application protocol.
+	//
+	// Section 9.1.2 of RFC-7540 provides a mechanism for servers to reject the
+	// reuse of a connection by responding with the HTTP 421 Misdirected Request
+	// status code. This indicates that the origin server has rejected the
+	// request because it appears to have been misdirected.
+	//
+	// To detect misdirected requests, Gateways SHOULD match the authority of
+	// the requests with all the SNI hostname(s) configured across all the
+	// Gateway Listeners on the same port and protocol:
+	//
+	// * If another Listener has an exact match or more specific wildcard entry,
+	//   the Gateway SHOULD return a 421.
+	// * If the current Listener (selected by SNI matching during ClientHello)
+	//   does not match the Host:
+	//     * If another Listener does match the Host the Gateway SHOULD return a
+	//       421.
+	//     * If no other Listener matches the Host, the Gateway MUST return a
+	//       404.
 	//
 	// For HTTPRoute and TLSRoute resources, there is an interaction with the
 	// `spec.hostnames` array. When both listener and route specify hostnames,
@@ -256,18 +394,24 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// same port, subject to the Listener compatibility rules.
 	//
 	// Support: Core
-	port: #PortNumber @go(Port)
+	//
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
+	//
+	// +required
+	port: int32 @go(Port,PortNumber)
 
 	// Protocol specifies the network protocol this listener expects to receive.
 	//
 	// Support: Core
+	// +required
 	protocol: #ProtocolType @go(Protocol)
 
 	// TLS is the TLS configuration for the Listener. This field is required if
 	// the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
 	// if the Protocol field is "HTTP", "TCP", or "UDP".
 	//
-	// The association of SNIs to Certificate defined in GatewayTLSConfig is
+	// The association of SNIs to Certificate defined in ListenerTLSConfig is
 	// defined based on the Hostname field for this listener.
 	//
 	// The GatewayClass MUST use the longest matching SNI out of all
@@ -276,7 +420,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core
 	//
 	// +optional
-	tls?: null | #GatewayTLSConfig @go(TLS,*GatewayTLSConfig)
+	tls?: null | #ListenerTLSConfig @go(TLS,*ListenerTLSConfig)
 
 	// AllowedRoutes defines the types of routes that MAY be attached to a
 	// Listener and the trusted namespaces where those Route resources MAY be
@@ -375,8 +519,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// ClientCertificateRef can reference to standard Kubernetes resources, i.e.
 	// Secret, or implementation-specific custom resources.
 	//
-	// This setting can be overridden on the service level by use of BackendTLSPolicy.
-	//
 	// Support: Core
 	//
 	// +optional
@@ -384,10 +526,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	clientCertificateRef?: null | #SecretObjectReference @go(ClientCertificateRef,*SecretObjectReference)
 }
 
-// GatewayTLSConfig describes a TLS configuration.
+// ListenerTLSConfig describes a TLS configuration for a listener.
 //
 // +kubebuilder:validation:XValidation:message="certificateRefs or options must be specified when mode is Terminate",rule="self.mode == 'Terminate' ? size(self.certificateRefs) > 0 || size(self.options) > 0 : true"
-#GatewayTLSConfig: {
+#ListenerTLSConfig: {
 	// Mode defines the TLS behavior for the TLS session initiated by the client.
 	// There are two possible modes:
 	//
@@ -432,20 +574,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Implementation-specific (More than one reference or other resource types)
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=64
 	certificateRefs?: [...#SecretObjectReference] @go(CertificateRefs,[]SecretObjectReference)
-
-	// FrontendValidation holds configuration information for validating the frontend (client).
-	// Setting this field will require clients to send a client certificate
-	// required for validation during the TLS handshake. In browsers this may result in a dialog appearing
-	// that requests a user to specify the client certificate.
-	// The maximum depth of a certificate chain accepted in verification is Implementation specific.
-	//
-	// Support: Extended
-	//
-	// +optional
-	// <gateway:experimental>
-	frontendValidation?: null | #FrontendTLSValidation @go(FrontendValidation,*FrontendTLSValidation)
 
 	// Options are a list of key/value pairs to enable extended TLS
 	// configuration for each implementation. For example, configuring the
@@ -461,6 +592,58 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	// +kubebuilder:validation:MaxProperties=16
 	options?: {[string]: #AnnotationValue} @go(Options,map[AnnotationKey]AnnotationValue)
+}
+
+// GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
+#GatewayTLSConfig: {
+	// Backend describes TLS configuration for gateway when connecting
+	// to backends.
+	//
+	// Note that this contains only details for the Gateway as a TLS client,
+	// and does _not_ imply behavior about how to choose which backend should
+	// get a TLS connection. That is determined by the presence of a BackendTLSPolicy.
+	//
+	// Support: Core
+	//
+	// +optional
+	// <gateway:experimental>
+	backend?: null | #GatewayBackendTLS @go(Backend,*GatewayBackendTLS)
+
+	// Frontend describes TLS config when client connects to Gateway.
+	// Support: Core
+	//
+	// +optional
+	// <gateway:experimental>
+	frontend?: null | #FrontendTLSConfig @go(Frontend,*FrontendTLSConfig)
+}
+
+// FrontendTLSConfig specifies frontend tls configuration for gateway.
+#FrontendTLSConfig: {
+	// Default specifies the default client certificate validation configuration
+	// for all Listeners handling HTTPS traffic, unless a per-port configuration
+	// is defined.
+	//
+	// support: Core
+	//
+	// +required
+	// <gateway:experimental>
+	default: #TLSConfig @go(Default)
+
+	// PerPort specifies tls configuration assigned per port.
+	// Per port configuration is optional. Once set this configuration overrides
+	// the default configuration for all Listeners handling HTTPS traffic
+	// that match this port.
+	// Each override port requires a unique TLS configuration.
+	//
+	// support: Core
+	//
+	// +optional
+	// +listType=map
+	// +listMapKey=port
+	// +kubebuilder:validation:MaxItems=64
+	// +kubebuilder:validation:XValidation:message="Port for TLS configuration must be unique within the Gateway",rule="self.all(t1, self.exists_one(t2, t1.port == t2.port))"
+	// <gateway:experimental>
+	perPort?: [...#TLSPortConfig] @go(PerPort,[]TLSPortConfig)
 }
 
 // TLSModeType type defines how a Gateway handles TLS sessions.
@@ -483,6 +666,46 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Note that SSL passthrough is only supported by TLSRoute.
 #TLSModePassthrough: #TLSModeType & "Passthrough"
 
+// TLSConfig describes TLS configuration that can apply to multiple Listeners
+// within this Gateway. Currently, it stores only the client certificate validation
+// configuration, but this may be extended in the future.
+#TLSConfig: {
+	// Validation holds configuration information for validating the frontend (client).
+	// Setting this field will result in mutual authentication when connecting to the gateway.
+	// In browsers this may result in a dialog appearing
+	// that requests a user to specify the client certificate.
+	// The maximum depth of a certificate chain accepted in verification is Implementation specific.
+	//
+	// Support: Core
+	//
+	// +optional
+	// <gateway:experimental>
+	validation?: null | #FrontendTLSValidation @go(Validation,*FrontendTLSValidation)
+}
+
+#TLSPortConfig: {
+	// The Port indicates the Port Number to which the TLS configuration will be
+	// applied. This configuration will be applied to all Listeners handling HTTPS
+	// traffic that match this port.
+	//
+	// Support: Core
+	//
+	// +required
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
+	// <gateway:experimental>
+	port: int32 @go(Port,PortNumber)
+
+	// TLS store the configuration that will be applied to all Listeners handling
+	// HTTPS traffic and matching given port.
+	//
+	// Support: Core
+	//
+	// +required
+	// <gateway:experimental>
+	tls: #TLSConfig @go(TLS)
+}
+
 // FrontendTLSValidation holds configuration information that can be used to validate
 // the frontend initiating the TLS connection
 #FrontendTLSValidation: {
@@ -499,8 +722,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core - A single reference to a Kubernetes ConfigMap
 	// with the CA certificate in a key named `ca.crt`.
 	//
-	// Support: Implementation-specific (More than one reference, or other kinds
-	// of resources).
+	// Support: Implementation-specific (More than one certificate in a ConfigMap
+	// with different keys or more than one reference, or other kinds of resources).
 	//
 	// References to a resource in a different namespace are invalid UNLESS there
 	// is a ReferenceGrant in the target namespace that allows the certificate
@@ -508,10 +731,54 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// "ResolvedRefs" condition MUST be set to False for this listener with the
 	// "RefNotPermitted" reason.
 	//
+	// +required
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=8
 	// +kubebuilder:validation:MinItems=1
-	caCertificateRefs?: [...#ObjectReference] @go(CACertificateRefs,[]ObjectReference)
+	caCertificateRefs: [...#ObjectReference] @go(CACertificateRefs,[]ObjectReference)
+
+	// FrontendValidationMode defines the mode for validating the client certificate.
+	// There are two possible modes:
+	//
+	// - AllowValidOnly: In this mode, the gateway will accept connections only if
+	//   the client presents a valid certificate. This certificate must successfully
+	//   pass validation against the CA certificates specified in `CACertificateRefs`.
+	// - AllowInsecureFallback: In this mode, the gateway will accept connections
+	//   even if the client certificate is not presented or fails verification.
+	//
+	//   This approach delegates client authorization to the backend and introduce
+	//   a significant security risk. It should be used in testing environments or
+	//   on a temporary basis in non-testing environments.
+	//
+	// Defaults to AllowValidOnly.
+	//
+	// Support: Core
+	//
+	// +optional
+	// +kubebuilder:default=AllowValidOnly
+	mode?: #FrontendValidationModeType @go(Mode)
 }
+
+// FrontendValidationModeType type defines how a Gateway validates client certificates.
+//
+// +kubebuilder:validation:Enum=AllowValidOnly;AllowInsecureFallback
+#FrontendValidationModeType: string // #enumFrontendValidationModeType
+
+#enumFrontendValidationModeType:
+	#AllowValidOnly |
+	#AllowInsecureFallback
+
+// AllowValidOnly indicates that a client certificate is required
+// during the TLS handshake and MUST pass validation.
+//
+// Support: Core
+#AllowValidOnly: #FrontendValidationModeType & "AllowValidOnly"
+
+// AllowInsecureFallback indicates that a client certificate may not be
+// presented during the handshake or the validation against CA certificates may fail.
+//
+// Support: Extended
+#AllowInsecureFallback: #FrontendValidationModeType & "AllowInsecureFallback"
 
 // AllowedRoutes defines which Routes may be attached to this Listener.
 #AllowedRoutes: {
@@ -521,6 +788,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:default={from: Same}
 	namespaces?: null | #RouteNamespaces @go(Namespaces,*RouteNamespaces)
 
@@ -537,31 +805,34 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Core
 	//
 	// +optional
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=8
 	kinds?: [...#RouteGroupKind] @go(Kinds,[]RouteGroupKind)
 }
 
-// FromNamespaces specifies namespace from which Routes may be attached to a
+// FromNamespaces specifies namespace from which Routes/ListenerSets may be attached to a
 // Gateway.
-//
-// +kubebuilder:validation:Enum=All;Selector;Same
 #FromNamespaces: string // #enumFromNamespaces
 
 #enumFromNamespaces:
 	#NamespacesFromAll |
 	#NamespacesFromSelector |
-	#NamespacesFromSame
+	#NamespacesFromSame |
+	#NamespacesFromNone
 
-// Routes in all namespaces may be attached to this Gateway.
+// Routes/ListenerSets in all namespaces may be attached to this Gateway.
 #NamespacesFromAll: #FromNamespaces & "All"
 
-// Only Routes in namespaces selected by the selector may be attached to
+// Only Routes/ListenerSets in namespaces selected by the selector may be attached to
 // this Gateway.
 #NamespacesFromSelector: #FromNamespaces & "Selector"
 
-// Only Routes in the same namespace as the Gateway may be attached to this
+// Only Routes/ListenerSets in the same namespace as the Gateway may be attached to this
 // Gateway.
 #NamespacesFromSame: #FromNamespaces & "Same"
+
+// No Routes/ListenerSets may be attached to this Gateway.
+#NamespacesFromNone: #FromNamespaces & "None"
 
 // RouteNamespaces indicate which namespaces Routes should be selected from.
 #RouteNamespaces: {
@@ -577,6 +848,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +optional
 	// +kubebuilder:default=Same
+	// +kubebuilder:validation:Enum=All;Selector;Same
 	from?: null | #FromNamespaces @go(From,*FromNamespaces)
 
 	// Selector must be specified when From is set to "Selector". In that case,
@@ -598,27 +870,31 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	group?: null | #Group @go(Group,*Group)
 
 	// Kind is the kind of the Route.
+	// +required
 	kind: #Kind @go(Kind)
 }
 
-// GatewayAddress describes an address that can be bound to a Gateway.
+// GatewaySpecAddress describes an address that can be bound to a Gateway.
 //
-// +kubebuilder:validation:XValidation:message="Hostname value must only contain valid characters (matching ^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$)",rule="self.type == 'Hostname' ? self.value.matches(r\"\"\"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$\"\"\"): true"
-#GatewayAddress: {
+// +kubebuilder:validation:XValidation:message="Hostname value must be empty or contain only valid characters (matching ^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$)",rule="self.type == 'Hostname' ? (!has(self.value) || self.value.matches(r\"\"\"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$\"\"\")): true"
+#GatewaySpecAddress: {
 	// Type of the address.
 	//
 	// +optional
 	// +kubebuilder:default=IPAddress
 	type?: null | #AddressType @go(Type,*AddressType)
 
-	// Value of the address. The validity of the values will depend
-	// on the type and support by the controller.
+	// When a value is unspecified, an implementation SHOULD automatically
+	// assign an address matching the requested type if possible.
+	//
+	// If an implementation does not support an empty value, they MUST set the
+	// "Programmed" condition in status to False with a reason of "AddressNotAssigned".
 	//
 	// Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
 	//
-	// +kubebuilder:validation:MinLength=1
+	// +optional
 	// +kubebuilder:validation:MaxLength=253
-	value: string @go(Value)
+	value?: string @go(Value)
 }
 
 // GatewayStatusAddress describes a network address that is bound to a Gateway.
@@ -638,6 +914,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
+	// +required
 	value: string @go(Value)
 }
 
@@ -654,6 +931,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//   * a specified address was unusable (e.g. already in use)
 	//
 	// +optional
+	// +listType=atomic
 	// <gateway:validateIPAddress>
 	// +kubebuilder:validation:MaxItems=16
 	addresses?: [...#GatewayStatusAddress] @go(Addresses,[]GatewayStatusAddress)
@@ -670,6 +948,34 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// * "Accepted"
 	// * "Programmed"
 	// * "Ready"
+	//
+	// <gateway:util:excludeFromCRD>
+	// Notes for implementors:
+	//
+	// Conditions are a listType `map`, which means that they function like a
+	// map with a key of the `type` field _in the k8s apiserver_.
+	//
+	// This means that implementations must obey some rules when updating this
+	// section.
+	//
+	// * Implementations MUST perform a read-modify-write cycle on this field
+	//   before modifying it. That is, when modifying this field, implementations
+	//   must be confident they have fetched the most recent version of this field,
+	//   and ensure that changes they make are on that recent version.
+	// * Implementations MUST NOT remove or reorder Conditions that they are not
+	//   directly responsible for. For example, if an implementation sees a Condition
+	//   with type `special.io/SomeField`, it MUST NOT remove, change or update that
+	//   Condition.
+	// * Implementations MUST always _merge_ changes into Conditions of the same Type,
+	//   rather than creating more than one Condition of the same Type.
+	// * Implementations MUST always update the `observedGeneration` field of the
+	//   Condition to the `metadata.generation` of the Gateway at the time of update creation.
+	// * If the `observedGeneration` of a Condition is _greater than_ the value the
+	//   implementation knows about, then it MUST NOT perform the update on that Condition,
+	//   but must wait for a future reconciliation and status update. (The assumption is that
+	//   the implementation's copy of the object is stale and an update will be re-triggered
+	//   if relevant.)
+	// </gateway:util:excludeFromCRD>
 	//
 	// +optional
 	// +listType=map
@@ -732,6 +1038,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// the merging behavior is implementation specific.
 	// It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
 	//
+	// If the referent cannot be found, refers to an unsupported kind, or when
+	// the data within that resource is malformed, the Gateway SHOULD be
+	// rejected with the "Accepted" status condition set to "False" and an
+	// "InvalidParameters" reason.
+	//
 	// Support: Implementation-specific
 	//
 	// +optional
@@ -742,15 +1053,18 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // configuration resource within the namespace.
 #LocalParametersReference: {
 	// Group is the group of the referent.
+	// +required
 	group: #Group @go(Group)
 
 	// Kind is kind of the referent.
+	// +required
 	kind: #Kind @go(Kind)
 
 	// Name is the name of the referent.
 	//
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
+	// +required
 	name: string @go(Name)
 }
 
@@ -763,7 +1077,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#GatewayConditionProgrammed |
 	#GatewayConditionAccepted |
 	#GatewayConditionScheduled |
-	#GatewayConditionReady
+	#GatewayConditionReady |
+	#GatewayConditionAttachedListenerSets
 
 // GatewayConditionReason defines the set of reasons that explain why a
 // particular Gateway condition type has been raised.
@@ -775,6 +1090,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#GatewayReasonNoResources |
 	#GatewayReasonAddressNotAssigned |
 	#GatewayReasonAddressNotUsable |
+	#GatewayConditionInsecureFrontendValidationMode |
+	#GatewayReasonConfigurationChanged |
 	#GatewayReasonAccepted |
 	#GatewayReasonListenersNotValid |
 	#GatewayReasonPending |
@@ -783,7 +1100,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#GatewayReasonScheduled |
 	#GatewayReasonNotReconciled |
 	#GatewayReasonReady |
-	#GatewayReasonListenersNotReady
+	#GatewayReasonListenersNotReady |
+	#GatewayReasonListenerSetsAttached |
+	#GatewayReasonNoListenerSetsAttached |
+	#GatewayReasonListenerSetsNotAllowed
 
 // This condition indicates whether a Gateway has generated some
 // configuration that is assumed to be ready soon in the underlying data
@@ -859,6 +1179,15 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // information on which address is causing the problem and how to resolve it
 // in the condition message.
 #GatewayReasonAddressNotUsable: #GatewayConditionReason & "AddressNotUsable"
+
+// This condition indicates `FrontendValidationModeType` changed from
+// `AllowValidOnly` to `AllowInsecureFallback`.
+#GatewayConditionInsecureFrontendValidationMode: #GatewayConditionReason & "InsecureFrontendValidationMode"
+
+// This reason MUST be set for GatewayConditionInsecureFrontendValidationMode
+// when client change FrontendValidationModeType for a Gateway or per port override
+// to `AllowInsecureFallback`.
+#GatewayReasonConfigurationChanged: #GatewayConditionReason & "ConfigurationChanged"
 
 // This condition is true when the controller managing the Gateway is
 // syntactically and semantically valid enough to produce some configuration
@@ -945,9 +1274,39 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Deprecated: Ready is reserved for future use
 #GatewayReasonListenersNotReady: #GatewayConditionReason & "ListenersNotReady"
 
+// AttachedListenerSets is a condition that is true when the Gateway has
+// at least one ListenerSet attached to it.
+//
+// Possible reasons for this condition to be True are:
+//
+// * "ListenerSetsAttached"
+//
+// Possible reasons for this condition to be False are:
+//
+// * "NoListenerSetsAttached"
+// * "ListenerSetsNotAllowed"
+//
+// Controllers may raise this condition with other reasons,
+// but should prefer to use the reasons listed above to improve
+// interoperability.
+#GatewayConditionAttachedListenerSets: #GatewayConditionType & "AttachedListenerSets"
+
+// This reason is used with the "AttachedListenerSets" condition when the
+// Gateway has at least one ListenerSet attached to it.
+#GatewayReasonListenerSetsAttached: #GatewayConditionReason & "ListenerSetsAttached"
+
+// This reason is used with the "AttachedListenerSets" condition when the
+// Gateway has no ListenerSets attached to it.
+#GatewayReasonNoListenerSetsAttached: #GatewayConditionReason & "NoListenerSetsAttached"
+
+// This reason is used with the "AttachedListenerSets" condition when the
+// Gateway has ListenerSets attached to it, but the ListenerSets are not allowed.
+#GatewayReasonListenerSetsNotAllowed: #GatewayConditionReason & "ListenerSetsNotAllowed"
+
 // ListenerStatus is the status associated with a Listener.
 #ListenerStatus: {
 	// Name is the name of the Listener that this status corresponds to.
+	// +required
 	name: #SectionName @go(Name)
 
 	// SupportedKinds is the list indicating the Kinds supported by this
@@ -960,6 +1319,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// and invalid Route kinds are specified, the implementation MUST
 	// reference the valid Route kinds that have been specified.
 	//
+	// +required
+	// +listType=atomic
 	// +kubebuilder:validation:MaxItems=8
 	supportedKinds: [...#RouteGroupKind] @go(SupportedKinds,[]RouteGroupKind)
 
@@ -980,13 +1341,45 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// Uses for this field include troubleshooting Route attachment and
 	// measuring blast radius/impact of changes to a Listener.
+	// +required
 	attachedRoutes: int32 @go(AttachedRoutes)
 
 	// Conditions describe the current condition of this listener.
 	//
+	//
+	// <gateway:util:excludeFromCRD>
+	// Notes for implementors:
+	//
+	// Conditions are a listType `map`, which means that they function like a
+	// map with a key of the `type` field _in the k8s apiserver_.
+	//
+	// This means that implementations must obey some rules when updating this
+	// section.
+	//
+	// * Implementations MUST perform a read-modify-write cycle on this field
+	//   before modifying it. That is, when modifying this field, implementations
+	//   must be confident they have fetched the most recent version of this field,
+	//   and ensure that changes they make are on that recent version.
+	// * Implementations MUST NOT remove or reorder Conditions that they are not
+	//   directly responsible for. For example, if an implementation sees a Condition
+	//   with type `special.io/SomeField`, it MUST NOT remove, change or update that
+	//   Condition.
+	// * Implementations MUST always _merge_ changes into Conditions of the same Type,
+	//   rather than creating more than one Condition of the same Type.
+	// * Implementations MUST always update the `observedGeneration` field of the
+	//   Condition to the `metadata.generation` of the Gateway at the time of update creation.
+	// * If the `observedGeneration` of a Condition is _greater than_ the value the
+	//   implementation knows about, then it MUST NOT perform the update on that Condition,
+	//   but must wait for a future reconciliation and status update. (The assumption is that
+	//   the implementation's copy of the object is stale and an update will be re-triggered
+	//   if relevant.)
+	//
+	// </gateway:util:excludeFromCRD>
+	//
 	// +listType=map
 	// +listMapKey=type
 	// +kubebuilder:validation:MaxItems=8
+	// +required
 	conditions: [...metav1.#Condition] @go(Conditions,[]metav1.Condition)
 }
 
@@ -1001,6 +1394,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#ListenerConditionDetached |
 	#ListenerConditionResolvedRefs |
 	#ListenerConditionProgrammed |
+	#ListenerConditionOverlappingTLSConfig |
 	#ListenerConditionReady
 
 // ListenerConditionReason defines the set of reasons that explain
@@ -1022,6 +1416,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#ListenerReasonProgrammed |
 	#ListenerReasonInvalid |
 	#ListenerReasonPending |
+	#ListenerReasonOverlappingHostnames |
+	#ListenerReasonOverlappingCertificates |
 	#ListenerReasonReady
 
 // This condition indicates that the controller was unable to resolve
@@ -1199,6 +1595,60 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // conditions when the Listener is either not yet reconciled or not yet not
 // online and ready to accept client traffic.
 #ListenerReasonPending: #ListenerConditionReason & "Pending"
+
+// This condition indicates that TLS configuration within this Listener
+// conflicts with TLS configuration in another Listener on the same port.
+// This could happen for two reasons:
+//
+// 1) Overlapping Hostnames: Listener A matches *.example.com while Listener
+//    B matches foo.example.com.
+// B) Overlapping Certificates: Listener A contains a certificate with a
+//    SAN for *.example.com, while Listener B contains a certificate with a
+//    SAN for foo.example.com.
+//
+// This overlapping TLS configuration can be particularly problematic when
+// combined with HTTP connection coalescing. When clients reuse connections
+// using this technique, it can have confusing interactions with Gateway
+// API, such as TLS configuration for one Listener getting used for a
+// request reusing an existing connection that would not be used if the same
+// request was initiating a new connection.
+//
+// Controllers MUST detect the presence of overlapping hostnames and MAY
+// detect the presence of overlapping certificates.
+//
+// This condition MUST be set on all Listeners with overlapping TLS config.
+// For example, consider the following listener - hostname mapping:
+//
+// A: foo.example.com
+// B: foo.example.org
+// C: *.example.com
+//
+// In the above example, Listeners A and C would have overlapping hostnames
+// and therefore this condition should be set for Listeners A and C, but not
+// B.
+//
+// Possible reasons for this condition to be True are:
+//
+// * "OverlappingHostnames"
+// * "OverlappingCertificates"
+//
+// If a controller supports checking for both possible reasons and finds
+// that both are true, it SHOULD set the "OverlappingCertificates" Reason.
+//
+// This is a negative polarity condition and MUST NOT be set when it is
+// False.
+//
+// Controllers may raise this condition with other reasons, but should
+// prefer to use the reasons listed above to improve interoperability.
+#ListenerConditionOverlappingTLSConfig: #ListenerConditionType & "OverlappingTLSConfig"
+
+// This reason is used with the "OverlappingTLSConfig" condition when the
+// condition is true.
+#ListenerReasonOverlappingHostnames: #ListenerConditionReason & "OverlappingHostnames"
+
+// This reason is used with the "OverlappingTLSConfig" condition when the
+// condition is true.
+#ListenerReasonOverlappingCertificates: #ListenerConditionReason & "OverlappingCertificates"
 
 // "Ready" is a condition type reserved for future use. It should not be used by implementations.
 // Note: This condition is not really "deprecated", but rather "reserved"; however, deprecated triggers Go linters

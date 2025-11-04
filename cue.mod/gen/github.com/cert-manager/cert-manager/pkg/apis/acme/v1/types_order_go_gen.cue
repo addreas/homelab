@@ -10,7 +10,6 @@ import (
 )
 
 // Order is a type to represent an Order with an ACME server
-// +k8s:openapi-gen=true
 #Order: {
 	metav1.#TypeMeta
 	metadata: metav1.#ObjectMeta @go(ObjectMeta)
@@ -38,7 +37,7 @@ import (
 	// If the Issuer does not exist, processing will be retried.
 	// If the Issuer is not an 'ACME' Issuer, an error will be returned and the
 	// Order will be marked as failed.
-	issuerRef: cmmeta.#ObjectReference @go(IssuerRef)
+	issuerRef: cmmeta.#IssuerReference @go(IssuerRef)
 
 	// CommonName is the common name as specified on the DER encoded CSR.
 	// If specified, this value must also be present in `dnsNames` or `ipAddresses`.
@@ -49,13 +48,15 @@ import (
 	// DNSNames is a list of DNS names that should be included as part of the Order
 	// validation process.
 	// This field must match the corresponding field on the DER encoded CSR.
-	//+optional
+	// +optional
+	// +listType=atomic
 	dnsNames?: [...string] @go(DNSNames,[]string)
 
 	// IPAddresses is a list of IP addresses that should be included as part of the Order
 	// validation process.
 	// This field must match the corresponding field on the DER encoded CSR.
 	// +optional
+	// +listType=atomic
 	ipAddresses?: [...string] @go(IPAddresses,[]string)
 
 	// Duration is the duration for the not after date for the requested certificate.
@@ -86,6 +87,7 @@ import (
 	// authorizations must be completed in order to validate the DNS names
 	// specified on the Order.
 	// +optional
+	// +listType=atomic
 	authorizations?: [...#ACMEAuthorization] @go(Authorizations,[]ACMEAuthorization)
 
 	// Certificate is a copy of the PEM encoded certificate for this Order.
@@ -146,6 +148,7 @@ import (
 	// name and an appropriate Challenge resource will be created to perform
 	// the ACME challenge process.
 	// +optional
+	// +listType=atomic
 	challenges?: [...#ACMEChallenge] @go(Challenges,[]ACMEChallenge)
 }
 

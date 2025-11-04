@@ -131,7 +131,7 @@ import (
 
 	// Artifact represents the output of the last successful reconciliation.
 	// +optional
-	artifact?: null | #Artifact @go(Artifact,*Artifact)
+	artifact?: null | meta.#Artifact @go(Artifact,*meta.Artifact)
 
 	meta.#ReconcileRequestStatus
 }

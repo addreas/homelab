@@ -16,6 +16,7 @@ alertmanager: {
 			namespace: "monitoring"
 		}
 		spec: {
+			alertmanagerConfigSelector: {}
 			image: "quay.io/prometheus/alertmanager:v0.28.1"
 			nodeSelector: "kubernetes.io/os": "linux"
 			podMetadata: labels: {
@@ -98,7 +99,7 @@ alertmanager: {
 				expr: """
 					# Without max_over_time, failed scrapes could create false negatives, see
 					# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
-					max_over_time(alertmanager_config_last_reload_successful{job="alertmanager-main",namespace="monitoring"}[5m]) == 0
+					max_over_time(alertmanager_config_last_reload_successful{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[5m]) == 0
 
 					"""
 				for: "10m"
@@ -113,9 +114,9 @@ alertmanager: {
 				expr: """
 					# Without max_over_time, failed scrapes could create false negatives, see
 					# https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
-					  max_over_time(alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"}[5m])
+					  max_over_time(alertmanager_cluster_members{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[5m])
 					< on (namespace,service) group_left
-					  count by (namespace,service) (max_over_time(alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"}[5m]))
+					  count by (namespace,service) (max_over_time(alertmanager_cluster_members{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[5m]))
 
 					"""
 				for: "15m"
@@ -129,9 +130,9 @@ alertmanager: {
 				}
 				expr: """
 					(
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[15m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[15m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[15m])
 					)
 					> 0.01
 
@@ -147,9 +148,9 @@ alertmanager: {
 				}
 				expr: """
 					min by (namespace,service, integration) (
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[15m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",container="alertmanager",namespace="monitoring", integration=~`.*`}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[15m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",container="alertmanager",namespace="monitoring", integration=~`.*`}[15m])
 					)
 					> 0.01
 
@@ -165,9 +166,9 @@ alertmanager: {
 				}
 				expr: """
 					min by (namespace,service, integration) (
-					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[15m])
+					  rate(alertmanager_notifications_failed_total{job="alertmanager-main",container="alertmanager",namespace="monitoring", integration!~`.*`}[15m])
 					/
-					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[15m])
+					  ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-main",container="alertmanager",namespace="monitoring", integration!~`.*`}[15m])
 					)
 					> 0.01
 
@@ -183,7 +184,7 @@ alertmanager: {
 				}
 				expr: """
 					count by (namespace,service) (
-					  count_values by (namespace,service) ("config_hash", alertmanager_config_hash{job="alertmanager-main",namespace="monitoring"})
+					  count_values by (namespace,service) ("config_hash", alertmanager_config_hash{job="alertmanager-main",container="alertmanager",namespace="monitoring"})
 					)
 					!= 1
 
@@ -200,11 +201,11 @@ alertmanager: {
 				expr: """
 					(
 					  count by (namespace,service) (
-					    avg_over_time(up{job="alertmanager-main",namespace="monitoring"}[5m]) < 0.5
+					    avg_over_time(up{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[5m]) < 0.5
 					  )
 					/
 					  count by (namespace,service) (
-					    up{job="alertmanager-main",namespace="monitoring"}
+					    up{job="alertmanager-main",container="alertmanager",namespace="monitoring"}
 					  )
 					)
 					>= 0.5
@@ -222,11 +223,11 @@ alertmanager: {
 				expr: """
 					(
 					  count by (namespace,service) (
-					    changes(process_start_time_seconds{job="alertmanager-main",namespace="monitoring"}[10m]) > 4
+					    changes(process_start_time_seconds{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[10m]) > 4
 					  )
 					/
 					  count by (namespace,service) (
-					    up{job="alertmanager-main",namespace="monitoring"}
+					    up{job="alertmanager-main",container="alertmanager",namespace="monitoring"}
 					  )
 					)
 					>= 0.5

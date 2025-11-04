@@ -38,7 +38,7 @@ package v2
 	apiVersion?: string @go(APIVersion)
 
 	// Kind of the referent.
-	// +kubebuilder:validation:Enum=OCIRepository;HelmChart
+	// +kubebuilder:validation:Enum=OCIRepository;HelmChart;ExternalArtifact
 	// +required
 	kind: string @go(Kind)
 
@@ -55,4 +55,24 @@ package v2
 	// +kubebuilder:validation:Optional
 	// +optional
 	namespace?: string @go(Namespace)
+}
+
+// DependencyReference defines a HelmRelease dependency on another HelmRelease resource.
+#DependencyReference: {
+	// Name of the referent.
+	// +required
+	name: string @go(Name)
+
+	// Namespace of the referent, defaults to the namespace of the HelmRelease
+	// resource object that contains the reference.
+	// +optional
+	namespace?: string @go(Namespace)
+
+	// ReadyExpr is a CEL expression that can be used to assess the readiness
+	// of a dependency. When specified, the built-in readiness check
+	// is replaced by the logic defined in the CEL expression.
+	// To make the CEL expression additive to the built-in readiness check,
+	// the feature gate `AdditiveCELDependencyCheck` must be set to `true`.
+	// +optional
+	readyExpr?: string @go(ReadyExpr)
 }

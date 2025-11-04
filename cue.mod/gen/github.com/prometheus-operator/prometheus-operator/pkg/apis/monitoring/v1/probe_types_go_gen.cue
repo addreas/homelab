@@ -22,69 +22,94 @@ import (
 // `Prometheus` and `PrometheusAgent` objects select `Probe` objects using label and namespace selectors.
 #Probe: {
 	metav1.#TypeMeta
+
+	// metadata defines ObjectMeta as the metadata that all persisted resources.
+	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
-	// Specification of desired Ingress selection for target discovery by Prometheus.
+	// spec defines the specification of desired Ingress selection for target discovery by Prometheus.
+	// +required
 	spec: #ProbeSpec @go(Spec)
+
+	// status defines the status subresource. It is under active development and is updated only when the
+	// "StatusForConfigurationResources" feature gate is enabled.
+	//
+	// Most recent observed status of the Probe. Read-only.
+	// More info:
+	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	status?: #ConfigResourceStatus @go(Status)
 }
 
 // ProbeSpec contains specification parameters for a Probe.
 // +k8s:openapi-gen=true
 #ProbeSpec: {
-	// The job name assigned to scraped metrics by default.
+	// jobName assigned to scraped metrics by default.
+	// +optional
 	jobName?: string @go(JobName)
 
-	// Specification for the prober to use for probing targets.
+	// prober defines the specification for the prober to use for probing targets.
 	// The prober.URL parameter is required. Targets cannot be probed if left empty.
+	// +optional
 	prober?: #ProberSpec @go(ProberSpec)
 
-	// The module to use for probing specifying how to probe the target.
+	// module to use for probing specifying how to probe the target.
 	// Example module configuring in the blackbox exporter:
 	// https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
+	// +optional
 	module?: string @go(Module)
 
-	// Targets defines a set of static or dynamically discovered targets to probe.
+	// targets defines a set of static or dynamically discovered targets to probe.
+	// +optional
 	targets?: #ProbeTargets @go(Targets)
 
-	// Interval at which targets are probed using the configured prober.
+	// interval at which targets are probed using the configured prober.
 	// If not specified Prometheus' global scrape interval is used.
+	// +optional
 	interval?: #Duration @go(Interval)
 
-	// Timeout for scraping metrics from the Prometheus exporter.
+	// scrapeTimeout defines the timeout for scraping metrics from the Prometheus exporter.
 	// If not specified, the Prometheus global scrape timeout is used.
 	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+	// +optional
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
-	// TLS configuration to use when scraping the endpoint.
+	// tlsConfig defines the TLS configuration to use when scraping the endpoint.
+	// +optional
 	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
 
-	// Secret to mount to read bearer token for scraping targets. The secret
+	// bearerTokenSecret defines the secret to mount to read bearer token for scraping targets. The secret
 	// needs to be in the same namespace as the probe and accessible by
 	// the Prometheus Operator.
+	// +optional
 	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
 
-	// BasicAuth allow an endpoint to authenticate over basic authentication.
+	// basicAuth allow an endpoint to authenticate over basic authentication.
 	// More info: https://prometheus.io/docs/operating/configuration/#endpoint
+	// +optional
 	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
 
-	// OAuth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	// oauth2 for the URL. Only valid in Prometheus versions 2.27.0 and newer.
+	// +optional
 	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
 
-	// MetricRelabelConfigs to apply to samples before ingestion.
+	// metricRelabelings defines the RelabelConfig to apply to samples before ingestion.
+	// +optional
 	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelConfigs,[]RelabelConfig)
 
-	// Authorization section for this endpoint
+	// authorization section for this endpoint
+	// +optional
 	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
 
-	// SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+	// sampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
 	// +optional
 	sampleLimit?: null | uint64 @go(SampleLimit,*uint64)
 
-	// TargetLimit defines a limit on the number of scraped targets that will be accepted.
+	// targetLimit defines a limit on the number of scraped targets that will be accepted.
 	// +optional
 	targetLimit?: null | uint64 @go(TargetLimit,*uint64)
 
-	// `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
+	// scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the
 	// protocols supported by Prometheus in order of preference (from most to least preferred).
 	//
 	// If unset, Prometheus uses its default value.
@@ -95,30 +120,30 @@ import (
 	// +optional
 	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
 
-	// The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+	// fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
 	//
 	// It requires Prometheus >= v3.0.0.
 	// +optional
 	fallbackScrapeProtocol?: null | #ScrapeProtocol @go(FallbackScrapeProtocol,*ScrapeProtocol)
 
-	// Per-scrape limit on number of labels that will be accepted for a sample.
+	// labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	// +optional
 	labelLimit?: null | uint64 @go(LabelLimit,*uint64)
 
-	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	// +optional
 	labelNameLengthLimit?: null | uint64 @go(LabelNameLengthLimit,*uint64)
 
-	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.
 	// Only valid in Prometheus versions 2.27.0 and newer.
 	// +optional
 	labelValueLengthLimit?: null | uint64 @go(LabelValueLengthLimit,*uint64)
 
 	#NativeHistogramConfig
 
-	// Per-scrape limit on the number of targets dropped by relabeling
+	// keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling
 	// that will be kept in memory. 0 means no limit.
 	//
 	// It requires Prometheus >= v2.47.0.
@@ -126,12 +151,12 @@ import (
 	// +optional
 	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
 
-	// The scrape class to apply.
+	// scrapeClass defines the scrape class to apply.
 	// +optional
 	// +kubebuilder:validation:MinLength=1
 	scrapeClass?: null | string @go(ScrapeClassName,*string)
 
-	// The list of HTTP query parameters for the scrape.
+	// params defines the list of HTTP query parameters for the scrape.
 	// Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined.
 	// The module name must be added using Module under ProbeSpec.
 	// +optional
@@ -144,14 +169,15 @@ import (
 // ProbeParam defines specification of extra parameters for a Probe.
 // +k8s:openapi-gen=true
 #ProbeParam: {
-	// The parameter name
+	// name defines the parameter name
 	// +kubebuilder:validation:MinLength=1
 	// +required
 	name?: string @go(Name)
 
-	// The parameter values
+	// values defines the parameter values
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:items:MinLength=1
+	// +optional
 	values?: [...string] @go(Values,[]string)
 }
 
@@ -164,26 +190,31 @@ import (
 	// relabeling configuration.
 	// If `ingress` is also defined, `staticConfig` takes precedence.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#static_config.
+	// +optional
 	staticConfig?: null | #ProbeTargetStaticConfig @go(StaticConfig,*ProbeTargetStaticConfig)
 
 	// ingress defines the Ingress objects to probe and the relabeling
 	// configuration.
 	// If `staticConfig` is also defined, `staticConfig` takes precedence.
+	// +optional
 	ingress?: null | #ProbeTargetIngress @go(Ingress,*ProbeTargetIngress)
 }
 
 // ProbeTargetStaticConfig defines the set of static targets considered for probing.
 // +k8s:openapi-gen=true
 #ProbeTargetStaticConfig: {
-	// The list of hosts to probe.
+	// static defines the list of hosts to probe.
+	// +optional
 	static?: [...string] @go(Targets,[]string)
 
-	// Labels assigned to all metrics scraped from the targets.
+	// labels defines all labels assigned to all metrics scraped from the targets.
+	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string)
 
-	// RelabelConfigs to apply to the label set of the targets before it gets
+	// relabelingConfigs defines relabelings to be apply to the label set of the targets before it gets
 	// scraped.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+	// +optional
 	relabelingConfigs?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 }
 
@@ -191,37 +222,43 @@ import (
 // The operator configures a target for each host/path combination of each ingress object.
 // +k8s:openapi-gen=true
 #ProbeTargetIngress: {
-	// Selector to select the Ingress objects.
+	// selector to select the Ingress objects.
+	// +optional
 	selector?: metav1.#LabelSelector @go(Selector)
 
-	// From which namespaces to select Ingress objects.
+	// namespaceSelector defines from which namespaces to select Ingress objects.
+	// +optional
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
-	// RelabelConfigs to apply to the label set of the target before it gets
+	// relabelingConfigs to apply to the label set of the target before it gets
 	// scraped.
 	// The original ingress address is available via the
 	// `__tmp_prometheus_ingress_address` label. It can be used to customize the
 	// probed URL.
 	// The original scrape job's name is available via the `__tmp_prometheus_job_name` label.
 	// More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+	// +optional
 	relabelingConfigs?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 }
 
 // ProberSpec contains specification parameters for the Prober used for probing.
 // +k8s:openapi-gen=true
 #ProberSpec: {
-	// Mandatory URL of the prober.
+	// url defines the mandatory URL of the prober.
+	// +required
 	url: string @go(URL)
 
-	// HTTP scheme to use for scraping.
+	// scheme defines the HTTP scheme to use for scraping.
 	// `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling.
 	// If empty, Prometheus uses the default value `http`.
 	// +kubebuilder:validation:Enum=http;https
+	// +optional
 	scheme?: string @go(Scheme)
 
-	// Path to collect metrics from.
+	// path to collect metrics from.
 	// Defaults to `/probe`.
 	// +kubebuilder:default:="/probe"
+	// +optional
 	path?: string @go(Path)
 
 	#ProxyConfig
@@ -232,10 +269,11 @@ import (
 #ProbeList: {
 	metav1.#TypeMeta
 
-	// Standard list metadata
-	// More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// metadata defines ListMeta as metadata for collection responses.
+	// +optional
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of Probes
+	// +required
 	items: [...#Probe] @go(Items,[]Probe)
 }

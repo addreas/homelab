@@ -141,6 +141,9 @@ import (
 	// RedirectURIs is an array of the redirect URIs allowed for the application
 	redirectUris?: [...#RedirectURI] @go(RedirectURIs,[]RedirectURI)
 
+	// RequestURIs is an array of request URIs that can be used in authorization requests
+	requestUris?: [...#RedirectURI] @go(RequestURIs,[]RedirectURI)
+
 	// PostLogoutRedirectURIs is an array of the post logout redirect URIs allowed for the application
 	postLogoutRedirectUris?: [...#RedirectURI] @go(PostLogoutRedirectURIs,[]RedirectURI)
 
@@ -230,6 +233,78 @@ import (
 	// Indicates if a deleted OAuth2Client custom resource should delete the database row or not.
 	// Values can be 'delete' to delete the OAuth2 client, value 'orphan' to keep an orphan oauth2 client.
 	deletionPolicy?: #OAuth2ClientDeletionPolicy @go(DeletionPolicy)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// LogoUri is the URI to the logo of the client.
+	// This is used to display the logo in the consent screen.
+	// It should be a valid URL pointing to an image.
+	logoUri?: string @go(LogoUri)
+
+	// +kubebuilder:validation:Enum=jwt;opaque
+	//
+	// AccessTokenStrategy is the OAuth 2.0 Access Token Strategy
+	accessTokenStrategy?: string @go(AccessTokenStrategy)
+
+	// +kubebuilder:validation:type=integer
+	// +kubebuilder:validation:Minimum=0
+	//
+	// ClientSecretExpiresAt is the timestamp when the client secret expires (currently always 0)
+	clientSecretExpiresAt?: int64 @go(ClientSecretExpiresAt)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// ClientUri is a URL string of a web page providing information about the client
+	clientUri?: string @go(ClientUri)
+
+	// Contacts is an array of strings representing ways to contact people responsible for this client
+	contacts?: [...string] @go(Contacts,[]string)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// PolicyUri is a URL string that points to a human-readable privacy policy document
+	policyUri?: string @go(PolicyUri)
+
+	// +kubebuilder:validation:type=string
+	//
+	// RequestObjectSigningAlg is the algorithm that must be used for signing request objects
+	requestObjectSigningAlg?: string @go(RequestObjectSigningAlg)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// SectorIdentifierUri is a URL using the https scheme to be used in calculating Pseudonymous Identifiers
+	sectorIdentifierUri?: string @go(SectorIdentifierUri)
+
+	// +kubebuilder:validation:type=bool
+	// +kubebuilder:default=false
+	//
+	// SkipLogoutConsent skips asking the user to confirm the logout request
+	skipLogoutConsent?: bool @go(SkipLogoutConsent)
+
+	// +kubebuilder:validation:Enum=public;pairwise
+	//
+	// SubjectType is the requested subject type
+	subjectType?: string @go(SubjectType)
+
+	// +kubebuilder:validation:type=string
+	//
+	// TokenEndpointAuthSigningAlg is the algorithm used to sign JWT tokens for client authentication
+	tokenEndpointAuthSigningAlg?: string @go(TokenEndpointAuthSigningAlg)
+
+	// +kubebuilder:validation:type=string
+	// +kubebuilder:validation:Pattern=`(^$|^https?://.*)`
+	//
+	// TosUri is a URL string that points to a human-readable terms of service document
+	tosUri?: string @go(TosUri)
+
+	// +kubebuilder:validation:type=string
+	//
+	// UserinfoSignedResponseAlg is the algorithm used to sign UserInfo responses
+	userinfoSignedResponseAlg?: string @go(UserinfoSignedResponseAlg)
 }
 
 // GrantType represents an OAuth 2.0 grant type

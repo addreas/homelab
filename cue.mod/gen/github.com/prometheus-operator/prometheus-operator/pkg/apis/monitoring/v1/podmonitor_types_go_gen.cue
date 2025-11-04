@@ -7,7 +7,6 @@ package v1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"k8s.io/api/core/v1"
 )
 
 #PodMonitorsKind:   "PodMonitor"
@@ -24,16 +23,29 @@ import (
 // `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
 #PodMonitor: {
 	metav1.#TypeMeta
+
+	// metadata defines ObjectMeta as the metadata that all persisted resources.
+	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
-	// Specification of desired Pod selection for target discovery by Prometheus.
+	// spec defines the specification of desired Pod selection for target discovery by Prometheus.
+	// +required
 	spec: #PodMonitorSpec @go(Spec)
+
+	// status defines the status subresource. It is under active development and is updated only when the
+	// "StatusForConfigurationResources" feature gate is enabled.
+	//
+	// Most recent observed status of the PodMonitor. Read-only.
+	// More info:
+	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	status?: #ConfigResourceStatus @go(Status)
 }
 
 // PodMonitorSpec contains specification parameters for a PodMonitor.
 // +k8s:openapi-gen=true
 #PodMonitorSpec: {
-	// The label to use to retrieve the job name from.
+	// jobLabel defines the label to use to retrieve the job name from.
 	// `jobLabel` selects the label from the associated Kubernetes `Pod`
 	// object which will be used as the `job` label for all metrics.
 	//
@@ -43,22 +55,25 @@ import (
 	//
 	// If the value of this field is empty, the `job` label of the metrics
 	// defaults to the namespace and name of the PodMonitor object (e.g. `<namespace>/<name>`).
+	// +optional
 	jobLabel?: string @go(JobLabel)
 
-	// `podTargetLabels` defines the labels which are transferred from the
+	// podTargetLabels defines the labels which are transferred from the
 	// associated Kubernetes `Pod` object onto the ingested metrics.
 	//
+	// +optional
 	podTargetLabels?: [...string] @go(PodTargetLabels,[]string)
 
-	// Defines how to scrape metrics from the selected pods.
+	// podMetricsEndpoints defines how to scrape metrics from the selected pods.
 	//
 	// +optional
 	podMetricsEndpoints?: [...#PodMetricsEndpoint] @go(PodMetricsEndpoints,[]PodMetricsEndpoint)
 
-	// Label selector to select the Kubernetes `Pod` objects to scrape metrics from.
+	// selector defines the label selector to select the Kubernetes `Pod` objects to scrape metrics from.
+	// +required
 	selector: metav1.#LabelSelector @go(Selector)
 
-	// Mechanism used to select the endpoints to scrape.
+	// selectorMechanism defines the mechanism used to select the endpoints to scrape.
 	// By default, the selection process relies on relabel configurations to filter the discovered targets.
 	// Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters.
 	// Which strategy is best for your use case needs to be carefully evaluated.
@@ -68,23 +83,24 @@ import (
 	// +optional
 	selectorMechanism?: null | #SelectorMechanism @go(SelectorMechanism,*SelectorMechanism)
 
-	// `namespaceSelector` defines in which namespace(s) Prometheus should discover the pods.
+	// namespaceSelector defines in which namespace(s) Prometheus should discover the pods.
 	// By default, the pods are discovered in the same namespace as the `PodMonitor` object but it is possible to select pods across different/all namespaces.
+	// +optional
 	namespaceSelector?: #NamespaceSelector @go(NamespaceSelector)
 
-	// `sampleLimit` defines a per-scrape limit on the number of scraped samples
+	// sampleLimit defines a per-scrape limit on the number of scraped samples
 	// that will be accepted.
 	//
 	// +optional
 	sampleLimit?: null | uint64 @go(SampleLimit,*uint64)
 
-	// `targetLimit` defines a limit on the number of scraped targets that will
+	// targetLimit defines a limit on the number of scraped targets that will
 	// be accepted.
 	//
 	// +optional
 	targetLimit?: null | uint64 @go(TargetLimit,*uint64)
 
-	// `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the
+	// scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the
 	// protocols supported by Prometheus in order of preference (from most to least preferred).
 	//
 	// If unset, Prometheus uses its default value.
@@ -95,27 +111,27 @@ import (
 	// +optional
 	scrapeProtocols?: [...#ScrapeProtocol] @go(ScrapeProtocols,[]ScrapeProtocol)
 
-	// The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
+	// fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.
 	//
 	// It requires Prometheus >= v3.0.0.
 	// +optional
 	fallbackScrapeProtocol?: null | #ScrapeProtocol @go(FallbackScrapeProtocol,*ScrapeProtocol)
 
-	// Per-scrape limit on number of labels that will be accepted for a sample.
+	// labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.
 	//
 	// It requires Prometheus >= v2.27.0.
 	//
 	// +optional
 	labelLimit?: null | uint64 @go(LabelLimit,*uint64)
 
-	// Per-scrape limit on length of labels name that will be accepted for a sample.
+	// labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.
 	//
 	// It requires Prometheus >= v2.27.0.
 	//
 	// +optional
 	labelNameLengthLimit?: null | uint64 @go(LabelNameLengthLimit,*uint64)
 
-	// Per-scrape limit on length of labels value that will be accepted for a sample.
+	// labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.
 	//
 	// It requires Prometheus >= v2.27.0.
 	//
@@ -124,7 +140,7 @@ import (
 
 	#NativeHistogramConfig
 
-	// Per-scrape limit on the number of targets dropped by relabeling
+	// keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling
 	// that will be kept in memory. 0 means no limit.
 	//
 	// It requires Prometheus >= v2.47.0.
@@ -132,7 +148,7 @@ import (
 	// +optional
 	keepDroppedTargets?: null | uint64 @go(KeepDroppedTargets,*uint64)
 
-	// `attachMetadata` defines additional metadata which is added to the
+	// attachMetadata defines additional metadata which is added to the
 	// discovered targets.
 	//
 	// It requires Prometheus >= v2.35.0.
@@ -140,12 +156,12 @@ import (
 	// +optional
 	attachMetadata?: null | #AttachMetadata @go(AttachMetadata,*AttachMetadata)
 
-	// The scrape class to apply.
+	// scrapeClass defines the scrape class to apply.
 	// +optional
 	// +kubebuilder:validation:MinLength=1
 	scrapeClass?: null | string @go(ScrapeClassName,*string)
 
-	// When defined, bodySizeLimit specifies a job level limit on the size
+	// bodySizeLimit when defined specifies a job level limit on the size
 	// of uncompressed response body that will be accepted by Prometheus.
 	//
 	// It requires Prometheus >= v2.28.0.
@@ -159,8 +175,7 @@ import (
 #PodMonitorList: {
 	metav1.#TypeMeta
 
-	// Standard list metadata
-	// More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// metadata defines ListMeta as metadata for collection responses.
 	metadata?: metav1.#ListMeta @go(ListMeta)
 
 	// List of PodMonitors
@@ -172,30 +187,32 @@ import (
 //
 // +k8s:openapi-gen=true
 #PodMetricsEndpoint: {
-	// The `Pod` port name which exposes the endpoint.
+	// port defines the `Pod` port name which exposes the endpoint.
 	//
 	// It takes precedence over the `portNumber` and `targetPort` fields.
 	// +optional
 	port?: null | string @go(Port,*string)
 
-	// The `Pod` port number which exposes the endpoint.
+	// portNumber defines the `Pod` port number which exposes the endpoint.
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Maximum=65535
 	// +optional
 	portNumber?: null | int32 @go(PortNumber,*int32)
 
-	// Name or number of the target port of the `Pod` object behind the Service, the
+	// targetPort defines the name or number of the target port of the `Pod` object behind the Service, the
 	// port must be specified with container port property.
 	//
 	// Deprecated: use 'port' or 'portNumber' instead.
+	// +optional
 	targetPort?: null | intstr.#IntOrString @go(TargetPort,*intstr.IntOrString)
 
-	// HTTP path from which to scrape for metrics.
+	// path defines the HTTP path from which to scrape for metrics.
 	//
 	// If empty, Prometheus uses the default value (e.g. `/metrics`).
+	// +optional
 	path?: string @go(Path)
 
-	// HTTP scheme to use for scraping.
+	// scheme defines the HTTP scheme to use for scraping.
 	//
 	// `http` and `https` are the expected values unless you rewrite the
 	// `__scheme__` label via relabeling.
@@ -203,48 +220,39 @@ import (
 	// If empty, Prometheus uses the default value `http`.
 	//
 	// +kubebuilder:validation:Enum=http;https
+	// +optional
 	scheme?: string @go(Scheme)
 
-	// `params` define optional HTTP URL parameters.
+	// params define optional HTTP URL parameters.
+	// +optional
 	params?: {[string]: [...string]} @go(Params,map[string][]string)
 
-	// Interval at which Prometheus scrapes the metrics from the target.
+	// interval at which Prometheus scrapes the metrics from the target.
 	//
 	// If empty, Prometheus uses the global scrape interval.
+	// +optional
 	interval?: #Duration @go(Interval)
 
-	// Timeout after which Prometheus considers the scrape to be failed.
+	// scrapeTimeout defines the timeout after which Prometheus considers the scrape to be failed.
 	//
 	// If empty, Prometheus uses the global scrape timeout unless it is less
 	// than the target's scrape interval value in which the latter is used.
 	// The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+	// +optional
 	scrapeTimeout?: #Duration @go(ScrapeTimeout)
 
-	// TLS configuration to use when scraping the target.
-	//
-	// +optional
-	tlsConfig?: null | #SafeTLSConfig @go(TLSConfig,*SafeTLSConfig)
-
-	// `bearerTokenSecret` specifies a key of a Secret containing the bearer
-	// token for scraping targets. The secret needs to be in the same namespace
-	// as the PodMonitor object and readable by the Prometheus Operator.
-	//
-	// +optional
-	//
-	// Deprecated: use `authorization` instead.
-	bearerTokenSecret?: v1.#SecretKeySelector @go(BearerTokenSecret)
-
-	// When true, `honorLabels` preserves the metric's labels when they collide
+	// honorLabels when true preserves the metric's labels when they collide
 	// with the target's labels.
+	// +optional
 	honorLabels?: bool @go(HonorLabels)
 
-	// `honorTimestamps` controls whether Prometheus preserves the timestamps
+	// honorTimestamps defines whether Prometheus preserves the timestamps
 	// when exposed by the target.
 	//
 	// +optional
 	honorTimestamps?: null | bool @go(HonorTimestamps,*bool)
 
-	// `trackTimestampsStaleness` defines whether Prometheus tracks staleness of
+	// trackTimestampsStaleness defines whether Prometheus tracks staleness of
 	// the metrics that have an explicit timestamp present in scraped data.
 	// Has no effect if `honorTimestamps` is false.
 	//
@@ -253,38 +261,13 @@ import (
 	// +optional
 	trackTimestampsStaleness?: null | bool @go(TrackTimestampsStaleness,*bool)
 
-	// `basicAuth` configures the Basic Authentication credentials to use when
-	// scraping the target.
-	//
-	// Cannot be set at the same time as `authorization`, or `oauth2`.
-	//
-	// +optional
-	basicAuth?: null | #BasicAuth @go(BasicAuth,*BasicAuth)
-
-	// `oauth2` configures the OAuth2 settings to use when scraping the target.
-	//
-	// It requires Prometheus >= 2.27.0.
-	//
-	// Cannot be set at the same time as `authorization`, or `basicAuth`.
-	//
-	// +optional
-	oauth2?: null | #OAuth2 @go(OAuth2,*OAuth2)
-
-	// `authorization` configures the Authorization header credentials to use when
-	// scraping the target.
-	//
-	// Cannot be set at the same time as `basicAuth`, or `oauth2`.
-	//
-	// +optional
-	authorization?: null | #SafeAuthorization @go(Authorization,*SafeAuthorization)
-
-	// `metricRelabelings` configures the relabeling rules to apply to the
+	// metricRelabelings defines the relabeling rules to apply to the
 	// samples before ingestion.
 	//
 	// +optional
 	metricRelabelings?: [...#RelabelConfig] @go(MetricRelabelConfigs,[]RelabelConfig)
 
-	// `relabelings` configures the relabeling rules to apply the target's
+	// relabelings defines the relabeling rules to apply the target's
 	// metadata labels.
 	//
 	// The Operator automatically adds relabelings for a few standard Kubernetes fields.
@@ -296,20 +279,7 @@ import (
 	// +optional
 	relabelings?: [...#RelabelConfig] @go(RelabelConfigs,[]RelabelConfig)
 
-	#ProxyConfig
-
-	// `followRedirects` defines whether the scrape requests should follow HTTP
-	// 3xx redirects.
-	//
-	// +optional
-	followRedirects?: null | bool @go(FollowRedirects,*bool)
-
-	// `enableHttp2` can be used to disable HTTP2 when scraping the target.
-	//
-	// +optional
-	enableHttp2?: null | bool @go(EnableHttp2,*bool)
-
-	// When true, the pods which are not running (e.g. either in Failed or
+	// filterRunning when true, the pods which are not running (e.g. either in Failed or
 	// Succeeded state) are dropped during the target discovery.
 	//
 	// If unset, the filtering is enabled.
@@ -318,4 +288,6 @@ import (
 	//
 	// +optional
 	filterRunning?: null | bool @go(FilterRunning,*bool)
+
+	#HTTPConfig
 }
