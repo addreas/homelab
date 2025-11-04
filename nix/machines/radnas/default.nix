@@ -2,32 +2,29 @@
 {
   imports = [
     ./minimal.nix
-    # ./sd-image.nix
-    ./rockchip.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "arm-trusted-firmware-rk3399" ];
+  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "arm-trusted-firmware-rk3399" ];
 
-  boot.initrd.kernelModules = [
-    "rockchip_rga"
-    "rockchip_saradc"
-    "rockchip_thermal"
-    "rockchipdrm"
-  ];
+  # boot.initrd.kernelModules = [
+  #   "rockchip_rga"
+  #   "rockchip_saradc"
+  #   "rockchip_thermal"
+  #   "rockchipdrm"
+  # ];
 
-  boot.kernelParams = [
-    "earlycon"
-    "console=tty0"
-    "console=ttyFIQ0,1500000n8"
-    "console=ttyAML0,115200n8"
-    "console=ttyS2,1500000n8"
-    "console=ttyS0,1500000n8"
-    "coherent_pool=2M"
-    "irqchip.gicv3_pseudo_nmi=0"
-  ];
+  # boot.kernelParams = [
+  #   "earlycon"
+  #   "console=tty0"
+  #   "console=ttyFIQ0,1500000n8"
+  #   "console=ttyAML0,115200n8"
+  #   "console=ttyS2,1500000n8"
+  #   "console=ttyS0,1500000n8"
+  #   "coherent_pool=2M"
+  #   "irqchip.gicv3_pseudo_nmi=0"
+  # ];
 
   # hardware.enableRedistributableFirmware = true;
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   system.stateVersion = "24.05";
   security.sudo.wheelNeedsPassword = false;

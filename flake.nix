@@ -128,14 +128,13 @@
         system = arm64;
         modules = [
           rockchip.nixosModules.sdImageRockchip
-          "${self}/nix/machines/radnas"
+          {
+            rockchip.uBoot = rockchip.packages.${x86}.uBootRadxaRock4SE;
+            boot.kernelPackages = rockchip.legacyPackages.${x86}.kernel_linux_6_12_rockchip;
+          }
         ];
-        specialArgs = {
-          inherit pkgsCrossArm;
-          # rkbinTools = self.packages.${x86}.rkbinTools;
-        };
       };
-      # nixosConfigurations.radnas = machine arm64 "radnas" [ rockchip.nixosModules.sdImageRockchip ];
 
+      images.radnas = self.nixosConfigurations.radnas.config.system.build.sdImage;
     };
 }
