@@ -25,7 +25,7 @@ githubReleases: {
 	"home-assistant/core":        "2025.10.3"
 	"jcmoraisjr/haproxy-ingress": "v0.15.0"
 	"kubereboot/charts":          "kured-5.10.0"
-	"longhorn/longhorn":          "v1.10.0"
+	"longhorn/longhorn":          "v1.9.2"
 	"ory/hydra":                  "v2.3.0"
 	"ory/kratos":                 "v1.3.1"
 	"zwave-js/zwave-js-ui":       "v11.6.1"
