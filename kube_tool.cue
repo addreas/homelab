@@ -56,7 +56,7 @@ osenv: os.Environ
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
 	cmd: ["kubectl", "--context", context, "diff", "-f-"]
-	env: {for key, value in osenv if key != "$id" {(key): value}} & {KUBECTL_EXTERNAL_DIFF: "kubectl-neat-diff"}
+	env: {for key, value in osenv if key != "$id" {(key): value}}
 	stdin: json.MarshalStream(resources)
 }
 

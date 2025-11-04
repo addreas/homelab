@@ -2,9 +2,6 @@ package kube
 
 import (
 	"list"
-	"strings"
-	"regexp"
-	"tool/file"
 	"tool/http"
 	"tool/exec"
 )
@@ -15,7 +12,7 @@ githubBearerToken: string @tag(githubToken)
 
 // Fetches the latest releases from github and populates `githubReleases` in tags.cue
 command: "update-github-tags": {
-	let releaseKeys = list.SortStrings([ for k, v in githubReleases {k}])
+	let releaseKeys = list.SortStrings([for k, v in githubReleases {k}])
 
 	releases: {
 		for r in releaseKeys {
@@ -57,24 +54,5 @@ command: "update-github-tags": {
 				(key): releases[key].jq.stdout
 			}
 		}
-	}
-}
-
-// Parse the current go.mod file and populate `goModVersions` in tags.cue
-command: "update-gomod-tags": {
-	readGoMod: file.Read & {
-		filename: "go.mod"
-		contents: string
-	}
-	let re = #"^\s+([-\w./]+)\s+([-\w.]+)$"#
-	let packages = {
-		for line in strings.Split(readGoMod.contents, "\n") if line =~ re {
-			let match = regexp.FindSubmatch(re, line)
-			"\(match[1])": match[2]
-		}
-	}
-
-	writeTags: #WriteTags & {
-		content: goModVersions: packages
 	}
 }

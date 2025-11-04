@@ -6,7 +6,7 @@ k: HelmRepository: "cert-manager": spec: {
 
 k: HelmRelease: "cert-manager": spec: {
 	chart: spec: {
-		version: goModVersions["github.com/cert-manager/cert-manager"]
+		version: githubReleases["cert-manager/cert-manager"]
 	}
 	values: installCRDs: true
 }
