@@ -51,10 +51,14 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "root"
 			mountPath: "/.platformio"
 			subPath:   ".platformio"
+		}, {}, {
+			name:      "root"
+			mountPath: "/.platformio"
+			subPath:   ".platformio"
 		}, {
 			name:      "root"
-			mountPath: "/piolibs"
-			subPath:   "piolibs"
+			mountPath: "/.cache"
+			subPath:   "cache"
 		}]
 	}]
 	volumes: [{
