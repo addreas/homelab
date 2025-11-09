@@ -51,7 +51,7 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "root"
 			mountPath: "/.platformio"
 			subPath:   ".platformio"
-		}, {}, {
+		}, {
 			name:      "root"
 			mountPath: "/.platformio"
 			subPath:   ".platformio"
