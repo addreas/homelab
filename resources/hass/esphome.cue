@@ -53,8 +53,8 @@ k: Deployment: esphome: spec: template: spec: {
 			subPath:   ".platformio"
 		}, {
 			name:      "root"
-			mountPath: "/.platformio"
-			subPath:   ".platformio"
+			mountPath: "/piolibs"
+			subPath:   "piolibs"
 		}, {
 			name:      "root"
 			mountPath: "/.cache"
