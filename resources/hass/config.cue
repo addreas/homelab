@@ -52,7 +52,11 @@ let conf = {
 			delay_off: "3:00:00"
 			state:     "states.binary_sensor.any_motion"
 		}]
-	}]
+	},
+		// sensor: [_ecoZenith.templateSensor]
+	]
+
+	// modbus: [_ecoZenith.modbus]
 }
 
 k: ConfigMap: "hass-config": data: "configuration.yaml": """

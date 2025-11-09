@@ -55,6 +55,10 @@ k: Deployment: esphome: spec: template: spec: {
 			name:      "root"
 			mountPath: "/piolibs"
 			subPath:   "piolibs"
+		}, {
+			name:      "root"
+			mountPath: "/.cache"
+			subPath:   "cache"
 		}]
 	}]
 	volumes: [{
