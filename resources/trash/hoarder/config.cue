@@ -5,8 +5,8 @@ k: ConfigMap: "hoarder-configuration": data: {
 	NEXTAUTH_URL:    "http://localhost:3000"
 }
 
-k: Secret: "hoarder-secrets": data: {
-	MEILI_MASTER_KEY:   'generated_secret'
-	NEXT_PUBLIC_SECRET: 'my-super-duper-secret-string'
-	NEXTAUTH_SECRET:    'generated_secret'
+k: Secret: "hoarder-secrets": stringData: {
+	MEILI_MASTER_KEY:   "generated_secret"
+	NEXT_PUBLIC_SECRET: "my-super-duper-secret-string"
+	NEXTAUTH_SECRET:    "generated_secret"
 }
