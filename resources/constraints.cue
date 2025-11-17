@@ -4,8 +4,6 @@ import (
 	"strings"
 )
 
-context: *"nucles" | string
-
 _homelab: {
 	kind:      "GitRepository"
 	name:      "homelab"

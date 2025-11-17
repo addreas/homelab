@@ -12,11 +12,6 @@ import (
 	"tool/os"
 )
 
-context: string
-
-kindfilter: string | *".*" @tag(kind)
-namefilter: string | *".*" @tag(name)
-
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
 let res = [for kind, rs in k for r in rs if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
 let earlyResources = [for r in res if list.Contains(earlyKinds, r.kind) {r}]

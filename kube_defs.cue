@@ -28,7 +28,7 @@ import (
 	monitoring_v1alpha1 "cue.dev/x/crd/monitoring.coreos.com/v1alpha1"
 )
 
-let resources = [
+let resourceSchemas = [
 	core_v1.#Namespace,
 	core_v1.#ConfigMap,
 	core_v1.#Endpoints,
@@ -94,7 +94,7 @@ let resources = [
 ]
 
 k: close({
-	for resource in resources {
+	for resource in resourceSchemas {
 		(resource.kind): [Name=string]: resource & {
 			metadata: name: _ | *Name
 
@@ -159,4 +159,18 @@ _kubernetesAPIs: {
 	}
 
 	"hydra.ory.sh/v1alpha1": OAuth2Client: _
+}
+
+_kindfilter: string | *".*" @tag(kind)
+_namefilter: string | *".*" @tag(name)
+
+_list: {
+	apiVersion: "v1"
+	kind:       "List"
+	items: [
+		for kind, resources in k
+		for resource in resources if resource.kind =~ _kindfilter && resource.metadata.name =~ _namefilter {
+			resource
+		},
+	]
 }
