@@ -207,6 +207,11 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 	volumeName:       Name
 }
 
+k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: metadata: {
+	"cue.toolkit.fluxcd.io/prune":       "true" | *"false"
+	"kustomize.toolkit.fluxcd.io/prune": "true" | *"false"
+}
+
 //
 // Adds an endpoint which can be called to delete all pods matching a label.
 //
