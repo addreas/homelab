@@ -207,7 +207,7 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 	volumeName:       Name
 }
 
-k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: metadata: {
+k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: [string]: metadata: labels: {
 	"cue.toolkit.fluxcd.io/prune":       "true" | *"false"
 	"kustomize.toolkit.fluxcd.io/prune": "true" | *"false"
 }

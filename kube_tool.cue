@@ -13,7 +13,7 @@ import (
 )
 
 let earlyKinds = ["Namespace", "CustomResourceDefinition"]
-let res = [for kind, rs in k for r in rs if r.kind =~ kindfilter && r.metadata.name =~ namefilter {r}]
+let res = [for kind, rs in k for r in rs if r.kind =~ _kindfilter && r.metadata.name =~ _namefilter {r}]
 let earlyResources = [for r in res if list.Contains(earlyKinds, r.kind) {r}]
 let resources = [for r in res if !list.Contains(earlyKinds, r.kind) {r}]
 
@@ -34,14 +34,14 @@ command: ls: cli.Print & {
 command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
-			cmd: ["kubectl", "--context", context, "replace", "-f-"]
+			cmd: ["kubectl", "replace", "-f-"]
 			stdin: yaml.MarshalStream(earlyResources)
 		}
 	}
 	if len(resources) > 0 {
 		apply: exec.Run & {
 			$after: [apply.applyEarly]
-			cmd: ["kubectl", "--context", context, "apply", "-f-"]
+			cmd: ["kubectl", "apply", "-f-"]
 			stdin: yaml.MarshalStream(resources)
 		}
 	}
@@ -50,7 +50,7 @@ command: apply: {
 osenv: os.Environ
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
-	cmd: ["kubectl", "--context", context, "diff", "-f-"]
+	cmd: ["kubectl", "diff", "-f-"]
 	env: {for key, value in osenv if key != "$id" {(key): value}}
 	stdin: json.MarshalStream(resources)
 }
@@ -64,7 +64,7 @@ command: seal: {
 	secrets: {
 		for key in unsealed {
 			(key): exec.Run & {
-				cmd: ["kubeseal", "--context", context, "--scope", scope]
+				cmd: ["kubeseal", "--scope", scope]
 				stdin:  yaml.Marshal(k.Secret[key])
 				stdout: string
 				content: yaml.Unmarshal(strings.Join([for l in strings.Split(stdout, "\n") if l !~ "null" {l}], "\n"))
