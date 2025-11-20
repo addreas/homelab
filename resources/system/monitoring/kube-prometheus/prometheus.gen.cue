@@ -1,0 +1,30 @@
+package kube
+
+k: ClusterRole: "prometheus-k8s": {
+	apiVersion: "rbac.authorization.k8s.io/v1"
+	kind:       "ClusterRole"
+	metadata: {
+		labels: {
+			"app.kubernetes.io/component": "prometheus"
+			"app.kubernetes.io/instance":  "k8s"
+			"app.kubernetes.io/name":      "prometheus"
+			"app.kubernetes.io/part-of":   "kube-prometheus"
+			"app.kubernetes.io/version":   "3.7.3"
+		}
+		name: "prometheus-k8s"
+	}
+	rules: [{
+		apiGroups: [
+			"",
+		]
+		resources: ["nodes/metrics"]
+		verbs: [
+			"get",
+		]
+	}, {
+		nonResourceURLs: ["/metrics", "/metrics/slis"]
+		verbs: [
+			"get",
+		]
+	}]
+}

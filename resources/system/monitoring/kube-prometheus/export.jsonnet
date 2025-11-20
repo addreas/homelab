@@ -103,7 +103,7 @@ local kp =
 
 local resources(name, filter = function(r) true) = std.foldr(
   function(r, acc) acc + {
-    [name]+: if !std.endsWith(r.kind, "List") then {
+    k: if !std.endsWith(r.kind, "List") then {
       [r.kind]+: {
         [r.metadata.name]: r
       }
@@ -117,21 +117,28 @@ local resources(name, filter = function(r) true) = std.foldr(
   {});
 
 {
- "alertmanager.json": resources("alertmanager", function(r) r.kind != "NetworkPolicy"),
- "blackboxExporter.json": resources("blackboxExporter", function(r) r.kind != "NetworkPolicy"),
- "kubePrometheus.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
- "kubeStateMetrics.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
- "kubernetesControlPlane.json": resources("kubernetesControlPlane"),
- "nodeExporter.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
- "prometheus.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
- "prometheusAdapter.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
- "prometheusOperator.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
+ "alertmanager.gen.json": resources("alertmanager", function(r) r.kind != "NetworkPolicy"),
+ "blackboxExporter.gen.json": resources("blackboxExporter", function(r) r.kind != "NetworkPolicy"),
+ "kubePrometheus.gen.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
+ "kubeStateMetrics.gen.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
+ "kubernetesControlPlane.gen.json": resources("kubernetesControlPlane"),
+ "nodeExporter.gen.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
+ "prometheus.gen.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
+ "prometheusAdapter.gen.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
+ "prometheusOperator.gen.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
 
- "grafanaDashboards.json": { grafanaDashboards:
-    kp.alertmanager.mixin.grafanaDashboards + 
-    kp.kubernetesControlPlane.mixin.grafanaDashboards + 
-    kp.nodeExporter.mixin.grafanaDashboards +
-    kp.prometheus.mixin.grafanaDashboards
+ "grafanaDashboards.gen.json": {
+  k: {
+    GrafanaDashboard: std.mapWithKey(function(k, v) {
+        spec: { source: { inline: { json: std.manifestJson(v) } } }
+      },
+      (
+        kp.alertmanager.mixin.grafanaDashboards + 
+        kp.kubernetesControlPlane.mixin.grafanaDashboards + 
+        kp.nodeExporter.mixin.grafanaDashboards +
+        kp.prometheus.mixin.grafanaDashboards
+      ))
+    }
   }
 }
 
