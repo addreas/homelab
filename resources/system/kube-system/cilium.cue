@@ -3,7 +3,6 @@ package kube
 k: CiliumLoadBalancerIPPool: "main": spec: {
 	serviceSelector: matchExpressions: [{key: "dont-give-me-an-ip", operator: "DoesNotExist"}]
 	blocks: [{
-		cidr:  "10.0.2.0/24"
 		start: "10.0.2.10"
 		stop:  "10.0.2.25"
 	}]
