@@ -114,11 +114,13 @@ let resourceSchemas = [
 	cilium_v2.#CiliumLocalRedirectPolicy,
 	cilium_v2.#CiliumNetworkPolicy,
 	cilium_v2.#CiliumNode,
+	cilium_v2.#CiliumLoadBalancerIPPool,
+	cilium_v2.#CiliumBGPClusterConfig,
+	cilium_v2.#CiliumBGPPeerConfig,
+	cilium_v2.#CiliumBGPAdvertisement,
 
-	cilium_v2alpha1.#CiliumBGPPeeringPolicy,
 	cilium_v2alpha1.#CiliumEgressNATPolicy,
 	cilium_v2alpha1.#CiliumL2AnnouncementPolicy,
-	cilium_v2alpha1.#CiliumLoadBalancerIPPool,
 	cilium_v2alpha1.#CiliumNodeConfig,
 
 	hydra_v1alpha1.#OAuth2Client,

@@ -1,26 +1,43 @@
 package kube
 
-let dummyMatch = {
-	matchExpressions: [{key: "dummy", operator: "NotIn", values: ["anything"]}]
-}
-
 k: CiliumLoadBalancerIPPool: "main": spec: {
+	serviceSelector: matchExpressions: [{key: "dont-give-me-an-ip", operator: "DoesNotExist"}]
 	blocks: [{
-		cidr: "192.168.10.0/24"
+		cidr:  "10.0.2.0/24"
+		start: "10.0.2.10"
+		stop:  "10.0.2.25"
 	}]
-	serviceSelector: dummyMatch
-	disabled:        false
 }
 
-k: CiliumBGPPeeringPolicy: "main": spec: {
-	nodeSelector: dummyMatch
-	virtualRouters: [{
-		localASN: 64512
-		neighbors: [{
-			peerASN:     64512
-			peerAddress: "192.168.0.1/32"
-		}]
-		serviceSelector: dummyMatch
-		exportPodCIDR:   false
+k: CiliumBGPClusterConfig: "cilium-bgp": spec: bgpInstances: [{
+	name: "main"
+	peers: [{
+		name: "default"
+		peerConfigRef: name: "cilium-peer"
+		autoDiscovery: {
+			mode: "DefaultGateway"
+			defaultGateway: addressFamily: "ipv4"
+		}
 	}]
+}]
+
+k: CiliumBGPPeerConfig: "cilium-peer": spec: families: [{
+	afi:  "ipv4"
+	safi: "unicast"
+	advertisements: matchLabels: advertise: "bgp"
+}]
+
+k: CiliumBGPAdvertisement: "bgp-loadbalancer-services": {
+	metadata: labels: advertise: "bgp"
+	spec: advertisements: [{
+		advertisementType: "Service"
+		service: addresses: ["LoadBalancerIP"]
+		selector: matchLabels: advertise: "bgp"
+	}]
+}
+
+k: CiliumL2AnnouncementPolicy: "arp-loadbalancer-services": spec: {
+	serviceSelector: matchLabels: advertise: "arp"
+	interfaces: ["^eno[0-9]+"]
+	loadBalancerIPs: true
 }
