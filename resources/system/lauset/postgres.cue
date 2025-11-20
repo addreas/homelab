@@ -6,7 +6,7 @@ k: StatefulSet: postgres: spec: {
 		containers: [{
 			image: "postgres:13"
 			envFrom: [
-				{secretRef: name:    "postgres-credentials"},
+				{secretRef: name: "postgres-credentials"},
 				{configMapRef: name: "postgres-config"},
 			]
 			ports: [{containerPort: 5432}]

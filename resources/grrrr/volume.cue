@@ -2,11 +2,11 @@ package kube
 
 k: PersistentVolume: "videos": spec: {
 	storageClassName: "nfs"
-	accessModes:["ReadWriteOnce"]
+	accessModes: ["ReadWriteOnce"]
 	capacity: storage: "2Ti"
 	nfs: {
 		server: "10.0.0.208"
-		path: "/var/nfs/shared/Videos"
+		path:   "/var/nfs/shared/Videos"
 	}
 }
 

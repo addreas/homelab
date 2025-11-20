@@ -36,11 +36,12 @@ k: StatefulSet: "hass-zwavejs": spec: {
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/usr/src/app/store"
+				},
 					// }, {
 					//  name:      "store-settings-json"
 					//  mountPath: "/usr/src/app/store/settings.json"
 					//  subPath:   "settings.json"
-				}]
+				]
 			}]
 			volumes: [{
 				name: "store-settings-json"

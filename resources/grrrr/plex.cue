@@ -48,7 +48,6 @@ k: StatefulSet: "plex": spec: template: spec: {
 		emptyDir: {}
 	}]
 	securityContext: fsGroupChangePolicy: "OnRootMismatch"
-
 }
 
 k: PersistentVolumeClaim: "plex-config": spec: resources: requests: storage: "20Gi"

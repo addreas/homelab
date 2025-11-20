@@ -22,7 +22,7 @@ k: StatefulSet: qbittorrent: {
 						ip route add 10.96.0.0/12 dev eth0
 						ip route add 10.48.0.0/16 dev eth0
 						"""]
-					securityContext: privileged: true 
+					securityContext: privileged: true
 					volumeMounts: [{
 						name:      "wg0-conf"
 						mountPath: "/config"
@@ -49,8 +49,8 @@ k: StatefulSet: qbittorrent: {
 						name:      "config"
 					}, {
 						mountPath: "/config/.cache"
-						name: "cache"
-					},{
+						name:      "cache"
+					}, {
 						mountPath: "/videos"
 						name:      "videos"
 					}]

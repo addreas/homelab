@@ -4,7 +4,7 @@ let hostNames = ["packlistor.se", "www.packlistor.se"]
 
 k: Ingress: packlistor: {
 	spec: {
-		rules: [ for h in hostNames {
+		rules: [for h in hostNames {
 			host: h
 			http: paths: [{
 				path:     "/"
@@ -21,7 +21,7 @@ k: Ingress: packlistor: {
 k: Service: packlistor: {}
 
 let baseContainer = {
-	image: "ghcr.io/jonasdahl/packlistor.se:main"
+	image:           "ghcr.io/jonasdahl/packlistor.se:main"
 	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "packlistor-secrets"}]
 	env: [{
@@ -42,7 +42,7 @@ k: Deployment: "packlistor": {
 				}]
 				containers: [baseContainer & {
 					name: "packlistor"
-					ports: [{containerPort: 3000, name:"http"}]
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}

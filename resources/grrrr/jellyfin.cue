@@ -5,7 +5,7 @@ k: StatefulSet: "jellyfin": spec: template: spec: {
 		image:           "ghcr.io/jellyfin/jellyfin:2025072105"
 		imagePullPolicy: "Always"
 		ports: [{
-			name: "http"
+			name:          "http"
 			containerPort: 8096
 		}]
 		volumeMounts: [{
@@ -32,7 +32,7 @@ k: StatefulSet: "jellyfin": spec: template: spec: {
 }
 
 k: PersistentVolumeClaim: "jellyfin-config": spec: resources: requests: storage: "20Gi"
-k: PersistentVolumeClaim: "jellyfin-cache": spec: resources: requests: storage: "20Gi"
+k: PersistentVolumeClaim: "jellyfin-cache": spec: resources: requests: storage:  "20Gi"
 
 k: Service: "jellyfin": {}
 k: Ingress: "jellyfin": _authproxy: true

@@ -11,7 +11,7 @@ k: StatefulSet: jackett: {
 					imagePullPolicy: "Always"
 					command: ["/app/Jackett/jackett", "--NoUpdates"]
 					env: [{
-						name: "TMPDIR"
+						name:  "TMPDIR"
 						value: "/tmp"
 					}]
 					ports: [{

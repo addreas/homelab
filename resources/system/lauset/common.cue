@@ -37,8 +37,7 @@ k: Ingress: "lauset": {
 		}]
 		rules: [{
 			host: _hostname
-			http: paths: [{
-			}, {
+			http: paths: [{}, {
 				path:     "/hydra/consent"
 				pathType: "Exact"
 				backend: service: {

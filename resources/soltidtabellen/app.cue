@@ -4,7 +4,7 @@ let hostNames = ["soltidtabellen.se", "www.soltidtabellen.se"]
 
 k: Ingress: soltidtabellen: {
 	spec: {
-		rules: [ for h in hostNames {
+		rules: [for h in hostNames {
 			host: h
 			http: paths: [{
 				path:     "/"
@@ -27,10 +27,10 @@ k: Deployment: "soltidtabellen": {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
 				containers: [{
-					name:  "soltidtabellen"
-					image: "ghcr.io/jonasdahl/soltidtabellen.se:main"
+					name:            "soltidtabellen"
+					image:           "ghcr.io/jonasdahl/soltidtabellen.se:main"
 					imagePullPolicy: "Always"
-					ports: [{containerPort: 3000, name:"http"}]
+					ports: [{containerPort: 3000, name: "http"}]
 				}]
 			}
 		}

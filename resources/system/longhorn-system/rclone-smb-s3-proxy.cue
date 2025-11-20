@@ -1,17 +1,17 @@
 package kube
 
 k: Secret: "rclone-config": stringData: "rclone.conf": """
-[remote]
-type = smb
-host = 10.0.0.208
-user = longhorn
-pass = 82a0fJnF9qUb4Vd62IkvJoNChM1-zF9SPlShZtjQumP_r7G8
-"""
+	[remote]
+	type = smb
+	host = 10.0.0.208
+	user = longhorn
+	pass = 82a0fJnF9qUb4Vd62IkvJoNChM1-zF9SPlShZtjQumP_r7G8
+	"""
 
 k: Secret: "longhorn-backup-creds": stringData: {
-	AWS_ACCESS_KEY_ID: "testtest"
+	AWS_ACCESS_KEY_ID:     "testtest"
 	AWS_SECRET_ACCESS_KEY: "testtest"
-	AWS_ENDPOINTS: "http://rclone-smb-s3-proxy.longhorn-system.svc.cluster.local:8080"
+	AWS_ENDPOINTS:         "http://rclone-smb-s3-proxy.longhorn-system.svc.cluster.local:8080"
 }
 
 k: Deployment: "rclone-smb-s3-proxy": spec: template: spec: {
@@ -26,18 +26,18 @@ k: Deployment: "rclone-smb-s3-proxy": spec: template: spec: {
 			"remote:/",
 		]
 		ports: [{
-			name: "http"
+			name:          "http"
 			containerPort: 8080
 		}]
 		envFrom: [{
 			secretRef: name: "longhorn-backup-creds"
 		}]
 		env: [{
-			name: "HOME"
+			name:  "HOME"
 			value: "/home/rclone"
 		}]
 		volumeMounts: [{
-			name: "config"
+			name:      "config"
 			mountPath: "/home/rclone/.config/rclone"
 		}]
 	}]

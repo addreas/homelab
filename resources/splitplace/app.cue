@@ -4,7 +4,7 @@ let hostNames = ["splitplace.app", "splitplace.jdahl.se"]
 
 k: Ingress: splitplace: {
 	spec: {
-		rules: [ for h in hostNames {
+		rules: [for h in hostNames {
 			host: h
 			http: paths: [{
 				path:     "/"
