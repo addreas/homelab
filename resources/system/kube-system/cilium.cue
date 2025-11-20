@@ -10,14 +10,13 @@ k: CiliumLoadBalancerIPPool: "main": spec: {
 }
 
 k: CiliumBGPClusterConfig: "cilium-bgp": spec: bgpInstances: [{
-	name: "main"
+	name:     "main"
+	localASN: 64512
 	peers: [{
 		name: "default"
 		peerConfigRef: name: "cilium-peer"
-		autoDiscovery: {
-			mode: "DefaultGateway"
-			defaultGateway: addressFamily: "ipv4"
-		}
+		peerASN:     64512
+		peerAddress: "10.0.2.1"
 	}]
 }]
 
