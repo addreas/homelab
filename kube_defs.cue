@@ -7,7 +7,7 @@ import (
 	batch_v1 "cue.dev/x/k8s.io/api/batch/v1"
 	core_v1 "cue.dev/x/k8s.io/api/core/v1"
 	discovery_v1 "cue.dev/x/k8s.io/api/discovery/v1"
-	metav1 "cue.dev/x/k8s.io/apimachinery/pkg/apis/meta/v1"
+	meta_v1 "cue.dev/x/k8s.io/apimachinery/pkg/apis/meta/v1"
 	networking_v1 "cue.dev/x/k8s.io/api/networking/v1"
 	policy_v1 "cue.dev/x/k8s.io/api/policy/v1"
 	rbac_v1 "cue.dev/x/k8s.io/api/rbac/v1"
@@ -26,6 +26,13 @@ import (
 	certmanager_v1 "cue.dev/x/crd/cert-manager.io/v1"
 	monitoring_v1 "cue.dev/x/crd/monitoring.coreos.com/v1"
 	monitoring_v1alpha1 "cue.dev/x/crd/monitoring.coreos.com/v1alpha1"
+
+	cilium_v2 "cilium.io/v2"
+	cilium_v2alpha1 "cilium.io/v2alpha1"
+	cue_v1beta2 "cue.toolkit.fluxcd.io/v1beta2"
+	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
+	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
+	cni_v1 "k8s.cni.cncf.io/v1"
 )
 
 let resourceSchemas = [
@@ -91,12 +98,38 @@ let resourceSchemas = [
 	monitoring_v1.#ServiceMonitor,
 	monitoring_v1.#Prometheus,
 	monitoring_v1.#PrometheusRule,
+
+	cue_v1beta2.#CueExport,
+
+	grafana_v1beta1.#Grafana,
+	grafana_v1beta1.#GrafanaDashboard,
+	grafana_v1beta1.#GrafanaDatasource,
+
+	cni_v1.#NetworkAttachmentDefinition,
+
+	cilium_v2.#CiliumClusterwideNetworkPolicy,
+	cilium_v2.#CiliumEndpoint,
+	cilium_v2.#CiliumExternalWorkload,
+	cilium_v2.#CiliumIdentity,
+	cilium_v2.#CiliumLocalRedirectPolicy,
+	cilium_v2.#CiliumNetworkPolicy,
+	cilium_v2.#CiliumNode,
+
+	cilium_v2alpha1.#CiliumBGPPeeringPolicy,
+	cilium_v2alpha1.#CiliumEgressNATPolicy,
+	cilium_v2alpha1.#CiliumL2AnnouncementPolicy,
+	cilium_v2alpha1.#CiliumLoadBalancerIPPool,
+	cilium_v2alpha1.#CiliumNodeConfig,
+
+	hydra_v1alpha1.#OAuth2Client,
 ]
 
 k: close({
 	for resource in resourceSchemas {
 		(resource.kind): [Name=string]: resource & {
-			metadata: name: _ | *Name
+			metadata: meta_v1.#ObjectMeta & {
+				name: _ | *Name
+			}
 
 			if strings.Contains(Name, "/") {
 				let splitName = strings.Split(Name, "/")
@@ -107,59 +140,7 @@ k: close({
 			}
 		}
 	}
-
-	for ApiVersion, kinds in _kubernetesAPIs {
-		for Kind, Type in kinds {
-			"\(Kind)": [Name=string]: Type & {
-				apiVersion: ApiVersion
-				kind:       Kind
-				metadata: metav1.#ObjectMeta & {
-					name: _ | *Name
-				}
-
-				if strings.Contains(Name, "/") {
-					let splitName = strings.Split(Name, "/")
-					metadata: {
-						namespace: splitName[0]
-						name:      splitName[1]
-					}
-				}
-			}
-		}
-	}
 })
-
-_kubernetesAPIs: {
-	"cue.toolkit.fluxcd.io/v1beta2": CueExport: _
-
-	"grafana.integreatly.org/v1beta1": {
-		Grafana:           _
-		GrafanaDashboard:  _
-		GrafanaDatasource: _
-	}
-
-	"k8s.cni.cncf.io/v1": NetworkAttachmentDefinition: _
-
-	"cilium.io/v2": {
-		CiliumClusterwideNetworkPolicy: _
-		CiliumEndpoint:                 _
-		CiliumExternalWorkload:         _
-		CiliumIdentity:                 _
-		CiliumLocalRedirectPolicy:      _
-		CiliumNetworkPolicy:            _
-		CiliumNode:                     _
-	}
-
-	"cilium.io/v2alpha1": {
-		CiliumBGPPeeringPolicy:     _
-		CiliumEgressNATPolicy:      _
-		CiliumL2AnnouncementPolicy: _
-		CiliumLoadBalancerIPPool:   _
-		CiliumNodeConfig:           _
-	}
-
-	"hydra.ory.sh/v1alpha1": OAuth2Client: _
-}
 
 _kindfilter: string | *".*" @tag(kind)
 _namefilter: string | *".*" @tag(name)
