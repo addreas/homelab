@@ -28,7 +28,10 @@ k: Deployment: mosquitto: spec: {
 	}
 }
 
-k: Service: mosquitto: spec: type: "LoadBalancer"
+k: Service: mosquitto: {
+	metadata: labels: advertise: "bgp"
+	spec: type: "LoadBalancer"
+}
 
 k: ConfigMap: "mosquitto-config": data: "mosquitto.conf": """
 	persistence false
