@@ -20,43 +20,7 @@ let conf = {
 
 	prometheus: namespace: "hass"
 
-	light: [{
-		platform: "group"
-		name:     "Fönsterlamporna"
-		entities: [
-			"light.fonstret_vanster_level_light_color_on_off",
-			"light.fonstret_mitten_level_light_color_on_off",
-			"light.fonstret_hoger_level_light_color_on_off",
-		]
-	}]
-
-	plant: {
-		for i in ["plant_sensor_6b4863", "plant_sensor_6b48a6"] {
-			(i): {
-				min_moisture: 20
-				sensors: {
-					moisture:     "sensor.\(i)_moisture"
-					temperature:  "sensor.\(i)_temperature"
-					conductivity: "sensor.\(i)_conductivity"
-					brightness:   "sensor.\(i)_illuminance"
-				}
-			}
-		}
-	}
-
 	tts: [{platform: "google_translate"}]
-
-	template: [{
-		binary_sensor: [{
-			name:      "Any motion last 3h"
-			delay_off: "3:00:00"
-			state:     "states.binary_sensor.any_motion"
-		}]
-	},
-		// sensor: [_ecoZenith.templateSensor]
-	]
-
-	// modbus: [_ecoZenith.modbus]
 }
 
 k: ConfigMap: "hass-config": data: "configuration.yaml": """
