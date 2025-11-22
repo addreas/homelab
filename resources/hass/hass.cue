@@ -58,6 +58,9 @@ k: StatefulSet: hass: spec: {
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/config"
+				}, {
+					name:      "tmp"
+					mountPath: "/.dockerenv"
 				}]
 			}]
 			volumes: [{
@@ -67,6 +70,9 @@ k: StatefulSet: hass: spec: {
 				}, {
 					secret: name: "hass-gcp-credential-json"
 				}]
+			}, {
+				name: "tmp"
+				emptyDir: {}
 			}]
 		}
 	}
