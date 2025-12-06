@@ -12,8 +12,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ^1.22
-      - name: Install `cue`, `jsonnet`, `jb`, `jq`
-        run: |-
+      - run: |-
           go install cuelang.org/go/cmd/cue@latest
           go install github.com/google/go-jsonnet/cmd/jsonnet@latest
           go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
@@ -21,10 +20,9 @@ jobs:
           JQ=/usr/bin/jq
           sudo curl -sLo $JQ https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo chmod +x $JQ
+        name: Install `cue`, `jsonnet`, `jb`, `jq`
       - run: cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags
-      - run: cue cmd update-jsonnet-defs
-      - run: cue cmd update-gomod-defs
-      - run: cue cmd update-gomod-tags
+      - run: cd ./resources/system/monitoring/kube-prometheus && ./export.sh && popd
       - run: git diff
       - run: cue vet -c ./resources/...
       - run: |-
@@ -33,9 +31,9 @@ jobs:
           git diff -U0 main tags.cue | sed '/@.*/d' | tail -n +5 >> .pr-body.md
           echo '````' >> .pr-body.md
       - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
         with:
           title: Updated dependencies
           body-path: .pr-body.md
           commit-message: Automatically update dependencies/definitions
           branch: automatically-update-deps
-        uses: peter-evans/create-pull-request@v5
