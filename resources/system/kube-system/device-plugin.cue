@@ -32,6 +32,14 @@ k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 				ID_MODEL:  "0200"
 			}
 		}
+		"addem.se/back_ups_es_700": {
+			permissions: "rw"
+			matchProperties: {
+				SUBSYSTEM: "usb"
+				ID_VENDOR: "APC"
+				ID_MODEL:  "Back-UPS_ES_700G_FW:871.O4_.I_USB_FW:O4"
+			}
+		}
 	}
 })
 
@@ -53,7 +61,7 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 			securityContext: fsGroup: 0
 			hostNetwork: true
 			containers: [{
-				image: "ghcr.io/addreas/k8s-hostdevice-plugin:a379a410e09679892baac49b6286c13820f7cebc"
+				image: "ghcr.io/addreas/k8s-hostdevice-plugin:986abd80beca8e18176e66472a09032feb11ab53"
 				name:  "plugin"
 				securityContext: {
 					runAsUser:  0
