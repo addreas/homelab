@@ -29,11 +29,11 @@ k: StatefulSet: qbittorrent: {
 					}]
 				}, util.copyStatic & {
 					volumeMounts: [{
-						mountPath: "/static/config/qBittorrent"
-						name:      "static-config"
-					}, {
 						mountPath: "/config/qBittorrent"
 						name:      "config"
+					}, {
+						mountPath: "/static/config/qBittorrent"
+						name:      "static-config"
 					}]
 				}]
 				containers: [{

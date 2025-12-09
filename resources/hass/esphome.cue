@@ -54,6 +54,9 @@ k: StatefulSet: esphome: spec: {
 				name:      "data"
 				mountPath: "/.cache"
 				subPath:   "cache"
+			}, {
+				name:      "esphome-configs"
+				mountPath: "/static/config"
 			}]
 		}]
 		volumes: [{
