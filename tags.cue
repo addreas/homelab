@@ -3,7 +3,7 @@ package kube
 githubReleases: {
 	"cloudflare/cloudflared":     "2025.10.1"
 	"dani-garcia/vaultwarden":    "1.34.3"
-	"esphome/esphome":            "2025.11.0"
+	"esphome/esphome":            "2025.11.5"
 	"grafana/grafana":            "v12.2.1"
 	"home-assistant/core":        "2025.12.2"
 	"jcmoraisjr/haproxy-ingress": "v0.15.0"
