@@ -5,7 +5,7 @@ githubReleases: {
 	"dani-garcia/vaultwarden":    "1.34.3"
 	"esphome/esphome":            "2025.10.3"
 	"grafana/grafana":            "v12.2.1"
-	"home-assistant/core":        "2025.11.3"
+	"home-assistant/core":        "2025.12.2"
 	"jcmoraisjr/haproxy-ingress": "v0.15.0"
 	"kubereboot/charts":          "kured-5.10.0"
 	"longhorn/longhorn":          "v1.10.0"
