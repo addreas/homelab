@@ -111,6 +111,7 @@ k: StatefulSet: qbittorrent: {
 					name: "cache"
 					emptyDir: {}
 				}]
+				terminationGracePeriodSeconds: 5
 			}
 		}
 	}
