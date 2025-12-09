@@ -5,11 +5,6 @@ import (
 	"github.com/addreas/homelab/util"
 )
 
-k: GitRepository: homelab: spec: {
-	url: "https://github.com/addreas/homelab"
-	ref: branch: "main"
-}
-
 k: GitRepository: "esphome-configs": spec: url: "https://github.com/jonasdahl/esphome.git"
 
 k: Kustomization: "esphome-configs": {
@@ -20,62 +15,64 @@ k: Kustomization: "esphome-configs": {
 	}
 }
 
-k: Deployment: esphome: spec: strategy: type: "Recreate"
-
-k: Deployment: esphome: spec: template: metadata:
-	annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+k: StatefulSet: esphome: spec: {
+	template: metadata: annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
 		name: "macvlan-conf"
 		mac:  "02:00:00:00:00:07" // https://en.wikipedia.org/wiki/MAC_address#IEEE_802c_local_MAC_address_usage
 	}])
 
-k: Deployment: esphome: spec: template: spec: {
-	initContainers: [
-		util.macvlanDefaultRouteFix,
-		util.copyStatic & {
+	template: spec: {
+		initContainers: [
+			util.macvlanDefaultRouteFix,
+			util.copyStatic & {
+				volumeMounts: [{
+					name:      "data"
+					mountPath: "/config"
+					subPath:   "config"
+				}, {
+					name:      "esphome-configs"
+					mountPath: "/static/config"
+				}]
+			},
+		]
+		containers: [{
+			image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
+			ports: [{containerPort: 6052}]
 			volumeMounts: [{
-				name:      "config"
+				name:      "data"
 				mountPath: "/config"
+				subPath:   "config"
 			}, {
-				name:      "esphome-configs"
-				mountPath: "/static/config"
+				name:      "data"
+				mountPath: "/.platformio"
+				subPath:   ".platformio"
+			}, {
+				name:      "data"
+				mountPath: "/piolibs"
+				subPath:   "piolibs"
+			}, {
+				name:      "data"
+				mountPath: "/.cache"
+				subPath:   "cache"
 			}]
-		},
-	]
-	containers: [{
-		image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
-		ports: [{containerPort: 6052}]
-		volumeMounts: [{
-			name:      "config"
-			mountPath: "/config"
-		}, {
-			name:      "root"
-			mountPath: "/.platformio"
-			subPath:   ".platformio"
-		}, {
-			name:      "root"
-			mountPath: "/piolibs"
-			subPath:   "piolibs"
-		}, {
-			name:      "root"
-			mountPath: "/.cache"
-			subPath:   "cache"
 		}]
-	}]
-	volumes: [{
-		name: "config"
-		emptyDir: {}
-	}, {
-		name: "root"
-		emptyDir: {}
-	}, {
-		name: "esphome-configs"
-		projected: sources: [{
-			secret: name: "esphome-secrets"
-		}, {
-			configMap: name: "esphome-configs"
+		volumes: [{
+			name: "esphome-configs"
+			projected: sources: [{
+				secret: name: "esphome-secrets"
+			}, {
+				configMap: name: "esphome-configs"
+			}]
 		}]
+		terminationGracePeriodSeconds: 0
+	}
+	volumeClaimTemplates: [{
+		metadata: name: "data"
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "5Gi"
+		}
 	}]
-	terminationGracePeriodSeconds: 0
 }
 
 k: Service: esphome: {}
