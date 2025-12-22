@@ -11,7 +11,8 @@ in
     systemd.services.kubelet = {
       description = "Kubernetes Kubelet Service";
       wantedBy = [ "multi-user.target" ];
-      after = [ "crio.service" ];
+      after = [ "network-online.target" "crio.service" ];
+      wants = [ "network-online.target" "crio.service" ];
 
       path = with pkgs; [
         gitMinimal
