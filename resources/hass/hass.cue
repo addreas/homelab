@@ -30,7 +30,7 @@ k: StatefulSet: hass: spec: {
 			]
 			containers: [{
 				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
-				command: ["hass", "-c", "/config", "--log-file", "/tmp/home-assistant.log"]
+				command: ["hass", "-c", "/config"]
 				resources: {
 					limits: {
 						cpu:                             "500m"
@@ -49,6 +49,9 @@ k: StatefulSet: hass: spec: {
 				}, {
 					name:  "HOME"
 					value: "/config"
+				}, {
+					name:  "SUPERVISOR"
+					value: "k8s"
 				}]
 				ports: [{
 					name:          "http"
@@ -57,9 +60,6 @@ k: StatefulSet: hass: spec: {
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/config"
-				}, {
-					name:      "tmp"
-					mountPath: "/tmp"
 				}]
 			}]
 			volumes: [{
@@ -69,9 +69,6 @@ k: StatefulSet: hass: spec: {
 				}, {
 					secret: name: "hass-gcp-credential-json"
 				}]
-			}, {
-				name: "tmp"
-				emptyDir: {}
 			}]
 		}
 	}
