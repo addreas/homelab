@@ -16,6 +16,8 @@ k: NetworkAttachmentDefinition: "macvlan-conf": spec: config: json.Marshal({
 			}]
 		}
 	}, {
+		type: "sbr"
+	}, {
 		type: "tuning"
 		capabilities: mac: true
 	}]

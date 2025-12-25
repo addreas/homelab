@@ -23,7 +23,6 @@ k: StatefulSet: esphome: spec: {
 
 	template: spec: {
 		initContainers: [
-			util.macvlanDefaultRouteFix,
 			util.copyStatic & {
 				volumeMounts: [{
 					name:      "data"

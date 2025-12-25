@@ -18,7 +18,6 @@ k: StatefulSet: hass: spec: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		spec: {
 			initContainers: [
-				util.macvlanDefaultRouteFix,
 				util.copyStatic & {
 					volumeMounts: [{
 						name:      "config"
@@ -31,7 +30,7 @@ k: StatefulSet: hass: spec: {
 			]
 			containers: [{
 				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
-				command: ["hass", "-c", "/config"]
+				command: ["hass", "-c", "/config", "--log-file", "/tmp/home-assistant.log"]
 				resources: {
 					limits: {
 						cpu:                             "500m"
@@ -60,7 +59,7 @@ k: StatefulSet: hass: spec: {
 					mountPath: "/config"
 				}, {
 					name:      "tmp"
-					mountPath: "/.dockerenv"
+					mountPath: "/tmp"
 				}]
 			}]
 			volumes: [{

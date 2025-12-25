@@ -13,7 +13,10 @@ _homelab: {
 let podTemplate = {
 	metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
 	spec: {
-		securityContext: fsGroup: *1000 | int
+		securityContext: {
+			fsGroup:             *1000 | int
+			fsGroupChangePolicy: *"OnRootMismatch" | "Always"
+		}
 		containers: [...{
 			securityContext: {
 				allowPrivilegeEscalation: *false | bool
