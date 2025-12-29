@@ -6,5 +6,6 @@
   ];
 
   networking.hostName = "nucle4";
+  services.kubeadm.controlPlane = true;
 }
 
