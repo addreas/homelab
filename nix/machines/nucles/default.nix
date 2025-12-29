@@ -31,7 +31,7 @@
   networking.useNetworkd = true;
 
   systemd.network.enable = true;
-  systemd.network.wait-online.extraArgs = "--interface=eno1";
+  systemd.network.wait-online.extraArgs = [ "--interface=eno1" ];
   services.resolved.dnssec = "false"; # dnssec fails for localdomain and breaks stuff
 
   security.sudo.wheelNeedsPassword = false;

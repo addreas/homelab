@@ -23,7 +23,7 @@ let
       gitMinimal
       openssh
       docker
-      utillinux
+      util-linux
       iproute2
       ethtool
       thin-provisioning-tools
