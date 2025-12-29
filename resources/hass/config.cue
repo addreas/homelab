@@ -9,6 +9,12 @@ import (
 // Prefer adding stuff here instead of in the configmap below
 let conf = {
 	logger: default: "info"
+	logger: logs: {
+		"habluetooth.wrappers":                             "warning"
+		"custom_components.bravia_quad.bravia_quad_client": "warning"
+		"custom_components.pax_ble":                        "error"
+	}
+
 	default_config: {}
 
 	http: {

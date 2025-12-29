@@ -49,9 +49,6 @@ k: StatefulSet: hass: spec: {
 				}, {
 					name:  "HOME"
 					value: "/config"
-				}, {
-					name:  "SUPERVISOR"
-					value: "k8s"
 				}]
 				ports: [{
 					name:          "http"
