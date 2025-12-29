@@ -30,7 +30,7 @@ k: StatefulSet: hass: spec: {
 			]
 			containers: [{
 				image: "ghcr.io/home-assistant/home-assistant:\(githubReleases."home-assistant/core")"
-				command: ["hass", "-c", "/config"]
+				command: ["hass", "-c", "/config", "--log-file", "/tmp/home-assistant.log"]
 				resources: {
 					limits: {
 						cpu:                             "500m"
@@ -58,6 +58,7 @@ k: StatefulSet: hass: spec: {
 					name:      "config"
 					mountPath: "/config"
 				}]
+				livenessProbe: exec: command: ["sh", "-c", "test $(stat -c %s /tmp/home-assistant.log) -lt \(1Gi)"]
 			}]
 			volumes: [{
 				name: "hass-config"

@@ -14,6 +14,11 @@ let conf = {
 		"custom_components.bravia_quad.bravia_quad_client": "warning"
 		"custom_components.pax_ble":                        "error"
 	}
+	logger: filters: {
+		"homeassistant.components.mqtt.entity": [
+			"The configuration for entity sensor..+ uses the deprecated option `object_id`",
+		]
+	}
 
 	default_config: {}
 
