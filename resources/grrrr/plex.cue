@@ -9,6 +9,10 @@ k: StatefulSet: "plex": spec: template: spec: {
 			rm -f "/config/Library/Application Support/Plex Media Server/plexmediaserver.pid"
 			exec "/usr/lib/plexmediaserver/Plex Media Server"
 			"""]
+		ports: [{
+			name:          "plex"
+			containerPort: 32400
+		}]
 		env: [{
 			name:  "PLEX_UID"
 			value: "1000"
@@ -44,3 +48,10 @@ k: StatefulSet: "plex": spec: template: spec: {
 }
 
 k: PersistentVolumeClaim: "plex-config": spec: resources: requests: storage: "20Gi"
+
+k: Service: "plex": {
+	metadata: labels: advertise: "bgp"
+	spec: type: "LoadBalancer"
+}
+
+k: Ingress: "plex": {}
