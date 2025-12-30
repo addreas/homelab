@@ -1,12 +1,5 @@
 package kube
 
-k: StatefulSet: "plex": spec: template: {
-	metadata: annotations: "v1.multus-cni.io/default-network": "default/macvlan-conf"
-	spec: {
-		dnsPolicy: "None"
-		dnsConfig: nameservers: ["10.0.2.1"]
-	}
-}
 k: StatefulSet: "plex": spec: template: spec: {
 	containers: [{
 		image:           "plexinc/pms-docker"

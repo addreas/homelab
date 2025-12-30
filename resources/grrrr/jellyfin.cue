@@ -35,4 +35,9 @@ k: PersistentVolumeClaim: "jellyfin-config": spec: resources: requests: storage:
 k: PersistentVolumeClaim: "jellyfin-cache": spec: resources: requests: storage:  "20Gi"
 
 k: Service: "jellyfin": {}
+k: Service: "jellyfin": {
+	metadata: labels: advertise: "bgp"
+	spec: type: "LoadBalancer"
+}
+
 k: Ingress: "jellyfin": _authproxy: true
