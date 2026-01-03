@@ -5,7 +5,7 @@ k: PersistentVolume: "videos": spec: {
 	accessModes: ["ReadWriteOnce"]
 	capacity: storage: "2Ti"
 	nfs: {
-		server: "10.0.0.208"
+		server: "10.0.0.207"
 		path:   "/var/nfs/shared/Videos"
 	}
 }
