@@ -158,8 +158,8 @@ command: "flux-bootstrap": exec.Run & {
 		"""
 	}
 
-	trim: exec.Run & {
-		$after: [write.contents]
-		cmd: ["cue", "trim", "--simplify"]
-	}
+	// trim: exec.Run & {
+	// 	$after: [write.contents]
+	// 	cmd: ["cue", "trim", "--simplify"]
+	// }
 }
