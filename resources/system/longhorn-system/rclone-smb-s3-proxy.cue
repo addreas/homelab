@@ -3,7 +3,7 @@ package kube
 k: Secret: "rclone-config": stringData: "rclone.conf": """
 	[remote]
 	type = smb
-	host = 10.0.0.208
+	host = 10.0.0.207
 	user = longhorn
 	pass = 82a0fJnF9qUb4Vd62IkvJoNChM1-zF9SPlShZtjQumP_r7G8
 	"""
