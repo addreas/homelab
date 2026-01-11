@@ -11,6 +11,7 @@ githubReleases: {
 	"jcmoraisjr/haproxy-ingress": "v0.15.0"
 	"kubereboot/charts":          "kured-5.10.0"
 	"longhorn/longhorn":          "v1.10.1"
+	"triliumnext/trilium":        "v0.101.3"
 	"ory/hydra":                  "v25.4.0"
 	"ory/hydra-maester":          "v0.0.40"
 	"ory/kratos":                 "v25.4.0"
