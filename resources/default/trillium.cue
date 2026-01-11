@@ -2,7 +2,7 @@ package kube
 
 k: StatefulSet: trillium: spec: {
 	template: spec: containers: [{
-		image: "ghcr.io/triliumnext/trilium:v0.90.4"
+		image: "ghcr.io/triliumnext/notes:v0.90.4"
 		command: ["node", "./src/www"]
 		env: [{
 			name:  "TRILIUM_DATA_DIR"
