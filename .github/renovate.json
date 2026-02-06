@@ -1,0 +1,18 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "group:allNonMajor"
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "tags.cue"
+            ],
+            "datasourceTemplate": "github-releases",
+            "matchStrings": [
+                "\"(?<depName>.*)\":\\s+\"(?<currentValue>.*)\"(\\s@renovate\\((versioning=(?<versioning>))?\\))?"
+            ]
+        }
+    ]
+}
