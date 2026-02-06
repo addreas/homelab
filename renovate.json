@@ -1,20 +1,16 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "group:allNonMajor"
-    ],
-    "onboarding": false,
-    "platform": "local",
-    "customManagers": [
-        {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "tags.cue"
-            ],
-            "datasourceTemplate": "github-releases",
-            "matchStrings": [
-                "\"(?<depName>.*)\":\\s+\"(?<currentValue>.*)\"(\\s@renovate\\((versioning=(?<versioning>))?\\))?"
-            ]
-        }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["group:allNonMajor"],
+  "onboarding": false,
+  "platform": "github",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["tags.cue"],
+      "datasourceTemplate": "github-releases",
+      "matchStrings": [
+        "\"(?<depName>.*)\":\\s+\"(?<currentValue>.*)\"(\\s@renovate\\((versioning=(?<versioning>))?\\))?"
+      ]
+    }
+  ]
 }
