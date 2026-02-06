@@ -15,4 +15,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configurationFile: .github/renovate.json
-
+        env:
+          LOG_LEVEL: debug

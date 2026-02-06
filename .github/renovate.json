@@ -3,7 +3,7 @@
     "extends": [
         "group:allNonMajor"
     ],
-    "onboarding": "false",
+    "onboarding": false,
     "platform": "local",
     "customManagers": [
         {
