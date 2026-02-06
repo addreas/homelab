@@ -23,8 +23,8 @@
     {
       "matchFileNames": ["**/export.sh"],
       "postUpgradeTasks": {
-        "commands": ["{{{parentDir}}}/export.sh"],
-        "fileFilters": ["{{{parentDir}}}/**"],
+        "commands": ["{{{packageFileDir}}}/export.sh"],
+        "fileFilters": ["{{{packageFileDir}}}/**"],
         "executionMode": "branch"
       }
     }
