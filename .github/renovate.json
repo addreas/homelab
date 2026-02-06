@@ -3,6 +3,8 @@
     "extends": [
         "group:allNonMajor"
     ],
+    "onboarding": "false",
+    "platform": "local",
     "customManagers": [
         {
             "customType": "regex",
