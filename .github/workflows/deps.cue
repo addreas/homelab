@@ -33,7 +33,7 @@ jobs: {
 					"""
 			},
 			{run: "cue cmd -t githubToken=${{ secrets.GITHUB_TOKEN }} update-github-tags"},
-			{run: "cd ./resources/system/monitoring/kube-prometheus && ./export.sh && popd"},
+			{run: "pushd ./resources/system/monitoring/kube-prometheus && ./export.sh && popd"},
 			{run: "git diff"},
 			{run: "cue vet -c ./resources/..."},
 			{run: """
