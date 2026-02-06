@@ -1282,11 +1282,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Received",
+		            "title": "Current Rate of Bits Received",
 		            "type": "timeseries"
 		        },
 		        {
@@ -1328,11 +1328,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Transmitted",
+		            "title": "Current Rate of Bits Transmitted",
 		            "type": "timeseries"
 		        },
 		        {
@@ -1345,7 +1345,7 @@ k: GrafanaDashboard: {
 		                    {
 		                        "matcher": {
 		                            "id": "byRegexp",
-		                            "options": "/Bytes/"
+		                            "options": "/Bits/"
 		                        },
 		                        "properties": [
 		                            {
@@ -1399,7 +1399,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1408,7 +1408,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1417,7 +1417,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg by (namespace) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "avg by (namespace) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1426,7 +1426,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg by (namespace) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "avg by (namespace) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1435,7 +1435,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1444,7 +1444,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1453,7 +1453,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -1462,7 +1462,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                }
@@ -1510,10 +1510,10 @@ k: GrafanaDashboard: {
 		                            "namespace": 8
 		                        },
 		                        "renameByName": {
-		                            "Value #A": "Rx Bytes",
-		                            "Value #B": "Tx Bytes",
-		                            "Value #C": "Rx Bytes (Avg)",
-		                            "Value #D": "Tx Bytes (Avg)",
+		                            "Value #A": "Rx Bits",
+		                            "Value #B": "Tx Bits",
+		                            "Value #C": "Rx Bits (Avg)",
+		                            "Value #D": "Tx Bits (Avg)",
 		                            "Value #E": "Rx Packets",
 		                            "Value #F": "Tx Packets",
 		                            "Value #G": "Rx Packets Dropped",
@@ -1564,11 +1564,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg by (namespace) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "avg by (namespace) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Average Rate of Bytes Received",
+		            "title": "Average Rate of Bits Received",
 		            "type": "timeseries"
 		        },
 		        {
@@ -1610,11 +1610,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg by (namespace) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "avg by (namespace) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Average Rate of Bytes Transmitted",
+		            "title": "Average Rate of Bits Transmitted",
 		            "type": "timeseries"
 		        },
 		        {
@@ -1656,7 +1656,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -1702,7 +1702,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -1748,7 +1748,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -1794,7 +1794,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -1840,7 +1840,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -1886,7 +1886,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (namespace) (\\n    rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace!=\\"\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\",cluster=\\"$cluster\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3382,7 +3382,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -3391,7 +3391,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -3526,7 +3526,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3577,7 +3577,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3628,7 +3628,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg(irate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "avg((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3679,7 +3679,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "avg(irate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "avg((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval]))) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3730,7 +3730,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_receive_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum(rate(container_network_receive_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3781,7 +3781,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_transmit_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum(rate(container_network_transmit_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3832,7 +3832,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_receive_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum(rate(container_network_receive_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -3883,7 +3883,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_transmit_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
+		                    "expr": "sum(rate(container_network_transmit_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=~\\".+\\"}[$__rate_interval])) by (namespace)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -4185,7 +4185,7 @@ k: GrafanaDashboard: {
 		                "hide": 0,
 		                "label": "cluster",
 		                "name": "cluster",
-		                "query": "label_values(up{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\"}, cluster)",
+		                "query": "label_values(up{job=\\"kube-state-metrics\\"}, cluster)",
 		                "refresh": 2,
 		                "sort": 1,
 		                "type": "query"
@@ -5420,7 +5420,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\",container!=\\"\\", image!=\\"\\"})) by (pod)",
+		                    "expr": "sum(max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})) by (pod)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -5610,7 +5610,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))) by (pod)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -5619,7 +5619,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))) by (pod)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -5754,7 +5754,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -5805,7 +5805,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -5856,7 +5856,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_receive_packets_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum(rate(container_network_receive_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -5907,7 +5907,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_transmit_packets_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum(rate(container_network_transmit_packets_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -5958,7 +5958,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum(rate(container_network_receive_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -6009,7 +6009,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum(rate(container_network_transmit_packets_dropped_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -6412,6 +6412,49 @@ k: GrafanaDashboard: {
 		                                }
 		                            }
 		                        ]
+		                    },
+		                    {
+		                        "matcher": {
+		                            "id": "byName",
+		                            "options": "max allocatable"
+		                        },
+		                        "properties": [
+		                            {
+		                                "id": "color",
+		                                "value": {
+		                                    "fixedColor": "super-light-red",
+		                                    "mode": "fixed"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.stacking",
+		                                "value": {
+		                                    "mode": "none"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.hideFrom",
+		                                "value": {
+		                                    "legend": false,
+		                                    "tooltip": true,
+		                                    "viz": false
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.lineStyle",
+		                                "value": {
+		                                    "dash": [
+		                                        10,
+		                                        10
+		                                    ],
+		                                    "fill": "dash"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.fillOpacity",
+		                                "value": 0
+		                            }
+		                        ]
 		                    }
 		                ]
 		            },
@@ -6446,6 +6489,14 @@ k: GrafanaDashboard: {
 		                    },
 		                    "expr": "sum(kube_node_status_capacity{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"cpu\\"})",
 		                    "legendFormat": "max capacity"
+		                },
+		                {
+		                    "datasource": {
+		                        "type": "prometheus",
+		                        "uid": "${datasource}"
+		                    },
+		                    "expr": "sum(kube_node_status_allocatable{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"cpu\\"})",
+		                    "legendFormat": "max allocatable"
 		                },
 		                {
 		                    "datasource": {
@@ -6641,6 +6692,49 @@ k: GrafanaDashboard: {
 		                                }
 		                            }
 		                        ]
+		                    },
+		                    {
+		                        "matcher": {
+		                            "id": "byName",
+		                            "options": "max allocatable"
+		                        },
+		                        "properties": [
+		                            {
+		                                "id": "color",
+		                                "value": {
+		                                    "fixedColor": "super-light-red",
+		                                    "mode": "fixed"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.stacking",
+		                                "value": {
+		                                    "mode": "none"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.hideFrom",
+		                                "value": {
+		                                    "legend": false,
+		                                    "tooltip": true,
+		                                    "viz": false
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.lineStyle",
+		                                "value": {
+		                                    "dash": [
+		                                        10,
+		                                        10
+		                                    ],
+		                                    "fill": "dash"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.fillOpacity",
+		                                "value": 0
+		                            }
+		                        ]
 		                    }
 		                ]
 		            },
@@ -6675,6 +6769,14 @@ k: GrafanaDashboard: {
 		                    },
 		                    "expr": "sum(kube_node_status_capacity{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"memory\\"})",
 		                    "legendFormat": "max capacity"
+		                },
+		                {
+		                    "datasource": {
+		                        "type": "prometheus",
+		                        "uid": "${datasource}"
+		                    },
+		                    "expr": "sum(kube_node_status_allocatable{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"memory\\"})",
+		                    "legendFormat": "max allocatable"
 		                },
 		                {
 		                    "datasource": {
@@ -6744,6 +6846,49 @@ k: GrafanaDashboard: {
 		                                }
 		                            }
 		                        ]
+		                    },
+		                    {
+		                        "matcher": {
+		                            "id": "byName",
+		                            "options": "max allocatable"
+		                        },
+		                        "properties": [
+		                            {
+		                                "id": "color",
+		                                "value": {
+		                                    "fixedColor": "super-light-red",
+		                                    "mode": "fixed"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.stacking",
+		                                "value": {
+		                                    "mode": "none"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.hideFrom",
+		                                "value": {
+		                                    "legend": false,
+		                                    "tooltip": true,
+		                                    "viz": false
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.lineStyle",
+		                                "value": {
+		                                    "dash": [
+		                                        10,
+		                                        10
+		                                    ],
+		                                    "fill": "dash"
+		                                }
+		                            },
+		                            {
+		                                "id": "custom.fillOpacity",
+		                                "value": 0
+		                            }
+		                        ]
 		                    }
 		                ]
 		            },
@@ -6778,6 +6923,14 @@ k: GrafanaDashboard: {
 		                    },
 		                    "expr": "sum(kube_node_status_capacity{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"memory\\"})",
 		                    "legendFormat": "max capacity"
+		                },
+		                {
+		                    "datasource": {
+		                        "type": "prometheus",
+		                        "uid": "${datasource}"
+		                    },
+		                    "expr": "sum(kube_node_status_allocatable{cluster=\\"$cluster\\", job=\\"kube-state-metrics\\", node=~\\"$node\\", resource=\\"memory\\"})",
+		                    "legendFormat": "max allocatable"
 		                },
 		                {
 		                    "datasource": {
@@ -7271,7 +7424,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\", pod=\\"$pod\\", container!=\\"\\"})) by (container)",
+		                    "expr": "sum(max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{namespace=\\"$namespace\\", pod=\\"$pod\\", cluster=\\"$cluster\\", container!=\\"\\"})) by (container)",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -7685,7 +7838,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(irate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * irate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -7736,7 +7889,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10065,7 +10218,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10124,7 +10277,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10133,7 +10286,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10142,7 +10295,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10151,7 +10304,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10160,7 +10313,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\\"$cluster\\", namespace=\\"$namespace\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"cpu\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                }
@@ -10255,7 +10408,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10317,7 +10470,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10326,7 +10479,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10335,7 +10488,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_requests{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10344,7 +10497,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10353,7 +10506,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
+		                    "expr": "sum(\\n    max by (cluster, namespace, pod, container)(container_memory_working_set_bytes{cluster=\\"$cluster\\", namespace=\\"$namespace\\", container!=\\"\\", image!=\\"\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n/sum(\\n    max by (cluster, namespace, pod, container)(kube_pod_container_resource_limits{job=\\"kube-state-metrics\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\", resource=\\"memory\\"})\\n  * on(cluster, namespace, pod)\\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}\\n) by (pod)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                }
@@ -10468,7 +10621,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10477,7 +10630,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -10612,7 +10765,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10663,7 +10816,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10714,7 +10867,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(avg(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(avg((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -10765,7 +10918,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(avg(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "(avg((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -11043,6 +11196,7 @@ k: GrafanaDashboard: {
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 0,
+		                "includeAll": true,
 		                "label": "workload",
 		                "name": "workload",
 		                "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload_type=~\\"$type\\"}, workload)",
@@ -11734,7 +11888,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -11743,7 +11897,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -11878,7 +12032,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -11929,7 +12083,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -11980,7 +12134,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(avg(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(avg((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -12031,7 +12185,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "(avg(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "(avg((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\", namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\", namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -14644,11 +14798,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Received",
+		            "title": "Current Rate of Bits Received",
 		            "type": "gauge"
 		        },
 		        {
@@ -14698,11 +14852,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Transmitted",
+		            "title": "Current Rate of Bits Transmitted",
 		            "type": "gauge"
 		        },
 		        {
@@ -14769,7 +14923,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (pod) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (pod) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -14778,7 +14932,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (pod) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (pod) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -14908,7 +15062,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (pod) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (pod) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -14954,7 +15108,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum by (pod) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
+		                    "expr": "sum by (pod) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n  * on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n)\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -15260,11 +15414,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Received",
+		            "title": "Current Rate of Bits Received",
 		            "type": "bargauge"
 		        },
 		        {
@@ -15300,11 +15454,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Transmitted",
+		            "title": "Current Rate of Bits Transmitted",
 		            "type": "bargauge"
 		        },
 		        {
@@ -15317,7 +15471,7 @@ k: GrafanaDashboard: {
 		                    {
 		                        "matcher": {
 		                            "id": "byRegexp",
-		                            "options": "/Bytes/"
+		                            "options": "/Bits/"
 		                        },
 		                        "properties": [
 		                            {
@@ -15371,7 +15525,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15380,7 +15534,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15389,7 +15543,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  avg by (workload, workload_type) (\\n    rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  avg by (workload, workload_type) (\\n    (8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15398,7 +15552,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  avg by (workload, workload_type) (\\n    rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  avg by (workload, workload_type) (\\n    (8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15407,7 +15561,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (1 * rate(container_network_receive_packets_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15416,7 +15570,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (1 * rate(container_network_transmit_packets_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15425,7 +15579,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (1 * rate(container_network_receive_packets_dropped_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                },
@@ -15434,7 +15588,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
+		                    "expr": "sort_desc(\\n  sum by (workload, workload_type) (\\n    (1 * rate(container_network_transmit_packets_dropped_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n    * on (cluster, namespace, pod) group_left\\n    kube_pod_info{cluster=\\"$cluster\\",namespace=\\"$namespace\\",host_network=\\"false\\"}\\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}\\n  )\\n)\\n",
 		                    "format": "table",
 		                    "instant": true
 		                }
@@ -15497,10 +15651,10 @@ k: GrafanaDashboard: {
 		                            "workload_type 8": 24
 		                        },
 		                        "renameByName": {
-		                            "Value #A": "Rx Bytes",
-		                            "Value #B": "Tx Bytes",
-		                            "Value #C": "Rx Bytes (Avg)",
-		                            "Value #D": "Tx Bytes (Avg)",
+		                            "Value #A": "Rx Bits",
+		                            "Value #B": "Tx Bits",
+		                            "Value #C": "Rx Bits (Avg)",
+		                            "Value #D": "Tx Bits (Avg)",
 		                            "Value #E": "Rx Packets",
 		                            "Value #F": "Tx Packets",
 		                            "Value #G": "Rx Packets Dropped",
@@ -15557,7 +15711,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -15608,7 +15762,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -15659,7 +15813,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(avg(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(avg((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -15710,7 +15864,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(avg(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval])\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
+		                    "expr": "sort_desc(avg((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster,namespace,pod) group_left ()\\n    topk by (cluster,namespace,pod) (\\n      1,\\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\\"false\\"})\\n    )\\n* on (cluster,namespace,pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=\\"$namespace\\", workload=~\\".+\\", workload_type=~\\"$type\\"}) by (workload))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -16057,7 +16211,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "((\\n  instance:node_cpu_utilisation:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n  *\\n  instance:node_num_cpu:sum{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n) != 0 )\\n/ scalar(sum(instance:node_num_cpu:sum{job=\\"node-exporter\\", cluster=\\"$cluster\\"}))\\n",
+		                    "expr": "((\\n  instance:node_cpu_utilisation:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n  *\\n  instance:node_num_cpu:sum{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n) != 0 )\\n/ scalar(sum(instance:node_num_cpu:sum{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}))\\n",
 		                    "legendFormat": "{{ instance }}"
 		                }
 		            ],
@@ -16104,7 +16258,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n  / scalar(count(instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", cluster=\\"$cluster\\"}))\\n)  != 0\\n",
+		                    "expr": "(\\n  instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n  / scalar(count(instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}))\\n)  != 0\\n",
 		                    "legendFormat": "{{ instance }}"
 		                }
 		            ],
@@ -16166,7 +16320,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n  / scalar(count(instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", cluster=\\"$cluster\\"}))\\n) != 0\\n",
+		                    "expr": "(\\n  instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n  / scalar(count(instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}))\\n) != 0\\n",
 		                    "legendFormat": "{{ instance }}"
 		                }
 		            ],
@@ -16213,7 +16367,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}",
+		                    "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "{{ instance }}"
 		                }
 		            ],
@@ -16289,7 +16443,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{ instance }} Receive"
 		                },
 		                {
@@ -16297,7 +16451,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{ instance }} Transmit"
 		                }
 		            ],
@@ -16358,7 +16512,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{ instance }} Receive"
 		                },
 		                {
@@ -16366,7 +16520,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{ instance }} Transmit"
 		                }
 		            ],
@@ -16428,7 +16582,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}))\\n",
+		                    "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}))\\n",
 		                    "legendFormat": "{{ instance }} {{device}}"
 		                }
 		            ],
@@ -16475,7 +16629,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}\\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", cluster=\\"$cluster\\"}))\\n",
+		                    "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}\\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}))\\n",
 		                    "legendFormat": "{{ instance }} {{device}}"
 		                }
 		            ],
@@ -16537,7 +16691,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "sum without (device) (\\n  max without (fstype, mountpoint) ((\\n    node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=\\"$cluster\\"}\\n    -\\n    node_filesystem_avail_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=\\"$cluster\\"}\\n  ) != 0)\\n)\\n/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=\\"$cluster\\"})))\\n",
+		                    "expr": "sum without (device) (\\n  max without (fstype, mountpoint) ((\\n    node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=~\\"$cluster\\"}\\n    -\\n    node_filesystem_avail_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=~\\"$cluster\\"}\\n  ) != 0)\\n)\\n/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", mountpoint!=\\"\\", cluster=~\\"$cluster\\"})))\\n",
 		                    "legendFormat": "{{ instance }}"
 		                }
 		            ],
@@ -16558,12 +16712,13 @@ k: GrafanaDashboard: {
 		                "type": "datasource"
 		            },
 		            {
+		                "allValue": ".*",
 		                "datasource": {
 		                    "type": "prometheus",
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 2,
-		                "includeAll": false,
+		                "includeAll": true,
 		                "name": "cluster",
 		                "query": "label_values(node_time_seconds, cluster)",
 		                "refresh": 2,
@@ -16640,7 +16795,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_cpu_utilisation:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_cpu_utilisation:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Utilisation"
 		                }
 		            ],
@@ -16687,7 +16842,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_load1_per_cpu:ratio{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Saturation"
 		                }
 		            ],
@@ -16749,7 +16904,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_memory_utilisation:ratio{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Utilisation"
 		                }
 		            ],
@@ -16796,7 +16951,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Major page Faults"
 		                }
 		            ],
@@ -16872,7 +17027,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Receive"
 		                },
 		                {
@@ -16880,7 +17035,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Transmit"
 		                }
 		            ],
@@ -16941,7 +17096,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Receive"
 		                },
 		                {
@@ -16949,7 +17104,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "Transmit"
 		                }
 		            ],
@@ -17011,7 +17166,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{device}}"
 		                }
 		            ],
@@ -17058,7 +17213,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} != 0",
+		                    "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} != 0",
 		                    "legendFormat": "{{device}}"
 		                }
 		            ],
@@ -17120,7 +17275,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "sort_desc(1 -\\n  (\\n    max without (mountpoint, fstype) (node_filesystem_avail_bytes{job=\\"node-exporter\\", fstype!=\\"\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n    /\\n    max without (mountpoint, fstype) (node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n  ) != 0\\n)\\n",
+		                    "expr": "sort_desc(1 -\\n  (\\n    max without (mountpoint, fstype) (node_filesystem_avail_bytes{job=\\"node-exporter\\", fstype!=\\"\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n    /\\n    max without (mountpoint, fstype) (node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!=\\"\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n  ) != 0\\n)\\n",
 		                    "legendFormat": "{{device}}"
 		                }
 		            ],
@@ -17141,12 +17296,13 @@ k: GrafanaDashboard: {
 		                "type": "datasource"
 		            },
 		            {
+		                "allValue": ".*",
 		                "datasource": {
 		                    "type": "prometheus",
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 2,
-		                "includeAll": false,
+		                "includeAll": true,
 		                "name": "cluster",
 		                "query": "label_values(node_time_seconds, cluster)",
 		                "refresh": 2,
@@ -17159,7 +17315,7 @@ k: GrafanaDashboard: {
 		                    "uid": "${datasource}"
 		                },
 		                "name": "instance",
-		                "query": "label_values(node_exporter_build_info{job=\\"node-exporter\\", cluster=\\"$cluster\\"}, instance)",
+		                "query": "label_values(node_exporter_build_info{job=\\"node-exporter\\", cluster=~\\"$cluster\\"}, instance)",
 		                "refresh": 2,
 		                "sort": 1,
 		                "type": "query"
@@ -17232,7 +17388,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n)\\n",
+		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n)\\n",
 		                    "intervalFactor": 5,
 		                    "legendFormat": "{{cpu}}"
 		                }
@@ -17274,7 +17430,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "1m load average"
 		                },
 		                {
@@ -17282,7 +17438,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "5m load average"
 		                },
 		                {
@@ -17290,7 +17446,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "15m load average"
 		                },
 		                {
@@ -17298,7 +17454,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", mode=\\"idle\\"})",
+		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", mode=\\"idle\\"})",
 		                    "legendFormat": "logical cores"
 		                }
 		            ],
@@ -17354,7 +17510,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "Physical Memory"
 		                },
 		                {
@@ -17362,7 +17518,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n    node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} -\\n    node_memory_available_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n)\\n",
+		                    "expr": "(\\n    node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} -\\n    node_memory_available_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n)\\n",
 		                    "legendFormat": "Memory Used"
 		                }
 		            ],
@@ -17410,7 +17566,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "100 -\\n(\\n  avg(node_memory_available_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}) /\\n  avg(node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n  * 100\\n)\\n"
+		                    "expr": "100 -\\n(\\n  avg(node_memory_available_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}) /\\n  avg(node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n  * 100\\n)\\n"
 		                }
 		            ],
 		            "title": "Memory Usage",
@@ -17490,7 +17646,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} read"
 		                },
@@ -17499,7 +17655,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} written"
 		                },
@@ -17508,7 +17664,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} io time"
 		                }
@@ -17631,7 +17787,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -17641,7 +17797,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -17791,7 +17947,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -17833,7 +17989,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -17855,11 +18011,13 @@ k: GrafanaDashboard: {
 		                "type": "datasource"
 		            },
 		            {
+		                "allValue": ".*",
 		                "datasource": {
 		                    "type": "prometheus",
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 2,
+		                "includeAll": true,
 		                "label": "Cluster",
 		                "name": "cluster",
 		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", sysname!=\\"Darwin\\"}, cluster)",
@@ -17873,7 +18031,7 @@ k: GrafanaDashboard: {
 		                },
 		                "label": "Instance",
 		                "name": "instance",
-		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=\\"$cluster\\", sysname!=\\"Darwin\\"}, instance)",
+		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=~\\"$cluster\\", sysname!=\\"Darwin\\"}, instance)",
 		                "refresh": 2,
 		                "type": "query"
 		            }
@@ -17945,7 +18103,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n)\\n",
+		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n)\\n",
 		                    "intervalFactor": 5,
 		                    "legendFormat": "{{cpu}}"
 		                }
@@ -17987,7 +18145,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "1m load average"
 		                },
 		                {
@@ -17995,7 +18153,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "5m load average"
 		                },
 		                {
@@ -18003,7 +18161,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "15m load average"
 		                },
 		                {
@@ -18011,7 +18169,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", mode=\\"idle\\"})",
+		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", mode=\\"idle\\"})",
 		                    "legendFormat": "logical cores"
 		                }
 		            ],
@@ -18067,7 +18225,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "Physical Memory"
 		                },
 		                {
@@ -18075,7 +18233,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n    node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} -\\n    node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} +\\n    node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} +\\n    node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n)\\n",
+		                    "expr": "(\\n    node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} -\\n    node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} +\\n    node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} +\\n    node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n)\\n",
 		                    "legendFormat": "Memory Used"
 		                },
 		                {
@@ -18083,7 +18241,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n    node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"} -\\n    node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n)\\n",
+		                    "expr": "(\\n    node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"} -\\n    node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n)\\n",
 		                    "legendFormat": "App Memory"
 		                },
 		                {
@@ -18091,7 +18249,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "Wired Memory"
 		                },
 		                {
@@ -18099,7 +18257,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "Compressed"
 		                }
 		            ],
@@ -18147,7 +18305,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n    (\\n      avg(node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}) -\\n      avg(node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}) +\\n      avg(node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}) +\\n      avg(node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n    ) /\\n    avg(node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n)\\n*\\n100\\n"
+		                    "expr": "(\\n    (\\n      avg(node_memory_internal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}) -\\n      avg(node_memory_purgeable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}) +\\n      avg(node_memory_wired_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}) +\\n      avg(node_memory_compressed_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n    ) /\\n    avg(node_memory_total_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n)\\n*\\n100\\n"
 		                }
 		            ],
 		            "title": "Memory Usage",
@@ -18227,7 +18385,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} read"
 		                },
@@ -18236,7 +18394,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} written"
 		                },
@@ -18245,7 +18403,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} io time"
 		                }
@@ -18368,7 +18526,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -18378,7 +18536,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -18528,7 +18686,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -18570,7 +18728,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -18592,11 +18750,13 @@ k: GrafanaDashboard: {
 		                "type": "datasource"
 		            },
 		            {
+		                "allValue": ".*",
 		                "datasource": {
 		                    "type": "prometheus",
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 2,
+		                "includeAll": true,
 		                "label": "Cluster",
 		                "name": "cluster",
 		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", sysname=\\"Darwin\\"},  cluster)",
@@ -18610,7 +18770,7 @@ k: GrafanaDashboard: {
 		                },
 		                "label": "Instance",
 		                "name": "instance",
-		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=\\"$cluster\\", sysname=\\"Darwin\\"}, instance)",
+		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=~\\"$cluster\\", sysname=\\"Darwin\\"}, instance)",
 		                "refresh": 2,
 		                "type": "query"
 		            }
@@ -18682,7 +18842,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n)\\n",
+		                    "expr": "(\\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\\"node-exporter\\", mode=~\\"idle|iowait|steal\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}[$__rate_interval])))\\n/ ignoring(cpu) group_left\\n  count without (cpu, mode) (node_cpu_seconds_total{job=\\"node-exporter\\", mode=\\"idle\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n)\\n",
 		                    "intervalFactor": 5,
 		                    "legendFormat": "{{cpu}}"
 		                }
@@ -18724,7 +18884,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load1{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "1m load average"
 		                },
 		                {
@@ -18732,7 +18892,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load5{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "5m load average"
 		                },
 		                {
@@ -18740,7 +18900,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_load15{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "15m load average"
 		                },
 		                {
@@ -18748,7 +18908,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", mode=\\"idle\\"})",
+		                    "expr": "count(node_cpu_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", mode=\\"idle\\"})",
 		                    "legendFormat": "logical cores"
 		                }
 		            ],
@@ -18804,7 +18964,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "(\\n  node_memory_MemTotal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n-\\n  node_memory_MemFree_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n-\\n  node_memory_Buffers_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n-\\n  node_memory_Cached_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}\\n)\\n",
+		                    "expr": "(\\n  node_memory_MemTotal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n-\\n  node_memory_MemFree_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n-\\n  node_memory_Buffers_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n-\\n  node_memory_Cached_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}\\n)\\n",
 		                    "legendFormat": "memory used"
 		                },
 		                {
@@ -18812,7 +18972,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_Buffers_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_Buffers_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "memory buffers"
 		                },
 		                {
@@ -18820,7 +18980,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_Cached_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_Cached_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "memory cached"
 		                },
 		                {
@@ -18828,7 +18988,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "node_memory_MemFree_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}",
+		                    "expr": "node_memory_MemFree_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}",
 		                    "legendFormat": "memory free"
 		                }
 		            ],
@@ -18876,7 +19036,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "100 -\\n(\\n  avg(node_memory_MemAvailable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"}) /\\n  avg(node_memory_MemTotal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\"})\\n* 100\\n)\\n"
+		                    "expr": "100 -\\n(\\n  avg(node_memory_MemAvailable_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"}) /\\n  avg(node_memory_MemTotal_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\"})\\n* 100\\n)\\n"
 		                }
 		            ],
 		            "title": "Memory Usage",
@@ -18956,7 +19116,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_read_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} read"
 		                },
@@ -18965,7 +19125,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_written_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} written"
 		                },
@@ -18974,7 +19134,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
+		                    "expr": "rate(node_disk_io_time_seconds_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device=~\\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\\"}[$__rate_interval])",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}} io time"
 		                }
@@ -19097,7 +19257,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -19107,7 +19267,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
+		                    "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", fstype!=\\"\\", mountpoint!=\\"\\"})\\n",
 		                    "format": "table",
 		                    "instant": true,
 		                    "legendFormat": ""
@@ -19257,7 +19417,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -19299,7 +19459,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "$datasource"
 		                    },
-		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
+		                    "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\", instance=\\"$instance\\", cluster=~\\"$cluster\\", device!=\\"lo\\"}[$__rate_interval]) * 8",
 		                    "intervalFactor": 1,
 		                    "legendFormat": "{{device}}"
 		                }
@@ -19321,11 +19481,13 @@ k: GrafanaDashboard: {
 		                "type": "datasource"
 		            },
 		            {
+		                "allValue": ".*",
 		                "datasource": {
 		                    "type": "prometheus",
 		                    "uid": "${datasource}"
 		                },
 		                "hide": 2,
+		                "includeAll": true,
 		                "label": "Cluster",
 		                "name": "cluster",
 		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", sysname!=\\"Darwin\\"}, cluster)",
@@ -19339,7 +19501,7 @@ k: GrafanaDashboard: {
 		                },
 		                "label": "Instance",
 		                "name": "instance",
-		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=\\"$cluster\\", sysname!=\\"Darwin\\"}, instance)",
+		                "query": "label_values(node_uname_info{job=\\"node-exporter\\", cluster=~\\"$cluster\\", sysname!=\\"Darwin\\"}, instance)",
 		                "refresh": 2,
 		                "type": "query"
 		            }
@@ -19730,11 +19892,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])))",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Received",
+		            "title": "Current Rate of Bits Received",
 		            "type": "gauge"
 		        },
 		        {
@@ -19784,11 +19946,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])))",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Transmitted",
+		            "title": "Current Rate of Bits Transmitted",
 		            "type": "gauge"
 		        },
 		        {
@@ -19830,7 +19992,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -19876,7 +20038,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval])) by (pod)",
+		                    "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", pod=~\\"$pod\\"}[$__rate_interval]))) by (pod)",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -22521,7 +22683,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sum(rate(scheduler_binding_duration_seconds_count{cluster=\\"$cluster\\", job=\\"kube-scheduler\\", instance=~\\"$instance\\"}[$__rate_interval])) by (cluster, instance)",
+		                    "expr": "sum(rate(scheduler_pod_scheduling_sli_duration_seconds_count{cluster=\\"$cluster\\", job=\\"kube-scheduler\\", instance=~\\"$instance\\"}[$__rate_interval])) by (cluster, instance)",
 		                    "legendFormat": "{{cluster}} {{instance}} binding"
 		                },
 		                {
@@ -22596,7 +22758,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "histogram_quantile(0.99, sum(rate(scheduler_binding_duration_seconds_bucket{cluster=\\"$cluster\\", job=\\"kube-scheduler\\",instance=~\\"$instance\\"}[$__rate_interval])) by (cluster, instance, le))",
+		                    "expr": "histogram_quantile(0.99, sum(rate(scheduler_pod_scheduling_sli_duration_seconds_bucket{cluster=\\"$cluster\\", job=\\"kube-scheduler\\",instance=~\\"$instance\\"}[$__rate_interval])) by (cluster, instance, le))",
 		                    "legendFormat": "{{cluster}} {{instance}} binding"
 		                },
 		                {
@@ -23058,11 +23220,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Received",
+		            "title": "Current Rate of Bits Received",
 		            "type": "bargauge"
 		        },
 		        {
@@ -23098,11 +23260,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Current Rate of Bytes Transmitted",
+		            "title": "Current Rate of Bits Transmitted",
 		            "type": "bargauge"
 		        },
 		        {
@@ -23138,11 +23300,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(avg(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(avg((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Average Rate of Bytes Received",
+		            "title": "Average Rate of Bits Received",
 		            "type": "bargauge"
 		        },
 		        {
@@ -23178,11 +23340,11 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(avg(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(avg((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
-		            "title": "Average Rate of Bytes Transmitted",
+		            "title": "Average Rate of Bits Transmitted",
 		            "type": "bargauge"
 		        },
 		        {
@@ -23229,7 +23391,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],
@@ -23280,7 +23442,7 @@ k: GrafanaDashboard: {
 		                        "type": "prometheus",
 		                        "uid": "${datasource}"
 		                    },
-		                    "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval])\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
+		                    "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{job=\\"kubelet\\", metrics_path=\\"/metrics/cadvisor\\", cluster=\\"$cluster\\",namespace=~\\"$namespace\\"}[$__rate_interval]))\\n* on (cluster, namespace, pod)\\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\\"$cluster\\",namespace=~\\"$namespace\\", workload=~\\"$workload\\", workload_type=~\\"$type\\"}) by (pod))\\n",
 		                    "legendFormat": "__auto"
 		                }
 		            ],

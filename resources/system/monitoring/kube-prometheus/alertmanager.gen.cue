@@ -9,21 +9,21 @@ k: Alertmanager: main: {
 			"app.kubernetes.io/instance":  "main"
 			"app.kubernetes.io/name":      "alertmanager"
 			"app.kubernetes.io/part-of":   "kube-prometheus"
-			"app.kubernetes.io/version":   "0.29.0"
+			"app.kubernetes.io/version":   "0.30.1"
 		}
 		name:      "main"
 		namespace: "monitoring"
 	}
 	spec: {
 		alertmanagerConfigSelector: {}
-		image: "quay.io/prometheus/alertmanager:v0.29.0"
+		image: "quay.io/prometheus/alertmanager:v0.30.1"
 		nodeSelector: "kubernetes.io/os": "linux"
 		podMetadata: labels: {
 			"app.kubernetes.io/component": "alert-router"
 			"app.kubernetes.io/instance":  "main"
 			"app.kubernetes.io/name":      "alertmanager"
 			"app.kubernetes.io/part-of":   "kube-prometheus"
-			"app.kubernetes.io/version":   "0.29.0"
+			"app.kubernetes.io/version":   "0.30.1"
 		}
 		replicas: 3
 		resources: {
@@ -43,6 +43,6 @@ k: Alertmanager: main: {
 			runAsUser:    1000
 		}
 		serviceAccountName: "alertmanager-main"
-		version:            "0.29.0"
+		version:            "0.30.1"
 	}
 }

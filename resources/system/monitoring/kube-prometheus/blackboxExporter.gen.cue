@@ -8,7 +8,7 @@ k: ClusterRole: "blackbox-exporter": {
 			"app.kubernetes.io/component": "exporter"
 			"app.kubernetes.io/name":      "blackbox-exporter"
 			"app.kubernetes.io/part-of":   "kube-prometheus"
-			"app.kubernetes.io/version":   "0.27.0"
+			"app.kubernetes.io/version":   "0.28.0"
 		}
 		name: "blackbox-exporter"
 	}

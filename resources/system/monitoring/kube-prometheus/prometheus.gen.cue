@@ -9,7 +9,7 @@ k: ClusterRole: "prometheus-k8s": {
 			"app.kubernetes.io/instance":  "k8s"
 			"app.kubernetes.io/name":      "prometheus"
 			"app.kubernetes.io/part-of":   "kube-prometheus"
-			"app.kubernetes.io/version":   "3.7.3"
+			"app.kubernetes.io/version":   "3.9.1"
 		}
 		name: "prometheus-k8s"
 	}

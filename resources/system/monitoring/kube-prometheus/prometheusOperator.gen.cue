@@ -6,7 +6,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 	metadata: {
 		annotations: {
 			"controller-gen.kubebuilder.io/version": "v0.19.0"
-			"operator.prometheus.io/version":        "0.86.2"
+			"operator.prometheus.io/version":        "0.89.0"
 		}
 		name: "alertmanagerconfigs.monitoring.coreos.com"
 	}
@@ -72,7 +72,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																	for the inhibition to take effect. This ensures related alerts are properly grouped.
 																	"""
 											items: type: "string"
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										sourceMatch: {
 											description: """
@@ -118,7 +119,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["name"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										targetMatch: {
 											description: """
@@ -164,12 +166,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["name"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 									}
 									type: "object"
 								}
-								type: "array"
+								type:                     "array"
+								"x-kubernetes-list-type": "atomic"
 							}
 							muteTimeIntervals: {
 								description: "muteTimeIntervals defines the list of MuteTimeInterval specifying when the routes should be muted."
@@ -205,7 +209,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															}
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													months: {
 														description: "months defines a list of MonthRange"
@@ -217,7 +222,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															pattern: "^((?i)january|february|march|april|may|june|july|august|september|october|november|december|1[0-2]|[1-9])(?:((:((?i)january|february|march|april|may|june|july|august|september|october|november|december|1[0-2]|[1-9]))$)|$)"
 															type:    "string"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													times: {
 														description: "times defines a list of TimeRange"
@@ -237,7 +243,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															}
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													weekdays: {
 														description: "weekdays defines a list of WeekdayRange"
@@ -249,7 +256,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															pattern: "^((?i)sun|mon|tues|wednes|thurs|fri|satur)day(?:((:(sun|mon|tues|wednes|thurs|fri|satur)day)$)|$)"
 															type:    "string"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													years: {
 														description: "years defines a list of YearRange"
@@ -258,18 +266,21 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															pattern:     "^2\\d{3}(?::2\\d{3}|$)"
 															type:        "string"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 									}
 									required: ["name"]
 									type: "object"
 								}
-								type: "array"
+								type:                     "array"
+								"x-kubernetes-list-type": "atomic"
 							}
 							receivers: {
 								description: "receivers defines the list of receivers."
@@ -1128,7 +1139,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["apiURL"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										emailConfigs: {
 											description: "emailConfigs defines the list of Email configurations."
@@ -1140,7 +1152,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				authIdentity defines the identity to use for SMTP authentication.
 																				This is typically used with PLAIN authentication mechanism.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													authPassword: {
 														description: """
@@ -1210,14 +1223,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				authUsername defines the username to use for SMTP authentication.
 																				This is used for SMTP AUTH when the server requires authentication.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													from: {
 														description: """
 																				from defines the sender address for email notifications.
 																				This appears as the "From" field in the email header.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													headers: {
 														description: """
@@ -1246,14 +1261,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															required: ["key", "value"]
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													hello: {
 														description: """
 																				hello defines the hostname to identify to the SMTP server.
 																				This is used in the SMTP HELO/EHLO command during the connection handshake.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													html: {
 														description: """
@@ -1278,14 +1295,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				smarthost defines the SMTP host and port through which emails are sent.
 																				Format should be "hostname:port", e.g. "smtp.example.com:587".
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													text: {
 														description: """
 																				text defines the plain text body of the email notification.
 																				This provides a fallback for email clients that don't support HTML.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													tlsConfig: {
 														description: """
@@ -1474,12 +1493,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				to defines the email address to send notifications to.
 																				This is the recipient address for alert notifications.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										msteamsConfigs: {
 											description: """
@@ -2334,7 +2355,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["webhookUrl"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										msteamsv2Configs: {
 											description: """
@@ -3183,7 +3205,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										name: {
 											description: "name defines the name of the receiver. Must be unique across all items from the list."
@@ -3203,7 +3226,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				actions defines a comma separated list of actions that will be available for the alert.
 																				These appear as action buttons in the OpsGenie interface.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													apiKey: {
 														description: """
@@ -3241,14 +3265,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				apiURL defines the URL to send OpsGenie API requests to.
 																				When not specified, defaults to the standard OpsGenie API endpoint.
 																				"""
-														type: "string"
+														pattern: "^https?://.+$"
+														type:    "string"
 													}
 													description: {
 														description: """
 																				description defines the detailed description of the incident.
 																				This provides additional context beyond the message field.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													details: {
 														description: """
@@ -3277,14 +3303,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															required: ["key", "value"]
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													entity: {
 														description: """
 																				entity defines an optional field that can be used to specify which domain alert is related to.
 																				This helps group related alerts together in OpsGenie.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													httpConfig: {
 														description: "httpConfig defines the HTTP client configuration for OpsGenie API requests."
@@ -4073,21 +4101,24 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				message defines the alert text limited to 130 characters.
 																				This appears as the main alert title in OpsGenie.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													note: {
 														description: """
 																				note defines an additional alert note.
 																				This provides supplementary information about the alert.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													priority: {
 														description: """
 																				priority defines the priority level of alert.
 																				Possible values are P1, P2, P3, P4, and P5, where P1 is highest priority.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													responders: {
 														description: """
@@ -4105,14 +4136,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																							id defines the unique identifier of the responder.
 																							This corresponds to the responder's ID within OpsGenie.
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 																name: {
 																	description: """
 																							name defines the display name of the responder.
 																							This is used when the responder is identified by name rather than ID.
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 																type: {
 																	description: """
@@ -4129,13 +4162,15 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																							username defines the username of the responder.
 																							This is typically used for user-type responders when identifying by username.
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 															}
 															required: ["type"]
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													sendResolved: {
 														description: "sendResolved defines whether or not to notify about resolved alerts."
@@ -4146,14 +4181,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				source defines the backlink to the sender of the notification.
 																				This helps identify where the alert originated from.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													tags: {
 														description: """
 																				tags defines a comma separated list of tags attached to the notifications.
 																				These help categorize and filter alerts within OpsGenie.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													updateAlerts: {
 														description: """
@@ -4165,7 +4202,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										pagerdutyConfigs: {
 											description: "pagerdutyConfigs defines the List of PagerDuty configurations."
@@ -4177,10 +4215,12 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												properties: {
 													class: {
 														description: "class defines the class/type of the event."
+														minLength:   1
 														type:        "string"
 													}
 													client: {
 														description: "client defines the client identification."
+														minLength:   1
 														type:        "string"
 													}
 													clientURL: {
@@ -4189,10 +4229,12 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													component: {
 														description: "component defines the part or component of the affected system that is broken."
+														minLength:   1
 														type:        "string"
 													}
 													description: {
 														description: "description of the incident."
+														minLength:   1
 														type:        "string"
 													}
 													details: {
@@ -4219,10 +4261,12 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															required: ["key", "value"]
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													group: {
 														description: "group defines a cluster or grouping of sources."
+														minLength:   1
 														type:        "string"
 													}
 													httpConfig: {
@@ -5014,6 +5058,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															properties: {
 																alt: {
 																	description: "alt is the optional alternative text for the image."
+																	minLength:   1
 																	type:        "string"
 																}
 																href: {
@@ -5022,12 +5067,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																}
 																src: {
 																	description: "src of the image being attached to the incident"
+																	minLength:   1
 																	type:        "string"
 																}
 															}
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													pagerDutyLinkConfigs: {
 														description: "pagerDutyLinkConfigs defines a list of link details to attach that provide further detail about an incident."
@@ -5036,6 +5083,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															properties: {
 																alt: {
 																	description: "alt defines the text that describes the purpose of the link, and can be used as the link's text."
+																	minLength:   1
 																	type:        "string"
 																}
 																href: {
@@ -5045,7 +5093,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															}
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													routingKey: {
 														description: """
@@ -5118,20 +5167,32 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													severity: {
 														description: "severity of the incident."
+														minLength:   1
 														type:        "string"
 													}
 													source: {
 														description: "source defines the unique location of the affected system."
+														minLength:   1
 														type:        "string"
+													}
+													timeout: {
+														description: """
+																				timeout is the maximum time allowed to invoke the pagerduty
+																				It requires Alertmanager >= v0.30.0.
+																				"""
+														pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+														type:    "string"
 													}
 													url: {
 														description: "url defines the URL to send requests to."
+														pattern:     "^https?://.+$"
 														type:        "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										pushoverConfigs: {
 											description: "pushoverConfigs defines the list of Pushover configurations."
@@ -5146,7 +5207,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				device defines the name of a specific device to send the notification to.
 																				If not specified, the notification is sent to all user's devices.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													expire: {
 														description: """
@@ -5160,6 +5222,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 														description: """
 																				html defines whether notification message is HTML or plain text.
 																				When true, the message can include HTML formatting tags.
+																				html and monospace formatting are mutually exclusive.
 																				"""
 														type: "boolean"
 													}
@@ -5950,7 +6013,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				message defines the notification message content.
 																				This is the main body text of the Pushover notification.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													monospace: {
 														description: """
@@ -5964,7 +6028,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				priority defines the notification priority level.
 																				See https://pushover.net/api#priority for valid values and behavior.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													retry: {
 														description: """
@@ -5983,14 +6048,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				sound defines the name of one of the sounds supported by device clients.
 																				This overrides the user's default sound choice for this notification.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													title: {
 														description: """
 																				title defines the notification title displayed in the Pushover message.
 																				This appears as the bold header text in the notification.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													token: {
 														description: """
@@ -6032,7 +6099,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				Either `token` or `tokenFile` is required.
 																				It requires Alertmanager >= v0.26.0.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													ttl: {
 														description: """
@@ -6054,7 +6122,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				urlTitle defines a title for the supplementary URL.
 																				If not specified, the raw URL is shown instead.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													userKey: {
 														description: """
@@ -6094,12 +6163,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				Either `userKey` or `userKeyFile` is required.
 																				It requires Alertmanager >= v0.26.0.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										rocketchatConfigs: {
 											description: """
@@ -6141,14 +6212,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																							url defines the URL the button links to when clicked.
 																							This creates a clickable button that opens the specified URL.
 																							"""
-																	pattern: "^https?://.+$"
-																	type:    "string"
+																	type: "string"
 																}
 															}
 															type: "object"
 														}
-														minItems: 1
-														type:     "array"
+														minItems:                 1
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													apiURL: {
 														description: """
@@ -6216,8 +6287,9 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															}
 															type: "object"
 														}
-														minItems: 1
-														type:     "array"
+														minItems:                 1
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													httpConfig: {
 														description: "httpConfig defines the HTTP client configuration for RocketChat API requests."
@@ -7006,16 +7078,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				iconURL defines the icon URL for the message avatar.
 																				This displays a custom image as the message sender's avatar.
 																				"""
-														pattern: "^https?://.+$"
-														type:    "string"
+														type: "string"
 													}
 													imageURL: {
 														description: """
 																				imageURL defines the image URL to display within the message.
 																				This embeds an image directly in the message attachment.
 																				"""
-														pattern: "^https?://.+$"
-														type:    "string"
+														type: "string"
 													}
 													linkNames: {
 														description: """
@@ -7048,8 +7118,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				thumbURL defines the thumbnail URL for the message.
 																				This displays a small thumbnail image alongside the message content.
 																				"""
-														pattern: "^https?://.+$"
-														type:    "string"
+														type: "string"
 													}
 													title: {
 														description: """
@@ -7071,6 +7140,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 														description: """
 																				token defines the sender token for RocketChat authentication.
 																				This is the personal access token or bot token used to authenticate API requests.
+																				The secret needs to be in the same namespace as the AlertmanagerConfig
+																				object and accessible by the Prometheus Operator.
 																				"""
 														properties: {
 															key: {
@@ -7101,6 +7172,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 														description: """
 																				tokenID defines the sender token ID for RocketChat authentication.
 																				This is the user ID associated with the token used for API requests.
+																				The secret needs to be in the same namespace as the AlertmanagerConfig
+																				object and accessible by the Prometheus Operator.
 																				"""
 														properties: {
 															key: {
@@ -7131,7 +7204,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["token", "tokenID"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										slackConfigs: {
 											description: "slackConfigs defines the list of Slack configurations."
@@ -7162,14 +7236,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																									dismissText defines the label for the cancel button in the dialog.
 																									When not specified, defaults to "Cancel". This button cancels the action.
 																									"""
-																			type: "string"
+																			minLength: 1
+																			type:      "string"
 																		}
 																		okText: {
 																			description: """
 																									okText defines the label for the confirmation button in the dialog.
 																									When not specified, defaults to "Okay". This button proceeds with the action.
 																									"""
-																			type: "string"
+																			minLength: 1
+																			type:      "string"
 																		}
 																		text: {
 																			description: """
@@ -7184,7 +7260,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																									title defines the title text displayed at the top of the confirmation dialog.
 																									When not specified, a default title will be used.
 																									"""
-																			type: "string"
+																			minLength: 1
+																			type:      "string"
 																		}
 																	}
 																	required: ["text"]
@@ -7195,14 +7272,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																							name defines a unique identifier for the action within the message.
 																							This value is sent back to your application when the action is triggered.
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 																style: {
 																	description: """
 																							style defines the visual appearance of the action element.
 																							Valid values include "default", "primary" (green), and "danger" (red).
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 																text: {
 																	description: """
@@ -7232,13 +7311,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																							value defines the payload sent when the action is triggered.
 																							This data is included in the callback sent to your application.
 																							"""
-																	type: "string"
+																	minLength: 1
+																	type:      "string"
 																}
 															}
 															required: ["text", "type"]
 															type: "object"
 														}
-														type: "array"
+														minItems:                 1
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													apiURL: {
 														description: """
@@ -7273,10 +7355,12 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													callbackId: {
 														description: "callbackId defines an identifier for the message used in interactive components."
+														minLength:   1
 														type:        "string"
 													}
 													channel: {
 														description: "channel defines the channel or user to send notifications to."
+														minLength:   1
 														type:        "string"
 													}
 													color: {
@@ -7284,10 +7368,12 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				color defines the color of the left border of the Slack message attachment.
 																				Can be a hex color code (e.g., "#ff0000") or a predefined color name.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													fallback: {
 														description: "fallback defines a plain-text summary of the attachment for clients that don't support attachments."
+														minLength:   1
 														type:        "string"
 													}
 													fields: {
@@ -7328,10 +7414,13 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															required: ["title", "value"]
 															type: "object"
 														}
-														type: "array"
+														minItems:                 1
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													footer: {
 														description: "footer defines small text displayed at the bottom of the message attachment."
+														minLength:   1
 														type:        "string"
 													}
 													httpConfig: {
@@ -8118,6 +8207,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													iconEmoji: {
 														description: "iconEmoji defines the emoji to use as the bot's avatar (e.g., \":ghost:\")."
+														minLength:   1
 														type:        "string"
 													}
 													iconURL: {
@@ -8140,11 +8230,17 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				mrkdwnIn defines which fields should be parsed as Slack markdown.
 																				Valid values include "pretext", "text", and "fields".
 																				"""
-														items: type: "string"
-														type: "array"
+														items: {
+															minLength: 1
+															type:      "string"
+														}
+														minItems:                 1
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													pretext: {
 														description: "pretext defines optional text that appears above the message attachment block."
+														minLength:   1
 														type:        "string"
 													}
 													sendResolved: {
@@ -8160,6 +8256,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													text: {
 														description: "text defines the main text content of the Slack message attachment."
+														minLength:   1
 														type:        "string"
 													}
 													thumbURL: {
@@ -8169,8 +8266,18 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				"""
 														type: "string"
 													}
+													timeout: {
+														description: """
+																				timeout defines the maximum time to wait for a webhook request to complete,
+																				before failing the request and allowing it to be retried.
+																				It requires Alertmanager >= v0.30.0.
+																				"""
+														pattern: "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+														type:    "string"
+													}
 													title: {
 														description: "title defines the title text displayed in the Slack message attachment."
+														minLength:   1
 														type:        "string"
 													}
 													titleLink: {
@@ -8179,12 +8286,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 													}
 													username: {
 														description: "username defines the slack bot user name."
+														minLength:   1
 														type:        "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										snsConfigs: {
 											description: "snsConfigs defines the list of SNS configurations"
@@ -8996,14 +9105,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				message defines the message content of the SNS notification.
 																				This is the actual notification text that will be sent to subscribers.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													phoneNumber: {
 														description: """
 																				phoneNumber defines the phone number if message is delivered via SMS in E.164 format.
 																				If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													sendResolved: {
 														description: "sendResolved defines whether or not to notify about resolved alerts."
@@ -9102,26 +9213,30 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				subject defines the subject line when the message is delivered to email endpoints.
 																				This field is only used when sending to email subscribers of an SNS topic.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													targetARN: {
 														description: """
 																				targetARN defines the mobile platform endpoint ARN if message is delivered via mobile notifications.
 																				If you don't specify this value, you must specify a value for the TopicARN or PhoneNumber.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													topicARN: {
 														description: """
 																				topicARN defines the SNS topic ARN, e.g. arn:aws:sns:us-east-2:698519295917:My-Topic.
 																				If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										telegramConfigs: {
 											description: "telegramConfigs defines the list of Telegram configurations."
@@ -9136,7 +9251,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				apiURL defines the Telegram API URL, e.g. https://api.telegram.org.
 																				If not specified, the default Telegram API URL will be used.
 																				"""
-														type: "string"
+														pattern: "^https?://.+$"
+														type:    "string"
 													}
 													botToken: {
 														description: """
@@ -10009,7 +10125,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["chatID"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										victoropsConfigs: {
 											description: "victoropsConfigs defines the list of VictorOps configurations."
@@ -10055,7 +10172,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				apiUrl defines the VictorOps API URL.
 																				When not specified, defaults to the standard VictorOps API endpoint.
 																				"""
-														type: "string"
+														pattern: "^https?://.+$"
+														type:    "string"
 													}
 													customFields: {
 														description: """
@@ -10084,14 +10202,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 															required: ["key", "value"]
 															type: "object"
 														}
-														type: "array"
+														type:                     "array"
+														"x-kubernetes-list-type": "atomic"
 													}
 													entityDisplayName: {
 														description: """
 																				entityDisplayName contains a summary of the alerted problem.
 																				This appears as the main title or identifier for the incident.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													httpConfig: {
 														description: "httpConfig defines the HTTP client's configuration for VictorOps API requests."
@@ -10880,21 +11000,24 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				messageType describes the behavior of the alert.
 																				Valid values are "CRITICAL", "WARNING", and "INFO".
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													monitoringTool: {
 														description: """
 																				monitoringTool defines the monitoring tool the state message is from.
 																				This helps identify the source system that generated the alert.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													routingKey: {
 														description: """
 																				routingKey defines a key used to map the alert to a team.
 																				This determines which VictorOps team will receive the alert notification.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													sendResolved: {
 														description: "sendResolved defines whether or not to notify about resolved alerts."
@@ -10905,12 +11028,15 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				stateMessage contains a long explanation of the alerted problem.
 																				This provides detailed context about the incident.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 												}
+												required: ["routingKey"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										webexConfigs: {
 											description: "webexConfigs defines the list of Webex configurations."
@@ -11724,7 +11850,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												required: ["roomID"]
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										webhookConfigs: {
 											description: "webhookConfigs defines the List of webhook configurations."
@@ -12580,7 +12707,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 										wechatConfigs: {
 											description: "wechatConfigs defines the list of WeChat configurations."
@@ -12595,7 +12723,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				agentID defines the application agent ID within WeChat Work.
 																				This identifies which WeChat Work application will send the notifications.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													apiSecret: {
 														description: """
@@ -12633,14 +12762,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				apiURL defines the WeChat API URL.
 																				When not specified, defaults to the standard WeChat Work API endpoint.
 																				"""
-														type: "string"
+														pattern: "^https?://.+$"
+														type:    "string"
 													}
 													corpID: {
 														description: """
 																				corpID defines the corp id for authentication.
 																				This is the unique identifier for your WeChat Work organization.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													httpConfig: {
 														description: "httpConfig defines the HTTP client configuration for WeChat API requests."
@@ -13429,14 +13560,16 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				message defines the API request data as defined by the WeChat API.
 																				This contains the actual notification content to be sent.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													messageType: {
 														description: """
 																				messageType defines the type of message to send.
 																				Valid values include "text", "markdown", and other WeChat Work supported message types.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													sendResolved: {
 														description: "sendResolved defines whether or not to notify about resolved alerts."
@@ -13447,32 +13580,38 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																				toParty defines the target department(s) to receive the notification.
 																				Can be a single department ID or multiple department IDs separated by '|'.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													toTag: {
 														description: """
 																				toTag defines the target tag(s) to receive the notification.
 																				Can be a single tag ID or multiple tag IDs separated by '|'.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 													toUser: {
 														description: """
 																				toUser defines the target user(s) to receive the notification.
 																				Can be a single user ID or multiple user IDs separated by '|'.
 																				"""
-														type: "string"
+														minLength: 1
+														type:      "string"
 													}
 												}
 												type: "object"
 											}
-											type: "array"
+											type:                     "array"
+											"x-kubernetes-list-type": "atomic"
 										}
 									}
 									required: ["name"]
 									type: "object"
 								}
 								type: "array"
+								"x-kubernetes-list-map-keys": ["name"]
+								"x-kubernetes-list-type": "map"
 							}
 							route: {
 								description: """
@@ -13484,7 +13623,8 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 									activeTimeIntervals: {
 										description: "activeTimeIntervals is a list of MuteTimeInterval names when this route should be active."
 										items: type: "string"
-										type: "array"
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									continue: {
 										description: """
@@ -13501,23 +13641,27 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 																Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
 																"""
 										items: type: "string"
-										type: "array"
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									groupInterval: {
 										description: """
 																groupInterval defines how long to wait before sending an updated notification.
-																Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
+																Must be greater than 0.
 																Example: "5m"
 																"""
-										type: "string"
+										minLength: 1
+										pattern:   "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:      "string"
 									}
 									groupWait: {
 										description: """
 																groupWait defines how long to wait before sending the initial notification.
-																Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
 																Example: "30s"
 																"""
-										type: "string"
+										minLength: 1
+										pattern:   "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:      "string"
 									}
 									matchers: {
 										description: """
@@ -13564,12 +13708,14 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 											required: ["name"]
 											type: "object"
 										}
-										type: "array"
+										type:                     "array"
+										"x-kubernetes-list-type": "atomic"
 									}
 									muteTimeIntervals: {
 										description: "muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,"
 										items: type: "string"
-										type: "array"
+										type:                     "array"
+										"x-kubernetes-list-type": "set"
 									}
 									receiver: {
 										description: """
@@ -13581,19 +13727,116 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 									repeatInterval: {
 										description: """
 																repeatInterval defines how long to wait before repeating the last notification.
-																Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
+																Must be greater than 0.
 																Example: "4h"
 																"""
-										type: "string"
+										minLength: 1
+										pattern:   "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+										type:      "string"
 									}
 									routes: {
 										description: "routes defines the child routes."
 										items: "x-kubernetes-preserve-unknown-fields": true
-										type: "array"
+										type:                     "array"
+										"x-kubernetes-list-type": "atomic"
 									}
 								}
 								type: "object"
 							}
+						}
+						type: "object"
+					}
+					status: {
+						description: """
+												status defines the status subresource. It is under active development and is updated only when the
+												"StatusForConfigurationResources" feature gate is enabled.
+
+												Most recent observed status of the ServiceMonitor. Read-only.
+												More info:
+												https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+												"""
+						properties: bindings: {
+							description: "bindings defines the list of workload resources (Prometheus, PrometheusAgent, ThanosRuler or Alertmanager) which select the configuration resource."
+							items: {
+								description: "WorkloadBinding is a link between a configuration resource and a workload resource."
+								properties: {
+									conditions: {
+										description: "conditions defines the current state of the configuration resource when bound to the referenced Workload object."
+										items: {
+											description: "ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler."
+											properties: {
+												lastTransitionTime: {
+													description: "lastTransitionTime defines the time of the last update to the current status property."
+													format:      "date-time"
+													type:        "string"
+												}
+												message: {
+													description: "message defines the human-readable message indicating details for the condition's last transition."
+													type:        "string"
+												}
+												observedGeneration: {
+													description: """
+																				observedGeneration defines the .metadata.generation that the
+																				condition was set based upon. For instance, if `.metadata.generation` is
+																				currently 12, but the `.status.conditions[].observedGeneration` is 9, the
+																				condition is out of date with respect to the current state of the object.
+																				"""
+													format: "int64"
+													type:   "integer"
+												}
+												reason: {
+													description: "reason for the condition's last transition."
+													type:        "string"
+												}
+												status: {
+													description: "status of the condition."
+													minLength:   1
+													type:        "string"
+												}
+												type: {
+													description: """
+																				type of the condition being reported.
+																				Currently, only "Accepted" is supported.
+																				"""
+													enum: ["Accepted"]
+													minLength: 1
+													type:      "string"
+												}
+											}
+											required: ["lastTransitionTime", "status", "type"]
+											type: "object"
+										}
+										type: "array"
+										"x-kubernetes-list-map-keys": ["type"]
+										"x-kubernetes-list-type": "map"
+									}
+									group: {
+										description: "group defines the group of the referenced resource."
+										enum: ["monitoring.coreos.com"]
+										type: "string"
+									}
+									name: {
+										description: "name defines the name of the referenced object."
+										minLength:   1
+										type:        "string"
+									}
+									namespace: {
+										description: "namespace defines the namespace of the referenced object."
+										minLength:   1
+										type:        "string"
+									}
+									resource: {
+										description: "resource defines the type of resource being referenced (e.g. Prometheus, PrometheusAgent, ThanosRuler or Alertmanager)."
+										enum: ["prometheuses", "prometheusagents", "thanosrulers", "alertmanagers"]
+										type: "string"
+									}
+								}
+								required: ["group", "name", "namespace", "resource"]
+								type: "object"
+							}
+							type: "array"
+							"x-kubernetes-list-map-keys": ["group", "resource", "name", "namespace"]
+							"x-kubernetes-list-type": "map"
 						}
 						type: "object"
 					}
@@ -13603,6 +13846,7 @@ k: CustomResourceDefinition: "alertmanagerconfigs.monitoring.coreos.com": {
 			}
 			served:  true
 			storage: true
+			subresources: status: {}
 		}]
 	}
 }
