@@ -13,6 +13,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
       - run: npx renovate
+        env:
+          GITHUB_COM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # - name: Self-hosted Renovate
       #   uses: renovatebot/github-action@v46.0.1
       #   with:
