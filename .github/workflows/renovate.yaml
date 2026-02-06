@@ -10,10 +10,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v46.0.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          configurationFile: renovate.json
-        env:
-          LOG_LEVEL: debug
+      - name: Setup Node
+        uses: actions/setup-node@v6
+      - run: npx renovate
+      # - name: Self-hosted Renovate
+      #   uses: renovatebot/github-action@v46.0.1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     configurationFile: renovate.json
+      #   env:
+      #     LOG_LEVEL: debug
