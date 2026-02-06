@@ -2,6 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["group:allNonMajor"],
   "ignorePaths": [".github/workflows/**"],
+  "allowedPostUpgradeCommands": [".*"],
   "customManagers": [
     {
       "customType": "regex",
@@ -10,6 +11,23 @@
       "matchStrings": [
         "\"(?<depName>.*)\":\\s+\"(?<currentValue>.*)\"(\\s@renovate\\((versioning=(?<versioning>))?\\))?"
       ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["**/export.sh"],
+      "matchStrings": [
+        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\nVERSION=(?<currentValue>\\S+)"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "matchFileNames": ["**/export.sh"],
+      "postUpgradeTasks": {
+        "commands": ["{{{parentDir}}}/export.sh"],
+        "fileFilters": ["{{{parentDir}}}/**"],
+        "executionMode": "branch"
+      }
     }
   ]
 }

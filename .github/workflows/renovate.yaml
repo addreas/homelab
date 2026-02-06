@@ -14,6 +14,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configurationFile: renovate.json
+          renovate-version: full
         env:
-          LOG_LEVEL: debug
           RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: "^.*export\\.sh$"
