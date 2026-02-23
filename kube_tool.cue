@@ -37,7 +37,7 @@ command: ls: cli.Print & {
 command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
-			cmd: ["kubectl", "replace", "-f-"]
+			cmd: ["kubectl", "apply", "-f-"]
 			stdin: yaml.MarshalStream(earlyResources)
 		}
 	}
