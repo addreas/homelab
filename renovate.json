@@ -5,6 +5,14 @@
   "customManagers": [
     {
       "customType": "regex",
+      "managerFilePatterns": ["resources/**/*.cue"],
+      "datasourceTemplate": "docker",
+      "matchStrings": [
+        "\"(?<depName>.*):(?<currentValue>.*)\"\\s@renovate(\\(packageName=\"(?<packageName>.*?)\"\\))?"
+      ]
+    },
+    {
+      "customType": "regex",
       "managerFilePatterns": ["tags.cue"],
       "datasourceTemplate": "github-releases",
       "matchStrings": [

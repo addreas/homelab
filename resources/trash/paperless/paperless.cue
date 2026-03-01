@@ -15,9 +15,8 @@ k: ConfigMap: "paperless-config": data: {
 	"PAPERLESS_APPS":                  "allauth.socialaccount.providers.openid_connect"
 	"PAPERLESS_DISABLE_REGULAR_LOGIN": "true"
 
-	"PAPERLESS_TIME_ZONE": "Europe/Stockholm"
-	// "PAPERLESS_OCR_LANGUAGE":     "swe"
-	// "PAPERLESS_OCR_LANGUAGES":    "swe eng"
+	"PAPERLESS_TIME_ZONE":        "Europe/Stockholm"
+	"PAPERLESS_OCR_LANGUAGE":     "swe"
 	"PAPERLESS_CONSUMER_DISABLE": "true"
 }
 
@@ -33,9 +32,8 @@ k: OAuth2Client: "paperless": spec: {
 k: StatefulSet: "paperless": spec: {
 	template: spec: {
 		containers: [{
-			name: "webserver"
-			// image: "ghcr.io/paperless-ngx/paperless-ngx:\(githubReleases["paperless-ngx/paperless-ngx"])"
-			image: "ghcr.io/addreas/paperless-ngx:v2.20.9" @renovate(githubReleases: "paperless-ngx/paperless-ngx")
+			name:  "webserver"
+			image: "ghcr.io/addreas/paperless-ngx:2.20.9" @renovate(packageName="ghcr.io/paperless-ngx/paperless-ngx")
 			ports: [{
 				name:          "http"
 				containerPort: 8000
