@@ -45,7 +45,7 @@ jobs:
 
       - name: Setup env
         shell: bash
-        script: |
+        run: |
           DOCKERFILE_PATH="${{ matrix.dockerfile }}"
           DOCKERFILE_DIR="$(dirname "$DOCKERFILE_PATH")"
 
