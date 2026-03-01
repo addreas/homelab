@@ -2,18 +2,15 @@ name: build-images
 
 on:
   push:
-    branches:
-      - 'main'
+    branches: [main]
     paths:
       - '**/*.Dockerfile'
 
 jobs:
   find:
     runs-on: ubuntu-latest
-
     outputs:
-      dockerfiles: ${{ steps.find.outputs.dockerfiles}}
-
+      dockerfiles: ${{ steps.find.outputs.dockerfiles }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,14 +19,15 @@ jobs:
       - id: find
         name: Find changed Dockerfiles
         run: |
-          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- '*.Dockerfile'| jq -R -s -c 'split("\n") | map(select(length > 0))')
+          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- '*.Dockerfile' | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "dockerfiles=$files" >> "$GITHUB_OUTPUT"
 
   build:
     runs-on: ubuntu-latest
-    needs:
-    - find
+    needs: [find]
+    if: needs.find.outputs.dockerfiles != '[]'
     strategy:
+      fail-fast: false
       matrix:
         dockerfile: ${{ fromJSON(needs.find.outputs.dockerfiles) }}
 
@@ -56,7 +54,6 @@ jobs:
           echo "DOCKERFILE_DIR=$DOCKERFILE_DIR" >> $GITHUB_ENV
           echo "FROM_VERSION=$FROM_VERSION" >> $GITHUB_ENV
           echo "DOCKERFILE_NAME_PREFIX=$DOCKERFILE_NAME_PREFIX" >> $GITHUB_ENV
-
 
       - name: Build and push
         uses: docker/build-push-action@v5
