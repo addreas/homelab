@@ -1,0 +1,8 @@
+machine:
+  network:
+    interfaces:
+    - deviceSelector:
+          physical: true
+      dhcp: true
+      vip:
+        ip: 10.24.0.24

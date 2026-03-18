@@ -1,0 +1,20 @@
+cluster:
+    controlPlane:
+        endpoint: https://api.qb:6443
+    clusterName: qb
+    network:
+        dnsDomain: cluster.local
+        podSubnets:
+            - 10.48.0.0/16
+        serviceSubnets:
+            - 10.96.0.0/12
+        cni:
+            name: none
+    proxy:
+        disabled: true
+
+    discovery:
+        enabled: false
+
+    allowSchedulingOnControlPlanes: false
+
