@@ -2,11 +2,10 @@
   description = "Just a bunch of stuff";
 
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-  inputs.nixpkgs-24.url = "nixpkgs/nixos-24.11";
 
   inputs.flakefiles.url = "github:addreas/flakefiles";
 
-  outputs = { self, nixpkgs, nixpkgs-24, flakefiles, ... }:
+  outputs = { self, nixpkgs, flakefiles, ... }:
     let
       x86 = "x86_64-linux";
 
@@ -15,18 +14,18 @@
         specialArgs.nixpkgs = nixpkgs;
         modules = [
           "${self}/nix/machines/${name}"
-          {
-            environment.etc."nixos-source".source = self;
-          }
-          flakefiles.nixosModules.addem-basic
           flakefiles.nixosModules.base
-          flakefiles.nixosModules.services
+          flakefiles.nixosModules.addem-basic
         ] ++ extraModules;
       };
     in
     {
       formatter.${x86} = nixpkgs.legacyPackages.${x86}.nixpkgs-fmt;
       apps.${x86} = flakefiles.apps.${x86};
+
+      packages.${x86}.nixiecore = nixpkgs.legacyPackages.${x86}.callPackage ./nix/packages/nixiecore {
+        host = machine x86 "maintenance-mode" [];
+      };
 
       nixosConfigurations.sergio = machine x86 "sergio" [
         flakefiles.nixosModules.nix-builder
