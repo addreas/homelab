@@ -6,3 +6,7 @@ machine:
       dhcp: true
       vip:
         ip: 10.24.0.24
+
+  featuers:
+    kubernetesTalosAPIAccess:
+      enabled: true

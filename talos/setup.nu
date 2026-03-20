@@ -126,6 +126,7 @@ export def "config boot" [
         | from json
         | where dst == "default"
         | get prefsrc
+        | first
 
 
     let factory_image = $"https://factory.talos.dev/image/($schematic_id)/($talos_version)"

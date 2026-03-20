@@ -1,20 +1,18 @@
 machine:
-    kubelet:
-        defaultRuntimeSeccompProfileEnabled: true
-        disableManifestsDirectory: true
+  kubelet:
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
 
-    install:
-        disk: /dev/nvme0n1
-        wipe: true
+  install:
+    disk: /dev/nvme0n1
+    wipe: true
 
-    features:
-        diskQuotaSupport: true
-        kubePrism:
-            enabled: true
-            port: 7445
-        hostDNS:
-            enabled: true
-            forwardKubeDNSToHost: false # cilium issue: https://github.com/siderolabs/talos/pull/9200
+  features:
+    diskQuotaSupport: true
+    kubePrism:
+      enabled: true
+      port: 7445
 
-        kubernetesTalosAPIAccess:
-            enabled: true
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false # cilium issue: https://github.com/siderolabs/talos/pull/9200
