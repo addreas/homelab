@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kube-multus-ds
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: kube-multus
+          volumeMounts:
+            - mountPath: /run/cni
+              name: host-run-cni
+
+        - name: dhcp-daemon
+          image: ghcr.io/addreas/cni-plugins:v1.9.1
+          command:
+            - /opt/cni/bin/dhcp
+            - daemon
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: host-run-cni
+              mountPath: /run/cni
+            - name: host-run-netns
+              mountPath: /var/run/netns
+              mountPropagation: HostToContainer
+
+      initContainers:
+        - name: install-cni-plugins
+          image: ghcr.io/addreas/cni-plugins:v1.9.1
+          command:
+            - /bin/sh
+            - -c
+            - cp /opt/cni/bin/* /host/opt/cni/bin
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: cnibin
+              mountPath: /host/opt/cni/bin
+              mountPropagation: Bidirectional
+
+      volumes:
+        - name: host-run-cni
+          hostPath:
+            path: /run/cni
