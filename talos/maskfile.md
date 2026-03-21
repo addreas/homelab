@@ -143,11 +143,6 @@ if [[ "$KIND" == "controlplane" ]]; then
     | sort -u \
     | xargs talosctl config endpoints 
 fi;
-
-talosctl config info -o json \
-    | (jq -r '.nodes[]' && echo ${NODE_IP})
-    | sort -u \
-    | xargs talosctl config nodes
 ```
 
 ### config boot (CLUSTER_NAME) (API_HOST) (SCHEMATICS)

@@ -1,12 +1,12 @@
 customization:
-    bootloader: sd-boot
-    extraKernelArgs:
-        - init_on_alloc=1
-        - init_on_free=1
-    systemExtensions:
-      officialExtensions:
-        - siderolabs/ctr
-        - siderolabs/fuse3
-        - siderolabs/glibc
-        - siderolabs/nfs-utils
-        - siderolabs/util-linux-tools
+  bootloader: sd-boot
+  extraKernelArgs:
+    - init_on_alloc=1
+    - init_on_free=1
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/ctr
+      - siderolabs/fuse3
+      - siderolabs/glibc
+      - siderolabs/nfs-utils
+      - siderolabs/util-linux-tools

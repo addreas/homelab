@@ -1,3 +1,5 @@
+@if(monitoring)
+
 package kube
 
 let DS_PROMETHEUS = {

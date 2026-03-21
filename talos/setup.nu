@@ -1,5 +1,3 @@
-#!/usr/bin/env nu
-
 export def "gen secrets" [] {
     talosctl gen secrets
     sops encrypt --in-place secrets.yaml
@@ -58,18 +56,13 @@ export def "config apply" [cluster_name: string, kind: string, node_ip: string] 
 
     talosctl apply-config --insecure --nodes $node_ip --file $"($kind).yaml"
 
-    def append-node [kind: string] {
+    if ($kind == "controlplane") {
         talosctl config info -o json
         | from json
-        | get $kind
+        | get endpoints
         | append $node_ip
         | uniq
-        | talosctl config $kind...$in
-    }
-
-    append-node nodes
-    if ($kind == "controlplane") {
-        append-node endpoints
+        | talosctl config endpoints ...$in
     }
 }
 
@@ -150,6 +143,24 @@ export def "config boot" [
     }
 }
 
+export def "config update" [
+    cluster_name: string,
+    node_name: string,
+    ...schematics: string,
+] {
+    let schematic_id = open schematics/base.yaml ...$schematics
+        | reduce { |it| merge deep --strategy append $it }
+        | to json
+        | http post https://factory.talos.dev/schematics
+        | get id
+    let talos_version = talosctl version --client --short
+        | grep Talos
+        | str replace "Talos " ""
+
+    let factory_image = $"https://factory.talos.dev/image/($schematic_id)/($talos_version)"
+    talosctl upgrade --nodes $node_name --image $"factory.talos.dev/metal-installer/($schematic_id):($talos_version)" 
+}
+
 
 export def "cluster bootstrap" [node_ip: string] {
     talosctl bootstrap --nodes $node_ip
@@ -167,9 +178,6 @@ export def "cluster resources" [] {
         --set cgroup.hostRoot=/sys/fs/cgroup
         --set k8sServiceHost=localhost
         --set k8sServicePort=7445)
-
-    # https://docs.siderolabs.com/kubernetes-guides/cni/multus
-    kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml
 
     flux install --toleration-keys=node-role.kubernetes.io/control-plane
 
