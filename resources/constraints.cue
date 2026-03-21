@@ -11,7 +11,9 @@ _homelab: {
 }
 
 let podTemplate = {
-	metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
+	if len(spec.containers) > 1 {
+		metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
+	}
 	spec: {
 		securityContext: {
 			fsGroup:             *1000 | int
@@ -19,9 +21,12 @@ let podTemplate = {
 		}
 		containers: [...{
 			securityContext: {
-				allowPrivilegeEscalation: *false | bool
+				runAsNonRoot:             *true | bool
 				runAsUser:                *1000 | int
 				runAsGroup:               *1000 | int
+				allowPrivilegeEscalation: *false | bool
+				capabilities: drop: ["ALL"]
+				seccompProfile: type: "RuntimeDefault"
 			}
 			ports: [...{protocol: *"TCP" | "UDP"}]
 		}]
