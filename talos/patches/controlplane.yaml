@@ -10,3 +10,4 @@ machine:
   featuers:
     kubernetesTalosAPIAccess:
       enabled: true
+
