@@ -1,0 +1,8 @@
+machine:
+  sysfs:
+    kernel.mm.hugepages.hugepages-2048kB.nr_hugepages: 1024
+  kernel:
+    modules:
+      - name: vfio_pci
+      - name: uio_pci_generic
+
