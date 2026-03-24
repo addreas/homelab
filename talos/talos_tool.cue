@@ -3,6 +3,7 @@ package talos
 import (
 	"list"
 	"regexp"
+	"strings"
 	"encoding/json"
 	"tool/exec"
 	"tool/http"
@@ -59,13 +60,19 @@ command: "talosconfig": exec.Run & {
 	...
 }
 
+command: "apply-all": {
+	let commands = [for name, _ in t.Node {"cue cmd apply -t node=\(name)"}]
+	exec.Run & {
+		cmd: ["sh", "-c", strings.Join(commands, " && ")]
+	}
+}
+
 command: "apply": {
 	$nodeName: string @tag(node)
-	$nodeTag:  string @tag(tag) // TODO what
 
-	node: t.Node[$nodeName]
+	config: exec.Run & {#genConfig, $node: t.Node[$nodeName]}
 
-	config: exec.Run & {#genConfig, $node: node}
+	// printConfig: cli.Print & {text: config.stdout}
 
 	apply: exec.Run & {
 		stdin: config.stdout
@@ -73,23 +80,21 @@ command: "apply": {
 			"--context", clusterName,
 			"--nodes", $nodeName,
 			"--file", "/dev/stdin",
-			"--mode", "no-reboot",
+			"--mode", "staged",
 		]
-		mustSucceed: false
-		success:     bool
 	}
-	if !apply.success {
-		applyStaged: exec.Run & {
-			stdin: config.stdout
-			cmd: ["talosctl", "apply-config",
-				"--context", clusterName,
-				"--nodes", $nodeName,
-				"--file", "/dev/stdin",
-				"--mode", "staged",
-			]
-		}
-		// label reboot-required
-	}
+	// if !apply.success {
+	// 	applyStaged: exec.Run & {
+	// 		stdin: config.stdout
+	// 		cmd: ["talosctl", "apply-config",
+	// 			"--context", clusterName,
+	// 			"--nodes", $nodeName,
+	// 			"--file", "/dev/stdin",
+	// 			"--mode", "staged",
+	// 		]
+	// 	}
+	// 	// label reboot-required
+	// }
 
 	schematic: http.Post & {
 		url: "https://factory.talos.dev/schematics"
@@ -98,14 +103,30 @@ command: "apply": {
 		_json: json.Unmarshal(response.body) & {id: string}
 	}
 
+	print: cli.Print & {
+		text: """
+		Upgrading to factory image "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)"
+		"""
+	}
+
 	upgrade: exec.Run & {
+		$after: [apply]
 		cmd: ["talosctl", "upgrade",
 			"--context", clusterName,
 			"--nodes", $nodeName,
-			"--image", "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)",
 			"--stage",
+			"--image", "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)",
+			"--debug",
 		]
 		// label reboot required
+	}
+
+	kubeUpgrade: exec.Run & {
+		$after: [apply]
+		cmd: ["talosctl", "upgrade-k8s",
+			"--context", clusterName,
+			"--nodes", $nodeName,
+		]
 	}
 }
 
