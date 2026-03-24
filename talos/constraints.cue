@@ -1,4 +1,3 @@
-@experiment(try)
 package talos
 
 import (
@@ -14,7 +13,7 @@ import (
 
 	mac: string
 
-	roles: [#Role]: _
+	role: [#Role]: _
 
 	patches: [...string]
 
@@ -24,12 +23,23 @@ import (
 t: Node: [name=string]: #NodeSpec & {
 	hostname: name
 
-	roles: base: _
+	role: base: _
 
-	patches: [for role, _ in roles if t.Role[role].patch != _|_ {yaml.Marshal(t.Role[role].patch)}]
+	patches: [
+		for r, _ in role
+		if t.Role[r].patch != _|_ {
+			yaml.Marshal(t.Role[r].patch)
+		}]
 
 	schematic: (#MergeAppend & {
-		in: [for role, _ in roles if t.Role[role].schematic != _|_ {t.Role[role].schematic}]
-		appendPaths: [["customization", "extraKernelArgs"], ["customization", "systemExtensions", "officialExtensions"]]
+		in: [
+			for r, _ in role
+			if t.Role[r].schematic != _|_ {
+				t.Role[r].schematic
+			}]
+		appendPaths: [
+			["customization", "extraKernelArgs"],
+			["customization", "systemExtensions", "officialExtensions"],
+		]
 	}).out
 }
