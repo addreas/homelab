@@ -8,13 +8,30 @@ k: HelmRelease: longhorn: spec: {
 	chart: spec: version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
+		// global: tolerations: [{
+		// 	key:    "node-role.kubernetes.io/control-plane"
+		// 	effect: "NoSchedule"
+		// }]
 		defaultSettings: {
-			autoSalvage:                          true
-			allowNodeDrainWithLastHealthyReplica: true
-		}
+			defaultReplicaCount: 2
+			replicaAutoBalance:  true
+			autoSalvage:         true
 
-		persistence: defaultClassReplicaCount: 2
-		defaultSettings: backupTarget:         "nfs://nucles.localdomain:/export/longhorn-backup"
+			allowNodeDrainWithLastHealthyReplica: true
+
+			backupTarget:                 "s3://Backups@us-east-1/longhorn"
+			backupTargetCredentialSecret: "longhorn-backup-creds"
+
+			createDefaultDiskLabeledNodes:  true
+			v2DataEngine:                   true
+			dataEngineInterruptModeEnabled: '{"v2": "true"}'
+			defaultDataLocality:            "best-effort"
+		}
+		persistence: {
+			dataEngine:               "v2"
+			defaultClassReplicaCount: 2
+			defaultDataLocality:      "best-effort"
+		}
 	}
 }
 
