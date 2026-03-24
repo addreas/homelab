@@ -1,130 +1,168 @@
 package talos
 
 import (
-	"strings"
+	"list"
+	"regexp"
 	"encoding/json"
 	"tool/exec"
 	"tool/http"
+	"tool/cli"
 )
+
+host: string @tag(host,var=hostname)
 
 secrets: exec.Run & {
 	cmd: ["sops", "decrypt", "secrets.yaml"]
 	stdout: string
 }
 
-command: "gen talosconfig": exec.Run & {
+talosVersion: exec.Run & {
+	cmd: ["talosctl", "version", "--client", "--short"]
+	stdout:  string
+	_parsed: regexp.Find(#"v.*"#, stdout)
+}
+
+command: "talosconfig": exec.Run & {
+	stdin: secrets.stdout
 	cmd: ["talosctl", "gen", "config",
 		clusterName,
 		"https://\(apiHost):6443",
 		"--with-secrets", "/dev/stdin",
 		"--output-type", "talosconfig",
 	]
-	stdin: secrets.stdout
 }
 
 #genConfig: {
 	$node: #NodeSpec
 
 	outputType: *"worker" | string
-	if $node.role["control-plane"] {
+	if $node.role["control-plane"] != _|_ {
 		outputType: "controlplane"
 	}
 
-	gen: exec.Run & {
-		cmd: ["talosctl", "gen", "config",
+	$after: [secrets]
+	stdin: secrets.stdout
+	cmd: list.Concat([
+		["talosctl", "gen", "config",
 			clusterName,
 			"https://\(apiHost):6443",
 			"--with-secrets", "/dev/stdin",
-			"--config-patch", $node.patch,
-			"--output-type", outputType,
+			"--output-types", outputType,
 			"--output", "-",
-		]
-		stdin:  secrets.stdout
-		stdout: string
-	}
+		],
+		list.Concat([for patch in $node.patches {
+			["--config-patch", patch]
+		}]),
+	])
+	stdout: string
 
-	$return: gen.stdout
+	...
 }
 
-command: "apply-config": {
+command: "apply": {
 	$nodeName: string @tag(node)
+	$nodeTag:  string @tag(tag) // TODO what
 
-	config: (#genConfig & {$node: nodes[$nodeName]}).$return
+	node: t.Node[$nodeName]
+
+	config: exec.Run & {#genConfig, $node: node}
 
 	apply: exec.Run & {
+		stdin: config.stdout
 		cmd: ["talosctl", "apply-config",
 			"--context", clusterName,
 			"--nodes", $nodeName,
 			"--file", "/dev/stdin",
+			"--mode", "no-reboot",
 		]
-		stdin: config
+		mustSucceed: false
+		success:     bool
+	}
+	if !apply.success {
+		applyStaged: exec.Run & {
+			stdin: config.stdout
+			cmd: ["talosctl", "apply-config",
+				"--context", clusterName,
+				"--nodes", $nodeName,
+				"--file", "/dev/stdin",
+				"--mode", "staged",
+			]
+		}
+		// label reboot-required
+	}
+
+	schematic: http.Post & {
+		url: "https://factory.talos.dev/schematics"
+		request: body:  json.Marshal(node.schematic)
+		response: body: string
+		_json: json.Unmarshal(response.body) & {id: string}
+	}
+
+	upgrade: exec.Run & {
+		cmd: ["talosctl", "upgrade",
+			"--context", clusterName,
+			"--nodes", $nodeName,
+			"--image", "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)",
+			"--stage",
+		]
+		// label reboot required
 	}
 }
 
 command: "boot": {
+	configEndpoint: "http://\(host):8080/v1/machineconfig/{mac}"
+	print: cli.Print & {
+		text: "exposing config endpoint \(configEndpoint)"
+	}
+
 	configServer: {
-		for node in nodes {
-			config: (node.mac): (#genConfig & {$node: node}).$return
+		configs: {
+			for _, node in t.Node {
+				(node.mac): exec.Run & {#genConfig, $node: node}
+			}
 		}
 
 		serve: http.Serve & {
 			listenAddr: ":8080"
-			routing: path: "/v1/talos/{mac}"
+			routing: path: "/v1/machineconfig/{mac}"
 			request: pathValues: mac: string
-			response: body: configServer.config[request.pathValues.mac]
+			response: body: configs[request.pathValues.mac].stdout
 		}
 	}
 
 	pixieServer: {
-		talosVersion: exec.Run & {
-			cmd: ["talosctl", "version", "--client", "--short"]
-			stdout:  string
-			_parsed: strings.Replace(stdout, "Talos ", "")
-		}
-		hostIp: exec.Run & {
-			cmd: ["ip", "--json", "route"]
-			stdout: string
+		configs: {
+			for _, node in t.Node {
+				(node.mac): {
+					schematic: http.Post & {
+						url: "https://factory.talos.dev/schematics"
+						request: body:  json.Marshal(node.schematic)
+						response: body: string
+						_json: json.Unmarshal(response.body) & {id: string}
+					}
 
-			for route in json.Unmarshal(stdout) if route.dst == "default" {
-				_parsed: route.prefsrc
-			}
-		}
-		configEndpoint: "http://\(hostIp._parsed):8080/v1/talos/{mac}"
+					let factoryImageBase = "https://factory.talos.dev/image/\(schematic._json.id)/\(talosVersion._parsed)"
 
-		schematic: [string]: _json: id: string
-		factoryImageBase: [string]: string
-		factoryCmdline: [string]: response: body: string
+					factoryCmdline: http.Get & {
+						url: "\(factoryImageBase)/cmdline-metal-amd64"
+						response: body: string
+					}
 
-		for node in nodes {
-			schematic: (node.mac): http.Post & {
-				url: "https://factory.talos.dev/schematics"
-				request: body:  json.Marshal(node.schematic)
-				response: body: string
-				_json: json.Unmarshal(response.body) & {id: string}
-			}
-
-			factoryImageBase: (node.mac): "https://factory.talos.dev/image/\(schematic[node.mac]._json.id)/\(talosVersion._parsed)"
-
-			factoryCmdline: (node.mac): http.Get & {
-				url: "\(factoryImageBase)/cmdline-metal-amd64"
-				response: body: string
+					body: json.Marshal({
+						kernel:  "\(factoryImageBase)/kernel-amd64"
+						initrd:  "\(factoryImageBase)/initramfs-amd64.xz"
+						cmdline: "\(factoryCmdline.response.body) talos.config=\(configEndpoint)"
+					})
+				}
 			}
 		}
 
 		serve: http.Serve & {
 			listenAddr: ":8080"
 			routing: path: "/v1/boot/{mac}"
-			request: pathValues: "mac": string
-
-			let mac = request.pathValues.mac
-
-			response: body: json.Marshal({
-				kernel:  "\(factoryImageBase[mac])/kernel-amd64"
-				initrd:  "\(factoryImageBase[mac])/initramfs-amd64.xz"
-				cmdline: "\(factoryCmdline[mac].response.body) talos.config=\(configEndpoint)"
-			})
+			request: pathValues: mac: string
+			response: body: configs[request.pathValues.mac].body
 		}
-
 	}
 
 	pixiecore: exec.Run & {
@@ -134,9 +172,4 @@ command: "boot": {
 			"--port=9734",
 			"--debug"]
 	}
-}
-
-command: "config update": {
-	// talosctl upgrade --nodes $node_name --image $"factory.talos.dev/metal-installer/($schematic_id):($talos_version)"
-	// talosctl apply-config --nodes $node_name --file config.yaml
 }
