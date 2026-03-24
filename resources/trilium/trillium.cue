@@ -1,12 +1,15 @@
 package kube
 
-k: StatefulSet: trillium: spec: {
+k: StatefulSet: trilium: spec: {
 	template: spec: containers: [{
 		image: "ghcr.io/triliumnext/trilium:\(githubReleases["triliumnext/trilium"])"
 		command: ["node", "./main.cjs"]
 		env: [{
 			name:  "TRILIUM_DATA_DIR"
 			value: "/data"
+		}, {
+			name:  "TRILIUM_PORT"
+			value: "8080"
 		}]
 		ports: [{
 			containerPort: 8080
@@ -36,5 +39,5 @@ k: StatefulSet: trillium: spec: {
 	}]
 }
 
-k: Service: trillium: {}
-k: Ingress: trillium: {}
+k: Service: trilium: {}
+k: Ingress: trilium: {}
