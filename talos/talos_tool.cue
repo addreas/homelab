@@ -1,191 +1,139 @@
 package talos
 
 import (
-	"list"
 	"strings"
-	"encoding/yaml"
 	"encoding/json"
-	"text/tabwriter"
-	"tool/cli"
-	"tool/file"
 	"tool/exec"
-	"tool/os"
+	"tool/http"
 )
 
-#pipe: {
-	args: {
-		cleanupAfter: [...]
-		contents: bytes | string
-	}
-
-	tmpDir: file.MkdirTemp & {path: string}
-
-	pipeName: "\(tmpDir.path)/pipe"
-
-	mkfifo: exec.Run & {
-		cmd: ["mkfifo", pipeName]
-	}
-
-	append: file.Append & {
-		filename: pipe
-		contents: args.contents
-	}
-
-	cleanup: file.RemoveAll & {
-		$after: $cleanupAfter
-		path:   tmpDir.path
-	}
+secrets: exec.Run & {
+	cmd: ["sops", "decrypt", "secrets.yaml"]
+	stdout: string
 }
 
-#sopsDecryptPipe: {
-	#pipe
-
-	args: contents: decrypt.stdout
-	decrypt: exec.Run & {
-		cmd: ["sops", "decrypt", "secrets.yaml"]
-		stdout: string
-	}
+command: "gen talosconfig": exec.Run & {
+	cmd: ["talosctl", "gen", "config",
+		clusterName,
+		"https://\(apiHost):6443",
+		"--with-secrets", "/dev/stdin",
+		"--output-type", "talosconfig",
+	]
+	stdin: secrets.stdout
 }
 
 #genConfig: {
-	args: {
-		cluster_name: string @tag(name)
-		api_host:     string @tag(host)
-		flags: [...string]
+	$node: #NodeSpec
+
+	outputType: *"worker" | string
+	if $node.role["control-plane"] {
+		outputType: "controlplane"
 	}
 
-	secrets: #sopsDecryptPipe & {
-		args: cleanupAfter: [generateConfig]
-	}
-
-	generateConfig: exec.Run & {
+	gen: exec.Run & {
 		cmd: ["talosctl", "gen", "config",
-			args.cluster_name,
-			"https://\(args.api_host):6443",
-			"--with-secrets", secrets.pipeName,
-			"--config-patch", "@patches/machine.yaml",
-			"--config-patch", "@patches/cluster.yaml",
-			...flags,
+			clusterName,
+			"https://\(apiHost):6443",
+			"--with-secrets", "/dev/stdin",
+			"--config-patch", $node.patch,
+			"--output-type", outputType,
+			"--output", "-",
 		]
+		stdin:  secrets.stdout
+		stdout: string
 	}
 
-}
-
-command: "gen talosconfig": genConfig & {
-	args: flags: ["--output-types", "talosconfig"]
-}
-
-command: "gen controlplane": genConfig & {
-	args: flags: [
-		"--config-patch", "@patches/controlplane.yaml",
-		"--output-types", "controlplane",
-		"--output", "config.yaml",
-	]
-}
-
-command: "gen worker": genConfig & {
-	args: flags: [
-		"--config-patch", "@patches/worker.yaml",
-		"--output-types", "worker",
-		"--output", "config.yaml",
-	]
+	$return: gen.stdout
 }
 
 command: "apply-config": {
-	args: {
-		cluster_name: string @tag(name)
-		node:         string @tag(node)
-	}
+	$nodeName: string @tag(node)
 
-	config: #pipe & {
-		args: content: gen.stdout
-		gen: "talosctl gen config --output -" // TODO
-	}
+	config: (#genConfig & {$node: nodes[$nodeName]}).$return
 
-	apply: cmd.Run & {
+	apply: exec.Run & {
 		cmd: ["talosctl", "apply-config",
-			"--context", args.cluster_name,
-			"--nodes", args.node,
-			"--file", config.pipeName,
+			"--context", clusterName,
+			"--nodes", $nodeName,
+			"--file", "/dev/stdin",
 		]
+		stdin: config
 	}
 }
 
 command: "boot": {
-	args: {
-		cluster_name: string @tag(name)
-		api_host:     string @tag(host)
-	}
-
 	configServer: {
-		gen: #genConfig & {
-			args: flags: [
-				"--output", "-",
-			]
+		for node in nodes {
+			config: (node.mac): (#genConfig & {$node: node}).$return
 		}
+
 		serve: http.Serve & {
 			listenAddr: ":8080"
-			routing: path: "/talos/{mac}/config.yaml"
-			request: {
-				pathValues: mac: string
+			routing: path: "/v1/talos/{mac}"
+			request: pathValues: mac: string
+			response: body: configServer.config[request.pathValues.mac]
+		}
+	}
+
+	pixieServer: {
+		talosVersion: exec.Run & {
+			cmd: ["talosctl", "version", "--client", "--short"]
+			stdout:  string
+			_parsed: strings.Replace(stdout, "Talos ", "")
+		}
+		hostIp: exec.Run & {
+			cmd: ["ip", "--json", "route"]
+			stdout: string
+
+			for route in json.Unmarshal(stdout) if route.dst == "default" {
+				_parsed: route.prefsrc
 			}
-			response: body: gen[request.pathValues.mac].stdout
 		}
-	}
+		configEndpoint: "http://\(hostIp._parsed):8080/v1/talos/{mac}"
 
-	//     let schematic_id = open schematics/base.yaml ...$schematics
-	//         | reduce { |it| merge deep --strategy append $it }
+		schematic: [string]: _json: id: string
+		factoryImageBase: [string]: string
+		factoryCmdline: [string]: response: body: string
 
-	schematicSource: {}
-	schematic: http.Post & {
-		url: "https://factory.talos.dev/schematics"
-		request: body: json.Marshal(schematicSource)
-		response: {
-			body: string
-			_json: json.Unmarshal(body) & {
-				id: string
+		for node in nodes {
+			schematic: (node.mac): http.Post & {
+				url: "https://factory.talos.dev/schematics"
+				request: body:  json.Marshal(node.schematic)
+				response: body: string
+				_json: json.Unmarshal(response.body) & {id: string}
+			}
+
+			factoryImageBase: (node.mac): "https://factory.talos.dev/image/\(schematic[node.mac]._json.id)/\(talosVersion._parsed)"
+
+			factoryCmdline: (node.mac): http.Get & {
+				url: "\(factoryImageBase)/cmdline-metal-amd64"
+				response: body: string
 			}
 		}
-	}
-	talosVersion: cmd.Run & {
-		cmd: ["talosctl", "version", "--client", "--short"]
-		stdout:  string
-		_parsed: strings.Replace(stdout, "Talos ", "")
-	}
-	hostIp: cmcd.Run & {
-		cmd: ["ip", "--json", "route"]
-		stdout: string
 
-		for route in json.Unmarshal(stdout) if route.dst == "default" {
-			_ip: route.prefsrc
+		serve: http.Serve & {
+			listenAddr: ":8080"
+			routing: path: "/v1/boot/{mac}"
+			request: pathValues: "mac": string
+
+			let mac = request.pathValues.mac
+
+			response: body: json.Marshal({
+				kernel:  "\(factoryImageBase[mac])/kernel-amd64"
+				initrd:  "\(factoryImageBase[mac])/initramfs-amd64.xz"
+				cmdline: "\(factoryCmdline[mac].response.body) talos.config=\(configEndpoint)"
+			})
 		}
 
 	}
 
-	factoryImageBase: "https://factory.talos.dev/image/\(schematic.response._json.id)/\(talosVersion._parsed)"
-
-	factoryCmdline: http.Get & {
-		url: "\(factoryImageBase)/cmdline-metal-amd64"
-		response: body: string
-	}
-
-	configEndpoint: "http://\(hostIp._parsed.ip):8080/talos/{mac}/config.yaml"
-
-	pixiecore: cmd.Run & {
-		cmd: ["pixiecore", "boot",
-			"\(factoryImage)/kernel-amd64",
-			"\(factoryImage)/initramfs-amd64.xz",
+	pixiecore: exec.Run & {
+		cmd: ["pixiecore", "api",
+			"http://localhost:8080",
 			"--dhcp-no-bind",
-			"--port 9734",
-			"--debug",
-			"--cmdline", "\(factoryCmdline) talos.config=\(configEndpoint)"]
+			"--port=9734",
+			"--debug"]
 	}
-
-}
-
-// Dump a yaml stream of Kubernetes resources
-command: "dump-yaml": cli.Print & {
-	text: yaml.MarshalStream(list.Concat([earlyResources, resources]))
 }
 
 command: "config update": {
