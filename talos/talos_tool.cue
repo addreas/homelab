@@ -170,8 +170,8 @@ command: "boot": {
 					}
 
 					body: json.Marshal({
-						kernel:  "\(factoryImageBase)/kernel-amd64"
-						initrd:  "\(factoryImageBase)/initramfs-amd64.xz"
+						kernel: "\(factoryImageBase)/kernel-amd64"
+						initrd: ["\(factoryImageBase)/initramfs-amd64.xz"]
 						cmdline: "\(factoryCmdline.response.body) talos.config=\(configEndpoint)"
 					})
 				}
