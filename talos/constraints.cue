@@ -1,23 +1,19 @@
 package talos
 
 import (
-	"encoding/yaml"
 	"strings"
-	"github.com/siderolabs/image-factory/pkg/schematic"
+	factory "github.com/siderolabs/image-factory/pkg/schematic"
+	"github.com/siderolabs/talos/pkg/machinery/config/types/v1alpha1"
 )
 
 #Role: =~strings.Join([for role, _ in t.Role {role}], "|")
 
 #NodeSpec: {
 	hostname: string
-
-	mac: string
-
-	role: [#Role]: _
-
-	patches: [...string]
-
-	"schematic": schematic.#Schematic
+	mac:      string
+	role: [#Role]: true
+	patches: [...v1alpha1.#Config]
+	schematic: factory.#Schematic
 }
 
 t: Node: [name=string]: #NodeSpec & {
@@ -28,7 +24,7 @@ t: Node: [name=string]: #NodeSpec & {
 	patches: [
 		for r, _ in role
 		if t.Role[r].patch != _|_ {
-			yaml.Marshal(t.Role[r].patch)
+			t.Role[r].patch
 		}]
 
 	schematic: (#MergeAppend & {
@@ -37,9 +33,8 @@ t: Node: [name=string]: #NodeSpec & {
 			if t.Role[r].schematic != _|_ {
 				t.Role[r].schematic
 			}]
-		appendPaths: [
-			["customization", "extraKernelArgs"],
-			["customization", "systemExtensions", "officialExtensions"],
-		]
 	}).out
 }
+
+t: Role: [string]: patch?:     v1alpha1.#Config
+t: Role: [string]: schematic?: factory.#Schematic

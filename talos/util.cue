@@ -2,44 +2,34 @@ package talos
 
 import "list"
 
-#Omit: {
-	in: {...}
-	out: {...}
-	skip: [...string]
-	out: {for k, v in in if !list.Contains(skip, k) {(k): v}}
-}
-
 #MergeAppend: {
 	in: [...{...}]
 	out: {...}
 
-	appendPaths: [...[...string]]
+	#scalar: null | bool | bytes | string | number
 
 	out: {
-		for i in in {
-			(#Omit & {in: i, skip: [for p in appendPaths {p[0]}]}).out
-		}
-		for p in appendPaths {
-			(p[0]): {
-				if len(p) == 1 {
-					list.Concat([for i in in if i[p[0]] != _|_ {i[p[0]]}])
-				}
-				if len(p) > 1 {
-					_ok: _
-					for i in in {
-						(#Omit & {in: i[p[0]], skip: [for p in appendPaths if len(p) > 1 {p[1]}]}).out
-					}
-					(p[1]): {
-						if len(p) == 2 {
-							list.Concat([for i in in if i[p[0]][p[1]] != _|_ {i[p[0]][p[1]]}])
-						}
-						if len(p) > 2 {
-							for i in in {
-								(#Omit & {in: i[p[0]][p[1]], skip: [for p in appendPaths if len(p) > 2 {p[2]}]}).out
-							}
-							(p[2]): {
-								if len(p) == 3 {
-									list.Concat([for i in in if i[p[0]][p[1]][p[2]] != _|_ {i[p[0]][p[1]][p[2]]}])
+		for v0 in in {
+			for k1, v1 in v0 {
+				(k1): {
+					if (v1 & #scalar) != _|_ {v1}
+					if (v1 & [...]) != _|_ {list.Concat([for i in in if i[k1] != _|_ {i[k1]}])}
+					if (v1 & {...}) != _|_ {
+						for k2, v2 in v1 {
+							(k2): {
+								if (v2 & #scalar) != _|_ {v2}
+								if (v2 & [...]) != _|_ {list.Concat([for i in in if i[k1][k2] != _|_ {i[k1][k2]}])}
+								if (v2 & {...}) != _|_ {
+									for k3, v3 in v2 {
+										(k3): {
+											if (v3 & #scalar) != _|_ {v3}
+											if (v3 & [...]) != _|_ {list.Concat([for i in in if i[k1][k2] != _|_ {i[k1][k2][k3]}])}
+											if (v3 & {...}) != _|_ {
+												// for k4, v4 in v3 { ... }
+												v3
+											}
+										}
+									}
 								}
 							}
 						}

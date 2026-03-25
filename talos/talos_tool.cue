@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 	"encoding/json"
+	"encoding/yaml"
 	"tool/exec"
 	"tool/http"
 	"tool/cli"
@@ -21,6 +22,22 @@ talosVersion: exec.Run & {
 	cmd: ["talosctl", "version", "--client", "--short"]
 	stdout:  string
 	_parsed: regexp.Find(#"v.*"#, stdout)
+}
+
+command: "talosctl": {
+	args: string @tag(cmd)
+	role: string @tag(role)
+
+	nodes: [
+		for name, node in t.Node if role == _|_ || node.role[role] != _|_ {name},
+	]
+
+	run: exec.Run & {
+		cmd: list.Concat([
+			["talosctl", "--nodes", strings.Join(nodes, ",")],
+			strings.Split(args, " "),
+		])
+	}
 }
 
 command: "talosconfig": exec.Run & {
@@ -52,7 +69,7 @@ command: "talosconfig": exec.Run & {
 			"--output", "-",
 		],
 		list.Concat([for patch in $node.patches {
-			["--config-patch", patch]
+			["--config-patch", yaml.Marshal(patch)]
 		}]),
 	])
 	stdout: string
@@ -70,9 +87,18 @@ command: "apply-all": {
 command: "apply": {
 	$nodeName: string @tag(node)
 
-	config: exec.Run & {#genConfig, $node: t.Node[$nodeName]}
+	node: t.Node[$nodeName]
 
-	// printConfig: cli.Print & {text: config.stdout}
+	config: exec.Run & {#genConfig, $node: node}
+
+	schematic: http.Post & {
+		url: "https://factory.talos.dev/schematics"
+		request: body:  json.Marshal(node.schematic)
+		response: body: string
+		_json: json.Unmarshal(response.body) & {id: string}
+	}
+
+	// configPrint: cli.Print & {text: config.stdout}
 
 	apply: exec.Run & {
 		stdin: config.stdout
@@ -83,27 +109,9 @@ command: "apply": {
 			"--mode", "staged",
 		]
 	}
-	// if !apply.success {
-	// 	applyStaged: exec.Run & {
-	// 		stdin: config.stdout
-	// 		cmd: ["talosctl", "apply-config",
-	// 			"--context", clusterName,
-	// 			"--nodes", $nodeName,
-	// 			"--file", "/dev/stdin",
-	// 			"--mode", "staged",
-	// 		]
-	// 	}
-	// 	// label reboot-required
-	// }
 
-	schematic: http.Post & {
-		url: "https://factory.talos.dev/schematics"
-		request: body:  json.Marshal(node.schematic)
-		response: body: string
-		_json: json.Unmarshal(response.body) & {id: string}
-	}
-
-	print: cli.Print & {
+	upgradePrint: cli.Print & {
+		$after: [apply]
 		text: """
 		Upgrading to factory image "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)"
 		"""
@@ -119,14 +127,6 @@ command: "apply": {
 			"--debug",
 		]
 		// label reboot required
-	}
-
-	kubeUpgrade: exec.Run & {
-		$after: [apply]
-		cmd: ["talosctl", "upgrade-k8s",
-			"--context", clusterName,
-			"--nodes", $nodeName,
-		]
 	}
 }
 
