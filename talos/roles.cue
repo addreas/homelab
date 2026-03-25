@@ -1,13 +1,5 @@
 package talos
 
-import (
-	// "github.com/siderolabs/talos/pkg/machinery/config/types/v1alpha1"
-	"github.com/siderolabs/image-factory/pkg/schematic"
-)
-
-// t: Role: [string]: "patch"?:     v1alpha1.#Config
-t: Role: [string]: "schematic"?: schematic.#Schematic
-
 t: Role: "control-plane": patch: machine: {
 	network: interfaces: [{
 		deviceSelector: physical: true
