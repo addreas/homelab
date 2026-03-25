@@ -24,7 +24,7 @@ import "github.com/siderolabs/crypto/x509"
 	//     Indicates the schema used to decode the contents.
 	//   values:
 	//     - "v1alpha1"
-	version: string @go(ConfigVersion)
+	version?: string @go(ConfigVersion)
 
 	//   description: |
 	//     Enable verbose logging to the console.
@@ -74,7 +74,7 @@ import "github.com/siderolabs/crypto/x509"
 	//   values:
 	//     - "controlplane"
 	//     - "worker"
-	type: string @go(MachineType)
+	type?: string @go(MachineType)
 
 	//   description: |
 	//     The `token` is used by a machine to join the PKI of the cluster.
@@ -82,7 +82,7 @@ import "github.com/siderolabs/crypto/x509"
 	//   examples:
 	//     - name: example token
 	//       value: "\"328hom.uqjzh6jnn2eie9oi\""
-	token: string @go(MachineToken)
+	token?: string @go(MachineToken)
 
 	//   description: |
 	//     The root certificate authority of the PKI.
