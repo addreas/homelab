@@ -50,10 +50,6 @@ t: Role: "base": {
 
 	schematic: customization: {
 		bootloader: "sd-boot"
-		extraKernelArgs: [
-			"init_on_alloc=1",
-			"init_on_free=1",
-		]
 		systemExtensions: officialExtensions: [
 			"siderolabs/ctr",
 			"siderolabs/fuse3",
@@ -66,6 +62,7 @@ t: Role: "base": {
 
 t: Role: "longhorn": {
 	patch: machine: {
+		nodeLabels: "node-role.kubernetes.io/longhorn":             ""
 		sysfs: "kernel.mm.hugepages.hugepages-2048kB.nr_hugepages": "1024"
 		kernel: modules: [{
 			name: "vfio_pci"

@@ -8,13 +8,14 @@ k: HelmRelease: longhorn: spec: {
 	chart: spec: version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
-		// global: tolerations: [{
-		// 	key:    "node-role.kubernetes.io/control-plane"
-		// 	effect: "NoSchedule"
-		// }]
+		global: tolerations: [{
+			key:    "node-role.kubernetes.io/control-plane"
+			effect: "NoSchedule"
+		}]
+		global: nodeSelector: "node-role.kubernetes.io/longhorn": ""
 		defaultSettings: {
 			defaultReplicaCount: 2
-			replicaAutoBalance:  true
+			replicaAutoBalance:  "best-effort"
 			autoSalvage:         true
 
 			allowNodeDrainWithLastHealthyReplica: true

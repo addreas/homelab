@@ -1,13 +1,17 @@
 #!/bin/sh
 set -e
 
+# _not_ implemented as a cue tool so that it can be run even if resources exist with missing defs
+
 mod=$PWD/cue.mod
 
 groups="
 cue.toolkit.fluxcd.io
 grafana.integreatly.org
 k8s.cni.cncf.io
-cilium.io hydra.ory.sh
+cilium.io
+hydra.ory.sh
+longhorn.io
 "
 
 kubectl get crd -o name \

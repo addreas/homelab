@@ -33,6 +33,8 @@ import (
 	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
 	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
 	cni_v1 "k8s.cni.cncf.io/v1"
+
+	longhorn_v1beta2 "longhorn.io/v1beta2"
 )
 
 let resourceSchemas = [
@@ -108,10 +110,6 @@ let resourceSchemas = [
 	cni_v1.#NetworkAttachmentDefinition,
 
 	cilium_v2.#CiliumClusterwideNetworkPolicy,
-	cilium_v2.#CiliumEndpoint,
-	cilium_v2.#CiliumExternalWorkload,
-	cilium_v2.#CiliumIdentity,
-	cilium_v2.#CiliumLocalRedirectPolicy,
 	cilium_v2.#CiliumNetworkPolicy,
 	cilium_v2.#CiliumNode,
 	cilium_v2.#CiliumLoadBalancerIPPool,
@@ -124,23 +122,45 @@ let resourceSchemas = [
 	cilium_v2alpha1.#CiliumNodeConfig,
 
 	hydra_v1alpha1.#OAuth2Client,
+
 ]
+
+let prefixSchemas = {
+	Longhorn: [
+		longhorn_v1beta2.#BackupTarget,
+		longhorn_v1beta2.#Node,
+		longhorn_v1beta2.#RecurringJob,
+	]
+}
+
+#metaName: {
+	$name: _
+
+	out: {
+		metadata: meta_v1.#ObjectMeta & {
+			name: _ | *$name
+		}
+
+		if strings.Contains($name, "/") {
+			let splitName = strings.Split($name, "/")
+
+			metadata: {
+				namespace: _ | *splitName[0]
+				name:      _ | *splitName[1]
+			}
+		}
+
+	}
+}
 
 k: close({
 	for resource in resourceSchemas {
-		(resource.kind): [Name=string]: resource & {
-			metadata: meta_v1.#ObjectMeta & {
-				name: _ | *Name
-			}
+		(resource.kind): [name=string]: resource & (#metaName & {$name: name}).out
+	}
 
-			if strings.Contains(Name, "/") {
-				let splitName = strings.Split(Name, "/")
-				metadata: {
-					namespace: splitName[0]
-					name:      splitName[1]
-				}
-			}
-		}
+	for prefix, resources in prefixSchemas
+	for resource in resources {
+		(prefix + resource.kind): [name=string]: resource & (#metaName & {$name: name}).out
 	}
 })
 
