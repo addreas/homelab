@@ -35,6 +35,7 @@ import (
 	cni_v1 "k8s.cni.cncf.io/v1"
 
 	longhorn_v1beta2 "longhorn.io/v1beta2"
+	cnpg_v1 "postgresql.cnpg.io/v1"
 )
 
 let resourceSchemas = [
@@ -130,6 +131,18 @@ let prefixSchemas = {
 		longhorn_v1beta2.#BackupTarget,
 		longhorn_v1beta2.#Node,
 		longhorn_v1beta2.#RecurringJob,
+	]
+	Postgres: [
+		// cnpg_v1.#Backup
+		// cnpg_v1.#ClusterImageCatalog
+		cnpg_v1.#Cluster
+		cnpg_v1.#Database
+		// cnpg_v1.#FailoverQuorum
+		// cnpg_v1.#ImageCatalog
+		// cnpg_v1.#Pooler
+		// cnpg_v1.#Publication
+		// cnpg_v1.#ScheduledBackup
+		// cnpg_v1.#Subscription
 	]
 }
 

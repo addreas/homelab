@@ -12,6 +12,7 @@ k8s.cni.cncf.io
 cilium.io
 hydra.ory.sh
 longhorn.io
+postgresql.cnpg.io
 "
 
 kubectl get crd -o name \

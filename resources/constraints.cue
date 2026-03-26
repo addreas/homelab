@@ -4,6 +4,13 @@ import (
 	"strings"
 )
 
+_namespace: string
+
+if _namespace != _|_ {
+	k: [string]: [string]: metadata: namespace: _namespace
+	k: Namespace: (_namespace): {}
+}
+
 _homelab: {
 	kind:      "GitRepository"
 	name:      "homelab"
