@@ -24,6 +24,7 @@ talosVersion: exec.Run & {
 	_parsed: regexp.Find(#"v.*"#, stdout)
 }
 
+// wrapper for talosctl with nodes populated. useage -t cmd="get disks" -t role=worker
 command: "talosctl": {
 	args: string @tag(cmd)
 	role: string @tag(role)
@@ -40,6 +41,7 @@ command: "talosctl": {
 	}
 }
 
+// generate a talosconfig
 command: "talosconfig": exec.Run & {
 	stdin: secrets.stdout
 	cmd: ["talosctl", "gen", "config",
@@ -77,6 +79,7 @@ command: "talosconfig": exec.Run & {
 	...
 }
 
+// run cue cmd apply for all nodes
 command: "apply-all": {
 	let commands = [for name, _ in t.Node {"cue cmd apply -t node=\(name)"}]
 	exec.Run & {
@@ -84,6 +87,7 @@ command: "apply-all": {
 	}
 }
 
+// run talosctl apply-config and talosctl upgrade for -t node
 command: "apply": {
 	$nodeName: string @tag(node)
 
@@ -130,6 +134,7 @@ command: "apply": {
 	}
 }
 
+// all-in-one pixiecore with automatic config application
 command: "boot": {
 	configEndpoint: "http://\(host):8080/v1/machineconfig/{mac}"
 	print: cli.Print & {
@@ -167,13 +172,23 @@ command: "boot": {
 					factoryCmdline: http.Get & {
 						url: "\(factoryImageBase)/cmdline-metal-amd64"
 						response: body: string
+
+						_parsed: {for arg in strings.Split(response.body, " ") {
+							let kv = strings.Split(arg, "=")
+							(kv[0]): *kv[1] | true
+						}}
 					}
 
 					body: json.Marshal({
 						kernel: "\(factoryImageBase)/kernel-amd64"
 						initrd: ["\(factoryImageBase)/initramfs-amd64.xz"]
-						cmdline: "\(factoryCmdline.response.body) talos.config=\(configEndpoint)"
+						cmdline: factoryCmdline._parsed
+						cmdline: "talos.config": url: configEndpoint
 					})
+
+					print: cli.Print & {
+						text: "boot spec for \(node.mac):\(body)"
+					}
 				}
 			}
 		}
@@ -189,7 +204,7 @@ command: "boot": {
 	pixiecore: exec.Run & {
 		cmd: ["pixiecore", "api",
 			"http://localhost:8080",
-			"--dhcp-no-bind",
+			// "--dhcp-no-bind",
 			"--port=9734",
 			"--debug"]
 	}
