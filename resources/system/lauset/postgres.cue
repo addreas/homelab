@@ -1,45 +1,18 @@
 package kube
 
-k: StatefulSet: postgres: spec: {
-	template: spec: {
-		securityContext: fsGroupChangePolicy: "Always"
-		containers: [{
-			image: "postgres:13"
-			envFrom: [
-				{secretRef: name: "postgres-credentials"},
-				{configMapRef: name: "postgres-config"},
-			]
-			ports: [{containerPort: 5432}]
-			readinessProbe: tcpSocket: port: 5432
-			volumeMounts: [{
-				name:      "data"
-				mountPath: "/var/lib/postgresql"
-				subPath:   "data"
-			}, {
-				name:      "init"
-				mountPath: "/docker-entrypoint-initdb.d/"
-			}]
-		}]
-		volumes: [{
-			name: "init"
-			configMap: name: "postgres-init"
-		}]
-	}
-	volumeClaimTemplates: [{
-		metadata: name: "data"
-		spec: {
-			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "5Gi"
-		}
-	}]
+k: PostgresCluster: "lauset-db": spec: {
+	instances: 2
+	storage: size: "1Gi"
 }
 
-k: Service: postgres: spec: ports: [{
-	name: "postgres"
-}]
+k: PostgresDatabase: "lauset-db-kratos": spec: {
+	name:  "kratos"
+	owner: "app"
+	cluster: name: "lauset-db"
+}
 
-k: ConfigMap: "postgres-init": data: "create-hydra.sql": """
-	CREATE USER hydra PASSWORD 'hydra';
-	CREATE DATABASE hydra OWNER hydra;
-	GRANT ALL PRIVILEGES ON DATABASE hydra TO hydra;
-	"""
+k: PostgresDatabase: "lauset-db-hydra": spec: {
+	name:  "hydra"
+	owner: "app"
+	cluster: name: "lauset-db"
+}
