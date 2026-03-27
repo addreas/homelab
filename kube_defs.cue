@@ -133,20 +133,20 @@ let prefixSchemas = {
 		longhorn_v1beta2.#RecurringJob,
 	]
 	Postgres: [
-		// cnpg_v1.#Backup
-		// cnpg_v1.#ClusterImageCatalog
-		cnpg_v1.#Cluster
-		cnpg_v1.#Database
-		// cnpg_v1.#FailoverQuorum
-		// cnpg_v1.#ImageCatalog
-		// cnpg_v1.#Pooler
-		// cnpg_v1.#Publication
-		// cnpg_v1.#ScheduledBackup
-		// cnpg_v1.#Subscription
+		// cnpg_v1.#Backup,
+		// cnpg_v1.#ClusterImageCatalog,
+		cnpg_v1.#Cluster,
+		cnpg_v1.#Database,
+		// cnpg_v1.#FailoverQuorum,
+		// cnpg_v1.#ImageCatalog,
+		// cnpg_v1.#Pooler,
+		// cnpg_v1.#Publication,
+		// cnpg_v1.#ScheduledBackup,
+		// cnpg_v1.#Subscription,
 	]
 }
 
-#metaName: {
+let metaName = {
 	$name: _
 
 	out: {
@@ -168,12 +168,12 @@ let prefixSchemas = {
 
 k: close({
 	for resource in resourceSchemas {
-		(resource.kind): [name=string]: resource & (#metaName & {$name: name}).out
+		(resource.kind): [name=string]: resource & (metaName & {$name: name}).out
 	}
 
 	for prefix, resources in prefixSchemas
 	for resource in resources {
-		(prefix + resource.kind): [name=string]: resource & (#metaName & {$name: name}).out
+		(prefix + resource.kind): [name=string]: resource & (metaName & {$name: name}).out
 	}
 })
 
