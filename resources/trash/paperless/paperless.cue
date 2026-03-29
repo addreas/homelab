@@ -21,12 +21,8 @@ k: ConfigMap: "paperless-config": data: {
 }
 
 k: OAuth2Client: "paperless": spec: {
-	clientName: "paperless"
-	grantTypes: ["authorization_code", "refresh_token"]
+	secretName: "paperless-oauth2-client-credentials"
 	redirectUris: ["https://paperless.addem.se/accounts/oidc/lauset/login/callback/"]
-	secretName:  "paperless-oauth2-client-credentials"
-	scope:       "openid email profile"
-	skipConsent: true
 }
 
 k: StatefulSet: "paperless": spec: {

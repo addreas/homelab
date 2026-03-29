@@ -88,10 +88,6 @@ k: PersistentVolumeClaim: "vikunja-data": spec: {
 }
 
 k: OAuth2Client: "vikunja": spec: {
-	clientName: "vikunja"
-	grantTypes: ["authorization_code", "refresh_token"]
+	secretName: "vikunja-oauth2-client-credentials"
 	redirectUris: ["https://vikunja.addem.se/auth/openid/lauset"]
-	secretName:  "vikunja-oauth2-client-credentials"
-	scope:       "openid email profile"
-	skipConsent: true
 }

@@ -3,12 +3,8 @@ package kube
 import "strings"
 
 k: OAuth2Client: "grafana": spec: {
-	clientName: "grafana"
-	grantTypes: ["authorization_code", "refresh_token"]
+	secretName: "grafana-oauth2-client-credentials"
 	redirectUris: ["https://grafana.addem.se/login/generic_oauth"]
-	secretName:  "grafana-oauth2-client-credentials"
-	scope:       "openid email"
-	skipConsent: true
 }
 
 k: Grafana: grafana: spec: {
