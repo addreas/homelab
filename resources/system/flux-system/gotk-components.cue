@@ -13,7 +13,7 @@ k: Kustomization: "flux-components": spec: {
 }
 
 k: GitRepository: "cue-controller": spec: {
-	ref: branch: "main"
+	ref: branch: "sops-again"
 	url: "https://github.com/addreas/cue-controller"
 }
 
@@ -22,7 +22,7 @@ k: Kustomization: "cue-controller": spec: {
 	prune: false // dont prune this either
 	images: [{
 		name:   "ghcr.io/addreas/cue-controller"
-		newTag: "v1.7.2-cue"
+		newTag: "v1.8.2"
 	}]
 	patches: [{
 		patch: yaml.Marshal({

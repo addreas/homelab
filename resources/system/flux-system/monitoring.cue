@@ -1,3 +1,4 @@
+@if(monitoring)
 package kube
 
 k: GrafanaDashboard: "flux-cluster": spec: source: remote: url:       "https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json"
