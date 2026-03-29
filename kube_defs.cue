@@ -20,6 +20,7 @@ import (
 	flux_notification_v1beta3 "cue.dev/x/crd/fluxcd.io/notification/v1beta3"
 	flux_kustomize_v1 "cue.dev/x/crd/fluxcd.io/kustomize/v1"
 	flux_helm_v2 "cue.dev/x/crd/fluxcd.io/helm/v2"
+	cue_v1 "cue.toolkit.fluxcd.io/v1"
 
 	sealed_secrets_v1alpha1 "cue.dev/x/crd/bitnami.com/sealed-secrets/v1alpha1"
 
@@ -29,7 +30,7 @@ import (
 
 	cilium_v2 "cilium.io/v2"
 	cilium_v2alpha1 "cilium.io/v2alpha1"
-	cue_v1beta2 "cue.toolkit.fluxcd.io/v1beta2"
+
 	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
 	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
 	cni_v1 "k8s.cni.cncf.io/v1"
@@ -89,6 +90,8 @@ let resourceSchemas = [
 
 	flux_helm_v2.#HelmRelease,
 
+	cue_v1.#CueExport,
+
 	sealed_secrets_v1alpha1.#SealedSecret,
 
 	certmanager_v1.#Certificate,
@@ -101,8 +104,6 @@ let resourceSchemas = [
 	monitoring_v1.#ServiceMonitor,
 	monitoring_v1.#Prometheus,
 	monitoring_v1.#PrometheusRule,
-
-	cue_v1beta2.#CueExport,
 
 	grafana_v1beta1.#Grafana,
 	grafana_v1beta1.#GrafanaDashboard,
