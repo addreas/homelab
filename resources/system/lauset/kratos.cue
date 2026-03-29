@@ -177,6 +177,13 @@ k: Deployment: kratos: spec: template: spec: {
 			"-y",
 		]
 		envFrom: [{secretRef: name: "kratos"}]
+		env: [{
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "kratos-db-app"
+				key:  "uri"
+			}
+		}]
 	}]
 	containers: [_probes & {
 		image: "oryd/kratos:\(githubReleases["ory/kratos"])"

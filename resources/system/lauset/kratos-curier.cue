@@ -6,15 +6,17 @@ k: StatefulSet: "kratos-courier": spec: template: spec: {
 		args: ["courier", "watch", "--config", "/etc/config/kratos.yaml"]
 		envFrom: [{secretRef: name: "kratos"}]
 		env: [{
-			name: "DSN"
-			valueFrom: secretKeyRef: name: "kratos-db-app"
-		}]
-		env: [{
 			name:  "LOG_FORMAT"
 			value: "json"
 		}, {
 			name:  "LOG_LEVEL"
 			value: "trace"
+		}, {
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "kratos-db-app"
+				key:  "uri"
+			}
 		}]
 		volumeMounts: [{
 			name:      "kratos-config-volume"

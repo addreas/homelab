@@ -39,6 +39,13 @@ k: Deployment: hydra: spec: template: spec: {
 			"-y",
 		]
 		envFrom: [{secretRef: name: "hydra"}]
+		env: [{
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "hydra-db-app"
+				key:  "uri"
+			}
+		}]
 	}]
 	containers: [_probes & {
 		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
