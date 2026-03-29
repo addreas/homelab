@@ -27,6 +27,10 @@ k: Kustomization: "hydra-maester": spec: {
 			op:    "add"
 			path:  "/spec/template/spec/containers/1/args/-"
 			value: "--hydra-url=http://hydra-admin"
+		}, {
+			op:    "add"
+			path:  "/spec/template/spec/containers/1/args/-"
+			value: "--hydra-port=80"
 		}])
 	}]
 }
