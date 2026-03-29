@@ -1,12 +1,8 @@
 package kube
 
 k: OAuth2Client: "authproxy": spec: {
-	clientName: "authproxy"
-	grantTypes: ["client_credentials", "authorization_code", "refresh_token"]
+	secretName: "authproxy-oauth2-client-credentials"
 	redirectUris: ["https://authproxy.addem.se/oauth2/callback"]
-	secretName:  "authproxy-oauth2-client-credentials"
-	scope:       "openid email profile"
-	skipConsent: true
 }
 
 k: Deployment: "authproxy": spec: template: spec: containers: [{

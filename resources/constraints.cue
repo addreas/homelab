@@ -227,6 +227,13 @@ k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: 
 	"kustomize.toolkit.fluxcd.io/prune": "true" | *"false"
 }
 
+k: OAuth2Client: [name=string]: spec: {
+	clientName: _ | *name
+	grantTypes: _ | *["client_credentials", "authorization_code", "refresh_token"]
+	scopeArray: _ | *["openid", "mail", "profile"]
+	skipConsent: _ | *true
+}
+
 //
 // Adds an endpoint which can be called to delete all pods matching a label.
 //
