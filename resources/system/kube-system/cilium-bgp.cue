@@ -1,12 +1,5 @@
+@if(bgp)
 package kube
-
-k: CiliumLoadBalancerIPPool: "main": spec: {
-	serviceSelector: matchExpressions: [{key: "dont-give-me-an-ip", operator: "DoesNotExist"}]
-	blocks: [{
-		start: "10.0.2.10"
-		stop:  "10.0.2.25"
-	}]
-}
 
 k: CiliumBGPClusterConfig: "cilium-bgp": spec: bgpInstances: [{
 	name:     "main"
@@ -32,10 +25,4 @@ k: CiliumBGPAdvertisement: "bgp-loadbalancer-services": {
 		service: addresses: ["LoadBalancerIP"]
 		selector: matchLabels: advertise: "bgp"
 	}]
-}
-
-k: CiliumL2AnnouncementPolicy: "arp-loadbalancer-services": spec: {
-	serviceSelector: matchLabels: advertise: "arp"
-	interfaces: ["^eno[0-9]+"]
-	loadBalancerIPs: true
 }
