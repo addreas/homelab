@@ -9,7 +9,8 @@ k: GitRepository: "hydra-maester": spec: {
 
 k: Kustomization: "hydra-maester": spec: {
 	sourceRef: name: "hydra-maester"
-	path: "./config/default"
+	path:            "./config/default"
+	targetNamespace: "ory"
 	images: [{
 		name:    "controller"
 		newName: "oryd/hydra-maester"
