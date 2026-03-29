@@ -64,8 +64,9 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 				image: "ghcr.io/addreas/k8s-hostdevice-plugin:986abd80beca8e18176e66472a09032feb11ab53"
 				name:  "plugin"
 				securityContext: {
-					runAsUser:  0
-					runAsGroup: 0
+					runAsUser:    0
+					runAsGroup:   0
+					runAsNonRoot: false
 				}
 				volumeMounts: [{
 					name:      "device-plugin"
