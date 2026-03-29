@@ -2,7 +2,7 @@ package kube
 
 k: GitRepository: "homelab": spec: {
 	url: "https://github.com/addreas/homelab"
-	ref: branch: "main"
+	ref: branch: "qb"
 }
 
 k: CueExport: "homelab-system": spec: {
@@ -10,7 +10,7 @@ k: CueExport: "homelab-system": spec: {
 	paths: [
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
-		"./resources/system/ingress",
+		// "./resources/system/ingress",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
 		// "./resources/system/monitoring",
