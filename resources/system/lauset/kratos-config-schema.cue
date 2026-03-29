@@ -271,7 +271,63 @@ import (
 				// Enables the lookup secret method
 				enabled?: bool | *false
 			}
-			passkey?: webauthn
+			passkey?: {
+				// Enables the Passkey method
+				enabled?: bool | *false
+
+				// Passkey Configuration
+				config?: {
+					// Relying Party (RP) Config
+					rp?: (*{
+						origin?:      _
+						origins?:     _
+						id:           _
+						display_name: _
+						...
+					} | {
+						origin:       string
+						origins?:     _
+						id:           _
+						display_name: _
+						...
+					} | {
+						origin?: _
+						origins: [...string]
+						id:           _
+						display_name: _
+						...
+					}) & {
+						// Relying Party Display Name
+						//
+						// An name to help the user identify this RP.
+						display_name?: string
+
+						// Relying Party Identifier
+						//
+						// The id must be a subset of the domain currently in the browser.
+						id?: string
+
+						// Relying Party Origin
+						//
+						// An explicit RP origin. If left empty, this defaults to `id`,
+						// prepended with the current protocol schema (HTTP or HTTPS).
+						origin?: string
+
+						// Relying Party Origins
+						//
+						// A list of explicit RP origins. If left empty, this defaults to
+						// either `origin` or `id`, prepended with the current protocol
+						// schema (HTTP or HTTPS).
+						origins?: [...string]
+
+						// Relying Party Icon
+						//
+						// An icon to help the user identify this RP.
+						icon?: string
+						...
+					}
+				}
+			}
 			webauthn?: {
 				// Enables the WebAuthn method
 				enabled?: bool | *false
