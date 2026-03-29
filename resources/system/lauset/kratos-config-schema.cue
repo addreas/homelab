@@ -271,6 +271,7 @@ import (
 				// Enables the lookup secret method
 				enabled?: bool | *false
 			}
+			passkey?: webauthn
 			webauthn?: {
 				// Enables the WebAuthn method
 				enabled?: bool | *false
@@ -286,7 +287,7 @@ import (
 					passwordless?: bool
 
 					// Relying Party (RP) Config
-					rp?: ({
+					rp?: (*{
 						origin?:      _
 						origins?:     _
 						id:           _
