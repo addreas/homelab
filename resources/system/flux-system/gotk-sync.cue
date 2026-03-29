@@ -17,7 +17,11 @@ k: CueExport: "homelab-system": spec: {
 		"./resources/system/lauset",
 		// "./resources/system/nixery",
 	]
-	prune:     false
+	prune: false
+	decryption: {
+		provider: "sops"
+		secretRef: name: "qb-homelab"
+	}
 	sourceRef: _homelab
 }
 
