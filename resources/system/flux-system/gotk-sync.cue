@@ -11,7 +11,7 @@ k: CueExport: "homelab-system": spec: {
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
 		"./resources/system/net",
-		// "./resources/system/ingress",
+		"./resources/system/ingress",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
 		// "./resources/system/monitoring",
