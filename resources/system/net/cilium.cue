@@ -26,7 +26,10 @@ k: HelmRelease: cilium: spec: {
 		l2announcements: enabled: true
 		bgpControlPlane: enabled: true
 
-		ingressController: enabled:          true
-		ingressController: loadbalancerMode: "shared"
+		ingressController: {
+			enabled:          true
+			loadbalancerMode: "shared"
+			service: labels: advertise: "arp"
+		}
 	}
 }
