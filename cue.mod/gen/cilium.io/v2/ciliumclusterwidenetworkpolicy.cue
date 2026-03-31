@@ -218,6 +218,14 @@ import (
 			// Any endpoint with the label "role=frontend" can communicate
 			// with any
 			// endpoint carrying the label "role=backend".
+			//
+			// Note that while an empty non-nil ToEndpoints does not select
+			// anything,
+			// nil ToEndpoints is implicitly treated as a wildcard selector if
+			// ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			toEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -302,21 +310,27 @@ import (
 				// following "." matches all subdomains as well as the name to the
 				// right.
 				// A trailing "." is automatically added when missing.
+				// - "**." is a special prefix which matches all multilevel
+				// subdomains in the prefix.
 				//
 				// Examples:
-				// `*.cilium.io` matches subdomains of cilium at that level
+				// 1. `*.cilium.io` matches subdomains of cilium at that level
 				// www.cilium.io and blog.cilium.io match, cilium.io and
 				// google.com do not
-				// `*cilium.io` matches cilium.io and all subdomains ends with
+				// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 				// "cilium.io"
 				// except those containing "." separator, subcilium.io and
 				// sub-cilium.io match,
 				// www.cilium.io and blog.cilium.io does not
-				// sub*.cilium.io matches subdomains of cilium where the subdomain
-				// component
-				// begins with "sub"
-				// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+				// 3. `sub*.cilium.io` matches subdomains of cilium where the
+				// subdomain component
+				// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+				// while www.cilium.io,
 				// blog.cilium.io, cilium.io and google.com do not
+				// 4. `**.cilium.io` matches all multilevel subdomains of
+				// cilium.io.
+				// "app.cilium.io" and "test.app.cilium.io" match but not
+				// "cilium.io"
 				matchPattern?: strings.MaxRunes(
 						255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 			}]
@@ -485,17 +499,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 
 				// Rules is a list of additional port level rules which must be
@@ -534,21 +551,27 @@ import (
 						// following "." matches all subdomains as well as the name to the
 						// right.
 						// A trailing "." is automatically added when missing.
+						// - "**." is a special prefix which matches all multilevel
+						// subdomains in the prefix.
 						//
 						// Examples:
-						// `*.cilium.io` matches subdomains of cilium at that level
+						// 1. `*.cilium.io` matches subdomains of cilium at that level
 						// www.cilium.io and blog.cilium.io match, cilium.io and
 						// google.com do not
-						// `*cilium.io` matches cilium.io and all subdomains ends with
+						// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 						// "cilium.io"
 						// except those containing "." separator, subcilium.io and
 						// sub-cilium.io match,
 						// www.cilium.io and blog.cilium.io does not
-						// sub*.cilium.io matches subdomains of cilium where the subdomain
-						// component
-						// begins with "sub"
-						// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+						// 3. `sub*.cilium.io` matches subdomains of cilium where the
+						// subdomain component
+						// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+						// while www.cilium.io,
 						// blog.cilium.io, cilium.io and google.com do not
+						// 4. `**.cilium.io` matches all multilevel subdomains of
+						// cilium.io.
+						// "app.cilium.io" and "test.app.cilium.io" match but not
+						// "cilium.io"
 						matchPattern?: strings.MaxRunes(
 								255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 					}]
@@ -627,6 +650,8 @@ import (
 					}]
 
 					// Kafka-specific rules.
+					// Deprecated: This beta feature is deprecated and will be removed
+					// in a future release.
 					kafka?: [...{
 						// APIKey is a case-insensitive string matched against the key of
 						// a
@@ -782,50 +807,8 @@ import (
 				}
 			}]
 
-			// ToRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be able to connect to
-			// other
-			// endpoints. These additional constraints do no by itself grant
-			// access
-			// privileges and must always be accompanied with at least one
-			// matching
-			// ToEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires any endpoint to
-			// which it
-			// communicates to also carry the label "team=A".
-			toRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			toRequires?: list.MaxItems(0) & [...string]
 
 			// ToServices is a list of services to which the endpoint subject
 			// to the rule is allowed to initiate connections.
@@ -1041,6 +1024,14 @@ import (
 			// Any endpoint with the label "role=frontend" can communicate
 			// with any
 			// endpoint carrying the label "role=backend".
+			//
+			// Note that while an empty non-nil ToEndpoints does not select
+			// anything,
+			// nil ToEndpoints is implicitly treated as a wildcard selector if
+			// ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			toEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -1155,64 +1146,25 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 			}]
 
-			// ToRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be able to connect to
-			// other
-			// endpoints. These additional constraints do no by itself grant
-			// access
-			// privileges and must always be accompanied with at least one
-			// matching
-			// ToEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires any endpoint to
-			// which it
-			// communicates to also carry the label "team=A".
-			toRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			toRequires?: list.MaxItems(0) & [...string]
 
 			// ToServices is a list of services to which the endpoint subject
 			// to the rule is allowed to initiate connections.
@@ -1454,6 +1406,14 @@ import (
 			// Any endpoint with the label "role=backend" can be consumed by
 			// any
 			// endpoint carrying the label "role=frontend".
+			//
+			// Note that while an empty non-nil FromEndpoints does not select
+			// anything,
+			// nil FromEndpoints is implicitly treated as a wildcard selector
+			// if ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			fromEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -1551,48 +1511,8 @@ import (
 							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 			}]
 
-			// FromRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be reachable. These
-			// additional constraints do no by itself grant access privileges
-			// and
-			// must always be accompanied with at least one matching
-			// FromEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires consuming
-			// endpoint
-			// to also carry the label "team=A".
-			fromRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			fromRequires?: list.MaxItems(0) & [...string]
 
 			// ICMPs is a list of ICMP rule identified by type number
 			// which the endpoint subject to the rule is allowed to
@@ -1748,17 +1668,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 
 				// Rules is a list of additional port level rules which must be
@@ -1797,21 +1720,27 @@ import (
 						// following "." matches all subdomains as well as the name to the
 						// right.
 						// A trailing "." is automatically added when missing.
+						// - "**." is a special prefix which matches all multilevel
+						// subdomains in the prefix.
 						//
 						// Examples:
-						// `*.cilium.io` matches subdomains of cilium at that level
+						// 1. `*.cilium.io` matches subdomains of cilium at that level
 						// www.cilium.io and blog.cilium.io match, cilium.io and
 						// google.com do not
-						// `*cilium.io` matches cilium.io and all subdomains ends with
+						// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 						// "cilium.io"
 						// except those containing "." separator, subcilium.io and
 						// sub-cilium.io match,
 						// www.cilium.io and blog.cilium.io does not
-						// sub*.cilium.io matches subdomains of cilium where the subdomain
-						// component
-						// begins with "sub"
-						// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+						// 3. `sub*.cilium.io` matches subdomains of cilium where the
+						// subdomain component
+						// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+						// while www.cilium.io,
 						// blog.cilium.io, cilium.io and google.com do not
+						// 4. `**.cilium.io` matches all multilevel subdomains of
+						// cilium.io.
+						// "app.cilium.io" and "test.app.cilium.io" match but not
+						// "cilium.io"
 						matchPattern?: strings.MaxRunes(
 								255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 					}]
@@ -1890,6 +1819,8 @@ import (
 					}]
 
 					// Kafka-specific rules.
+					// Deprecated: This beta feature is deprecated and will be removed
+					// in a future release.
 					kafka?: [...{
 						// APIKey is a case-insensitive string matched against the key of
 						// a
@@ -2166,6 +2097,14 @@ import (
 			// Any endpoint with the label "role=backend" can be consumed by
 			// any
 			// endpoint carrying the label "role=frontend".
+			//
+			// Note that while an empty non-nil FromEndpoints does not select
+			// anything,
+			// nil FromEndpoints is implicitly treated as a wildcard selector
+			// if ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			fromEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -2263,48 +2202,8 @@ import (
 							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 			}]
 
-			// FromRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be reachable. These
-			// additional constraints do no by itself grant access privileges
-			// and
-			// must always be accompanied with at least one matching
-			// FromEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires consuming
-			// endpoint
-			// to also carry the label "team=A".
-			fromRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			fromRequires?: list.MaxItems(0) & [...string]
 
 			// ICMPs is a list of ICMP rule identified by type number
 			// which the endpoint subject to the rule is not allowed to
@@ -2368,17 +2267,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 			}]
 		}]
@@ -2636,6 +2538,14 @@ import (
 			// Any endpoint with the label "role=frontend" can communicate
 			// with any
 			// endpoint carrying the label "role=backend".
+			//
+			// Note that while an empty non-nil ToEndpoints does not select
+			// anything,
+			// nil ToEndpoints is implicitly treated as a wildcard selector if
+			// ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			toEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -2720,21 +2630,27 @@ import (
 				// following "." matches all subdomains as well as the name to the
 				// right.
 				// A trailing "." is automatically added when missing.
+				// - "**." is a special prefix which matches all multilevel
+				// subdomains in the prefix.
 				//
 				// Examples:
-				// `*.cilium.io` matches subdomains of cilium at that level
+				// 1. `*.cilium.io` matches subdomains of cilium at that level
 				// www.cilium.io and blog.cilium.io match, cilium.io and
 				// google.com do not
-				// `*cilium.io` matches cilium.io and all subdomains ends with
+				// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 				// "cilium.io"
 				// except those containing "." separator, subcilium.io and
 				// sub-cilium.io match,
 				// www.cilium.io and blog.cilium.io does not
-				// sub*.cilium.io matches subdomains of cilium where the subdomain
-				// component
-				// begins with "sub"
-				// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+				// 3. `sub*.cilium.io` matches subdomains of cilium where the
+				// subdomain component
+				// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+				// while www.cilium.io,
 				// blog.cilium.io, cilium.io and google.com do not
+				// 4. `**.cilium.io` matches all multilevel subdomains of
+				// cilium.io.
+				// "app.cilium.io" and "test.app.cilium.io" match but not
+				// "cilium.io"
 				matchPattern?: strings.MaxRunes(
 						255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 			}]
@@ -2903,17 +2819,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 
 				// Rules is a list of additional port level rules which must be
@@ -2952,21 +2871,27 @@ import (
 						// following "." matches all subdomains as well as the name to the
 						// right.
 						// A trailing "." is automatically added when missing.
+						// - "**." is a special prefix which matches all multilevel
+						// subdomains in the prefix.
 						//
 						// Examples:
-						// `*.cilium.io` matches subdomains of cilium at that level
+						// 1. `*.cilium.io` matches subdomains of cilium at that level
 						// www.cilium.io and blog.cilium.io match, cilium.io and
 						// google.com do not
-						// `*cilium.io` matches cilium.io and all subdomains ends with
+						// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 						// "cilium.io"
 						// except those containing "." separator, subcilium.io and
 						// sub-cilium.io match,
 						// www.cilium.io and blog.cilium.io does not
-						// sub*.cilium.io matches subdomains of cilium where the subdomain
-						// component
-						// begins with "sub"
-						// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+						// 3. `sub*.cilium.io` matches subdomains of cilium where the
+						// subdomain component
+						// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+						// while www.cilium.io,
 						// blog.cilium.io, cilium.io and google.com do not
+						// 4. `**.cilium.io` matches all multilevel subdomains of
+						// cilium.io.
+						// "app.cilium.io" and "test.app.cilium.io" match but not
+						// "cilium.io"
 						matchPattern?: strings.MaxRunes(
 								255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 					}]
@@ -3045,6 +2970,8 @@ import (
 					}]
 
 					// Kafka-specific rules.
+					// Deprecated: This beta feature is deprecated and will be removed
+					// in a future release.
 					kafka?: [...{
 						// APIKey is a case-insensitive string matched against the key of
 						// a
@@ -3200,50 +3127,8 @@ import (
 				}
 			}]
 
-			// ToRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be able to connect to
-			// other
-			// endpoints. These additional constraints do no by itself grant
-			// access
-			// privileges and must always be accompanied with at least one
-			// matching
-			// ToEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires any endpoint to
-			// which it
-			// communicates to also carry the label "team=A".
-			toRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			toRequires?: list.MaxItems(0) & [...string]
 
 			// ToServices is a list of services to which the endpoint subject
 			// to the rule is allowed to initiate connections.
@@ -3459,6 +3344,14 @@ import (
 			// Any endpoint with the label "role=frontend" can communicate
 			// with any
 			// endpoint carrying the label "role=backend".
+			//
+			// Note that while an empty non-nil ToEndpoints does not select
+			// anything,
+			// nil ToEndpoints is implicitly treated as a wildcard selector if
+			// ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			toEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -3573,64 +3466,25 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 			}]
 
-			// ToRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be able to connect to
-			// other
-			// endpoints. These additional constraints do no by itself grant
-			// access
-			// privileges and must always be accompanied with at least one
-			// matching
-			// ToEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires any endpoint to
-			// which it
-			// communicates to also carry the label "team=A".
-			toRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			toRequires?: list.MaxItems(0) & [...string]
 
 			// ToServices is a list of services to which the endpoint subject
 			// to the rule is allowed to initiate connections.
@@ -3872,6 +3726,14 @@ import (
 			// Any endpoint with the label "role=backend" can be consumed by
 			// any
 			// endpoint carrying the label "role=frontend".
+			//
+			// Note that while an empty non-nil FromEndpoints does not select
+			// anything,
+			// nil FromEndpoints is implicitly treated as a wildcard selector
+			// if ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			fromEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -3969,48 +3831,8 @@ import (
 							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 			}]
 
-			// FromRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be reachable. These
-			// additional constraints do no by itself grant access privileges
-			// and
-			// must always be accompanied with at least one matching
-			// FromEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires consuming
-			// endpoint
-			// to also carry the label "team=A".
-			fromRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			fromRequires?: list.MaxItems(0) & [...string]
 
 			// ICMPs is a list of ICMP rule identified by type number
 			// which the endpoint subject to the rule is allowed to
@@ -4166,17 +3988,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 
 				// Rules is a list of additional port level rules which must be
@@ -4215,21 +4040,27 @@ import (
 						// following "." matches all subdomains as well as the name to the
 						// right.
 						// A trailing "." is automatically added when missing.
+						// - "**." is a special prefix which matches all multilevel
+						// subdomains in the prefix.
 						//
 						// Examples:
-						// `*.cilium.io` matches subdomains of cilium at that level
+						// 1. `*.cilium.io` matches subdomains of cilium at that level
 						// www.cilium.io and blog.cilium.io match, cilium.io and
 						// google.com do not
-						// `*cilium.io` matches cilium.io and all subdomains ends with
+						// 2. `*cilium.io` matches cilium.io and all subdomains ends with
 						// "cilium.io"
 						// except those containing "." separator, subcilium.io and
 						// sub-cilium.io match,
 						// www.cilium.io and blog.cilium.io does not
-						// sub*.cilium.io matches subdomains of cilium where the subdomain
-						// component
-						// begins with "sub"
-						// sub.cilium.io and subdomain.cilium.io match, www.cilium.io,
+						// 3. `sub*.cilium.io` matches subdomains of cilium where the
+						// subdomain component
+						// begins with "sub". sub.cilium.io and subdomain.cilium.io match
+						// while www.cilium.io,
 						// blog.cilium.io, cilium.io and google.com do not
+						// 4. `**.cilium.io` matches all multilevel subdomains of
+						// cilium.io.
+						// "app.cilium.io" and "test.app.cilium.io" match but not
+						// "cilium.io"
 						matchPattern?: strings.MaxRunes(
 								255) & =~"^([-a-zA-Z0-9_*]+[.]?)+$"
 					}]
@@ -4308,6 +4139,8 @@ import (
 					}]
 
 					// Kafka-specific rules.
+					// Deprecated: This beta feature is deprecated and will be removed
+					// in a future release.
 					kafka?: [...{
 						// APIKey is a case-insensitive string matched against the key of
 						// a
@@ -4584,6 +4417,14 @@ import (
 			// Any endpoint with the label "role=backend" can be consumed by
 			// any
 			// endpoint carrying the label "role=frontend".
+			//
+			// Note that while an empty non-nil FromEndpoints does not select
+			// anything,
+			// nil FromEndpoints is implicitly treated as a wildcard selector
+			// if ToPorts
+			// are also specified.
+			// To select everything, use one EndpointSelector without any
+			// match requirements.
 			fromEndpoints?: [...{
 				// matchExpressions is a list of label selector requirements. The
 				// requirements are ANDed.
@@ -4681,48 +4522,8 @@ import (
 							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 			}]
 
-			// FromRequires is a list of additional constraints which must be
-			// met
-			// in order for the selected endpoints to be reachable. These
-			// additional constraints do no by itself grant access privileges
-			// and
-			// must always be accompanied with at least one matching
-			// FromEndpoints.
-			//
-			// Example:
-			// Any Endpoint with the label "team=A" requires consuming
-			// endpoint
-			// to also carry the label "team=A".
-			fromRequires?: [...{
-				// matchExpressions is a list of label selector requirements. The
-				// requirements are ANDed.
-				matchExpressions?: [...{
-					// key is the label key that the selector applies to.
-					key!: string
-
-					// operator represents a key's relationship to a set of values.
-					// Valid operators are In, NotIn, Exists and DoesNotExist.
-					operator!: "In" | "NotIn" | "Exists" | "DoesNotExist"
-
-					// values is an array of string values. If the operator is In or
-					// NotIn,
-					// the values array must be non-empty. If the operator is Exists
-					// or DoesNotExist,
-					// the values array must be empty. This array is replaced during a
-					// strategic
-					// merge patch.
-					values?: [...string]
-				}]
-
-				// matchLabels is a map of {key,value} pairs. A single {key,value}
-				// in the matchLabels
-				// map is equivalent to an element of matchExpressions, whose key
-				// field is "key", the
-				// operator is "In", and the values array contains only "value".
-				// The requirements are ANDed.
-				matchLabels?: [string]: strings.MaxRunes(
-							63) & =~"^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
-			}]
+			// Deprecated.
+			fromRequires?: list.MaxItems(0) & [...string]
 
 			// ICMPs is a list of ICMP rule identified by type number
 			// which the endpoint subject to the rule is not allowed to
@@ -4786,17 +4587,20 @@ import (
 
 					// Port can be an L4 port number, or a name in the form of "http"
 					// or "http-8080".
-					port!: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
+					port?: =~"^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[0-9]{1,4})|([a-zA-Z0-9]-?)*[a-zA-Z](-?[a-zA-Z0-9])*$"
 
-					// Protocol is the L4 protocol. If omitted or empty, any protocol
-					// matches. Accepted values: "TCP", "UDP", "SCTP", "ANY"
+					// Protocol is the L4 protocol. If "ANY", omitted or empty, any
+					// protocols
+					// with transport ports (TCP, UDP, SCTP) match.
+					//
+					// Accepted values: "TCP", "UDP", "SCTP", "VRRP", "IGMP", "ANY"
 					//
 					// Matching on ICMP is not supported.
 					//
 					// Named port specified for a container may narrow this down, but
 					// may not
 					// contradict this.
-					protocol?: "TCP" | "UDP" | "SCTP" | "ANY"
+					protocol?: "TCP" | "UDP" | "SCTP" | "VRRP" | "IGMP" | "ANY"
 				}]
 			}]
 		}]
