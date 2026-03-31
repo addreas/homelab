@@ -9,4 +9,4 @@ k: GitRepository: "gateway-api-crds": spec: {
 		"""
 }
 
-k: Kustomization: "gateway-api-crds": spec: path: "./config/crd"
+k: Kustomization: "gateway-api-crds": spec: path: "./config/crd/experimental"
