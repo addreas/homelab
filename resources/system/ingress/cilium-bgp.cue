@@ -8,7 +8,7 @@ k: CiliumBGPClusterConfig: "cilium-bgp": spec: bgpInstances: [{
 		name: "default"
 		peerConfigRef: name: "cilium-peer"
 		peerASN:     64512
-		peerAddress: "10.0.2.1"
+		peerAddress: "10.24.0.1"
 	}]
 }]
 

@@ -34,23 +34,22 @@ k: Deployment: cloudflared: spec: {
 }
 
 k: ConfigMap: "cloudflared-config": data: "config.yaml": yaml.Marshal({
-	tunnel:             "d8e11b22-80ad-42ef-9c8b-92992118e669"
+	tunnel:             "9484a4de-29a5-41da-a2e5-5e5562f8d3c4"
 	"credentials-file": "/etc/cloudflared/\(tunnel).json"
 	"no-autoupdate":    true
 	ingress: [{
-		service: "http://haproxy-haproxy-ingress.ingress.svc.cluster.local"
+		service: "http://addem.ingress.svc.cluster.local"
 	}]
 })
 
 // cloudflared tunnel login
-// cloudflared tunnel create nucles-ingress # prints tunnel UUID
-// TUNNEL=d8e11b22-80ad-42ef-9c8b-92992118e669
+// cloudflared tunnel create qb-ingress # prints tunnel UUID
+// TUNNEL=9484a4de-29a5-41da-a2e5-5e5562f8d3c4
 // kubectl create secret generic cloudflared-credentials \
 //   --dry-run=client \
 //   --namespace=ingress \
 //   --from-file ~/.cloudflared/$TUNNEL.json \
-//   --output yaml | cue import-yaml > cloudflared-secret.cue
-// cue seal
-// rm cloudflared-secret.cue
+//   --output yaml | cue cmd import-yaml > cloudflared-secret.enc.cue
+// cue cmd seal
 // cloudflared tunnel route dns $TUNNEL "*.addem.se"
 // cloudflared tunnel route dns $TUNNEL "addem.se"

@@ -37,6 +37,8 @@ import (
 
 	longhorn_v1beta2 "longhorn.io/v1beta2"
 	cnpg_v1 "postgresql.cnpg.io/v1"
+
+	gateway_v1 "gateway.networking.k8s.io/v1"
 )
 
 let resourceSchemas = [
@@ -64,6 +66,15 @@ let resourceSchemas = [
 	networking_v1.#Ingress,
 	networking_v1.#IngressClass,
 	networking_v1.#NetworkPolicy,
+
+	gateway_v1.#GatewayClass,
+	gateway_v1.#Gateway,
+	gateway_v1.#ListenerSet,
+	gateway_v1.#HTTPRoute,
+	gateway_v1.#GRPCRoute,
+	gateway_v1.#TLSRoute,
+	gateway_v1.#BackendTLSPolicy,
+	gateway_v1.#ReferenceGrant,
 
 	policy_v1.#PodDisruptionBudget,
 

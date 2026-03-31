@@ -267,6 +267,10 @@ package v2
 			}
 		}
 
+		// ServiceAccount is the service account associated with the
+		// endpoint
+		"service-account"?: string
+
 		// State is the state of the endpoint.
 		state?: "creating" | "waiting-for-identity" | "not-ready" | "waiting-to-regenerate" | "regenerating" | "restoring" | "ready" | "disconnecting" | "disconnected" | "invalid"
 	}
