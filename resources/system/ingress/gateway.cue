@@ -1,7 +1,5 @@
 package kube
 
-k: GatewayClass: "cilium": spec: controllerName: "io.cilium/gateway-controller"
-
 k: Gateway: addem: {
 	metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
 	spec: {
