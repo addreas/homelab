@@ -22,7 +22,9 @@ k: HelmRelease: cilium: spec: {
 		ipam: mode:      "kubernetes"
 		bpf: masquerade: true
 
-		gatewayAPI: enabled: true
+		gatewayAPI: enabled:      true
+		l2announcements: enabled: true
+		bgpControlPlane: enabled: true
 
 		ingressController: enabled:          true
 		ingressController: loadbalancerMode: "shared"
