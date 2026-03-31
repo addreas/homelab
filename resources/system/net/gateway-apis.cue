@@ -5,7 +5,7 @@ k: GitRepository: "gateway-api-crds": spec: {
 	url: "https://github.com/kubernetes-sigs/gateway-api"
 	ignore: """
 		/*
-		!/config/crd.yml
+		!/config/crd
 		"""
 }
 
