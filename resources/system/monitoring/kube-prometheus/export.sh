@@ -10,7 +10,7 @@ export PATH="$PATH:$(go env GOPATH 2>/dev/null)/bin"
 cd "$(dirname "$0")"
 
 # renovate: depName=prometheus-operator/kube-prometheus datasource=github-releases
-VERSION=v0.16.0
+VERSION=v0.17.0
 
 if [ ! -d vendor ]; then
   jb init
