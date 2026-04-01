@@ -11,7 +11,7 @@ githubReleases: {
 	"jcmoraisjr/haproxy-ingress":  "v0.15.1"
 	"kubereboot/charts":           "kured-5.11.0"
 	"longhorn/longhorn":           "v1.11.0"
-	"ory/hydra":                   "v25.4.0"
+	"ory/hydra":                   "v26.2.0"
 	"ory/hydra-maester":           "v0.0.41"
 	"ory/kratos":                  "v25.4.0"
 	"paperless-ngx/paperless-ngx": "v2.20.9"
