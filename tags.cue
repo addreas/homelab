@@ -15,6 +15,6 @@ githubReleases: {
 	"ory/hydra-maester":           "v0.0.41"
 	"ory/kratos":                  "v25.4.0"
 	"paperless-ngx/paperless-ngx": "v2.20.13"
-	"triliumnext/trilium":         "v0.102.1"
+	"triliumnext/trilium":         "v0.102.2"
 	"zwave-js/zwave-js-ui":        "v11.15.1"
 }

@@ -18,11 +18,11 @@ k: StatefulSet: trillium: spec: {
 		}]
 		resources: {
 			limits: {
-				cpu:    "100m"
+				cpu:    "2"
 				memory: "1Gi"
 			}
 			requests: {
-				cpu:    "5m"
+				cpu:    "100m"
 				memory: "128Mi"
 			}
 		}
