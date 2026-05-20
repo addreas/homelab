@@ -40,7 +40,7 @@ k: StatefulSet: qbittorrent: {
 					name:            "qbittorrent"
 					image:           "lscr.io/linuxserver/qbittorrent:latest"
 					imagePullPolicy: "Always"
-					command: ["/usr/bin/qbittorrent-nox"]
+					command: ["/app/qbittorrent-nox", "--confirm-legal-notice"]
 					ports: [{
 						containerPort: 8080
 					}]
@@ -64,23 +64,6 @@ k: StatefulSet: qbittorrent: {
 							cpu:    "250m"
 						}
 					}
-				}, {
-					name:  "exporter"
-					image: "esanchezm/prometheus-qbittorrent-exporter:v1.1.0"
-					resources: limits: {
-						cpu:    "150m"
-						memory: "64Mi"
-					}
-					ports: [{
-						containerPort: 8000
-					}]
-					env: [{
-						name:  "QBITTORRENT_HOST"
-						value: "localhost"
-					}, {
-						name:  "QBITTORRENT_PORT"
-						value: "8080"
-					}]
 				}, {
 					name:  "socks-proxy"
 					image: "xkuma/socks5"
