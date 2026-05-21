@@ -10,21 +10,24 @@ import (
 #Role: =~strings.Join([for role, _ in t.Role {role}], "|")
 
 #NodeSpec: {
+	// inputs
+	mac: string
+	ip?: string
+	roles: [...#Role]
+
+	// derived outputs
 	hostname: string
-	mac:      string
-	ip?:      string
-	role: [#Role]: true
 	patches: [...]
 	schematic: factory.#Schematic
 }
 
 t: Node: [name=string]: #NodeSpec & {
-	role: base: _
+	roles: _
 
-	ip?: string
+	hostname: name
 
 	patches: [
-		for r, _ in role
+		for r in roles
 		if t.Role[r].patch != _|_ {
 			t.Role[r].patch
 		}, {
@@ -36,7 +39,7 @@ t: Node: [name=string]: #NodeSpec & {
 
 	schematic: (#MergeAppend & {
 		in: [
-			for r, _ in role
+			for r in roles
 			if t.Role[r].schematic != _|_ {
 				t.Role[r].schematic
 			}]

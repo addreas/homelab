@@ -4,19 +4,16 @@ t: Role: "control-plane": patch: machine: {
 	network: interfaces: [{
 		deviceSelector: physical: true
 		dhcp: true
-		vip: ip: "10.24.0.24"
+		vip: ip: apiVip
 	}]
 	features: kubernetesTalosAPIAccess: enabled: true
 }
 
 t: Role: "worker": patch: machine: nodeLabels: "node-role.kubernetes.io/worker": ""
 
-t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
-t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
-
 t: Role: "base": {
 	patch: cluster: {
-		controlPlane: endpoint: "https://api.qb:6443"
+		controlPlane: endpoint: "https://\(apiHost):6443"
 		clusterName: "qb"
 		network: {
 			dnsDomain: "cluster.local"
@@ -82,3 +79,6 @@ t: Role: "longhorn": {
 }
 
 t: Role: "intel": schematic: customization: systemExtensions: officialExtensions: ["siderolabs/intel-ucode"]
+
+t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
+t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]

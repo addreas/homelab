@@ -21,18 +21,6 @@ secrets: exec.Run & {
 	stdout: string
 }
 
-talosVersion: {
-	req: http.Get & {
-		url: "https://api.github.com/repos/siderolabs/talos/releases"
-		response: {
-			statusCode: 200
-			body:       string & =~".*tag_name.*"
-			value:      json.Unmarshal(body)
-		}
-	}
-	value: req.response.value[0].tag_name
-}
-
 // wrapper for talosctl with nodes populated. useage -t cmd="get disks" -t role=worker
 command: "talosctl": {
 	args: string @tag(cmd)
@@ -61,33 +49,7 @@ command: "talosconfig": exec.Run & {
 	]
 }
 
-#genConfig: {
-	$node: #NodeSpec
-
-	outputType: *"worker" | string
-	if $node.role["control-plane"] != _|_ {
-		outputType: "controlplane"
-	}
-
-	$after: [secrets]
-	stdin: secrets.stdout
-	cmd: list.Concat([
-		["talosctl", "gen", "config",
-			clusterName,
-			"https://\(apiHost):6443",
-			"--with-secrets", "/dev/stdin",
-			"--output-types", outputType,
-			"--output", "-",
-		],
-		list.Concat([for patch in $node.patches {
-			["--config-patch", yaml.Marshal(patch)]
-		}]),
-	])
-	stdout: string
-
-	...
-}
-
+// apply initial config on node (-t node=name) in maintainance mode (ip has to be defined)
 command: "adopt": {
 	apply: exec.Run & {
 		stdin: targetNodeConfig.stdout
@@ -125,6 +87,8 @@ command: "apply": {
 		response: body: string
 		response: value: json.Unmarshal(response.body) & {id: string}
 	}
+
+	talosVersion: #talosVersion & {req: http.Get}
 
 	upgradePrint: cli.Print & {
 		$after: [apply]
@@ -165,6 +129,8 @@ command: "boot": {
 			response: body: configs[request.pathValues.mac].stdout
 		}
 	}
+
+	talosVersion: #talosVersion & {req: http.Get}
 
 	pixieServer: {
 		configs: {
@@ -218,4 +184,74 @@ command: "boot": {
 			"--port=9734",
 			"--debug"]
 	}
+}
+
+command: "bootstrap": exec.Run & {
+	let ciliumValues = {
+		ipam: mode: "kubernetes"
+		kubeProxyReplacement: true
+		securityContext: capabilities: ciliumAgent:      "{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
+		securityContext: capabilities: cleanCiliumState: "{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
+		cgroup: autoMount: enabled:                      false
+		cgroup: hostRoot: "/sys/fs/cgroup"
+		k8sServiceHost: "localhost"
+		k8sServicePort: 7445
+	}
+
+	cmd: ["sh", "-c", """
+		talosctl bootstrap -n \(targetNodeName)
+		talosctl kubeconfig -n \(targetNodeName)
+		# TODO: note even close to something that would work
+		cilium install --values \(ciliumValues)
+
+		# https://docs.siderolabs.com/kubernetes-guides/cni/multus
+		kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml
+
+		flux install --toleration-keys=node-role.kubernetes.io/control-plane
+
+		kubectl apply -k https://github.com/addreas/cue-controller/config/default
+
+		cue cmd apply -t kind=CueExport ../resources/...
+		"""]
+}
+
+#genConfig: {
+	$node: #NodeSpec
+
+	outputType: *"worker" | string
+	if list.Contains($node.roles, "control-plane") {
+		outputType: "controlplane"
+	}
+
+	$after: [secrets]
+	stdin: secrets.stdout
+	cmd: list.Concat([
+		["talosctl", "gen", "config",
+			clusterName,
+			"https://\(apiHost):6443",
+			"--with-secrets", "/dev/stdin",
+			"--output-types", outputType,
+			"--output", "-",
+		],
+		list.Concat([for patch in $node.patches {
+			["--config-patch", yaml.Marshal(patch)]
+		}]),
+	])
+	stdout: string
+
+	...
+}
+
+#talosVersion: {
+	req: {
+		url: "https://api.github.com/repos/siderolabs/talos/releases"
+		response: {
+			statusCode: 200
+			body:       string & =~".*tag_name.*"
+			value:      json.Unmarshal(body)
+			...
+		}
+		...
+	}
+	value: req.response.value[0].tag_name
 }
