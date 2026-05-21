@@ -116,7 +116,6 @@ command: "apply": {
 			"--context", clusterName,
 			"--nodes", targetNodeName,
 			"--file", "/dev/stdin",
-			"--mode", "staged",
 		]
 	}
 
@@ -139,11 +138,9 @@ command: "apply": {
 		cmd: ["talosctl", "upgrade",
 			"--context", clusterName,
 			"--nodes", targetNodeName,
-			"--stage",
 			"--image", "factory.talos.dev/metal-installer/\(schematic.response.value.id):\(talosVersion.value)",
 			"--debug",
 		]
-		// label reboot required
 	}
 }
 
