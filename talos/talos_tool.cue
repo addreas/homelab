@@ -2,7 +2,6 @@ package talos
 
 import (
 	"list"
-	"regexp"
 	"strings"
 	"encoding/json"
 	"encoding/yaml"
@@ -11,17 +10,27 @@ import (
 	"tool/cli"
 )
 
-host: string @tag(host,var=hostname)
+host:           string @tag(host,var=hostname)
+targetNodeName: string @tag(node)
+
+targetNode: t.Node[targetNodeName]
+targetNodeConfig: exec.Run & {#genConfig, $node: targetNode}
 
 secrets: exec.Run & {
 	cmd: ["sops", "decrypt", "secrets.yaml"]
 	stdout: string
 }
 
-talosVersion: exec.Run & {
-	cmd: ["talosctl", "version", "--client", "--short"]
-	stdout:  string
-	_parsed: regexp.Find(#"v.*"#, stdout)
+talosVersion: {
+	req: http.Get & {
+		url: "https://api.github.com/repos/siderolabs/talos/releases"
+		response: {
+			statusCode: 200
+			body:       string & =~".*tag_name.*"
+			value:      json.Unmarshal(body)
+		}
+	}
+	value: req.response.value[0].tag_name
 }
 
 // wrapper for talosctl with nodes populated. useage -t cmd="get disks" -t role=worker
@@ -79,6 +88,18 @@ command: "talosconfig": exec.Run & {
 	...
 }
 
+command: "adopt": {
+	apply: exec.Run & {
+		stdin: targetNodeConfig.stdout
+		cmd: ["talosctl", "apply-config",
+			"--context", clusterName,
+			"--nodes", targetNode.ip,
+			"--file", "/dev/stdin",
+			"--insecure",
+		]
+	}
+}
+
 // run cue cmd apply for all nodes
 command: "apply-all": {
 	let commands = [for name, _ in t.Node {"cue cmd apply -t node=\(name)"}]
@@ -89,35 +110,27 @@ command: "apply-all": {
 
 // run talosctl apply-config and talosctl upgrade for -t node
 command: "apply": {
-	$nodeName: string @tag(node)
-
-	node: t.Node[$nodeName]
-
-	config: exec.Run & {#genConfig, $node: node}
-
-	schematic: http.Post & {
-		url: "https://factory.talos.dev/schematics"
-		request: body:  json.Marshal(node.schematic)
-		response: body: string
-		_json: json.Unmarshal(response.body) & {id: string}
-	}
-
-	// configPrint: cli.Print & {text: config.stdout}
-
 	apply: exec.Run & {
-		stdin: config.stdout
+		stdin: targetNodeConfig.stdout
 		cmd: ["talosctl", "apply-config",
 			"--context", clusterName,
-			"--nodes", $nodeName,
+			"--nodes", targetNodeName,
 			"--file", "/dev/stdin",
 			"--mode", "staged",
 		]
 	}
 
+	schematic: http.Post & {
+		url: "https://factory.talos.dev/schematics"
+		request: body:  json.Marshal(targetNode.schematic)
+		response: body: string
+		response: value: json.Unmarshal(response.body) & {id: string}
+	}
+
 	upgradePrint: cli.Print & {
 		$after: [apply]
 		text: """
-		Upgrading to factory image "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)"
+		Upgrading to factory image "factory.talos.dev/metal-installer/\(schematic.response.value.id):\(talosVersion.value)"
 		"""
 	}
 
@@ -125,9 +138,9 @@ command: "apply": {
 		$after: [apply]
 		cmd: ["talosctl", "upgrade",
 			"--context", clusterName,
-			"--nodes", $nodeName,
+			"--nodes", targetNodeName,
 			"--stage",
-			"--image", "factory.talos.dev/metal-installer/\(schematic._json.id):\(talosVersion._parsed)",
+			"--image", "factory.talos.dev/metal-installer/\(schematic.response.value.id):\(talosVersion.value)",
 			"--debug",
 		]
 		// label reboot required
@@ -158,36 +171,36 @@ command: "boot": {
 
 	pixieServer: {
 		configs: {
+			schematics: {
+				for _, node in t.Node {
+					let str = json.Marshal(node.schematic)
+					(str): http.Post & {
+						url: "https://factory.talos.dev/schematics"
+						request: body:  str
+						response: body: string
+						response: value: json.Unmarshal(response.body) & {id: string}
+					}
+				}
+			}
+
 			for _, node in t.Node {
 				(node.mac): {
-					schematic: http.Post & {
-						url: "https://factory.talos.dev/schematics"
-						request: body:  json.Marshal(node.schematic)
-						response: body: string
-						_json: json.Unmarshal(response.body) & {id: string}
-					}
+					schematicId: schematics[json.Marshal(node.schematic)].response.value.id
 
-					let factoryImageBase = "https://factory.talos.dev/image/\(schematic._json.id)/\(talosVersion._parsed)"
-
-					factoryCmdline: http.Get & {
-						url: "\(factoryImageBase)/cmdline-metal-amd64"
-						response: body: string
-
-						_parsed: {for arg in strings.Split(response.body, " ") {
-							let kv = strings.Split(arg, "=")
-							(kv[0]): *kv[1] | true
-						}}
-					}
+					let factoryImageBase = "https://factory.talos.dev/image/\(schematicId)/\(talosVersion.value)"
 
 					body: json.Marshal({
 						kernel: "\(factoryImageBase)/kernel-amd64"
 						initrd: ["\(factoryImageBase)/initramfs-amd64.xz"]
-						cmdline: factoryCmdline._parsed
-						cmdline: "talos.config": url: configEndpoint
+						cmdline: {
+							"console":        "tty0"
+							"talos.platform": "metal"
+							"talos.config": url: configEndpoint // pixiecore translated
+						}
 					})
 
 					print: cli.Print & {
-						text: "boot spec for \(node.mac):\(body)"
+						text: "boot spec for \(node.mac): \(body)"
 					}
 				}
 			}
@@ -202,7 +215,7 @@ command: "boot": {
 	}
 
 	pixiecore: exec.Run & {
-		cmd: ["pixiecore", "api",
+		cmd: ["sudo", "--non-interactive", "pixiecore", "api",
 			"http://localhost:8080",
 			// "--dhcp-no-bind",
 			"--port=9734",

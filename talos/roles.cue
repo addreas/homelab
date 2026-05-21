@@ -11,6 +11,9 @@ t: Role: "control-plane": patch: machine: {
 
 t: Role: "worker": patch: machine: nodeLabels: "node-role.kubernetes.io/worker": ""
 
+t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
+t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
+
 t: Role: "base": {
 	patch: cluster: {
 		controlPlane: endpoint: "https://api.qb:6443"
