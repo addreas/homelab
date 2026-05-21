@@ -5,7 +5,7 @@ t: Node: {
 
 	"talos-3cf-jbr": {mac: "1c:69:7a:a0:af:3e", cp}
 	"talos-lcn-k2p": {mac: "1c:69:7a:6f:c2:b8", cp}
-	"talos-zze-vjy": {mac: "1c:69:7a:01:84:76", cp, role: longhorn: _}
+	"qb-cp-90": {mac: "1c:69:7a:01:84:76", ip: "10.24.0.90", cp, role: longhorn: _}
 }
 
 t: Node: {
