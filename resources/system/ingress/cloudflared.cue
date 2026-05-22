@@ -38,7 +38,7 @@ k: ConfigMap: "cloudflared-config": data: "config.yaml": yaml.Marshal({
 	"credentials-file": "/etc/cloudflared/\(tunnel).json"
 	"no-autoupdate":    true
 	ingress: [{
-		service: "http://addem.ingress.svc.cluster.local"
+		service: "http://cilium-gateway-addem.ingress.svc.cluster.local"
 	}]
 })
 
