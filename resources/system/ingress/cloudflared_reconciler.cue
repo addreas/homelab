@@ -1,4 +1,4 @@
-@if(cue-controller-dynamic-reconcile)
+@if(cue_controller_dynamic_reconcile)
 package kube
 
 reconcile: cloudflared: {
