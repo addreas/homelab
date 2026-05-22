@@ -19,14 +19,14 @@ k: StatefulSet: "kratos-courier": spec: template: spec: {
 			}
 		}]
 		volumeMounts: [{
-			name:      "kratos-config-volume"
+			name:      "config"
 			mountPath: "/etc/config"
 			readOnly:  true
 		}]
 	}]
 	volumes: [{
-		name: "kratos-config-volume"
-		configMap: name: "kratos-config"
+		name: "config"
+		configMap: name: "kratos"
 	}]
 }
 

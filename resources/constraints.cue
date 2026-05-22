@@ -125,7 +125,7 @@ k: Ingress: [Name=string]: {
 	}
 	spec: rules: _ | *[{
 		host:             _ | *"\(Name).addem.se"
-		ingressClassName: "cilium"
+		ingressClassName: _ | *"cilium"
 		http: paths: _ | *[{
 			path:     _ | *"/"
 			pathType: _ | *"Prefix"

@@ -5,7 +5,14 @@ k: Ingress: bitwarden: {
 		option forwardfor header X-Real-IP
 		"""
 	spec: rules: [{
-		http: paths: [{}, {
+		http: paths: [{
+			path:     "/"
+			pathType: "Prefix"
+			backend: service: {
+				name: "bitwarden"
+				port: number: 8080
+			}
+		}, {
 			path:     "/notifications/hub"
 			pathType: "Exact"
 			backend: service: {

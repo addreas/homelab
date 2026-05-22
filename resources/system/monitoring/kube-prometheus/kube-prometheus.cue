@@ -24,6 +24,7 @@ k: Ingress: "prometheus-k8s": {
 	_authproxy: true
 	spec: rules: [{
 		http: paths: [{
+			pathType: "Prefix"
 			backend: service: {
 				name: "prometheus-k8s"
 				port: name: "web"
@@ -66,6 +67,7 @@ k: Ingress: "alertmanager-main": {
 	_authproxy: true
 	spec: rules: [{
 		http: paths: [{
+			pathType: "Prefix"
 			backend: service: {
 				name: "alertmanager-main"
 				port: name: "web"
