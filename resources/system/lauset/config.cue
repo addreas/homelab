@@ -181,7 +181,7 @@ let hydra_config = #HydraConfigSchema & {
 	}
 }
 
-k: ConfigMap: "kratos-config": data: {
+k: ConfigMap: "kratos": data: {
 	"kratos.yaml":          yaml.Marshal(kratos_config)
 	"identity.schema.json": json.Marshal(identity_schema)
 }
