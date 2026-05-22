@@ -3,7 +3,7 @@ package kube
 k: HelmRepository: cilium: spec: url: "https://helm.cilium.io/"
 
 k: HelmRelease: cilium: spec: {
-	chart: spec: version: "1.19.2" // TODO: renovate?
+	chart: spec: version: "1.19.4" // TODO: renovate?
 	values: {
 		cni: exclusive: false
 
@@ -22,9 +22,10 @@ k: HelmRelease: cilium: spec: {
 		ipam: mode:      "kubernetes"
 		bpf: masquerade: true
 
-		gatewayAPI: enabled:      true
 		l2announcements: enabled: true
 		bgpControlPlane: enabled: true
+
+		gatewayAPI: enabled: true
 
 		ingressController: {
 			enabled:          true

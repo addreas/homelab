@@ -124,7 +124,8 @@ k: Ingress: [Name=string]: {
 		}
 	}
 	spec: rules: _ | *[{
-		host: _ | *"\(Name).addem.se"
+		host:             _ | *"\(Name).addem.se"
+		ingressClassName: "cilium"
 		http: paths: _ | *[{
 			path:     _ | *"/"
 			pathType: _ | *"Prefix"
@@ -138,6 +139,17 @@ k: Ingress: [Name=string]: {
 			}
 		}, ...]
 	}, ...]
+}
+
+k: HTTPRoute: [Name=string]: spec: {
+	hostnames: _ | *["\(Name).addem.se"]
+	parentRefs: _ | *[{name: "addem", namespace: "ingress"}]
+	rules: _ | *[{
+		backendRefs: [{
+			name: Name
+			port: k.Service[Name].spec.ports[0].port
+		}]
+	}]
 }
 
 k: SealedSecret: [string]: {
