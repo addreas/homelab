@@ -116,13 +116,6 @@ k: ServiceMonitor: [Name=string]: spec: {
 }
 
 k: Ingress: [Name=string]: {
-	_authproxy: true | *false
-	if _authproxy {
-		metadata: annotations: {
-			"ingress.kubernetes.io/auth-url":    "https://authproxy.addem.se/oauth2/auth"
-			"ingress.kubernetes.io/auth-signin": "https://authproxy.addem.se/oauth2/start?rd=https://%[hdr(host)]%[path]"
-		}
-	}
 	spec: rules: _ | *[{
 		host:             _ | *"\(Name).addem.se"
 		ingressClassName: _ | *"cilium"
