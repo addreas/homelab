@@ -1,28 +1,5 @@
 package kube
 
-import "encoding/yaml"
-
-_hydra_config: #HydraConfigSchema & {
-	serve: {
-		admin: port: 4445
-		public: {
-			port: 4444
-			request_log: disable_for_health: true
-		}
-		tls: allow_termination_from: ["10.0.0.0/8"]
-	}
-	urls: {
-		self: issuer: "https://\(_hostname)/hydra/"
-		self: public: "https://\(_hostname)/hydra/"
-		self: admin:  "http://hydra-admin.ory.svc.cluster.local"
-		consent: "https://\(_hostname)/hydra/consent"
-		login:   "https://\(_hostname)/hydra/login"
-		logout:  "https://\(_hostname)/logout"
-	}
-}
-
-k: ConfigMap: hydra: data: "config.yaml": yaml.Marshal(_hydra_config)
-
 k: Deployment: hydra: spec: template: spec: {
 	volumes: [{
 		name: "hydra-config-volume"

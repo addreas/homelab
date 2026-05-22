@@ -48,6 +48,8 @@ k: Kustomization: "cue-controller": spec: {
 
 k: Ingress: "flux-webhook": spec: rules: [{
 	http: paths: [{
+		path:     "/"
+		pathType: "Prefix"
 		backend: service: {
 			name: "webhook-receiver"
 			port: name: "http"

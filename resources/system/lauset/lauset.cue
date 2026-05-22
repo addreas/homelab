@@ -32,10 +32,3 @@ k: Service: "lauset": spec: ports: [{
 	targetPort: "http"
 	name:       "http"
 }]
-
-k: ConfigMap: "lauset": data: {
-	KRATOS_BROWSER_URL: "https://\(_hostname)/kratos"
-	KRATOS_ADMIN_URL:   "http://kratos-admin.ory.svc.cluster.local"
-	KRATOS_PUBLIC_URL:  "http://kratos-public.ory.svc.cluster.local"
-	HYDRA_ADMIN_URL:    "http://hydra-admin.ory.svc.cluster.local"
-}
