@@ -13,7 +13,7 @@ githubReleases: {
 	"longhorn/longhorn":           "v1.11.2"
 	"ory/hydra":                   "v26.2.0"
 	"ory/hydra-maester":           "v0.0.42"
-	"ory/kratos":                  "v25.4.0"
+	"ory/kratos":                  "v26.2.0"
 	"paperless-ngx/paperless-ngx": "v2.20.15"
 	"triliumnext/trilium":         "v0.103.0"
 	"zwave-js/zwave-js-ui":        "v11.19.0"
