@@ -83,10 +83,12 @@ let sops = {
 	]
 }
 
+// find all files that match "*.enc.cue" and sops encrypts them in place
 command: "seal": exec.Run & {
 	cmd: (sops & {$action: "encrypt"}).out
 }
 
+// find all files that match "*.enc.cue" and sops decrypts them in place
 command: "unseal": exec.Run & {
 	cmd: (sops & {$action: "decrypt"}).out
 }

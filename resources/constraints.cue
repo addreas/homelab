@@ -60,7 +60,12 @@ k: Job: [string]: spec: {
 
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
-k: StatefulSet: [Name=string]: spec: serviceName: _ | *Name
+k: StatefulSet: [Name=string]: spec: {
+	serviceName: _ | *Name
+	volumeClaimTemplates: [{
+		spec: accessModes: _ | *["ReadWriteOnce"]
+	}]
+}
 
 k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [Name=string]: spec: template: spec: containers: [{
 	name: _ | *Name
@@ -221,10 +226,13 @@ k: PersistentVolume: [Name = =~"sergio-.*"]: spec: {
 }
 
 k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
-	accessModes: ["ReadWriteOnce"]
 	storageClassName: "static-node-local-storage"
 	volumeMode:       "Filesystem"
 	volumeName:       Name
+}
+
+k: PersistentVolumeClaim: [string]: spec: {
+	accessModes: _ | *["ReadWriteOnce"]
 }
 
 k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: [string]: metadata: labels: {
