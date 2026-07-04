@@ -24,6 +24,8 @@ k: HelmRelease: longhorn: spec: {
 		}
 
 		persistence: defaultClassReplicaCount: 2
+
+		global: imageRegistry: ""
 		image: longhorn: {
 			manager: {
 				repository: "ghcr.io/addreas/longhorn-manager"
