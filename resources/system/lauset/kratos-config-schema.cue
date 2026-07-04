@@ -1350,6 +1350,7 @@ import (
 		default_browser_return_url?: #defaultReturnTo
 		password?:                   #selfServiceAfterRegistrationMethod
 		webauthn?:                   #selfServiceAfterRegistrationMethod
+		passkey?:                    #selfServiceAfterRegistrationMethod
 		oidc?:                       #selfServiceAfterRegistrationMethod
 		code?:                       #selfServiceAfterRegistrationMethod
 		hooks?:                      #selfServiceHooks
