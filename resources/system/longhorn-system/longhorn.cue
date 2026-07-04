@@ -26,11 +26,13 @@ k: HelmRelease: longhorn: spec: {
 		persistence: defaultClassReplicaCount: 2
 		image: longhorn: {
 			manager: {
-				repository: "ghcr.io/addreas/longhorn-manager"
+				registry:   "ghcr.io"
+				repository: "addreas/longhorn-manager"
 				tag:        githubReleases["longhorn/longhorn"]
 			}
 			instanceManager: {
-				repository: "ghcr.io/addreas/longhorn-instance-manager"
+				registry:   "ghcr.io"
+				repository: "addreas/longhorn-instance-manager"
 				tag:        githubReleases["longhorn/longhorn"]
 			}
 		}
