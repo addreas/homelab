@@ -31,20 +31,21 @@ let kratos_config = #KratosConfigSchema & {
 				config: issuer: "Lauset"
 			}
 			lookup_secret: enabled: true
-			webauthn: {
-				enabled: true
-				config: {
-					passwordless: true
-					rp: {
-						display_name: "Lauset"
-						id:           "addem.se"
-						origin:       "https://\(hostname)"
-					}
-				}
+			_rp: {
+				display_name: "Lauset"
+				id:           "addem.se"
+				origin:       "https://\(hostname)"
 			}
+			// webauthn: {
+			// 	enabled: true
+			// 	config: {
+			// 		passwordless: false
+			// 		rp: _rp
+			// 	}
+			// }
 			passkey: {
 				enabled: true
-				config: rp: webauthn.config.rp
+				config: rp: _rp
 			}
 		}
 
@@ -79,8 +80,8 @@ let kratos_config = #KratosConfigSchema & {
 				ui_url:   "https://\(hostname)/registration"
 				after: {
 					password: hooks: [{hook: "session"}, {hook: "show_verification_ui"}]
-					webauthn: hooks: [{hook: "session"}]
-					// passkey: hooks: [{hook: "session"}]
+					// webauthn: hooks: [{hook: "session"}]
+					passkey: hooks: [{hook: "session"}]
 				}
 			}
 		}
@@ -126,14 +127,14 @@ let identity_schema = {
 					"minLength": 3
 					"ory.sh/kratos": {
 						"credentials": {
-							"password": "identifier":  true
-							"totp": "account_name":    true
-							"webauthn": "identifier":  true
+							"password": "identifier": true
+							"totp": "account_name":   true
+							// "webauthn": "identifier":  true
 							"passkey": "display_name": true
-							"code": {
-								"identifier": true
-								"via":        "email"
-							}
+							// "code": {
+							// 	"identifier": true
+							// 	"via":        "email"
+							// }
 						}
 						"recovery": "via":     "email"
 						"verification": "via": "email"
