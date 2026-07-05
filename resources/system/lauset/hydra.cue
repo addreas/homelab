@@ -12,6 +12,7 @@ k: Deployment: hydra: spec: template: spec: {
 		args: [
 			"migrate",
 			"sql",
+			"up",
 			"-e",
 			"-y",
 		]
@@ -40,6 +41,9 @@ k: Deployment: hydra: spec: template: spec: {
 				name: "hydra-db-app"
 				key:  "uri"
 			}
+		}, {
+			name:  "ORY_SDK_URL"
+			value: "http://localhost:4445"
 		}]
 		ports: [{
 			name:          "http-public"

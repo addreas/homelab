@@ -4,6 +4,8 @@ import (
 	"strings"
 )
 
+context: "admin@qb"
+
 _namespace: string
 
 if _namespace != _|_ {
@@ -62,7 +64,8 @@ k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
 k: StatefulSet: [Name=string]: spec: {
 	serviceName: _ | *Name
-	volumeClaimTemplates: [{
+
+	volumeClaimTemplates: [...{
 		spec: accessModes: _ | *["ReadWriteOnce"]
 	}]
 }
