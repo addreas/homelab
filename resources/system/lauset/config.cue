@@ -5,7 +5,7 @@ import (
 	"encoding/yaml"
 )
 
-let hostname = "auth.addem.se"
+let hostname = "q2.addem.se"
 
 let kratos_config = #KratosConfigSchema & {
 	serve: {
@@ -14,14 +14,19 @@ let kratos_config = #KratosConfigSchema & {
 			cors: enabled:                   false
 			request_log: disable_for_health: true
 		}
-		admin: base_url: "http://kratos:4434/"
+		admin: {
+			base_url: "http://kratos:4434/"
+			request_log: disable_for_health: true
+		}
 	}
 
 	selfservice: {
 		default_browser_return_url: "https://\(hostname)/"
 		allowed_return_urls: [
 			"https://\(hostname)/",
-			"https://\(hostname)/hydra/login",
+			"https://\(hostname)/settings",
+			"https://\(hostname)/session",
+			"https://\(hostname)/consent",
 		]
 
 		methods: {
@@ -165,7 +170,10 @@ let identity_schema = {
 
 let hydra_config = #HydraConfigSchema & {
 	serve: {
-		admin: port: 4445
+		admin: {
+			port: 4445
+			request_log: disable_for_health: true
+		}
 		public: {
 			port: 4444
 			request_log: disable_for_health: true
@@ -176,8 +184,8 @@ let hydra_config = #HydraConfigSchema & {
 		self: issuer: "https://\(hostname)/hydra/"
 		self: public: "https://\(hostname)/hydra/"
 		self: admin:  "http://hydra-admin.ory.svc.cluster.local"
-		consent: "https://\(hostname)/hydra/consent"
-		login:   "https://\(hostname)/hydra/login"
+		consent: "https://\(hostname)/consent"
+		login:   "https://\(hostname)/login"
 		logout:  "https://\(hostname)/logout"
 	}
 }

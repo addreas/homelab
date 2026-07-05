@@ -43,6 +43,9 @@ k: Deployment: "kratos": spec: template: spec: {
 				name: "kratos-db-app"
 				key:  "uri"
 			}
+		}, {
+			name:  "KRATOS_ADMIN_URL"
+			value: "http://localhost:4434"
 		}]
 		volumeMounts: [{
 			name:      "config"

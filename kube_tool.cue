@@ -10,6 +10,8 @@ import (
 	"tool/os"
 )
 
+context: string
+
 _kindfilter: string | *".*" @tag(kind)
 _namefilter: string | *".*" @tag(name)
 
@@ -35,14 +37,14 @@ command: ls: cli.Print & {
 command: apply: {
 	if len(earlyResources) > 0 {
 		applyEarly: exec.Run & {
-			cmd: ["kubectl", "apply", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
 			stdin: yaml.MarshalStream(earlyResources)
 		}
 	}
 	if len(resources) > 0 {
 		apply: exec.Run & {
 			$after: [apply.applyEarly]
-			cmd: ["kubectl", "apply", "-f-"]
+			cmd: ["kubectl", "--context", context, "apply", "-f-"]
 			stdin: yaml.MarshalStream(resources)
 		}
 	}
@@ -51,7 +53,7 @@ command: apply: {
 osenv: os.Environ
 // Diff Kubernetes resources with the current cluster state
 command: diff: exec.Run & {
-	cmd: ["kubectl", "diff", "-f-"]
+	cmd: ["kubectl", "--context", context, "diff", "-f-"]
 	env: {for key, value in osenv if key != "$id" {(key): value}}
 	stdin: json.MarshalStream(resources)
 }
