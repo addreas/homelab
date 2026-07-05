@@ -6,7 +6,7 @@ githubReleases: {
 	"dani-garcia/vaultwarden":     "1.36.0"
 	"esphome/esphome":             "2026.6.4"
 	"fluxcd/flux2":                "v2.9.0"
-	"grafana/grafana":             "v12.4.5"
+	"grafana/grafana":             "v13.1.0"
 	"home-assistant/core":         "2026.6.4"
 	"jcmoraisjr/haproxy-ingress":  "v0.16.1"
 	"kubereboot/charts":           "kured-5.11.0"
