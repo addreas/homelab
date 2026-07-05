@@ -10,7 +10,7 @@ githubReleases: {
 	"grafana/grafana":             "v13.1.0"
 	"jcmoraisjr/haproxy-ingress":  "v0.16.1"
 	"kubereboot/charts":           "kured-5.11.0"
-	"longhorn/longhorn":           "v1.12.0"
+	"longhorn/longhorn":           "v1.11.2"
 	"ory/hydra":                   "v26.2.0"
 	"ory/hydra-maester":           "v0.0.42"
 	"ory/kratos":                  "v26.2.0"
