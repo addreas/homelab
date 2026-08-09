@@ -10,7 +10,7 @@ let hostname = "q2.addem.se"
 let kratos_config = #KratosConfigSchema & {
 	serve: {
 		public: {
-			base_url: "https://\(hostname)/kratos"
+			base_url: "https://\(hostname)/"
 			cors: enabled:                   false
 			request_log: disable_for_health: true
 		}
@@ -92,7 +92,7 @@ let kratos_config = #KratosConfigSchema & {
 		}
 	}
 
-	oauth2_provider: url: "https://\(hostname)/hydra/"
+	oauth2_provider: url: "http://hydra-admin.ory.svc.cluster.local"
 
 	log: {
 		level:                 "info"
@@ -181,8 +181,8 @@ let hydra_config = #HydraConfigSchema & {
 		tls: allow_termination_from: ["10.0.0.0/8"]
 	}
 	urls: {
-		self: issuer: "https://\(hostname)/hydra/"
-		self: public: "https://\(hostname)/hydra/"
+		self: issuer: "https://\(hostname)/"
+		self: public: "https://\(hostname)/"
 		self: admin:  "http://hydra-admin.ory.svc.cluster.local"
 		consent: "https://\(hostname)/consent"
 		login:   "https://\(hostname)/login"
@@ -198,7 +198,7 @@ k: ConfigMap: "kratos": data: {
 k: ConfigMap: "hydra": data: "config.yaml": yaml.Marshal(hydra_config)
 
 k: ConfigMap: "lauset": data: {
-	KRATOS_BROWSER_URL: "https://\(hostname)/kratos"
+	KRATOS_BROWSER_URL: "https://\(hostname)/"
 	KRATOS_ADMIN_URL:   "http://kratos-admin.ory.svc.cluster.local"
 	KRATOS_PUBLIC_URL:  "http://kratos-public.ory.svc.cluster.local"
 	HYDRA_ADMIN_URL:    "http://hydra-admin.ory.svc.cluster.local"
