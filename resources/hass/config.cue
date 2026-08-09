@@ -22,11 +22,6 @@ let conf = {
 
 	default_config: {}
 
-	http: {
-		use_x_forwarded_for: true
-		trusted_proxies: ["10.0.0.0/8", "192.168.0.0/24"]
-	}
-
 	// homeassistant: media_dirs: media: "/media/videos"
 
 	prometheus: namespace: "hass"
