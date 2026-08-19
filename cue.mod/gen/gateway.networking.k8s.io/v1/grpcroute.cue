@@ -9,19 +9,15 @@ import (
 #GRPCRoute: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -32,76 +28,52 @@ import (
 	// Spec defines the desired state of GRPCRoute.
 	spec!: {
 		// Hostnames defines a set of hostnames to match against the GRPC
-		// Host header to select a GRPCRoute to process the request. This
-		// matches
-		// the RFC 1123 definition of a hostname with 2 notable
-		// exceptions:
+		// Host header to select a GRPCRoute to process the request. This matches
+		// the RFC 1123 definition of a hostname with 2 notable exceptions:
 		//
 		// 1. IPs are not allowed.
-		// 2. A hostname may be prefixed with a wildcard label (`*.`). The
-		// wildcard
+		// 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
 		// label MUST appear by itself as the first label.
 		//
-		// If a hostname is specified by both the Listener and GRPCRoute,
-		// there
-		// MUST be at least one intersecting hostname for the GRPCRoute to
-		// be
+		// If a hostname is specified by both the Listener and GRPCRoute, there
+		// MUST be at least one intersecting hostname for the GRPCRoute to be
 		// attached to the Listener. For example:
 		//
-		// * A Listener with `test.example.com` as the hostname matches
-		// GRPCRoutes
-		// that have either not specified any hostnames, or have specified
-		// at
+		// * A Listener with `test.example.com` as the hostname matches GRPCRoutes
+		// that have either not specified any hostnames, or have specified at
 		// least one of `test.example.com` or `*.example.com`.
-		// * A Listener with `*.example.com` as the hostname matches
-		// GRPCRoutes
-		// that have either not specified any hostnames or have specified
-		// at least
+		// * A Listener with `*.example.com` as the hostname matches GRPCRoutes
+		// that have either not specified any hostnames or have specified at least
 		// one hostname that matches the Listener hostname. For example,
-		// `test.example.com` and `*.example.com` would both match. On the
-		// other
+		// `test.example.com` and `*.example.com` would both match. On the other
 		// hand, `example.com` and `test.example.net` would not match.
 		//
-		// Hostnames that are prefixed with a wildcard label (`*.`) are
-		// interpreted
-		// as a suffix match. That means that a match for `*.example.com`
-		// would match
-		// both `test.example.com`, and `foo.test.example.com`, but not
-		// `example.com`.
+		// Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
+		// as a suffix match. That means that a match for `*.example.com` would match
+		// both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
 		//
-		// If both the Listener and GRPCRoute have specified hostnames,
-		// any
-		// GRPCRoute hostnames that do not match the Listener hostname
-		// MUST be
-		// ignored. For example, if a Listener specified `*.example.com`,
-		// and the
+		// If both the Listener and GRPCRoute have specified hostnames, any
+		// GRPCRoute hostnames that do not match the Listener hostname MUST be
+		// ignored. For example, if a Listener specified `*.example.com`, and the
 		// GRPCRoute specified `test.example.com` and `test.example.net`,
 		// `test.example.net` MUST NOT be considered for a match.
 		//
-		// If both the Listener and GRPCRoute have specified hostnames,
-		// and none
-		// match with the criteria above, then the GRPCRoute MUST NOT be
-		// accepted by
-		// the implementation. The implementation MUST raise an 'Accepted'
-		// Condition
-		// with a status of `False` in the corresponding
-		// RouteParentStatus.
+		// If both the Listener and GRPCRoute have specified hostnames, and none
+		// match with the criteria above, then the GRPCRoute MUST NOT be accepted by
+		// the implementation. The implementation MUST raise an 'Accepted' Condition
+		// with a status of `False` in the corresponding RouteParentStatus.
 		//
 		// If a Route (A) of type HTTPRoute or GRPCRoute is attached to a
-		// Listener and that listener already has another Route (B) of the
-		// other
-		// type attached and the intersection of the hostnames of A and B
-		// is
-		// non-empty, then the implementation MUST accept exactly one of
-		// these two
+		// Listener and that listener already has another Route (B) of the other
+		// type attached and the intersection of the hostnames of A and B is
+		// non-empty, then the implementation MUST accept exactly one of these two
 		// routes, determined by the following criteria, in order:
 		//
 		// * The oldest Route based on creation timestamp.
 		// * The Route appearing first in alphabetical order by
 		// "{namespace}/{name}".
 		//
-		// The rejected Route MUST raise an 'Accepted' condition with a
-		// status of
+		// The rejected Route MUST raise an 'Accepted' condition with a status of
 		// 'False' in the corresponding RouteParentStatus.
 		//
 		// Support: Core
@@ -109,24 +81,15 @@ import (
 			253) & strings.MinRunes(
 			1) & =~"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"]
 
-		// ParentRefs references the resources (usually Gateways) that a
-		// Route wants
-		// to be attached to. Note that the referenced parent resource
-		// needs to
-		// allow this for the attachment to be complete. For Gateways,
-		// that means
-		// the Gateway needs to allow attachment from Routes of this kind
-		// and
-		// namespace. For Services, that means the Service must either be
-		// in the same
-		// namespace for a "producer" route, or the mesh implementation
-		// must support
-		// and allow "consumer" routes for the referenced Service.
-		// ReferenceGrant is
-		// not applicable for governing ParentRefs to Services - it is not
-		// possible to
-		// create a "producer" route for a Service in a different
-		// namespace from the
+		// ParentRefs references the resources (usually Gateways) that a Route wants
+		// to be attached to. Note that the referenced parent resource needs to
+		// allow this for the attachment to be complete. For Gateways, that means
+		// the Gateway needs to allow attachment from Routes of this kind and
+		// namespace. For Services, that means the Service must either be in the same
+		// namespace for a "producer" route, or the mesh implementation must support
+		// and allow "consumer" routes for the referenced Service. ReferenceGrant is
+		// not applicable for governing ParentRefs to Services - it is not possible to
+		// create a "producer" route for a Service in a different namespace from the
 		// Route.
 		//
 		// There are two kinds of parent resources with "Core" support:
@@ -134,63 +97,55 @@ import (
 		// * Gateway (Gateway conformance profile)
 		// * Service (Mesh conformance profile, ClusterIP Services only)
 		//
-		// This API may be extended in the future to support additional
-		// kinds of parent
+		// This API may be extended in the future to support additional kinds of parent
 		// resources.
 		//
 		// ParentRefs must be _distinct_. This means either that:
 		//
-		// * They select different objects. If this is the case, then
-		// parentRef
+		// * They select different objects. If this is the case, then parentRef
 		// entries are distinct. In terms of fields, this means that the
-		// multi-part key defined by `group`, `kind`, `namespace`, and
-		// `name` must
+		// multi-part key defined by `group`, `kind`, `namespace`, and `name` must
 		// be unique across all parentRef entries in the Route.
-		// * They do not select different objects, but for each optional
-		// field used,
-		// each ParentRef that selects the same object must set the same
-		// set of
+		// * They do not select different objects, but for each optional field used,
+		// each ParentRef that selects the same object must set the same set of
 		// optional fields to different values. If one ParentRef sets a
-		// combination of optional fields, all must set the same
-		// combination.
+		// combination of optional fields, all must set the same combination.
 		//
 		// Some examples:
 		//
-		// * If one ParentRef sets `sectionName`, all ParentRefs
-		// referencing the
+		// * If one ParentRef sets `sectionName`, all ParentRefs referencing the
 		// same object must also set `sectionName`.
-		// * If one ParentRef sets `port`, all ParentRefs referencing the
-		// same
+		// * If one ParentRef sets `port`, all ParentRefs referencing the same
 		// object must also set `port`.
-		// * If one ParentRef sets `sectionName` and `port`, all
-		// ParentRefs
-		// referencing the same object must also set `sectionName` and
-		// `port`.
+		// * If one ParentRef sets `sectionName` and `port`, all ParentRefs
+		// referencing the same object must also set `sectionName` and `port`.
 		//
-		// It is possible to separately reference multiple distinct
-		// objects that may
-		// be collapsed by an implementation. For example, some
-		// implementations may
-		// choose to merge compatible Gateway Listeners together. If that
-		// is the
-		// case, the list of routes attached to those resources should
-		// also be
+		// It is possible to separately reference multiple distinct objects that may
+		// be collapsed by an implementation. For example, some implementations may
+		// choose to merge compatible Gateway Listeners together. If that is the
+		// case, the list of routes attached to those resources should also be
 		// merged.
 		//
-		// Note that for ParentRefs that cross namespace boundaries, there
-		// are specific
-		// rules. Cross-namespace references are only valid if they are
-		// explicitly
-		// allowed by something in the namespace they are referring to.
-		// For example,
-		// Gateway has the AllowedRoutes field, and ReferenceGrant
-		// provides a
+		// Note that for ParentRefs that cross namespace boundaries, there are specific
+		// rules. Cross-namespace references are only valid if they are explicitly
+		// allowed by something in the namespace they are referring to. For example,
+		// Gateway has the AllowedRoutes field, and ReferenceGrant provides a
 		// generic way to enable other kinds of cross-namespace reference.
+		//
+		//
+		// ParentRefs from a Route to a Service in the same namespace are "producer"
+		// routes, which apply default routing rules to inbound connections from
+		// any namespace to the Service.
+		//
+		// ParentRefs from a Route to a Service in a different namespace are
+		// "consumer" routes, and these routing rules are only applied to outbound
+		// connections originating from the same namespace as the Route, for which
+		// the intended destination of the connections are a Service targeted as a
+		// ParentRef of the Route.
 		parentRefs?: list.MaxItems(32) & [...{
 			// Group is the group of the referent.
 			// When unspecified, "gateway.networking.k8s.io" is inferred.
-			// To set the core API group (such as for a "Service" kind
-			// referent),
+			// To set the core API group (such as for a "Service" kind referent),
 			// Group must be explicitly set to "" (empty string).
 			//
 			// Support: Core
@@ -216,102 +171,85 @@ import (
 				253) & strings.MinRunes(
 				1)
 
-			// Namespace is the namespace of the referent. When unspecified,
-			// this refers
+			// Namespace is the namespace of the referent. When unspecified, this refers
 			// to the local namespace of the Route.
 			//
-			// Note that there are specific rules for ParentRefs which cross
-			// namespace
-			// boundaries. Cross-namespace references are only valid if they
-			// are explicitly
-			// allowed by something in the namespace they are referring to.
-			// For example:
-			// Gateway has the AllowedRoutes field, and ReferenceGrant
-			// provides a
-			// generic way to enable any other kind of cross-namespace
-			// reference.
+			// Note that there are specific rules for ParentRefs which cross namespace
+			// boundaries. Cross-namespace references are only valid if they are explicitly
+			// allowed by something in the namespace they are referring to. For example:
+			// Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+			// generic way to enable any other kind of cross-namespace reference.
+			//
+			//
+			// ParentRefs from a Route to a Service in the same namespace are "producer"
+			// routes, which apply default routing rules to inbound connections from
+			// any namespace to the Service.
+			//
+			// ParentRefs from a Route to a Service in a different namespace are
+			// "consumer" routes, and these routing rules are only applied to outbound
+			// connections originating from the same namespace as the Route, for which
+			// the intended destination of the connections are a Service targeted as a
+			// ParentRef of the Route.
+			//
 			//
 			// Support: Core
 			namespace?: strings.MaxRunes(
 					63) & strings.MinRunes(
 					1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
-			// Port is the network port this Route targets. It can be
-			// interpreted
+			// Port is the network port this Route targets. It can be interpreted
 			// differently based on the type of parent resource.
 			//
-			// When the parent resource is a Gateway, this targets all
-			// listeners
-			// listening on the specified port that also support this kind of
-			// Route(and
-			// select this Route). It's not recommended to set `Port` unless
-			// the
-			// networking behaviors specified in a Route must apply to a
-			// specific port
-			// as opposed to a listener(s) whose port(s) may be changed. When
-			// both Port
-			// and SectionName are specified, the name and port of the
-			// selected listener
+			// When the parent resource is a Gateway, this targets all listeners
+			// listening on the specified port that also support this kind of Route(and
+			// select this Route). It's not recommended to set `Port` unless the
+			// networking behaviors specified in a Route must apply to a specific port
+			// as opposed to a listener(s) whose port(s) may be changed. When both Port
+			// and SectionName are specified, the name and port of the selected listener
 			// must match both specified values.
 			//
+			//
+			// When the parent resource is a Service, this targets a specific port in the
+			// Service spec. When both Port (experimental) and SectionName are specified,
+			// the name and port of the selected port must match both specified values.
+			//
+			//
 			// Implementations MAY choose to support other parent resources.
-			// Implementations supporting other types of parent resources MUST
-			// clearly
+			// Implementations supporting other types of parent resources MUST clearly
 			// document how/if Port is interpreted.
 			//
-			// For the purpose of status, an attachment is considered
-			// successful as
-			// long as the parent resource accepts it partially. For example,
-			// Gateway
-			// listeners can restrict which Routes can attach to them by Route
-			// kind,
-			// namespace, or hostname. If 1 of 2 Gateway listeners accept
-			// attachment
-			// from the referencing Route, the Route MUST be considered
-			// successfully
-			// attached. If no Gateway listeners accept attachment from this
-			// Route,
+			// For the purpose of status, an attachment is considered successful as
+			// long as the parent resource accepts it partially. For example, Gateway
+			// listeners can restrict which Routes can attach to them by Route kind,
+			// namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
+			// from the referencing Route, the Route MUST be considered successfully
+			// attached. If no Gateway listeners accept attachment from this Route,
 			// the Route MUST be considered detached from the Gateway.
 			//
 			// Support: Extended
 			port?: int32 & int & <=65535 & >=1
 
-			// SectionName is the name of a section within the target
-			// resource. In the
-			// following resources, SectionName is interpreted as the
-			// following:
+			// SectionName is the name of a section within the target resource. In the
+			// following resources, SectionName is interpreted as the following:
 			//
-			// * Gateway: Listener name. When both Port (experimental) and
-			// SectionName
-			// are specified, the name and port of the selected listener must
-			// match
+			// * Gateway: Listener name. When both Port (experimental) and SectionName
+			// are specified, the name and port of the selected listener must match
 			// both specified values.
-			// * Service: Port name. When both Port (experimental) and
-			// SectionName
-			// are specified, the name and port of the selected listener must
-			// match
+			// * Service: Port name. When both Port (experimental) and SectionName
+			// are specified, the name and port of the selected listener must match
 			// both specified values.
 			//
-			// Implementations MAY choose to support attaching Routes to other
-			// resources.
-			// If that is the case, they MUST clearly document how SectionName
-			// is
+			// Implementations MAY choose to support attaching Routes to other resources.
+			// If that is the case, they MUST clearly document how SectionName is
 			// interpreted.
 			//
-			// When unspecified (empty string), this will reference the entire
-			// resource.
-			// For the purpose of status, an attachment is considered
-			// successful if at
-			// least one section in the parent resource accepts it. For
-			// example, Gateway
-			// listeners can restrict which Routes can attach to them by Route
-			// kind,
-			// namespace, or hostname. If 1 of 2 Gateway listeners accept
-			// attachment from
-			// the referencing Route, the Route MUST be considered
-			// successfully
-			// attached. If no Gateway listeners accept attachment from this
-			// Route, the
+			// When unspecified (empty string), this will reference the entire resource.
+			// For the purpose of status, an attachment is considered successful if at
+			// least one section in the parent resource accepts it. For example, Gateway
+			// listeners can restrict which Routes can attach to them by Route kind,
+			// namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
+			// the referencing Route, the Route MUST be considered successfully
+			// attached. If no Gateway listeners accept attachment from this Route, the
 			// Route MUST be considered detached from the Gateway.
 			//
 			// Support: Core
@@ -322,38 +260,27 @@ import (
 
 		// Rules are a list of GRPC matchers, filters and actions.
 		rules?: list.MaxItems(16) & [...{
-			// BackendRefs defines the backend(s) where matching requests
-			// should be
+			// BackendRefs defines the backend(s) where matching requests should be
 			// sent.
 			//
-			// Failure behavior here depends on how many BackendRefs are
-			// specified and
+			// Failure behavior here depends on how many BackendRefs are specified and
 			// how many are invalid.
 			//
-			// If *all* entries in BackendRefs are invalid, and there are also
-			// no filters
-			// specified in this route rule, *all* traffic which matches this
-			// rule MUST
+			// If *all* entries in BackendRefs are invalid, and there are also no filters
+			// specified in this route rule, *all* traffic which matches this rule MUST
 			// receive an `UNAVAILABLE` status.
 			//
-			// See the GRPCBackendRef definition for the rules about what
-			// makes a single
+			// See the GRPCBackendRef definition for the rules about what makes a single
 			// GRPCBackendRef invalid.
 			//
-			// When a GRPCBackendRef is invalid, `UNAVAILABLE` statuses MUST
-			// be returned for
-			// requests that would have otherwise been routed to an invalid
-			// backend. If
-			// multiple backends are specified, and some are invalid, the
-			// proportion of
-			// requests that would otherwise have been routed to an invalid
-			// backend
+			// When a GRPCBackendRef is invalid, `UNAVAILABLE` statuses MUST be returned for
+			// requests that would have otherwise been routed to an invalid backend. If
+			// multiple backends are specified, and some are invalid, the proportion of
+			// requests that would otherwise have been routed to an invalid backend
 			// MUST receive an `UNAVAILABLE` status.
 			//
-			// For example, if two backends are specified with equal weights,
-			// and one is
-			// invalid, 50 percent of traffic MUST receive an `UNAVAILABLE`
-			// status.
+			// For example, if two backends are specified with equal weights, and one is
+			// invalid, 50 percent of traffic MUST receive an `UNAVAILABLE` status.
 			// Implementations may choose how that 50 percent is determined.
 			//
 			// Support: Core for Kubernetes Service
@@ -362,34 +289,27 @@ import (
 			//
 			// Support for weight: Core
 			backendRefs?: list.MaxItems(16) & [...{
-				// Filters defined at this level MUST be executed if and only if
-				// the
+				// Filters defined at this level MUST be executed if and only if the
 				// request is being forwarded to the backend defined here.
 				//
-				// Support: Implementation-specific (For broader support of
-				// filters, use the
+				// Support: Implementation-specific (For broader support of filters, use the
 				// Filters field in GRPCRouteRule.)
 				filters?: list.MaxItems(16) & [...{
-					// ExtensionRef is an optional, implementation-specific extension
-					// to the
-					// "filter" behavior. For example, resource "myroutefilter" in
-					// group
-					// "networking.example.net"). ExtensionRef MUST NOT be used for
-					// core and
+					// ExtensionRef is an optional, implementation-specific extension to the
+					// "filter" behavior. For example, resource "myroutefilter" in group
+					// "networking.example.net"). ExtensionRef MUST NOT be used for core and
 					// extended filters.
 					//
 					// Support: Implementation-specific
 					//
 					// This filter can be used multiple times within the same rule.
 					extensionRef?: {
-						// Group is the group of the referent. For example,
-						// "gateway.networking.k8s.io".
+						// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 						// When unspecified or empty string, core API group is inferred.
 						group!: strings.MaxRunes(
 							253) & =~"^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
-						// Kind is kind of the referent. For example "HTTPRoute" or
-						// "Service".
+						// Kind is kind of the referent. For example "HTTPRoute" or "Service".
 						kind!: strings.MaxRunes(
 							63) & strings.MinRunes(
 							1) & =~"^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
@@ -400,8 +320,7 @@ import (
 							1)
 					}
 
-					// RequestHeaderModifier defines a schema for a filter that
-					// modifies request
+					// RequestHeaderModifier defines a schema for a filter that modifies request
 					// headers.
 					//
 					// Support: Core
@@ -423,33 +342,29 @@ import (
 						// GET /foo HTTP/1.1
 						// my-header: foo,bar,baz
 						add?: list.MaxItems(16) & [...{
-							// Name is the name of the HTTP Header to be matched. Name
-							// matching MUST be
-							// case-insensitive. (See
-							// https://tools.ietf.org/html/rfc7230#section-3.2).
+							// Name is the name of the HTTP Header to be matched. Name matching MUST be
+							// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 							//
-							// If multiple entries specify equivalent header names, the first
-							// entry with
-							// an equivalent name MUST be considered for a match. Subsequent
-							// entries
+							// If multiple entries specify equivalent header names, the first entry with
+							// an equivalent name MUST be considered for a match. Subsequent entries
 							// with an equivalent header name MUST be ignored. Due to the
-							// case-insensitivity of header names, "foo" and "Foo" are
-							// considered
+							// case-insensitivity of header names, "foo" and "Foo" are considered
 							// equivalent.
 							name!: strings.MaxRunes(
 								256) & strings.MinRunes(
 								1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 							// Value is the value of HTTP Header to be matched.
+							//
+							// Must consist of printable US-ASCII characters, optionally separated
+							// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 							value!: strings.MaxRunes(
 								4096) & strings.MinRunes(
-								1)
+								1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 						}]
 
-						// Remove the given header(s) from the HTTP request before the
-						// action. The
-						// value of Remove is a list of HTTP header names. Note that the
-						// header
+						// Remove the given header(s) from the HTTP request before the action. The
+						// value of Remove is a list of HTTP header names. Note that the header
 						// names are case-insensitive (see
 						// https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
 						//
@@ -483,104 +398,85 @@ import (
 						// GET /foo HTTP/1.1
 						// my-header: bar
 						set?: list.MaxItems(16) & [...{
-							// Name is the name of the HTTP Header to be matched. Name
-							// matching MUST be
-							// case-insensitive. (See
-							// https://tools.ietf.org/html/rfc7230#section-3.2).
+							// Name is the name of the HTTP Header to be matched. Name matching MUST be
+							// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 							//
-							// If multiple entries specify equivalent header names, the first
-							// entry with
-							// an equivalent name MUST be considered for a match. Subsequent
-							// entries
+							// If multiple entries specify equivalent header names, the first entry with
+							// an equivalent name MUST be considered for a match. Subsequent entries
 							// with an equivalent header name MUST be ignored. Due to the
-							// case-insensitivity of header names, "foo" and "Foo" are
-							// considered
+							// case-insensitivity of header names, "foo" and "Foo" are considered
 							// equivalent.
 							name!: strings.MaxRunes(
 								256) & strings.MinRunes(
 								1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 							// Value is the value of HTTP Header to be matched.
+							//
+							// Must consist of printable US-ASCII characters, optionally separated
+							// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 							value!: strings.MaxRunes(
 								4096) & strings.MinRunes(
-								1)
+								1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 						}]
 					}
 
-					// RequestMirror defines a schema for a filter that mirrors
-					// requests.
-					// Requests are sent to the specified destination, but responses
-					// from
+					// RequestMirror defines a schema for a filter that mirrors requests.
+					// Requests are sent to the specified destination, but responses from
 					// that destination are ignored.
 					//
-					// This filter can be used multiple times within the same rule.
-					// Note that
-					// not all implementations will be able to support mirroring to
-					// multiple
+					// This filter can be used multiple times within the same rule. Note that
+					// not all implementations will be able to support mirroring to multiple
 					// backends.
 					//
 					// Support: Extended
 					requestMirror?: {
-						// BackendRef references a resource where mirrored requests are
-						// sent.
+						// BackendRef references a resource where mirrored requests are sent.
 						//
-						// Mirrored requests must be sent only to a single destination
-						// endpoint
-						// within this BackendRef, irrespective of how many endpoints are
-						// present
+						// Mirrored requests must be sent only to a single destination endpoint
+						// within this BackendRef, irrespective of how many endpoints are present
 						// within this BackendRef.
 						//
-						// If the referent cannot be found, this BackendRef is invalid and
-						// must be
-						// dropped from the Gateway. The controller must ensure the
-						// "ResolvedRefs"
-						// condition on the Route status is set to `status: False` and not
-						// configure
+						// If the referent cannot be found, this BackendRef is invalid and must be
+						// dropped from the Gateway. The controller must ensure the "ResolvedRefs"
+						// condition on the Route status is set to `status: False` and not configure
 						// this backend in the underlying implementation.
 						//
 						// If there is a cross-namespace reference to an *existing* object
-						// that is not allowed by a ReferenceGrant, the controller must
-						// ensure the
-						// "ResolvedRefs" condition on the Route is set to `status:
-						// False`,
-						// with the "RefNotPermitted" reason and not configure this
-						// backend in the
+						// that is not allowed by a ReferenceGrant, the controller must ensure the
+						// "ResolvedRefs" condition on the Route is set to `status: False`,
+						// with the "RefNotPermitted" reason and not configure this backend in the
 						// underlying implementation.
 						//
-						// In either error case, the Message of the `ResolvedRefs`
-						// Condition
+						// In either error case, the Message of the `ResolvedRefs` Condition
 						// should be used to provide more detail about the problem.
 						//
 						// Support: Extended for Kubernetes Service
 						//
 						// Support: Implementation-specific for any other resource
+						//
+						// If the backend service requires TLS, use BackendTLSPolicy to tell the
+						// implementation to supply the TLS details to be used to connect to that
+						// backend.
 						backendRef!: {
-							// Group is the group of the referent. For example,
-							// "gateway.networking.k8s.io".
+							// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 							// When unspecified or empty string, core API group is inferred.
 							group?: strings.MaxRunes(
 								253) & =~"^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
-							// Kind is the Kubernetes resource kind of the referent. For
-							// example
+							// Kind is the Kubernetes resource kind of the referent. For example
 							// "Service".
 							//
 							// Defaults to "Service" when not specified.
 							//
-							// ExternalName services can refer to CNAME DNS records that may
-							// live
-							// outside of the cluster and as such are difficult to reason
-							// about in
-							// terms of conformance. They also may not be safe to forward to
-							// (see
-							// CVE-2021-25740 for more information). Implementations SHOULD
-							// NOT
+							// ExternalName services can refer to CNAME DNS records that may live
+							// outside of the cluster and as such are difficult to reason about in
+							// terms of conformance. They also may not be safe to forward to (see
+							// CVE-2021-25740 for more information). Implementations SHOULD NOT
 							// support ExternalName Services.
 							//
 							// Support: Core (Services with a type other than ExternalName)
 							//
-							// Support: Implementation-specific (Services with type
-							// ExternalName)
+							// Support: Implementation-specific (Services with type ExternalName)
 							kind?: strings.MaxRunes(
 								63) & strings.MinRunes(
 								1) & =~"^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
@@ -590,16 +486,12 @@ import (
 								253) & strings.MinRunes(
 								1)
 
-							// Namespace is the namespace of the backend. When unspecified,
-							// the local
+							// Namespace is the namespace of the backend. When unspecified, the local
 							// namespace is inferred.
 							//
-							// Note that when a namespace different than the local namespace
-							// is specified,
-							// a ReferenceGrant object is required in the referent namespace
-							// to allow that
-							// namespace's owner to accept the reference. See the
-							// ReferenceGrant
+							// Note that when a namespace different than the local namespace is specified,
+							// a ReferenceGrant object is required in the referent namespace to allow that
+							// namespace's owner to accept the reference. See the ReferenceGrant
 							// documentation for details.
 							//
 							// Support: Core
@@ -607,14 +499,10 @@ import (
 									63) & strings.MinRunes(
 									1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
-							// Port specifies the destination port number to use for this
-							// resource.
-							// Port is required when the referent is a Kubernetes Service. In
-							// this
-							// case, the port number is the service port number, not the
-							// target port.
-							// For other resources, destination port might be derived from the
-							// referent
+							// Port specifies the destination port number to use for this resource.
+							// Port is required when the referent is a Kubernetes Service. In this
+							// case, the port number is the service port number, not the target port.
+							// For other resources, destination port might be derived from the referent
 							// resource or this field.
 							port?: int32 & int & <=65535 & >=1
 						}
@@ -622,8 +510,7 @@ import (
 						// Fraction represents the fraction of requests that should be
 						// mirrored to BackendRef.
 						//
-						// Only one of Fraction or Percent may be specified. If neither
-						// field
+						// Only one of Fraction or Percent may be specified. If neither field
 						// is specified, 100% of requests will be mirrored.
 						fraction?: {
 							denominator?: int32 & int & >=1
@@ -631,19 +518,15 @@ import (
 						}
 
 						// Percent represents the percentage of requests that should be
-						// mirrored to BackendRef. Its minimum value is 0 (indicating 0%
-						// of
-						// requests) and its maximum value is 100 (indicating 100% of
-						// requests).
+						// mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+						// requests) and its maximum value is 100 (indicating 100% of requests).
 						//
-						// Only one of Fraction or Percent may be specified. If neither
-						// field
+						// Only one of Fraction or Percent may be specified. If neither field
 						// is specified, 100% of requests will be mirrored.
 						percent?: int32 & int & <=100 & >=0
 					}
 
-					// ResponseHeaderModifier defines a schema for a filter that
-					// modifies response
+					// ResponseHeaderModifier defines a schema for a filter that modifies response
 					// headers.
 					//
 					// Support: Extended
@@ -665,33 +548,29 @@ import (
 						// GET /foo HTTP/1.1
 						// my-header: foo,bar,baz
 						add?: list.MaxItems(16) & [...{
-							// Name is the name of the HTTP Header to be matched. Name
-							// matching MUST be
-							// case-insensitive. (See
-							// https://tools.ietf.org/html/rfc7230#section-3.2).
+							// Name is the name of the HTTP Header to be matched. Name matching MUST be
+							// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 							//
-							// If multiple entries specify equivalent header names, the first
-							// entry with
-							// an equivalent name MUST be considered for a match. Subsequent
-							// entries
+							// If multiple entries specify equivalent header names, the first entry with
+							// an equivalent name MUST be considered for a match. Subsequent entries
 							// with an equivalent header name MUST be ignored. Due to the
-							// case-insensitivity of header names, "foo" and "Foo" are
-							// considered
+							// case-insensitivity of header names, "foo" and "Foo" are considered
 							// equivalent.
 							name!: strings.MaxRunes(
 								256) & strings.MinRunes(
 								1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 							// Value is the value of HTTP Header to be matched.
+							//
+							// Must consist of printable US-ASCII characters, optionally separated
+							// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 							value!: strings.MaxRunes(
 								4096) & strings.MinRunes(
-								1)
+								1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 						}]
 
-						// Remove the given header(s) from the HTTP request before the
-						// action. The
-						// value of Remove is a list of HTTP header names. Note that the
-						// header
+						// Remove the given header(s) from the HTTP request before the action. The
+						// value of Remove is a list of HTTP header names. Note that the header
 						// names are case-insensitive (see
 						// https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
 						//
@@ -725,96 +604,74 @@ import (
 						// GET /foo HTTP/1.1
 						// my-header: bar
 						set?: list.MaxItems(16) & [...{
-							// Name is the name of the HTTP Header to be matched. Name
-							// matching MUST be
-							// case-insensitive. (See
-							// https://tools.ietf.org/html/rfc7230#section-3.2).
+							// Name is the name of the HTTP Header to be matched. Name matching MUST be
+							// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 							//
-							// If multiple entries specify equivalent header names, the first
-							// entry with
-							// an equivalent name MUST be considered for a match. Subsequent
-							// entries
+							// If multiple entries specify equivalent header names, the first entry with
+							// an equivalent name MUST be considered for a match. Subsequent entries
 							// with an equivalent header name MUST be ignored. Due to the
-							// case-insensitivity of header names, "foo" and "Foo" are
-							// considered
+							// case-insensitivity of header names, "foo" and "Foo" are considered
 							// equivalent.
 							name!: strings.MaxRunes(
 								256) & strings.MinRunes(
 								1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 							// Value is the value of HTTP Header to be matched.
+							//
+							// Must consist of printable US-ASCII characters, optionally separated
+							// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 							value!: strings.MaxRunes(
 								4096) & strings.MinRunes(
-								1)
+								1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 						}]
 					}
 
-					// Type identifies the type of filter to apply. As with other API
-					// fields,
+					// Type identifies the type of filter to apply. As with other API fields,
 					// types are classified into three conformance levels:
 					//
-					// - Core: Filter types and their corresponding configuration
-					// defined by
-					// "Support: Core" in this package, e.g. "RequestHeaderModifier".
-					// All
+					// - Core: Filter types and their corresponding configuration defined by
+					// "Support: Core" in this package, e.g. "RequestHeaderModifier". All
 					// implementations supporting GRPCRoute MUST support core filters.
 					//
-					// - Extended: Filter types and their corresponding configuration
-					// defined by
-					// "Support: Extended" in this package, e.g. "RequestMirror".
-					// Implementers
+					// - Extended: Filter types and their corresponding configuration defined by
+					// "Support: Extended" in this package, e.g. "RequestMirror". Implementers
 					// are encouraged to support extended filters.
 					//
-					// - Implementation-specific: Filters that are defined and
-					// supported by specific vendors.
-					// In the future, filters showing convergence in behavior across
-					// multiple
-					// implementations will be considered for inclusion in extended or
-					// core
-					// conformance levels. Filter-specific configuration for such
-					// filters
-					// is specified using the ExtensionRef field. `Type` MUST be set
-					// to
+					// - Implementation-specific: Filters that are defined and supported by specific vendors.
+					// In the future, filters showing convergence in behavior across multiple
+					// implementations will be considered for inclusion in extended or core
+					// conformance levels. Filter-specific configuration for such filters
+					// is specified using the ExtensionRef field. `Type` MUST be set to
 					// "ExtensionRef" for custom filters.
 					//
-					// Implementers are encouraged to define custom implementation
-					// types to
+					// Implementers are encouraged to define custom implementation types to
 					// extend the core API with implementation-specific behavior.
 					//
-					// If a reference to a custom filter type cannot be resolved, the
-					// filter
-					// MUST NOT be skipped. Instead, requests that would have been
-					// processed by
+					// If a reference to a custom filter type cannot be resolved, the filter
+					// MUST NOT be skipped. Instead, requests that would have been processed by
 					// that filter MUST receive a HTTP error response.
 					type!: "ResponseHeaderModifier" | "RequestHeaderModifier" | "RequestMirror" | "ExtensionRef"
 				}]
 
-				// Group is the group of the referent. For example,
-				// "gateway.networking.k8s.io".
+				// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 				// When unspecified or empty string, core API group is inferred.
 				group?: strings.MaxRunes(
 					253) & =~"^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
-				// Kind is the Kubernetes resource kind of the referent. For
-				// example
+				// Kind is the Kubernetes resource kind of the referent. For example
 				// "Service".
 				//
 				// Defaults to "Service" when not specified.
 				//
-				// ExternalName services can refer to CNAME DNS records that may
-				// live
-				// outside of the cluster and as such are difficult to reason
-				// about in
-				// terms of conformance. They also may not be safe to forward to
-				// (see
-				// CVE-2021-25740 for more information). Implementations SHOULD
-				// NOT
+				// ExternalName services can refer to CNAME DNS records that may live
+				// outside of the cluster and as such are difficult to reason about in
+				// terms of conformance. They also may not be safe to forward to (see
+				// CVE-2021-25740 for more information). Implementations SHOULD NOT
 				// support ExternalName Services.
 				//
 				// Support: Core (Services with a type other than ExternalName)
 				//
-				// Support: Implementation-specific (Services with type
-				// ExternalName)
+				// Support: Implementation-specific (Services with type ExternalName)
 				kind?: strings.MaxRunes(
 					63) & strings.MinRunes(
 					1) & =~"^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
@@ -824,16 +681,12 @@ import (
 					253) & strings.MinRunes(
 					1)
 
-				// Namespace is the namespace of the backend. When unspecified,
-				// the local
+				// Namespace is the namespace of the backend. When unspecified, the local
 				// namespace is inferred.
 				//
-				// Note that when a namespace different than the local namespace
-				// is specified,
-				// a ReferenceGrant object is required in the referent namespace
-				// to allow that
-				// namespace's owner to accept the reference. See the
-				// ReferenceGrant
+				// Note that when a namespace different than the local namespace is specified,
+				// a ReferenceGrant object is required in the referent namespace to allow that
+				// namespace's owner to accept the reference. See the ReferenceGrant
 				// documentation for details.
 				//
 				// Support: Core
@@ -841,95 +694,69 @@ import (
 						63) & strings.MinRunes(
 						1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
-				// Port specifies the destination port number to use for this
-				// resource.
-				// Port is required when the referent is a Kubernetes Service. In
-				// this
-				// case, the port number is the service port number, not the
-				// target port.
-				// For other resources, destination port might be derived from the
-				// referent
+				// Port specifies the destination port number to use for this resource.
+				// Port is required when the referent is a Kubernetes Service. In this
+				// case, the port number is the service port number, not the target port.
+				// For other resources, destination port might be derived from the referent
 				// resource or this field.
 				port?: int32 & int & <=65535 & >=1
 
-				// Weight specifies the proportion of requests forwarded to the
-				// referenced
+				// Weight specifies the proportion of requests forwarded to the referenced
 				// backend. This is computed as weight/(sum of all weights in this
-				// BackendRefs list). For non-zero values, there may be some
-				// epsilon from
+				// BackendRefs list). For non-zero values, there may be some epsilon from
 				// the exact proportion defined here depending on the precision an
-				// implementation supports. Weight is not a percentage and the sum
-				// of
+				// implementation supports. Weight is not a percentage and the sum of
 				// weights does not need to equal 100.
 				//
-				// If only one backend is specified and it has a weight greater
-				// than 0, 100%
-				// of the traffic is forwarded to that backend. If weight is set
-				// to 0, no
-				// traffic should be forwarded for this entry. If unspecified,
-				// weight
+				// If only one backend is specified and it has a weight greater than 0, 100%
+				// of the traffic is forwarded to that backend. If weight is set to 0, no
+				// traffic should be forwarded for this entry. If unspecified, weight
 				// defaults to 1.
 				//
 				// Support for this field varies based on the context where used.
 				weight?: int32 & int & <=1000000 & >=0
 			}]
 
-			// Filters define the filters that are applied to requests that
-			// match
+			// Filters define the filters that are applied to requests that match
 			// this rule.
 			//
-			// The effects of ordering of multiple behaviors are currently
-			// unspecified.
-			// This can change in the future based on feedback during the
-			// alpha stage.
+			// The effects of ordering of multiple behaviors are currently unspecified.
+			// This can change in the future based on feedback during the alpha stage.
 			//
-			// Conformance-levels at this level are defined based on the type
-			// of filter:
+			// Conformance-levels at this level are defined based on the type of filter:
 			//
-			// - ALL core filters MUST be supported by all implementations
-			// that support
+			// - ALL core filters MUST be supported by all implementations that support
 			// GRPCRoute.
 			// - Implementers are encouraged to support extended filters.
-			// - Implementation-specific custom filters have no API guarantees
-			// across
+			// - Implementation-specific custom filters have no API guarantees across
 			// implementations.
 			//
-			// Specifying the same filter multiple times is not supported
-			// unless explicitly
+			// Specifying the same filter multiple times is not supported unless explicitly
 			// indicated in the filter.
 			//
-			// If an implementation cannot support a combination of filters,
-			// it must clearly
-			// document that limitation. In cases where incompatible or
-			// unsupported
-			// filters are specified and cause the `Accepted` condition to be
-			// set to status
-			// `False`, implementations may use the `IncompatibleFilters`
-			// reason to specify
+			// If an implementation cannot support a combination of filters, it must clearly
+			// document that limitation. In cases where incompatible or unsupported
+			// filters are specified and cause the `Accepted` condition to be set to status
+			// `False`, implementations may use the `IncompatibleFilters` reason to specify
 			// this configuration error.
 			//
 			// Support: Core
 			filters?: list.MaxItems(16) & [...{
-				// ExtensionRef is an optional, implementation-specific extension
-				// to the
-				// "filter" behavior. For example, resource "myroutefilter" in
-				// group
-				// "networking.example.net"). ExtensionRef MUST NOT be used for
-				// core and
+				// ExtensionRef is an optional, implementation-specific extension to the
+				// "filter" behavior. For example, resource "myroutefilter" in group
+				// "networking.example.net"). ExtensionRef MUST NOT be used for core and
 				// extended filters.
 				//
 				// Support: Implementation-specific
 				//
 				// This filter can be used multiple times within the same rule.
 				extensionRef?: {
-					// Group is the group of the referent. For example,
-					// "gateway.networking.k8s.io".
+					// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 					// When unspecified or empty string, core API group is inferred.
 					group!: strings.MaxRunes(
 						253) & =~"^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
-					// Kind is kind of the referent. For example "HTTPRoute" or
-					// "Service".
+					// Kind is kind of the referent. For example "HTTPRoute" or "Service".
 					kind!: strings.MaxRunes(
 						63) & strings.MinRunes(
 						1) & =~"^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
@@ -940,8 +767,7 @@ import (
 						1)
 				}
 
-				// RequestHeaderModifier defines a schema for a filter that
-				// modifies request
+				// RequestHeaderModifier defines a schema for a filter that modifies request
 				// headers.
 				//
 				// Support: Core
@@ -963,33 +789,29 @@ import (
 					// GET /foo HTTP/1.1
 					// my-header: foo,bar,baz
 					add?: list.MaxItems(16) & [...{
-						// Name is the name of the HTTP Header to be matched. Name
-						// matching MUST be
-						// case-insensitive. (See
-						// https://tools.ietf.org/html/rfc7230#section-3.2).
+						// Name is the name of the HTTP Header to be matched. Name matching MUST be
+						// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 						//
-						// If multiple entries specify equivalent header names, the first
-						// entry with
-						// an equivalent name MUST be considered for a match. Subsequent
-						// entries
+						// If multiple entries specify equivalent header names, the first entry with
+						// an equivalent name MUST be considered for a match. Subsequent entries
 						// with an equivalent header name MUST be ignored. Due to the
-						// case-insensitivity of header names, "foo" and "Foo" are
-						// considered
+						// case-insensitivity of header names, "foo" and "Foo" are considered
 						// equivalent.
 						name!: strings.MaxRunes(
 							256) & strings.MinRunes(
 							1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 						// Value is the value of HTTP Header to be matched.
+						//
+						// Must consist of printable US-ASCII characters, optionally separated
+						// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 						value!: strings.MaxRunes(
 							4096) & strings.MinRunes(
-							1)
+							1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 					}]
 
-					// Remove the given header(s) from the HTTP request before the
-					// action. The
-					// value of Remove is a list of HTTP header names. Note that the
-					// header
+					// Remove the given header(s) from the HTTP request before the action. The
+					// value of Remove is a list of HTTP header names. Note that the header
 					// names are case-insensitive (see
 					// https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
 					//
@@ -1023,104 +845,85 @@ import (
 					// GET /foo HTTP/1.1
 					// my-header: bar
 					set?: list.MaxItems(16) & [...{
-						// Name is the name of the HTTP Header to be matched. Name
-						// matching MUST be
-						// case-insensitive. (See
-						// https://tools.ietf.org/html/rfc7230#section-3.2).
+						// Name is the name of the HTTP Header to be matched. Name matching MUST be
+						// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 						//
-						// If multiple entries specify equivalent header names, the first
-						// entry with
-						// an equivalent name MUST be considered for a match. Subsequent
-						// entries
+						// If multiple entries specify equivalent header names, the first entry with
+						// an equivalent name MUST be considered for a match. Subsequent entries
 						// with an equivalent header name MUST be ignored. Due to the
-						// case-insensitivity of header names, "foo" and "Foo" are
-						// considered
+						// case-insensitivity of header names, "foo" and "Foo" are considered
 						// equivalent.
 						name!: strings.MaxRunes(
 							256) & strings.MinRunes(
 							1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 						// Value is the value of HTTP Header to be matched.
+						//
+						// Must consist of printable US-ASCII characters, optionally separated
+						// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 						value!: strings.MaxRunes(
 							4096) & strings.MinRunes(
-							1)
+							1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 					}]
 				}
 
-				// RequestMirror defines a schema for a filter that mirrors
-				// requests.
-				// Requests are sent to the specified destination, but responses
-				// from
+				// RequestMirror defines a schema for a filter that mirrors requests.
+				// Requests are sent to the specified destination, but responses from
 				// that destination are ignored.
 				//
-				// This filter can be used multiple times within the same rule.
-				// Note that
-				// not all implementations will be able to support mirroring to
-				// multiple
+				// This filter can be used multiple times within the same rule. Note that
+				// not all implementations will be able to support mirroring to multiple
 				// backends.
 				//
 				// Support: Extended
 				requestMirror?: {
-					// BackendRef references a resource where mirrored requests are
-					// sent.
+					// BackendRef references a resource where mirrored requests are sent.
 					//
-					// Mirrored requests must be sent only to a single destination
-					// endpoint
-					// within this BackendRef, irrespective of how many endpoints are
-					// present
+					// Mirrored requests must be sent only to a single destination endpoint
+					// within this BackendRef, irrespective of how many endpoints are present
 					// within this BackendRef.
 					//
-					// If the referent cannot be found, this BackendRef is invalid and
-					// must be
-					// dropped from the Gateway. The controller must ensure the
-					// "ResolvedRefs"
-					// condition on the Route status is set to `status: False` and not
-					// configure
+					// If the referent cannot be found, this BackendRef is invalid and must be
+					// dropped from the Gateway. The controller must ensure the "ResolvedRefs"
+					// condition on the Route status is set to `status: False` and not configure
 					// this backend in the underlying implementation.
 					//
 					// If there is a cross-namespace reference to an *existing* object
-					// that is not allowed by a ReferenceGrant, the controller must
-					// ensure the
-					// "ResolvedRefs" condition on the Route is set to `status:
-					// False`,
-					// with the "RefNotPermitted" reason and not configure this
-					// backend in the
+					// that is not allowed by a ReferenceGrant, the controller must ensure the
+					// "ResolvedRefs" condition on the Route is set to `status: False`,
+					// with the "RefNotPermitted" reason and not configure this backend in the
 					// underlying implementation.
 					//
-					// In either error case, the Message of the `ResolvedRefs`
-					// Condition
+					// In either error case, the Message of the `ResolvedRefs` Condition
 					// should be used to provide more detail about the problem.
 					//
 					// Support: Extended for Kubernetes Service
 					//
 					// Support: Implementation-specific for any other resource
+					//
+					// If the backend service requires TLS, use BackendTLSPolicy to tell the
+					// implementation to supply the TLS details to be used to connect to that
+					// backend.
 					backendRef!: {
-						// Group is the group of the referent. For example,
-						// "gateway.networking.k8s.io".
+						// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 						// When unspecified or empty string, core API group is inferred.
 						group?: strings.MaxRunes(
 							253) & =~"^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
-						// Kind is the Kubernetes resource kind of the referent. For
-						// example
+						// Kind is the Kubernetes resource kind of the referent. For example
 						// "Service".
 						//
 						// Defaults to "Service" when not specified.
 						//
-						// ExternalName services can refer to CNAME DNS records that may
-						// live
-						// outside of the cluster and as such are difficult to reason
-						// about in
-						// terms of conformance. They also may not be safe to forward to
-						// (see
-						// CVE-2021-25740 for more information). Implementations SHOULD
-						// NOT
+						// ExternalName services can refer to CNAME DNS records that may live
+						// outside of the cluster and as such are difficult to reason about in
+						// terms of conformance. They also may not be safe to forward to (see
+						// CVE-2021-25740 for more information). Implementations SHOULD NOT
 						// support ExternalName Services.
 						//
 						// Support: Core (Services with a type other than ExternalName)
 						//
-						// Support: Implementation-specific (Services with type
-						// ExternalName)
+						// Support: Implementation-specific (Services with type ExternalName)
 						kind?: strings.MaxRunes(
 							63) & strings.MinRunes(
 							1) & =~"^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
@@ -1130,16 +933,12 @@ import (
 							253) & strings.MinRunes(
 							1)
 
-						// Namespace is the namespace of the backend. When unspecified,
-						// the local
+						// Namespace is the namespace of the backend. When unspecified, the local
 						// namespace is inferred.
 						//
-						// Note that when a namespace different than the local namespace
-						// is specified,
-						// a ReferenceGrant object is required in the referent namespace
-						// to allow that
-						// namespace's owner to accept the reference. See the
-						// ReferenceGrant
+						// Note that when a namespace different than the local namespace is specified,
+						// a ReferenceGrant object is required in the referent namespace to allow that
+						// namespace's owner to accept the reference. See the ReferenceGrant
 						// documentation for details.
 						//
 						// Support: Core
@@ -1147,14 +946,10 @@ import (
 								63) & strings.MinRunes(
 								1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
-						// Port specifies the destination port number to use for this
-						// resource.
-						// Port is required when the referent is a Kubernetes Service. In
-						// this
-						// case, the port number is the service port number, not the
-						// target port.
-						// For other resources, destination port might be derived from the
-						// referent
+						// Port specifies the destination port number to use for this resource.
+						// Port is required when the referent is a Kubernetes Service. In this
+						// case, the port number is the service port number, not the target port.
+						// For other resources, destination port might be derived from the referent
 						// resource or this field.
 						port?: int32 & int & <=65535 & >=1
 					}
@@ -1162,8 +957,7 @@ import (
 					// Fraction represents the fraction of requests that should be
 					// mirrored to BackendRef.
 					//
-					// Only one of Fraction or Percent may be specified. If neither
-					// field
+					// Only one of Fraction or Percent may be specified. If neither field
 					// is specified, 100% of requests will be mirrored.
 					fraction?: {
 						denominator?: int32 & int & >=1
@@ -1171,19 +965,15 @@ import (
 					}
 
 					// Percent represents the percentage of requests that should be
-					// mirrored to BackendRef. Its minimum value is 0 (indicating 0%
-					// of
-					// requests) and its maximum value is 100 (indicating 100% of
-					// requests).
+					// mirrored to BackendRef. Its minimum value is 0 (indicating 0% of
+					// requests) and its maximum value is 100 (indicating 100% of requests).
 					//
-					// Only one of Fraction or Percent may be specified. If neither
-					// field
+					// Only one of Fraction or Percent may be specified. If neither field
 					// is specified, 100% of requests will be mirrored.
 					percent?: int32 & int & <=100 & >=0
 				}
 
-				// ResponseHeaderModifier defines a schema for a filter that
-				// modifies response
+				// ResponseHeaderModifier defines a schema for a filter that modifies response
 				// headers.
 				//
 				// Support: Extended
@@ -1205,33 +995,29 @@ import (
 					// GET /foo HTTP/1.1
 					// my-header: foo,bar,baz
 					add?: list.MaxItems(16) & [...{
-						// Name is the name of the HTTP Header to be matched. Name
-						// matching MUST be
-						// case-insensitive. (See
-						// https://tools.ietf.org/html/rfc7230#section-3.2).
+						// Name is the name of the HTTP Header to be matched. Name matching MUST be
+						// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 						//
-						// If multiple entries specify equivalent header names, the first
-						// entry with
-						// an equivalent name MUST be considered for a match. Subsequent
-						// entries
+						// If multiple entries specify equivalent header names, the first entry with
+						// an equivalent name MUST be considered for a match. Subsequent entries
 						// with an equivalent header name MUST be ignored. Due to the
-						// case-insensitivity of header names, "foo" and "Foo" are
-						// considered
+						// case-insensitivity of header names, "foo" and "Foo" are considered
 						// equivalent.
 						name!: strings.MaxRunes(
 							256) & strings.MinRunes(
 							1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 						// Value is the value of HTTP Header to be matched.
+						//
+						// Must consist of printable US-ASCII characters, optionally separated
+						// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 						value!: strings.MaxRunes(
 							4096) & strings.MinRunes(
-							1)
+							1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 					}]
 
-					// Remove the given header(s) from the HTTP request before the
-					// action. The
-					// value of Remove is a list of HTTP header names. Note that the
-					// header
+					// Remove the given header(s) from the HTTP request before the action. The
+					// value of Remove is a list of HTTP header names. Note that the header
 					// names are case-insensitive (see
 					// https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).
 					//
@@ -1265,74 +1051,57 @@ import (
 					// GET /foo HTTP/1.1
 					// my-header: bar
 					set?: list.MaxItems(16) & [...{
-						// Name is the name of the HTTP Header to be matched. Name
-						// matching MUST be
-						// case-insensitive. (See
-						// https://tools.ietf.org/html/rfc7230#section-3.2).
+						// Name is the name of the HTTP Header to be matched. Name matching MUST be
+						// case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
 						//
-						// If multiple entries specify equivalent header names, the first
-						// entry with
-						// an equivalent name MUST be considered for a match. Subsequent
-						// entries
+						// If multiple entries specify equivalent header names, the first entry with
+						// an equivalent name MUST be considered for a match. Subsequent entries
 						// with an equivalent header name MUST be ignored. Due to the
-						// case-insensitivity of header names, "foo" and "Foo" are
-						// considered
+						// case-insensitivity of header names, "foo" and "Foo" are considered
 						// equivalent.
 						name!: strings.MaxRunes(
 							256) & strings.MinRunes(
 							1) & =~"^[A-Za-z0-9!#$%&'*+\\-.^_\\x60|~]+$"
 
 						// Value is the value of HTTP Header to be matched.
+						//
+						// Must consist of printable US-ASCII characters, optionally separated
+						// by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 						value!: strings.MaxRunes(
 							4096) & strings.MinRunes(
-							1)
+							1) & =~"^[!-~]+([\\t ]?[!-~]+)*$"
 					}]
 				}
 
-				// Type identifies the type of filter to apply. As with other API
-				// fields,
+				// Type identifies the type of filter to apply. As with other API fields,
 				// types are classified into three conformance levels:
 				//
-				// - Core: Filter types and their corresponding configuration
-				// defined by
-				// "Support: Core" in this package, e.g. "RequestHeaderModifier".
-				// All
+				// - Core: Filter types and their corresponding configuration defined by
+				// "Support: Core" in this package, e.g. "RequestHeaderModifier". All
 				// implementations supporting GRPCRoute MUST support core filters.
 				//
-				// - Extended: Filter types and their corresponding configuration
-				// defined by
-				// "Support: Extended" in this package, e.g. "RequestMirror".
-				// Implementers
+				// - Extended: Filter types and their corresponding configuration defined by
+				// "Support: Extended" in this package, e.g. "RequestMirror". Implementers
 				// are encouraged to support extended filters.
 				//
-				// - Implementation-specific: Filters that are defined and
-				// supported by specific vendors.
-				// In the future, filters showing convergence in behavior across
-				// multiple
-				// implementations will be considered for inclusion in extended or
-				// core
-				// conformance levels. Filter-specific configuration for such
-				// filters
-				// is specified using the ExtensionRef field. `Type` MUST be set
-				// to
+				// - Implementation-specific: Filters that are defined and supported by specific vendors.
+				// In the future, filters showing convergence in behavior across multiple
+				// implementations will be considered for inclusion in extended or core
+				// conformance levels. Filter-specific configuration for such filters
+				// is specified using the ExtensionRef field. `Type` MUST be set to
 				// "ExtensionRef" for custom filters.
 				//
-				// Implementers are encouraged to define custom implementation
-				// types to
+				// Implementers are encouraged to define custom implementation types to
 				// extend the core API with implementation-specific behavior.
 				//
-				// If a reference to a custom filter type cannot be resolved, the
-				// filter
-				// MUST NOT be skipped. Instead, requests that would have been
-				// processed by
+				// If a reference to a custom filter type cannot be resolved, the filter
+				// MUST NOT be skipped. Instead, requests that would have been processed by
 				// that filter MUST receive a HTTP error response.
 				type!: "ResponseHeaderModifier" | "RequestHeaderModifier" | "RequestMirror" | "ExtensionRef"
 			}]
 
-			// Matches define conditions used for matching the rule against
-			// incoming
-			// gRPC requests. Each match is independent, i.e. this rule will
-			// be matched
+			// Matches define conditions used for matching the rule against incoming
+			// gRPC requests. Each match is independent, i.e. this rule will be matched
 			// if **any** one of the matches is satisfied.
 			//
 			// For example, take the following matches configuration:
@@ -1354,21 +1123,15 @@ import (
 			// - service of foo.bar AND contains the header `version: 2`
 			// - service of foo.bar.v2
 			//
-			// See the documentation for GRPCRouteMatch on how to specify
-			// multiple
+			// See the documentation for GRPCRouteMatch on how to specify multiple
 			// match conditions to be ANDed together.
 			//
-			// If no matches are specified, the implementation MUST match
-			// every gRPC request.
+			// If no matches are specified, the implementation MUST match every gRPC request.
 			//
-			// Proxy or Load Balancer routing configuration generated from
-			// GRPCRoutes
-			// MUST prioritize rules based on the following criteria,
-			// continuing on
-			// ties. Merging MUST not be done between GRPCRoutes and
-			// HTTPRoutes.
-			// Precedence MUST be given to the rule with the largest number
-			// of:
+			// Proxy or Load Balancer routing configuration generated from GRPCRoutes
+			// MUST prioritize rules based on the following criteria, continuing on
+			// ties. Merging MUST not be done between GRPCRoutes and HTTPRoutes.
+			// Precedence MUST be given to the rule with the largest number of:
 			//
 			// * Characters in a matching non-wildcard hostname.
 			// * Characters in a matching hostname.
@@ -1376,37 +1139,27 @@ import (
 			// * Characters in a matching method.
 			// * Header matches.
 			//
-			// If ties still exist across multiple Routes, matching precedence
-			// MUST be
-			// determined in order of the following criteria, continuing on
-			// ties:
+			// If ties still exist across multiple Routes, matching precedence MUST be
+			// determined in order of the following criteria, continuing on ties:
 			//
 			// * The oldest Route based on creation timestamp.
 			// * The Route appearing first in alphabetical order by
 			// "{namespace}/{name}".
 			//
-			// If ties still exist within the Route that has been given
-			// precedence,
-			// matching precedence MUST be granted to the first matching rule
-			// meeting
+			// If ties still exist within the Route that has been given precedence,
+			// matching precedence MUST be granted to the first matching rule meeting
 			// the above criteria.
 			matches?: list.MaxItems(64) & [...{
-				// Headers specifies gRPC request header matchers. Multiple match
-				// values are
-				// ANDed together, meaning, a request MUST match all the specified
-				// headers
+				// Headers specifies gRPC request header matchers. Multiple match values are
+				// ANDed together, meaning, a request MUST match all the specified headers
 				// to select the route.
 				headers?: list.MaxItems(16) & [...{
 					// Name is the name of the gRPC Header to be matched.
 					//
-					// If multiple entries specify equivalent header names, only the
-					// first
-					// entry with an equivalent name MUST be considered for a match.
-					// Subsequent
-					// entries with an equivalent header name MUST be ignored. Due to
-					// the
-					// case-insensitivity of header names, "foo" and "Foo" are
-					// considered
+					// If multiple entries specify equivalent header names, only the first
+					// entry with an equivalent name MUST be considered for a match. Subsequent
+					// entries with an equivalent header name MUST be ignored. Due to the
+					// case-insensitivity of header names, "foo" and "Foo" are considered
 					// equivalent.
 					name!: strings.MaxRunes(
 						256) & strings.MinRunes(
@@ -1421,20 +1174,17 @@ import (
 						1)
 				}]
 
-				// Method specifies a gRPC request service/method matcher. If this
-				// field is
+				// Method specifies a gRPC request service/method matcher. If this field is
 				// not specified, all services and methods will match.
 				method?: {
-					// Value of the method to match against. If left empty or omitted,
-					// will
+					// Value of the method to match against. If left empty or omitted, will
 					// match all services.
 					//
 					// At least one of Service and Method MUST be a non-empty string.
 					method?: strings.MaxRunes(
 							1024)
 
-					// Value of the service to match against. If left empty or
-					// omitted, will
+					// Value of the service to match against. If left empty or omitted, will
 					// match any service.
 					//
 					// At least one of Service and Method MUST be a non-empty string.
@@ -1444,104 +1194,150 @@ import (
 					// Type specifies how to match against the service and/or method.
 					// Support: Core (Exact with service and method specified)
 					//
-					// Support: Implementation-specific (Exact with method specified
-					// but no service specified)
+					// Support: Implementation-specific (Exact with method specified but no service specified)
 					//
 					// Support: Implementation-specific (RegularExpression)
 					type?: "Exact" | "RegularExpression"
 				}
 			}]
 
-			// Name is the name of the route rule. This name MUST be unique
-			// within a Route if it is set.
+			// Name is the name of the route rule. This name MUST be unique within a Route if it is set.
 			//
 			// Support: Extended
 			name?: strings.MaxRunes(
 				253) & strings.MinRunes(
 				1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+
+			// SessionPersistence defines and configures session persistence
+			// for the route rule.
+			//
+			// Support: Extended
+			sessionPersistence?: {
+				// AbsoluteTimeout defines the absolute timeout of the persistent
+				// session. Once the AbsoluteTimeout duration has elapsed, the
+				// session becomes invalid.
+				//
+				// Support: Extended
+				absoluteTimeout?: =~"^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+
+				// CookieConfig provides configuration settings that are specific
+				// to cookie-based session persistence.
+				//
+				// Support: Core
+				cookieConfig?: {
+					// LifetimeType specifies whether the cookie has a permanent or
+					// session-based lifetime. A permanent cookie persists until its
+					// specified expiry time, defined by the Expires or Max-Age cookie
+					// attributes, while a session cookie is deleted when the current
+					// session ends.
+					//
+					// When set to "Permanent", AbsoluteTimeout indicates the
+					// cookie's lifetime via the Expires or Max-Age cookie attributes
+					// and is required.
+					//
+					// When set to "Session", AbsoluteTimeout indicates the
+					// absolute lifetime of the cookie tracked by the gateway and
+					// is optional.
+					//
+					// Defaults to "Session".
+					//
+					// Support: Core for "Session" type
+					//
+					// Support: Extended for "Permanent" type
+					lifetimeType?: "Permanent" | "Session"
+				}
+
+				// SessionName defines the name of the persistent session token
+				// which may be reflected in the cookie or the header. Users
+				// should avoid reusing session names to prevent unintended
+				// consequences, such as rejection or unpredictable behavior.
+				//
+				// Support: Implementation-specific
+				sessionName?: strings.MaxRunes(
+						128)
+
+				// Type defines the type of session persistence such as through
+				// the use of a header or cookie. Defaults to cookie based session
+				// persistence.
+				//
+				// Support: Core for "Cookie" type
+				//
+				// Support: Extended for "Header" type
+				type?: "Cookie" | "Header"
+			}
 		}]
+
+		// UseDefaultGateways indicates the default Gateway scope to use for this
+		// Route. If unset (the default) or set to None, the Route will not be
+		// attached to any default Gateway; if set, it will be attached to any
+		// default Gateway supporting the named scope, subject to the usual rules
+		// about which Routes a Gateway is allowed to claim.
+		//
+		// Think carefully before using this functionality! The set of default
+		// Gateways supporting the requested scope can change over time without
+		// any notice to the Route author, and in many situations it will not be
+		// appropriate to request a default Gateway for a given Route -- for
+		// example, a Route with specific security requirements should almost
+		// certainly not use a default Gateway.
+		useDefaultGateways?: "All" | "None"
 	}
 
 	// Status defines the current state of GRPCRoute.
 	status?: {
-		// Parents is a list of parent resources (usually Gateways) that
-		// are
-		// associated with the route, and the status of the route with
-		// respect to
-		// each parent. When this route attaches to a parent, the
-		// controller that
-		// manages the parent must add an entry to this list when the
-		// controller
-		// first sees the route and should update the entry as appropriate
-		// when the
+		// Parents is a list of parent resources (usually Gateways) that are
+		// associated with the route, and the status of the route with respect to
+		// each parent. When this route attaches to a parent, the controller that
+		// manages the parent must add an entry to this list when the controller
+		// first sees the route and should update the entry as appropriate when the
 		// route or gateway is modified.
 		//
-		// Note that parent references that cannot be resolved by an
-		// implementation
-		// of this API will not be added to this list. Implementations of
-		// this API
-		// can only populate Route status for the Gateways/parent
-		// resources they are
+		// Note that parent references that cannot be resolved by an implementation
+		// of this API will not be added to this list. Implementations of this API
+		// can only populate Route status for the Gateways/parent resources they are
 		// responsible for.
 		//
-		// A maximum of 32 Gateways will be represented in this list. An
-		// empty list
+		// A maximum of 32 Gateways will be represented in this list. An empty list
 		// means the route has not been attached to any Gateway.
 		parents!: list.MaxItems(32) & [...{
-			// Conditions describes the status of the route with respect to
-			// the Gateway.
-			// Note that the route's availability is also subject to the
-			// Gateway's own
+			// Conditions describes the status of the route with respect to the Gateway.
+			// Note that the route's availability is also subject to the Gateway's own
 			// status conditions and listener status.
 			//
-			// If the Route's ParentRef specifies an existing Gateway that
-			// supports
-			// Routes of this kind AND that Gateway's controller has
-			// sufficient access,
-			// then that Gateway's controller MUST set the "Accepted"
-			// condition on the
-			// Route, to indicate whether the route has been accepted or
-			// rejected by the
+			// If the Route's ParentRef specifies an existing Gateway that supports
+			// Routes of this kind AND that Gateway's controller has sufficient access,
+			// then that Gateway's controller MUST set the "Accepted" condition on the
+			// Route, to indicate whether the route has been accepted or rejected by the
 			// Gateway, and why.
 			//
-			// A Route MUST be considered "Accepted" if at least one of the
-			// Route's
+			// A Route MUST be considered "Accepted" if at least one of the Route's
 			// rules is implemented by the Gateway.
 			//
-			// There are a number of cases where the "Accepted" condition may
-			// not be set
+			// There are a number of cases where the "Accepted" condition may not be set
 			// due to lack of controller visibility, that includes when:
 			//
 			// * The Route refers to a nonexistent parent.
 			// * The Route is of a type that the controller does not support.
-			// * The Route is in a namespace to which the controller does not
-			// have access.
+			// * The Route is in a namespace to which the controller does not have access.
 			conditions!: list.MaxItems(8) & [...{
-				// lastTransitionTime is the last time the condition transitioned
-				// from one status to another.
-				// This should be when the underlying condition changed. If that
-				// is not known, then using the time when the API field changed
-				// is acceptable.
+				// lastTransitionTime is the last time the condition transitioned from one status to another.
+				// This should be when the underlying condition changed. If that is not known,
+				// then using the time when the API field changed is acceptable.
 				lastTransitionTime!: time.Time
 
-				// message is a human readable message indicating details about
-				// the transition.
+				// message is a human readable message indicating details about the transition.
 				// This may be an empty string.
 				message!: strings.MaxRunes(
 						32768)
 
-				// observedGeneration represents the .metadata.generation that the
-				// condition was set based upon.
+				// observedGeneration represents the .metadata.generation that the condition was set based upon.
 				// For instance, if .metadata.generation is currently 12, but the
-				// .status.conditions[x].observedGeneration is 9, the condition
-				// is out of date
+				// .status.conditions[x].observedGeneration is 9, the condition is out of date
 				// with respect to the current state of the instance.
 				observedGeneration?: int64 & int & >=0
 
-				// reason contains a programmatic identifier indicating the reason
-				// for the condition's last transition.
-				// Producers of specific condition types may define expected
-				// values and meanings for this field,
+				// reason contains a programmatic identifier indicating the reason for the
+				// condition's last transition.
+				// Producers of specific condition types may define expected values and meanings for this field,
 				// and whether the values are considered a guaranteed API.
 				// The value should be a CamelCase string.
 				// This field may not be empty.
@@ -1557,22 +1353,18 @@ import (
 					316) & =~"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
 			}] & [_, ...]
 
-			// ControllerName is a domain/path string that indicates the name
-			// of the
+			// ControllerName is a domain/path string that indicates the name of the
 			// controller that wrote this status. This corresponds with the
 			// controllerName field on GatewayClass.
 			//
 			// Example: "example.net/gateway-controller".
 			//
-			// The format of this field is DOMAIN "/" PATH, where DOMAIN and
-			// PATH are
+			// The format of this field is DOMAIN "/" PATH, where DOMAIN and PATH are
 			// valid Kubernetes names
 			// (https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names).
 			//
-			// Controllers MUST populate this field when writing status.
-			// Controllers should ensure that
-			// entries to status populated with their ControllerName are
-			// cleaned up when they are no
+			// Controllers MUST populate this field when writing status. Controllers should ensure that
+			// entries to status populated with their ControllerName are cleaned up when they are no
 			// longer necessary.
 			controllerName!: strings.MaxRunes(
 						253) & strings.MinRunes(
@@ -1583,8 +1375,7 @@ import (
 			parentRef!: {
 				// Group is the group of the referent.
 				// When unspecified, "gateway.networking.k8s.io" is inferred.
-				// To set the core API group (such as for a "Service" kind
-				// referent),
+				// To set the core API group (such as for a "Service" kind referent),
 				// Group must be explicitly set to "" (empty string).
 				//
 				// Support: Core
@@ -1610,102 +1401,85 @@ import (
 					253) & strings.MinRunes(
 					1)
 
-				// Namespace is the namespace of the referent. When unspecified,
-				// this refers
+				// Namespace is the namespace of the referent. When unspecified, this refers
 				// to the local namespace of the Route.
 				//
-				// Note that there are specific rules for ParentRefs which cross
-				// namespace
-				// boundaries. Cross-namespace references are only valid if they
-				// are explicitly
-				// allowed by something in the namespace they are referring to.
-				// For example:
-				// Gateway has the AllowedRoutes field, and ReferenceGrant
-				// provides a
-				// generic way to enable any other kind of cross-namespace
-				// reference.
+				// Note that there are specific rules for ParentRefs which cross namespace
+				// boundaries. Cross-namespace references are only valid if they are explicitly
+				// allowed by something in the namespace they are referring to. For example:
+				// Gateway has the AllowedRoutes field, and ReferenceGrant provides a
+				// generic way to enable any other kind of cross-namespace reference.
+				//
+				//
+				// ParentRefs from a Route to a Service in the same namespace are "producer"
+				// routes, which apply default routing rules to inbound connections from
+				// any namespace to the Service.
+				//
+				// ParentRefs from a Route to a Service in a different namespace are
+				// "consumer" routes, and these routing rules are only applied to outbound
+				// connections originating from the same namespace as the Route, for which
+				// the intended destination of the connections are a Service targeted as a
+				// ParentRef of the Route.
+				//
 				//
 				// Support: Core
 				namespace?: strings.MaxRunes(
 						63) & strings.MinRunes(
 						1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
-				// Port is the network port this Route targets. It can be
-				// interpreted
+				// Port is the network port this Route targets. It can be interpreted
 				// differently based on the type of parent resource.
 				//
-				// When the parent resource is a Gateway, this targets all
-				// listeners
-				// listening on the specified port that also support this kind of
-				// Route(and
-				// select this Route). It's not recommended to set `Port` unless
-				// the
-				// networking behaviors specified in a Route must apply to a
-				// specific port
-				// as opposed to a listener(s) whose port(s) may be changed. When
-				// both Port
-				// and SectionName are specified, the name and port of the
-				// selected listener
+				// When the parent resource is a Gateway, this targets all listeners
+				// listening on the specified port that also support this kind of Route(and
+				// select this Route). It's not recommended to set `Port` unless the
+				// networking behaviors specified in a Route must apply to a specific port
+				// as opposed to a listener(s) whose port(s) may be changed. When both Port
+				// and SectionName are specified, the name and port of the selected listener
 				// must match both specified values.
 				//
+				//
+				// When the parent resource is a Service, this targets a specific port in the
+				// Service spec. When both Port (experimental) and SectionName are specified,
+				// the name and port of the selected port must match both specified values.
+				//
+				//
 				// Implementations MAY choose to support other parent resources.
-				// Implementations supporting other types of parent resources MUST
-				// clearly
+				// Implementations supporting other types of parent resources MUST clearly
 				// document how/if Port is interpreted.
 				//
-				// For the purpose of status, an attachment is considered
-				// successful as
-				// long as the parent resource accepts it partially. For example,
-				// Gateway
-				// listeners can restrict which Routes can attach to them by Route
-				// kind,
-				// namespace, or hostname. If 1 of 2 Gateway listeners accept
-				// attachment
-				// from the referencing Route, the Route MUST be considered
-				// successfully
-				// attached. If no Gateway listeners accept attachment from this
-				// Route,
+				// For the purpose of status, an attachment is considered successful as
+				// long as the parent resource accepts it partially. For example, Gateway
+				// listeners can restrict which Routes can attach to them by Route kind,
+				// namespace, or hostname. If 1 of 2 Gateway listeners accept attachment
+				// from the referencing Route, the Route MUST be considered successfully
+				// attached. If no Gateway listeners accept attachment from this Route,
 				// the Route MUST be considered detached from the Gateway.
 				//
 				// Support: Extended
 				port?: int32 & int & <=65535 & >=1
 
-				// SectionName is the name of a section within the target
-				// resource. In the
-				// following resources, SectionName is interpreted as the
-				// following:
+				// SectionName is the name of a section within the target resource. In the
+				// following resources, SectionName is interpreted as the following:
 				//
-				// * Gateway: Listener name. When both Port (experimental) and
-				// SectionName
-				// are specified, the name and port of the selected listener must
-				// match
+				// * Gateway: Listener name. When both Port (experimental) and SectionName
+				// are specified, the name and port of the selected listener must match
 				// both specified values.
-				// * Service: Port name. When both Port (experimental) and
-				// SectionName
-				// are specified, the name and port of the selected listener must
-				// match
+				// * Service: Port name. When both Port (experimental) and SectionName
+				// are specified, the name and port of the selected listener must match
 				// both specified values.
 				//
-				// Implementations MAY choose to support attaching Routes to other
-				// resources.
-				// If that is the case, they MUST clearly document how SectionName
-				// is
+				// Implementations MAY choose to support attaching Routes to other resources.
+				// If that is the case, they MUST clearly document how SectionName is
 				// interpreted.
 				//
-				// When unspecified (empty string), this will reference the entire
-				// resource.
-				// For the purpose of status, an attachment is considered
-				// successful if at
-				// least one section in the parent resource accepts it. For
-				// example, Gateway
-				// listeners can restrict which Routes can attach to them by Route
-				// kind,
-				// namespace, or hostname. If 1 of 2 Gateway listeners accept
-				// attachment from
-				// the referencing Route, the Route MUST be considered
-				// successfully
-				// attached. If no Gateway listeners accept attachment from this
-				// Route, the
+				// When unspecified (empty string), this will reference the entire resource.
+				// For the purpose of status, an attachment is considered successful if at
+				// least one section in the parent resource accepts it. For example, Gateway
+				// listeners can restrict which Routes can attach to them by Route kind,
+				// namespace, or hostname. If 1 of 2 Gateway listeners accept attachment from
+				// the referencing Route, the Route MUST be considered successfully
+				// attached. If no Gateway listeners accept attachment from this Route, the
 				// Route MUST be considered detached from the Gateway.
 				//
 				// Support: Core

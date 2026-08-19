@@ -3,19 +3,15 @@ package v1beta2
 #Volume: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -29,13 +25,11 @@ package v1beta2
 		accessMode?:   "rwo" | "rwop" | "rwx"
 		backingImage?: string
 
-		// BackupBlockSize indicate the block size to create backups. The
-		// block size is immutable.
+		// BackupBlockSize indicate the block size to create backups. The block size is immutable.
 		backupBlockSize?:         "2097152" | "16777216"
 		backupCompressionMethod?: "none" | "lz4" | "gzip"
 
-		// The backup target name that the volume will be backed up to or
-		// is synced.
+		// The backup target name that the volume will be backed up to or is synced.
 		backupTargetName?: string
 		cloneMode?:        "" | "full-copy" | "linked-clone"
 		dataEngine?:       "v1" | "v2"
@@ -45,8 +39,7 @@ package v1beta2
 		diskSelector?: [...string]
 		encrypted?: bool
 
-		// Setting that freezes the filesystem on the root partition
-		// before a snapshot is created.
+		// Setting that freezes the filesystem on the root partition before a snapshot is created.
 		freezeFilesystemForSnapshot?: "ignored" | "enabled" | "disabled"
 		fromBackup?:                  string
 		frontend?:                    "blockdev" | "iscsi" | "nvmf" | "ublk" | ""
@@ -58,14 +51,10 @@ package v1beta2
 		nodeSelector?: [...string]
 		numberOfReplicas?: int
 
-		// Specifies whether Longhorn should rebuild replicas while the
-		// detached volume is degraded.
-		// - ignored: Use the global setting for offline replica
-		// rebuilding.
-		// - enabled: Enable offline rebuilding for this volume,
-		// regardless of the global setting.
-		// - disabled: Disable offline rebuilding for this volume,
-		// regardless of the global setting
+		// Specifies whether Longhorn should rebuild replicas while the detached volume is degraded.
+		// - ignored: Use the global setting for offline replica rebuilding.
+		// - enabled: Enable offline rebuilding for this volume, regardless of the global setting.
+		// - disabled: Disable offline rebuilding for this volume, regardless of the global setting
 		offlineRebuilding?: "ignored" | "disabled" | "enabled"
 
 		// RebuildConcurrentSyncLimit controls the maximum number of file
@@ -75,22 +64,21 @@ package v1beta2
 		rebuildConcurrentSyncLimit?: int & <=5 & >=0
 		replicaAutoBalance?:         "ignored" | "disabled" | "least-effort" | "best-effort"
 
-		// Replica disk soft anti affinity of the volume. Set enabled to
-		// allow replicas to be scheduled in the same disk.
+		// Replica disk soft anti affinity of the volume. Set enabled to allow replicas
+		// to be scheduled in the same disk.
 		replicaDiskSoftAntiAffinity?: "ignored" | "enabled" | "disabled"
 
-		// ReplicaRebuildingBandwidthLimit controls the maximum write
-		// bandwidth (in megabytes per second) allowed on the destination
-		// replica during the rebuilding process. Set this value to 0 to
-		// disable bandwidth limiting.
+		// ReplicaRebuildingBandwidthLimit controls the maximum write bandwidth (in
+		// megabytes per second) allowed on the destination replica during the
+		// rebuilding process. Set this value to 0 to disable bandwidth limiting.
 		replicaRebuildingBandwidthLimit?: int64 & int & >=0
 
-		// Replica soft anti affinity of the volume. Set enabled to allow
-		// replicas to be scheduled on the same node.
+		// Replica soft anti affinity of the volume. Set enabled to allow replicas to be
+		// scheduled on the same node.
 		replicaSoftAntiAffinity?: "ignored" | "enabled" | "disabled"
 
-		// Replica zone soft anti affinity of the volume. Set enabled to
-		// allow replicas to be scheduled in the same zone.
+		// Replica zone soft anti affinity of the volume. Set enabled to allow replicas
+		// to be scheduled in the same zone.
 		replicaZoneSoftAntiAffinity?: "ignored" | "enabled" | "disabled"
 		restoreVolumeRecurringJob?:   "ignored" | "enabled" | "disabled"
 		revisionCounterDisabled?:     bool
@@ -100,12 +88,10 @@ package v1beta2
 		snapshotMaxSize?:             string
 		staleReplicaTimeout?:         int
 
-		// ublkNumberOfQueue controls the number of queues for ublk
-		// frontend.
+		// ublkNumberOfQueue controls the number of queues for ublk frontend.
 		ublkNumberOfQueue?: int
 
-		// ublkQueueDepth controls the depth of each queue for ublk
-		// frontend.
+		// ublkQueueDepth controls the depth of each queue for ublk frontend.
 		ublkQueueDepth?:            int
 		unmapMarkSnapChainRemoved?: "ignored" | "disabled" | "enabled"
 	}
@@ -125,16 +111,13 @@ package v1beta2
 				// Last time we probed the condition.
 				lastProbeTime?: string
 
-				// Last time the condition transitioned from one status to
-				// another.
+				// Last time the condition transitioned from one status to another.
 				lastTransitionTime?: string
 
-				// Human-readable message indicating details about last
-				// transition.
+				// Human-readable message indicating details about last transition.
 				message?: string
 
-				// Unique, one-word, CamelCase reason for the condition's last
-				// transition.
+				// Unique, one-word, CamelCase reason for the condition's last transition.
 				reason?: string
 
 				// Status is the status of the condition.

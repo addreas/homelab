@@ -5,19 +5,15 @@ import "time"
 #BackupTarget: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -25,8 +21,7 @@ import "time"
 	kind?: string
 	metadata?: {}
 
-	// BackupTargetSpec defines the desired state of the Longhorn
-	// backup target
+	// BackupTargetSpec defines the desired state of the Longhorn backup target
 	spec?: {
 		// The backup target URL.
 		backupTargetURL?: string
@@ -34,8 +29,7 @@ import "time"
 		// The backup target credential secret.
 		credentialSecret?: string
 
-		// The interval that the cluster needs to run sync with the backup
-		// target.
+		// The interval that the cluster needs to run sync with the backup target.
 		pollInterval?: string
 
 		// The time to request run sync the remote backup target.
@@ -43,11 +37,9 @@ import "time"
 			null | time.Time
 	}
 
-	// BackupTargetStatus defines the observed state of the Longhorn
-	// backup target
+	// BackupTargetStatus defines the observed state of the Longhorn backup target
 	status?: {
-		// Available indicates if the remote backup target is available or
-		// not.
+		// Available indicates if the remote backup target is available or not.
 		available?: bool
 
 		// Records the reason on why the backup target is unavailable.
@@ -56,16 +48,13 @@ import "time"
 				// Last time we probed the condition.
 				lastProbeTime?: string
 
-				// Last time the condition transitioned from one status to
-				// another.
+				// Last time the condition transitioned from one status to another.
 				lastTransitionTime?: string
 
-				// Human-readable message indicating details about last
-				// transition.
+				// Human-readable message indicating details about last transition.
 				message?: string
 
-				// Unique, one-word, CamelCase reason for the condition's last
-				// transition.
+				// Unique, one-word, CamelCase reason for the condition's last transition.
 				reason?: string
 
 				// Status is the status of the condition.
@@ -76,13 +65,11 @@ import "time"
 				type?: string
 			}]
 
-		// The last time that the controller synced with the remote backup
-		// target.
+		// The last time that the controller synced with the remote backup target.
 		lastSyncedAt?:
 			null | time.Time
 
-		// The node ID on which the controller is responsible to reconcile
-		// this backup target CR.
+		// The node ID on which the controller is responsible to reconcile this backup target CR.
 		ownerID?: string
 	}
 

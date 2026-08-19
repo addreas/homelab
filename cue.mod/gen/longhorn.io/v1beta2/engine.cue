@@ -3,19 +3,15 @@ package v1beta2
 #Engine: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -38,8 +34,7 @@ package v1beta2
 		// RebuildConcurrentSyncLimit controls the maximum number of file
 		// synchronization operations that can run
 		// concurrently during a single replica rebuild.
-		// It is determined by the global setting or the volume spec field
-		// with the same name.
+		// It is determined by the global setting or the volume spec field with the same name.
 		rebuildConcurrentSyncLimit?: int & <=5 & >=0
 		replicaAddressMap?: [string]: string
 		requestedBackupRestore?:  string
@@ -49,12 +44,10 @@ package v1beta2
 		snapshotMaxCount?:        int
 		snapshotMaxSize?:         string
 
-		// ublkNumberOfQueue controls the number of queues for ublk
-		// frontend.
+		// ublkNumberOfQueue controls the number of queues for ublk frontend.
 		ublkNumberOfQueue?: int
 
-		// ublkQueueDepth controls the depth of each queue for ublk
-		// frontend.
+		// ublkQueueDepth controls the depth of each queue for ublk frontend.
 		ublkQueueDepth?:                   int
 		unmapMarkSnapChainRemovedEnabled?: bool
 		upgradedReplicaAddressMap?: [string]: string
@@ -91,16 +84,13 @@ package v1beta2
 				// Last time we probed the condition.
 				lastProbeTime?: string
 
-				// Last time the condition transitioned from one status to
-				// another.
+				// Last time the condition transitioned from one status to another.
 				lastTransitionTime?: string
 
-				// Human-readable message indicating details about last
-				// transition.
+				// Human-readable message indicating details about last transition.
 				message?: string
 
-				// Unique, one-word, CamelCase reason for the condition's last
-				// transition.
+				// Unique, one-word, CamelCase reason for the condition's last transition.
 				reason?: string
 
 				// Status is the status of the condition.
@@ -140,8 +130,7 @@ package v1beta2
 		// RebuildConcurrentSyncLimit controls the maximum number of file
 		// synchronization operations that can run
 		// concurrently during a single replica rebuild.
-		// It is determined by the global setting or the volume spec field
-		// with the same name.
+		// It is determined by the global setting or the volume spec field with the same name.
 		rebuildConcurrentSyncLimit?: int & >=0
 		rebuildStatus?:
 			null | {
@@ -149,8 +138,7 @@ package v1beta2
 					appliedRebuildingMBps?: int64 & int
 					error?:                 string
 
-					// Deprecated. We are now using FromReplicaAddressList to list all
-					// source replicas.
+					// Deprecated. We are now using FromReplicaAddressList to list all source replicas.
 					fromReplicaAddress?: string
 					fromReplicaAddressList?: [...string]
 					isRebuilding?: bool
@@ -163,12 +151,12 @@ package v1beta2
 				[string]: string
 			}
 
-		// ReplicaTransitionTimeMap records the time a replica in
-		// ReplicaModeMap transitions from one mode to another (or
-		// from not being in the ReplicaModeMap to being in it). This
-		// information is sometimes required by other controllers
-		// (e.g. the volume controller uses it to determine the correct
-		// value for replica.Spec.lastHealthyAt).
+		// ReplicaTransitionTimeMap records the time a replica in ReplicaModeMap
+		// transitions from one mode to another (or
+		// from not being in the ReplicaModeMap to being in it). This information is
+		// sometimes required by other controllers
+		// (e.g. the volume controller uses it to determine the correct value for
+		// replica.Spec.lastHealthyAt).
 		replicaTransitionTimeMap?: [string]: string
 		restoreStatus?:
 			null | {

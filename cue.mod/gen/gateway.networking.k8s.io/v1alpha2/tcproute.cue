@@ -1,4 +1,4 @@
-package v1alpha3
+package v1alpha2
 
 import (
 	"list"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-#TLSRoute: {
+#TCPRoute: {
 	_embeddedResource
 
 	// APIVersion defines the versioned schema of this representation of an object.
@@ -25,19 +25,8 @@ import (
 	kind?: string
 	metadata?: {}
 
-	// Spec defines the desired state of TLSRoute.
+	// Spec defines the desired state of TCPRoute.
 	spec!: {
-		// Hostnames defines a set of SNI hostnames that should match against the
-		// SNI attribute of TLS ClientHello message in TLS handshake. This matches
-		// the RFC 1123 definition of a hostname with 2 notable exceptions:
-		//
-		// 1. IPs are not allowed in SNI hostnames per RFC 6066.
-		// 2. A hostname may be prefixed with a wildcard label (`*.`). The wildcard
-		// label must appear by itself as the first label.
-		hostnames!: list.MaxItems(1024) & [...strings.MaxRunes(
-			253) & strings.MinRunes(
-			1) & =~"^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"] & [_, ...]
-
 		// ParentRefs references the resources (usually Gateways) that a Route wants
 		// to be attached to. Note that the referenced parent resource needs to
 		// allow this for the attachment to be complete. For Gateways, that means
@@ -215,29 +204,16 @@ import (
 					1) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 		}]
 
-		// Rules are a list of actions.
-		rules!: list.MaxItems(1) & [...{
+		// Rules are a list of TCP matchers and actions.
+		rules!: list.MaxItems(16) & [...{
 			// BackendRefs defines the backend(s) where matching requests should be
-			// sent. If unspecified or invalid (refers to a nonexistent resource or
-			// a Service with no endpoints), the rule performs no forwarding; if no
-			// filters are specified that would result in a response being sent, the
-			// underlying implementation must actively reject request attempts to this
-			// backend, by rejecting the connection. Request rejections must respect
-			// weight; if an invalid backend is requested to have 80% of requests, then
-			// 80% of requests must be rejected instead.
-			//
-			// When a TLSRoute is attached to a listener in Terminate mode, a BackendTLSPolicy
-			// can be used to enable re-encryption of the traffic to the backends.
+			// sent. If unspecified or invalid (refers to a nonexistent resource or a
+			// Service with no endpoints), the underlying implementation MUST actively
+			// reject connection attempts to this backend. Connection rejections must
+			// respect weight; if an invalid backend is requested to have 80% of
+			// connections, then 80% of connections must be rejected instead.
 			//
 			// Support: Core for Kubernetes Service
-			//
-			// Support: Extended for Kubernetes ServiceImport
-			//
-			// Support: Implementation-specific for any other resource
-			//
-			// Support for weight: Extended
-			//
-			// Support for BackendTLSPolicy: Extended
 			backendRefs!: list.MaxItems(16) & [...{
 				// Group is the group of the referent. For example, "gateway.networking.k8s.io".
 				// When unspecified or empty string, core API group is inferred.
@@ -324,7 +300,7 @@ import (
 		useDefaultGateways?: "All" | "None"
 	}
 
-	// Status defines the current state of TLSRoute.
+	// Status defines the current state of TCPRoute.
 	status?: {
 		// Parents is a list of parent resources (usually Gateways) that are
 		// associated with the route, and the status of the route with respect to
@@ -539,8 +515,8 @@ import (
 			...
 		}
 	}
-	apiVersion: "gateway.networking.k8s.io/v1alpha3"
-	kind:       "TLSRoute"
+	apiVersion: "gateway.networking.k8s.io/v1alpha2"
+	kind:       "TCPRoute"
 	metadata!: {
 		name!:      string
 		namespace!: string

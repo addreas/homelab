@@ -5,19 +5,15 @@ import "time"
 #BackupVolume: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -25,8 +21,7 @@ import "time"
 	kind?: string
 	metadata?: {}
 
-	// BackupVolumeSpec defines the desired state of the Longhorn
-	// backup volume
+	// BackupVolumeSpec defines the desired state of the Longhorn backup volume
 	spec?: {
 		// The backup target name that the backup volume was synced.
 		backupTargetName?:
@@ -40,8 +35,7 @@ import "time"
 		volumeName?: string
 	}
 
-	// BackupVolumeStatus defines the observed state of the Longhorn
-	// backup volume
+	// BackupVolumeStatus defines the observed state of the Longhorn backup volume
 	status?: {
 		// the backing image checksum.
 		backingImageChecksum?: string
@@ -71,20 +65,17 @@ import "time"
 		lastModificationTime?:
 			null | time.Time
 
-		// The last time that the backup volume was synced into the
-		// cluster.
+		// The last time that the backup volume was synced into the cluster.
 		lastSyncedAt?:
 			null | time.Time
 
-		// The error messages when call longhorn engine on list or inspect
-		// backup volumes.
+		// The error messages when call longhorn engine on list or inspect backup volumes.
 		messages?:
 			null | {
 				[string]: string
 			}
 
-		// The node ID on which the controller is responsible to reconcile
-		// this backup volume CR.
+		// The node ID on which the controller is responsible to reconcile this backup volume CR.
 		ownerID?: string
 
 		// The backup volume size.

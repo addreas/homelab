@@ -3,19 +3,15 @@ package v2
 #CiliumEndpoint: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -25,8 +21,7 @@ package v2
 
 	// EndpointStatus is the status of a Cilium endpoint.
 	status?: {
-		// Controllers is the list of failing controllers for this
-		// endpoint.
+		// Controllers is the list of failing controllers for this endpoint.
 		controllers?: [...{
 			// Configuration is the controller configuration
 			configuration?: {
@@ -61,21 +56,18 @@ package v2
 
 		// Encryption is the encryption configuration of the node
 		encryption?: {
-			// Key is the index to the key to use for encryption or 0 if
-			// encryption is
+			// Key is the index to the key to use for encryption or 0 if encryption is
 			// disabled.
 			key?: int
 		}
 
-		// ExternalIdentifiers is a set of identifiers to identify the
-		// endpoint
+		// ExternalIdentifiers is a set of identifiers to identify the endpoint
 		// apart from the pod name. This includes container runtime IDs.
 		"external-identifiers"?: {
 			// ID assigned to this attachment by container runtime
 			"cni-attachment-id"?: string
 
-			// ID assigned by container runtime (deprecated, may not be
-			// unique)
+			// ID assigned by container runtime (deprecated, may not be unique)
 			"container-id"?: string
 
 			// Name assigned to container (deprecated, may not be unique)
@@ -140,8 +132,7 @@ package v2
 			timestamp?: string
 		}]
 
-		// NamedPorts List of named Layer 4 port and protocol pairs which
-		// will be used in Network
+		// NamedPorts List of named Layer 4 port and protocol pairs which will be used in Network
 		// Policy specs.
 		//
 		// swagger:model NamedPorts
@@ -165,19 +156,15 @@ package v2
 				ipv6?: string
 			}]
 
-			// NodeIP is the IP of the node the endpoint is running on. The IP
-			// must
+			// NodeIP is the IP of the node the endpoint is running on. The IP must
 			// be reachable between nodes.
 			node?: string
 		}
 
-		// EndpointPolicy represents the endpoint's policy by listing all
-		// allowed
-		// ingress and egress identities in combination with L4 port and
-		// protocol.
+		// EndpointPolicy represents the endpoint's policy by listing all allowed
+		// ingress and egress identities in combination with L4 port and protocol.
 		policy?: {
-			// EndpointPolicyDirection is the list of allowed identities per
-			// direction.
+			// EndpointPolicyDirection is the list of allowed identities per direction.
 			egress?: {
 				// Deprecated
 				adding?: [...{
@@ -187,8 +174,7 @@ package v2
 					protocol?: int
 				}]
 
-				// AllowedIdentityList is a list of IdentityTuples that species
-				// peers that are
+				// AllowedIdentityList is a list of IdentityTuples that species peers that are
 				// allowed.
 				allowed?: [...{
 					"dest-port"?: int
@@ -197,8 +183,7 @@ package v2
 					protocol?: int
 				}]
 
-				// DenyIdentityList is a list of IdentityTuples that species peers
-				// that are
+				// DenyIdentityList is a list of IdentityTuples that species peers that are
 				// denied.
 				denied?: [...{
 					"dest-port"?: int
@@ -216,13 +201,12 @@ package v2
 					protocol?: int
 				}]
 
-				// EndpointPolicyState defines the state of the Policy mode:
-				// "enforcing", "non-enforcing", "disabled"
+				// EndpointPolicyState defines the state of the Policy mode: "enforcing",
+				// "non-enforcing", "disabled"
 				state?: string
 			}
 
-			// EndpointPolicyDirection is the list of allowed identities per
-			// direction.
+			// EndpointPolicyDirection is the list of allowed identities per direction.
 			ingress?: {
 				// Deprecated
 				adding?: [...{
@@ -232,8 +216,7 @@ package v2
 					protocol?: int
 				}]
 
-				// AllowedIdentityList is a list of IdentityTuples that species
-				// peers that are
+				// AllowedIdentityList is a list of IdentityTuples that species peers that are
 				// allowed.
 				allowed?: [...{
 					"dest-port"?: int
@@ -242,8 +225,7 @@ package v2
 					protocol?: int
 				}]
 
-				// DenyIdentityList is a list of IdentityTuples that species peers
-				// that are
+				// DenyIdentityList is a list of IdentityTuples that species peers that are
 				// denied.
 				denied?: [...{
 					"dest-port"?: int
@@ -261,14 +243,13 @@ package v2
 					protocol?: int
 				}]
 
-				// EndpointPolicyState defines the state of the Policy mode:
-				// "enforcing", "non-enforcing", "disabled"
+				// EndpointPolicyState defines the state of the Policy mode: "enforcing",
+				// "non-enforcing", "disabled"
 				state?: string
 			}
 		}
 
-		// ServiceAccount is the service account associated with the
-		// endpoint
+		// ServiceAccount is the service account associated with the endpoint
 		"service-account"?: string
 
 		// State is the state of the endpoint.

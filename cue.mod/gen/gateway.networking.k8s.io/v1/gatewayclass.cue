@@ -9,19 +9,15 @@ import (
 #GatewayClass: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -31,10 +27,8 @@ import (
 
 	// Spec defines the desired state of GatewayClass.
 	spec!: {
-		// ControllerName is the name of the controller that is managing
-		// Gateways of
-		// this class. The value of this field MUST be a domain prefixed
-		// path.
+		// ControllerName is the name of the controller that is managing Gateways of
+		// this class. The value of this field MUST be a domain prefixed path.
 		//
 		// Example: "example.net/gateway-controller".
 		//
@@ -49,31 +43,23 @@ import (
 		description?: strings.MaxRunes(
 				64)
 
-		// ParametersRef is a reference to a resource that contains the
-		// configuration
-		// parameters corresponding to the GatewayClass. This is optional
-		// if the
+		// ParametersRef is a reference to a resource that contains the configuration
+		// parameters corresponding to the GatewayClass. This is optional if the
 		// controller does not require any additional configuration.
 		//
-		// ParametersRef can reference a standard Kubernetes resource,
-		// i.e. ConfigMap,
-		// or an implementation-specific custom resource. The resource can
-		// be
+		// ParametersRef can reference a standard Kubernetes resource, i.e. ConfigMap,
+		// or an implementation-specific custom resource. The resource can be
 		// cluster-scoped or namespace-scoped.
 		//
-		// If the referent cannot be found, refers to an unsupported kind,
-		// or when
-		// the data within that resource is malformed, the GatewayClass
-		// SHOULD be
-		// rejected with the "Accepted" status condition set to "False"
-		// and an
+		// If the referent cannot be found, refers to an unsupported kind, or when
+		// the data within that resource is malformed, the GatewayClass SHOULD be
+		// rejected with the "Accepted" status condition set to "False" and an
 		// "InvalidParameters" reason.
 		//
-		// A Gateway for this GatewayClass may provide its own
-		// `parametersRef`. When both are specified,
+		// A Gateway for this GatewayClass may provide its own `parametersRef`. When both are specified,
 		// the merging behavior is implementation specific.
-		// It is generally recommended that GatewayClass provides defaults
-		// that can be overridden by a Gateway.
+		// It is generally recommended that GatewayClass provides defaults that can be
+		// overridden by a Gateway.
 		//
 		// Support: Implementation-specific
 		parametersRef?: {
@@ -92,8 +78,7 @@ import (
 				1)
 
 			// Namespace is the namespace of the referent.
-			// This field is required when referring to a Namespace-scoped
-			// resource and
+			// This field is required when referring to a Namespace-scoped resource and
 			// MUST be unset when referring to a Cluster-scoped resource.
 			namespace?: strings.MaxRunes(
 					63) & strings.MinRunes(
@@ -103,8 +88,7 @@ import (
 
 	// Status defines the current state of GatewayClass.
 	//
-	// Implementations MUST populate status on all GatewayClass
-	// resources which
+	// Implementations MUST populate status on all GatewayClass resources which
 	// specify their controller name.
 	status?: {
 		// Conditions is the current status from the controller for
@@ -113,31 +97,25 @@ import (
 		// Controllers should prefer to publish conditions using values
 		// of GatewayClassConditionType for the type of each Condition.
 		conditions?: list.MaxItems(8) & [...{
-			// lastTransitionTime is the last time the condition transitioned
-			// from one status to another.
-			// This should be when the underlying condition changed. If that
-			// is not known, then using the time when the API field changed
-			// is acceptable.
+			// lastTransitionTime is the last time the condition transitioned from one status to another.
+			// This should be when the underlying condition changed. If that is not known,
+			// then using the time when the API field changed is acceptable.
 			lastTransitionTime!: time.Time
 
-			// message is a human readable message indicating details about
-			// the transition.
+			// message is a human readable message indicating details about the transition.
 			// This may be an empty string.
 			message!: strings.MaxRunes(
 					32768)
 
-			// observedGeneration represents the .metadata.generation that the
-			// condition was set based upon.
+			// observedGeneration represents the .metadata.generation that the condition was set based upon.
 			// For instance, if .metadata.generation is currently 12, but the
-			// .status.conditions[x].observedGeneration is 9, the condition
-			// is out of date
+			// .status.conditions[x].observedGeneration is 9, the condition is out of date
 			// with respect to the current state of the instance.
 			observedGeneration?: int64 & int & >=0
 
-			// reason contains a programmatic identifier indicating the reason
-			// for the condition's last transition.
-			// Producers of specific condition types may define expected
-			// values and meanings for this field,
+			// reason contains a programmatic identifier indicating the reason for the
+			// condition's last transition.
+			// Producers of specific condition types may define expected values and meanings for this field,
 			// and whether the values are considered a guaranteed API.
 			// The value should be a CamelCase string.
 			// This field may not be empty.
@@ -153,13 +131,10 @@ import (
 				316) & =~"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
 		}]
 
-		// SupportedFeatures is the set of features the GatewayClass
-		// support.
-		// It MUST be sorted in ascending alphabetical order by the Name
-		// key.
+		// SupportedFeatures is the set of features the GatewayClass support.
+		// It MUST be sorted in ascending alphabetical order by the Name key.
 		supportedFeatures?: list.MaxItems(64) & [...{
-			// FeatureName is used to describe distinct features that are
-			// covered by
+			// FeatureName is used to describe distinct features that are covered by
 			// conformance tests.
 			name!: string
 		}]

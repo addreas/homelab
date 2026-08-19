@@ -5,19 +5,15 @@ import "time"
 #Backup: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -27,8 +23,8 @@ import "time"
 
 	// BackupSpec defines the desired state of the Longhorn backup
 	spec?: {
-		// The backup block size. 0 means the legacy default size 2MiB,
-		// and -1 indicate the block size is invalid.
+		// The backup block size. 0 means the legacy default size 2MiB, and -1 indicate
+		// the block size is invalid.
 		backupBlockSize?: "-1" | "2097152" | "16777216"
 
 		// The backup mode of this backup.
@@ -66,13 +62,11 @@ import "time"
 				[string]: string
 			}
 
-		// The last time that the backup was synced with the remote backup
-		// target.
+		// The last time that the backup was synced with the remote backup target.
 		lastSyncedAt?:
 			null | time.Time
 
-		// The error messages when calling longhorn engine on listing or
-		// inspecting backups.
+		// The error messages when calling longhorn engine on listing or inspecting backups.
 		messages?:
 			null | {
 				[string]: string
@@ -81,8 +75,7 @@ import "time"
 		// Size in bytes of newly uploaded data
 		newlyUploadDataSize?: string
 
-		// The node ID on which the controller is responsible to reconcile
-		// this backup CR.
+		// The node ID on which the controller is responsible to reconcile this backup CR.
 		ownerID?: string
 
 		// The snapshot backup progress.

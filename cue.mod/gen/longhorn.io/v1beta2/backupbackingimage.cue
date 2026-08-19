@@ -5,19 +5,15 @@ import "time"
 #BackupBackingImage: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -25,8 +21,7 @@ import "time"
 	kind?: string
 	metadata?: {}
 
-	// BackupBackingImageSpec defines the desired state of the
-	// Longhorn backing image backup
+	// BackupBackingImageSpec defines the desired state of the Longhorn backing image backup
 	spec?: {
 		// The backing image name.
 		backingImage!: string
@@ -46,8 +41,7 @@ import "time"
 		userCreated!: bool
 	}
 
-	// BackupBackingImageStatus defines the observed state of the
-	// Longhorn backing image backup
+	// BackupBackingImageStatus defines the observed state of the Longhorn backing image backup
 	status?: {
 		// The backing image name.
 		backingImage?: string
@@ -70,24 +64,20 @@ import "time"
 				[string]: string
 			}
 
-		// The last time that the backing image backup was synced with the
-		// remote backup target.
+		// The last time that the backing image backup was synced with the remote backup target.
 		lastSyncedAt?:
 			null | time.Time
 
-		// The address of the backing image manager that runs backing
-		// image backup.
+		// The address of the backing image manager that runs backing image backup.
 		managerAddress?: string
 
-		// The error messages when listing or inspecting backing image
-		// backup.
+		// The error messages when listing or inspecting backing image backup.
 		messages?:
 			null | {
 				[string]: string
 			}
 
-		// The node ID on which the controller is responsible to reconcile
-		// this CR.
+		// The node ID on which the controller is responsible to reconcile this CR.
 		ownerID?: string
 
 		// The backing image backup progress.
@@ -96,8 +86,7 @@ import "time"
 		// Record the secret if this backup backing image is encrypted
 		secret?: string
 
-		// Record the secret namespace if this backup backing image is
-		// encrypted
+		// Record the secret namespace if this backup backing image is encrypted
 		secretNamespace?: string
 
 		// The backing image size.

@@ -3,19 +3,15 @@ package v1beta2
 #VolumeAttachment: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -23,17 +19,14 @@ package v1beta2
 	kind?: string
 	metadata?: {}
 
-	// VolumeAttachmentSpec defines the desired state of Longhorn
-	// VolumeAttachment
+	// VolumeAttachmentSpec defines the desired state of Longhorn VolumeAttachment
 	spec?: {
 		attachmentTickets?: [string]: {
-			// A sequence number representing a specific generation of the
-			// desired state.
+			// A sequence number representing a specific generation of the desired state.
 			// Populated by the system. Read-only.
 			generation?: int64 & int
 
-			// The unique ID of this attachment. Used to differentiate
-			// different attachments of the same volume.
+			// The unique ID of this attachment. Used to differentiate different attachments of the same volume.
 			id?: string
 
 			// The node that this attachment is requesting
@@ -48,8 +41,7 @@ package v1beta2
 		volume!: string
 	}
 
-	// VolumeAttachmentStatus defines the observed state of Longhorn
-	// VolumeAttachment
+	// VolumeAttachmentStatus defines the observed state of Longhorn VolumeAttachment
 	status?: attachmentTicketStatuses?: [string]: {
 		// Record any error when trying to fulfill this attachment
 		conditions!:
@@ -57,16 +49,13 @@ package v1beta2
 				// Last time we probed the condition.
 				lastProbeTime?: string
 
-				// Last time the condition transitioned from one status to
-				// another.
+				// Last time the condition transitioned from one status to another.
 				lastTransitionTime?: string
 
-				// Human-readable message indicating details about last
-				// transition.
+				// Human-readable message indicating details about last transition.
 				message?: string
 
-				// Unique, one-word, CamelCase reason for the condition's last
-				// transition.
+				// Unique, one-word, CamelCase reason for the condition's last transition.
 				reason?: string
 
 				// Status is the status of the condition.
@@ -77,13 +66,11 @@ package v1beta2
 				type?: string
 			}]
 
-		// A sequence number representing a specific generation of the
-		// desired state.
+		// A sequence number representing a specific generation of the desired state.
 		// Populated by the system. Read-only.
 		generation?: int64 & int
 
-		// The unique ID of this attachment. Used to differentiate
-		// different attachments of the same volume.
+		// The unique ID of this attachment. Used to differentiate different attachments of the same volume.
 		id?: string
 
 		// Indicate whether this attachment ticket has been satisfied

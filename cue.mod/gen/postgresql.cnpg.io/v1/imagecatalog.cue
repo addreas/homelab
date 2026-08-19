@@ -5,19 +5,15 @@ import "list"
 #ImageCatalog: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -34,8 +30,7 @@ import "list"
 			// The image reference
 			image!: string
 
-			// The PostgreSQL major version of the image. Must be unique
-			// within the catalog.
+			// The PostgreSQL major version of the image. Must be unique within the catalog.
 			major!: int & >=10
 		}] & [_, ...]
 	}

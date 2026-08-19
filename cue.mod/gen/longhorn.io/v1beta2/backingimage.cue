@@ -3,19 +3,15 @@ package v1beta2
 #BackingImage: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -23,8 +19,7 @@ package v1beta2
 	kind?: string
 	metadata?: {}
 
-	// BackingImageSpec defines the desired state of the Longhorn
-	// backing image
+	// BackingImageSpec defines the desired state of the Longhorn backing image
 	spec?: {
 		checksum?:   string
 		dataEngine?: "v1" | "v2"
@@ -34,8 +29,8 @@ package v1beta2
 		}
 		diskSelector?: [...string]
 
-		// Deprecated. We are now using DiskFileSpecMap to assign
-		// different spec to the file on different disks.
+		// Deprecated. We are now using DiskFileSpecMap to assign different spec to the
+		// file on different disks.
 		disks?: [string]: string
 		minNumberOfCopies?: int
 		nodeSelector?: [...string]
@@ -45,8 +40,7 @@ package v1beta2
 		sourceType?: "download" | "upload" | "export-from-volume" | "restore" | "clone"
 	}
 
-	// BackingImageStatus defines the observed state of the Longhorn
-	// backing image status
+	// BackingImageStatus defines the observed state of the Longhorn backing image status
 	status?: {
 		checksum?: string
 		diskFileStatusMap?:
@@ -65,9 +59,9 @@ package v1beta2
 			}
 		ownerID?: string
 
-		// Real size of image in bytes, which may be smaller than the size
-		// when the file is a sparse file. Will be zero until known (e.g.
-		// while a backing image is uploading)
+		// Real size of image in bytes, which may be smaller than the size when the file
+		// is a sparse file. Will be zero until known (e.g. while a backing image is
+		// uploading)
 		realSize?:        int64 & int
 		size?:            int64 & int
 		uuid?:            string
@@ -76,9 +70,8 @@ package v1beta2
 		// It is pending -> in-progress -> ready/failed
 		v2FirstCopyStatus?: string
 
-		// Virtual size of image in bytes, which may be larger than
-		// physical size. Will be zero until known (e.g. while a backing
-		// image is uploading)
+		// Virtual size of image in bytes, which may be larger than physical size. Will
+		// be zero until known (e.g. while a backing image is uploading)
 		virtualSize?: int64 & int
 	}
 
