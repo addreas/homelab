@@ -6,6 +6,7 @@ import (
 )
 
 let hostname = "q2.addem.se"
+let rootHost = "addem.se"
 
 let kratos_config = #KratosConfigSchema & {
 	serve: {
@@ -23,10 +24,7 @@ let kratos_config = #KratosConfigSchema & {
 	selfservice: {
 		default_browser_return_url: "https://\(hostname)/"
 		allowed_return_urls: [
-			"https://\(hostname)/",
-			"https://\(hostname)/settings",
-			"https://\(hostname)/session",
-			"https://\(hostname)/consent",
+			"https://*.\(rootHost)/",
 		]
 
 		methods: {
@@ -69,7 +67,7 @@ let kratos_config = #KratosConfigSchema & {
 
 			verification: {
 				enabled: true
-				ui_url:  "https://\(hostname)/settings/verification"
+				ui_url:  "https://\(hostname)/verification"
 				after: default_browser_return_url: "https://\(hostname)/"
 			}
 
@@ -101,6 +99,8 @@ let kratos_config = #KratosConfigSchema & {
 	}
 
 	ciphers: algorithm: "xchacha20-poly1305"
+
+	cookies: domain: rootHost
 
 	hashers: {
 		algorithm: "bcrypt"
