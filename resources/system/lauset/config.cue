@@ -187,6 +187,7 @@ let hydra_config = #HydraConfigSchema & {
 		consent: "https://\(hostname)/consent"
 		login:   "https://\(hostname)/login"
 		logout:  "https://\(hostname)/logout"
+		error:   "https://\(hostname)/error"
 	}
 }
 
