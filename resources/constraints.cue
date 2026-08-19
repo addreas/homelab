@@ -246,7 +246,7 @@ k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: 
 k: OAuth2Client: [name=string]: spec: {
 	clientName: _ | *name
 	grantTypes: _ | *["client_credentials", "authorization_code", "refresh_token"]
-	scopeArray: _ | *["openid", "mail", "profile"]
+	scopeArray: _ | *["openid", "email", "profile"]
 	skipConsent: _ | *true
 }
 
