@@ -39,7 +39,8 @@ k: HTTPRoute: "auth": spec: {
 				"/settings",
 			] {
 				{path: {type: "Exact", value: p}}
-			}
+			},
+			{path: {type: "PathPrefix", value: "/assets"}},
 		]
 		backendRefs: [{
 			name: "lauset"
