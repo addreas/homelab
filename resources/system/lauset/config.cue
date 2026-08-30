@@ -5,7 +5,7 @@ import (
 	"encoding/yaml"
 )
 
-let hostname = "q2.addem.se"
+let hostname = "auth.addem.se"
 let rootHost = "addem.se"
 
 let kratos_config = #KratosConfigSchema & {
@@ -34,11 +34,11 @@ let kratos_config = #KratosConfigSchema & {
 				config: issuer: "Lauset"
 			}
 			lookup_secret: enabled: true
-			_rp: {
-				display_name: "Lauset"
-				id:           "addem.se"
-				origin:       "https://\(hostname)"
-			}
+			// _rp: {
+			// 	display_name: "Lauset"
+			// 	id:           "addem.se"
+			// 	origin:       "https://\(hostname)"
+			// }
 			// webauthn: {
 			// 	enabled: true
 			// 	config: {
@@ -46,10 +46,10 @@ let kratos_config = #KratosConfigSchema & {
 			// 		rp: _rp
 			// 	}
 			// }
-			passkey: {
-				enabled: true
-				config: rp: _rp
-			}
+			// passkey: {
+			// 	enabled: true
+			// 	config: rp: _rp
+			// }
 		}
 
 		flows: {
@@ -82,9 +82,12 @@ let kratos_config = #KratosConfigSchema & {
 				lifespan: "10m"
 				ui_url:   "https://\(hostname)/registration"
 				after: {
-					password: hooks: [{hook: "session"}, {hook: "show_verification_ui"}]
+					password: hooks: [
+						{hook: "session"},
+						// {hook: "show_verification_ui"}
+					]
 					// webauthn: hooks: [{hook: "session"}]
-					passkey: hooks: [{hook: "session"}]
+					// passkey: hooks: [{hook: "session"}]
 				}
 			}
 		}
