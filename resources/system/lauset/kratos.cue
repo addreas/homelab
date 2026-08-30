@@ -30,11 +30,11 @@ k: Deployment: "kratos": spec: template: spec: {
 			"/etc/config/kratos.yaml",
 		]
 		ports: [{
-			name:          "http-admin"
-			containerPort: 4434
-		}, {
 			name:          "http-public"
 			containerPort: 4433
+		}, {
+			name:          "http-admin"
+			containerPort: 4434
 		}]
 		envFrom: [{secretRef: name: "kratos"}]
 		env: [{
