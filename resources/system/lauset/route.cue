@@ -1,7 +1,7 @@
 package kube
 
 k: HTTPRoute: "auth": spec: {
-	hostnames: ["auth.addem.se", "q2.addem.se"]
+	hostnames: ["auth.addem.se"]
 	rules: [{
 		matches: [
 			{path: {type: "Exact", value: "/.well-known/ory/webauthn.js"}},
@@ -24,24 +24,6 @@ k: HTTPRoute: "auth": spec: {
 			port: 80
 		}]
 	}, {
-		// very explicit because /admin is unprotected 😱
-		matches: [
-			for p in [
-				"/",
-				"/login",
-				"/registration",
-				"/verification",
-				"/recovery",
-				"/consent",
-				"/logout",
-				"/error",
-				"/sessions",
-				"/settings",
-			] {
-				{path: {type: "Exact", value: p}}
-			},
-			{path: {type: "PathPrefix", value: "/assets"}},
-		]
 		backendRefs: [{
 			name: "lauset"
 			port: 80
