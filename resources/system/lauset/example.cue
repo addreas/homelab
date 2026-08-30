@@ -1,3 +1,5 @@
+@if(example)
+
 package kube
 
 k: Deployment: "example-app": spec: template: spec: {
@@ -21,21 +23,14 @@ k: HTTPRoute: "example-app": spec: {
 			externalAuth: {
 				protocol: "HTTP"
 				backendRef: {
-					name: "lauset"
-					port: 80
+					name:      "lauset"
+					namespace: "ory" // TODO: referencegrant
+					port:      80
 				}
 				http: {
 					path: "/check"
-					allowedHeaders: ["Cookie", "x-envoy-original-path"]
-					allowedResponseHeaders: [
-						"Location",
-						"X-User-Id",
-						"X-User-Email",
-						"X-User-Name",
-						"X-Auth-Request-User",
-						"X-Auth-Request-Email",
-						"X-Auth-Request-Preferred-Username",
-					]
+					allowedHeaders: ["Cookie"]
+					allowedResponseHeaders: ["Location"]
 				}
 			}
 		}]
