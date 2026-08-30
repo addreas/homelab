@@ -60,6 +60,10 @@ k: Job: [string]: spec: {
 	}
 }
 
+k: CronJob: [Name=string]: spec: jobTemplate: spec: template: podTemplate & {
+	spec: restartPolicy: _ | *"Never"
+}
+
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
 k: StatefulSet: [Name=string]: spec: {
@@ -71,6 +75,10 @@ k: StatefulSet: [Name=string]: spec: {
 }
 
 k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [Name=string]: spec: template: spec: containers: [{
+	name: _ | *Name
+}, ...]
+
+k: CronJob: [Name=string]: spec: jobTemplate: spec: template: spec: containers: [{
 	name: _ | *Name
 }, ...]
 
