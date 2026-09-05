@@ -1,5 +1,5 @@
 package kube
-
+k: StatefulSet: plex: spec: replicas: 0
 k: StatefulSet: "plex": spec: template: spec: {
 	containers: [{
 		image:           "plexinc/pms-docker"
