@@ -1,33 +1,13 @@
 package kube
 
-import "github.com/addreas/homelab/util"
+import utils "github.com/addreas/homelab/util"
 
 k: StatefulSet: qbittorrent: {
 	spec: {
 		template: {
-			metadata: labels: "vpn-egress": "gateway"
+			metadata: labels: "vpn-egress": "client"
 			spec: {
-				securityContext: {
-					sysctls: [{
-						name:  "net.ipv4.conf.all.src_valid_mark"
-						value: "1"
-					}]
-				}
-				initContainers: [{
-					name:  "wg-quick"
-					image: "nixery.dev/shell/iproute2/wireguard-tools"
-					command: ["sh", "-c"]
-					args: ["""
-						wg-quick up /config/wg0.conf
-						ip route add 10.96.0.0/12 dev eth0
-						ip route add 10.48.0.0/16 dev eth0
-						"""]
-					securityContext: privileged: true
-					volumeMounts: [{
-						name:      "wg0-conf"
-						mountPath: "/config"
-					}]
-				}, util.copyStatic & {
+				initContainers: [utils.copyStatic & {
 					volumeMounts: [{
 						mountPath: "/config/qBittorrent"
 						name:      "config"
@@ -64,24 +44,8 @@ k: StatefulSet: qbittorrent: {
 							cpu:    "250m"
 						}
 					}
-				}, {
-					name:  "socks-proxy"
-					image: "xkuma/socks5"
-					resources: limits: {
-						memory: "64Mi"
-						cpu:    "10m"
-					}
-					ports: [{
-						containerPort: 1080
-					}]
 				}]
 				volumes: [{
-					name: "wg0-conf"
-					secret: {
-						secretName:  "wg0-conf"
-						defaultMode: 0o600
-					}
-				}, {
 					name: "static-config"
 					configMap: name: "qbittorrent-static-config"
 				}, {
@@ -110,19 +74,12 @@ k: Service: qbittorrent: spec: ports: [{
 	port: 8000
 }]
 
-k: ServiceMonitor: qbittorrent: spec: endpoints: [{
-	port:     "metrics"
-	interval: "60s"
-}]
-
-k: Ingress: qbittorrent: _authproxy: true
+k: HTTPRoute: qbittorrent: _authproxy: true
 
 k: ConfigMap: "qbittorrent-static-config": data: {
 	"qBittorrent.conf": #"""
 		[BitTorrent]
 		Session\DefaultSavePath=/videos/downloads
-		Session\Interface=wg0
-		Session\InterfaceName=wg0
 
 		[Meta]
 		MigrationVersion=2
@@ -133,8 +90,6 @@ k: ConfigMap: "qbittorrent-static-config": data: {
 		Advanced\trackerPort=9000
 		Connection\GlobalDLLimitAlt=10240
 		Connection\GlobalUPLimitAlt=10240
-		Connection\Interface=wg0
-		Connection\InterfaceName=wg0
 		Connection\ResolvePeerCountries=true
 		Connection\alt_speeds_on=true
 		Downloads\SavePath=/videos/downloads/
@@ -162,81 +117,4 @@ k: ConfigMap: "qbittorrent-static-config": data: {
 		    }
 		}
 		"""#
-}
-
-k: Service: "vpn-egress": {
-	_selector: "vpn-egress": "gateway"
-	spec: ports: [{
-		name: "socks"
-		port: 1080
-	}]
-}
-
-k: CiliumNetworkPolicy: "vpn-egress-gateway": {
-	spec: {
-		endpointSelector: matchLabels: "vpn-egress": "gateway"
-		ingress: [{
-			fromEntities: ["cluster"]
-		}]
-		egress: [{
-			toEndpoints: [{
-				matchLabels: {
-					"k8s:io.kubernetes.pod.namespace": "kube-system"
-					"k8s:k8s-app":                     "kube-dns"
-				}
-			}]
-			toPorts: [{
-				ports: [{
-					port:     "53"
-					protocol: "ANY"
-				}]
-				rules: dns: [{
-					matchPattern: "*"
-				}]
-			}]
-		}, {
-			toFQDNs: [{
-				matchName: "se-sto.azirevpn.net"
-			}]
-			toPorts: [{
-				ports: [{
-					port:     "51820"
-					protocol: "UDP"
-				}]
-			}]
-		}]
-	}
-}
-
-k: CiliumNetworkPolicy: "vpn-egress-clients": spec: {
-	endpointSelector: matchLabels: "vpn-egress": "client"
-	ingress: [{
-		fromEntities: ["cluster"]
-	}]
-	egress: [{
-		toEntities: ["cluster"]
-	}, {
-		toEndpoints: [{
-			matchLabels: "vpn-egress": "gateway"
-		}]
-		toPorts: [{
-			ports: [{
-				port:     "1080"
-				protocol: "TCP"
-			}]
-		}]
-	}]
-}
-
-k: GrafanaDashboard: "qbittorrent": spec: {
-	source: remote: url: "https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json"
-	datasources: [{
-		datasourceRef: name:      "prometheus"
-		datasourceRef: namespace: "monitoring"
-		inputName: "DS_PROMETHEUS"
-	}]
-	plugins: [{
-		name:    "grafana-piechart-panel"
-		version: "1.6.1"
-	}]
 }

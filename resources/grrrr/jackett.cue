@@ -43,4 +43,4 @@ k: PersistentVolumeClaim: "jackett-config": spec: resources: requests: storage: 
 
 k: Service: jackett: {}
 
-k: Ingress: jackett: _authproxy: true
+k: HTTPRoute: jackett: _authproxy: true

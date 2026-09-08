@@ -2,6 +2,8 @@ package kube
 
 import (
 	"strings"
+
+	utils "github.com/addreas/homelab/util"
 )
 
 context: "admin@qb"
@@ -150,15 +152,21 @@ k: Ingress: [Name=string]: {
 	}, ...]
 }
 
-k: HTTPRoute: [Name=string]: spec: {
-	hostnames: _ | *["\(Name).addem.se"]
-	parentRefs: _ | *[{name: "addem", namespace: "ingress"}]
-	rules: _ | *[{
-		backendRefs: [{
-			name: Name
-			port: k.Service[Name].spec.ports[0].port
+k: HTTPRoute: [Name=string]: {
+	_authproxy: true | *false
+	spec: {
+		hostnames: _ | *["\(Name).addem.se"]
+		parentRefs: _ | *[{name: "addem", namespace: "ingress"}]
+		rules: _ | *[{
+			if _authproxy {
+				filters: [utils.#AuthProxy]
+			}
+			backendRefs: [{
+				name: Name
+				port: k.Service[Name].spec.ports[0].port
+			}]
 		}]
-	}]
+	}
 }
 
 k: SealedSecret: [string]: {

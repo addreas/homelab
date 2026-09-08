@@ -40,4 +40,4 @@ k: Service: "jellyfin": {
 	spec: type: "LoadBalancer"
 }
 
-k: Ingress: "jellyfin": _authproxy: true
+k: HTTPRoute: "jellyfin": _authproxy: true

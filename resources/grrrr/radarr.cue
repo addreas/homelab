@@ -53,22 +53,4 @@ k: Service: radarr: spec: ports: [{
 	port: 9707
 }]
 
-k: ServiceMonitor: radarr: spec: endpoints: [{
-	port:     "metrics"
-	interval: "60s"
-}]
-
-k: Ingress: radarr: _authproxy: true
-
-k: GrafanaDashboard: "radarr": spec: {
-	source: remote: grafanaCom: id: 12896
-	datasources: [{
-		datasourceRef: name:      "prometheus"
-		datasourceRef: namespace: "monitoring"
-		inputName: "DS_RANCHER_MONITORING"
-	}]
-	plugins: [{
-		name:    "grafana-piechart-panel"
-		version: "1.6.1"
-	}]
-}
+k: HTTPRoute: radarr: _authproxy: true

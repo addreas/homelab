@@ -48,22 +48,4 @@ k: PersistentVolumeClaim: "sonarr-config": spec: resources: requests: storage: "
 
 k: Service: sonarr: {}
 
-k: ServiceMonitor: sonarr: spec: endpoints: [{
-	port:     "metrics"
-	interval: "60s"
-}]
-
-k: Ingress: sonarr: _authproxy: true
-
-k: GrafanaDashboard: "sonarr": spec: {
-	source: remote: grafanaCom: id: 12530
-	datasources: [{
-		datasourceRef: name:      "prometheus"
-		datasourceRef: namespace: "monitoring"
-		inputName: "DS_PROMETHEUS"
-	}]
-	plugins: [{
-		name:    "grafana-piechart-panel"
-		version: "1.6.1"
-	}]
-}
+k: HTTPRoute: sonarr: _authproxy: true
