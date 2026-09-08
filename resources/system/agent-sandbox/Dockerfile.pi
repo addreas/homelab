@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1
+FROM node:24
+
+RUN usermod -l pi -d /home/pi -m node && \
+    groupmod -n pi node && \
+    chown -R pi:pi /home/pi
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    fd-find \
+    ripgrep \
+    python3-pip \
+    sudo \
+    unzip \
+    tini \
+    && ln -s /usr/bin/fdfind /usr/local/bin/fd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Allow pi user to sudo without a password
+RUN echo "pi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/pi && \
+    chmod 0440 /etc/sudoers.d/pi
+
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
+USER pi:pi
+WORKDIR /workspace
+ENTRYPOINT ["tini", "--", "sleep", "infinity"]

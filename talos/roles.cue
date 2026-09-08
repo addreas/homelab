@@ -35,6 +35,9 @@ t: Role: "base": {
 			disk: "/dev/nvme0n1"
 			wipe: true
 		}
+
+		sysctls: "user.max_user_namespaces": "11255"
+
 		features: {
 			diskQuotaSupport: true
 			kubePrism: {
