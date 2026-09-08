@@ -130,6 +130,7 @@ let resourceSchemas = [
 	cilium_v2.#CiliumBGPClusterConfig,
 	cilium_v2.#CiliumBGPPeerConfig,
 	cilium_v2.#CiliumBGPAdvertisement,
+	cilium_v2.#CiliumEgressGatewayPolicy,
 
 	cilium_v2alpha1.#CiliumEgressNATPolicy,
 	cilium_v2alpha1.#CiliumL2AnnouncementPolicy,

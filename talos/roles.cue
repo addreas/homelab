@@ -83,10 +83,12 @@ t: Role: "intel": schematic: customization: systemExtensions: officialExtensions
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
 
-// secondary address for cilium egress gateway (see resources/system/net/vpn-egress.cue);
-// the UDM policy-routes source 10.25.0.2 into the azireVPN wireguard client
 t: Role: "vpn-egress": patch: machine: network: interfaces: [{
 	deviceSelector: physical: true
-	dhcp:           true
-	addresses:      ["10.25.0.2/32"]
+	dhcp: true
+	vlans: [{
+		vlanId: 25
+		addresses: ["10.25.0.2/28"]
+		routes: [{network: "0.0.0.0/0", gateway: "10.25.0.1", metric: 2048}]
+	}]
 }]

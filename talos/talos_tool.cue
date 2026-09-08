@@ -89,6 +89,7 @@ command: "apply": {
 	}
 
 	talosVersion: #talosVersion & {req: http.Get}
+	// talosVersion: value: "v1.13.2"
 
 	upgradePrint: cli.Print & {
 		$after: [apply]
@@ -253,5 +254,6 @@ command: "bootstrap": exec.Run & {
 		}
 		...
 	}
-	value: req.response.value[0].tag_name
+
+	value: [for r in req.response.value if r.prerelease != true {r}][0].tag_name
 }
