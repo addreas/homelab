@@ -63,6 +63,7 @@ import "time"
 				// Type is the type of the condition.
 				type?: string
 			}]
+		cpuPolicy?: string
 		diskStatus?:
 			null | {
 				[string]: {

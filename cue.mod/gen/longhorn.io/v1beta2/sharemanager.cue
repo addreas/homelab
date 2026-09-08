@@ -27,6 +27,9 @@ package v1beta2
 
 	// ShareManagerStatus defines the observed state of the Longhorn share manager
 	status?: {
+		// The image currently used by the share manager pod
+		currentImage?: string
+
 		// NFS endpoint that can access the mounted filesystem of the volume
 		endpoint?: string
 

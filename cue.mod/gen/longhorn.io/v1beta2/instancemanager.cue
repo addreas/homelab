@@ -22,7 +22,17 @@ package v1beta2
 	// InstanceManagerSpec defines the desired state of the Longhorn instance manager
 	spec?: {
 		dataEngine?: string
-		dataEngineSpec?: v2?: cpuMask?: string
+		dataEngineSpec?: v2?: {
+			// CPUIsolationEnabled overrides the cluster-wide
+			// data-engine-cpu-isolation-enabled setting for this instance manager.
+			// "true" -> pass --enable-irq-affinity and --enable-workqueue-affinity
+			// to start-spdk-tgt (steer host IRQs and unbound kernel
+			// workqueues away from the SPDK reactor CPUs).
+			// "false" -> do not pass the flags.
+			// "" -> inherit the global setting value.
+			cpuIsolationEnabled?: "" | "true" | "false"
+			cpuMask?:             string
+		}
 		image?:  string
 		nodeID?: string
 		type?:   "aio" | "engine" | "replica"
@@ -68,13 +78,52 @@ package v1beta2
 			}]
 		currentState?: string
 		dataEngineStatus?: v2?: {
-			cpuMask?: string
+			cpuCoreNumber?: int64 & int
+			cpuMask?:       string
 
 			// InterruptModeEnabled indicates whether the V2 data engine is running in
 			// interrupt mode (true) or polling mode (false). Set by Longhorn manager;
 			// read-only to users.
 			interruptModeEnabled?: "" | "true" | "false"
 		}
+		instanceEngineFrontends?:
+			null | {
+				[string]: {
+					spec?: {
+						dataEngine?: string
+						name?:       string
+					}
+					status?: {
+						activePath?: string
+						conditions?:
+							null | {
+								[string]: bool
+							}
+						endpoint?: string
+						errorMsg?: string
+						frontend?: string
+						listen?:   string
+						paths?: [...{
+							anaState?:   string
+							engineName?: string
+							nguid?:      string
+							nqn?:        string
+							targetIP?:   string
+							targetPort?: int
+						}]
+						portEnd?:         int32 & int
+						portStart?:       int32 & int
+						preferredPath?:   string
+						resourceVersion?: int64 & int
+						state?:           string
+						targetPortEnd?:   int32 & int
+						targetPortStart?: int32 & int
+						type?:            string
+						ublkID?:          int32 & int
+						uuid?:            string
+					}
+				}
+			}
 		instanceEngines?:
 			null | {
 				[string]: {
@@ -83,15 +132,26 @@ package v1beta2
 						name?:       string
 					}
 					status?: {
+						activePath?: string
 						conditions?:
 							null | {
 								[string]: bool
 							}
-						endpoint?:        string
-						errorMsg?:        string
-						listen?:          string
+						endpoint?: string
+						errorMsg?: string
+						frontend?: string
+						listen?:   string
+						paths?: [...{
+							anaState?:   string
+							engineName?: string
+							nguid?:      string
+							nqn?:        string
+							targetIP?:   string
+							targetPort?: int
+						}]
 						portEnd?:         int32 & int
 						portStart?:       int32 & int
+						preferredPath?:   string
 						resourceVersion?: int64 & int
 						state?:           string
 						targetPortEnd?:   int32 & int
@@ -110,15 +170,102 @@ package v1beta2
 						name?:       string
 					}
 					status?: {
+						activePath?: string
 						conditions?:
 							null | {
 								[string]: bool
 							}
-						endpoint?:        string
-						errorMsg?:        string
-						listen?:          string
+						endpoint?: string
+						errorMsg?: string
+						frontend?: string
+						listen?:   string
+						paths?: [...{
+							anaState?:   string
+							engineName?: string
+							nguid?:      string
+							nqn?:        string
+							targetIP?:   string
+							targetPort?: int
+						}]
 						portEnd?:         int32 & int
 						portStart?:       int32 & int
+						preferredPath?:   string
+						resourceVersion?: int64 & int
+						state?:           string
+						targetPortEnd?:   int32 & int
+						targetPortStart?: int32 & int
+						type?:            string
+						ublkID?:          int32 & int
+						uuid?:            string
+					}
+				}
+			}
+		instanceShardGroups?:
+			null | {
+				[string]: {
+					spec?: {
+						dataEngine?: string
+						name?:       string
+					}
+					status?: {
+						activePath?: string
+						conditions?:
+							null | {
+								[string]: bool
+							}
+						endpoint?: string
+						errorMsg?: string
+						frontend?: string
+						listen?:   string
+						paths?: [...{
+							anaState?:   string
+							engineName?: string
+							nguid?:      string
+							nqn?:        string
+							targetIP?:   string
+							targetPort?: int
+						}]
+						portEnd?:         int32 & int
+						portStart?:       int32 & int
+						preferredPath?:   string
+						resourceVersion?: int64 & int
+						state?:           string
+						targetPortEnd?:   int32 & int
+						targetPortStart?: int32 & int
+						type?:            string
+						ublkID?:          int32 & int
+						uuid?:            string
+					}
+				}
+			}
+		instanceShards?:
+			null | {
+				[string]: {
+					spec?: {
+						dataEngine?: string
+						name?:       string
+					}
+					status?: {
+						activePath?: string
+						conditions?:
+							null | {
+								[string]: bool
+							}
+						endpoint?: string
+						errorMsg?: string
+						frontend?: string
+						listen?:   string
+						paths?: [...{
+							anaState?:   string
+							engineName?: string
+							nguid?:      string
+							nqn?:        string
+							targetIP?:   string
+							targetPort?: int
+						}]
+						portEnd?:         int32 & int
+						portStart?:       int32 & int
+						preferredPath?:   string
 						resourceVersion?: int64 & int
 						state?:           string
 						targetPortEnd?:   int32 & int

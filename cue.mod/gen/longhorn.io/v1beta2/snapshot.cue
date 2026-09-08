@@ -38,6 +38,10 @@ package v1beta2
 	// SnapshotStatus defines the observed state of Longhorn Snapshot
 	status?: {
 		checksum?: string
+
+		// ChecksumCalculatedAt is the RFC3339 timestamp indicating when the checksum
+		// for this snapshot was last calculated or updated.
+		checksumCalculatedAt?: string
 		children?:
 			null | {
 				[string]: bool
@@ -48,13 +52,14 @@ package v1beta2
 			null | {
 				[string]: string
 			}
-		markRemoved?: bool
-		ownerID?:     string
-		parent?:      string
-		readyToUse?:  bool
-		restoreSize?: int64 & int
-		size?:        int64 & int
-		userCreated?: bool
+		markRemoved?:   bool
+		ownerID?:       string
+		parent?:        string
+		readyToUse?:    bool
+		requestedTime?: string
+		restoreSize?:   int64 & int
+		size?:          int64 & int
+		userCreated?:   bool
 	}
 
 	_embeddedResource: {

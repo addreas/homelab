@@ -33,11 +33,41 @@ package v1beta2
 		backupTargetName?: string
 		cloneMode?:        "" | "full-copy" | "linked-clone"
 		dataEngine?:       "v1" | "v2"
-		dataLocality?:     "disabled" | "best-effort" | "strict-local"
-		dataSource?:       string
-		disableFrontend?:  bool
+
+		// DataLayout declares the user's intended data layout (topology type,
+		// protection mode, and EC parameters).
+		// The entire struct is immutable after creation.
+		dataLayout?: {
+			// DataChunks is the number of data chunks (k) in the EC array.
+			// Required when Type is sharded; must be 0 for replicated volumes.
+			dataChunks?: int & >=0
+
+			// Mode describes the specific data protection mechanism in use.
+			// Empty for V1 volumes where no SPDK-level mode applies.
+			mode?: "raid1" | "erasureCoding" | ""
+
+			// ParityChunks is the number of parity chunks (m) in the EC array.
+			// The volume tolerates up to m simultaneous disk failures.
+			// Required when Type is sharded; must be 0 for replicated volumes.
+			parityChunks?: int & >=0
+
+			// StripSizeKB is the chunk size in KiB used by the EC bdev.
+			// Must be a power of two in the range [4, 1024].
+			// Required when Type is sharded; must be 0 for replicated volumes.
+			stripSizeKB?: int & >=0
+
+			// Type describes how volume data is distributed across nodes.
+			type?: "replicated" | "sharded" | ""
+		}
+		dataLocality?:    "disabled" | "best-effort" | "strict-local"
+		dataSource?:      string
+		disableFrontend?: bool
 		diskSelector?: [...string]
 		encrypted?: bool
+
+		// engineNodeID defines the node where the backend engine (target) runs.
+		// If empty, falls back to NodeID.
+		engineNodeID?: string
 
 		// Setting that freezes the filesystem on the root partition before a snapshot is created.
 		freezeFilesystemForSnapshot?: "ignored" | "enabled" | "disabled"
@@ -47,7 +77,9 @@ package v1beta2
 		lastAttachedBy?:              string
 		migratable?:                  bool
 		migrationNodeID?:             string
-		nodeID?:                      string
+
+		// nodeID defines the node where the volume is attached (where the frontend initiator runs).
+		nodeID?: string
 		nodeSelector?: [...string]
 		numberOfReplicas?: int
 
@@ -84,9 +116,21 @@ package v1beta2
 		revisionCounterDisabled?:     bool
 		size?:                        string
 		snapshotDataIntegrity?:       "ignored" | "disabled" | "enabled" | "fast-check"
-		snapshotMaxCount?:            int
-		snapshotMaxSize?:             string
-		staleReplicaTimeout?:         int
+
+		// SnapshotHashingRequestedAt is the RFC3339 timestamp (e.g.,
+		// "2026-03-16T10:30:00Z") when an on-demand snapshot checksum calculation is
+		// requested.
+		// When this value is set and is later than
+		// LastOnDemandSnapshotHashingCompleteAt, the system will calculate checksums
+		// for all user snapshots.
+		//
+		// If SnapshotHashingRequestedAt differs from
+		// LastOnDemandSnapshotHashingCompleteAt, it indicates that a hashing request
+		// is still in progress, and a new request will be rejected.
+		snapshotHashingRequestedAt?: string
+		snapshotMaxCount?:           int
+		snapshotMaxSize?:            string
+		staleReplicaTimeout?:        int
 
 		// ublkNumberOfQueue controls the number of queues for ublk frontend.
 		ublkNumberOfQueue?: int
@@ -127,7 +171,10 @@ package v1beta2
 				// Type is the type of the condition.
 				type?: string
 			}]
-		currentImage?: string
+
+		// the node that the engine (target) is currently running on.
+		currentEngineNodeID?: string
+		currentImage?:        string
 
 		// the node that this volume is currently migrating to
 		currentMigrationNodeID?: string
@@ -154,17 +201,29 @@ package v1beta2
 					workloadType?: string
 				}]
 		}
+		lastAutoSalvagedAt?: string
 		lastBackup?:         string
 		lastBackupAt?:       string
 		lastDegradedAt?:     string
-		ownerID?:            string
-		remountRequestedAt?: string
-		restoreInitiated?:   bool
-		restoreRequired?:    bool
-		robustness?:         string
-		shareEndpoint?:      string
-		shareState?:         string
-		state?:              string
+
+		// LastOnDemandSnapshotHashingCompleteAt is the RFC3339 timestamp (e.g.,
+		// "2026-03-16T10:30:00Z") when the
+		// most recent on-demand snapshot checksum calculation completed.
+		// When this value matches SnapshotHashingRequestedAt, the requested on-demand
+		// checksum calculation is considered complete.
+		lastOnDemandSnapshotHashingCompleteAt?: string
+		ownerID?:                               string
+		remountRequestedAt?:                    string
+		restoreInitiated?:                      bool
+		restoreRequired?:                       bool
+		robustness?:                            string
+		shareEndpoint?:                         string
+		shareState?:                            string
+		state?:                                 string
+
+		// SwitchoverState describes the current progress of a v2 engine live switchover.
+		// Empty when no switchover is in progress.
+		switchoverState?: string
 	}
 
 	_embeddedResource: {

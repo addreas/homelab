@@ -82,7 +82,11 @@ package v1beta2
 		// because it is set when the volume
 		// controller acknowledges the change.
 		lastHealthyAt?: string
-		logRequested?:  bool
+
+		// LinkedCloneSrcReplicaName is the name of the src replica this clone replica is parented to.
+		// Immutable once set. Non-empty only for linked-clone replicas.
+		linkedCloneSrcReplicaName?: string
+		logRequested?:              bool
 
 		// MigrationEngineName is indicating the migrating engine which current
 		// connected to this replica. This is only
