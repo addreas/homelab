@@ -8,6 +8,7 @@ k: GitRepository: "homelab": spec: {
 k: CueExport: "homelab-system": spec: {
 	interval: "30m"
 	paths: [
+		"./resources/system/agent-sandbox",
 		"./resources/system/cert-manager",
 		"./resources/system/flux-system",
 		"./resources/system/net",

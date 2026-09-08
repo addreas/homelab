@@ -14,6 +14,8 @@ hydra.ory.sh
 longhorn.io
 postgresql.cnpg.io
 gateway.networking.k8s.io
+agents.x-k8s.io
+extensions.agents.x-k8s.io
 "
 
 kubectl get crd -o name \

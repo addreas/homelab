@@ -19,7 +19,7 @@ _homelab: {
 	namespace: "flux-system"
 }
 
-let podTemplate = {
+let podTemplateDefaults = {
 	if len(spec.containers) > 1 {
 		metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
 	}
@@ -34,7 +34,7 @@ let podTemplate = {
 				runAsUser:                *1000 | int
 				runAsGroup:               *1000 | int
 				allowPrivilegeEscalation: *false | bool
-				capabilities: drop: ["ALL"]
+				capabilities: _ | *{drop: ["ALL"]}
 				seccompProfile: type: "RuntimeDefault"
 			}
 			ports: [...{protocol: *"TCP" | "UDP"}]
@@ -47,32 +47,36 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 	metadata: labels: _selector
 	spec: {
 		selector: matchLabels: _selector
-		template: podTemplate & {
+		template: podTemplateDefaults & {
 			metadata: labels: _selector
 		}
 	}
 }
 
+k: Sandbox: [string]: spec: podTemplate: podTemplateDefaults
+
 k: Job: [string]: spec: {
 	ttlSecondsAfterFinished: 60 * 60
-	template: podTemplate & {
+	template: podTemplateDefaults & {
 		spec: restartPolicy: _ | *"OnFailure"
 	}
 }
 
-k: CronJob: [Name=string]: spec: jobTemplate: spec: template: podTemplate & {
+k: CronJob: [Name=string]: spec: jobTemplate: spec: template: podTemplateDefaults & {
 	spec: restartPolicy: _ | *"Never"
 }
 
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
-k: StatefulSet: [Name=string]: spec: {
-	serviceName: _ | *Name
+k: StatefulSet: [Name=string]: spec: serviceName: _ | *Name
 
-	volumeClaimTemplates: [...{
-		spec: accessModes: _ | *["ReadWriteOnce"]
-	}]
+let pvcDefaults = {
+	accessModes: _ | *["ReadWriteOnce"]
 }
+
+k: ["StatefulSet" | "Sandbox"]: [string]: spec: volumeClaimTemplates: [...{
+	spec: pvcDefaults
+}]
 
 k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [Name=string]: spec: template: spec: containers: [{
 	name: _ | *Name
@@ -91,6 +95,10 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [string]: spec: templat
 		imagePullPolicy: _ | *"IfNotPresent"
 	}]
 }
+
+k: Sandbox: [string]: spec: podTemplate: spec: containers: [...{
+	imagePullPolicy: _ | *"IfNotPresent"
+}]
 
 k: Service: [Name=string]: {
 	_selector: _ | *close({app: Name})
@@ -241,9 +249,7 @@ k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
 	volumeName:       Name
 }
 
-k: PersistentVolumeClaim: [string]: spec: {
-	accessModes: _ | *["ReadWriteOnce"]
-}
+k: PersistentVolumeClaim: [string]: spec: pvcDefaults
 
 k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: [string]: metadata: labels: {
 	"cue.toolkit.fluxcd.io/prune":       "true" | *"false"

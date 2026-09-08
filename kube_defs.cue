@@ -34,6 +34,8 @@ import (
 
 	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
 	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
+	agents_v1beta1 "agents.x-k8s.io/v1beta1"
+	agents_ext_v1beta1 "extensions.agents.x-k8s.io/v1beta1"
 	cni_v1 "k8s.cni.cncf.io/v1"
 
 	longhorn_v1beta2 "longhorn.io/v1beta2"
@@ -136,6 +138,11 @@ let resourceSchemas = [
 	cilium_v2alpha1.#CiliumNodeConfig,
 
 	hydra_v1alpha1.#OAuth2Client,
+
+	agents_v1beta1.#Sandbox,
+	agents_ext_v1beta1.#SandboxClaim,
+	agents_ext_v1beta1.#SandboxTemplate,
+	agents_ext_v1beta1.#SandboxWarmPool,
 
 ]
 
