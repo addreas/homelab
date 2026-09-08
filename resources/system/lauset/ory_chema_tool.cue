@@ -7,6 +7,8 @@ import (
 	"tool/http"
 )
 
+_images: {}
+
 #FixTracing: {
 	schema: string
 	otelxSchema: http.Get & {

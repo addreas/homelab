@@ -1,3 +1,4 @@
+@experiment(try)
 package kube
 
 import (
@@ -163,15 +164,13 @@ let metaName = {
 
 	out: {
 		metadata: meta_v1.#ObjectMeta & {
-			name: _ | *$name
-		}
-
-		if strings.Contains($name, "/") {
-			let splitName = strings.Split($name, "/")
-
-			metadata: {
+			if strings.Contains($name, "/") {
+				let splitName = strings.Split($name, "/")
 				namespace: _ | *splitName[0]
 				name:      _ | *splitName[1]
+			}
+			if !strings.Contains($name, "/") {
+				name: _ | *$name
 			}
 		}
 

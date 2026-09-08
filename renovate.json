@@ -13,6 +13,16 @@
     },
     {
       "customType": "regex",
+      "matchStringsStrategy": "recursive",
+      "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
+      "datasourceTemplate": "docker",
+      "matchStrings": [
+        "_?images?:\\s*\\{[^{}]*\\}",
+        "(?:^|\\n)\\s*[\\w-]+:\\s*\"(?<depName>[\\w./-]+):(?<currentValue>[\\w.-]+)\""
+      ]
+    },
+    {
+      "customType": "regex",
       "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
       "datasourceTemplate": "git-tags",
       "matchStrings": [

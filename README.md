@@ -5,14 +5,10 @@ Kubernetes configuration as CUE, deployed with flux and
 
 ## Layout
 
-- `kube_defs.cue` — the `k` registry: `k: <Kind>: <name>: <resource>`. Kinds are
-  typed by unification against schemas from `cue.dev/x` deps and CRD defs
-  generated into `cue.mod/gen/`.
-- `kube_tool.cue` — `cue cmd` helpers: `ls`, `apply`, `diff`, `dump-yaml`,
-  `seal`/`unseal` (sops).
-- `resources/constraints.cue` — cross-cutting defaults (securityContext,
-  service ports, ingress/httpRoute hosts, prune labels, `_namespace`, `_homelab`).
-- `resources/` can be arbitrairily nested.
+- `kube_defs.cue` defines schema for `k: <Kind>: <name>: <resource>`. Kinds unified  against schemas from `cue.dev/x` deps and CRD defs generated into `cue.mod/gen/`.
+- `kube_tool.cue` contains `cue cmd` tools like `ls`, `apply`, `diff`, `dump-yaml`, `seal`/`unseal` (sops).
+- `renovate_tool.cue` contains a lint (`cue cmd lintrenovate ./resources/...`) that validates all referenced versions are in a format that the renovate regex managers pick up.
+- `resources/constraints.cue`: cross-cutting defaults and creature comforts (securityContext, automatic service/ingress mapping, `_namespace`).
 
 ## How evaluation works
 
@@ -31,6 +27,3 @@ directories, which is what makes per-kind defaults and validation work.
 
 - `_namespace: "foo"` in a directory defaults every resource in it to `foo`
   and creates the Namespace.
-- Helm is preferred for controllers: `HelmRepository` + `HelmRelease` for
-  published charts, `GitRepository` + chart path for repo-only charts.
-- Secrets live in `*.enc.cue` files, sops/age encrypted.
