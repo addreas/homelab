@@ -1,6 +1,9 @@
 package kube
 
-import "encoding/yaml"
+import (
+	"encoding/yaml"
+	"strings"
+)
 
 k: GitRepository: "hydra-maester": spec: {
 	ref: branch: "master"
@@ -14,7 +17,7 @@ k: Kustomization: "hydra-maester": spec: {
 	images: [{
 		name:    "controller"
 		newName: "oryd/hydra-maester"
-		newTag:  "\(githubReleases["ory/hydra-maester"])-amd64"
+		newTag:  "\(strings.Split(_images.maester, ":")[1])-amd64"
 	}, {
 		name:    "gcr.io/kubebuilder/kube-rbac-proxy"
 		newName: "registry.k8s.io/kubebuilder/kube-rbac-proxy"

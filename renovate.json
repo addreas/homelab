@@ -5,18 +5,33 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["resources/**/*.cue"],
+      "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
       "datasourceTemplate": "docker",
       "matchStrings": [
-        "\"(?<depName>.*):(?<currentValue>.*)\"\\s@renovate(\\(packageName=\"(?<packageName>.*?)\"\\))?"
+        "(_?images?):\\s*(\\w+:\\s*)?\"(?<depName>[\\w./-]+):(?<currentValue>[\\w.-]+)\""
       ]
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["tags.cue"],
-      "datasourceTemplate": "github-releases",
+      "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
+      "datasourceTemplate": "git-tags",
       "matchStrings": [
-        "\"(?<depName>.*)\":\\s+\"(?<currentValue>.*)\"(\\s@renovate\\((versioning=(?<versioning>))?\\))?"
+        "k: GitRepository:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*\\{\\s*\\n\\s*url:\\s*\"(?<depName>[^\"\\n]+)\"\\s*\\n\\s*ref:\\s*tag:\\s*\"(?<currentValue>[^\"\\n]+)\""
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
+      "datasourceTemplate": "helm",
+      "matchStrings": [
+        "k: HelmRepository:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*url:\\s*\"(?<registryUrls>[^\"\\n]+)\"\\s*\\n\\s*k: HelmRelease:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*\\{\\s*\\n\\s*chart: spec: \\{\\s*\\n\\s*chart:\\s*\"(?<depName>[^\"]+)\"\\s*\\n\\s*version:\\s*\"(?<currentValue>[^\"\\n@]+)\""
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
+      "matchStrings": [
+        "//\\s*renovate:\\s*depName=(?<depName>\\S+)\\s+datasource=(?<datasource>\\S+)\\s*\\n\\s*_?images?:\\s*(\\w+:\\s*)?\"(?<currentValue>[^\"\\n]+)\""
       ]
     },
     {

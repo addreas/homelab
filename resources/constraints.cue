@@ -190,7 +190,6 @@ k: HelmRelease: [Name=string]: {
 		interval: _ | *"1h"
 		chart: spec: {
 			interval: _ | *"1h"
-			chart:    _ | *Name
 			sourceRef: _ | *{
 				kind:      "HelmRepository"
 				name:      _ | *Name

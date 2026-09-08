@@ -10,7 +10,7 @@ k: CronJob: "kratos-cleanup": spec: {
 		backoffLimit: 3
 		template: spec: {
 			containers: [{
-				image: "oryd/kratos:\(githubReleases["ory/kratos"])"
+				image: _images.kratos
 				command: ["kratos"]
 				args: ["cleanup", "sql"]
 				env: [{

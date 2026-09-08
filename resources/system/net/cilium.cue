@@ -3,7 +3,10 @@ package kube
 k: HelmRepository: cilium: spec: url: "https://helm.cilium.io/"
 
 k: HelmRelease: cilium: spec: {
-	chart: spec: version: "1.20.1" // TODO: renovate?
+	chart: spec: {
+		chart:   "cilium"
+		version: "1.20.1"
+	}
 	values: {
 		cni: exclusive: false
 

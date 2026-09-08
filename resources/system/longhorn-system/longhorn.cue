@@ -1,11 +1,12 @@
 package kube
 
-import "strings"
-
 k: HelmRepository: longhorn: spec: url: "https://charts.longhorn.io"
 
 k: HelmRelease: longhorn: spec: {
-	chart: spec: version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
+	chart: spec: {
+		chart:   "longhorn"
+		version: "1.12.1"
+	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
 		global: tolerations: [{

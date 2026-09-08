@@ -1,6 +1,7 @@
 package kube
 
 import (
+	"strings"
 	"tool/exec"
 	"tool/file"
 	"tool/http"
@@ -31,7 +32,7 @@ import (
 
 command: "kratos-config-schema": task: {
 	kratosSchema: http.Get & {
-		url: "https://raw.githubusercontent.com/ory/kratos/\(githubReleases["ory/kratos"])/embedx/config.schema.json"
+		url: "https://raw.githubusercontent.com/ory/kratos/\(strings.Split(_images.kratos, ":")[1])/embedx/config.schema.json"
 		response: body: string
 	}
 	fixTracing: #FixTracing & {
@@ -74,7 +75,7 @@ command: "kratos-config-schema": task: {
 
 command: "hydra-config-schema": task: {
 	hydraSchema: http.Get & {
-		url: "https://raw.githubusercontent.com/ory/hydra/\(githubReleases["ory/hydra"])/spec/config.json"
+		url: "https://raw.githubusercontent.com/ory/hydra/\(strings.Split(_images.hydra, ":")[1])/spec/config.json"
 		response: body: string
 	}
 	fixTracing: #FixTracing & {

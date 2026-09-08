@@ -7,7 +7,7 @@ k: Deployment: hydra: spec: template: spec: {
 	}]
 	initContainers: [{
 		name:  "migrate"
-		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+		image: _images.hydra
 		command: ["hydra"]
 		args: [
 			"migrate",
@@ -26,7 +26,7 @@ k: Deployment: hydra: spec: template: spec: {
 		}]
 	}]
 	containers: [_probes & {
-		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+		image: _images.hydra
 		command: ["hydra"]
 		args: [
 			"serve",

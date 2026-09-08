@@ -1,8 +1,8 @@
 package kube
 
 k: GitRepository: "gateway-api-crds": spec: {
-	ref: tag: "v1.6.1" // TODO: renovate
 	url: "https://github.com/kubernetes-sigs/gateway-api"
+	ref: tag: "v1.6.1"
 	ignore: """
 		/*
 		!/config/crd

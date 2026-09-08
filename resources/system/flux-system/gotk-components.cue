@@ -3,8 +3,8 @@ package kube
 import "encoding/yaml"
 
 k: GitRepository: "flux-components": spec: {
-	ref: tag: githubReleases["fluxcd/flux2"]
 	url: "https://github.com/fluxcd/flux2"
+	ref: tag: "v2.9.5"
 }
 
 k: Kustomization: "flux-components": spec: {

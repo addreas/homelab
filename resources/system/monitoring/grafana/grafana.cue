@@ -1,7 +1,5 @@
 package kube
 
-import "strings"
-
 k: OAuth2Client: "grafana": spec: {
 	secretName: "grafana-oauth2-client-credentials"
 	redirectUris: ["https://grafana.addem.se/login/generic_oauth"]
@@ -41,7 +39,7 @@ k: Grafana: grafana: spec: {
 	deployment: spec: template: spec: {
 		containers: [{
 			name:  "grafana"
-			image: "grafana/grafana:\(strings.TrimPrefix(githubReleases["grafana/grafana"], "v"))"
+			image: "grafana/grafana:13.2.1"
 			volumeMounts: [{
 				name:      "oauth-creds"
 				mountPath: "/etc/grafana/oauth-creds/"

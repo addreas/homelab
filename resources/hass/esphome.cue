@@ -35,7 +35,7 @@ k: StatefulSet: esphome: spec: {
 			},
 		]
 		containers: [{
-			image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
+			image: "esphome/esphome:2026.8.2"
 			ports: [{containerPort: 6052}]
 			volumeMounts: [{
 				name:      "data"

@@ -3,8 +3,8 @@ package kube
 import "encoding/yaml"
 
 k: GitRepository: multus: spec: {
-	ref: tag: "v4.2.4" // TODO: renovate
 	url: "https://github.com/k8snetworkplumbingwg/multus-cni"
+	ref: tag: "v4.2.4"
 	ignore: """
 		/*
 		!/deployments/multus-daemonset.yml

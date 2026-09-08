@@ -10,17 +10,15 @@ Kubernetes configuration as CUE, deployed with flux and
   generated into `cue.mod/gen/`.
 - `kube_tool.cue` — `cue cmd` helpers: `ls`, `apply`, `diff`, `dump-yaml`,
   `seal`/`unseal` (sops).
-- `tags.cue` — GitHub release pins, referenced as
-  `githubReleases["org/repo"]`, bumped by renovate.
 - `resources/constraints.cue` — cross-cutting defaults (securityContext,
   service ports, ingress/httpRoute hosts, prune labels, `_namespace`, `_homelab`).
-- `resources/<area>/<component>/` — one directory per component or app.
+- `resources/` can be arbitrairily nested.
 
 ## How evaluation works
 
 All files are `package kube`. A CUE instance is the target directory plus all
-ancestor directories, so `resources/constraints.cue`, `kube_defs.cue` and
-`tags.cue` are always in scope:
+ancestor directories, so `resources/constraints.cue` and `kube_defs.cue` are
+always in scope:
 
 ```sh
 cue cmd ls ./resources/default   # ./ prefix is required
@@ -35,5 +33,4 @@ directories, which is what makes per-kind defaults and validation work.
   and creates the Namespace.
 - Helm is preferred for controllers: `HelmRepository` + `HelmRelease` for
   published charts, `GitRepository` + chart path for repo-only charts.
-- Secrets live in `*.enc.cue` files, sops/age encrypted; flux decrypts them
-  with the `qb-homelab` secret in `flux-system`.
+- Secrets live in `*.enc.cue` files, sops/age encrypted.

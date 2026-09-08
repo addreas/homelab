@@ -10,7 +10,7 @@ k: CronJob: "hydra-cleanup": spec: {
 		backoffLimit: 3
 		template: spec: {
 			containers: [{
-				image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+				image: _images.hydra
 				command: ["hydra"]
 				args: ["janitor", "-e", "--grants", "--requests", "--tokens", "--keep-if-younger=24h", "--access-lifespan=1h", "--refresh-lifespan=40h", "--consent-request-lifespan=10m"]
 				env: [{

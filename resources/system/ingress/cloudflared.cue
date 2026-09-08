@@ -10,7 +10,7 @@ k: Deployment: cloudflared: spec: {
 			value: "0 1000"
 		}]
 		containers: [{
-			image: "cloudflare/cloudflared:\(githubReleases["cloudflare/cloudflared"])"
+			image: _images.cloudflared
 			args: [
 				"tunnel",
 				"--config",

@@ -3,7 +3,7 @@ package kube
 k: Deployment: "kratos": spec: template: spec: {
 	initContainers: [{
 		name:  "migrate"
-		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
+		image: _images.kratos
 		command: ["kratos"]
 		args: [
 			"migrate",
@@ -21,7 +21,7 @@ k: Deployment: "kratos": spec: template: spec: {
 		}]
 	}]
 	containers: [_probes & {
-		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
+		image: _images.kratos
 		command: ["kratos"]
 		args: [
 			"serve",
