@@ -16,7 +16,7 @@ groups: "base": {
 		"worker": {
 			common: roles: ["worker", "longhorn", "intel"]
 			nodes: {
-				"talos-hz2-2oi": mac: "30:24:a9:87:60:bf"
+				"talos-hz2-2oi": {mac: "30:24:a9:87:60:bf", roles: ["vpn-egress"]}
 				"talos-o1t-0lm": mac: "e8:d8:d1:54:d7:df"
 			}
 		}
