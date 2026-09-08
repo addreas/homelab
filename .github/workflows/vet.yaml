@@ -1,0 +1,17 @@
+name: CUE vet
+
+on:
+  push:
+
+jobs:
+  vet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cue-lang/setup-cue@v1.0.1
+        with:
+          version: v0.17.1
+
+      - name: Vet resources
+        run: cue vet -c ./resources/...
