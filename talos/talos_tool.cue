@@ -216,6 +216,38 @@ command: "bootstrap": exec.Run & {
 		"""]
 }
 
+// regenerate CUE defs from the talos machinery Go types at a pinned version
+// (default: latest release; override with -t version=vX.Y.Z)
+command: "defs": {
+	version: string @tag(version)
+	version: *talosVersion.value | string
+
+	talosVersion: #talosVersion & {req: http.Get}
+
+	fetch: http.Get & {
+		url: "https://raw.githubusercontent.com/siderolabs/talos/\(version)/pkg/machinery/config/types/types.go"
+		response: body: string
+	}
+
+	// first quoted string on each line mentioning pkg/machinery (grep|sed equivalent)
+	quoted: [for line in strings.Split(fetch.response.body, "\n")
+		if strings.Contains(line, "pkg/machinery")
+		if strings.Contains(line, "\"") {strings.Split(line, "\"")[1]}]
+
+	// dedupe via map keys (no list.Uniq)
+	pkgs: [for k, _ in {for q in quoted {(q): true}} {k}]
+
+	// pin the talos Go module (machinery included) so cue get go resolves at \(version)
+	pin: exec.Run & {
+		cmd: ["go", "-C", "..", "get", "github.com/siderolabs/talos@\(version)"]
+	}
+
+	generate: exec.Run & {
+		$after: [fetch, pin]
+		cmd: list.Concat([["cue", "get", "go"], pkgs])
+	}
+}
+
 #genConfig: {
 	$node: #NodeSpec
 
