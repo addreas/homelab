@@ -83,12 +83,15 @@ t: Role: "intel": schematic: customization: systemExtensions: officialExtensions
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
 
-t: Role: "vpn-egress": patch: machine: network: interfaces: [{
-	deviceSelector: physical: true
-	dhcp: true
-	vlans: [{
-		vlanId: 25
-		addresses: ["10.25.0.2/28"]
-		routes: [{network: "0.0.0.0/0", gateway: "10.25.0.1", metric: 2048}]
+t: Role: "vpn-egress": patch: machine: {
+	nodeLabels: "node-role.kubernetes.io/vpn-egress": ""
+	network: interfaces: [{
+		deviceSelector: physical: true
+		dhcp: true
+		vlans: [{
+			vlanId: 25
+			addresses: ["10.25.0.2/28"]
+			routes: [{network: "0.0.0.0/0", gateway: "10.25.0.1", metric: 2048}]
+		}]
 	}]
-}]
+}
