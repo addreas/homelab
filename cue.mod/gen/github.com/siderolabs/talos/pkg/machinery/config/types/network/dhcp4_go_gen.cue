@@ -43,6 +43,12 @@ import (
 	ignoreHostname?: null | bool @go(ConfigIgnoreHostname,*bool)
 
 	//   description: |
+	//     Ignore routes received from the DHCP server (the default gateway and classless static routes).
+	//
+	//     The connected route for the leased address is still configured.
+	ignoreRoutes?: null | bool @go(ConfigIgnoreRoutes,*bool)
+
+	//   description: |
 	//     Client identifier to use when communicating with DHCP servers.
 	//
 	//     Defaults to 'mac' if not set.

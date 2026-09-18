@@ -8,7 +8,7 @@ import "google.golang.org/genproto/googleapis/rpc/status"
 
 // The state of an evaluation.
 //
-// Can represent an inital, partial, or completed state of evaluation.
+// Can represent an initial, partial, or completed state of evaluation.
 #EvalState: {
 	// The unique values referenced in this message.
 	values?: [...#ExprValue] @go(Values,[]*ExprValue) @protobuf(1,bytes,rep,proto3)
@@ -24,7 +24,7 @@ import "google.golang.org/genproto/googleapis/rpc/status"
 #ExprValue: {
 	// An expression can resolve to a value, error or unknown.
 	//
-	// Types that are assignable to Kind:
+	// Types that are valid to be assigned to Kind:
 	//
 	//	*ExprValue_Value
 	//	*ExprValue_Error
@@ -40,14 +40,14 @@ _#isExprValue_Kind: _
 }
 
 #ExprValue_Error: {
-	// The set of errors in the critical path of evalution.
+	// The set of errors in the critical path of evaluation.
 	//
 	// Only errors in the critical path are included. For example,
 	// `(<error1> || true) && <error2>` will only result in `<error2>`,
 	// while `<error1> || <error2>` will result in both `<error1>` and
 	// `<error2>`.
 	//
-	// Errors cause by the presence of other errors are not included in the
+	// Errors caused by the presence of other errors are not included in the
 	// set. For example `<error1>.foo`, `foo(<error1>)`, and `<error1> + 1` will
 	// only result in `<error1>`.
 	//
@@ -74,13 +74,13 @@ _#isExprValue_Kind: _
 	//	foo(<unknown[1]>) -> <unknown[1]>
 	//	<unknown[1]> + <unknown[2]> -> <unknown[1]> or <unknown[2[>
 	//
-	// Unknown takes precidence over Error in cases where a `Value` can short
+	// Unknown takes precedence over Error in cases where a `Value` can short
 	// circuit the result:
 	//
 	//	<error> || <unknown> -> <unknown>
 	//	<error> && <unknown> -> <unknown>
 	//
-	// Errors take precidence in all other cases:
+	// Errors take precedence in all other cases:
 	//
 	//	<unknown> + <error> -> <error>
 	//	foo(<unknown>, <error>) -> <error>
@@ -103,11 +103,13 @@ _#isExprValue_Kind: _
 	exprs?: [...int64] @go(Exprs,[]int64) @protobuf(1,varint,rep,packed,proto3)
 }
 
-// A single evalution result.
+// A single evaluation result.
 #EvalState_Result: {
-	// The id of the expression this result if for.
+	// The id of the expression this result is for.
 	expr?: int64 @go(Expr) @protobuf(1,varint,opt,proto3)
 
 	// The index in `values` of the resulting value.
 	value?: int64 @go(Value) @protobuf(2,varint,opt,proto3)
 }
+
+_#file_google_api_expr_v1alpha1_eval_proto_rawDesc: '\n#google/api/expr/v1alpha1/eval.proto\x12\x18google.api.expr.v1alpha1\x1a$google/api/expr/v1alpha1/value.proto\x1a\x17google/rpc/status.proto"\xc2\x01\n\tEvalState\x12;\n\x06values\x18\x01 \x03(\v2#.google.api.expr.v1alpha1.ExprValueR\x06values\x12D\n\aresults\x18\x03 \x03(\v2*.google.api.expr.v1alpha1.EvalState.ResultR\aresults\x1a2\n\x06Result\x12\x12\n\x04expr\x18\x01 \x01(\x03R\x04expr\x12\x14\n\x05value\x18\x02 \x01(\x03R\x05value"\xca\x01\n\tExprValue\x127\n\x05value\x18\x01 \x01(\v2\x1f.google.api.expr.v1alpha1.ValueH\x00R\x05value\x12:\n\x05error\x18\x02 \x01(\v2".google.api.expr.v1alpha1.ErrorSetH\x00R\x05error\x12@\n\aunknown\x18\x03 \x01(\v2$.google.api.expr.v1alpha1.UnknownSetH\x00R\aunknownB\x06\n\x04kind"6\n\bErrorSet\x12*\n\x06errors\x18\x01 \x03(\v2\x12.google.rpc.StatusR\x06errors""\n\nUnknownSet\x12\x14\n\x05exprs\x18\x01 \x03(\x03R\x05exprsBi\n\x1ccom.google.api.expr.v1alpha1B\tEvalProtoP\x01Z<google.golang.org/genproto/googleapis/api/expr/v1alpha1;exprb\x06proto3'

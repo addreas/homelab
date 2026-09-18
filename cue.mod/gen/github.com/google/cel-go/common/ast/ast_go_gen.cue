@@ -20,3 +20,49 @@ import "github.com/google/cel-go/common/types/ref"
 	OverloadIDs: [...string] @go(,[]string)
 	Value: ref.#Val
 }
+
+// Extension represents a versioned, optional feature present in the AST that affects CEL component behavior.
+#Extension: {
+	// ID indicates the unique name of the extension.
+	ID: string
+
+	// Version indicates the major / minor version.
+	Version: #ExtensionVersion
+
+	// Components enumerates the CEL components affected by the feature.
+	Components: [...#ExtensionComponent] @go(,[]ExtensionComponent)
+}
+
+// ExtensionVersion represents a semantic version with a major and minor number.
+#ExtensionVersion: {
+	// Major version of the extension.
+	// All versions with the same major number are expected to be compatible with all minor version changes.
+	Major: int64
+
+	// Minor version of the extension which indicates that some small non-semantic change has been made to
+	// the extension.
+	Minor: int64
+}
+
+// ExtensionComponent indicates which CEL component is affected.
+#ExtensionComponent: int // #enumExtensionComponent
+
+#enumExtensionComponent:
+	#ComponentParser |
+	#ComponentTypeChecker |
+	#ComponentRuntime
+
+#values_ExtensionComponent: {
+	ComponentParser:      #ComponentParser
+	ComponentTypeChecker: #ComponentTypeChecker
+	ComponentRuntime:     #ComponentRuntime
+}
+
+// ComponentParser means the feature affects expression parsing.
+#ComponentParser: #ExtensionComponent & 1
+
+// ComponentTypeChecker means the feature affects type-checking.
+#ComponentTypeChecker: #ExtensionComponent & 2
+
+// ComponentRuntime alters program planning or evaluation of the AST.
+#ComponentRuntime: #ExtensionComponent & 3

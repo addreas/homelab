@@ -111,7 +111,7 @@ import "google.golang.org/protobuf/types/known/structpb"
 #Type: {
 	// The kind of type.
 	//
-	// Types that are assignable to TypeKind:
+	// Types that are valid to be assigned to TypeKind:
 	//
 	//	*Type_Dyn
 	//	*Type_Null
@@ -215,7 +215,7 @@ _#isType_TypeKind: _
 
 	// Required. The declaration kind.
 	//
-	// Types that are assignable to DeclKind:
+	// Types that are valid to be assigned to DeclKind:
 	//
 	//	*Decl_Ident
 	//	*Decl_Function
@@ -314,6 +314,19 @@ _#isDecl_DeclKind: _
 #Decl_FunctionDecl: {
 	// Required. List of function overloads, must contain at least one overload.
 	overloads?: [...#Decl_FunctionDecl_Overload] @go(Overloads,[]*Decl_FunctionDecl_Overload) @protobuf(1,bytes,rep,proto3)
+
+	// Documentation string for the function that indicates the general purpose
+	// of the function and its behavior.
+	//
+	// Documentation strings for the function should be general purpose with
+	// specific examples provided in the overload doc string.
+	//
+	// Examples:
+	//
+	//	The 'in' operator tests whether an item exists in a collection.
+	//
+	//	The 'substring' function returns a substring of a target string.
+	doc?: string @go(Doc) @protobuf(2,bytes,opt,proto3)
 }
 
 // An overload indicates a function's parameter types and return type, and
@@ -365,6 +378,24 @@ _#isDecl_DeclKind: _
 	// expected type of the target receiver.
 	is_instance_function?: bool @go(IsInstanceFunction) @protobuf(5,varint,opt,json=isInstanceFunction,proto3)
 
-	// Documentation string for the overload.
+	// Examples for the overload and its expected return value, separated by
+	// newlines.
+	//
+	// Prefer using CEL literals in examples as they are easily consumed by
+	// humans and simple to validate with machines. The example should contain
+	// an expression with a literal return value in comments inline. If the
+	// expression example is too complex or would need an example for a
+	// variable that cannot be expressed in CEL, document the input and return
+	// in a comment preceding the example.
+	//
+	// Examples:
+	//
+	//	1 in [1, 2, 3] // true
+	//	'key' in {'key1: 1, 'key2': 2} // false
+	//	// Test whether one or more keys exist within a map.
+	//	// returns true if list_of_keys contains 'key2' or 'key3'
+	//	list_of_keys.exists(key, key in {'key3': 1, 'key2': 2})
 	doc?: string @go(Doc) @protobuf(6,bytes,opt,proto3)
 }
+
+_#file_google_api_expr_v1alpha1_checked_proto_rawDesc: '\n&google/api/expr/v1alpha1/checked.proto\x12\x18google.api.expr.v1alpha1\x1a%google/api/expr/v1alpha1/syntax.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto"\x9a\x04\n\vCheckedExpr\x12\\\n\rreference_map\x18\x02 \x03(\v27.google.api.expr.v1alpha1.CheckedExpr.ReferenceMapEntryR\freferenceMap\x12M\n\btype_map\x18\x03 \x03(\v22.google.api.expr.v1alpha1.CheckedExpr.TypeMapEntryR\atypeMap\x12E\n\vsource_info\x18\x05 \x01(\v2$.google.api.expr.v1alpha1.SourceInfoR\nsourceInfo\x12!\n\fexpr_version\x18\x06 \x01(\tR\vexprVersion\x122\n\x04expr\x18\x04 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x04expr\x1ad\n\x11ReferenceMapEntry\x12\x10\n\x03key\x18\x01 \x01(\x03R\x03key\x129\n\x05value\x18\x02 \x01(\v2#.google.api.expr.v1alpha1.ReferenceR\x05value:\x028\x01\x1aZ\n\fTypeMapEntry\x12\x10\n\x03key\x18\x01 \x01(\x03R\x03key\x124\n\x05value\x18\x02 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\x05value:\x028\x01"\xc8\v\n\x04Type\x12*\n\x03dyn\x18\x01 \x01(\v2\x16.google.protobuf.EmptyH\x00R\x03dyn\x120\n\x04null\x18\x02 \x01(\x0e2\x1a.google.protobuf.NullValueH\x00R\x04null\x12L\n\tprimitive\x18\x03 \x01(\x0e2,.google.api.expr.v1alpha1.Type.PrimitiveTypeH\x00R\tprimitive\x12H\n\awrapper\x18\x04 \x01(\x0e2,.google.api.expr.v1alpha1.Type.PrimitiveTypeH\x00R\awrapper\x12M\n\nwell_known\x18\x05 \x01(\x0e2,.google.api.expr.v1alpha1.Type.WellKnownTypeH\x00R\twellKnown\x12F\n\tlist_type\x18\x06 \x01(\v2\'.google.api.expr.v1alpha1.Type.ListTypeH\x00R\blistType\x12C\n\bmap_type\x18\a \x01(\v2&.google.api.expr.v1alpha1.Type.MapTypeH\x00R\amapType\x12I\n\bfunction\x18\b \x01(\v2+.google.api.expr.v1alpha1.Type.FunctionTypeH\x00R\bfunction\x12#\n\fmessage_type\x18\t \x01(\tH\x00R\vmessageType\x12\x1f\n\ntype_param\x18\n \x01(\tH\x00R\ttypeParam\x124\n\x04type\x18\v \x01(\v2\x1e.google.api.expr.v1alpha1.TypeH\x00R\x04type\x12.\n\x05error\x18\f \x01(\v2\x16.google.protobuf.EmptyH\x00R\x05error\x12R\n\rabstract_type\x18\x0e \x01(\v2+.google.api.expr.v1alpha1.Type.AbstractTypeH\x00R\fabstractType\x1aG\n\bListType\x12;\n\telem_type\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\belemType\x1a\x83\x01\n\aMapType\x129\n\bkey_type\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\akeyType\x12=\n\nvalue_type\x18\x02 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\tvalueType\x1a\x8c\x01\n\fFunctionType\x12?\n\vresult_type\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\nresultType\x12;\n\targ_types\x18\x02 \x03(\v2\x1e.google.api.expr.v1alpha1.TypeR\bargTypes\x1ak\n\fAbstractType\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12G\n\x0fparameter_types\x18\x02 \x03(\v2\x1e.google.api.expr.v1alpha1.TypeR\x0eparameterTypes"s\n\rPrimitiveType\x12\x1e\n\x1aPRIMITIVE_TYPE_UNSPECIFIED\x10\x00\x12\b\n\x04BOOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\n\n\x06UINT64\x10\x03\x12\n\n\x06DOUBLE\x10\x04\x12\n\n\x06STRING\x10\x05\x12\t\n\x05BYTES\x10\x06"V\n\rWellKnownType\x12\x1f\n\x1bWELL_KNOWN_TYPE_UNSPECIFIED\x10\x00\x12\a\n\x03ANY\x10\x01\x12\r\n\tTIMESTAMP\x10\x02\x12\f\n\bDURATION\x10\x03B\v\n\ttype_kind"\xc5\x05\n\x04Decl\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12@\n\x05ident\x18\x02 \x01(\v2(.google.api.expr.v1alpha1.Decl.IdentDeclH\x00R\x05ident\x12I\n\bfunction\x18\x03 \x01(\v2+.google.api.expr.v1alpha1.Decl.FunctionDeclH\x00R\bfunction\x1a\x8b\x01\n\tIdentDecl\x122\n\x04type\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\x04type\x128\n\x05value\x18\x02 \x01(\v2".google.api.expr.v1alpha1.ConstantR\x05value\x12\x10\n\x03doc\x18\x03 \x01(\tR\x03doc\x1a\x80\x03\n\fFunctionDecl\x12R\n\toverloads\x18\x01 \x03(\v24.google.api.expr.v1alpha1.Decl.FunctionDecl.OverloadR\toverloads\x12\x10\n\x03doc\x18\x02 \x01(\tR\x03doc\x1a\x89\x02\n\bOverload\x12\x1f\n\voverload_id\x18\x01 \x01(\tR\noverloadId\x126\n\x06params\x18\x02 \x03(\v2\x1e.google.api.expr.v1alpha1.TypeR\x06params\x12\x1f\n\vtype_params\x18\x03 \x03(\tR\ntypeParams\x12?\n\vresult_type\x18\x04 \x01(\v2\x1e.google.api.expr.v1alpha1.TypeR\nresultType\x120\n\x14is_instance_function\x18\x05 \x01(\bR\x12isInstanceFunction\x12\x10\n\x03doc\x18\x06 \x01(\tR\x03docB\v\n\tdecl_kind"z\n\tReference\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x1f\n\voverload_id\x18\x03 \x03(\tR\noverloadId\x128\n\x05value\x18\x04 \x01(\v2".google.api.expr.v1alpha1.ConstantR\x05valueBi\n\x1ccom.google.api.expr.v1alpha1B\tDeclProtoP\x01Z<google.golang.org/genproto/googleapis/api/expr/v1alpha1;exprb\x06proto3'

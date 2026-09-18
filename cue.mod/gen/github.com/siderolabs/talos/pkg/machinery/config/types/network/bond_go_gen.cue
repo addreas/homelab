@@ -216,7 +216,7 @@ import (
 	adUserPortKey?: null | uint16 @go(BondADUserPortKey,*uint16)
 
 	//   description: |
-	//     Whether to send LACPDU frames periodically.
+	//     Whether to send LACPDU frames periodically, defaults to "on" if mode is 802.3ad.
 	//   examples:
 	//    - value: >
 	//       "on"

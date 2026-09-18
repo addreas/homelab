@@ -16,7 +16,7 @@ import (
 #Value: {
 	// Required. The valid kinds of values.
 	//
-	// Types that are assignable to Kind:
+	// Types that are valid to be assigned to Kind:
 	//
 	//	*Value_NullValue
 	//	*Value_BoolValue
@@ -120,7 +120,7 @@ _#isValue_Kind: _
 #MapValue: {
 	// The set of map entries.
 	//
-	// CEL has fewer restrictions on keys, so a protobuf map represenation
+	// CEL has fewer restrictions on keys, so a protobuf map representation
 	// cannot be used.
 	entries?: [...#MapValue_Entry] @go(Entries,[]*MapValue_Entry) @protobuf(1,bytes,rep,proto3)
 }
@@ -136,3 +136,5 @@ _#isValue_Kind: _
 	// The value.
 	value?: null | #Value @go(Value,*Value) @protobuf(2,bytes,opt,proto3)
 }
+
+_#file_google_api_expr_v1alpha1_value_proto_rawDesc: '\n$google/api/expr/v1alpha1/value.proto\x12\x18google.api.expr.v1alpha1\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto"\xcd\x04\n\x05Value\x12;\n\nnull_value\x18\x01 \x01(\x0e2\x1a.google.protobuf.NullValueH\x00R\tnullValue\x12\x1f\n\nbool_value\x18\x02 \x01(\bH\x00R\tboolValue\x12!\n\vint64_value\x18\x03 \x01(\x03H\x00R\nint64Value\x12#\n\fuint64_value\x18\x04 \x01(\x04H\x00R\vuint64Value\x12#\n\fdouble_value\x18\x05 \x01(\x01H\x00R\vdoubleValue\x12#\n\fstring_value\x18\x06 \x01(\tH\x00R\vstringValue\x12!\n\vbytes_value\x18\a \x01(\fH\x00R\nbytesValue\x12D\n\nenum_value\x18\t \x01(\v2#.google.api.expr.v1alpha1.EnumValueH\x00R\tenumValue\x129\n\fobject_value\x18\n \x01(\v2\x14.google.protobuf.AnyH\x00R\vobjectValue\x12A\n\tmap_value\x18\v \x01(\v2".google.api.expr.v1alpha1.MapValueH\x00R\bmapValue\x12D\n\nlist_value\x18\f \x01(\v2#.google.api.expr.v1alpha1.ListValueH\x00R\tlistValue\x12\x1f\n\ntype_value\x18\x0f \x01(\tH\x00R\ttypeValueB\x06\n\x04kind"5\n\tEnumValue\x12\x12\n\x04type\x18\x01 \x01(\tR\x04type\x12\x14\n\x05value\x18\x02 \x01(\x05R\x05value"D\n\tListValue\x127\n\x06values\x18\x01 \x03(\v2\x1f.google.api.expr.v1alpha1.ValueR\x06values"\xc1\x01\n\bMapValue\x12B\n\aentries\x18\x01 \x03(\v2(.google.api.expr.v1alpha1.MapValue.EntryR\aentries\x1aq\n\x05Entry\x121\n\x03key\x18\x01 \x01(\v2\x1f.google.api.expr.v1alpha1.ValueR\x03key\x125\n\x05value\x18\x02 \x01(\v2\x1f.google.api.expr.v1alpha1.ValueR\x05valueBj\n\x1ccom.google.api.expr.v1alpha1B\nValueProtoP\x01Z<google.golang.org/genproto/googleapis/api/expr/v1alpha1;exprb\x06proto3'

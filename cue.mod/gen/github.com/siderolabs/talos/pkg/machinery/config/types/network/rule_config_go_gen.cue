@@ -89,5 +89,5 @@ import (
 	//   schema:
 	//     type: string
 	//     pattern: ^[0-9a-f.:]+/\d{1,3}$
-	except?: #Prefix @go(Except)
+	except?: meta.#Prefix @go(Except)
 }

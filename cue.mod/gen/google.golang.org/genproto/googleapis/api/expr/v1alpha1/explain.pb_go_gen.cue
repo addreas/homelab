@@ -7,7 +7,7 @@ package expr
 // Values of intermediate expressions produced when evaluating expression.
 // Deprecated, use `EvalState` instead.
 //
-// Deprecated: Do not use.
+// Deprecated: Marked as deprecated in google/api/expr/v1alpha1/explain.proto.
 #Explain: {
 	// All of the observed values.
 	//
@@ -31,3 +31,5 @@ package expr
 	// Index of the value in the values list.
 	value_index?: int32 @go(ValueIndex) @protobuf(2,varint,opt,json=valueIndex,proto3)
 }
+
+_#file_google_api_expr_v1alpha1_explain_proto_rawDesc: '\n&google/api/expr/v1alpha1/explain.proto\x12\x18google.api.expr.v1alpha1\x1a$google/api/expr/v1alpha1/value.proto"\xce\x01\n\aExplain\x127\n\x06values\x18\x01 \x03(\v2\x1f.google.api.expr.v1alpha1.ValueR\x06values\x12I\n\nexpr_steps\x18\x02 \x03(\v2*.google.api.expr.v1alpha1.Explain.ExprStepR\texprSteps\x1a;\n\bExprStep\x12\x0e\n\x02id\x18\x01 \x01(\x03R\x02id\x12\x1f\n\vvalue_index\x18\x02 \x01(\x05R\nvalueIndex:\x02\x18\x01Bl\n\x1ccom.google.api.expr.v1alpha1B\fExplainProtoP\x01Z<google.golang.org/genproto/googleapis/api/expr/v1alpha1;exprb\x06proto3'

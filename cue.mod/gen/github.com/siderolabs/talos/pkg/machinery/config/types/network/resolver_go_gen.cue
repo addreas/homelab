@@ -4,7 +4,10 @@
 
 package network
 
-import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
+import (
+	"github.com/siderolabs/talos/pkg/machinery/config/types/meta"
+	"github.com/siderolabs/talos/pkg/machinery/nethelpers"
+)
 
 #ResolverKind: "ResolverConfig"
 
@@ -13,6 +16,9 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 //	examples:
 //	  - value: exampleResolverConfigV1Alpha1()
 //	  - value: exampleResolverConfigV1Alpha2()
+//	  - value: exampleResolverConfigV1Alpha3()
+//	  - value: exampleResolverConfigV1Alpha4()
+//	  - value: exampleResolverConfigV1Alpha5()
 //	alias: ResolverConfig
 //	schemaRoot: true
 //	schemaMeta: v1alpha1/ResolverConfig
@@ -34,6 +40,12 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//
 	//     The default is to derive search domains from the hostname FQDN.
 	searchDomains?: #SearchDomainsConfig @go(ResolverSearchDomains)
+
+	//   description: |
+	//     Configuration for host DNS resolver.
+	//
+	//     This configures a local DNS caching resolver on the host to improve DNS resolution performance and reliability.
+	hostDNS?: #HostDNSConfig @go(ResolverHostDNS)
 }
 
 // NameserverConfig represents a single nameserver configuration.
@@ -42,11 +54,44 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//     The IP address of the nameserver.
 	//   examples:
 	//    - value: >
-	//       Addr{netip.MustParseAddr("10.0.0.1")}
+	//       meta.Addr{netip.MustParseAddr("10.0.0.1")}
 	//   schema:
 	//     type: string
 	//     pattern: ^[0-9a-f.:]+$
-	address: #Addr @go(Address)
+	address: meta.#Addr @go(Address)
+
+	//   description: |
+	//     A DNS protocol to use.
+	//
+	//     The default protocol is plain DNS (`Do53`) (DNS over TCP/UDP). Set this to
+	//     `DoT` to use DNS over TLS (RFC 7858) on TCP port 853, or `DoH` to use DNS
+	//     over HTTPS (RFC 8484) on TCP port 443 with the `/dns-query` URL path. Both
+	//     `DoT` and `DoH` deliver encrypted queries to this nameserver.
+	//
+	//     Note: encrypted DNS protocols require a correct system clock to validate
+	//     certificates. If NTP is configured with hostnames that need to be resolved
+	//     through DoT/DoH, the boot may stall: NTP needs DNS, and TLS needs valid
+	//     time. Either rely on the hardware clock, configure NTP servers by IP, or
+	//     keep at least one plain-DNS fallback nameserver.
+	//   values:
+	//     - "Do53"
+	//     - "DoT"
+	//     - "DoH"
+	protocol?: nethelpers.#DNSProtocol @go(Protocol)
+
+	//   description: |
+	//     TLS server name to validate the nameserver certificate against.
+	//
+	//     This field should be set if the protocol is set to `DoT` or `DoH`.
+	//     The value is used both as the SNI sent during the TLS handshake and as the
+	//     name verified against the server certificate. For `DoH`, it is also used as
+	//     the host portion of the request URL (`https://<tlsServerName>/dns-query`)
+	//     while the connection itself is established to the configured `address`.
+	//
+	//   examples:
+	//     - value: >
+	//        "dns1.example.com"
+	tlsServerName?: string @go(TLSServerName)
 }
 
 // SearchDomainsConfig represents search domains configuration.
@@ -58,9 +103,15 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//     For example, if "example.com" is a search domain and a user tries to resolve
 	//     "host", the system will attempt to resolve "host.example.com".
 	//
-	//     This overrides any search domains obtained via DHCP or platform configuration.
+	//     If set, this overrides any search domains obtained via DHCP or platform configuration.
+	//     An empty list (`domains: []`) clears search domains obtained from DHCP or platform,
+	//     while leaving this field unset inherits them.
 	//     The default configuration derives the search domain from the hostname FQDN.
-	domains?: [...string] @go(SearchDomains,[]string)
+	//   schema:
+	//     type: array
+	//     items:
+	//       type: string
+	domains?: #SearchDomainList @go(SearchDomains)
 
 	//   description: |
 	//     Disable default search domain configuration from hostname FQDN.
@@ -68,4 +119,35 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//     When set to true, the system will not derive search domains from the hostname FQDN.
 	//     This allows for a custom configuration of search domains without any defaults.
 	disableDefault?: null | bool @go(SearchDisableDefault,*bool)
+}
+
+// SearchDomainList is a list of DNS search domains.
+//
+// A nil list means that search domains are not configured (and are inherited from
+// other configuration layers), while an explicitly empty list clears search domains
+// obtained from DHCP or platform.
+#SearchDomainList: [...string]
+
+// HostDNSConfig represents host DNS configuration.
+#HostDNSConfig: {
+	//   description: |
+	//     Enable host DNS caching resolver.
+	//
+	//     When enabled, a local DNS caching resolver is deployed on the host to improve DNS resolution performance and reliability.
+	//     Upstream DNS servers for the host resolver are configured using the `nameservers` field in this config document.
+	enabled?: null | bool @go(HostDNSEnabled,*bool)
+
+	//   description: |
+	//     Use the host DNS resolver as upstream for Kubernetes CoreDNS pods.
+	//
+	//     When enabled, CoreDNS pods use host DNS server as the upstream DNS (instead of
+	//     using configured upstream DNS resolvers directly).
+	forwardKubeDNSToHost?: null | bool @go(HostDNSForwardKubeDNSToHost,*bool)
+
+	//   description: |
+	//     Resolve member hostnames using the host DNS resolver.
+	//
+	//     When enabled, cluster member hostnames and node names are resolved using the host DNS resolver.
+	//     This requires service discovery to be enabled.
+	resolveMemberNames?: null | bool @go(HostDNSResolveMemberNames,*bool)
 }

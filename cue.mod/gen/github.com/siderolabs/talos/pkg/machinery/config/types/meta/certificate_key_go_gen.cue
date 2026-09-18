@@ -4,6 +4,8 @@
 
 package meta
 
+#PEMTypeCertificate: "CERTIFICATE"
+
 // CertificateAndKey represents a PEM-encoded certificate and key pair.
 #CertificateAndKey: {
 	cert?: string @go(Cert)

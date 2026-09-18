@@ -54,12 +54,12 @@ import (
 // Expressions are abstractly represented as a collection of identifiers,
 // select statements, function calls, literals, and comprehensions. All
 // operators with the exception of the '.' operator are modelled as function
-// calls. This makes it easy to represent new operators into the existing AST.
+// calls. This makes it easy to represent new operators in the existing AST.
 //
 // All references within expressions must resolve to a
 // [Decl][google.api.expr.v1alpha1.Decl] provided at type-check for an
 // expression to be valid. A reference may either be a bare identifier `name` or
-// a qualified identifier `google.api.name`. References may either refer to a
+// a qualified identifier `google.api.name`. References may refer to either a
 // value or a function declaration.
 //
 // For example, the expression `google.api.name.startsWith('expr')` references
@@ -69,12 +69,12 @@ import (
 #Expr: {
 	// Required. An id assigned to this node by the parser which is unique in a
 	// given expression tree. This is used to associate type information and other
-	// attributes to a node in the parse tree.
+	// attributes with a node in the parse tree.
 	id?: int64 @go(Id) @protobuf(2,varint,opt,proto3)
 
 	// Required. Variants of expressions.
 	//
-	// Types that are assignable to ExprKind:
+	// Types that are valid to be assigned to ExprKind:
 	//
 	//	*Expr_ConstExpr
 	//	*Expr_IdentExpr
@@ -127,7 +127,7 @@ _#isExpr_ExprKind: _
 //
 // Named 'Constant' here for backwards compatibility.
 //
-// This is similar as the primitives supported in the well-known type
+// This is similar to the primitives supported in the well-known type
 // `google.protobuf.Value`, but richer so it can represent CEL's full range of
 // primitives.
 //
@@ -140,7 +140,7 @@ _#isExpr_ExprKind: _
 #Constant: {
 	// Required. The valid constant kinds.
 	//
-	// Types that are assignable to ConstantKind:
+	// Types that are valid to be assigned to ConstantKind:
 	//
 	//	*Constant_NullValue
 	//	*Constant_BoolValue
@@ -194,18 +194,18 @@ _#isConstant_ConstantKind: _
 #Constant_DurationValue: {
 	// protobuf.Duration value.
 	//
-	// Deprecated: duration is no longer considered a builtin cel type.
+	// Deprecated: duration is no longer considered a builtin CEL type.
 	//
-	// Deprecated: Do not use.
+	// Deprecated: Marked as deprecated in google/api/expr/v1alpha1/syntax.proto.
 	DurationValue?: null | durationpb.#Duration @go(,*durationpb.Duration) @protobuf(8,bytes,opt,name=duration_value,json=durationValue,proto3,oneof)
 }
 
 #Constant_TimestampValue: {
 	// protobuf.Timestamp value.
 	//
-	// Deprecated: timestamp is no longer considered a builtin cel type.
+	// Deprecated: timestamp is no longer considered a builtin CEL type.
 	//
-	// Deprecated: Do not use.
+	// Deprecated: Marked as deprecated in google/api/expr/v1alpha1/syntax.proto.
 	TimestampValue?: null | timestamppb.#Timestamp @go(,*timestamppb.Timestamp) @protobuf(9,bytes,opt,name=timestamp_value,json=timestampValue,proto3,oneof)
 }
 
@@ -226,7 +226,7 @@ _#isConstant_ConstantKind: _
 	//
 	// The line number of a given position is the index `i` where for a given
 	// `id` the `line_offsets[i] < id_positions[id] < line_offsets[i+1]`. The
-	// column may be derivd from `id_positions[id] - line_offsets[i]`.
+	// column may be derived from `id_positions[id] - line_offsets[i]`.
 	line_offsets?: [...int32] @go(LineOffsets,[]int32) @protobuf(3,varint,rep,packed,json=lineOffsets,proto3)
 
 	// A list of tags for extensions that were used while parsing or type checking
@@ -241,7 +241,7 @@ _#isConstant_ConstantKind: _
 
 // A specific position in source.
 #SourcePosition: {
-	// The soucre location name (e.g. file name).
+	// The source location name (e.g. file name).
 	location?: string @go(Location) @protobuf(1,bytes,opt,proto3)
 
 	// The UTF-8 code unit offset.
@@ -290,7 +290,7 @@ _#isConstant_ConstantKind: _
 //
 // For example, `value == 10`, `size(map_value)`.
 #Expr_Call: {
-	// The target of an method call-style expression. For example, `x` in
+	// The target of a method call-style expression. For example, `x` in
 	// `x.f()`.
 	target?: null | #Expr @go(Target,*Expr) @protobuf(1,bytes,opt,proto3)
 
@@ -303,7 +303,7 @@ _#isConstant_ConstantKind: _
 
 // A list creation expression.
 //
-// Lists may either be homogenous, e.g. `[1, 2, 3]`, or heterogeneous, e.g.
+// Lists may either be homogeneous, e.g. `[1, 2, 3]`, or heterogeneous, e.g.
 // `dyn([1, 'hello', 2.0])`
 #Expr_CreateList: {
 	// The elements part of the list.
@@ -324,7 +324,7 @@ _#isConstant_ConstantKind: _
 // similar, but prefixed with a type name and composed of field ids:
 // `types.MyType{field_id: 'value'}`.
 #Expr_CreateStruct: {
-	// The type name of the message to be created, empty when creating map
+	// The type name of the message to be created; empty when creating map
 	// literals.
 	message_name?: string @go(MessageName) @protobuf(1,bytes,opt,json=messageName,proto3)
 
@@ -355,7 +355,7 @@ _#isConstant_ConstantKind: _
 //
 // The `has(m.x)` macro tests whether the property `x` is present in struct
 // `m`. The semantics of this macro depend on the type of `m`. For proto2
-// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the
+// messages `has(m.x)` is defined as 'defined, but not set'. For proto3, the
 // macro tests whether the property is set to its default. For map and struct
 // types, the macro tests whether the property `x` is defined on `m`.
 //
@@ -377,7 +377,7 @@ _#isConstant_ConstantKind: _
 //
 // Comprehensions for the optional V2 macros which support map-to-map
 // translation differ slightly from the standard environment macros in that
-// they expose both the key or index in addition to the value for each list
+// they expose the key or index in addition to the value for each list
 // or map entry:
 //
 // ```
@@ -394,13 +394,12 @@ _#isConstant_ConstantKind: _
 // ```
 #Expr_Comprehension: {
 	// The name of the first iteration variable.
-	// When the iter_range is a list, this variable is the list element.
-	// When the iter_range is a map, this variable is the map entry key.
+	// For the single iteration variable macros, when iter_range is a list, this
+	// variable is the list element and when the iter_range is a map, this
+	// variable is the map key.
 	iter_var?: string @go(IterVar) @protobuf(1,bytes,opt,json=iterVar,proto3)
 
-	// The name of the second iteration variable, empty if not set.
-	// When the iter_range is a list, this variable is the integer index.
-	// When the iter_range is a map, this variable is the map entry value.
+	// The name of the second iteration variable; empty if not set.
 	// This field is only set for comprehension v2 macros.
 	iter_var2?: string @go(IterVar2) @protobuf(8,bytes,opt,json=iterVar2,proto3)
 
@@ -434,12 +433,12 @@ _#isConstant_ConstantKind: _
 #Expr_CreateStruct_Entry: {
 	// Required. An id assigned to this node by the parser which is unique
 	// in a given expression tree. This is used to associate type
-	// information and other attributes to the node.
+	// information and other attributes with the node.
 	id?: int64 @go(Id) @protobuf(1,varint,opt,proto3)
 
 	// The `Entry` key kinds.
 	//
-	// Types that are assignable to KeyKind:
+	// Types that are valid to be assigned to KeyKind:
 	//
 	//	*Expr_CreateStruct_Entry_FieldKey
 	//	*Expr_CreateStruct_Entry_MapKey
@@ -476,7 +475,7 @@ _#isExpr_CreateStruct_Entry_KeyKind: _
 	// If set, the listed components must understand the extension for the
 	// expression to evaluate correctly.
 	//
-	// This field has set semantics, repeated values should be deduplicated.
+	// This field has set semantics; repeated values should be deduplicated.
 	affected_components?: [...#SourceInfo_Extension_Component] @go(AffectedComponents,[]SourceInfo_Extension_Component) @protobuf(2,varint,rep,packed,json=affectedComponents,proto3,enum=google.api.expr.v1alpha1.SourceInfo_Extension_Component)
 
 	// Version info. May be skipped if it isn't meaningful for the extension.
@@ -494,3 +493,5 @@ _#isExpr_CreateStruct_Entry_KeyKind: _
 	// existing implementations, but may be provided informationally.
 	minor?: int64 @go(Minor) @protobuf(2,varint,opt,proto3)
 }
+
+_#file_google_api_expr_v1alpha1_syntax_proto_rawDesc: '\n%google/api/expr/v1alpha1/syntax.proto\x12\x18google.api.expr.v1alpha1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x87\x01\n\nParsedExpr\x122\n\x04expr\x18\x02 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x04expr\x12E\n\vsource_info\x18\x03 \x01(\v2$.google.api.expr.v1alpha1.SourceInfoR\nsourceInfo"\xcb\r\n\x04Expr\x12\x0e\n\x02id\x18\x02 \x01(\x03R\x02id\x12C\n\nconst_expr\x18\x03 \x01(\v2".google.api.expr.v1alpha1.ConstantH\x00R\tconstExpr\x12E\n\nident_expr\x18\x04 \x01(\v2$.google.api.expr.v1alpha1.Expr.IdentH\x00R\tidentExpr\x12H\n\vselect_expr\x18\x05 \x01(\v2%.google.api.expr.v1alpha1.Expr.SelectH\x00R\nselectExpr\x12B\n\tcall_expr\x18\x06 \x01(\v2#.google.api.expr.v1alpha1.Expr.CallH\x00R\bcallExpr\x12H\n\tlist_expr\x18\a \x01(\v2).google.api.expr.v1alpha1.Expr.CreateListH\x00R\blistExpr\x12N\n\vstruct_expr\x18\b \x01(\v2+.google.api.expr.v1alpha1.Expr.CreateStructH\x00R\nstructExpr\x12]\n\x12comprehension_expr\x18\t \x01(\v2,.google.api.expr.v1alpha1.Expr.ComprehensionH\x00R\x11comprehensionExpr\x1a\x1b\n\x05Ident\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x1au\n\x06Select\x128\n\aoperand\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\aoperand\x12\x14\n\x05field\x18\x02 \x01(\tR\x05field\x12\x1b\n\ttest_only\x18\x03 \x01(\bR\btestOnly\x1a\x8e\x01\n\x04Call\x126\n\x06target\x18\x01 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x06target\x12\x1a\n\bfunction\x18\x02 \x01(\tR\bfunction\x122\n\x04args\x18\x03 \x03(\v2\x1e.google.api.expr.v1alpha1.ExprR\x04args\x1as\n\nCreateList\x12:\n\belements\x18\x01 \x03(\v2\x1e.google.api.expr.v1alpha1.ExprR\belements\x12)\n\x10optional_indices\x18\x02 \x03(\x05R\x0foptionalIndices\x1a\xdb\x02\n\fCreateStruct\x12!\n\fmessage_name\x18\x01 \x01(\tR\vmessageName\x12K\n\aentries\x18\x02 \x03(\v21.google.api.expr.v1alpha1.Expr.CreateStruct.EntryR\aentries\x1a\xda\x01\n\x05Entry\x12\x0e\n\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n\tfield_key\x18\x02 \x01(\tH\x00R\bfieldKey\x129\n\amap_key\x18\x03 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprH\x00R\x06mapKey\x124\n\x05value\x18\x04 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x05value\x12%\n\x0eoptional_entry\x18\x05 \x01(\bR\roptionalEntryB\n\n\bkey_kind\x1a\x9a\x03\n\rComprehension\x12\x19\n\biter_var\x18\x01 \x01(\tR\aiterVar\x12\x1b\n\titer_var2\x18\b \x01(\tR\biterVar2\x12=\n\niter_range\x18\x02 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\titerRange\x12\x19\n\baccu_var\x18\x03 \x01(\tR\aaccuVar\x12;\n\taccu_init\x18\x04 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\baccuInit\x12E\n\x0eloop_condition\x18\x05 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\rloopCondition\x12;\n\tloop_step\x18\x06 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\bloopStep\x126\n\x06result\x18\a \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x06resultB\v\n\texpr_kind"\xc1\x03\n\bConstant\x12;\n\nnull_value\x18\x01 \x01(\x0e2\x1a.google.protobuf.NullValueH\x00R\tnullValue\x12\x1f\n\nbool_value\x18\x02 \x01(\bH\x00R\tboolValue\x12!\n\vint64_value\x18\x03 \x01(\x03H\x00R\nint64Value\x12#\n\fuint64_value\x18\x04 \x01(\x04H\x00R\vuint64Value\x12#\n\fdouble_value\x18\x05 \x01(\x01H\x00R\vdoubleValue\x12#\n\fstring_value\x18\x06 \x01(\tH\x00R\vstringValue\x12!\n\vbytes_value\x18\a \x01(\fH\x00R\nbytesValue\x12F\n\x0eduration_value\x18\b \x01(\v2\x19.google.protobuf.DurationB\x02\x18\x01H\x00R\rdurationValue\x12I\n\x0ftimestamp_value\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x02\x18\x01H\x00R\x0etimestampValueB\x0f\n\rconstant_kind"\x8c\a\n\nSourceInfo\x12%\n\x0esyntax_version\x18\x01 \x01(\tR\rsyntaxVersion\x12\x1a\n\blocation\x18\x02 \x01(\tR\blocation\x12!\n\fline_offsets\x18\x03 \x03(\x05R\vlineOffsets\x12Q\n\tpositions\x18\x04 \x03(\v23.google.api.expr.v1alpha1.SourceInfo.PositionsEntryR\tpositions\x12U\n\vmacro_calls\x18\x05 \x03(\v24.google.api.expr.v1alpha1.SourceInfo.MacroCallsEntryR\nmacroCalls\x12N\n\nextensions\x18\x06 \x03(\v2..google.api.expr.v1alpha1.SourceInfo.ExtensionR\nextensions\x1a\x80\x03\n\tExtension\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12i\n\x13affected_components\x18\x02 \x03(\x0e28.google.api.expr.v1alpha1.SourceInfo.Extension.ComponentR\x12affectedComponents\x12P\n\aversion\x18\x03 \x01(\v26.google.api.expr.v1alpha1.SourceInfo.Extension.VersionR\aversion\x1a5\n\aVersion\x12\x14\n\x05major\x18\x01 \x01(\x03R\x05major\x12\x14\n\x05minor\x18\x02 \x01(\x03R\x05minor"o\n\tComponent\x12\x19\n\x15COMPONENT_UNSPECIFIED\x10\x00\x12\x14\n\x10COMPONENT_PARSER\x10\x01\x12\x1a\n\x16COMPONENT_TYPE_CHECKER\x10\x02\x12\x15\n\x11COMPONENT_RUNTIME\x10\x03\x1a<\n\x0ePositionsEntry\x12\x10\n\x03key\x18\x01 \x01(\x03R\x03key\x12\x14\n\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\x1a]\n\x0fMacroCallsEntry\x12\x10\n\x03key\x18\x01 \x01(\x03R\x03key\x124\n\x05value\x18\x02 \x01(\v2\x1e.google.api.expr.v1alpha1.ExprR\x05value:\x028\x01"p\n\x0eSourcePosition\x12\x1a\n\blocation\x18\x01 \x01(\tR\blocation\x12\x16\n\x06offset\x18\x02 \x01(\x05R\x06offset\x12\x12\n\x04line\x18\x03 \x01(\x05R\x04line\x12\x16\n\x06column\x18\x04 \x01(\x05R\x06columnBk\n\x1ccom.google.api.expr.v1alpha1B\vSyntaxProtoP\x01Z<google.golang.org/genproto/googleapis/api/expr/v1alpha1;exprb\x06proto3'

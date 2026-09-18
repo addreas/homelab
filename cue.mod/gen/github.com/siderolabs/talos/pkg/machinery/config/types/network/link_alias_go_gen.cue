@@ -15,6 +15,7 @@ import (
 //
 //	examples:
 //	  - value: exampleLinkAliasConfigV1Alpha1()
+//	  - value: exampleLinkAliasMultipleConfigV1Alpha1()
 //	alias: LinkAliasConfig
 //	schemaRoot: true
 //	schemaMeta: v1alpha1/LinkAliasConfig
@@ -27,18 +28,27 @@ import (
 	//    Don't use system interface names like "eth0", "ens3", "enp0s2", etc. as those may conflict
 	//    with existing physical interfaces.
 	//
+	//    The name can contain a single integer format verb (`%d`) to create multiple aliases
+	//    from a single config document. When a format verb is detected, each matched link receives a sequential
+	//    alias (e.g. `net0`, `net1`, ...) based on hardware address order of the links.
+	//    Links already aliased by a previous config are automatically skipped.
+	//
 	//   examples:
 	//    - value: >
 	//       "net0"
 	//    - value: >
 	//       "private"
+	//    - value: >
+	//       "net%d"
 	//   schemaRequired: true
 	name: string @go(MetaName)
 
 	//   description: |
 	//     Selector to match the link to alias.
 	//
-	//     Selector must match exactly one link, otherwise an error is returned.
+	//     When the alias name is a fixed string, the selector must match exactly one link.
+	//     When the alias name contains a format verb (e.g. `net%d`), the selector may match multiple links
+	//     and each match receives a sequential alias.
 	//     If multiple selectors match the same link, the first one is used.
 	selector?: #LinkSelector @go(Selector)
 }

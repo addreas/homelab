@@ -89,10 +89,15 @@
 //	... // make use of m as a *structpb.Value
 package structpb
 
-// `NullValue` is a singleton enumeration to represent the null value for the
-// `Value` type union.
+// Represents a JSON `null`.
 //
-// The JSON representation for `NullValue` is JSON `null`.
+// `NullValue` is a sentinel, using an enum with only one value to represent
+// the null value for the `Value` type union.
+//
+// A field of type `NullValue` with any value other than `0` is considered
+// invalid. Most ProtoJSON serializers will emit a Value with a `null_value` set
+// as a JSON `null` regardless of the integer value, and so will round trip to
+// a `0` value.
 #NullValue: int32 // #enumNullValue
 
 #enumNullValue:
@@ -103,59 +108,65 @@ package structpb
 // Null value.
 #NullValue_NULL_VALUE: #NullValue & 0
 
-// `Struct` represents a structured data value, consisting of fields
-// which map to dynamically typed values. In some languages, `Struct`
-// might be supported by a native representation. For example, in
-// scripting languages like JS a struct is represented as an
-// object. The details of that representation are described together
-// with the proto support for the language.
+// Represents a JSON object.
 //
-// The JSON representation for `Struct` is JSON object.
+// An unordered key-value map, intending to perfectly capture the semantics of a
+// JSON object. This enables parsing any arbitrary JSON payload as a message
+// field in ProtoJSON format.
+//
+// This follows RFC 8259 guidelines for interoperable JSON: notably this type
+// cannot represent large Int64 values or `NaN`/`Infinity` numbers,
+// since the JSON format generally does not support those values in its number
+// type.
+//
+// If you do not intend to parse arbitrary JSON into your message, a custom
+// typed message should be preferred instead of using this type.
 #Struct: _
 
+// Represents a JSON value.
+//
 // `Value` represents a dynamically typed value which can be either
 // null, a number, a string, a boolean, a recursive struct value, or a
 // list of values. A producer of value is expected to set one of these
-// variants. Absence of any variant indicates an error.
-//
-// The JSON representation for `Value` is JSON value.
+// variants. Absence of any variant is an invalid state.
 #Value: _
 
 _#isValue_Kind: _
 
 #Value_NullValue: {
-	// Represents a null value.
+	// Represents a JSON `null`.
 	NullValue: #NullValue @protobuf(1,varint,opt,name=null_value,json=nullValue,proto3,enum=google.protobuf.NullValue,oneof)
 }
 
 #Value_NumberValue: {
-	// Represents a double value.
+	// Represents a JSON number. Must not be `NaN`, `Infinity` or
+	// `-Infinity`, since those are not supported in JSON. This also cannot
+	// represent large Int64 values, since JSON format generally does not
+	// support them in its number type.
 	NumberValue: float64 @protobuf(2,fixed64,opt,name=number_value,json=numberValue,proto3,oneof)
 }
 
 #Value_StringValue: {
-	// Represents a string value.
+	// Represents a JSON string.
 	StringValue: string @protobuf(3,bytes,opt,name=string_value,json=stringValue,proto3,oneof)
 }
 
 #Value_BoolValue: {
-	// Represents a boolean value.
+	// Represents a JSON boolean (`true` or `false` literal in JSON).
 	BoolValue: bool @protobuf(4,varint,opt,name=bool_value,json=boolValue,proto3,oneof)
 }
 
 #Value_StructValue: {
-	// Represents a structured value.
+	// Represents a JSON object.
 	StructValue?: null | #Struct @go(,*Struct) @protobuf(5,bytes,opt,name=struct_value,json=structValue,proto3,oneof)
 }
 
 #Value_ListValue: {
-	// Represents a repeated `Value`.
+	// Represents a JSON array.
 	ListValue?: null | #ListValue @go(,*ListValue) @protobuf(6,bytes,opt,name=list_value,json=listValue,proto3,oneof)
 }
 
-// `ListValue` is a wrapper around a repeated field of values.
-//
-// The JSON representation for `ListValue` is JSON array.
+// Represents a JSON array.
 #ListValue: _
 
 _#file_google_protobuf_struct_proto_rawDesc: '\n\x1cgoogle/protobuf/struct.proto\x12\x0fgoogle.protobuf"\x98\x01\n\x06Struct\x12;\n\x06fields\x18\x01 \x03(\v2#.google.protobuf.Struct.FieldsEntryR\x06fields\x1aQ\n\vFieldsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12,\n\x05value\x18\x02 \x01(\v2\x16.google.protobuf.ValueR\x05value:\x028\x01"\xb2\x02\n\x05Value\x12;\n\nnull_value\x18\x01 \x01(\x0e2\x1a.google.protobuf.NullValueH\x00R\tnullValue\x12#\n\fnumber_value\x18\x02 \x01(\x01H\x00R\vnumberValue\x12#\n\fstring_value\x18\x03 \x01(\tH\x00R\vstringValue\x12\x1f\n\nbool_value\x18\x04 \x01(\bH\x00R\tboolValue\x12<\n\fstruct_value\x18\x05 \x01(\v2\x17.google.protobuf.StructH\x00R\vstructValue\x12;\n\nlist_value\x18\x06 \x01(\v2\x1a.google.protobuf.ListValueH\x00R\tlistValueB\x06\n\x04kind";\n\tListValue\x12.\n\x06values\x18\x01 \x03(\v2\x16.google.protobuf.ValueR\x06values*\x1b\n\tNullValue\x12\x0e\n\nNULL_VALUE\x10\x00B\u007f\n\x13com.google.protobufB\vStructProtoP\x01Z/google.golang.org/protobuf/types/known/structpb\xf8\x01\x01\xa2\x02\x03GPB\xaa\x02\x1eGoogle.Protobuf.WellKnownTypesb\x06proto3'

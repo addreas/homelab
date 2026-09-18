@@ -12,7 +12,10 @@
 //
 package v1alpha1
 
-import "github.com/siderolabs/crypto/x509"
+import (
+	"github.com/siderolabs/crypto/x509"
+	"github.com/siderolabs/talos/pkg/machinery/config/types/meta"
+)
 
 // Config defines the v1alpha1.Config Talos machine configuration document.
 //
@@ -24,7 +27,7 @@ import "github.com/siderolabs/crypto/x509"
 	//     Indicates the schema used to decode the contents.
 	//   values:
 	//     - "v1alpha1"
-	version?: string @go(ConfigVersion)
+	version: string @go(ConfigVersion)
 
 	//   description: |
 	//     Enable verbose logging to the console.
@@ -74,7 +77,7 @@ import "github.com/siderolabs/crypto/x509"
 	//   values:
 	//     - "controlplane"
 	//     - "worker"
-	type?: string @go(MachineType)
+	type: string @go(MachineType)
 
 	//   description: |
 	//     The `token` is used by a machine to join the PKI of the cluster.
@@ -82,7 +85,7 @@ import "github.com/siderolabs/crypto/x509"
 	//   examples:
 	//     - name: example token
 	//       value: "\"328hom.uqjzh6jnn2eie9oi\""
-	token?: string @go(MachineToken)
+	token: string @go(MachineToken)
 
 	//   description: |
 	//     The root certificate authority of the PKI.
@@ -119,39 +122,25 @@ import "github.com/siderolabs/crypto/x509"
 	//       value: '[]string{"10.0.0.10", "172.16.0.10", "192.168.0.10"}'
 	certSANs: [...string] @go(MachineCertSANs,[]string)
 
-	//   description: |
-	//     Provides machine specific control plane configuration options.
-	//   examples:
-	//     - name: ControlPlane definition example.
-	//       value: machineControlplaneExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeControllerManagerConfig`/`KubeSchedulerConfig` instead.
 	controlPlane?: null | #MachineControlPlaneConfig @go(MachineControlPlane,*MachineControlPlaneConfig)
 
-	//   description: |
-	//     Used to provide additional options to the kubelet.
-	//   examples:
-	//     - name: Kubelet definition example.
-	//       value: machineKubeletExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeletConfig` instead.
 	kubelet?: null | #KubeletConfig @go(MachineKubelet,*KubeletConfig)
 
-	//   description: |
-	//     Used to provide static pod definitions to be run by the kubelet directly bypassing the kube-apiserver.
+	// docgen:nodoc
 	//
-	//     Static pods can be used to run components which should be started before the Kubernetes control plane is up.
-	//     Talos doesn't validate the pod definition.
-	//     Updates to this field can be applied without a reboot.
-	//
-	//     See https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/.
-	//   examples:
-	//     - name: nginx static pod.
-	//       value: machinePodsExample()
-	//   schema:
-	//     type: array
-	//     items:
-	//       type: object
-	pods?: [...#Unstructured] @go(MachinePods,[]Unstructured)
+	// Deprecated: Use `KubeStaticPodConfig` instead.
+	pods?: [...meta.#Unstructured] @go(MachinePods,[]meta.Unstructured)
 
-	//   description: |
-	//     Provides machine specific network configuration options.
+	// docgen:nodoc
+	//
+	// Deprecated: All fields within NetworkConfig are deprecated. Use multi-document network config types instead:
+	// HostnameConfig, NetworkDeviceConfig, ResolverConfig, StaticHostConfig, KubeSpanConfig.
 	network?: null | #NetworkConfig @go(MachineNetwork,*NetworkConfig)
 
 	// docgen:nodoc
@@ -159,47 +148,19 @@ import "github.com/siderolabs/crypto/x509"
 	// Deprecated: Use 'UserVolumeConfig' instead.
 	disks?: [...#MachineDisk] @go(MachineDisks,[]*MachineDisk)
 
-	//   description: |
-	//     Used to provide instructions for installations.
+	// docgen:nodoc
 	//
-	//     Note that this configuration section gets silently ignored by Talos images that are considered pre-installed.
-	//     To make sure Talos installs according to the provided configuration, Talos should be booted with ISO or PXE-booted.
-	//   examples:
-	//     - name: MachineInstall config usage example.
-	//       value: machineInstallExample()
+	// Deprecated: Use the 'UnattendedInstall' multi-document config instead.
 	install?: null | #InstallConfig @go(MachineInstall,*InstallConfig)
 
-	//   description: |
-	//     Allows the addition of user specified files.
-	//     The value of `op` can be `create`, `overwrite`, or `append`.
-	//     In the case of `create`, `path` must not exist.
-	//     In the case of `overwrite`, and `append`, `path` must be a valid file.
-	//     If an `op` value of `append` is used, the existing file will be appended.
-	//     Note that the file contents are not required to be base64 encoded.
-	//   examples:
-	//      - name: MachineFiles usage example.
-	//        value: machineFilesExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use dedicated configuration documents such as EtcFileConfig and CRICustomizationConfig instead.
 	files?: [...#MachineFile] @go(MachineFiles,[]*MachineFile)
 
-	//   description: |
-	//     The `env` field allows for the addition of environment variables.
-	//     All environment variables are set on PID 1 in addition to every service.
-	//   values:
-	//     - "`GRPC_GO_LOG_VERBOSITY_LEVEL`"
-	//     - "`GRPC_GO_LOG_SEVERITY_LEVEL`"
-	//     - "`http_proxy`"
-	//     - "`https_proxy`"
-	//     - "`no_proxy`"
-	//   examples:
-	//     - name: Environment variables definition examples.
-	//       value: machineEnvExamples0()
-	//     - value: machineEnvExamples1()
-	//     - value: machineEnvExamples2()
-	//   schema:
-	//     type: object
-	//     patternProperties:
-	//       ".*":
-	//         type: string
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'EnvironmentConfig' instead.
 	env?: {[string]: string} @go(MachineEnv,Env)
 
 	// docgen:nodoc
@@ -207,18 +168,14 @@ import "github.com/siderolabs/crypto/x509"
 	// Deprecated: Use 'TimeSyncConfig' instead.
 	time?: null | #TimeConfig @go(MachineTime,*TimeConfig)
 
-	//   description: |
-	//     Used to configure the machine's sysctls.
-	//   examples:
-	//     - name: MachineSysctls usage example.
-	//       value: machineSysctlsExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'SysctlConfig' instead.
 	sysctls?: {[string]: string} @go(MachineSysctls,map[string]string)
 
-	//   description: |
-	//     Used to configure the machine's sysfs.
-	//   examples:
-	//     - name: MachineSysfs usage example.
-	//       value: machineSysfsExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'SysfsConfig' instead.
 	sysfs?: {[string]: string} @go(MachineSysfs,map[string]string)
 
 	// docgen:nodoc
@@ -241,18 +198,22 @@ import "github.com/siderolabs/crypto/x509"
 	//     Configures the udev system.
 	//   examples:
 	//     - value: machineUdevExample()
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use `UdevRulesConfig` instead.
 	udev?: null | #UdevConfig @go(MachineUdev,*UdevConfig)
 
 	//   description: |
 	//     Configures the logging system.
 	//   examples:
-	//     - value: machineLoggingExample()
+	//     - value: machineLoggingExample1()
+	//     - value: machineLoggingExample2()
 	logging?: null | #LoggingConfig @go(MachineLogging,*LoggingConfig)
 
-	//   description: |
-	//     Configures the kernel.
-	//   examples:
-	//     - value: machineKernelExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'KernelModuleConfig' instead.
 	kernel?: null | #KernelConfig @go(MachineKernel,*KernelConfig)
 
 	//  description: |
@@ -261,44 +222,24 @@ import "github.com/siderolabs/crypto/x509"
 	//    - value: machineSeccompExample()
 	seccompProfiles?: [...#MachineSeccompProfile] @go(MachineSeccompProfiles,[]*MachineSeccompProfile)
 
-	//  description: |
-	//    Override (patch) settings in the default OCI runtime spec for CRI containers.
+	// docgen:nodoc
 	//
-	//    It can be used to set some default container settings which are not configurable in Kubernetes,
-	//    for example default ulimits.
-	//    Note: this change applies to all newly created containers, and it requires a reboot to take effect.
-	//  examples:
-	//    - name: override default open file limit
-	//      value: machineBaseRuntimeSpecOverridesExample()
-	//  schema:
-	//    type: object
-	baseRuntimeSpecOverrides?: #Unstructured @go(MachineBaseRuntimeSpecOverrides)
+	// Deprecated: Use the CRIBaseRuntimeSpecConfig configuration document instead.
+	baseRuntimeSpecOverrides?: meta.#Unstructured @go(MachineBaseRuntimeSpecOverrides)
 
-	//  description: |
-	//    Configures the node labels for the machine.
+	// docgen:nodoc
 	//
-	//    Note: In the default Kubernetes configuration, worker nodes are restricted to set
-	//    labels with some prefixes (see [NodeRestriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) admission plugin).
-	//  examples:
-	//    - name: node labels example.
-	//      value: 'map[string]string{"exampleLabel": "exampleLabelValue"}'
+	// Deprecated: use `KubeNodeConfig` instead.
 	nodeLabels?: {[string]: string} @go(MachineNodeLabels,map[string]string)
 
-	//  description: |
-	//    Configures the node annotations for the machine.
-	//  examples:
-	//    - name: node annotations example.
-	//      value: 'map[string]string{"customer.io/rack": "r13a25"}'
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeNodeConfig` instead.
 	nodeAnnotations?: {[string]: string} @go(MachineNodeAnnotations,map[string]string)
 
-	//  description: |
-	//    Configures the node taints for the machine. Effect is optional.
+	// docgen:nodoc
 	//
-	//    Note: In the default Kubernetes configuration, worker nodes are not allowed to
-	//    modify the taints (see [NodeRestriction](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction) admission plugin).
-	//  examples:
-	//    - name: node taints example.
-	//      value: 'map[string]string{"exampleTaint": "exampleTaintValue:NoSchedule"}'
+	// Deprecated: use `KubeNodeConfig` instead.
 	nodeTaints?: {[string]: string} @go(MachineNodeTaints,map[string]string)
 }
 
@@ -312,39 +253,34 @@ import "github.com/siderolabs/crypto/x509"
 	//   The `value` field is used to provide the seccomp profile.
 	// schema:
 	//   type: object
-	value: #Unstructured @go(MachineSeccompProfileValue)
+	value: meta.#Unstructured @go(MachineSeccompProfileValue)
 }
 
 // ClusterConfig represents the cluster-wide config values.
-//
-//	examples:
-//	   - value: clusterConfigExample()
 #ClusterConfig: {
-	//   description: |
-	//     Globally unique identifier for this cluster (base64 encoded random 32 bytes).
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryIdentityConfig' document instead.
 	id?: string @go(ClusterID)
 
-	//   description: |
-	//     Shared secret of cluster (base64 encoded random 32 bytes).
-	//     This secret is shared among cluster members but should never be sent over the network.
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryIdentityConfig' document instead.
 	secret?: string @go(ClusterSecret)
 
-	//   description: |
-	//     Provides control plane specific configuration options.
-	//   examples:
-	//     - name: Setting controlplane endpoint address to 1.2.3.4 and port to 443 example.
-	//       value: clusterControlPlaneExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeClusterConfig` instead.
 	controlPlane?: null | #ControlPlaneConfig @go(ControlPlane,*ControlPlaneConfig)
 
-	//   description: |
-	//     Configures the cluster's name.
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeClusterConfig` instead.
 	clusterName?: string @go(ClusterName)
 
-	//   description: |
-	//     Provides cluster specific network configuration options.
-	//   examples:
-	//     - name: Configuring with flannel CNI and setting up subnets.
-	//       value:  clusterNetworkExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeNetworkConfig` and `KubeFlannelCNIConfig` instead.
 	network?: null | #ClusterNetworkConfig @go(ClusterNetwork,*ClusterNetworkConfig)
 
 	//   description: |
@@ -354,107 +290,59 @@ import "github.com/siderolabs/crypto/x509"
 	//       value: '"wlzjyw.bei2zfylhs2by0wd"'
 	token?: string @go(BootstrapToken)
 
-	//   description: |
-	//     A key used for the [encryption of secret data at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
-	//     Enables encryption with AESCBC.
-	//   examples:
-	//     - name: Decryption secret example (do not use in production!).
-	//       value: '"z01mye6j16bspJYtTB/5SFX8j7Ph4JXxM2Xuu4vsBPM="'
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeEtcdEncryptionConfig` instead.
 	aescbcEncryptionSecret?: string @go(ClusterAESCBCEncryptionSecret)
 
-	//   description: |
-	//     A key used for the [encryption of secret data at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
-	//     Enables encryption with secretbox.
-	//     Secretbox has precedence over AESCBC.
-	//   examples:
-	//     - name: Decryption secret example (do not use in production!).
-	//       value: '"z01mye6j16bspJYtTB/5SFX8j7Ph4JXxM2Xuu4vsBPM="'
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeEtcdEncryptionConfig` instead.
 	secretboxEncryptionSecret?: string @go(ClusterSecretboxEncryptionSecret)
 
-	//   description: |
-	//     The base64 encoded root certificate authority used by Kubernetes.
-	//   examples:
-	//     - name: ClusterCA example.
-	//       value: pemEncodedCertificateExample()
-	//   schema:
-	//     type: object
-	//     additionalProperties: false
-	//     properties:
-	//       crt:
-	//         type: string
-	//       key:
-	//         type: string
+	//  docgen:nodoc
+	//
+	// Deprecated: Use `KubeAPIServerCAConfig` instead.
 	ca?: null | x509.#PEMEncodedCertificateAndKey @go(ClusterCA,*x509.PEMEncodedCertificateAndKey)
 
-	//   description: |
-	//     The list of base64 encoded accepted certificate authorities used by Kubernetes.
-	//   schema:
-	//     type: object
-	//     additionalProperties: false
-	//     properties:
-	//       crt:
-	//         type: string
+	//  docgen:nodoc
+	//
+	// Deprecated: Use `KubeAPIServerCAConfig` instead.
 	acceptedCAs?: [...x509.#PEMEncodedCertificate] @go(ClusterAcceptedCAs,[]*x509.PEMEncodedCertificate)
 
-	//   description: |
-	//     The base64 encoded aggregator certificate authority used by Kubernetes for front-proxy certificate generation.
+	// docgen:nodoc
 	//
-	//     This CA can be self-signed.
-	//   examples:
-	//     - name: AggregatorCA example.
-	//       value: pemEncodedCertificateExample()
-	//   schema:
-	//     type: object
-	//     additionalProperties: false
-	//     properties:
-	//       crt:
-	//         type: string
-	//       key:
-	//         type: string
+	// Deprecated: Use `KubeAPIServerAggregatorCAConfig` instead.
 	aggregatorCA?: null | x509.#PEMEncodedCertificateAndKey @go(ClusterAggregatorCA,*x509.PEMEncodedCertificateAndKey)
 
-	//   description: |
-	//     The base64 encoded private key for service account token generation.
-	//   examples:
-	//     - name: AggregatorCA example.
-	//       value: pemEncodedKeyExample()
-	//   schema:
-	//     type: object
-	//     additionalProperties: false
-	//     properties:
-	//       key:
-	//         type: string
-	//         additionalProperties: false
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeServiceAccountConfig` instead.
 	serviceAccount?: null | x509.#PEMEncodedKey @go(ClusterServiceAccount,*x509.PEMEncodedKey)
 
-	//   description: |
-	//     API server specific configuration options.
-	//   examples:
-	//     - value: clusterAPIServerExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeAPIServerConfig` instead.
 	apiServer?: null | #APIServerConfig @go(APIServerConfig,*APIServerConfig)
 
-	//   description: |
-	//     Controller manager server specific configuration options.
-	//   examples:
-	//     - value: clusterControllerManagerExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeControllerManagerConfig` instead.
 	controllerManager?: null | #ControllerManagerConfig @go(ControllerManagerConfig,*ControllerManagerConfig)
 
-	//   description: |
-	//     Kube-proxy server-specific configuration options
-	//   examples:
-	//     - value: clusterProxyExample()
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeProxyConfig` instead.
 	proxy?: null | #ProxyConfig @go(ProxyConfig,*ProxyConfig)
 
-	//   description: |
-	//     Scheduler server specific configuration options.
-	//   examples:
-	//     - value: clusterSchedulerExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeSchedulerConfig` instead.
 	scheduler?: null | #SchedulerConfig @go(SchedulerConfig,*SchedulerConfig)
 
-	//   description: |
-	//     Configures cluster member discovery.
-	//   examples:
-	//     - value: clusterDiscoveryExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' instead
 	discovery?: null | #ClusterDiscoveryConfig @go(ClusterDiscoveryConfig,*ClusterDiscoveryConfig)
 
 	//   description: |
@@ -463,10 +351,9 @@ import "github.com/siderolabs/crypto/x509"
 	//     - value: clusterEtcdExample()
 	etcd?: null | #EtcdConfig @go(EtcdConfig,*EtcdConfig)
 
-	//   description: |
-	//     Core DNS specific configuration options.
-	//   examples:
-	//     - value: clusterCoreDNSExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeCoreDNSConfig` instead.
 	coreDNS?: null | #CoreDNS @go(CoreDNSConfig,*CoreDNS)
 
 	//   description: |
@@ -475,36 +362,19 @@ import "github.com/siderolabs/crypto/x509"
 	//     - value: clusterExternalCloudProviderConfigExample()
 	externalCloudProvider?: null | #ExternalCloudProviderConfig @go(ExternalCloudProviderConfig,*ExternalCloudProviderConfig)
 
-	//   description: |
-	//     A list of urls that point to additional manifests.
-	//     These will get automatically deployed as part of the bootstrap.
-	//   examples:
-	//     - value: >
-	//        []string{
-	//         "https://www.example.com/manifest1.yaml",
-	//         "https://www.example.com/manifest2.yaml",
-	//        }
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeExternalManifestConfig` instead.
 	extraManifests?: [...string] @go(ExtraManifests,[]string)
 
-	//   description: |
-	//     A map of key value pairs that will be added while fetching the extraManifests.
-	//   examples:
-	//     - value: >
-	//         map[string]string{
-	//           "Token": "1234567",
-	//           "X-ExtraInfo": "info",
-	//         }
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeExternalManifestConfig` instead.
 	extraManifestHeaders?: {[string]: string} @go(ExtraManifestHeaders,map[string]string)
 
-	//   description: |
-	//     A list of inline Kubernetes manifests.
-	//     These will get automatically deployed as part of the bootstrap.
-	//   examples:
-	//     - value: clusterInlineManifestsExample()
-	//   schema:
-	//     type: array
-	//     items:
-	//       $ref: "#/$defs/v1alpha1.ClusterInlineManifest"
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeInlineManifestConfig` instead.
 	inlineManifests?: #ClusterInlineManifests @go(ClusterInlineManifests)
 
 	//   description: |
@@ -516,22 +386,18 @@ import "github.com/siderolabs/crypto/x509"
 
 	// docgen:nodoc
 	//
-	// Deprecated: Use `AllowSchedulingOnControlPlanes` instead.
+	// Deprecated: use `KubeNodeConfig` instead.
 	allowSchedulingOnMasters?: null | bool @go(AllowSchedulingOnMasters,*bool)
 
-	//   description: |
-	//     Allows running workload on control-plane nodes.
-	//   values:
-	//     - true
-	//     - yes
-	//     - false
-	//     - no
-	//   examples:
-	//     - value: true
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeNodeConfig` instead.
 	allowSchedulingOnControlPlanes?: null | bool @go(AllowSchedulingOnControlPlanes,*bool)
 }
 
 // LinuxIDMapping represents the Linux ID mapping.
+//
+//docgen:nodoc
 #LinuxIDMapping: {
 	//   description: |
 	//     ContainerID is the starting UID/GID in the container.
@@ -547,6 +413,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // ExtraMount wraps OCI Mount specification.
+//
+//docgen:nodoc
 #ExtraMount: {
 	//   description: |
 	//     Destination is the absolute path where the mount will be placed in the container.
@@ -578,17 +446,25 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // MachineControlPlaneConfig machine specific configuration options.
+//
+// docgen:nodoc
 #MachineControlPlaneConfig: {
-	//   description: |
-	//     Controller manager machine specific configuration options.
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeControllerManagerConfig` instead.
 	controllerManager?: null | #MachineControllerManagerConfig @go(MachineControllerManager,*MachineControllerManagerConfig)
 
-	//   description: |
-	//     Scheduler machine specific configuration options.
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeSchedulerConfig` instead.
 	scheduler?: null | #MachineSchedulerConfig @go(MachineScheduler,*MachineSchedulerConfig)
 }
 
 // MachineControllerManagerConfig represents the machine specific ControllerManager config values.
+//
+// Deprecated: Use `KubeControllerManagerConfig` instead.
+//
+// docgen:nodoc
 #MachineControllerManagerConfig: {
 	//   description: |
 	//     Disable kube-controller-manager on the node.
@@ -596,6 +472,10 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // MachineSchedulerConfig represents the machine specific Scheduler config values.
+//
+// Deprecated: Use `KubeSchedulerConfig` instead.
+//
+// docgen:nodoc
 #MachineSchedulerConfig: {
 	//   description: |
 	//     Disable kube-scheduler on the node.
@@ -603,45 +483,35 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // KubeletConfig represents the kubelet config values.
+//
+// Deprecated: Use `KubeletConfig` instead.
+//
+// docgen:nodoc
 #KubeletConfig: {
-	//   description: |
-	//     The `image` field is an optional reference to an alternative kubelet image.
-	//   examples:
-	//     - value: kubeletImageExample()
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeletConfig` instead.
 	image?: string @go(KubeletImage)
 
-	//   description: |
-	//     The `ClusterDNS` field is an optional reference to an alternative kubelet clusterDNS ip list.
-	//   examples:
-	//     - value: '[]string{"10.96.0.10", "169.254.2.53"}'
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeletConfig` instead.
 	clusterDNS?: [...string] @go(KubeletClusterDNS,[]string)
 
-	//   description: |
-	//     The `extraArgs` field is used to provide additional flags to the kubelet.
-	//   examples:
-	//     - value: >
-	//         map[string]string{
-	//           "key": "value",
-	//         }
-	extraArgs?: {[string]: string} @go(KubeletExtraArgs,map[string]string)
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeletConfig` instead.
+	extraArgs?: meta.#Args @go(KubeletExtraArgs)
 
-	//   description: |
-	//     The `extraMounts` field is used to add additional mounts to the kubelet container.
-	//     Note that either `bind` or `rbind` are required in the `options`.
-	//   examples:
-	//     - value: kubeletExtraMountsExample()
+	// docgen:nodoc
+	//
+	// Deprecated: removed in multi-doc config.
 	extraMounts?: [...#ExtraMount] @go(KubeletExtraMounts,[]ExtraMount)
 
-	//   description: |
-	//     The `extraConfig` field is used to provide kubelet configuration overrides.
+	// docgen:nodoc
 	//
-	//     Some fields are not allowed to be overridden: authentication and authorization, cgroups
-	//     configuration, ports, etc.
-	//   examples:
-	//     - value: kubeletExtraConfigExample()
-	//   schema:
-	//     type: object
-	extraConfig?: #Unstructured @go(KubeletExtraConfig)
+	// Deprecated: use `KubeletConfig` instead.
+	extraConfig?: meta.#Unstructured @go(KubeletExtraConfig)
 
 	//  description: |
 	//   The `KubeletCredentialProviderConfig` field is used to provide kubelet credential configuration.
@@ -649,56 +519,37 @@ import "github.com/siderolabs/crypto/x509"
 	//    - value: kubeletCredentialProviderConfigExample()
 	//  schema:
 	//    type: object
-	credentialProviderConfig?: #Unstructured @go(KubeletCredentialProviderConfig)
+	credentialProviderConfig?: meta.#Unstructured @go(KubeletCredentialProviderConfig)
 
-	//  description: |
-	//    Enable container runtime default Seccomp profile.
-	//  values:
-	//    - true
-	//    - yes
-	//    - false
-	//    - no
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeletConfig` instead.
 	defaultRuntimeSeccompProfileEnabled?: null | bool @go(KubeletDefaultRuntimeSeccompProfileEnabled,*bool)
 
-	//   description: |
-	//     The `registerWithFQDN` field is used to force kubelet to use the node FQDN for registration.
-	//     This is required in clouds like AWS.
-	//   values:
-	//     - true
-	//     - yes
-	//     - false
-	//     - no
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeNodeConfig` instead.
 	registerWithFQDN?: null | bool @go(KubeletRegisterWithFQDN,*bool)
 
-	//   description: |
-	//     The `nodeIP` field is used to configure `--node-ip` flag for the kubelet.
-	//     This is used when a node has multiple addresses to choose from.
-	//   examples:
-	//     - value: kubeletNodeIPExample()
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeNodeConfig` instead.
 	nodeIP?: null | #KubeletNodeIPConfig @go(KubeletNodeIP,*KubeletNodeIPConfig)
 
-	//   description: |
-	//      The `skipNodeRegistration` is used to run the kubelet without registering with the apiserver.
-	//      This runs kubelet as standalone and only runs static pods.
-	//   values:
-	//     - true
-	//     - yes
-	//     - false
-	//     - no
+	// docgen:nodoc
+	//
+	// Deprecated: use `KubeNodeConfig` instead.
 	skipNodeRegistration?: null | bool @go(KubeletSkipNodeRegistration,*bool)
 
-	//   description: |
-	//     The `disableManifestsDirectory` field configures the kubelet to get static pod manifests from the /etc/kubernetes/manifests directory.
-	//     It's recommended to configure static pods with the "pods" key instead.
-	//   values:
-	//     - true
-	//     - yes
-	//     - false
-	//     - no
+	// docgen:nodoc
+	//
+	// Deprecated: locked to true in multi-doc config.
 	disableManifestsDirectory?: null | bool @go(KubeletDisableManifestsDirectory,*bool)
 }
 
 // KubeletNodeIPConfig represents the kubelet node IP configuration.
+//
+//docgen:nodoc
 #KubeletNodeIPConfig: {
 	//  description: |
 	//    The `validSubnets` field configures the networks to pick kubelet node IP from.
@@ -710,6 +561,10 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // NetworkConfig represents the machine's networking config values.
+//
+// Deprecated: all fields in NetworkConfig are deprecated, use corresponding multi-doc config types instead.
+//
+//docgen:nodoc
 #NetworkConfig: {
 	// docgen:nodoc
 	//
@@ -733,13 +588,12 @@ import "github.com/siderolabs/crypto/x509"
 
 	// docgen:nodoc
 	//
-	// Deprecated: Use `StatisHostConfig` instead.
+	// Deprecated: Use `StaticHostConfig` instead.
 	extraHostEntries?: [...#ExtraHost] @go(ExtraHostEntries,[]*ExtraHost)
 
-	//   description: |
-	//     Configures KubeSpan feature.
-	//   examples:
-	//     - value: networkKubeSpanExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeSpanConfig` document instead.
 	kubespan?: null | #NetworkKubeSpan @go(NetworkKubeSpan,*NetworkKubeSpan)
 
 	// docgen:nodoc
@@ -754,6 +608,8 @@ import "github.com/siderolabs/crypto/x509"
 #NetworkDeviceList: [...#Device]
 
 // InstallConfig represents the installation options for preparing a node.
+//
+// docgen:nodoc
 #InstallConfig: {
 	//   description: |
 	//     The disk used for installations.
@@ -779,7 +635,7 @@ import "github.com/siderolabs/crypto/x509"
 	//     Image reference for each Talos release can be found on
 	//     [GitHub releases page](https://github.com/siderolabs/talos/releases).
 	//   examples:
-	//     - value: '"ghcr.io/siderolabs/installer:latest"'
+	//     - value: '"factory.talos.dev/metal-installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba:latest"'
 	image?: string @go(InstallImage)
 
 	// docgen:nodoc
@@ -829,15 +685,10 @@ import "github.com/siderolabs/crypto/x509"
 #InstallDiskType: string
 
 // InstallDiskSelector represents a disk query parameters for the install disk lookup.
+//
+//docgen:nodoc
 #InstallDiskSelector: {
 	//   description: Disk size.
-	//   examples:
-	//     - name: Select a disk which size is equal to 4GB.
-	//       value: machineInstallDiskSizeMatcherExamples0()
-	//     - name: Select a disk which size is greater than 1TB.
-	//       value: machineInstallDiskSizeMatcherExamples1()
-	//     - name: Select a disk which size is less or equal than 2TB.
-	//       value: machineInstallDiskSizeMatcherExamples2()
 	//   schema:
 	//     type: string
 	size?: null | #InstallDiskSizeMatcher @go(Size,*InstallDiskSizeMatcher)
@@ -952,6 +803,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // CoreDNS represents the CoreDNS config values.
+//
+//docgen:nodoc
 #CoreDNS: {
 	//   description: |
 	//     Disable coredns deployment on cluster bootstrap.
@@ -966,27 +819,27 @@ import "github.com/siderolabs/crypto/x509"
 #Endpoint: _
 
 // ControlPlaneConfig represents the control plane configuration options.
+//
+//docgen:nodoc
 #ControlPlaneConfig: {
 	//   description: |
 	//     Endpoint is the canonical controlplane endpoint, which can be an IP address or a DNS hostname.
 	//     It is single-valued, and may optionally include a port number.
-	//   examples:
-	//     - value: clusterEndpointExample1()
-	//     - value: clusterEndpointExample2()
 	//   schema:
 	//     type: string
 	//     format: uri
 	//     pattern: "^https://"
 	endpoint?: null | #Endpoint @go(Endpoint,*Endpoint)
 
-	//   description: |
-	//     The port that the API server listens on internally.
-	//     This may be different than the port portion listed in the endpoint field above.
-	//     The default is `6443`.
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeAPIServerConfig` instead.
 	localAPIServerPort?: int @go(LocalAPIServerPort)
 }
 
 // APIServerConfig represents the kube apiserver configuration options.
+//
+//docgen:nodoc
 #APIServerConfig: {
 	//   description: |
 	//     The container image used in the API server manifest.
@@ -996,7 +849,15 @@ import "github.com/siderolabs/crypto/x509"
 
 	//   description: |
 	//     Extra arguments to supply to the API server.
-	extraArgs?: {[string]: string} @go(ExtraArgsConfig,map[string]string)
+	//   schema:
+	//     type: object
+	//     additionalProperties:
+	//       oneOf:
+	//         - type: string
+	//         - type: array
+	//           items:
+	//             type: string
+	extraArgs?: meta.#Args @go(ExtraArgsConfig)
 
 	//   description: |
 	//     Extra volumes to mount to the API server static pod.
@@ -1013,24 +874,20 @@ import "github.com/siderolabs/crypto/x509"
 
 	//   description: |
 	//     Extra certificate subject alternative names for the API server's certificate.
-	certSANs?: [...string] @go(CertSANs,[]string)
+	certSANs?: [...string] @go(ExtraCertSANs,[]string)
 
 	// docgen:nodoc
 	disablePodSecurityPolicy?: null | bool @go(DisablePodSecurityPolicyConfig,*bool)
 
-	//   description: |
-	//     Configure the API server admission plugins.
-	//   examples:
-	//     - value: admissionControlConfigExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeAdmissionControlConfig` instead.
 	admissionControl?: #AdmissionPluginConfigList @go(AdmissionControlConfig)
 
-	//   description: |
-	//     Configure the API server audit policy.
-	//   examples:
-	//     - value: APIServerDefaultAuditPolicy
-	//   schema:
-	//     type: object
-	auditPolicy?: #Unstructured @go(AuditPolicyConfig)
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeAuditPolicyConfig` instead.
+	auditPolicy?: meta.#Unstructured @go(AuditPolicyConfig)
 
 	//   description: |
 	//     Configure the API server resources.
@@ -1038,19 +895,20 @@ import "github.com/siderolabs/crypto/x509"
 	//     type: object
 	resources?: null | #ResourcesConfig @go(ResourcesConfig,*ResourcesConfig)
 
-	//   description: |
-	//     Configure the API server authorization config. Node and RBAC authorizers are always added irrespective of the configuration.
-	//   examples:
-	//     - value: authorizationConfigExample()
+	// docgen:nodoc
+	//
+	// Deprecated: Use `KubeAuthorizerConfig` instead.
 	authorizationConfig?: #AuthorizationConfigAuthorizerConfigList @go(AuthorizationConfigConfig)
 }
 
 // AdmissionPluginConfigList represents the admission plugin configuration list.
 //
-//docgen:alias
+//docgen:nodoc
 #AdmissionPluginConfigList: [...#AdmissionPluginConfig]
 
 // AdmissionPluginConfig represents the API server admission plugin configuration.
+//
+//docgen:nodoc
 #AdmissionPluginConfig: {
 	//   description: |
 	//     Name is the name of the admission controller.
@@ -1062,15 +920,17 @@ import "github.com/siderolabs/crypto/x509"
 	//     configuration.
 	//   schema:
 	//     type: object
-	configuration: #Unstructured @go(PluginConfiguration)
+	configuration: meta.#Unstructured @go(PluginConfiguration)
 }
 
 // AuthorizationConfigAuthorizerConfigList represents the authorization config authorizer configuration list.
 //
-//docgen:alias
+//docgen:nodoc
 #AuthorizationConfigAuthorizerConfigList: [...#AuthorizationConfigAuthorizerConfig]
 
 // AuthorizationConfigAuthorizerConfig represents the API server authorization config authorizer configuration.
+//
+//docgen:nodoc
 #AuthorizationConfigAuthorizerConfig: {
 	//   description: |
 	//     Type is the name of the authorizer. Allowed values are `Node`, `RBAC`, and `Webhook`.
@@ -1084,20 +944,30 @@ import "github.com/siderolabs/crypto/x509"
 	//     webhook is the configuration for the webhook authorizer.
 	//   schema:
 	//     type: object
-	webhook?: #Unstructured @go(AuthorizerWebhook)
+	webhook?: meta.#Unstructured @go(AuthorizerWebhook)
 }
 
 // ControllerManagerConfig represents the kube controller manager configuration options.
+//
+// Deprecated: Use `KubeControllerManagerConfig` instead.
+//
+// docgen:nodoc
 #ControllerManagerConfig: {
 	//   description: |
 	//     The container image used in the controller manager manifest.
-	//   examples:
-	//     - value: clusterControllerManagerImageExample()
 	image?: string @go(ContainerImage)
 
 	//   description: |
 	//     Extra arguments to supply to the controller manager.
-	extraArgs?: {[string]: string} @go(ExtraArgsConfig,map[string]string)
+	//   schema:
+	//     type: object
+	//     additionalProperties:
+	//       oneOf:
+	//         - type: string
+	//         - type: array
+	//           items:
+	//             type: string
+	extraArgs?: meta.#Args @go(ExtraArgsConfig)
 
 	//   description: |
 	//     Extra volumes to mount to the controller manager static pod.
@@ -1120,11 +990,15 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // ProxyConfig represents the kube proxy configuration options.
+//
+// Deprecated: use KubeProxyConfig instead.
+//
+// docgen:nodoc
 #ProxyConfig: {
 	//   description: |
 	//     Disable kube-proxy deployment on cluster bootstrap.
 	//   examples:
-	//     - value: pointer.To(false)
+	//     - value: new(false)
 	disabled?: null | bool @go(Disabled,*bool)
 
 	//   description: |
@@ -1140,20 +1014,38 @@ import "github.com/siderolabs/crypto/x509"
 
 	//   description: |
 	//     Extra arguments to supply to kube-proxy.
-	extraArgs?: {[string]: string} @go(ExtraArgsConfig,map[string]string)
+	//   schema:
+	//     type: object
+	//     additionalProperties:
+	//       oneOf:
+	//         - type: string
+	//         - type: array
+	//           items:
+	//             type: string
+	extraArgs?: meta.#Args @go(ExtraArgsConfig)
 }
 
 // SchedulerConfig represents the kube scheduler configuration options.
+//
+// Deprecated: Use `KubeSchedulerConfig` instead.
+//
+// docgen:nodoc
 #SchedulerConfig: {
 	//   description: |
 	//     The container image used in the scheduler manifest.
-	//   examples:
-	//     - value: clusterSchedulerImageExample()
 	image?: string @go(ContainerImage)
 
 	//   description: |
 	//     Extra arguments to supply to the scheduler.
-	extraArgs?: {[string]: string} @go(ExtraArgsConfig,map[string]string)
+	//   schema:
+	//     type: object
+	//     additionalProperties:
+	//       oneOf:
+	//         - type: string
+	//         - type: array
+	//           items:
+	//             type: string
+	extraArgs?: meta.#Args @go(ExtraArgsConfig)
 
 	//   description: |
 	//     Extra volumes to mount to the scheduler static pod.
@@ -1178,7 +1070,7 @@ import "github.com/siderolabs/crypto/x509"
 	//     Specify custom kube-scheduler configuration.
 	//   schema:
 	//     type: object
-	config?: #Unstructured @go(SchedulerConfig)
+	config?: meta.#Unstructured @go(SchedulerConfig)
 }
 
 // EtcdConfig represents the etcd configuration options.
@@ -1222,11 +1114,19 @@ import "github.com/siderolabs/crypto/x509"
 	//     - `peer-key-file`
 	//   examples:
 	//     - values: >
-	//         map[string]string{
-	//           "initial-cluster": "https://1.2.3.4:2380",
-	//           "advertise-client-urls": "https://1.2.3.4:2379",
+	//         meta.Args{
+	//           "initial-cluster": meta.NewArgValue("https://1.2.3.4:2380", nil),
+	//           "advertise-client-urls": meta.NewArgValue("https://1.2.3.4:2379", nil),
 	//         }
-	extraArgs?: {[string]: string} @go(EtcdExtraArgs,map[string]string)
+	//   schema:
+	//     type: object
+	//     additionalProperties:
+	//       oneOf:
+	//         - type: string
+	//         - type: array
+	//           items:
+	//             type: string
+	extraArgs?: meta.#Args @go(EtcdExtraArgs)
 
 	// docgen:nodoc
 	//
@@ -1259,6 +1159,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // ClusterNetworkConfig represents kube networking configuration options.
+//
+// docgen:nodoc
 #ClusterNetworkConfig: {
 	//   description: |
 	//     The CNI used.
@@ -1294,6 +1196,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // CNIConfig represents the CNI configuration options.
+//
+// docgen:nodoc
 #CNIConfig: {
 	//   description: |
 	//     Name of CNI to use.
@@ -1314,6 +1218,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // FlannelCNIConfig represents the Flannel CNI configuration options.
+//
+// docgen:nodoc
 #FlannelCNIConfig: {
 	//   description: |
 	//     Extra arguments for 'flanneld'.
@@ -1321,6 +1227,12 @@ import "github.com/siderolabs/crypto/x509"
 	//     - value: >
 	//         []string{"--iface-can-reach=192.168.1.1"}
 	extraArgs?: [...string] @go(FlanneldExtraArgs,[]string)
+
+	//   description: |
+	//     Deploys kube-network-policies along with Flannel.
+	//
+	//     This enables Kubernetes Network Policies support in the cluster.
+	kubeNetworkPoliciesEnabled?: null | bool @go(FlannelKubeNetworkPoliciesEnabled,*bool)
 }
 
 // ExternalCloudProviderConfig contains external cloud provider configuration.
@@ -1507,9 +1419,13 @@ import "github.com/siderolabs/crypto/x509"
 #EncryptionKeyNodeID: {}
 
 // Env represents a set of environment variables.
+//
+//docgen:nodoc
 #Env: {[string]: string}
 
 // ResourcesConfig represents the pod resources.
+//
+//docgen:nodoc
 #ResourcesConfig: {
 	//   description: |
 	//     Requests configures the reserved cpu/memory resources.
@@ -1518,7 +1434,7 @@ import "github.com/siderolabs/crypto/x509"
 	//       value: resourcesConfigRequestsExample()
 	//   schema:
 	//     type: object
-	requests?: #Unstructured @go(Requests)
+	requests?: meta.#Unstructured @go(Requests)
 
 	//   description: |
 	//     Limits configures the maximum cpu/memory resources a container can use.
@@ -1527,13 +1443,15 @@ import "github.com/siderolabs/crypto/x509"
 	//       value: resourcesConfigLimitsExample()
 	//   schema:
 	//     type: object
-	limits?: #Unstructured @go(Limits)
+	limits?: meta.#Unstructured @go(Limits)
 }
 
 // FileMode represents file's permissions.
 #FileMode: _
 
 // MachineFile represents a file to write to disk.
+//
+//docgen:nodoc
 #MachineFile: {
 	//   description: The contents of the file.
 	content: string @go(FileContent)
@@ -2131,12 +2049,9 @@ import "github.com/siderolabs/crypto/x509"
 	// Deprecated: use HostConfig instead.
 	stableHostname?: null | bool @go(StableHostname,*bool)
 
-	//   description: |
-	//    Configure Talos API access from Kubernetes pods.
+	// docgen:nodoc
 	//
-	//    This feature is disabled if the feature config is not specified.
-	//   examples:
-	//     - value: kubernetesTalosAPIAccessConfigExample()
+	// Deprecated: use KubeTalosAPIAccessConfig instead.
 	kubernetesTalosAPIAccess?: null | #KubernetesTalosAPIAccessConfig @go(KubernetesTalosAPIAccessConfig,*KubernetesTalosAPIAccessConfig)
 
 	// docgen:nodoc
@@ -2147,17 +2062,19 @@ import "github.com/siderolabs/crypto/x509"
 	//     Also enables kubelet tracking of ephemeral disk usage in the kubelet via quota.
 	diskQuotaSupport?: null | bool @go(DiskQuotaSupport,*bool)
 
-	//   description: |
-	//     KubePrism - local proxy/load balancer on defined port that will distribute
-	//     requests to all API servers in the cluster.
+	// docgen:nodoc
+	//
+	// Deprecated: Use KubePrismConfig document instead.
 	kubePrism?: null | #KubePrism @go(KubePrismSupport,*KubePrism)
 
-	//   description: |
-	//     Configures host DNS caching resolver.
+	// docgen:nodoc
+	//
+	// Deprecated: Use ResolverConfig document instead.
 	hostDNS?: null | #HostDNSConfig @go(HostDNSSupport,*HostDNSConfig)
 
-	//   description: |
-	//     Enable Image Cache feature.
+	// docgen:nodoc
+	//
+	// Deprecated: Use ImageCacheConfig document instead.
 	imageCache?: null | #ImageCacheConfig @go(ImageCacheSupport,*ImageCacheConfig)
 
 	//   description: |
@@ -2169,6 +2086,10 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // KubePrism describes the configuration for the KubePrism load balancer.
+//
+// docgen:nodoc
+//
+// Deprecated: Use KubePrismConfig document instead.
 #KubePrism: {
 	//   description: |
 	//     Enable KubePrism support - will start local load balancing proxy.
@@ -2180,6 +2101,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // ImageCacheConfig describes the configuration for the Image Cache feature.
+//
+// docgen:nodoc
 #ImageCacheConfig: {
 	//   description: |
 	//     Enable local image cache.
@@ -2187,6 +2110,10 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // KubernetesTalosAPIAccessConfig describes the configuration for the Talos API access from Kubernetes pods.
+//
+// docgen:nodoc
+//
+// Deprecated: Use KubeTalosAPIAccessConfig document instead.
 #KubernetesTalosAPIAccessConfig: {
 	//   description: |
 	//     Enable Talos API access from Kubernetes pods.
@@ -2204,10 +2131,14 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // HostDNSConfig describes the configuration for the host DNS resolver.
+//
+// Deprecated: Use ResolverConfig document instead.
+//
+// docgen:nodoc
 #HostDNSConfig: {
 	//   description: |
 	//     Enable host DNS caching resolver.
-	enabled?: null | bool @go(HostDNSEnabled,*bool)
+	enabled?: null | bool @go(HostDNSConfigEnabled,*bool)
 
 	//   description: |
 	//     Use the host DNS resolver as upstream for Kubernetes CoreDNS pods.
@@ -2225,6 +2156,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // VolumeMountConfig struct describes extra volume mount for the static pods.
+//
+//docgen:nodoc
 #VolumeMountConfig: {
 	//   description: |
 	//     Path on the host.
@@ -2247,10 +2180,16 @@ import "github.com/siderolabs/crypto/x509"
 
 // ClusterInlineManifests is a list of ClusterInlineManifest.
 //
-//docgen:alias
+// docgen:nodoc
+//
+// Deprecated: Use `KubeInlineManifestConfig` instead.
 #ClusterInlineManifests: [...#ClusterInlineManifest]
 
 // ClusterInlineManifest struct describes inline bootstrap manifests for the user.
+//
+// docgen:nodoc
+//
+// Deprecated: Use `KubeInlineManifestConfig` instead.
 #ClusterInlineManifest: {
 	//   description: |
 	//     Name of the manifest.
@@ -2267,6 +2206,10 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // NetworkKubeSpan struct describes KubeSpan configuration.
+//
+// Deprecated: Use KubeSpanConfig document instead.
+//
+// docgen:nodoc
 #NetworkKubeSpan: {
 	// description: |
 	//   Enable the KubeSpan feature.
@@ -2309,6 +2252,8 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // KubeSpanFilters struct describes KubeSpan advanced network addresses filtering.
+//
+// docgen:nodoc
 #KubeSpanFilters: {
 	// description: |
 	//   Filter node addresses which will be advertised as KubeSpan endpoints for peer-to-peer Wireguard connections.
@@ -2364,18 +2309,34 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // ClusterDiscoveryConfig struct configures cluster membership discovery.
+//
+// docgen:nodoc
+//
+// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 #ClusterDiscoveryConfig: {
 	// description: |
 	//   Enable the cluster membership discovery feature.
 	//   Cluster discovery is based on individual registries which are configured under the registries field.
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	enabled?: null | bool @go(DiscoveryEnabled,*bool)
 
 	// description: |
 	//   Configure registries used for cluster member discovery.
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	registries: #DiscoveryRegistriesConfig @go(DiscoveryRegistries)
 }
 
 // DiscoveryRegistriesConfig struct configures cluster membership discovery.
+//
+// docgen:nodoc
+//
+// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 #DiscoveryRegistriesConfig: {
 	// description: |
 	//   Kubernetes registry uses Kubernetes API server to discover cluster members and stores additional information
@@ -2383,14 +2344,26 @@ import "github.com/siderolabs/crypto/x509"
 	//
 	//   This feature is deprecated as it is not compatible with Kubernetes 1.32+.
 	//   See https://github.com/siderolabs/talos/issues/9980 for more information.
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	kubernetes: #RegistryKubernetesConfig @go(RegistryKubernetes)
 
 	// description: |
 	//   Service registry is using an external service to push and pull information about cluster members.
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	service: #RegistryServiceConfig @go(RegistryService)
 }
 
 // RegistryKubernetesConfig struct configures Kubernetes discovery registry.
+//
+// docgen:nodoc
+//
+// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 #RegistryKubernetesConfig: {
 	// description: |
 	//   Disable Kubernetes discovery registry.
@@ -2398,22 +2371,42 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // RegistryServiceConfig struct configures Kubernetes discovery registry.
+//
+// docgen:nodoc
+//
+// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 #RegistryServiceConfig: {
 	// description: |
 	//   Disable external service discovery registry.
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	disabled?: null | bool @go(RegistryDisabled,*bool)
 
 	// description: |
 	//   External service endpoint.
 	// examples:
 	//   - value: constants.DefaultDiscoveryServiceEndpoint
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use 'DiscoveryServiceConfig' document instead.
 	endpoint?: string @go(RegistryEndpoint)
 }
 
 // UdevConfig describes how the udev system should be configured.
+//
+// docgen:nodoc
+//
+// Deprecated: Use `UdevRulesConfig` instead.
 #UdevConfig: {
 	//   description: |
 	//     List of udev rules to apply to the udev system
+	//
+	// docgen:nodoc
+	//
+	// Deprecated: Use `UdevRulesConfig` instead.
 	rules?: [...string] @go(UdevRules,[]string)
 }
 
@@ -2428,9 +2421,6 @@ import "github.com/siderolabs/crypto/x509"
 #LoggingDestination: {
 	// description: |
 	//   Where to send logs. Supported protocols are "tcp" and "udp".
-	// examples:
-	//   - value: loggingEndpointExample1()
-	//   - value: loggingEndpointExample2()
 	endpoint?: null | #Endpoint @go(LoggingEndpoint,*Endpoint)
 
 	// description: |
@@ -2445,19 +2435,33 @@ import "github.com/siderolabs/crypto/x509"
 }
 
 // KernelConfig struct configures Talos Linux kernel.
+//
+// docgen:nodoc
+//
+// Deprecated: Use multi-doc `KernelModuleConfig` instead.
 #KernelConfig: {
 	// description: |
 	//   Kernel modules to load.
+	//
+	// Deprecated: Use multi-doc `KernelModuleConfig` instead.
 	modules?: [...#KernelModuleConfig] @go(KernelModules,[]*KernelModuleConfig)
 }
 
 // KernelModuleConfig struct configures Linux kernel modules to load.
+//
+// docgen:nodoc
+//
+// Deprecated: Use multi-doc `KernelModuleConfig` instead.
 #KernelModuleConfig: {
 	// description: |
 	//   Module name.
+	//
+	// Deprecated: Use multi-doc `KernelModuleConfig` instead.
 	name: string @go(ModuleName)
 
 	// description: |
 	//   Module parameters, changes applied after reboot.
+	//
+	// Deprecated: Use multi-doc `KernelModuleConfig` instead.
 	parameters?: [...string] @go(ModuleParameters,[]string)
 }

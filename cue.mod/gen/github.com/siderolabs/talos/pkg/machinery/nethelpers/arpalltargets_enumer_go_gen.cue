@@ -32,6 +32,10 @@ _#_AutoHostnameKindName: "offtalos-addrstable"
 
 _#_AutoHostnameKindLowerName: "offtalos-addrstable"
 
+_#_BGPSessionStateName: "UNKNOWNIDLECONNECTACTIVEOPEN_SENTOPEN_CONFIRMESTABLISHED"
+
+_#_BGPSessionStateLowerName: "unknownidleconnectactiveopen_sentopen_confirmestablished"
+
 _#_BondModeName: "balance-rractive-backupbalance-xorbroadcast802.3adbalance-tlbbalance-alb"
 
 _#_BondModeLowerName: "balance-rractive-backupbalance-xorbroadcast802.3adbalance-tlbbalance-alb"
@@ -54,6 +58,10 @@ _#_ConntrackStateLowerName_2: "new"
 _#_DefaultActionName: "acceptblock"
 
 _#_DefaultActionLowerName: "acceptblock"
+
+_#_DNSProtocolName: "Do53DoTDoH"
+
+_#_DNSProtocolLowerName: "do53dotdoh"
 
 _#_DuplexName_0:      "HalfFull"
 _#_DuplexLowerName_0: "halffull"
@@ -150,6 +158,11 @@ _#_RouteProtocolLowerName_5: "eigrp"
 _#_RouteTypeName: "unspecunicastlocalbroadcastanycastmulticastblackholeunreachableprohibitthrownatxresolve"
 
 _#_RouteTypeLowerName: "unspecunicastlocalbroadcastanycastmulticastblackholeunreachableprohibitthrownatxresolve"
+
+_#_RoutingRuleActionName_0:      "unspecunicast"
+_#_RoutingRuleActionLowerName_0: "unspecunicast"
+_#_RoutingRuleActionName_1:      "blackholeunreachableprohibit"
+_#_RoutingRuleActionLowerName_1: "blackholeunreachableprohibit"
 
 _#_RoutingTableName: "unspec123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206207208209210211212213214215216217218219220221222223224225226227228229230231232233234235236237238239240241242243244245246247248249250251252defaultmainlocal"
 

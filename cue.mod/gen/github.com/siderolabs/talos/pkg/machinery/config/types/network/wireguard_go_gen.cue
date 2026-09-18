@@ -71,7 +71,7 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//   schema:
 	//     type: string
 	//     pattern: ^([0-9a-f.:]+|\[[0-9a-f:.]+\]):\d{1,5}$
-	endpoint?: #AddrPort @go(WireguardEndpoint)
+	endpoint?: meta.#AddrPort @go(WireguardEndpoint)
 
 	//   description: |
 	//     Specifies the persistent keepalive interval for this peer.
@@ -89,5 +89,5 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 	//     items:
 	//       type: string
 	//       pattern: ^[0-9a-f.:]+/\d{1,3}$
-	allowedIPs?: [...#Prefix] @go(WireguardAllowedIPs,[]Prefix)
+	allowedIPs?: [...meta.#Prefix] @go(WireguardAllowedIPs,[]meta.Prefix)
 }

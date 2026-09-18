@@ -32,4 +32,7 @@ import exprpb "google.golang.org/genproto/googleapis/api/expr/v1alpha1:expr"
 #FieldType: {
 	// Type of the field as a protobuf type value.
 	Type?: null | exprpb.#Type @go(,*exprpb.Type)
+
+	// IsJSONFIeld indicates that the field was accessed via its JSON name.
+	IsJSONField: bool
 }

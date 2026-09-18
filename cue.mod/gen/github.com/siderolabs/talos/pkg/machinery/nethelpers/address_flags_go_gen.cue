@@ -5,7 +5,12 @@
 package nethelpers
 
 // AddressFlags is a bitmask of AddressFlag.
-#AddressFlags: string
+#AddressFlags: string // #enumAddressFlags
+
+#enumAddressFlags:
+	#AddressFlagsManaged
+
+#values_AddressFlags: AddressFlagsManaged: #AddressFlagsManaged
 
 // AddressFlag wraps IFF_* constants.
 #AddressFlag: string // #enumAddressFlag
@@ -51,3 +56,5 @@ package nethelpers
 #AddressNoPrefixRoute:  #AddressFlag & 512
 #AddressMCAutoJoin:     #AddressFlag & 1024
 #AddressStablePrivacy:  #AddressFlag & 2048
+
+#AddressFlagsManaged: #AddressFlags & 1938

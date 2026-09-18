@@ -94,28 +94,28 @@ import (
 	//    If not specified, a default route will be created for the address family of the gateway.
 	//   examples:
 	//    - value: >
-	//       Prefix{netip.MustParsePrefix("10.0.0.0/8")}
+	//       meta.Prefix{netip.MustParsePrefix("10.0.0.0/8")}
 	//   schema:
 	//     type: string
 	//     pattern: ^[0-9a-f.:]+/\d{1,3}$
-	destination?: #Prefix @go(RouteDestination)
+	destination?: meta.#Prefix @go(RouteDestination)
 
 	//   description: |
 	//     The route's gateway (if empty, creates link scope route).
 	//   examples:
 	//    - value: >
-	//       Addr{netip.MustParseAddr("10.0.0.1")}
+	//       meta.Addr{netip.MustParseAddr("10.0.0.1")}
 	//   schema:
 	//     type: string
 	//     pattern: ^[0-9a-f.:]+$
-	gateway?: #Addr @go(RouteGateway)
+	gateway?: meta.#Addr @go(RouteGateway)
 
 	//   description: |
 	//     The route's source address (optional).
 	//   schema:
 	//     type: string
 	//     pattern: ^[0-9a-f.:]+$
-	source?: #Addr @go(RouteSource)
+	source?: meta.#Addr @go(RouteSource)
 
 	//   description: |
 	//     The optional metric for the route.

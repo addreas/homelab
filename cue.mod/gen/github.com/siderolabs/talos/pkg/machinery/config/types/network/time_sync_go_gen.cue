@@ -48,8 +48,15 @@ import "github.com/siderolabs/talos/pkg/machinery/config/types/meta"
 #NTPConfig: {
 	//   description: |
 	//     Specifies time (NTP) servers to use for setting the system time.
-	//     Defaults to `time.cloudflare.com`.
+	//     Defaults to `time.cloudflare.com` when configuration is not provided.
 	servers?: [...string] @go(Servers,[]string)
+
+	//   description: |
+	//     Enables NTS (Network Time Security) for NTP queries.
+	//     NTS provides authenticated and encrypted time synchronization using TLS.
+	//     When enabled, all NTP capable servers must be specified as hostnames (not IP addresses).
+	//     Defaults to `true` when configuration is not provided, using the system default server (`time.cloudflare.com`).
+	useNTS?: null | bool @go(UseNTS,*bool)
 }
 
 // PTPConfig represents a PTP (Precision Time Protocol) configuration.
