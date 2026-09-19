@@ -1,52 +1,62 @@
 package talos
 
-t: Role: "control-plane": patch: machine: {
-	network: interfaces: [{
+t: Role: "control-plane": patches: [{
+	machine: network: interfaces: [{
 		deviceSelector: physical: true
 		dhcp: true
 		vip: ip: apiVip
 	}]
-	features: kubernetesTalosAPIAccess: enabled: true
-}
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KubeTalosAPIAccessConfig"
+	allowedRoles: ["os:operator"]
+	allowedKubernetesNamespaces: ["kube-system"]
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KubeProxyConfig"
+	enabled:    false
+}]
 
-t: Role: "worker": patch: machine: nodeLabels: "node-role.kubernetes.io/worker": ""
+t: Role: "worker": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "KubeNodeConfig"
+	labels: "node-role.kubernetes.io/worker": ""
+}]
 
 t: Role: "base": {
-	patch: cluster: {
-		controlPlane: endpoint: "https://\(apiHost):6443"
-		clusterName: "qb"
-		network: {
-			dnsDomain: "cluster.local"
-			podSubnets: ["10.48.0.0/16"]
-			serviceSubnets: ["10.96.0.0/12"]
-			cni: name: "none"
-		}
-		proxy: disabled:    true
-		discovery: enabled: false
-		allowSchedulingOnControlPlanes: false
-	}
-
-	patch: machine: {
-		kubelet: {
-			defaultRuntimeSeccompProfileEnabled: true
-			disableManifestsDirectory:           true
-		}
-		install: {
-			disk: "/dev/nvme0n1"
+	patches: [{
+		machine: features: diskQuotaSupport: true
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "KubeNetworkConfig"
+		dnsDomain:  "cluster.local"
+		podSubnets: ["10.48.0.0/16"]
+		serviceSubnets: ["10.96.0.0/12"]
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "KubeFlannelCNIConfig"
+		$patch:     "delete"
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "ResolverConfig"
+		hostDNS: forwardKubeDNSToHost: false // cilium issue: https://github.com/siderolabs/talos/pull/9200
+	}, {
+		apiVersion:                          "v1alpha1"
+		kind:                                "KubeletConfig"
+		defaultRuntimeSeccompProfileEnabled: true
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "UnattendedInstallConfig"
+		provisioning: {
+			diskSelector: match: #"disk.dev_path == "/dev/nvme0n1""#
 			wipe: true
 		}
-		features: {
-			diskQuotaSupport: true
-			kubePrism: {
-				enabled: true
-				port:    7445
-			}
-			hostDNS: {
-				enabled:              true
-				forwardKubeDNSToHost: false // cilium issue: https://github.com/siderolabs/talos/pull/9200
-			}
-		}
-	}
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "DiscoveryServiceConfig"
+		name:       "default"
+		$patch:     "delete"
+	}]
 
 	schematic: customization: {
 		bootloader: "sd-boot"
@@ -60,32 +70,35 @@ t: Role: "base": {
 	}
 }
 
-t: Role: "longhorn": {
-	patch: machine: {
-		nodeLabels: "node-role.kubernetes.io/longhorn":             ""
-		sysfs: "kernel.mm.hugepages.hugepages-2048kB.nr_hugepages": "1024"
-		kernel: modules: [{
-			name: "vfio_pci"
-		}, {
-			name: "uio_pci_generic"
-		}]
-	}
-
-	schematic: customization: systemExtensions: officialExtensions: [
-		"siderolabs/iscsi-tools",
-		"siderolabs/nfs-utils",
-		"siderolabs/nfsd",
-	]
-}
+t: Role: "longhorn": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "KubeNodeConfig"
+	labels: "node-role.kubernetes.io/longhorn": ""
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "SysfsConfig"
+	params: "kernel.mm.hugepages.hugepages-2048kB.nr_hugepages": "1024"
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KernelModuleConfig"
+	name:       "vfio_pci"
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KernelModuleConfig"
+	name:       "uio_pci_generic"
+}]
 
 t: Role: "intel": schematic: customization: systemExtensions: officialExtensions: ["siderolabs/intel-ucode"]
 
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
 
-t: Role: "vpn-egress": patch: machine: {
-	nodeLabels: "node-role.kubernetes.io/vpn-egress": ""
-	network: interfaces: [{
+t: Role: "vpn-egress": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "KubeNodeConfig"
+	labels: "node-role.kubernetes.io/vpn-egress": ""
+}, {
+	machine: network: interfaces: [{
 		deviceSelector: physical: true
 		dhcp: true
 		vlans: [{
@@ -94,4 +107,4 @@ t: Role: "vpn-egress": patch: machine: {
 			routes: [{network: "0.0.0.0/0", gateway: "10.25.0.1", metric: 2048}]
 		}]
 	}]
-}
+}]

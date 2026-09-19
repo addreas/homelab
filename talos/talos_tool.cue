@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"encoding/yaml"
 	"tool/exec"
+	"tool/file"
 	"tool/http"
 	"tool/cli"
 )
@@ -21,7 +22,7 @@ secrets: exec.Run & {
 	stdout: string
 }
 
-// wrapper for talosctl with nodes populated. useage -t cmd="get disks" -t role=worker
+// wrapper for talosctl with nodes populated. usage -t cmd="get disks" -t role=worker
 command: "talosctl": {
 	args: string @tag(cmd)
 	role: string @tag(role)
@@ -49,7 +50,7 @@ command: "talosconfig": exec.Run & {
 	]
 }
 
-// apply initial config on node (-t node=name) in maintainance mode (ip has to be defined)
+// apply initial config on node (-t node=name) in maintenance mode (ip has to be defined)
 command: "adopt": {
 	apply: exec.Run & {
 		stdin: targetNodeConfig.stdout
@@ -62,7 +63,7 @@ command: "adopt": {
 	}
 }
 
-// run cue cmd apply for all nodes
+// apply config to every node, sequentially
 command: "apply-all": {
 	let commands = [for name, _ in t.Node {"cue cmd apply -t node=\(name)"}]
 	exec.Run & {
@@ -94,7 +95,8 @@ command: "apply": {
 	upgradePrint: cli.Print & {
 		$after: [apply]
 		text: """
-		Upgrading to factory image "factory.talos.dev/metal-installer/\(schematic.response.value.id):\(talosVersion.value)"
+		Running upgrade: 
+		\(strings.Join(upgrade.cmd, " "))
 		"""
 	}
 
@@ -109,7 +111,7 @@ command: "apply": {
 	}
 }
 
-// all-in-one pixiecore with automatic config application
+// all-in-one pixiecore with automatic config fetch
 command: "boot": {
 	configEndpoint: "http://\(host):8080/v1/machineconfig/{mac}"
 	print: cli.Print & {
@@ -187,37 +189,64 @@ command: "boot": {
 	}
 }
 
-command: "bootstrap": exec.Run & {
-	let ciliumValues = {
+// bootstrap etcd + fetch kubeconfig, install cilium/multus/flux and apply resources
+command: "bootstrap": {
+	ciliumValues: {
 		ipam: mode: "kubernetes"
 		kubeProxyReplacement: true
-		securityContext: capabilities: ciliumAgent:      "{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
-		securityContext: capabilities: cleanCiliumState: "{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
-		cgroup: autoMount: enabled:                      false
-		cgroup: hostRoot: "/sys/fs/cgroup"
+		securityContext: capabilities: {
+			ciliumAgent:      "CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID"
+			cleanCiliumState: "NET_ADMIN,SYS_ADMIN,SYS_RESOURCE"
+		}
+		cgroup: {
+			autoMount: enabled: false
+			hostRoot: "/sys/fs/cgroup"
+		}
 		k8sServiceHost: "localhost"
 		k8sServicePort: 7445
 	}
 
-	cmd: ["sh", "-c", """
-		talosctl bootstrap -n \(targetNodeName)
-		talosctl kubeconfig -n \(targetNodeName)
-		# TODO: note even close to something that would work
-		cilium install --values \(ciliumValues)
+	bootstrap: exec.Run & {
+		cmd: ["talosctl", "bootstrap", "--nodes", targetNodeName]
+	}
 
-		# https://docs.siderolabs.com/kubernetes-guides/cni/multus
-		kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml
+	kubeconfig: exec.Run & {
+		$after: [bootstrap]
+		cmd: ["talosctl", "kubeconfig", "--nodes", targetNodeName]
+	}
 
-		flux install --toleration-keys=node-role.kubernetes.io/control-plane
+	ciliumValuesFile: file.Create & {
+		filename: "cilium-values.yaml"
+		contents: yaml.Marshal(ciliumValues)
+	}
 
-		kubectl apply -k https://github.com/addreas/cue-controller/config/default
+	cilium: exec.Run & {
+		$after: [kubeconfig, ciliumValuesFile]
+		cmd: ["cilium", "install", "--values", ciliumValuesFile.filename]
+	}
 
-		cue cmd apply -t kind=CueExport ../resources/...
-		"""]
+	multus: exec.Run & {
+		$after: [cilium]
+		cmd: ["kubectl", "apply", "-f", "https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/deployments/multus-daemonset-thick.yml"]
+	}
+
+	flux: exec.Run & {
+		$after: [cilium]
+		cmd: ["flux", "install", "--toleration-keys=node-role.kubernetes.io/control-plane"]
+	}
+
+	cueController: exec.Run & {
+		$after: [flux]
+		cmd: ["kubectl", "apply", "-k", "https://github.com/addreas/cue-controller/config/default"]
+	}
+
+	applyResources: exec.Run & {
+		$after: [cueController]
+		cmd: ["cue", "cmd", "apply", "-t", "kind=CueExport", "../resources/..."]
+	}
 }
 
-// regenerate CUE defs from the talos machinery Go types at a pinned version
-// (default: latest release; override with -t version=vX.Y.Z)
+// cue get go the talos go types
 command: "defs": {
 	version: string @tag(version)
 	version: *talosVersion.value | string
@@ -229,15 +258,10 @@ command: "defs": {
 		response: body: string
 	}
 
-	// first quoted string on each line mentioning pkg/machinery (grep|sed equivalent)
-	quoted: [for line in strings.Split(fetch.response.body, "\n")
+	pkgs: [for line in strings.Split(fetch.response.body, "\n")
 		if strings.Contains(line, "pkg/machinery")
 		if strings.Contains(line, "\"") {strings.Split(line, "\"")[1]}]
 
-	// dedupe via map keys (no list.Uniq)
-	pkgs: [for k, _ in {for q in quoted {(q): true}} {k}]
-
-	// pin the talos Go module (machinery included) so cue get go resolves at \(version)
 	pin: exec.Run & {
 		cmd: ["go", "-C", "..", "get", "github.com/siderolabs/talos@\(version)"]
 	}

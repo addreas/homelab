@@ -1,6 +1,0 @@
-customization:
-  systemExtensions:
-    officialExtensions:
-      - siderolabs/iscsi-tools
-      - siderolabs/nfs-utils
-      - siderolabs/nfsd

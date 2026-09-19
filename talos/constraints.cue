@@ -3,8 +3,6 @@ package talos
 import (
 	"strings"
 	factory "github.com/siderolabs/image-factory/pkg/schematic"
-	"github.com/siderolabs/talos/pkg/machinery/config/types/v1alpha1"
-	// "github.com/siderolabs/talos/pkg/machinery/config/types/network"
 )
 
 #Role: =~strings.Join([for role, _ in t.Role {role}], "|")
@@ -28,9 +26,8 @@ t: Node: [name=string]: #NodeSpec & {
 
 	patches: [
 		for r in roles
-		if t.Role[r].patch != _|_ {
-			t.Role[r].patch
-		}, {
+		if t.Role[r].patches != _|_
+		for p in t.Role[r].patches {p}, {
 			apiVersion: "v1alpha1"
 			kind:       "HostnameConfig"
 			hostname:   name
@@ -46,5 +43,13 @@ t: Node: [name=string]: #NodeSpec & {
 	}).out
 }
 
-t: Role: [string]: patch?:     v1alpha1.#Config
+t: Role: [string]: patches?: [...]
 t: Role: [string]: schematic?: factory.#Schematic
+
+_check: ""
+for _, node in t.Node
+for i, p in node.patches
+if p["$patch"] == _|_
+if (p & #Patch) == _|_ {
+	_check: "invalid patch in \(node.hostname) [\(i)]"
+}
