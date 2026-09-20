@@ -1,6 +1,9 @@
 package talos
 
-import "list"
+import (
+	"list"
+	"encoding/json"
+)
 
 #MergeAppend: {
 	in: [...{...}]
@@ -38,4 +41,21 @@ import "list"
 			}
 		}
 	}
+}
+
+#githubLatest: {
+	$repo: string
+
+	req: {
+		url: "https://api.github.com/repos/\($repo)/releases"
+		response: {
+			statusCode: 200
+			body:       string & =~".*tag_name.*"
+			value:      json.Unmarshal(body)
+			...
+		}
+		...
+	}
+
+	value: [for r in req.response.value if r.prerelease != true {r}][0].tag_name
 }

@@ -6,6 +6,7 @@ t: Role: "control-plane": patches: [{
 		dhcp: true
 		vip: ip: apiVip
 	}]
+	machine: certSANs: [apiHost, apiVip]
 }, {
 	apiVersion: "v1alpha1"
 	kind:       "KubeTalosAPIAccessConfig"
@@ -17,11 +18,7 @@ t: Role: "control-plane": patches: [{
 	enabled:    false
 }]
 
-t: Role: "worker": patches: [{
-	apiVersion: "v1alpha1"
-	kind:       "KubeNodeConfig"
-	labels: "node-role.kubernetes.io/worker": ""
-}]
+t: Role: "worker": patches: []
 
 t: Role: "base": {
 	patches: [{
@@ -48,7 +45,9 @@ t: Role: "base": {
 		apiVersion: "v1alpha1"
 		kind:       "UnattendedInstallConfig"
 		provisioning: {
-			diskSelector: match: #"disk.dev_path == "/dev/nvme0n1""#
+			diskSelector: match: #"(disk.size > 200u * GB) && (disk.size < 1000u * GB)"#
+			// diskSelector: match: #"disk.transport == "nvme" && disk.size > 200u * GiB"#
+			// diskSelector: match: #"disk.dev_path == "/dev/nvme1n1""#
 			wipe: true
 		}
 	}, {
@@ -70,23 +69,26 @@ t: Role: "base": {
 	}
 }
 
-t: Role: "longhorn": patches: [{
-	apiVersion: "v1alpha1"
-	kind:       "KubeNodeConfig"
-	labels: "node-role.kubernetes.io/longhorn": ""
-}, {
-	apiVersion: "v1alpha1"
-	kind:       "SysfsConfig"
-	params: "kernel.mm.hugepages.hugepages-2048kB.nr_hugepages": "1024"
-}, {
-	apiVersion: "v1alpha1"
-	kind:       "KernelModuleConfig"
-	name:       "vfio_pci"
-}, {
-	apiVersion: "v1alpha1"
-	kind:       "KernelModuleConfig"
-	name:       "uio_pci_generic"
-}]
+t: Role: "longhorn": {
+	// requires manual kubectl label node <name> node-role.kubernetes.io/longhorn
+	patches: [{
+		apiVersion: "v1alpha1"
+		kind:       "SysfsConfig"
+		params: "kernel.mm.hugepages.hugepages-2048kB.nr_hugepages": "1024"
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "KernelModuleConfig"
+		name:       "vfio_pci"
+	}, {
+		apiVersion: "v1alpha1"
+		kind:       "KernelModuleConfig"
+		name:       "uio_pci_generic"
+	}]
+	schematic: customization: systemExtensions: officialExtensions: [
+		"siderolabs/iscsi-tools",
+		"siderolabs/nfsd",
+	]
+}
 
 t: Role: "intel": schematic: customization: systemExtensions: officialExtensions: ["siderolabs/intel-ucode"]
 
@@ -94,10 +96,7 @@ t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimenta
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
 
 t: Role: "vpn-egress": patches: [{
-	apiVersion: "v1alpha1"
-	kind:       "KubeNodeConfig"
-	labels: "node-role.kubernetes.io/vpn-egress": ""
-}, {
+	// requires manual kubectl label node <name> node-role.kubernetes.io/vpn-egress
 	machine: network: interfaces: [{
 		deviceSelector: physical: true
 		dhcp: true

@@ -7,17 +7,17 @@ groups: "base": {
 		"control-plane": {
 			common: roles: ["control-plane", "intel"]
 			nodes: {
-				"talos-3cf-jbr": {mac: "1c:69:7a:a0:af:3e", ip: "10.24.0.86"}
-				"talos-lcn-k2p": {mac: "1c:69:7a:6f:c2:b8", ip: "10.24.0.94"}
-				"qb-cp-90": {mac: "1c:69:7a:01:84:76", ip: "10.24.0.90", roles: ["longhorn"]}
+				"qbm0": {mac: "1c:69:7a:a0:af:3e", ip: "10.24.0.86"}
+				"qbm1": {mac: "1c:69:7a:01:84:76", ip: "10.24.0.90"}
+				"qbm2": {mac: "1c:69:7a:6f:c2:b8", ip: "10.24.0.94"}
 			}
 		}
 
 		"worker": {
 			common: roles: ["worker", "longhorn", "intel"]
 			nodes: {
-				"talos-hz2-2oi": {mac: "30:24:a9:87:60:bf", roles: ["vpn-egress"]}
-				"talos-o1t-0lm": mac: "e8:d8:d1:54:d7:df"
+				"qbw0": {mac: "30:24:a9:87:60:bf", ip: "10.24.0.69", roles: ["vpn-egress"]}
+				"qbw1": {mac: "e8:d8:d1:54:d7:df", ip: "10.24.0.95"}
 			}
 		}
 	}
