@@ -161,7 +161,7 @@ command: "apply": {
 					"--file", "/dev/stdin",
 					if dryRun {"--dry-run"},
 				]
-				stdout: string
+				success: bool
 			}
 
 			runningVersion: exec.Run & {
@@ -176,8 +176,7 @@ command: "apply": {
 			}
 
 			upgrade: exec.Run & {
-				// $after: [apply] // bug? re-triggers apply after upgrade
-				_applied: apply.stdout
+				$after: [apply.success]
 
 				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
 
