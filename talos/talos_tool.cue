@@ -13,10 +13,10 @@ import (
 
 host: string @tag(host,var=hostname)
 
-talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
-// talosVersion: value: "v1.14.1"
-k8sVersion: #githubLatest & {req: http.Get, $repo: "kubernetes/kubernetes"}
-// k8sVersion: value: "v1.36.2"
+// talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
+talosVersion: value: "v1.14.1"
+// k8sVersion: #githubLatest & {req: http.Get, $repo: "kubernetes/kubernetes"}
+k8sVersion: value: "v1.36.2"
 
 secrets: exec.Run & {
 	cmd: ["sops", "decrypt", "secrets.yaml"]
@@ -77,9 +77,9 @@ targetNodes: [Name=string]: {
 				// "--talos-version", talosVersion.value,
 				"--install-image", schematic.installImage,
 				"--kubernetes-version", k8sVersion.value,
-				"--with-docs", "false",
-				"--with-examples", "false",
-				"--with-cluster-discovery", "false",
+				"--with-docs=false",
+				"--with-examples=false",
+				"--with-cluster-discovery=false",
 				"--output-types", outputType,
 				"--output", "-",
 			],

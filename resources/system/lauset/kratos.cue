@@ -78,6 +78,6 @@ k: Service: "kratos-public": spec: {
 }
 
 k: PostgresCluster: "kratos-db": spec: {
-	instances: 1
+	instances: 2
 	storage: size: "1Gi"
 }

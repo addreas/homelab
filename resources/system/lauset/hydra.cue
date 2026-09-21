@@ -79,6 +79,6 @@ k: Service: "hydra-public": spec: {
 }
 
 k: PostgresCluster: "hydra-db": spec: {
-	instances: 1
+	instances: 2
 	storage: size: "1Gi"
 }

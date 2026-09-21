@@ -16,6 +16,10 @@ t: Role: "control-plane": patches: [{
 	apiVersion: "v1alpha1"
 	kind:       "KubeProxyConfig"
 	enabled:    false
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KubeAPIServerConfig"
+	extraArgs: "feature-gates": "MutablePVNodeAffinity=true"
 }]
 
 t: Role: "worker": patches: []
@@ -45,8 +49,8 @@ t: Role: "base": {
 		apiVersion: "v1alpha1"
 		kind:       "UnattendedInstallConfig"
 		provisioning: {
-			diskSelector: match: #"(disk.size > 200u * GB) && (disk.size < 1000u * GB)"#
-			// diskSelector: match: #"disk.transport == "nvme" && disk.size > 200u * GiB"#
+			// diskSelector: match: #"(disk.size > 200u * GB) && (disk.size < 1000u * GB)"#
+			diskSelector: match: #"disk.transport == "nvme" && disk.size < 1000u * GiB"#
 			// diskSelector: match: #"disk.dev_path == "/dev/nvme1n1""#
 			wipe: true
 		}
