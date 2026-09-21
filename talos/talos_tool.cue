@@ -16,7 +16,7 @@ host: string @tag(host,var=hostname)
 // talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
 talosVersion: value: "v1.14.1"
 // k8sVersion: #githubLatest & {req: http.Get, $repo: "kubernetes/kubernetes"}
-k8sVersion: value: "v1.36.2"
+k8sVersion: value: "v1.37.0"
 
 secrets: exec.Run & {
 	cmd: ["sops", "decrypt", "secrets.yaml"]
