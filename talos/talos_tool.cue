@@ -11,7 +11,9 @@ import (
 	"tool/cli"
 )
 
-host: string @tag(host,var=hostname)
+host:        string                        @tag(host,var=hostname)
+dryRun:      bool | *false                 @tag(dryRun,type=bool)
+factoryHost: string | *"factory.talos.dev" @tag(factory)
 
 // talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
 talosVersion: value: "v1.14.1"
@@ -28,7 +30,7 @@ targetSchematics: {
 		let str = json.Marshal(node.spec.schematic)
 		(str): {
 			post: http.Post & {
-				url: "https://factory.talos.dev/schematics"
+				url: "https://\(factoryHost)/schematics"
 				request: body:  str
 				response: body: string
 				response: value: json.Unmarshal(response.body) & {id: string}
@@ -36,9 +38,9 @@ targetSchematics: {
 
 			id: post.response.value.id
 
-			installImage: "factory.talos.dev/metal-installer/\(id):\(talosVersion.value)"
+			installImage: "\(factoryHost)/metal-installer/\(id):\(talosVersion.value)"
 
-			factoryImageBase: "https://factory.talos.dev/image/\(id)/\(talosVersion.value)"
+			factoryImageBase: "https://\(factoryHost)/image/\(id)/\(talosVersion.value)"
 			cmdlineGet: http.Get & {
 				url: "\(factoryImageBase)/cmdline-metal-amd64"
 				response: body: string
@@ -74,7 +76,6 @@ targetNodes: [Name=string]: {
 				clusterName,
 				"https://\(apiHost):6443",
 				"--with-secrets", "/dev/stdin",
-				// "--talos-version", talosVersion.value,
 				"--install-image", schematic.installImage,
 				"--kubernetes-version", k8sVersion.value,
 				"--with-docs=false",
@@ -140,6 +141,7 @@ command: "adopt": {
 				"--nodes", node.spec.ip,
 				"--file", "/dev/stdin",
 				"--insecure",
+				if dryRun {"--dry-run"},
 			]
 		}
 	}
@@ -148,7 +150,7 @@ command: "adopt": {
 command: "dump-config": cli.Print & {text: targetNodes[targetNodeName].machineConfig.stdout}
 
 // run talosctl apply-config and talosctl upgrade for -t node
-command: "apply-and-upgrade": {
+command: "apply": {
 	for name, node in targetNodes {
 		(name): {
 			apply: exec.Run & {
@@ -157,16 +159,44 @@ command: "apply-and-upgrade": {
 					"--context", clusterName,
 					"--nodes", name,
 					"--file", "/dev/stdin",
+					if dryRun {"--dry-run"},
 				]
+				stdout: string
 			}
+
+			runningVersion: exec.Run & {
+				cmd: ["talosctl", "--context", clusterName, "--nodes", name, "get", "version", "-o", "json"]
+				stdout: string
+				parsed: json.Unmarshal(stdout) & {spec: version: string}
+			}
+			runningSchematic: exec.Run & {
+				cmd: ["talosctl", "--context", clusterName, "--nodes", name, "get", "imagefactoryschematic", "-o", "json"]
+				stdout: string
+				parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
+			}
+
 			upgrade: exec.Run & {
-				$after: [apply]
-				cmd: ["talosctl", "upgrade",
-					"--context", clusterName,
-					"--nodes", name,
-					"--image", node.schematic.installImage,
-					"--debug",
-				]
+				// $after: [apply] // bug? re-triggers apply after upgrade
+				_applied: apply.stdout
+
+				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
+
+				let needsUpgrade = runningImage != node.schematic.installImage
+
+				if !needsUpgrade {
+					cmd: ["echo", "\(name): already running \(runningImage)"]
+				}
+				if needsUpgrade && dryRun {
+					cmd: ["echo", "\(name): dry-run: would upgrade \(runningImage) -> \(node.schematic.installImage)"]
+				}
+				if needsUpgrade && !dryRun {
+					cmd: ["talosctl", "upgrade",
+						"--context", clusterName,
+						"--nodes", name,
+						"--image", node.schematic.installImage,
+						"--debug",
+					]
+				}
 			}
 		}
 	}
