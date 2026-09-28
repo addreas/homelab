@@ -2,77 +2,67 @@ package kube
 
 import utils "github.com/addreas/homelab/util"
 
-k: StatefulSet: qbittorrent: {
-	spec: {
-		template: {
-			metadata: labels: "vpn-egress": "client"
-			spec: {
-				initContainers: [utils.copyStatic & {
-					volumeMounts: [{
-						mountPath: "/config/qBittorrent"
-						name:      "config"
-					}, {
-						mountPath: "/static/config/qBittorrent"
-						name:      "static-config"
-					}]
+k: StatefulSet: qbittorrent: spec: {
+	template: {
+		metadata: labels: "vpn-egress": "client"
+		spec: {
+			initContainers: [utils.copyStatic & {
+				volumeMounts: [{
+					mountPath: "/config/qBittorrent"
+					name:      "config"
+				}, {
+					mountPath: "/static/config/qBittorrent"
+					name:      "static-config"
 				}]
-				containers: [{
-					name:            "qbittorrent"
-					image:           "lscr.io/linuxserver/qbittorrent:latest"
-					imagePullPolicy: "Always"
-					command: ["/app/qbittorrent-nox", "--confirm-legal-notice"]
-					ports: [{
-						containerPort: 8080
-					}]
-					volumeMounts: [{
-						mountPath: "/config/qBittorrent"
-						name:      "config"
-					}, {
-						mountPath: "/config/.cache"
-						name:      "cache"
-					}, {
-						mountPath: "/videos"
-						name:      "videos"
-					}]
-					resources: {
-						limits: {
-							memory: "2Gi"
-							cpu:    "500m"
-						}
-						requests: {
-							memory: "512Mi"
-							cpu:    "250m"
-						}
+			}]
+			containers: [{
+				name:            "qbittorrent"
+				image:           "lscr.io/linuxserver/qbittorrent:5.2.3"
+				command: ["/app/qbittorrent-nox", "--confirm-legal-notice"]
+				ports: [{
+					containerPort: 8080
+				}]
+				volumeMounts: [{
+					mountPath: "/config/qBittorrent"
+					name:      "config"
+				}, {
+					mountPath: "/config/.cache"
+					name:      "cache"
+				}, {
+					mountPath: "/videos"
+					name:      "videos"
+				}]
+				resources: {
+					limits: {
+						memory: "2Gi"
+						cpu:    "500m"
 					}
-				}]
-				volumes: [{
-					name: "static-config"
-					configMap: name: "qbittorrent-static-config"
-				}, {
-					name: "videos"
-					persistentVolumeClaim: claimName: "videos"
-				}, {
-					name: "config"
-					persistentVolumeClaim: claimName: "qbittorrent-config"
-				}, {
-					name: "cache"
-					emptyDir: {}
-				}]
-				terminationGracePeriodSeconds: 5
-			}
+					requests: {
+						memory: "512Mi"
+						cpu:    "250m"
+					}
+				}
+			}]
+			volumes: [{
+				name: "static-config"
+				configMap: name: "qbittorrent-static-config"
+			}, {
+				name: "videos"
+				persistentVolumeClaim: claimName: "videos"
+			}, {
+				name: "cache"
+				emptyDir: {}
+			}]
+			terminationGracePeriodSeconds: 5
 		}
 	}
+	volumeClaimTemplates: [{
+		metadata: name: "config"
+		spec: resources: requests: storage: "5Gi"
+	}]
 }
 
-k: PersistentVolumeClaim: "qbittorrent-config": spec: resources: requests: storage: "5Gi"
-
-k: Service: qbittorrent: spec: ports: [{
-	name: "http"
-	port: 8080
-}, {
-	name: "metrics"
-	port: 8000
-}]
+k: Service: qbittorrent: {}
 
 k: HTTPRoute: qbittorrent: _authproxy: true
 

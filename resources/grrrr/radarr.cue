@@ -1,56 +1,46 @@
 package kube
 
-k: StatefulSet: radarr: {
-	spec: {
-		template: {
-			metadata: labels: "vpn-egress": "client"
-			spec: {
-				containers: [{
-					name:            "radarr"
-					image:           "lscr.io/linuxserver/radarr:latest"
-					imagePullPolicy: "Always"
-					command: ["/app/radarr/bin/Radarr", "-nobrowser", "-data=/config"]
-					ports: [{
-						containerPort: 7878
-					}]
-					volumeMounts: [{
-						mountPath: "/config"
-						name:      "config"
-					}, {
-						mountPath: "/videos"
-						name:      "videos"
-					}]
-					resources: {
-						limits: {
-							cpu:    "1500m"
-							memory: "2Gi"
-						}
-						requests: {
-							cpu:    "100m"
-							memory: "512Mi"
-						}
-					}
+k: StatefulSet: radarr: spec: {
+	template: {
+		metadata: labels: "vpn-egress": "client"
+		spec: {
+			containers: [{
+				name:            "radarr"
+				image:           "lscr.io/linuxserver/radarr:6.4.4"
+				command: ["/app/radarr/bin/Radarr", "-nobrowser", "-data=/config"]
+				ports: [{
+					containerPort: 7878
 				}]
-				volumes: [{
-					name: "videos"
-					persistentVolumeClaim: claimName: "videos"
+				volumeMounts: [{
+					mountPath: "/config"
+					name:      "config"
 				}, {
-					name: "config"
-					persistentVolumeClaim: claimName: "radarr-config"
+					mountPath: "/videos"
+					name:      "videos"
 				}]
-			}
+				resources: {
+					limits: {
+						cpu:    "1500m"
+						memory: "2Gi"
+					}
+					requests: {
+						cpu:    "100m"
+						memory: "512Mi"
+					}
+				}
+			}]
+			volumes: [{
+				name: "videos"
+				persistentVolumeClaim: claimName: "videos"
+			}]
 		}
 	}
+	volumeClaimTemplates: [{
+		metadata: name: "config"
+		spec: resources: requests: storage: "5Gi"
+	}]
 }
 
-k: PersistentVolumeClaim: "radarr-config": spec: resources: requests: storage: "5Gi"
-
-k: Service: radarr: spec: ports: [{
-	name: "http"
-	port: 7878
-}, {
-	name: "metrics"
-	port: 9707
-}]
+k: Service: radarr: spec: {}
 
 k: HTTPRoute: radarr: _authproxy: true

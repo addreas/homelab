@@ -1,43 +1,41 @@
 package kube
 
-k: StatefulSet: "jellyfin": spec: template: spec: {
-	containers: [{
-		image:           "ghcr.io/jellyfin/jellyfin:2025072105"
-		imagePullPolicy: "Always"
-		ports: [{
-			name:          "http"
-			containerPort: 8096
+k: StatefulSet: jellyfin: spec: {
+	template: spec: {
+		containers: [{
+			image: "ghcr.io/jellyfin/jellyfin:10.11.11"
+			ports: [{
+				name:          "http"
+				containerPort: 8096
+			}]
+			volumeMounts: [{
+				name:      "config"
+				mountPath: "/config"
+			}, {
+				name:      "cache"
+				mountPath: "/cache"
+			}, {
+				name:      "videos"
+				mountPath: "/videos"
+			}]
 		}]
-		volumeMounts: [{
-			name:      "config"
-			mountPath: "/config"
-		}, {
-			name:      "cache"
-			mountPath: "/cache"
-		}, {
-			name:      "videos"
-			mountPath: "/videos"
+		volumes: [{
+			name: "videos"
+			persistentVolumeClaim: claimName: "videos"
 		}]
-	}]
-	volumes: [{
-		name: "config"
-		persistentVolumeClaim: claimName: "jellyfin-config"
+	}
+	volumeClaimTemplates: [{
+		metadata: name: "config"
+		spec: resources: requests: storage: "20Gi"
 	}, {
-		name: "cache"
-		persistentVolumeClaim: claimName: "jellyfin-cache"
-	}, {
-		name: "videos"
-		persistentVolumeClaim: claimName: "videos"
+		metadata: name: "cache"
+		spec: resources: requests: storage: "20Gi"
 	}]
 }
 
-k: PersistentVolumeClaim: "jellyfin-config": spec: resources: requests: storage: "20Gi"
-k: PersistentVolumeClaim: "jellyfin-cache": spec: resources: requests: storage:  "20Gi"
-
-k: Service: "jellyfin": {}
-k: Service: "jellyfin": {
+k: Service: jellyfin: {
 	metadata: labels: advertise: "bgp"
 	spec: type: "LoadBalancer"
 }
 
-k: HTTPRoute: "jellyfin": _authproxy: true
+k: HTTPRoute: jellyfin: _authproxy: true
