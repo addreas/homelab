@@ -99,15 +99,28 @@ t: Role: "intel": schematic: customization: systemExtensions: officialExtensions
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
 
+// requires manual kubectl label node <name> node-role.kubernetes.io/vpn-egress
 t: Role: "vpn-egress": patches: [{
-	// requires manual kubectl label node <name> node-role.kubernetes.io/vpn-egress
-	machine: network: interfaces: [{
-		deviceSelector: physical: true
-		dhcp: true
-		vlans: [{
-			vlanId: 25
-			addresses: ["10.25.0.2/28"]
-			routes: [{network: "0.0.0.0/0", gateway: "10.25.0.1", metric: 2048}]
-		}]
+	apiVersion: "v1alpha1"
+	kind:       "DHCPv4Config"
+	name:       "eno1"
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "VLANConfig"
+	name:       "eno1.25"
+	vlanID:     25
+	parent:     "eno1"
+	addresses: [{address: "10.25.0.2/28"}]
+	routes: [{
+		gateway: "10.25.0.1"
+		metric:  2048
+		table:   "125"
 	}]
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "RoutingRuleConfig"
+	name:       "1000"
+	src:        "10.25.0.2/32"
+	table:      "125"
+	action:     "unicast"
 }]
