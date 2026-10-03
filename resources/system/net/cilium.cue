@@ -24,11 +24,12 @@ k: HelmRelease: cilium: spec: {
 		kubeProxyReplacement: true
 		ipam: mode:      "kubernetes"
 		bpf: masquerade: true
+		devices: "en+"
 
 		l2announcements: enabled: true
 		bgpControlPlane: enabled: true
 
-		gatewayAPI: enabled: true
+		gatewayAPI: enabled:    true
 		egressGateway: enabled: true
 
 		ingressController: {

@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"grrrr" | string
+_namespace: "grrrr"
 
 k: CueExport: "homelab-grrrr": spec: {
 	interval:  "30m"
