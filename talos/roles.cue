@@ -112,8 +112,12 @@ t: Role: "vpn-egress": patches: [{
 	parent:     "eno1"
 	addresses: [{address: "10.25.0.2/28"}]
 	routes: [{
+		// for same node egress, main table but high metric
 		gateway: "10.25.0.1"
 		metric:  2048
+	}, {
+		// for cross node egress, completely separate table
+		gateway: "10.25.0.1"
 		table:   "125"
 	}]
 }, {

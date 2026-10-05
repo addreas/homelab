@@ -3,7 +3,7 @@ package kube
 k: Deployment: flaresolverr: spec: template: {
 	metadata: labels: "vpn-egress": "client"
 	spec: containers: [{
-		image:           "ghcr.io/flaresolverr/flaresolverr:v3.5.2"
+		image: "ghcr.io/flaresolverr/flaresolverr:v3.5.2"
 		ports: [{
 			name:          "http"
 			containerPort: 8191
@@ -11,7 +11,7 @@ k: Deployment: flaresolverr: spec: template: {
 		resources: {
 			limits: {
 				cpu:    "2"
-				memory: "512Mi"
+				memory: "2Gi"
 			}
 			requests: cpu: "500m"
 		}
