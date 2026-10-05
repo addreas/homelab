@@ -5,7 +5,7 @@ k: HelmRepository: longhorn: spec: url: "https://charts.longhorn.io"
 k: HelmRelease: longhorn: spec: {
 	chart: spec: {
 		chart:   "longhorn"
-		version: "1.12.1"
+		version: "1.13.0"
 	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
