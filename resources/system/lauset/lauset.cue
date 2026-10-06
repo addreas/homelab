@@ -2,7 +2,7 @@ package kube
 
 k: Deployment: "lauset": spec: template: spec: {
 	containers: [{
-		image: "ghcr.io/addreas/lauset:f14e1fc"
+		image: "ghcr.io/addreas/lauset:d791911"
 		envFrom: [{configMapRef: name: "lauset"}, {secretRef: name: "lauset"}]
 		ports: [{
 			name:          "http"
