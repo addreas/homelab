@@ -105,6 +105,8 @@ let kratos_config = #KratosConfigSchema & {
 
 	cookies: domain: rootHost
 
+	session: whoami: required_aal: "aal1"
+
 	hashers: {
 		algorithm: "bcrypt"
 		bcrypt: {}
