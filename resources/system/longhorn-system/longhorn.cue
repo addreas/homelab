@@ -13,7 +13,7 @@ k: HelmRelease: longhorn: spec: {
 			key:    "node-role.kubernetes.io/control-plane"
 			effect: "NoSchedule"
 		}]
-		global: nodeSelector: "node-role.kubernetes.io/longhorn": ""
+		longhornManager: nodeSelector: "node-role.kubernetes.io/longhorn": ""
 		defaultSettings: {
 			defaultReplicaCount: 2
 			replicaAutoBalance:  "best-effort"

@@ -1,9 +1,9 @@
+@if(insanity)
 package kube
 
 let nodes = {
-	"talos-hz2-2oi": "disk-1": path: "/dev/nvme0n1"
-	"talos-o1t-0lm": "disk-1": path: "/dev/sda"
-	"talos-zze-vjy": "disk-1": path: "/dev/sda"
+	"qbw0": "disk-1": path: "/dev/nvme0n1"
+	"qbw1": "disk-1": path: "/dev/sda"
 }
 
 for nodeName, disks in nodes
