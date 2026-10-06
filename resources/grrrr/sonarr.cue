@@ -5,8 +5,8 @@ k: StatefulSet: sonarr: spec: {
 		metadata: labels: "vpn-egress": "client"
 		spec: {
 			containers: [{
-				name:            "sonarr"
-				image:           "lscr.io/linuxserver/sonarr:4.0.20"
+				name:  "sonarr"
+				image: "lscr.io/linuxserver/sonarr:4.0.20"
 				command: ["/app/sonarr/bin/Sonarr", "-nobrowser", "-data=/config"]
 				ports: [{
 					name:          "http"

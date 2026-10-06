@@ -3,7 +3,7 @@ package kube
 let hostname = "ryot.addem.se"
 
 k: OAuth2Client: "ryot": spec: {
-	secretName:   "ryot-oauth2-client-credentials"
+	secretName: "ryot-oauth2-client-credentials"
 	redirectUris: ["https://\(hostname)/api/auth"]
 }
 
@@ -13,7 +13,6 @@ k: Deployment: ryot: spec: template: spec: containers: [{
 	securityContext: {
 		runAsUser:  1001
 		runAsGroup: 1001
-		allowPrivilegeEscalation: true
 		capabilities: add: ["NET_BIND_SERVICE"]
 	}
 	env: [{
@@ -29,7 +28,7 @@ k: Deployment: ryot: spec: template: spec: containers: [{
 			key:  "access-token"
 		}
 	}, {
-		name:  "SERVER_ADMIN_ACCESS_TOKEN"
+		name: "SERVER_ADMIN_ACCESS_TOKEN"
 		valueFrom: secretKeyRef: {
 			name: "ryot"
 			key:  "SERVER_ADMIN_ACCESS_TOKEN"

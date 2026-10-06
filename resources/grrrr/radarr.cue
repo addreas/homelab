@@ -5,8 +5,8 @@ k: StatefulSet: radarr: spec: {
 		metadata: labels: "vpn-egress": "client"
 		spec: {
 			containers: [{
-				name:            "radarr"
-				image:           "lscr.io/linuxserver/radarr:6.4.4"
+				name:  "radarr"
+				image: "lscr.io/linuxserver/radarr:6.4.4"
 				command: ["/app/radarr/bin/Radarr", "-nobrowser", "-data=/config"]
 				ports: [{
 					containerPort: 7878
