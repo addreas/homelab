@@ -34,7 +34,7 @@ k: StatefulSet: jellyfin: spec: {
 }
 
 k: Service: jellyfin: {
-	metadata: labels: advertise: "bgp"
+	metadata: labels: advertise: "arp"
 	spec: type: "LoadBalancer"
 }
 
