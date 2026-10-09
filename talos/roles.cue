@@ -45,6 +45,7 @@ t: Role: "base": {
 		apiVersion:                          "v1alpha1"
 		kind:                                "KubeletConfig"
 		defaultRuntimeSeccompProfileEnabled: true
+		extraArgs: "rotate-server-certificates": true
 	}, {
 		apiVersion: "v1alpha1"
 		kind:       "UnattendedInstallConfig"
