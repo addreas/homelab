@@ -154,17 +154,23 @@ k: Ingress: [Name=string]: {
 
 k: HTTPRoute: [Name=string]: {
 	_authproxy: true | *false
+	_defaultBackendRef: _ | *{
+		name: Name
+		port: k.Service[Name].spec.ports[0].port
+	}
 	spec: {
 		hostnames: _ | *["\(Name).addem.se"]
 		parentRefs: _ | *[{name: "addem", namespace: "ingress"}]
-		rules: _ | *[{
-			if _authproxy {
-				filters: [utils.#AuthProxy]
-			}
-			backendRefs: [{
-				name: Name
-				port: k.Service[Name].spec.ports[0].port
-			}]
+		rules: _ | *[{backendRefs: [_defaultBackendRef]}, ...]
+	}
+
+	if _authproxy {
+		spec: rules: [{
+			matches: [utils.#TunnelMatch]
+			filters: [utils.#AuthProxy]
+			backendRefs: [_defaultBackendRef]
+		}, {
+			backendRefs: [_defaultBackendRef]
 		}]
 	}
 }

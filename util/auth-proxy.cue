@@ -17,3 +17,12 @@ package util
 		}
 	}
 }
+
+// Presence of cf-ray: request came through the cloudflare tunnel.
+#TunnelMatch: {
+	headers: [{
+		type:  "RegularExpression"
+		name:  "cf-ray"
+		value: ".*"
+	}]
+}
