@@ -24,7 +24,7 @@ k: HTTPRoute: "example-app": spec: {
 				protocol: "HTTP"
 				backendRef: {
 					name:      "lauset"
-					namespace: "ory" // TODO: referencegrant
+					namespace: "ory"
 					port:      80
 				}
 				http: {
