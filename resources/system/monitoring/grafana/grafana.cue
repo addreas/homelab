@@ -1,10 +1,5 @@
 package kube
 
-k: OAuth2Client: "grafana": spec: {
-	secretName: "grafana-oauth2-client-credentials"
-	redirectUris: ["https://grafana.addem.se/login/generic_oauth"]
-}
-
 k: Grafana: grafana: spec: {
 	config: {
 		server: root_url: "https://grafana.addem.se/"
@@ -18,8 +13,6 @@ k: Grafana: grafana: spec: {
 			signout_redirect_url: "https://auth.addem.se/hydra/oauth2/sessions/logout"
 			oauth_auto_login:     "true"
 		}
-		// "log": level: "debug"
-		// "log.console": level: "debug"
 		"auth.anonymous": enabled: "false"
 		"auth.generic_oauth": {
 			enabled:             "true"
@@ -30,9 +23,7 @@ k: Grafana: grafana: spec: {
 			token_url:           "https://auth.addem.se/hydra/oauth2/token"
 			api_url:             "https://auth.addem.se/hydra/userinfo"
 			role_attribute_path: "Admin"
-			// use_pkce:            true
 		}
-		// dashboards: default_home_dashboard_path: "/etc/grafana/home-dash/dashboard.json"
 		alerting: enabled:         "false"
 		security: allow_embedding: "true"
 	}
@@ -43,57 +34,20 @@ k: Grafana: grafana: spec: {
 			volumeMounts: [{
 				name:      "oauth-creds"
 				mountPath: "/etc/grafana/oauth-creds/"
-			}, {
-				name:      "home-dash"
-				mountPath: "/etc/grafana/home-dash"
 			}]
 		}]
 		volumes: [{
 			name: "oauth-creds"
 			secret: secretName: "grafana-oauth2-client-credentials"
-		}, {
-			name: "home-dash"
-			configMap: name: "grafana-home-dashboard"
 		}]
 	}
-	ingress: {
-		metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
-		spec: {
-			rules: [{
-				host: "grafana.addem.se"
-			}]
-			tls: [{
-				hosts: ["grafana.addem.se"]
-				secretName: "grafana-cert"
-			}]
-		}
+	httpRoute: spec: {
+		hostnames: ["grafana.addem.se"]
+		parentRefs: [{name: "addem", namespace: "ingress"}]
 	}
 }
 
-k: GitRepository: "grafana-operator": spec: {
-	// ref: tag: goModVersions["github.com/grafana-operator/grafana-operator/v4"]
-	// url: "https://github.com/grafana-operator/grafana-operator.git"
-	ref: branch: "master"
-	url: "https://github.com/addreas/grafana-operator.git"
-	ignore: """
-		/*
-		!/config
-		"""
-}
-
-k: Kustomization: "grafana-operator": spec: {
-	healthChecks: [{
-		kind:      "Deployment"
-		name:      "grafana-operator-controller-manager"
-		namespace: "monitoring"
-	}]
-	interval:        "30m"
-	path:            "./config/default"
-	targetNamespace: "monitoring"
-	prune:           false // CRDs are included so prune becomes messy...
-	images: [{
-		name:    "ghcr.io/grafana-operator/grafana-operator"
-		newName: "ghcr.io/addreas/grafana-operator"
-		newTag:  "v5.1.0-pre-alpha.1"
-	}]
+k: OAuth2Client: grafana: spec: {
+	secretName: "grafana-oauth2-client-credentials"
+	redirectUris: ["https://grafana.addem.se/login/generic_oauth"]
 }
