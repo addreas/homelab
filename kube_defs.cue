@@ -33,6 +33,8 @@ import (
 	cilium_v2alpha1 "cilium.io/v2alpha1"
 
 	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
+	vm_v1beta1 "operator.victoriametrics.com/v1beta1"
+	vm_v1 "operator.victoriametrics.com/v1"
 	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
 	cni_v1 "k8s.cni.cncf.io/v1"
 
@@ -116,6 +118,14 @@ let resourceSchemas = [
 	monitoring_v1.#ServiceMonitor,
 	monitoring_v1.#Prometheus,
 	monitoring_v1.#PrometheusRule,
+
+	vm_v1beta1.#VMSingle,
+	vm_v1beta1.#VMAgent,
+	vm_v1beta1.#VMAlert,
+	vm_v1beta1.#VMAlertmanager,
+	vm_v1beta1.#VMRule,
+	vm_v1.#VLAgent,
+	vm_v1.#VLSingle,
 
 	grafana_v1beta1.#Grafana,
 	grafana_v1beta1.#GrafanaDashboard,

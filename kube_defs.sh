@@ -8,6 +8,7 @@ mod=$PWD/cue.mod
 groups="
 cue.toolkit.fluxcd.io
 grafana.integreatly.org
+operator.victoriametrics.com
 k8s.cni.cncf.io
 cilium.io
 hydra.ory.sh
