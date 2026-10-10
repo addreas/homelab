@@ -27,6 +27,15 @@ k: Deployment: bitmagnet: spec: {
 				name:          "http"
 				containerPort: 3333
 			}]
+			livenessProbe: {
+				httpGet: {
+					path: "/status"
+					port: "http"
+				}
+				initialDelaySeconds: 30
+				periodSeconds:       60
+				failureThreshold:    10
+			}
 			workingDir: "/config"
 			volumeMounts: [{
 				name:      "config"
@@ -44,7 +53,7 @@ k: Deployment: bitmagnet: spec: {
 			}
 		}]
 		spec: volumes: [{
-			name:      "config"
+			name: "config"
 			configMap: name: "bitmagnet"
 		}]
 	}
