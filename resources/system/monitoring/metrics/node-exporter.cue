@@ -1,5 +1,6 @@
 package kube
 
+// renovate: registryUrl=https://prometheus-community.github.io/helm-charts
 k: HelmRelease: "node-exporter": spec: {
 	chart: spec: {
 		chart:   "prometheus-node-exporter"

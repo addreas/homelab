@@ -1,5 +1,6 @@
 package kube
 
+// renovate: registryUrl=https://prometheus-community.github.io/helm-charts
 k: HelmRelease: "kube-state-metrics": spec: {
 	chart: spec: {
 		chart:   "kube-state-metrics"

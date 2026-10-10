@@ -88,12 +88,15 @@ command: lintrenovate: {
 		for f in r.packageFiles.regex
 		for d in f.deps {d}]
 
+	_ignorePrefixes: ["nixery.dev/"]
+
 	_violations: {
 		if len(_versions) == 0 {
 			"no rendered versions — run: cue cmd lintrenovate ./resources/...": true
 		}
 
-		for _, dep in _versions {
+		for _, dep in _versions
+		if len([for p in _ignorePrefixes if strings.HasPrefix(dep.depName, p) {p}]) == 0 {
 			if dep.datasource == "git-tags" {
 				if len([for d in _extracted if (d & dep) != _|_ {d}]) == 0 {"untracked git repo \(dep.depName)": true}
 			}

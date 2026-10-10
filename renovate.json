@@ -34,7 +34,8 @@
       "managerFilePatterns": ["/\\.cue$/", "!**/*.gen.cue"],
       "datasourceTemplate": "helm",
       "matchStrings": [
-        "k: HelmRepository:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*url:\\s*\"(?<registryUrls>[^\"\\n]+)\"\\s*\\n\\s*k: HelmRelease:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*\\{\\s*\\n\\s*chart: spec: \\{\\s*\\n\\s*chart:\\s*\"(?<depName>[^\"]+)\"\\s*\\n\\s*version:\\s*\"(?<currentValue>[^\"\\n@]+)\""
+        "(?://\\s*renovate:\\s*registryUrl=(?<registryUrls>[^\\s\"\\n]+))\\s*\\n\\s*k: HelmRelease:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*(?:\\{\\s*\\n\\s*)?chart: spec: \\{\\s*\\n\\s*chart:\\s*\"(?<depName>[^\"]+)\"\\s*\\n\\s*version:\\s*\"(?<currentValue>[^\"\\n@]+)\"",
+        "k: HelmRepository:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*url:\\s*\"(?<registryUrls>[^\"\\n]+)\"\\s*\\n\\s*k: HelmRelease:\\s*\"?[^\":\\n]+\"?:\\s*spec:\\s*(?:\\{\\s*\\n\\s*)?chart: spec: \\{\\s*\\n\\s*chart:\\s*\"(?<depName>[^\"]+)\"\\s*\\n\\s*version:\\s*\"(?<currentValue>[^\"\\n@]+)\""
       ]
     },
     {
