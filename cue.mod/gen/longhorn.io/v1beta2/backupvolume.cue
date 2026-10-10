@@ -69,6 +69,12 @@ import "time"
 		lastSyncedAt?:
 			null | time.Time
 
+		// The source snapshot of the backed up volume, set only when it was a linked clone.
+		linkedCloneSourceSnapshot?: string
+
+		// The source volume of the backed up volume, set only when it was a linked clone.
+		linkedCloneSourceVolume?: string
+
 		// The error messages when call longhorn engine on list or inspect backup volumes.
 		messages?:
 			null | {

@@ -19,22 +19,22 @@ let DS_OPENSHIFT_PROMETHEUS = {
 }
 
 k: GrafanaDashboard: "longhorn": spec: {
-	source: remote: grafanaCom: id: 13032
+	grafanaCom: id: 13032
 	datasources: [DS_PROMETHEUS]
 }
 
 k: GrafanaDashboard: "kubernetes-persistent-volumes": spec: {
-	source: remote: grafanaCom: id: 13646
+	grafanaCom: id: 13646
 	datasources: [DS_PROMETHEUS]
 }
 
 k: GrafanaDashboard: "k8s-storage-volumes-cluster": spec: {
-	source: remote: grafanaCom: id: 11454
+	grafanaCom: id: 11454
 	datasources: [DS_OPENSHIFT_PROMETHEUS]
 }
 
 k: GrafanaDashboard: "k8s-storage-volumes-namespace": spec: {
-	source: remote: grafanaCom: id: 11455
+	grafanaCom: id: 11455
 	datasources: [DS_OPENSHIFT_PROMETHEUS]
 }
 

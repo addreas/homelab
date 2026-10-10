@@ -41,7 +41,24 @@ package v1beta2
 		parameters?: [string]: string
 
 		// The retain count of the snapshot/backup.
+		// Retain represents the number of snapshots/backups to retain and only when the
+		// retention policy is "count-based".
 		retain?: int
+
+		// The retention age of the snapshot/backup, specified as a Go duration string,
+		// such as "10m", "24h", or "8760h". Note that Go durations have no day or year unit,
+		// so a day is "24h". Snapshots/backups older than this are cleaned up by the recurring job.
+		// Only takes effect when the retention policy is "age-based".
+		// If the retention policy is "age-based", this value is 0s, the recurring job will not start.
+		retainAge?: string
+
+		// The retention policy that determines whether the recurring job cleans up
+		// snapshots/backups based on their count or age. Can be "count-based" or
+		// "age-based". The two policies work independently: "count-based" (the default)
+		// retains the configured number of newest snapshots/backups and ignores
+		// RetainAge, while "age-based" retains snapshots/backups no older than RetainAge
+		// and ignores Retain.
+		retentionPolicy?: "count-based" | "age-based"
 
 		// The recurring job task.
 		// Can be "snapshot", "snapshot-force-create", "snapshot-cleanup",

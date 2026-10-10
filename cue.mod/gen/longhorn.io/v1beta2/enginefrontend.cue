@@ -27,12 +27,18 @@ package v1beta2
 		disableFrontend?: bool
 
 		// EngineName is the name of the v2 engine target (required for EngineFrontend instance creation)
-		engineName?:       string
-		frontend?:         "blockdev" | "iscsi" | "nvmf" | "ublk" | ""
-		image?:            string
-		logRequested?:     bool
-		nodeID?:           string
-		salvageRequested?: bool
+		engineName?:   string
+		frontend?:     "blockdev" | "iscsi" | "nvmf" | "ublk" | ""
+		image?:        string
+		logRequested?: bool
+		nodeID?:       string
+
+		// nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
+		// creates when connecting the blockdev frontend over NVMe-TCP.
+		// 0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
+		// Takes effect on (re)attach.
+		nvmeTcpNrIoQueues?: int
+		salvageRequested?:  bool
 
 		// Size is the desired size of the frontend device in bytes, as requested
 		// by the volume owner. The EngineFrontend controller drives the frontend

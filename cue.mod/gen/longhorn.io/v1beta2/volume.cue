@@ -83,6 +83,12 @@ package v1beta2
 		nodeSelector?: [...string]
 		numberOfReplicas?: int
 
+		// nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
+		// creates when connecting the blockdev frontend over NVMe-TCP.
+		// 0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
+		// Takes effect on (re)attach.
+		nvmeTcpNrIoQueues?: int
+
 		// Specifies whether Longhorn should rebuild replicas while the detached volume is degraded.
 		// - ignored: Use the global setting for offline replica rebuilding.
 		// - enabled: Enable offline rebuilding for this volume, regardless of the global setting.
@@ -131,6 +137,15 @@ package v1beta2
 		snapshotMaxCount?:           int
 		snapshotMaxSize?:            string
 		staleReplicaTimeout?:        int
+
+		// TopologyRequirement lists the failure domains the volume's replicas must
+		// be scheduled in, derived from the CSI accessible topology at creation —
+		// the same failure domains as the PV nodeAffinity terms (a node must match
+		// at least one term). Empty means unconstrained.
+		topologyRequirement?: [...{
+			region?: string
+			zone?:   string
+		}]
 
 		// ublkNumberOfQueue controls the number of queues for ublk frontend.
 		ublkNumberOfQueue?: int

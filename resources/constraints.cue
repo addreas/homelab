@@ -183,16 +183,11 @@ k: SealedSecret: [string]: {
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
 	spec: {
-		interval:                      _ | *"1h"
-		allowCrossNamespaceReferences: _ | *true
-		folder:                        _ | *strings.ToTitle(metadata.namespace)
-		source: _ | *close({
-			remote: contentCacheDuration: "24h"
-		})
+		allowCrossNamespaceImport: _ | *true
+		folder:                    _ | *strings.ToTitle(metadata.namespace)
+		contentCacheDuration:      _ | *"24h"
 	}
 }
-
-k: GrafanaDatasource: [string]: spec: interval: _ | *"1h"
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 
