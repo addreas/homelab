@@ -1,11 +1,8 @@
 package kube
 
 k: CronJob: "hydra-cleanup": spec: {
-	schedule:                   "0 4 * * *"
-	timeZone:                   "Europe/Stockholm"
-	concurrencyPolicy:          "Forbid"
-	successfulJobsHistoryLimit: 3
-	failedJobsHistoryLimit:     1
+	schedule:          "0 4 * * *"
+	concurrencyPolicy: "Forbid"
 	jobTemplate: spec: {
 		backoffLimit: 3
 		template: spec: {
