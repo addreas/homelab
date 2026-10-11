@@ -194,6 +194,10 @@ k: GrafanaDashboard: [string]: {
 	}
 }
 
+k: ["GrafanaDashboard" | "GrafanaDatasource"]: [string]: spec: {
+	instanceSelector: matchExpressions: [{key: "not-default", operator: "DoesNotExist"}]
+}
+
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 
 k: HelmRepository: [string]: spec: interval: _ | *"1h"
