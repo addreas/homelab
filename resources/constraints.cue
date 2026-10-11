@@ -56,14 +56,14 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 }
 
 k: Job: [string]: spec: {
-	ttlSecondsAfterFinished: 60 * 60
+	ttlSecondsAfterFinished: _ | *(60 * 60)
 	template: podTemplate & {
 		spec: restartPolicy: _ | *"OnFailure"
 	}
 }
 
 k: CronJob: [Name=string]: spec: {
-	successfulJobsHistoryLimit: 1
+	successfulJobsHistoryLimit: _ | *1
 	jobTemplate: spec: {
 		template: podTemplate & {
 			spec: restartPolicy: _ | *"Never"
