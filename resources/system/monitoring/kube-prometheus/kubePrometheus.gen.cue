@@ -10,6 +10,7 @@ k: PrometheusRule: "kube-prometheus-rules": {
 			"app.kubernetes.io/part-of":   "kube-prometheus"
 			prometheus:                    "k8s"
 			role:                          "alert-rules"
+			ruler:                         "metrics"
 		}
 		name:      "kube-prometheus-rules"
 		namespace: "monitoring"

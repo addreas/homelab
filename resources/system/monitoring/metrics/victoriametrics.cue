@@ -19,16 +19,31 @@ k: VMSingle: metrics: spec: {
 	extraArgs: "dedup.minScrapeInterval": "30s"
 }
 
-k: GrafanaDatasource: prometheus: spec: datasource: {
-	name:      "prometheus"
-	type:      "prometheus"
-	url:       "http://vmsingle-metrics.monitoring.svc.cluster.local:8429"
+k: GrafanaDatasource: alertmanager: spec: datasource: {
+	name:      "alertmanager"
+	type:      "alertmanager"
+	url:       "http://vmalertmanager-alertmanager.monitoring.svc.cluster.local:9093"
 	access:    "proxy"
-	isDefault: true
 	basicAuth: false
 	jsonData: {
-		manageAlerts:   true
-		prometheusType: "Prometheus"
+		implementation:             "prometheus"
+		handleGrafanaManagedAlerts: true
+	}
+}
+
+k: GrafanaDatasource: prometheus: spec: {
+	plugins: [{name: "grafana-metricsdrilldown-app", version: "latest"}]
+	datasource: {
+		name:      "prometheus"
+		type:      "prometheus"
+		url:       "http://vmauth-unified.monitoring.svc.cluster.local:8427"
+		access:    "proxy"
+		isDefault: true
+		basicAuth: false
+		jsonData: {
+			manageAlerts:   true
+			prometheusType: "Prometheus"
+		}
 	}
 }
 
@@ -38,6 +53,8 @@ k: VMAgent: scrape: spec: {
 	externalLabels: cluster: "qb"
 	scrapeInterval: "30s"
 
+	extraArgs: "promscrape.maxScrapeSize": "64MB"
+
 	remoteWrite: [{
 		url: "http://vmsingle-metrics.monitoring.svc:8429/api/v1/write"
 	}]
@@ -46,7 +63,7 @@ k: VMAgent: scrape: spec: {
 
 k: VMAlert: metrics: spec: {
 	datasource: url: "http://vmsingle-metrics.monitoring.svc:8429"
-	notifier: url:   "http://vmalertmanager-alerter.monitoring.svc:9093"
+	notifier: url:   "http://vmalertmanager-alertmanager.monitoring.svc:9093"
 
 	ruleSelector: matchLabels: ruler: "metrics"
 	ruleNamespaceSelector: {}

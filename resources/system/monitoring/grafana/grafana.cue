@@ -2,6 +2,10 @@ package kube
 
 k: Grafana: grafana: spec: {
 	config: {
+		plugins: {
+			preinstall_auto_update: "false"
+			preinstall_disabled:    "true"
+		}
 		server: root_url: "https://grafana.addem.se/"
 		users: {
 			default_theme:        "light"
@@ -16,8 +20,8 @@ k: Grafana: grafana: spec: {
 		"auth.anonymous": enabled: "false"
 		"auth.generic_oauth": {
 			enabled:             "true"
-			client_id:           "$__file{/etc/grafana/oauth-creds/CLIENT_ID}"
-			client_secret:       "$__file{/etc/grafana/oauth-creds/CLIENT_SECRET}"
+			client_id:           "$__env{CLIENT_ID}"
+			client_secret:       "$__env{CLIENT_SECRET}"
 			scopes:              "openid email"
 			auth_url:            "https://auth.addem.se/oauth2/auth"
 			token_url:           "https://auth.addem.se/oauth2/token"
@@ -27,20 +31,26 @@ k: Grafana: grafana: spec: {
 		alerting: enabled:         "false"
 		security: allow_embedding: "true"
 	}
-	deployment: spec: template: spec: {
-		containers: [{
-			name:  "grafana"
-			image: "grafana/grafana:13.2.1"
-			volumeMounts: [{
-				name:      "oauth-creds"
-				mountPath: "/etc/grafana/oauth-creds/"
-			}]
+	deployment: spec: template: spec: containers: [{
+		name:  "grafana"
+		image: "grafana/grafana:13.2.1"
+		env: [{
+			name:  "GF_INSTALL_PLUGINS_FORCE"
+			value: "true"
+		}, {
+			name: "CLIENT_ID"
+			valueFrom: secretKeyRef: {
+				name: "grafana-oauth2-client-credentials"
+				key:  "CLIENT_ID"
+			}
+		}, {
+			name: "CLIENT_SECRET"
+			valueFrom: secretKeyRef: {
+				name: "grafana-oauth2-client-credentials"
+				key:  "CLIENT_SECRET"
+			}
 		}]
-		volumes: [{
-			name: "oauth-creds"
-			secret: secretName: "grafana-oauth2-client-credentials"
-		}]
-	}
+	}]
 	httpRoute: spec: {
 		hostnames: ["grafana.addem.se"]
 		parentRefs: [{name: "addem", namespace: "ingress"}]

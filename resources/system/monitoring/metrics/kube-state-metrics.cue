@@ -7,5 +7,8 @@ k: HelmRelease: "kube-state-metrics": spec: {
 		version: "8.6.0"
 		sourceRef: name: "prometheus-community"
 	}
-	values: prometheus: monitor: enabled: true
+	values: prometheus: monitor: {
+		enabled:     true
+		honorLabels: true
+	}
 }

@@ -124,6 +124,11 @@ let resourceSchemas = [
 	vm_v1beta1.#VMAlert,
 	vm_v1beta1.#VMAlertmanager,
 	vm_v1beta1.#VMRule,
+	vm_v1beta1.#VMNodeScrape,
+	vm_v1beta1.#VMAuth,
+	vm_v1beta1.#VMServiceScrape,
+	vm_v1beta1.#VMPodScrape,
+	vm_v1beta1.#VMProbe,
 	vm_v1.#VLAgent,
 	vm_v1.#VLSingle,
 

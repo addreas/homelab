@@ -23,5 +23,3 @@ cue import -p kube -f ./manifests/*.json
 
 mv manifests/*.cue .
 rm -r manifests
-
-rm -r vendor jsonnetfile.*
