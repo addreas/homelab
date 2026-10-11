@@ -62,8 +62,13 @@ k: Job: [string]: spec: {
 	}
 }
 
-k: CronJob: [Name=string]: spec: jobTemplate: spec: template: podTemplate & {
-	spec: restartPolicy: _ | *"Never"
+k: CronJob: [Name=string]: spec: {
+	successfulJobsHistoryLimit: 1
+	jobTemplate: spec: {
+		template: podTemplate & {
+			spec: restartPolicy: _ | *"Never"
+		}
+	}
 }
 
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
