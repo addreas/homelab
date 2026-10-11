@@ -7,7 +7,7 @@ k: ["VMAlert" | "VMAgent" | "VMAlertmanager" | "VMSingle" | "VLAgent" | "VLSingl
 	limits: {cpu: "2", memory: "2Gi"}
 }
 
-k: Namespace: "longhorn-system": metadata: labels: {
+k: Namespace: (_namespace): metadata: labels: {
 	"pod-security.kubernetes.io/enforce": "privileged"
 	"pod-security.kubernetes.io/audit":   "privileged"
 	"pod-security.kubernetes.io/warn":    "privileged"
