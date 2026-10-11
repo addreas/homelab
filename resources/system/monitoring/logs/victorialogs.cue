@@ -5,16 +5,13 @@ k: VLSingle: logs: spec: {
 	storage: resources: requests: storage: "100Gi"
 }
 
-k: GrafanaDatasource: victorialogs: spec: {
-	instanceSelector: {}
-	datasource: {
-		name:      "victorialogs"
-		type:      "victorialogs"
-		url:       "http://vlsingle-logs.monitoring.svc.cluster.local:9428"
-		access:    "proxy"
-		isDefault: false
-		basicAuth: false
-	}
+k: GrafanaDatasource: victorialogs: spec: datasource: {
+	name:      "victorialogs"
+	type:      "victorialogs"
+	url:       "http://vlsingle-logs.monitoring.svc.cluster.local:9428"
+	access:    "proxy"
+	isDefault: false
+	basicAuth: false
 }
 
 k: VLAgent: collector: spec: {

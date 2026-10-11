@@ -19,19 +19,16 @@ k: VMSingle: metrics: spec: {
 	extraArgs: "dedup.minScrapeInterval": "30s"
 }
 
-k: GrafanaDatasource: prometheus: spec: {
-	instanceSelector: {}
-	datasource: {
-		name:      "prometheus"
-		type:      "prometheus"
-		url:       "http://vmsingle-metrics.monitoring.svc.cluster.local:8429"
-		access:    "proxy"
-		isDefault: true
-		basicAuth: false
-		jsonData: {
-			manageAlerts:   true
-			prometheusType: "Prometheus"
-		}
+k: GrafanaDatasource: prometheus: spec: datasource: {
+	name:      "prometheus"
+	type:      "prometheus"
+	url:       "http://vmsingle-metrics.monitoring.svc.cluster.local:8429"
+	access:    "proxy"
+	isDefault: true
+	basicAuth: false
+	jsonData: {
+		manageAlerts:   true
+		prometheusType: "Prometheus"
 	}
 }
 

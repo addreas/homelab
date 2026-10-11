@@ -10,7 +10,7 @@ k: Grafana: grafana: spec: {
 		auth: {
 			disable_login_form:   "true"
 			disable_signout_menu: "false"
-			signout_redirect_url: "https://auth.addem.se/hydra/oauth2/sessions/logout"
+			signout_redirect_url: "https://auth.addem.se/oauth2/sessions/logout"
 			oauth_auto_login:     "true"
 		}
 		"auth.anonymous": enabled: "false"
@@ -19,10 +19,10 @@ k: Grafana: grafana: spec: {
 			client_id:           "$__file{/etc/grafana/oauth-creds/CLIENT_ID}"
 			client_secret:       "$__file{/etc/grafana/oauth-creds/CLIENT_SECRET}"
 			scopes:              "openid email"
-			auth_url:            "https://auth.addem.se/hydra/oauth2/auth"
-			token_url:           "https://auth.addem.se/hydra/oauth2/token"
-			api_url:             "https://auth.addem.se/hydra/userinfo"
-			role_attribute_path: "Admin"
+			auth_url:            "https://auth.addem.se/oauth2/auth"
+			token_url:           "https://auth.addem.se/oauth2/token"
+			api_url:             "https://auth.addem.se/userinfo"
+			role_attribute_path: "'Admin'"
 		}
 		alerting: enabled:         "false"
 		security: allow_embedding: "true"

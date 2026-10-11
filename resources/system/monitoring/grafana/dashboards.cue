@@ -1,33 +1,5 @@
 package kube
 
-k: GrafanaDatasource: prometheus: spec: {
-	instanceSelector: {}
-	datasource: {
-		name:      "prometheus"
-		type:      "prometheus"
-		url:       "http://vmsingle-metrics.monitoring.svc.cluster.local:8429"
-		access:    "proxy"
-		isDefault: true
-		basicAuth: false
-		jsonData: {
-			manageAlerts:   true
-			prometheusType: "Prometheus"
-		}
-	}
-}
-
-k: GrafanaDatasource: victorialogs: spec: {
-	instanceSelector: {}
-	datasource: {
-		name:      "victorialogs"
-		type:      "victorialogs"
-		url:       "http://vlsingle-logs.monitoring.svc.cluster.local:9428"
-		access:    "proxy"
-		isDefault: false
-		basicAuth: false
-	}
-}
-
 let DS_PROMETHEUS = {
 	datasourceName: "prometheus"
 	inputName:      "DS_PROMETHEUS"
