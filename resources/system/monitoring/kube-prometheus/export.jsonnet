@@ -1,68 +1,68 @@
-local base = (import 'kube-prometheus/main.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
       namespace: 'monitoring',
+      ruleLabels+: { ruler: 'metrics' },
     },
 
     kubernetesControlPlane+: {
       kubeProxy: false,
     },
   },
+
+  kubernetesControlPlane+: {
+    serviceMonitorKubeScheduler:: {},
+    serviceMonitorKubeControllerManager:: {},
+
+    mixin+:: {
+      prometheusAlerts+:: {
+        groups: std.filter(
+          function(g) g.name != 'kubernetes-system-scheduler'
+          && g.name != 'kubernetes-system-controller-manager',
+          super.groups
+        ),
+      },
+      prometheusRules+:: {
+        groups: std.filter(
+          function(g) g.name != 'kube-scheduler.rules',
+          super.groups
+        ),
+      },
+    },
+  },
 };
 
-local endpointFieldRename = {
-  relabelings: 'relabelConfigs',
-  metricRelabelings: 'metricRelabelConfigs',
-};
-
-local kubeletVMNodeScrape(e, sm=base.kubernetesControlPlane.serviceMonitorKubelet) = {
+local kubeletVMNodeScrape(e, sm=kp.kubernetesControlPlane.serviceMonitorKubelet) = {
+  local path = std.get(e, 'path', '/metrics'),
   apiVersion: 'operator.victoriametrics.com/v1beta1',
   kind: 'VMNodeScrape',
   metadata: sm.metadata + {
-    name: sm.metadata.name + std.strReplace(std.get(e, 'path', '/metrics'), '/', '-'),
+    name: sm.metadata.name + std.strReplace(path, '/', '-'),
   },
   spec: {
-    [std.get(endpointFieldRename, k, k)]: e[k]
+    [std.get({
+      relabelings: 'relabelConfigs',
+      metricRelabelings: 'metricRelabelConfigs',
+    }, k, k)]: e[k]
     for k in std.objectFields(e)
     if k != 'port'
   } + {
-    path: std.get(e, 'path', '/metrics'),
     port: '10250',
     max_scrape_size: '64MB',
-    selector: {},
-    relabelConfigs: [{ targetLabel: 'job', replacement: 'kubelet' }] + e.relabelings,
+    relabelConfigs+: [{ targetLabel: 'job', replacement: 'kubelet' }],
   },
 };
 
-local kp = base + {
-  kubernetesControlPlane+: {
-    [kubeletVMNodeScrape(e).metadata.name]: kubeletVMNodeScrape(e)
-    for e in base.kubernetesControlPlane.serviceMonitorKubelet.spec.endpoints
-  },
-};
+local resources = [
+  r
+  for r in std.objectValues(kp.kubePrometheus)
+  + std.objectValues(kp.kubernetesControlPlane)
+  if std.objectHas(r, 'kind')
+  && r.kind != 'Namespace'
+  && r.metadata.name != 'kubelet'
+] + [
+  kubeletVMNodeScrape(e)
+  for e in kp.kubernetesControlPlane.serviceMonitorKubelet.spec.endpoints
+];
 
-local resources(name, filter = function(r) true, extraLabels = {}) = std.foldr(
-  function(r, acc) acc + {
-    k+: if !std.endsWith(r.kind, 'List') then {
-      [r.kind]+: {
-        [r.metadata.name]: r + { metadata+: { labels+: extraLabels } }
-      }
-    } else {
-      [std.strReplace(r.kind, 'List', '')]+: {
-        [rr.metadata.namespace + '/' + rr.metadata.name]: rr for rr in r.items
-      }
-    }
-  },
-  [r for r in std.objectValues(kp[name]) if filter(r)],
-  {});
-
-{
-  // kube-prometheus-rules PrometheusRule (upstream: kubePrometheus-prometheusRule.yaml)
-  'kubePrometheus.gen.json': resources('kubePrometheus', function(r) r.metadata.name == 'kube-prometheus-rules', { ruler: 'metrics' }),
-
-  // kubernetes-monitoring-rules PrometheusRule + control-plane ServiceMonitors
-  // (upstream: kubernetesControlPlane-prometheusRule.yaml, kubernetesControlPlane-serviceMonitor*.yaml)
-  'kubernetesControlPlane.gen.json': resources('kubernetesControlPlane', function(r)
-    !(r.kind == 'ServiceMonitor' && r.metadata.name == 'kubelet')
-  , { ruler: 'metrics' }),
-}
+{ ['%s.gen.json' % r.metadata.name]: r for r in resources }

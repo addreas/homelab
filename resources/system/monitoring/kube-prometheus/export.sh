@@ -17,9 +17,10 @@ if [ ! -d vendor ]; then
   jb install "github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@${VERSION}"
 fi
 
+rm -rf manifests
 jsonnet -J vendor -m manifests -c export.jsonnet
 
-cue import -p kube -f ./manifests/*.json
+cue import -p kube -f -l '"k"' -l kind -l metadata.name ./manifests/*.json
 
 mv manifests/*.cue .
 rm -r manifests
