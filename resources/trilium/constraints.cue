@@ -1,8 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"trilium" | string
-
-k: Namespace: "trilium": {}
+_namespace: "trilium"
 
 k: CueExport: "homelab-trilium": spec: {
 	interval:  "30m"

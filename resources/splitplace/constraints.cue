@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"splitplace" | string
+_namespace: "splitplace"
 
 k: CueExport: "homelab-splitplace": spec: {
 	interval:  "30m"

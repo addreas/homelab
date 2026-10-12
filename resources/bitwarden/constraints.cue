@@ -1,9 +1,8 @@
 package kube
 
-k: [string]: [string]: metadata: {
-	namespace: *"bitwarden" | string
-	labels: app: "bitwarden"
-}
+_namespace: "bitwarden"
+
+k: [string]: [string]: metadata: labels: app: "bitwarden"
 
 k: CueExport: "homelab-bitwarden": spec: {
 	interval:  "30m"

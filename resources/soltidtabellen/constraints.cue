@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"soltidtabellen" | string
+_namespace: "soltidtabellen"
 
 k: CueExport: "homelab-soltidtabellen": spec: {
 	interval:  "30m"

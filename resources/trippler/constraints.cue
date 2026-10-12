@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"trippler" | string
+_namespace: "trippler"
 
 k: CueExport: "homelab-trippler": spec: {
 	interval:  "30m"

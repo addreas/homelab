@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"packlistor" | string
+_namespace: "packlistor"
 
 k: CueExport: "homelab-packlistor": spec: {
 	interval:  "30m"
