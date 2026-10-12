@@ -29,7 +29,10 @@ k: HelmRelease: cilium: spec: {
 		l2announcements: enabled: true
 		bgpControlPlane: enabled: true
 
-		gatewayAPI: enabled:    true
+		gatewayAPI: {
+			enabled: true
+			gatewayClass: create: false
+		}
 		egressGateway: enabled: true
 
 		ingressController: {

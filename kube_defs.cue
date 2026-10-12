@@ -150,6 +150,7 @@ let resourceSchemas = [
 	cilium_v2alpha1.#CiliumEgressNATPolicy,
 	cilium_v2alpha1.#CiliumL2AnnouncementPolicy,
 	cilium_v2alpha1.#CiliumNodeConfig,
+	cilium_v2alpha1.#CiliumGatewayClassConfig,
 
 	hydra_v1alpha1.#OAuth2Client,
 
