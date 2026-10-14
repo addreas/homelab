@@ -79,6 +79,7 @@ let kratos_config = #KratosConfigSchema & {
 			}
 
 			registration: {
+				enabled:  false
 				lifespan: "10m"
 				ui_url:   "https://\(hostname)/registration"
 				after: {
