@@ -20,6 +20,11 @@ k: GrafanaDatasource: victorialogs: spec: {
 k: VLAgent: collector: spec: {
 	k8sCollector: enabled: true
 
+	tolerations: [{
+		key:    "node-role.kubernetes.io/control-plane"
+		effect: "NoSchedule"
+	}]
+
 	remoteWrite: [{
 		url: "http://vlsingle-logs.monitoring.svc:9428/internal/insert"
 	}]
