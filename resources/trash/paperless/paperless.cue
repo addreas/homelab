@@ -33,7 +33,7 @@ k: StatefulSet: "paperless": spec: {
 	template: spec: {
 		containers: [{
 			name:  "webserver"
-			image: "ghcr.io/addreas/paperless-ngx:3.1.3" @renovate(packageName="ghcr.io/paperless-ngx/paperless-ngx")
+			image: "ghcr.io/addreas/paperless-ngx:3.3.4" @renovate(packageName="ghcr.io/paperless-ngx/paperless-ngx")
 			ports: [{
 				name:          "http"
 				containerPort: 8000
