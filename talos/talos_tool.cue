@@ -12,7 +12,6 @@ import (
 )
 
 host:        string                        @tag(host,var=hostname)
-dryRun:      bool | *false                 @tag(dryRun,type=bool)
 factoryHost: string | *"factory.talos.dev" @tag(factory)
 
 // talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
@@ -108,6 +107,22 @@ if targetNodesRole != _|_ {
 
 targetNodeByMAC: {for name, node in targetNodes {(node.mac): node}}
 
+nodeState: [Name=string]: {
+	version: exec.Run & {
+		cmd: ["talosctl", "--context", clusterName, "--nodes", Name, "get", "version", "-o", "json"]
+		stdout: string
+		parsed: json.Unmarshal(stdout) & {spec: version: string}
+	}
+
+	schematic: exec.Run & {
+		cmd: ["talosctl", "--context", clusterName, "--nodes", Name, "get", "imagefactoryschematic", "-o", "json"]
+		stdout: string
+		parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
+	}
+
+	runningImage: "\(factoryHost)/metal-installer/\(schematic.parsed.spec.schematicId):\(version.parsed.spec.version)"
+}
+
 // wrapper for talosctl with nodes populated. usage -t cmd="get disks" -t role=worker
 command: "talosctl": {
 	args: string @tag(cmd)
@@ -141,13 +156,41 @@ command: "adopt": {
 				"--nodes", node.spec.ip,
 				"--file", "/dev/stdin",
 				"--insecure",
-				if dryRun {"--dry-run"},
 			]
 		}
 	}
 }
 
 command: "dump-config": cli.Print & {text: targetNodes[targetNodeName].machineConfig.stdout}
+
+// diff config/image with current node state
+command: "diff": {
+	for name, node in targetNodes {
+		(name): {
+			config: exec.Run & {
+				stdin: node.machineConfig.stdout
+				cmd: ["talosctl", "apply-config",
+					"--context", clusterName,
+					"--nodes", name,
+					"--file", "/dev/stdin",
+					"--dry-run",
+				]
+			}
+
+			upgrade: cli.Print & {
+				$after: [config, nodeState[name].version, nodeState[name].schematic]
+				let runningImage = nodeState[name].runningImage
+				let needsUpgrade = runningImage != node.schematic.installImage
+				if needsUpgrade {
+					text: "\(name): would upgrade \(runningImage) -> \(node.schematic.installImage)"
+				}
+				if !needsUpgrade {
+					text: "\(name): already running \(runningImage)"
+				}
+			}
+		}
+	}
+}
 
 // run talosctl apply-config and talosctl upgrade for -t node
 command: "apply": {
@@ -159,36 +202,21 @@ command: "apply": {
 					"--context", clusterName,
 					"--nodes", name,
 					"--file", "/dev/stdin",
-					if dryRun {"--dry-run"},
 				]
 				success: bool
-			}
-
-			runningVersion: exec.Run & {
-				cmd: ["talosctl", "--context", clusterName, "--nodes", name, "get", "version", "-o", "json"]
-				stdout: string
-				parsed: json.Unmarshal(stdout) & {spec: version: string}
-			}
-			runningSchematic: exec.Run & {
-				cmd: ["talosctl", "--context", clusterName, "--nodes", name, "get", "imagefactoryschematic", "-o", "json"]
-				stdout: string
-				parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
 			}
 
 			upgrade: exec.Run & {
 				$after: [apply.success]
 
-				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
+				let runningImage = nodeState[name].runningImage
 
 				let needsUpgrade = runningImage != node.schematic.installImage
 
 				if !needsUpgrade {
 					cmd: ["echo", "\(name): already running \(runningImage)"]
 				}
-				if needsUpgrade && dryRun {
-					cmd: ["echo", "\(name): dry-run: would upgrade \(runningImage) -> \(node.schematic.installImage)"]
-				}
-				if needsUpgrade && !dryRun {
+				if needsUpgrade {
 					cmd: ["talosctl", "upgrade",
 						"--context", clusterName,
 						"--nodes", name,
