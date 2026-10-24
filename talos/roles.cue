@@ -22,8 +22,6 @@ t: Role: "control-plane": patches: [{
 	extraArgs: "feature-gates": "MutablePVNodeAffinity=true"
 }]
 
-t: Role: "worker": patches: []
-
 t: Role: "base": {
 	patches: [{
 		machine: features: diskQuotaSupport: true
@@ -34,27 +32,10 @@ t: Role: "base": {
 		podSubnets: ["10.48.0.0/16"]
 		serviceSubnets: ["10.96.0.0/12"]
 	}, {
-		apiVersion: "v1alpha1"
-		kind:       "KubeFlannelCNIConfig"
-		$patch:     "delete"
-	}, {
-		apiVersion: "v1alpha1"
-		kind:       "ResolverConfig"
-		hostDNS: forwardKubeDNSToHost: false // cilium issue: https://github.com/siderolabs/talos/pull/9200
-	}, {
 		apiVersion:                          "v1alpha1"
 		kind:                                "KubeletConfig"
 		defaultRuntimeSeccompProfileEnabled: true
 		extraArgs: "rotate-server-certificates": true
-	}, {
-		apiVersion: "v1alpha1"
-		kind:       "UnattendedInstallConfig"
-		provisioning: {
-			// diskSelector: match: #"(disk.size > 200u * GB) && (disk.size < 1000u * GB)"#
-			diskSelector: match: #"disk.transport == "nvme" && disk.size < 1000u * GiB"#
-			// diskSelector: match: #"disk.dev_path == "/dev/nvme1n1""#
-			wipe: true
-		}
 	}, {
 		apiVersion: "v1alpha1"
 		kind:       "DiscoveryServiceConfig"
@@ -73,6 +54,28 @@ t: Role: "base": {
 		]
 	}
 }
+
+t: Role: "cilium": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "KubeFlannelCNIConfig"
+	$patch:     "delete"
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "ResolverConfig"
+	hostDNS: forwardKubeDNSToHost: false // cilium issue: https://github.com/siderolabs/talos/pull/9200
+}]
+
+t: Role: "nvme-install-disk": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "UnattendedInstallConfig"
+	provisioning: {
+		// diskSelector: match: #"(disk.size > 200u * GB) && (disk.size < 1000u * GB)"#
+		diskSelector: match: #"disk.transport == "nvme" && disk.size < 1000u * GiB"#
+		// diskSelector: match: #"disk.dev_path == "/dev/nvme1n1""#
+		wipe: true
+	}
+
+}]
 
 t: Role: "longhorn": {
 	// requires manual kubectl label node <name> node-role.kubernetes.io/longhorn
@@ -99,6 +102,48 @@ t: Role: "intel": schematic: customization: systemExtensions: officialExtensions
 
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]
+
+t: Role: "talos-logs": patches: [{
+	machine: logging: destinations: [{
+		endpoint: "tcp://127.0.0.1:60514/"
+		format:   "json_lines"
+		extraTags: cluster: "qb"
+	}]
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "KubeStaticPodConfig"
+	name:       "talos-logs"
+	pod: {
+		apiVersion: "v1"
+		kind:       "Pod"
+		metadata: {
+			name:      "talos-logs"
+			namespace: "kube-system"
+			labels: "app.kubernetes.io/name": "talos-logs"
+		}
+		spec: {
+			hostNetwork: true
+			dnsPolicy:   "ClusterFirstWithHostNet"
+			containers: [{
+				name:  "sink"
+				image: "alpine/socat:1.8.0.1"
+				args: ["-u", "TCP-LISTEN:60514,reuseaddr,fork", "-"]
+				securityContext: {
+					allowPrivilegeEscalation: false
+					capabilities: drop: ["ALL"]
+					runAsNonRoot: true
+					runAsUser:    1000
+					runAsGroup:   1000
+					seccompProfile: type: "RuntimeDefault"
+				}
+				resources: requests: {
+					cpu:    "5m"
+					memory: "16Mi"
+				}
+			}]
+		}
+	}
+}]
 
 // requires manual kubectl label node <name> node-role.kubernetes.io/vpn-egress
 t: Role: "vpn-egress": patches: [{

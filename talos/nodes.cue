@@ -2,7 +2,7 @@
 package talos
 
 groups: "base": {
-	common: roles: ["base"]
+	common: roles: ["base", "cilium", "talos-logs", "nvme-install-disk"]
 	groups: {
 		"control-plane": {
 			common: roles: ["control-plane", "intel"]
@@ -14,7 +14,7 @@ groups: "base": {
 		}
 
 		"worker": {
-			common: roles: ["worker", "longhorn", "intel"]
+			common: roles: ["longhorn", "intel"]
 			nodes: {
 				"qbw0": {mac: "30:24:a9:87:60:bf", ip: "10.24.0.69", roles: ["vpn-egress"]}
 				"qbw1": {mac: "e8:d8:d1:54:d7:df", ip: "10.24.0.95"}

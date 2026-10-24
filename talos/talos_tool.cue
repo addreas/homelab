@@ -315,4 +315,11 @@ command: "defs": {
 		$after: [fetch, pin]
 		cmd: list.Concat([["cue", "get", "go"], pkgs])
 	}
+
+	// unstructured_go_gen.cue is superseded by the committed unstructured.cue
+	// (cue get go cannot express the upstream yaml inline tag).
+	fixup: exec.Run & {
+		$after: [generate]
+		cmd: ["rm", "-f", "../cue.mod/gen/github.com/siderolabs/talos/pkg/machinery/config/types/meta/unstructured_go_gen.cue"]
+	}
 }
