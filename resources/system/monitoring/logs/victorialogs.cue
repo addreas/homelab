@@ -14,6 +14,12 @@ k: GrafanaDatasource: victorialogs: spec: {
 		access:    "proxy"
 		isDefault: false
 		basicAuth: false
+		jsonData: logLevelRules: [
+			{field: "response_flags", operator: "regex", value: "^(UF|UH|UR|SI)$", level: "error"},
+			{field: "response_code", operator: "greaterThan", value: 499, level: "error"},
+			{field: "response_code", operator: "greaterThan", value: 399, level: "warning"},
+			{field: "response_code", operator: "greaterThan", value: 0, level: "info"},
+		]
 	}
 }
 
