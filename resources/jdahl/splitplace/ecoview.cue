@@ -1,12 +1,15 @@
 package kube
 
-k: Ingress: ecoview: _authproxy: true
+k: HTTPRoute: ecoview: _authproxy: true
 
 k: Service: ecoview: spec: ports: [{
 	name: "http"
 }]
 
+k: PersistentVolumeClaim: "data-ecoview-0": spec: resources: requests: storage: "3Gi"
+
 k: StatefulSet: "ecoview": spec: {
+	replicas: 0
 	template: spec: {
 		imagePullSecrets: [{name: "regcred"}]
 		initContainers: [{

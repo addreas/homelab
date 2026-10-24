@@ -23,3 +23,26 @@ k: Gateway: addem: {
 		}]
 	}
 }
+
+k: Gateway: jdahl: {
+	metadata: annotations: "cert-manager.io/cluster-issuer": "jdahl-se-letsencrypt"
+	spec: {
+		gatewayClassName: "cilium"
+		infrastructure: labels: advertise: "arp"
+		listeners: [{
+			name:     "http"
+			port:     80
+			protocol: "HTTP"
+			allowedRoutes: namespaces: from: "All"
+		}, {
+			name:     "https"
+			port:     443
+			protocol: "HTTPS"
+			allowedRoutes: namespaces: from: "All"
+			tls: {
+				mode: "Terminate"
+				certificateRefs: [{name: "jdahl-se-tls"}]
+			}
+		}]
+	}
+}

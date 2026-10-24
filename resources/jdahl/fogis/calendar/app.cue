@@ -1,6 +1,6 @@
 package kube
 
-k: Ingress: fogis: {}
+k: HTTPRoute: fogis: {}
 
 k: Service: fogis: {}
 

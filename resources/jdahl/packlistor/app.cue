@@ -2,20 +2,8 @@ package kube
 
 let hostNames = ["packlistor.se", "www.packlistor.se"]
 
-k: Ingress: packlistor: {
-	spec: {
-		rules: [for h in hostNames {
-			host: h
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "packlistor"
-					port: name: "http"
-				}
-			}]
-		}]
-	}
+k: HTTPRoute: packlistor: {
+	spec: hostnames: hostNames
 }
 
 k: Service: packlistor: {}
@@ -25,14 +13,18 @@ let baseContainer = {
 	imagePullPolicy: "Always"
 	envFrom: [{secretRef: name: "packlistor-secrets"}]
 	env: [{
-		name:  "DATABASE_URL"
-		value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@\(postgresHost):5432/$(POSTGRES_DB)"
+		name: "DATABASE_URL"
+		valueFrom: secretKeyRef: {
+			name: "\(postgresHost)-app"
+			key:  "uri"
+		}
 	}]
 }
 
 k: Deployment: "packlistor": {
 	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
+		replicas: 0
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]

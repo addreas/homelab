@@ -2,20 +2,8 @@ package kube
 
 let hostNames = ["splitplace.app", "splitplace.jdahl.se"]
 
-k: Ingress: splitplace: {
-	spec: {
-		rules: [for h in hostNames {
-			host: h
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "splitplace"
-					port: name: "http"
-				}
-			}]
-		}]
-	}
+k: HTTPRoute: splitplace: {
+	spec: hostnames: hostNames
 }
 
 k: Service: splitplace: {}
@@ -30,8 +18,11 @@ let baseContainer = {
 		{secretRef: name: "sendgrid"},
 	]
 	env: [{
-		name:  "DATABASE_URL"
-		value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@\(postgresHost):5432/$(POSTGRES_DB)"
+		name: "DATABASE_URL"
+		valueFrom: secretKeyRef: {
+			name: "\(postgresHost)-app"
+			key:  "uri"
+		}
 	}, {
 		name:  "APP_URL"
 		value: "https://\(hostNames[0])"
@@ -41,7 +32,7 @@ let baseContainer = {
 k: Deployment: "splitplace": {
 	metadata: labels: "homelab.addem.se/autodeploy": "true"
 	spec: {
-		replicas: 1
+		replicas: 0
 		template: {
 			spec: {
 				imagePullSecrets: [{name: "regcred"}]
