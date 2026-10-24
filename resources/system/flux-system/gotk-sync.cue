@@ -14,7 +14,6 @@ k: CueExport: "homelab-system": spec: {
 		"./resources/system/ingress",
 		"./resources/system/kube-system",
 		"./resources/system/longhorn-system",
-		// "./resources/system/monitoring",
 		"./resources/system/lauset",
 		// "./resources/system/nixery",
 	]
