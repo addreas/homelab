@@ -89,6 +89,7 @@ targetNodes: [Name=string]: {
 		])
 
 		stdout: string
+		stderr: string
 	}
 }
 
@@ -106,22 +107,6 @@ if targetNodesRole != _|_ {
 }
 
 targetNodeByMAC: {for name, node in targetNodes {(node.mac): node}}
-
-nodeState: [Name=string]: {
-	version: exec.Run & {
-		cmd: ["talosctl", "--context", clusterName, "--nodes", Name, "get", "version", "-o", "json"]
-		stdout: string
-		parsed: json.Unmarshal(stdout) & {spec: version: string}
-	}
-
-	schematic: exec.Run & {
-		cmd: ["talosctl", "--context", clusterName, "--nodes", Name, "get", "imagefactoryschematic", "-o", "json"]
-		stdout: string
-		parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
-	}
-
-	runningImage: "\(factoryHost)/metal-installer/\(schematic.parsed.spec.schematicId):\(version.parsed.spec.version)"
-}
 
 // wrapper for talosctl with nodes populated. usage -t cmd="get disks" -t role=worker
 command: "talosctl": {
@@ -163,6 +148,22 @@ command: "adopt": {
 
 command: "dump-config": cli.Print & {text: targetNodes[targetNodeName].machineConfig.stdout}
 
+#runningVersion: exec.Run & {
+	node: string
+	cmd:  ["talosctl", "--context", clusterName, "--nodes", node, "get", "version", "-o", "json"]
+	stdout: string
+	stderr: string
+	parsed: json.Unmarshal(stdout) & {spec: version: string}
+}
+
+#runningSchematic: exec.Run & {
+	node: string
+	cmd:  ["talosctl", "--context", clusterName, "--nodes", node, "get", "imagefactoryschematic", "-o", "json"]
+	stdout: string
+	stderr: string
+	parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
+}
+
 // diff config/image with current node state
 command: "diff": {
 	for name, node in targetNodes {
@@ -177,16 +178,18 @@ command: "diff": {
 				]
 			}
 
-			upgrade: cli.Print & {
-				$after: [config, nodeState[name].version, nodeState[name].schematic]
-				let runningImage = nodeState[name].runningImage
+			runningVersion: #runningVersion & {node: name}
+			runningSchematic: #runningSchematic & {node: name}
+
+			upgrade: exec.Run & {
+				$after: [config.stdout]
+				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
 				let needsUpgrade = runningImage != node.schematic.installImage
-				if needsUpgrade {
-					text: "\(name): would upgrade \(runningImage) -> \(node.schematic.installImage)"
+				let cmds = {
+					"true":  ["echo", "\(name): would upgrade \(runningImage) -> \(node.schematic.installImage)"]
+					"false": ["echo", "\(name): already running \(runningImage)"]
 				}
-				if !needsUpgrade {
-					text: "\(name): already running \(runningImage)"
-				}
+				cmd: [for upg in [needsUpgrade] {cmds["\(upg)"]}][0]
 			}
 		}
 	}
@@ -206,24 +209,23 @@ command: "apply": {
 				success: bool
 			}
 
+			runningVersion: #runningVersion & {node: name}
+			runningSchematic: #runningSchematic & {node: name}
+
 			upgrade: exec.Run & {
 				$after: [apply.success]
-
-				let runningImage = nodeState[name].runningImage
-
+				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
 				let needsUpgrade = runningImage != node.schematic.installImage
-
-				if !needsUpgrade {
-					cmd: ["echo", "\(name): already running \(runningImage)"]
-				}
-				if needsUpgrade {
-					cmd: ["talosctl", "upgrade",
+				let cmds = {
+					"true":  ["talosctl", "upgrade",
 						"--context", clusterName,
 						"--nodes", name,
 						"--image", node.schematic.installImage,
 						"--debug",
 					]
+					"false": ["echo", "\(name): already running \(runningImage)"]
 				}
+				cmd: [for upg in [needsUpgrade] {cmds["\(upg)"]}][0]
 			}
 		}
 	}
