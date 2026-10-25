@@ -5,33 +5,6 @@ import "encoding/json"
 k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 	socketPrefix: "hostdevice-plugin"
 	devices: {
-		"addem.se/dev_deconz_conbee": {
-			containerPath: "/dev/deconz-conbee"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "FTDI"
-				ID_MODEL:  "FT230X_Basic_UART"
-			}
-		}
-		"addem.se/dev_deconz_conbee_ii": {
-			containerPath: "/dev/deconz-conbee-ii"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "dresden_elektronik_ingenieurtechnik_GmbH"
-				ID_MODEL:  "ConBee_II"
-			}
-		}
-		"addem.se/dev_aeotec_zstick": {
-			containerPath: "/dev/aeotec-z-stick"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "0658"
-				ID_MODEL:  "0200"
-			}
-		}
 		"addem.se/dev_thread_rcp": {
 			containerPath: "/dev/thread-rcp"
 			permissions:   "rw"
@@ -39,14 +12,6 @@ k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 				SUBSYSTEM: "tty"
 				ID_VENDOR: "Nordic_Semiconductor_ASA"
 				ID_MODEL:  "Thread_Co-Processor"
-			}
-		}
-		"addem.se/back_ups_es_700": {
-			permissions: "rw"
-			matchProperties: {
-				SUBSYSTEM: "usb"
-				ID_VENDOR: "APC"
-				ID_MODEL:  "Back-UPS_ES_700G_FW:871.O4_.I_USB_FW:O4"
 			}
 		}
 	}
