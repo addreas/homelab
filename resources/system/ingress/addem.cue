@@ -2,6 +2,32 @@ package kube
 
 import "encoding/yaml"
 
+let tunnelID = "9484a4de-29a5-41da-a2e5-5e5562f8d3c4"
+
+k: Gateway: addem: {
+	metadata: annotations: "cert-manager.io/cluster-issuer": "addem-se-letsencrypt"
+	spec: {
+		gatewayClassName: "cilium"
+		infrastructure: labels: advertise: "arp"
+		listeners: [{
+			name:     "http"
+			port:     80
+			protocol: "HTTP"
+			allowedRoutes: namespaces: from: "All"
+		}, {
+			name:     "https"
+			hostname: "*.addem.se"
+			port:     443
+			protocol: "HTTPS"
+			allowedRoutes: namespaces: from: "All"
+			tls: {
+				mode: "Terminate"
+				certificateRefs: [{name: "addem-se-tls"}]
+			}
+		}]
+	}
+}
+
 k: Deployment: cloudflared: spec: {
 	replicas: 2
 	template: spec: {
@@ -34,8 +60,8 @@ k: Deployment: cloudflared: spec: {
 }
 
 k: ConfigMap: "cloudflared-config": data: "config.yaml": yaml.Marshal({
-	tunnel:             "9484a4de-29a5-41da-a2e5-5e5562f8d3c4"
-	"credentials-file": "/etc/cloudflared/\(tunnel).json"
+	tunnel:             tunnelID
+	"credentials-file": "/etc/cloudflared/\(tunnelID).json"
 	"no-autoupdate":    true
 	ingress: [{
 		service: "http://cilium-gateway-addem.ingress.svc.cluster.local"

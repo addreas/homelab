@@ -1,21 +1,8 @@
 package kube
 
-let hostNames = ["soltidtabellen.se", "www.soltidtabellen.se"]
-
-k: Ingress: soltidtabellen: {
-	spec: {
-		rules: [for h in hostNames {
-			host: h
-			http: paths: [{
-				path:     "/"
-				pathType: "Prefix"
-				backend: service: {
-					name: "soltidtabellen"
-					port: name: "http"
-				}
-			}]
-		}]
-	}
+k: HTTPRoute: soltidtabellen: spec: {
+	hostnames: ["soltidtabellen.se", "www.soltidtabellen.se"]
+	parentRefs: [{name: "jdahl", namespace: "ingress"}]
 }
 
 k: Service: soltidtabellen: {}
