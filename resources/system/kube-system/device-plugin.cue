@@ -32,6 +32,15 @@ k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
 				ID_MODEL:  "0200"
 			}
 		}
+		"addem.se/dev_thread_rcp": {
+			containerPath: "/dev/thread-rcp"
+			permissions:   "rw"
+			matchProperties: {
+				SUBSYSTEM: "tty"
+				ID_VENDOR: "Nordic_Semiconductor_ASA"
+				ID_MODEL:  "Thread_Co-Processor"
+			}
+		}
 		"addem.se/back_ups_es_700": {
 			permissions: "rw"
 			matchProperties: {
@@ -57,6 +66,10 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 				// This, along with the annotation above marks this pod as a critical add-on.
 				key:      "CriticalAddonsOnly"
 				operator: "Exists"
+			}, {
+				key:      "node-role.kubernetes.io/control-plane"
+				operator: "Exists"
+				effect:   "NoSchedule"
 			}]
 			securityContext: fsGroup: 0
 			hostNetwork: true
