@@ -1,4 +1,3 @@
-@if(tailscale)
 package kube
 
 k: StatefulSet: "tailscale-subnet-router": spec: template: spec: {
