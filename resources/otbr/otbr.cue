@@ -1,10 +1,6 @@
 package kube
 
-import (
-	"crypto/md5"
-	"encoding/hex"
-	"encoding/json"
-)
+import "encoding/json"
 
 k: NetworkAttachmentDefinition: "otbr-thread": spec: config: json.Marshal({
 	cniVersion: "0.3.0"
@@ -32,37 +28,12 @@ k: NetworkAttachmentDefinition: "otbr-thread": spec: config: json.Marshal({
 	}]
 })
 
-k: ConfigMap: "otbr-dataset-hook": data: "after_server": """
-	(
-		set +x
-		want=$(tr -d '[:space:]' < /etc/otbr-dataset/dataset.tlv 2>/dev/null)
-		for _ in $(seq 1 120); do
-			[ -S /run/openthread-wpan0.sock ] && break
-			sleep 1
-		done
-		if [ -n "$want" ]; then
-			have=$(ot-ctl dataset active -x 2>/dev/null | head -1)
-			if [ "$have" = "$want" ]; then
-				echo "otbr-dataset: matches desired dataset"
-			else
-				echo "otbr-dataset: applying desired dataset"
-				ot-ctl dataset set active "$want"
-				ot-ctl ifconfig up
-				ot-ctl thread start
-			fi
-		fi
-	) &
-	"""
-
 k: StatefulSet: "otbr": spec: {
 	template: {
-		metadata: annotations: {
-			"k8s.v1.cni.cncf.io/networks": json.Marshal([{
-				name: "otbr-thread"
-				mac:  "02:00:00:00:00:06"
-			}])
-			"addem.se/dataset-hash": hex.Encode(md5.Sum(k.Secret."otbr-dataset".stringData."dataset.tlv"))
-		}
+		metadata: annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
+			name: "otbr-thread"
+			mac:  "02:00:00:00:00:06"
+		}])
 		spec: {
 			tolerations: [{
 				key:      "node-role.kubernetes.io/control-plane"
@@ -81,9 +52,21 @@ k: StatefulSet: "otbr": spec: {
 				args: [
 					"--radio-url", "spinel+hdlc+uart:///dev/thread-rcp?uart-init-deassert",
 					"-B", "net1",
+					"--trel-url", "trel://net1",
 					"--debug-level", "5",
 				]
 				ports: [{containerPort: 8081}, {containerPort: 80}]
+				livenessProbe: {
+					exec: command: ["ot-ctl", "state"]
+					initialDelaySeconds: 120
+					periodSeconds:        20
+					timeoutSeconds:       15
+					failureThreshold:     3
+				}
+				volumeMounts: [{
+					name:      "thread"
+					mountPath: "/var/lib/thread"
+				}]
 				securityContext: {
 					privileged:               true
 					runAsNonRoot:             false
@@ -91,28 +74,21 @@ k: StatefulSet: "otbr": spec: {
 					runAsGroup:               0
 					allowPrivilegeEscalation: true
 				}
-				volumeMounts: [{
-					name:      "dataset"
-					mountPath: "/etc/otbr-dataset"
-				}, {
-					name:      "hook"
-					mountPath: "/app/examples/platforms/ubuntu"
-				}]
 				resources: limits: {
 					cpu:                       "200m"
 					memory:                    "256Mi"
 					"addem.se/dev_thread_rcp": "1"
 				}
 			}]
-			volumes: [{
-				name: "dataset"
-				secret: secretName: "otbr-dataset"
-			}, {
-				name: "hook"
-				configMap: name: "otbr-dataset-hook"
-			}]
 		}
 	}
+	volumeClaimTemplates: [{
+		metadata: name: "thread"
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "64Mi"
+		}
+	}]
 }
 
 k: Service: "otbr": spec: ports: [{
