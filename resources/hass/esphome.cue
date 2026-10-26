@@ -17,7 +17,7 @@ k: Kustomization: "esphome-configs": {
 
 k: StatefulSet: esphome: spec: {
 	template: metadata: annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-		name: "macvlan-conf"
+		name: "iot-bridge"
 		mac:  "02:00:00:00:00:07" // https://en.wikipedia.org/wiki/MAC_address#IEEE_802c_local_MAC_address_usage
 	}])
 

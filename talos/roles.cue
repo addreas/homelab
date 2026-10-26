@@ -27,6 +27,10 @@ t: Role: "base": {
 		machine: features: diskQuotaSupport: true
 	}, {
 		apiVersion: "v1alpha1"
+		kind:       "DHCPv4Config"
+		name:       "eno1"
+	}, {
+		apiVersion: "v1alpha1"
 		kind:       "KubeNetworkConfig"
 		dnsDomain:  "cluster.local"
 		podSubnets: ["10.48.0.0/16"]
@@ -148,10 +152,6 @@ t: Role: "talos-logs": patches: [{
 // requires manual kubectl label node <name> node-role.kubernetes.io/vpn-egress
 t: Role: "vpn-egress": patches: [{
 	apiVersion: "v1alpha1"
-	kind:       "DHCPv4Config"
-	name:       "eno1"
-}, {
-	apiVersion: "v1alpha1"
 	kind:       "VLANConfig"
 	name:       "eno1.25"
 	vlanID:     25
@@ -173,4 +173,17 @@ t: Role: "vpn-egress": patches: [{
 	src:        "10.25.0.2/32"
 	table:      "125"
 	action:     "unicast"
+}]
+
+t: Role: "iot-bridge": patches: [{
+	apiVersion: "v1alpha1"
+	kind:       "VLANConfig"
+	name:       "eno1.2"
+	vlanID:     2
+	parent:     "eno1"
+}, {
+	apiVersion: "v1alpha1"
+	kind:       "BridgeConfig"
+	name:       "br-iot"
+	links: ["eno1.2"]
 }]
