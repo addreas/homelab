@@ -81,7 +81,7 @@ k: StatefulSet: hass: spec: {
 
 k: Service: hass: {}
 
-k: Ingress: hass: {}
+k: HTTPRoute: hass: {}
 
 k: ServiceMonitor: hass: spec: endpoints: [{
 	port:     "http"

@@ -79,4 +79,4 @@ k: StatefulSet: esphome: spec: {
 
 k: Service: esphome: {}
 
-k: Ingress: esphome: _authproxy: true
+k: HTTPRoute: esphome: _authproxy: true
