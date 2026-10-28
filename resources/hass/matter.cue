@@ -5,6 +5,7 @@ import (
 )
 
 k: StatefulSet: "hass-matter": spec: {
+	replicas: 0
 	template: {
 		metadata: annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
 			name: "macvlan-conf"
