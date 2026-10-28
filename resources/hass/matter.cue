@@ -17,7 +17,7 @@ k: StatefulSet: "hass-matter": spec: {
 					"--storage-path", "/data",
 					"--primary-interface", "net1",
 					"--ble-proxy",
-					"--log-level", "debug",
+					// "--log-level", "debug",
 				]
 				env: [{name: "ENABLE_TEST_NET_DCL", value: "true"}]
 				ports: [{containerPort: 5580}]
