@@ -1,6 +1,7 @@
 package kube
 
 k: StatefulSet: bitwarden: spec: {
+	replicas: 0
 	template: spec: containers: [{
 		image: "vaultwarden/server:\(githubReleases["dani-garcia/vaultwarden"])"
 		envFrom: [{
