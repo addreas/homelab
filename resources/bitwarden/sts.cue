@@ -22,9 +22,6 @@ k: StatefulSet: bitwarden: spec: {
 		ports: [{
 			containerPort: 8080
 			name:          "http"
-		}, {
-			containerPort: 3012
-			name:          "websocket"
 		}]
 		volumeMounts: [{
 			mountPath: "/data"

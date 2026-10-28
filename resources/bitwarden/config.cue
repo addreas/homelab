@@ -6,7 +6,6 @@ k: ConfigMap: bitwarden: data: {
 	SMTP_PORT:          "587"
 	SMTP_SECURITY:      "starttls"
 	SMTP_SSL:           "true"
-	WEBSOCKET_ENABLED:  "true"
 	DATA_FOLDER:        "/data"
 	DOMAIN:             "https://bitwarden.addem.se"
 	ROCKET_WORKERS:     "2"
