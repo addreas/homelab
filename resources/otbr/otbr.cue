@@ -28,15 +28,15 @@ k: StatefulSet: "otbr": spec: {
 					"--radio-url", "spinel+hdlc+uart:///dev/thread-rcp?uart-init-deassert",
 					"-B", "net1",
 					"--trel-url", "trel://net1",
-					"--debug-level", "5",
+					// "--debug-level", "5",
 				]
 				ports: [{containerPort: 8081}, {containerPort: 80}]
 				livenessProbe: {
 					exec: command: ["ot-ctl", "state"]
 					initialDelaySeconds: 120
-					periodSeconds:        20
-					timeoutSeconds:       15
-					failureThreshold:     3
+					periodSeconds:       20
+					timeoutSeconds:      15
+					failureThreshold:    3
 				}
 				volumeMounts: [{
 					name:      "thread"
