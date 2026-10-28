@@ -2,8 +2,8 @@ package kube
 
 k: StatefulSet: trilium: spec: {
 	template: spec: containers: [{
-		image: "ghcr.io/triliumnext/trilium:v0.105.0"
-		command: ["node", "./main.cjs"]
+		image: "ghcr.io/triliumnext/trilium:v0.106.1"
+		command: ["node", "./main.mjs"]
 		env: [{
 			name:  "TRILIUM_DATA_DIR"
 			value: "/data"
@@ -40,4 +40,4 @@ k: StatefulSet: trilium: spec: {
 }
 
 k: Service: trilium: {}
-k: Ingress: trilium: {}
+k: HTTPRoute: trilium: {}
