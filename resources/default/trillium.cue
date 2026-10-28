@@ -1,6 +1,7 @@
 package kube
 
 k: StatefulSet: trillium: spec: {
+	replicas: 0
 	template: spec: containers: [{
 		image: "ghcr.io/triliumnext/trilium:\(githubReleases["triliumnext/trilium"])"
 		command: ["node", "./main.mjs"]
