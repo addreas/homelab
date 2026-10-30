@@ -27,6 +27,10 @@ t: Role: "base": {
 		machine: features: diskQuotaSupport: true
 	}, {
 		apiVersion: "v1alpha1"
+		kind:       "SysctlConfig"
+		params: "user.max_user_namespaces": "65536"
+	}, {
+		apiVersion: "v1alpha1"
 		kind:       "DHCPv4Config"
 		name:       "eno1"
 	}, {
