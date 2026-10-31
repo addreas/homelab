@@ -30,7 +30,10 @@ k: HelmRelease: longhorn: spec: {
 			defaultDataLocality: "best-effort"
 
 			replicaReplenishmentWaitInterval: 3600
-			snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: v2: "true"
+			snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: {
+				v1: "false"
+				v2: "true"
+			}
 		}
 		persistence: {
 			dataEngine:               "v2"
