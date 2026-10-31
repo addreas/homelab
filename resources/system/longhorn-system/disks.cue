@@ -2,8 +2,8 @@
 package kube
 
 let nodes = {
-	"qbw0": "disk-1": path: "/dev/nvme0n1"
-	"qbw1": "disk-1": path: "/dev/sda"
+	"qbw0": "disk-1": path: "/dev/disk/by-id/nvme-KINGSTON_SNV2S2000G_50026B7382B0FFAF"
+	"qbw1": "disk-1": path: "/dev/disk/by-id/ata-SAMSUNG_MZ7KH960HAJR-00005_S47NNA0N209981"
 }
 
 for nodeName, disks in nodes
