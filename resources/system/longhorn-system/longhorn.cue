@@ -24,10 +24,13 @@ k: HelmRelease: longhorn: spec: {
 			backupTarget:                 "s3://Backups@us-east-1/longhorn"
 			backupTargetCredentialSecret: "longhorn-backup-creds"
 
-			createDefaultDiskLabeledNodes:  true
-			v2DataEngine:                   true
-			dataEngineInterruptModeEnabled: '{"v2": "true"}'
-			defaultDataLocality:            "best-effort"
+			createDefaultDiskLabeledNodes: true
+			v2DataEngine:                  true
+			dataEngineInterruptModeEnabled: v2: "true"
+			defaultDataLocality: "best-effort"
+
+			replicaReplenishmentWaitInterval: 3600
+			snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: v2: "true"
 		}
 		persistence: {
 			dataEngine:               "v2"
