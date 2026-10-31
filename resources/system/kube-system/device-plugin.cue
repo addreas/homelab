@@ -57,6 +57,15 @@ k: ConfigMap: "generic-device-plugin-config": data: "config.json": json.Marshal(
 				path: "/dev/fuse"
 			}]
 		}]
+	}, {
+		name: "dev-kvm"
+		groups: [{
+			count: 10
+			paths: [{
+				path:        "/dev/kvm"
+				permissions: "rw"
+			}]
+		}]
 	}]
 })
 
@@ -88,10 +97,10 @@ k: DaemonSet: "generic-device-plugin": spec: {
 				securityContext: {
 					allowPrivilegeEscalation: false
 					capabilities: drop: ["ALL"]
-					readOnlyRootFilesystem:   true
-					runAsUser:                0
-					runAsGroup:               0
-					runAsNonRoot:             false
+					readOnlyRootFilesystem: true
+					runAsUser:              0
+					runAsGroup:             0
+					runAsNonRoot:           false
 				}
 				volumeMounts: [{
 					name:      "device-plugin"
