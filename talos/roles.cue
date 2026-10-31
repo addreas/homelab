@@ -106,7 +106,12 @@ t: Role: "longhorn": {
 	]
 }
 
-t: Role: "intel": schematic: customization: systemExtensions: officialExtensions: ["siderolabs/intel-ucode"]
+t: Role: "sandbox-runtimes": schematic: customization: systemExtensions: officialExtensions: [
+	"siderolabs/gvisor",
+	"siderolabs/kata-containers",
+]
+
+t: Role: "intel": schematic: customization: systemExtensions: officialExtensions: ["siderolabs/intel-ucode", "siderolabs/i915"]
 
 t: Role: "reset": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system"]
 t: Role: "maintainance": schematic: customization: extraKernelArgs: ["talos.experimental.wipe=system:EPHEMERAL,STATE"]

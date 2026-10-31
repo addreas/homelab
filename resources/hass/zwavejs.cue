@@ -31,7 +31,7 @@ k: StatefulSet: "hass-zwavejs": spec: {
 						key:  "key"
 					}
 				}]
-				resources: limits: "addem.se/dev_aeotec_zstick": "1"
+				resources: limits: "addem.se/dev-aeotec-zstick": "1"
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/usr/src/app/store"

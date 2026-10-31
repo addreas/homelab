@@ -10,6 +10,7 @@ import (
 	discovery_v1 "cue.dev/x/k8s.io/api/discovery/v1"
 	meta_v1 "cue.dev/x/k8s.io/apimachinery/pkg/apis/meta/v1"
 	networking_v1 "cue.dev/x/k8s.io/api/networking/v1"
+	node_v1 "cue.dev/x/k8s.io/api/node/v1"
 	policy_v1 "cue.dev/x/k8s.io/api/policy/v1"
 	rbac_v1 "cue.dev/x/k8s.io/api/rbac/v1"
 	storage_v1 "cue.dev/x/k8s.io/api/storage/v1"
@@ -80,6 +81,8 @@ let resourceSchemas = [
 	gateway_v1.#ReferenceGrant,
 
 	policy_v1.#PodDisruptionBudget,
+
+	node_v1.#RuntimeClass,
 
 	rbac_v1.#Role,
 	rbac_v1.#RoleBinding,

@@ -150,7 +150,7 @@ command: "dump-config": cli.Print & {text: targetNodes[targetNodeName].machineCo
 
 #runningVersion: exec.Run & {
 	node: string
-	cmd:  ["talosctl", "--context", clusterName, "--nodes", node, "get", "version", "-o", "json"]
+	cmd: ["talosctl", "--context", clusterName, "--nodes", node, "get", "version", "-o", "json"]
 	stdout: string
 	stderr: string
 	parsed: json.Unmarshal(stdout) & {spec: version: string}
@@ -158,7 +158,7 @@ command: "dump-config": cli.Print & {text: targetNodes[targetNodeName].machineCo
 
 #runningSchematic: exec.Run & {
 	node: string
-	cmd:  ["talosctl", "--context", clusterName, "--nodes", node, "get", "imagefactoryschematic", "-o", "json"]
+	cmd: ["talosctl", "--context", clusterName, "--nodes", node, "get", "imagefactoryschematic", "-o", "json"]
 	stdout: string
 	stderr: string
 	parsed: json.Unmarshal(stdout) & {spec: schematicId: string}
@@ -186,7 +186,7 @@ command: "diff": {
 				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
 				let needsUpgrade = runningImage != node.schematic.installImage
 				let cmds = {
-					"true":  ["echo", "\(name): would upgrade \(runningImage) -> \(node.schematic.installImage)"]
+					"true": ["echo", "\(name): would upgrade \(runningImage) -> \(node.schematic.installImage)"]
 					"false": ["echo", "\(name): already running \(runningImage)"]
 				}
 				cmd: [for upg in [needsUpgrade] {cmds["\(upg)"]}][0]
@@ -217,7 +217,7 @@ command: "apply": {
 				let runningImage = "\(factoryHost)/metal-installer/\(runningSchematic.parsed.spec.schematicId):\(runningVersion.parsed.spec.version)"
 				let needsUpgrade = runningImage != node.schematic.installImage
 				let cmds = {
-					"true":  ["talosctl", "upgrade",
+					"true": ["talosctl", "upgrade",
 						"--context", clusterName,
 						"--nodes", name,
 						"--image", node.schematic.installImage,

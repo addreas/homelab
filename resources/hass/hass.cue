@@ -35,7 +35,7 @@ k: StatefulSet: hass: spec: {
 					limits: {
 						cpu:                             "500m"
 						memory:                          "2Gi"
-						"addem.se/dev_deconz_conbee_ii": "1"
+						"addem.se/dev-deconz-conbee-ii": "1"
 					}
 					requests: {
 						cpu:    "100m"

@@ -14,7 +14,7 @@ groups: "base": {
 		}
 
 		"worker": {
-			common: roles: ["longhorn", "intel", "iot-bridge"]
+			common: roles: ["longhorn", "intel", "iot-bridge", "sandbox-runtimes"]
 			nodes: {
 				"qbw0": {mac: "30:24:a9:87:60:bf", ip: "10.24.0.69", roles: ["vpn-egress"]}
 				"qbw1": {mac: "e8:d8:d1:54:d7:df", ip: "10.24.0.95"}

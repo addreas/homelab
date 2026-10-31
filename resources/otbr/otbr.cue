@@ -52,7 +52,7 @@ k: StatefulSet: "otbr": spec: {
 				resources: limits: {
 					cpu:                       "200m"
 					memory:                    "256Mi"
-					"addem.se/dev_thread_rcp": "1"
+					"addem.se/dev-thread-rcp": "1"
 				}
 			}]
 		}

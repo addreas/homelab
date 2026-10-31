@@ -2,25 +2,68 @@ package kube
 
 import "encoding/json"
 
-k: ConfigMap: "hostdevice-plugin-config": data: "config.json": json.Marshal({
-	socketPrefix: "hostdevice-plugin"
-	devices: {
-		"addem.se/dev_thread_rcp": {
-			containerPath: "/dev/thread-rcp"
-			permissions:   "rw"
-			matchProperties: {
-				SUBSYSTEM: "tty"
-				ID_VENDOR: "Nordic_Semiconductor_ASA"
-				ID_MODEL:  "Thread_Co-Processor"
-			}
-		}
-	}
+k: ConfigMap: "generic-device-plugin-config": data: "config.json": json.Marshal({
+	domain: "addem.se"
+	devices: [{
+		name: "dev-thread-rcp"
+		groups: [{
+			paths: [{
+				path:        "/dev/serial/by-id/usb-Nordic_Semiconductor_ASA_Thread_Co-Processor_*"
+				mountPath:   "/dev/thread-rcp"
+				permissions: "rw"
+			}]
+		}]
+	}, {
+		name: "dev-deconz-conbee"
+		groups: [{
+			paths: [{
+				path:        "/dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_*"
+				mountPath:   "/dev/deconz-conbee"
+				permissions: "rw"
+			}]
+		}]
+	}, {
+		name: "dev-deconz-conbee-ii"
+		groups: [{
+			paths: [{
+				path:        "/dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_*"
+				mountPath:   "/dev/deconz-conbee-ii"
+				permissions: "rw"
+			}]
+		}]
+	}, {
+		name: "dev-aeotec-zstick"
+		groups: [{
+			paths: [{
+				path:        "/dev/serial/by-id/usb-0658_0200*"
+				mountPath:   "/dev/aeotec-z-stick"
+				permissions: "rw"
+			}]
+		}]
+	}, {
+		name: "dev-dri"
+		groups: [{
+			paths: [{
+				path: "/dev/dri/card*"
+			}, {
+				path: "/dev/dri/renderD*"
+			}]
+		}]
+	}, {
+		name: "fuse"
+		groups: [{
+			count: 10
+			paths: [{
+				path: "/dev/fuse"
+			}]
+		}]
+	}]
 })
 
-k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
-	selector: matchLabels: app: "hostdevice-plugin"
+k: DaemonSet: "generic-device-plugin": spec: {
+	selector: matchLabels: app: "generic-device-plugin"
 	template: {
-		metadata: labels: app: "hostdevice-plugin"
+		metadata: labels: app: "generic-device-plugin"
 		spec: {
 			// Mark this pod as a critical add-on; when enabled, the critical add-on scheduler
 			// reserves resources for critical add-on pods so that they can be rescheduled after
@@ -37,27 +80,31 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 				effect:   "NoSchedule"
 			}]
 			securityContext: fsGroup: 0
-			hostNetwork: true
+			automountServiceAccountToken: false
 			containers: [{
-				image: "ghcr.io/addreas/k8s-hostdevice-plugin:986abd80beca8e18176e66472a09032feb11ab53"
-				name:  "plugin"
+				image: "squat/generic-device-plugin:0.2.0"
+				name:  "generic-device-plugin"
+				args: ["--config", "/config/config.json"]
 				securityContext: {
-					runAsUser:    0
-					runAsGroup:   0
-					runAsNonRoot: false
+					allowPrivilegeEscalation: false
+					capabilities: drop: ["ALL"]
+					readOnlyRootFilesystem:   true
+					runAsUser:                0
+					runAsGroup:               0
+					runAsNonRoot:             false
 				}
 				volumeMounts: [{
 					name:      "device-plugin"
 					mountPath: "/var/lib/kubelet/device-plugins"
 				}, {
-					name:      "run-udev"
-					mountPath: "/run/udev"
+					name:      "dev"
+					mountPath: "/dev"
 				}, {
 					name:      "config"
-					mountPath: "/k8s-hostdevice-plugin"
+					mountPath: "/config"
 				}]
 				resources: limits: {
-					cpu:    "10m"
+					cpu:    "50m"
 					memory: "64Mi"
 				}
 			}]
@@ -65,11 +112,11 @@ k: DaemonSet: "hostdevice-plugin-daemonset": spec: {
 				name: "device-plugin"
 				hostPath: path: "/var/lib/kubelet/device-plugins"
 			}, {
-				name: "run-udev"
-				hostPath: path: "/run/udev"
+				name: "dev"
+				hostPath: path: "/dev"
 			}, {
 				name: "config"
-				configMap: name: "hostdevice-plugin-config"
+				configMap: name: "generic-device-plugin-config"
 			}]
 		}
 	}

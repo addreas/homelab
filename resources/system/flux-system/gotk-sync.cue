@@ -13,6 +13,7 @@ k: CueExport: "homelab-system": spec: {
 		"./resources/system/net",
 		"./resources/system/ingress",
 		"./resources/system/kube-system",
+		"./resources/system/runtimes",
 		"./resources/system/longhorn-system",
 		"./resources/system/lauset",
 		// "./resources/system/nixery",
