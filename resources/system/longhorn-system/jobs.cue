@@ -14,6 +14,13 @@ k: LonghornRecurringJob: "backup-12-weekly": spec: {
 	groups: ["long"]
 }
 
+k: LonghornRecurringJob: "snapshot-cleanup-daily": spec: {
+	task:   "snapshot-cleanup"
+	cron:   "30 3 * * *"
+	retain: 0
+	groups: ["default"]
+}
+
 k: LonghornRecurringJob: "trim-daily": spec: {
 	task:        "filesystem-trim"
 	cron:        "0 4 * * *"
