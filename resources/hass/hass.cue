@@ -14,6 +14,7 @@ k: StatefulSet: hass: spec: template: metadata:
 	}])
 
 k: StatefulSet: hass: spec: {
+	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		spec: {
@@ -42,10 +43,12 @@ k: StatefulSet: hass: spec: {
 						memory: "256Mi"
 					}
 				}
-				envFrom: [{secretRef: name: "hass-postgres-credentials"}]
 				env: [{
-					name:  "DB_URL"
-					value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@hass-postgres-new/hass"
+					name: "DB_URL"
+					valueFrom: secretKeyRef: {
+						name: "hass-recorder-app"
+						key:  "uri"
+					}
 				}, {
 					name:  "HOME"
 					value: "/config"

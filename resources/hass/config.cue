@@ -5,9 +5,26 @@ import (
 	"encoding/yaml"
 )
 
-// yaml.Marshal cannot do the !include statements, so that's why it's split up
-// Prefer adding stuff here instead of in the configmap below
 let conf = {
+	automation: "automations.yaml" @yaml(,tag="!include")
+	script:     "scripts.yaml"     @yaml(,tag="!include")
+	scene:      "scenes.yaml"      @yaml(,tag="!include")
+
+	frontend: {
+		themes: "themes" @yaml(,tag="!include_dir_merge_named")
+	}
+
+	recorder: {
+		db_url: "DB_URL" @yaml(,tag="!env_var")
+	}
+
+	google_assistant: {
+		project_id:      "hass-dke"
+		service_account: "hass-dke-8e86dc9cd8ce.json" @yaml(,tag="!include")
+		report_state:    true
+		exposed_domains: ["switch", "light"]
+	}
+
 	logger: default: "info"
 	logger: logs: {
 		"habluetooth.wrappers":                             "warning"
@@ -22,34 +39,12 @@ let conf = {
 
 	default_config: {}
 
-	// homeassistant: media_dirs: media: "/media/videos"
-
 	prometheus: namespace: "hass"
 
 	tts: [{platform: "google_translate"}]
 }
 
-k: ConfigMap: "hass-config": data: "configuration.yaml": """
-	automation: !include automations.yaml
-	script: !include scripts.yaml
-	scene: !include scenes.yaml
-
-	frontend:
-	  themes: !include_dir_merge_named themes
-
-	recorder:
-	  db_url: !env_var DB_URL
-
-	google_assistant:
-	  project_id: hass-dke
-	  service_account: !include hass-dke-8e86dc9cd8ce.json
-	  report_state: true
-	  exposed_domains:
-	  - switch
-	  - light
-
-	\(yaml.Marshal(conf))
-	"""
+k: ConfigMap: "hass-config": data: "configuration.yaml": yaml.Marshal(conf)
 
 k: ConfigMap: "zwave-js-settings-json": data: "settings.json": json.Marshal({
 	mqtt: disabled:         true

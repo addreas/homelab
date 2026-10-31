@@ -6,6 +6,7 @@ import (
 )
 
 k: Deployment: mosquitto: spec: {
+	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
 		spec: {
