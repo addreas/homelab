@@ -2,7 +2,7 @@ package kube
 
 import "encoding/json"
 
-k: NetworkAttachmentDefinition: "iot-bridge": spec: config: json.Marshal({
+k: NetworkAttachmentDefinition: "otbr/iot-bridge": spec: config: json.Marshal({
 	cniVersion: "0.3.0"
 	plugins: [{
 		type:   "bridge"
