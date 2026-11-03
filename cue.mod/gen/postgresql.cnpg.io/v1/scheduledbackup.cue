@@ -108,6 +108,9 @@ import "time"
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	status?: {
+		// Error is the latest admission validation error
+		error?: string
+
 		// The latest time the schedule
 		lastCheckTime?: time.Time
 

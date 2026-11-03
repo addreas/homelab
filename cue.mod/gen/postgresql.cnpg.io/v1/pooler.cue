@@ -1,5 +1,7 @@
 package v1
 
+import "strings"
+
 #Pooler: {
 	_embeddedResource
 
@@ -69,14 +71,17 @@ package v1
 		instances?: int32 & int
 
 		// The configuration of the monitoring infrastructure of this pooler.
-		//
-		// Deprecated: This feature will be removed in an upcoming release. If
-		// you need this functionality, you can create a PodMonitor manually.
 		monitoring?: {
 			// Enable or disable the `PodMonitor`
+			//
+			// Deprecated: This feature will be removed in an upcoming release. If
+			// you need this functionality, you can create a PodMonitor manually.
 			enablePodMonitor?: bool
 
 			// The list of metric relabelings for the `PodMonitor`. Applied to samples before ingestion.
+			//
+			// Deprecated: This feature will be removed in an upcoming release. If
+			// you need this functionality, you can create a PodMonitor manually.
 			podMonitorMetricRelabelings?: [...{
 				// action to perform based on the regex matching.
 				//
@@ -89,7 +94,7 @@ package v1
 				// modulus to take of the hash of the source label values.
 				//
 				// Only applicable when the action is `HashMod`.
-				modulus?: int64 & int
+				modulus?: int64 & int & >=0
 
 				// regex defines the regular expression against which the extracted value is matched.
 				regex?: string
@@ -118,6 +123,9 @@ package v1
 			}]
 
 			// The list of relabelings for the `PodMonitor`. Applied to samples before scraping.
+			//
+			// Deprecated: This feature will be removed in an upcoming release. If
+			// you need this functionality, you can create a PodMonitor manually.
 			podMonitorRelabelings?: [...{
 				// action to perform based on the regex matching.
 				//
@@ -130,7 +138,7 @@ package v1
 				// modulus to take of the hash of the source label values.
 				//
 				// Only applicable when the action is `HashMod`.
-				modulus?: int64 & int
+				modulus?: int64 & int & >=0
 
 				// regex defines the regular expression against which the extracted value is matched.
 				regex?: string
@@ -157,6 +165,14 @@ package v1
 				// Regex capture groups are available.
 				targetLabel?: string
 			}]
+
+			// Configure TLS communication for the metrics endpoint.
+			// Changing tls.enabled option will force a rollout of all instances.
+			tls?: {
+				// Enable TLS for the monitoring endpoint.
+				// Changing this option will force a rollout of all instances.
+				enabled?: bool
+			}
 		}
 
 		// The PgBouncer configuration
@@ -192,6 +208,30 @@ package v1
 				name!: string
 			}
 
+			// Image is the pgbouncer container image to use. When set, it takes
+			// precedence over ImageCatalogRef and the operator default, but is
+			// overridden by an explicit image set in the pod template.
+			image?: string
+
+			// ImageCatalogRef points to an entry in an ImageCatalog or ClusterImageCatalog.
+			// Mutually exclusive with Image.
+			imageCatalogRef?: {
+				// APIGroup is the group for the resource being referenced.
+				// If APIGroup is not specified, the specified Kind must be in the core API group.
+				// For any other third-party types, APIGroup is required.
+				apiGroup?: string
+
+				// Key identifies the entry within the catalog's componentImages list.
+				key!: strings.MaxRunes(
+					63) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+
+				// Kind is the type of resource being referenced
+				kind!: string
+
+				// Name is the name of resource being referenced
+				name!: string
+			}
+
 			// Additional parameters to be passed to PgBouncer - please check
 			// the CNPG documentation for a list of options you can configure
 			parameters?: [string]: string
@@ -224,6 +264,14 @@ package v1
 				name!: string
 			}
 		}
+
+		// Name of an existing ServiceAccount in the same namespace to use for the pooler.
+		// When specified, the operator will not create a new ServiceAccount
+		// but will use the provided one. This is useful for sharing a single
+		// ServiceAccount across multiple poolers (e.g., for cloud IAM configurations).
+		// If not specified, a ServiceAccount will be created with the pooler name.
+		serviceAccountName?: strings.MaxRunes(
+					253) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
 		// Template for the Service to be created
 		serviceTemplate?: {
@@ -1131,7 +1179,8 @@ package v1
 						valueFrom?: {
 							// Selects a key of a ConfigMap.
 							configMapKeyRef?: {
-								// The key to select.
+								// The key to select from the ConfigMap's Data field.
+								// Keys in the BinaryData field are not currently propagated to container env vars.
 								key!: string
 
 								// Name of the referent.
@@ -1308,6 +1357,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -1380,6 +1433,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -1432,6 +1489,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -1466,6 +1529,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -1570,6 +1637,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -1604,6 +1677,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -1798,7 +1875,6 @@ package v1
 						// procMount denotes the type of proc mount to use for the containers.
 						// The default value is Default which uses the container runtime defaults for
 						// readonly paths and masked paths.
-						// This requires the ProcMountType feature flag to be enabled.
 						// Note that this field cannot be set when spec.os.name is windows.
 						procMount?: string
 
@@ -1920,6 +1996,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -1954,6 +2036,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -2050,8 +2136,15 @@ package v1
 					// Pod volumes to mount into the container's filesystem.
 					// Cannot be updated.
 					volumeMounts?: [...{
-						// Path within the container at which the volume should be mounted. Must
-						// not contain ':'.
+						// bindMountOptions is the list of additional bind mount options to apply when
+						// mounting this volume into the container. Allowed values are noexec,
+						// nodev, and nosuid. These are Linux mount options and have no effect on
+						// Windows nodes.
+						// This field is not supported with image volumes.
+						// This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.
+						bindMountOptions?: [...string]
+
+						// Path within the container at which the volume should be mounted.
 						mountPath!: string
 
 						// mountPropagation determines how mounts are propagated from the host
@@ -2197,7 +2290,8 @@ package v1
 						valueFrom?: {
 							// Selects a key of a ConfigMap.
 							configMapKeyRef?: {
-								// The key to select.
+								// The key to select from the ConfigMap's Data field.
+								// Keys in the BinaryData field are not currently propagated to container env vars.
 								key!: string
 
 								// Name of the referent.
@@ -2371,6 +2465,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -2443,6 +2541,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -2492,6 +2594,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -2526,6 +2634,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -2620,6 +2732,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -2654,6 +2772,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -2826,7 +2948,6 @@ package v1
 						// procMount denotes the type of proc mount to use for the containers.
 						// The default value is Default which uses the container runtime defaults for
 						// readonly paths and masked paths.
-						// This requires the ProcMountType feature flag to be enabled.
 						// Note that this field cannot be set when spec.os.name is windows.
 						procMount?: string
 
@@ -2942,6 +3063,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -2976,6 +3103,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -3081,8 +3212,15 @@ package v1
 					// allowed for ephemeral containers.
 					// Cannot be updated.
 					volumeMounts?: [...{
-						// Path within the container at which the volume should be mounted. Must
-						// not contain ':'.
+						// bindMountOptions is the list of additional bind mount options to apply when
+						// mounting this volume into the container. Allowed values are noexec,
+						// nodev, and nosuid. These are Linux mount options and have no effect on
+						// Windows nodes.
+						// This field is not supported with image volumes.
+						// This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.
+						bindMountOptions?: [...string]
+
+						// Path within the container at which the volume should be mounted.
 						mountPath!: string
 
 						// mountPropagation determines how mounts are propagated from the host
@@ -3138,6 +3276,48 @@ package v1
 					workingDir?: string
 				}]
 
+				// evictionResponders reference responders that react to Evictions based on EvictionRequests.
+				// Responders should observe and communicate through the Eviction Resource API to help with
+				// the graceful termination of a pod. The responders are selected sequentially, according to
+				// their specified priority.
+				//
+				// Responders should periodically report on an eviction progress by updating the
+				// .status.responders[].heartbeatTime field of the Eviction object. If this field is not updated
+				// within the heartbeat deadline defined by the Eviction API (currently 20 minutes), the eviction
+				// is passed over to the next responder with a lower priority. If there is no other responder,
+				// the last default imperative-eviction.k8s.io/evictor responder with a priority of 100 will
+				// evict the pod using the imperative Eviction API (pods/<name>/eviction subresource).
+				//
+				// The maximum length of the responders list is 10.
+				// Responders are not supported when the pod is part of a PodGroup (.spec.schedulingGroup is set).
+				// This field can only be set on creation and is immutable afterwards.
+				evictionResponders?: [...{
+					// name allows you to identify the responder responding to the Eviction.
+					//
+					// It must be a valid domain-prefixed key (such as "acme.io/foo").
+					// Domain names *.k8s.io and *.kubernetes.io are reserved.
+					// This field must be unique for each responder.
+					// This field is required.
+					name!: string
+
+					// priority for this responder. Higher priorities are selected first by the
+					// evictionrequest-controller.
+					// If there are responders with the same priority, the responder whose domain
+					// name comes first in the
+					// alphabetical higher domain order, will be picked. This means that the top
+					// domain labels are compared
+					// alphabetically first, followed by the lower domain labels. The key is compared last.
+					//
+					// The responder that is the managing controller of the pod should set the value of
+					// this field to 10000 to allow both for preemption or fallback registration by other
+					// responders.
+					//
+					// The minimum value is 0 and the maximum value is 100000.
+					// The interval 0-999 is reserved for responders with *.k8s.io suffix.
+					// This field is required.
+					priority!: int32 & int
+				}]
+
 				// HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts
 				// file if specified.
 				hostAliases?: [...{
@@ -3172,8 +3352,6 @@ package v1
 				// When set to false, a new userns is created for the pod. Setting false is useful for
 				// mitigating container breakout vulnerabilities even allowing users to run their
 				// containers as root without actually having root privileges on the host.
-				// This field is alpha-level and is only honored by servers that enable the
-				// UserNamespacesSupport feature.
 				hostUsers?: bool
 
 				// Specifies the hostname of the Pod
@@ -3190,7 +3368,6 @@ package v1
 				//
 				// This field must be a valid DNS subdomain as defined in RFC 1123 and contain
 				// at most 64 characters.
-				// Requires the HostnameOverride feature gate to be enabled.
 				hostnameOverride?: string
 
 				// ImagePullSecrets is an optional list of references to secrets in the same
@@ -3266,7 +3443,8 @@ package v1
 						valueFrom?: {
 							// Selects a key of a ConfigMap.
 							configMapKeyRef?: {
-								// The key to select.
+								// The key to select from the ConfigMap's Data field.
+								// Keys in the BinaryData field are not currently propagated to container env vars.
 								key!: string
 
 								// Name of the referent.
@@ -3443,6 +3621,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -3515,6 +3697,10 @@ package v1
 								// Name must be an IANA_SVC_NAME.
 								port!: matchN(>=1, [int, string]) & (int | string)
 
+								// Protocol selects the wire protocol for the probe connection.
+								// Nil defaults to HTTP/1.1.
+								protocol?: string
+
 								// Scheme to use for connecting to the host.
 								// Defaults to HTTP.
 								scheme?: string
@@ -3567,6 +3753,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -3601,6 +3793,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -3705,6 +3901,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -3739,6 +3941,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -3933,7 +4139,6 @@ package v1
 						// procMount denotes the type of proc mount to use for the containers.
 						// The default value is Default which uses the container runtime defaults for
 						// readonly paths and masked paths.
-						// This requires the ProcMountType feature flag to be enabled.
 						// Note that this field cannot be set when spec.os.name is windows.
 						procMount?: string
 
@@ -4055,6 +4260,12 @@ package v1
 
 						// GRPC specifies a GRPC HealthCheckRequest.
 						grpc?: {
+							// mode specifies the connection mode for the gRPC health probe.
+							// Set to "TLS" to use TLS without certificate verification.
+							// Set to "Plaintext" to use a plaintext (insecure) connection explicitly.
+							// If not specified, the probe uses a plaintext (insecure) connection.
+							mode?: string
+
 							// Port number of the gRPC service. Number must be in the range 1 to 65535.
 							port!: int32 & int
 
@@ -4089,6 +4300,10 @@ package v1
 							// Number must be in the range 1 to 65535.
 							// Name must be an IANA_SVC_NAME.
 							port!: matchN(>=1, [int, string]) & (int | string)
+
+							// Protocol selects the wire protocol for the probe connection.
+							// Nil defaults to HTTP/1.1.
+							protocol?: string
 
 							// Scheme to use for connecting to the host.
 							// Defaults to HTTP.
@@ -4185,8 +4400,15 @@ package v1
 					// Pod volumes to mount into the container's filesystem.
 					// Cannot be updated.
 					volumeMounts?: [...{
-						// Path within the container at which the volume should be mounted. Must
-						// not contain ':'.
+						// bindMountOptions is the list of additional bind mount options to apply when
+						// mounting this volume into the container. Allowed values are noexec,
+						// nodev, and nosuid. These are Linux mount options and have no effect on
+						// Windows nodes.
+						// This field is not supported with image volumes.
+						// This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.
+						bindMountOptions?: [...string]
+
+						// Path within the container at which the volume should be mounted.
 						mountPath!: string
 
 						// mountPropagation determines how mounts are propagated from the host
@@ -4309,6 +4531,8 @@ package v1
 
 				// PreemptionPolicy is the Policy for preempting pods with lower priority.
 				// One of Never, PreemptLowerPriority.
+				// When Priority Admission Controller is enabled, it prevents users from setting
+				// this field. The admission controller populates this field from PriorityClassName.
 				// Defaults to PreemptLowerPriority if unset.
 				preemptionPolicy?: string
 
@@ -4365,6 +4589,16 @@ package v1
 					// will also be deleted. The pod name and resource name, along with a
 					// generated component, will be used to form a unique name for the
 					// ResourceClaim, which will be recorded in pod.status.resourceClaimStatuses.
+					//
+					// When the DRAWorkloadResourceClaims feature gate is enabled and the pod
+					// belongs to a PodGroup that defines a PodGroupResourceClaim with the same
+					// Name and ResourceClaimTemplateName, this PodResourceClaim resolves to the
+					// ResourceClaim generated for the PodGroup. All pods in the group that
+					// define an equivalent PodResourceClaim matching the
+					// PodGroupResourceClaim's Name and ResourceClaimTemplateName share the same
+					// generated ResourceClaim. ResourceClaims generated for a PodGroup are
+					// owned by the PodGroup and their lifecycles are tied to the PodGroup
+					// instead of any individual pod.
 					//
 					// This field is immutable and no changes will be made to the
 					// corresponding ResourceClaim by the control plane after creating the
@@ -4443,6 +4677,25 @@ package v1
 					// Each scheduling gate must have a unique name field.
 					name!: string
 				}]
+
+				// SchedulingGroup provides a reference to the immediate scheduling runtime
+				// grouping object that this Pod belongs to.
+				// This field is used by the scheduler to identify the group and apply the
+				// correct group scheduling policies. The association with a group also
+				// impacts other lifecycle aspects of a Pod that are relevant in a wider context
+				// of scheduling like preemption, resource attachment, etc. If not specified,
+				// the Pod is treated as a single unit in all of these aspects.
+				// The group object referenced by this field may not exist at the time the
+				// Pod is created.
+				// This field is immutable, but a group object with the same name may be
+				// recreated with different policies. Doing this during pod scheduling
+				// may result in the placement not conforming to the expected policies.
+				schedulingGroup?: {
+					// PodGroupName specifies the name of the standalone PodGroup object
+					// that represents the runtime instance of this group.
+					// Must be a DNS subdomain.
+					podGroupName?: string
+				}
 
 				// SecurityContext holds pod-level security attributes and common container settings.
 				// Optional: Defaults to empty. See type description for default values of each field.
@@ -4524,12 +4777,8 @@ package v1
 					// Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
 					// whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
 					// CSIDriver instance. Other volumes are always re-labelled recursively.
-					// "MountOption" value is allowed only when SELinuxMount feature gate is enabled.
 					//
-					// If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
-					// If not specified and SELinuxMount feature gate is disabled, "MountOption" is
-					// used for ReadWriteOncePod volumes
-					// and "Recursive" for all other volumes.
+					// If not specified, "MountOption" is used.
 					//
 					// This field affects only Pods that have SELinux label set, either in
 					// PodSecurityContext or in SecurityContext of all containers.
@@ -4995,6 +5244,11 @@ package v1
 						// mode, like fsGroup, and the result can be other mode bits set.
 						defaultMode?: int32 & int
 
+						// defaultUser is Optional: The owner UID of the created files by default.
+						// The defaultUser field is only used as a fallback when the item-level user field is unset.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						defaultUser?: int64 & int
+
 						// items if unspecified, each key-value pair in the Data field of the referenced
 						// ConfigMap will be projected into the volume as a file whose name is the
 						// key and content is the value. If specified, the listed keys will be
@@ -5019,6 +5273,11 @@ package v1
 							// May not contain the path element '..'.
 							// May not start with the string '..'.
 							path!: string
+
+							// user is Optional: The owner UID of the created file.
+							// If specified, the item-level user field takes precedence over defaultUser.
+							// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+							user?: int64 & int
 						}]
 
 						// Name of the referent.
@@ -5079,6 +5338,11 @@ package v1
 						// mode, like fsGroup, and the result can be other mode bits set.
 						defaultMode?: int32 & int
 
+						// defaultUser is Optional: The owner UID of the created files by default.
+						// The defaultUser field is only used as a fallback when the item-level user field is unset.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						defaultUser?: int64 & int
+
 						// Items is a list of downward API volume file
 						items?: [...{
 							// Required: Selects a field of the pod: only annotations, labels, name,
@@ -5116,6 +5380,11 @@ package v1
 								// Required: resource to select
 								resource!: string
 							}
+
+							// user is Optional: The owner UID of the created file.
+							// If specified, the item-level user field takes precedence over defaultUser.
+							// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+							user?: int64 & int
 						}]
 					}
 
@@ -5127,6 +5396,16 @@ package v1
 						// Must be an empty string (default) or Memory.
 						// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 						medium?: string
+
+						// mode specifies the permission bits for the emptyDir directory, in numeric
+						// notation (e.g., 0755, 01777). Must be a value between 0000 and 01777.
+						// If not specified, defaults to 0777.
+						// This might be in conflict with other options that affect the file
+						// mode, like fsGroup. If fsGroup is specified, the fsGroup permissions
+						// will override the mode specified here.
+						// This field has no effect on Windows.
+						// This field is alpha and requires EmptyDirVolumeMode featuregate to be enabled.
+						mode?: int32 & int
 
 						// sizeLimit is the total amount of local storage required for this EmptyDir volume.
 						// The size limit is also applicable for memory medium.
@@ -5204,10 +5483,8 @@ package v1
 								// * An existing PVC (PersistentVolumeClaim)
 								// If the provisioner or an external controller can support the specified data source,
 								// it will create a new volume based on the contents of the specified data source.
-								// When the AnyVolumeDataSource feature gate is enabled, dataSource contents
-								// will be copied to dataSourceRef,
-								// and dataSourceRef contents will be copied to dataSource when
-								// dataSourceRef.namespace is not specified.
+								// dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be
+								// copied to dataSource when dataSourceRef.namespace is not specified.
 								// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 								dataSource?: {
 									// APIGroup is the group for the resource being referenced.
@@ -5243,7 +5520,6 @@ package v1
 								// specified.
 								// * While dataSource only allows local objects, dataSourceRef allows objects
 								// in any namespaces.
-								// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 								// (Alpha) Using the namespace field of dataSourceRef requires the
 								// CrossNamespaceVolumeDataSource feature gate to be enabled.
 								dataSourceRef?: {
@@ -5509,7 +5785,7 @@ package v1
 					// The OCI object gets mounted in a single directory
 					// (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers
 					// in the same way as for container images.
-					// The volume will be mounted read-only (ro) and non-executable files (noexec).
+					// The volume will be mounted read-only (ro).
 					// Sub path mounts for containers are not supported
 					// (spec.containers[*].volumeMounts.subpath) before 1.33.
 					// The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
@@ -5642,8 +5918,7 @@ package v1
 
 					// portworxVolume represents a portworx volume attached and mounted on kubelets host machine.
 					// Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type
-					// are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate
-					// is on.
+					// are redirected to the pxd.portworx.com CSI driver.
 					portworxVolume?: {
 						// fSType represents the filesystem type to mount
 						// Must be a filesystem type supported by the host operating system.
@@ -5667,6 +5942,11 @@ package v1
 						// This might be in conflict with other options that affect the file
 						// mode, like fsGroup, and the result can be other mode bits set.
 						defaultMode?: int32 & int
+
+						// defaultUser is Optional: The owner UID of the created files by default.
+						// The defaultUser field is only used as a fallback when the item-level user field is unset.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						defaultUser?: int64 & int
 
 						// sources is the list of volume projections. Each entry in this list
 						// handles one source.
@@ -5730,6 +6010,11 @@ package v1
 								// Mutually-exclusive with name. The contents of all selected
 								// ClusterTrustBundles will be unified and deduplicated.
 								signerName?: string
+
+								// user is Optional: The owner UID of the created file.
+								// If specified, the item-level user field takes precedence over defaultUser.
+								// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+								user?: int64 & int
 							}
 
 							// configMap information about the configMap data to project
@@ -5758,6 +6043,11 @@ package v1
 									// May not contain the path element '..'.
 									// May not start with the string '..'.
 									path!: string
+
+									// user is Optional: The owner UID of the created file.
+									// If specified, the item-level user field takes precedence over defaultUser.
+									// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+									user?: int64 & int
 								}]
 
 								// Name of the referent.
@@ -5810,6 +6100,11 @@ package v1
 										// Required: resource to select
 										resource!: string
 									}
+
+									// user is Optional: The owner UID of the created file.
+									// If specified, the item-level user field takes precedence over defaultUser.
+									// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+									user?: int64 & int
 								}]
 							}
 
@@ -5905,6 +6200,11 @@ package v1
 								// Kubelet's generated CSRs will be addressed to this signer.
 								signerName!: string
 
+								// user is Optional: The owner UID of the created file.
+								// If specified, the item-level user field takes precedence over defaultUser.
+								// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+								user?: int64 & int
+
 								// userAnnotations allow pod authors to pass additional information to
 								// the signer implementation. Kubernetes does not restrict or validate this
 								// metadata in any way.
@@ -5947,6 +6247,11 @@ package v1
 									// May not contain the path element '..'.
 									// May not start with the string '..'.
 									path!: string
+
+									// user is Optional: The owner UID of the created file.
+									// If specified, the item-level user field takes precedence over defaultUser.
+									// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+									user?: int64 & int
 								}]
 
 								// Name of the referent.
@@ -5979,6 +6284,11 @@ package v1
 								// path is the path relative to the mount point of the file to project the
 								// token into.
 								path!: string
+
+								// user is Optional: The owner UID of the created file.
+								// If specified, the item-level user field takes precedence over defaultUser.
+								// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+								user?: int64 & int
 							}
 						}]
 					}
@@ -6123,6 +6433,11 @@ package v1
 						// mode, like fsGroup, and the result can be other mode bits set.
 						defaultMode?: int32 & int
 
+						// defaultUser is Optional: The owner UID of the created files by default.
+						// The defaultUser field is only used as a fallback when the item-level user field is unset.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						defaultUser?: int64 & int
+
 						// items If unspecified, each key-value pair in the Data field of the referenced
 						// Secret will be projected into the volume as a file whose name is the
 						// key and content is the value. If specified, the listed keys will be
@@ -6147,6 +6462,11 @@ package v1
 							// May not contain the path element '..'.
 							// May not start with the string '..'.
 							path!: string
+
+							// user is Optional: The owner UID of the created file.
+							// If specified, the item-level user field takes precedence over defaultUser.
+							// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+							user?: int64 & int
 						}]
 
 						// optional field specify whether the Secret or its keys must be defined
@@ -6213,34 +6533,6 @@ package v1
 						volumePath!: string
 					}
 				}]
-
-				// WorkloadRef provides a reference to the Workload object that this Pod belongs to.
-				// This field is used by the scheduler to identify the PodGroup and apply the
-				// correct group scheduling policies. The Workload object referenced
-				// by this field may not exist at the time the Pod is created.
-				// This field is immutable, but a Workload object with the same name
-				// may be recreated with different policies. Doing this during pod scheduling
-				// may result in the placement not conforming to the expected policies.
-				workloadRef?: {
-					// Name defines the name of the Workload object this Pod belongs to.
-					// Workload must be in the same namespace as the Pod.
-					// If it doesn't match any existing Workload, the Pod will remain unschedulable
-					// until a Workload object is created and observed by the kube-scheduler.
-					// It must be a DNS subdomain.
-					name!: string
-
-					// PodGroup is the name of the PodGroup within the Workload that this Pod
-					// belongs to. If it doesn't match any existing PodGroup within the Workload,
-					// the Pod will remain unschedulable until the Workload object is recreated
-					// and observed by the kube-scheduler. It must be a DNS label.
-					podGroup!: string
-
-					// PodGroupReplicaKey specifies the replica key of the PodGroup to which this
-					// Pod belongs. It is used to distinguish pods belonging to different replicas
-					// of the same pod group. The pod group policy is applied separately to each replica.
-					// When set, it must be a DNS label.
-					podGroupReplicaKey?: string
-				}
 			}
 		}
 
@@ -6253,8 +6545,25 @@ package v1
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	status?: {
+		// Error is the latest admission validation error
+		error?: string
+
+		// Image is the resolved pgbouncer container image that the operator is
+		// using for this Pooler, including any override coming from spec.template.
+		// While Phase is Active or Paused this field reflects what the Deployment
+		// actually runs; while Phase is Inactive or Failed it may carry the last
+		// successfully resolved value (or be empty if the Pooler has never reconciled
+		// successfully).
+		image?: string
+
 		// The number of pods trying to be scheduled
 		instances?: int32 & int
+
+		// Phase summarizes the overall lifecycle state of the Pooler.
+		phase?: "active" | "paused" | "inactive" | "failed"
+
+		// PhaseReason is a human-readable explanation of the current Phase.
+		phaseReason?: string
 
 		// The resource version of the config object
 		secrets?: {

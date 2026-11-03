@@ -238,6 +238,12 @@ import "time"
 		// A map containing the plugin metadata
 		pluginMetadata?: [string]: string
 
+		// When the backup process was started by the operator
+		reconciliationStartedAt?: time.Time
+
+		// When the reconciliation was terminated by the operator (either successfully or not)
+		reconciliationTerminatedAt?: time.Time
+
 		// The credentials to use to upload data to S3
 		s3Credentials?: {
 			// The reference to the access key id
@@ -300,10 +306,10 @@ import "time"
 			}]
 		}
 
-		// When the backup was started
+		// When the backup execution was started by the backup tool
 		startedAt?: time.Time
 
-		// When the backup was terminated
+		// When the backup execution was terminated by the backup tool
 		stoppedAt?: time.Time
 
 		// Tablespace map file content as returned by Postgres in case of online (hot) backups

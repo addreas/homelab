@@ -673,8 +673,8 @@ import (
 
 					// Compress a backup file (a tar file per tablespace) while streaming it
 					// to the object store. Available options are empty string (no
-					// compression, default), `gzip`, `bzip2`, and `snappy`.
-					compression?: "bzip2" | "gzip" | "snappy"
+					// compression, default), `gzip`, `bzip2`, `lz4`, and `snappy`.
+					compression?: "bzip2" | "gzip" | "lz4" | "snappy"
 
 					// Whenever to force the encryption of files (if the bucket is
 					// not already configured for that).
@@ -692,6 +692,22 @@ import (
 					// The number of parallel jobs to be used to upload the backup, defaults
 					// to 2
 					jobs?: int32 & int & >=1
+
+					// Additional arguments that can be appended to the 'barman-cloud-restore'
+					// command-line invocation. These arguments provide flexibility to customize
+					// the data restore process further, according to specific requirements or
+					// configurations.
+					//
+					// Example:
+					// In a scenario where specialized restore options are required, such as setting
+					// a specific read timeout or defining custom behavior, users can use this field
+					// to specify additional command arguments.
+					//
+					// Note:
+					// It's essential to ensure that the provided arguments are valid and supported
+					// by the 'barman-cloud-restore' command, to avoid potential errors or unintended
+					// behavior during execution.
+					restoreAdditionalCommandArgs?: [...string]
 				}
 
 				// The path where to store the backup (i.e. s3://bucket/path/to/folder)
@@ -914,8 +930,10 @@ import (
 				// Available from PostgreSQL 17.
 				builtinLocale?: string
 
-				// Whether the `-k` option should be passed to initdb,
-				// enabling checksums on data pages (default: `false`)
+				// Whether data checksums are enabled on data pages, to help detect
+				// corruption by the I/O system that would otherwise be silent
+				// (default: `false` before PostgreSQL 18, `true` from PostgreSQL 18 on,
+				// matching the initdb default in each case).
 				dataChecksums?: bool
 
 				// Name of the database used by the application. Default: `app`.
@@ -1381,7 +1399,8 @@ import (
 			valueFrom?: {
 				// Selects a key of a ConfigMap.
 				configMapKeyRef?: {
-					// The key to select.
+					// The key to select from the ConfigMap's Data field.
+					// Keys in the BinaryData field are not currently propagated to container env vars.
 					key!: string
 
 					// Name of the referent.
@@ -1540,10 +1559,8 @@ import (
 					// * An existing PVC (PersistentVolumeClaim)
 					// If the provisioner or an external controller can support the specified data source,
 					// it will create a new volume based on the contents of the specified data source.
-					// When the AnyVolumeDataSource feature gate is enabled, dataSource contents
-					// will be copied to dataSourceRef,
-					// and dataSourceRef contents will be copied to dataSource when
-					// dataSourceRef.namespace is not specified.
+					// dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be
+					// copied to dataSource when dataSourceRef.namespace is not specified.
 					// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 					dataSource?: {
 						// APIGroup is the group for the resource being referenced.
@@ -1579,7 +1596,6 @@ import (
 					// specified.
 					// * While dataSource only allows local objects, dataSourceRef allows objects
 					// in any namespaces.
-					// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 					// (Alpha) Using the namespace field of dataSourceRef requires the
 					// CrossNamespaceVolumeDataSource feature gate to be enabled.
 					dataSourceRef?: {
@@ -1757,8 +1773,8 @@ import (
 
 					// Compress a backup file (a tar file per tablespace) while streaming it
 					// to the object store. Available options are empty string (no
-					// compression, default), `gzip`, `bzip2`, and `snappy`.
-					compression?: "bzip2" | "gzip" | "snappy"
+					// compression, default), `gzip`, `bzip2`, `lz4`, and `snappy`.
+					compression?: "bzip2" | "gzip" | "lz4" | "snappy"
 
 					// Whenever to force the encryption of files (if the bucket is
 					// not already configured for that).
@@ -1776,6 +1792,22 @@ import (
 					// The number of parallel jobs to be used to upload the backup, defaults
 					// to 2
 					jobs?: int32 & int & >=1
+
+					// Additional arguments that can be appended to the 'barman-cloud-restore'
+					// command-line invocation. These arguments provide flexibility to customize
+					// the data restore process further, according to specific requirements or
+					// configurations.
+					//
+					// Example:
+					// In a scenario where specialized restore options are required, such as setting
+					// a specific read timeout or defining custom behavior, users can use this field
+					// to specify additional command arguments.
+					//
+					// Note:
+					// It's essential to ensure that the provided arguments are valid and supported
+					// by the 'barman-cloud-restore' command, to avoid potential errors or unintended
+					// behavior during execution.
+					restoreAdditionalCommandArgs?: [...string]
 				}
 
 				// The path where to store the backup (i.e. s3://bucket/path/to/folder)
@@ -2115,10 +2147,12 @@ import (
 
 				// List of one or more existing roles to which this role will be
 				// immediately added as a new member. Default empty.
+				// Changes to the list are applied to an existing role through
+				// `GRANT` and `REVOKE` statements, not only at role creation.
 				inRoles?: [...string]
 
 				// Whether a role "inherits" the privileges of roles it is a member of.
-				// Defaults is `true`.
+				// Default is `true`.
 				inherit?: bool
 
 				// Whether the role is allowed to log in. A role having the `login`
@@ -2130,8 +2164,10 @@ import (
 				// Name of the role
 				name!: string
 
-				// Secret containing the password of the role (if present)
-				// If null, the password will be ignored unless DisablePassword is set
+				// Secret containing the password of the role (if present).
+				// If null, the password will be ignored unless DisablePassword is set.
+				// When set, the secret must follow the `kubernetes.io/basic-auth` format
+				// and contain both a `username` and a `password` field.
 				passwordSecret?: {
 					// Name of the referent.
 					name!: string
@@ -2551,7 +2587,7 @@ import (
 				// modulus to take of the hash of the source label values.
 				//
 				// Only applicable when the action is `HashMod`.
-				modulus?: int64 & int
+				modulus?: int64 & int & >=0
 
 				// regex defines the regular expression against which the extracted value is matched.
 				regex?: string
@@ -2595,7 +2631,7 @@ import (
 				// modulus to take of the hash of the source label values.
 				//
 				// Only applicable when the action is `HashMod`.
-				modulus?: int64 & int
+				modulus?: int64 & int & >=0
 
 				// regex defines the regular expression against which the extracted value is matched.
 				regex?: string
@@ -2742,12 +2778,8 @@ import (
 			// Eligible volumes are in-tree FibreChannel and iSCSI volumes, and all CSI volumes
 			// whose CSI driver announces SELinux support by setting spec.seLinuxMount: true in their
 			// CSIDriver instance. Other volumes are always re-labelled recursively.
-			// "MountOption" value is allowed only when SELinuxMount feature gate is enabled.
 			//
-			// If not specified and SELinuxMount feature gate is enabled, "MountOption" is used.
-			// If not specified and SELinuxMount feature gate is disabled, "MountOption" is
-			// used for ReadWriteOncePod volumes
-			// and "Recursive" for all other volumes.
+			// If not specified, "MountOption" is used.
 			//
 			// This field affects only Pods that have SELinux label set, either in
 			// PodSecurityContext or in SecurityContext of all containers.
@@ -2852,6 +2884,42 @@ import (
 			}
 		}
 
+		// PodSelectorRefs defines named pod label selectors that can be referenced
+		// in pg_hba rules using the ${podselector:NAME} syntax in the address field.
+		// The operator resolves matching pod IPs and the instance manager expands
+		// pg_hba lines accordingly. Only pods in the Cluster's own namespace are considered.
+		podSelectorRefs?: [...{
+			// Name is the identifier used to reference this selector in pg_hba rules
+			// via the ${podselector:NAME} syntax in the address field.
+			name!: strings.MinRunes(
+				1) & =~"^[a-z]([a-z0-9_-]*[a-z0-9])?$"
+
+			// Selector is a label selector that identifies the pods whose IPs
+			// should be resolved. Only pods in the Cluster's namespace are considered.
+			selector!: {
+				// matchExpressions is a list of label selector requirements. The requirements are ANDed.
+				matchExpressions?: [...{
+					// key is the label key that the selector applies to.
+					key!: string
+
+					// operator represents a key's relationship to a set of values.
+					// Valid operators are In, NotIn, Exists and DoesNotExist.
+					operator!: string
+
+					// values is an array of string values. If the operator is In or NotIn,
+					// the values array must be non-empty. If the operator is Exists or DoesNotExist,
+					// the values array must be empty. This array is replaced during a strategic
+					// merge patch.
+					values?: [...string]
+				}]
+
+				// matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+				// map is equivalent to an element of matchExpressions, whose key field is "key", the
+				// operator is "In", and the values array contains only "value". The requirements are ANDed.
+				matchLabels?: [string]: string
+			}
+		}]
+
 		// The GID of the `postgres` user inside the image, defaults to `26`
 		postgresGID?: int64 & int
 
@@ -2868,16 +2936,43 @@ import (
 
 			// The configuration of the extensions to be added
 			extensions?: [...{
+				// A list of directories within the image to be appended to the
+				// PostgreSQL process's `PATH` environment variable.
+				bin_path?: [...string]
+
 				// The list of directories inside the image which should be added to dynamic_library_path.
 				// If not defined, defaults to "/lib".
 				dynamic_library_path?: [...string]
+
+				// Env is a list of custom environment variables to be set in the
+				// PostgreSQL process for this extension. It is the responsibility of the
+				// cluster administrator to ensure the variables are correct for the
+				// specific extension. Note that changes to these variables require
+				// a manual cluster restart to take effect.
+				env?: [...{
+					// Name of the environment variable to be injected into the
+					// PostgreSQL process.
+					name!: strings.MinRunes(
+						1) & =~"^[a-zA-Z_][a-zA-Z0-9_]*$"
+
+					// Value of the environment variable. CloudNativePG performs a direct
+					// replacement of this value, with support for placeholder expansion.
+					// The ${`image_root`} placeholder resolves to the absolute mount path
+					// of the extension's volume (e.g., `/extensions/my-extension`). This
+					// is particularly useful for allowing applications or libraries to
+					// locate specific directories within the mounted image.
+					// Unrecognized placeholders are rejected. To include a literal ${...}
+					// in the value, escape it as $${...}.
+					value!: strings.MinRunes(
+						1)
+				}]
 
 				// The list of directories inside the image which should be added to extension_control_path.
 				// If not defined, defaults to "/share".
 				extension_control_path?: [...string]
 
-				// The image containing the extension, required
-				image!: {
+				// The image containing the extension.
+				image?: {
 					// Policy for pulling OCI objects. Possible values are:
 					// Always: the kubelet always attempts to pull the reference. Container creation
 					// will fail If the pull fails.
@@ -2903,8 +2998,11 @@ import (
 				// The list of directories inside the image which should be added to ld_library_path.
 				ld_library_path?: [...string]
 
-				// The name of the extension, required
-				name!: strings.MinRunes(
+				// The name of the extension, required. The limit of 59 characters
+				// leaves room for the prefix the operator adds when deriving the
+				// extension's Kubernetes Volume name (capped at 63 characters).
+				name!: strings.MaxRunes(
+					59) & strings.MinRunes(
 					1) & =~"^[a-z0-9]([-a-z0-9_]*[a-z0-9])?$"
 			}]
 
@@ -2967,7 +3065,9 @@ import (
 			parameters?: [string]: string
 
 			// PostgreSQL Host Based Authentication rules (lines to be appended
-			// to the pg_hba.conf file)
+			// to the pg_hba.conf file).
+			// Use the ${podselector:NAME} syntax to reference a pod selector;
+			// the rule will be expanded for each Pod IP matching that selector.
 			pg_hba?: [...string]
 
 			// PostgreSQL User Name Maps rules (lines to be appended
@@ -3037,6 +3137,35 @@ import (
 			}
 		}
 
+		// Configuration of the Kubernetes `Lease` used to coordinate safe primary
+		// election within the cluster. When omitted, the operator applies built-in
+		// defaults; tune these values only if you understand the consequences for
+		// failover timing.
+		primaryLease?: {
+			// How long, in seconds, the primary lease is considered valid before it
+			// expires and another instance may acquire it. It must be greater than
+			// `renewDeadlineSeconds`.
+			// Defaults to 15.
+			leaseDurationSeconds?: int32 & int & >=1
+
+			// The TTL, in seconds, written when the primary explicitly releases the
+			// lease on a clean shutdown, allowing a replica to promote without waiting
+			// for the full lease duration to expire.
+			// Defaults to 1.
+			releasedLeaseDurationSeconds?: int32 & int & >=1
+
+			// How long, in seconds, the current primary keeps retrying to renew the
+			// lease before giving up and stopping. It must be smaller than
+			// `leaseDurationSeconds`.
+			// Defaults to 10.
+			renewDeadlineSeconds?: int32 & int & >=1
+
+			// How frequently, in seconds, a non-holder instance retries acquiring or
+			// renewing the lease.
+			// Defaults to 2.
+			retryPeriodSeconds?: int32 & int & >=1
+		}
+
 		// Method to follow to upgrade the primary server during a rolling
 		// update procedure, after all replicas have been successfully updated:
 		// it can be with a switchover (`switchover`) or in-place (`restart` - default).
@@ -3070,10 +3199,12 @@ import (
 				initialDelaySeconds?: int32 & int
 
 				// Configure the feature that extends the liveness probe for a primary
-				// instance. In addition to the basic checks, this verifies whether the
+				// instance. In addition to the basic checks, this reports whether the
 				// primary is isolated from the Kubernetes API server and from its
-				// replicas, ensuring that it can be safely shut down if network
-				// partition or API unavailability is detected. Enabled by default.
+				// replicas, so the kubelet restarts it through the normal
+				// container-termination path (a smart shutdown, bounded by
+				// `.spec.smartShutdownTimeout`) when a network partition or API
+				// unavailability is detected. Enabled by default.
 				isolationCheck?: {
 					// Timeout in milliseconds for connections during the primary isolation check
 					connectionTimeout?: int
@@ -3207,6 +3338,11 @@ import (
 			// mode, like fsGroup, and the result can be other mode bits set.
 			defaultMode?: int32 & int
 
+			// defaultUser is Optional: The owner UID of the created files by default.
+			// The defaultUser field is only used as a fallback when the item-level user field is unset.
+			// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+			defaultUser?: int64 & int
+
 			// sources is the list of volume projections. Each entry in this list
 			// handles one source.
 			sources?: [...{
@@ -3269,6 +3405,11 @@ import (
 					// Mutually-exclusive with name. The contents of all selected
 					// ClusterTrustBundles will be unified and deduplicated.
 					signerName?: string
+
+					// user is Optional: The owner UID of the created file.
+					// If specified, the item-level user field takes precedence over defaultUser.
+					// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+					user?: int64 & int
 				}
 
 				// configMap information about the configMap data to project
@@ -3297,6 +3438,11 @@ import (
 						// May not contain the path element '..'.
 						// May not start with the string '..'.
 						path!: string
+
+						// user is Optional: The owner UID of the created file.
+						// If specified, the item-level user field takes precedence over defaultUser.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						user?: int64 & int
 					}]
 
 					// Name of the referent.
@@ -3349,6 +3495,11 @@ import (
 							// Required: resource to select
 							resource!: string
 						}
+
+						// user is Optional: The owner UID of the created file.
+						// If specified, the item-level user field takes precedence over defaultUser.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						user?: int64 & int
 					}]
 				}
 
@@ -3444,6 +3595,11 @@ import (
 					// Kubelet's generated CSRs will be addressed to this signer.
 					signerName!: string
 
+					// user is Optional: The owner UID of the created file.
+					// If specified, the item-level user field takes precedence over defaultUser.
+					// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+					user?: int64 & int
+
 					// userAnnotations allow pod authors to pass additional information to
 					// the signer implementation. Kubernetes does not restrict or validate this
 					// metadata in any way.
@@ -3486,6 +3642,11 @@ import (
 						// May not contain the path element '..'.
 						// May not start with the string '..'.
 						path!: string
+
+						// user is Optional: The owner UID of the created file.
+						// If specified, the item-level user field takes precedence over defaultUser.
+						// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+						user?: int64 & int
 					}]
 
 					// Name of the referent.
@@ -3518,6 +3679,11 @@ import (
 					// path is the path relative to the mount point of the file to project the
 					// token into.
 					path!: string
+
+					// user is Optional: The owner UID of the created file.
+					// If specified, the item-level user field takes precedence over defaultUser.
+					// (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+					user?: int64 & int
 				}
 			}]
 		}
@@ -3706,7 +3872,6 @@ import (
 			// procMount denotes the type of proc mount to use for the containers.
 			// The default value is Default which uses the container runtime defaults for
 			// readonly paths and masked paths.
-			// This requires the ProcMountType feature flag to be enabled.
 			// Note that this field cannot be set when spec.os.name is windows.
 			procMount?: string
 
@@ -3804,6 +3969,15 @@ import (
 			}
 		}
 
+		// Name of an existing ServiceAccount in the same namespace to use for the cluster.
+		// When specified, the operator will not create a new ServiceAccount
+		// but will use the provided one. This is useful for sharing a single
+		// ServiceAccount across multiple clusters (e.g., for cloud IAM configurations).
+		// If not specified, a ServiceAccount will be created with the cluster name.
+		// Mutually exclusive with ServiceAccountTemplate.
+		serviceAccountName?: strings.MaxRunes(
+					253) & =~"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+
 		// Configure the generation of the service account
 		serviceAccountTemplate?: {
 			// Metadata are the metadata to be used for the generated
@@ -3855,10 +4029,8 @@ import (
 				// * An existing PVC (PersistentVolumeClaim)
 				// If the provisioner or an external controller can support the specified data source,
 				// it will create a new volume based on the contents of the specified data source.
-				// When the AnyVolumeDataSource feature gate is enabled, dataSource contents
-				// will be copied to dataSourceRef,
-				// and dataSourceRef contents will be copied to dataSource when
-				// dataSourceRef.namespace is not specified.
+				// dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be
+				// copied to dataSource when dataSourceRef.namespace is not specified.
 				// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 				dataSource?: {
 					// APIGroup is the group for the resource being referenced.
@@ -3894,7 +4066,6 @@ import (
 				// specified.
 				// * While dataSource only allows local objects, dataSourceRef allows objects
 				// in any namespaces.
-				// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 				// (Alpha) Using the namespace field of dataSourceRef requires the
 				// CrossNamespaceVolumeDataSource feature gate to be enabled.
 				dataSourceRef?: {
@@ -4033,10 +4204,8 @@ import (
 					// * An existing PVC (PersistentVolumeClaim)
 					// If the provisioner or an external controller can support the specified data source,
 					// it will create a new volume based on the contents of the specified data source.
-					// When the AnyVolumeDataSource feature gate is enabled, dataSource contents
-					// will be copied to dataSourceRef,
-					// and dataSourceRef contents will be copied to dataSource when
-					// dataSourceRef.namespace is not specified.
+					// dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be
+					// copied to dataSource when dataSourceRef.namespace is not specified.
 					// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 					dataSource?: {
 						// APIGroup is the group for the resource being referenced.
@@ -4072,7 +4241,6 @@ import (
 					// specified.
 					// * While dataSource only allows local objects, dataSourceRef allows objects
 					// in any namespaces.
-					// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 					// (Alpha) Using the namespace field of dataSourceRef requires the
 					// CrossNamespaceVolumeDataSource feature gate to be enabled.
 					dataSourceRef?: {
@@ -4334,10 +4502,8 @@ import (
 				// * An existing PVC (PersistentVolumeClaim)
 				// If the provisioner or an external controller can support the specified data source,
 				// it will create a new volume based on the contents of the specified data source.
-				// When the AnyVolumeDataSource feature gate is enabled, dataSource contents
-				// will be copied to dataSourceRef,
-				// and dataSourceRef contents will be copied to dataSource when
-				// dataSourceRef.namespace is not specified.
+				// dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be
+				// copied to dataSource when dataSourceRef.namespace is not specified.
 				// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 				dataSource?: {
 					// APIGroup is the group for the resource being referenced.
@@ -4373,7 +4539,6 @@ import (
 				// specified.
 				// * While dataSource only allows local objects, dataSourceRef allows objects
 				// in any namespaces.
-				// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 				// (Alpha) Using the namespace field of dataSourceRef requires the
 				// CrossNamespaceVolumeDataSource feature gate to be enabled.
 				dataSourceRef?: {
@@ -4677,6 +4842,8 @@ import (
 		lastSuccessfulBackupByMethod?: [string]: time.Time
 
 		// ID of the latest generated node (used to avoid node name clashing)
+		//
+		// Deprecated: this field is not set anymore
 		latestGeneratedNode?: int
 
 		// ManagedRolesStatus reports the state of the managed roles in the cluster
@@ -4684,8 +4851,10 @@ import (
 			// ByStatus gives the list of roles in each state
 			byStatus?: [string]: [...string]
 
-			// CannotReconcile lists roles that cannot be reconciled in PostgreSQL,
-			// with an explanation of the cause
+			// CannotReconcile lists roles that cannot be reconciled, with an
+			// explanation of the cause. Failures may originate in PostgreSQL
+			// (e.g. dropping a role that owns objects) or in Kubernetes (e.g.
+			// the referenced password Secret cannot be fetched).
 			cannotReconcile?: [string]: [...string]
 
 			// PasswordStatus gives the last transaction id and password secret version for each managed role
@@ -4701,9 +4870,86 @@ import (
 		// OnlineUpdateEnabled shows if the online upgrade is enabled inside the cluster
 		onlineUpdateEnabled?: bool
 
+		// OperatorCertificateFingerprint is the SHA256 fingerprint of the operator's
+		// in-memory client certificate public key. The instance manager pins this
+		// fingerprint to authenticate requests from the operator.
+		operatorCertificateFingerprint?: string
+
 		// PGDataImageInfo contains the details of the latest image that has run on the
 		// current data directory.
 		pgDataImageInfo?: {
+			// Extensions contains the container image extensions available for the current Image
+			extensions?: [...{
+				// A list of directories within the image to be appended to the
+				// PostgreSQL process's `PATH` environment variable.
+				bin_path?: [...string]
+
+				// The list of directories inside the image which should be added to dynamic_library_path.
+				// If not defined, defaults to "/lib".
+				dynamic_library_path?: [...string]
+
+				// Env is a list of custom environment variables to be set in the
+				// PostgreSQL process for this extension. It is the responsibility of the
+				// cluster administrator to ensure the variables are correct for the
+				// specific extension. Note that changes to these variables require
+				// a manual cluster restart to take effect.
+				env?: [...{
+					// Name of the environment variable to be injected into the
+					// PostgreSQL process.
+					name!: strings.MinRunes(
+						1) & =~"^[a-zA-Z_][a-zA-Z0-9_]*$"
+
+					// Value of the environment variable. CloudNativePG performs a direct
+					// replacement of this value, with support for placeholder expansion.
+					// The ${`image_root`} placeholder resolves to the absolute mount path
+					// of the extension's volume (e.g., `/extensions/my-extension`). This
+					// is particularly useful for allowing applications or libraries to
+					// locate specific directories within the mounted image.
+					// Unrecognized placeholders are rejected. To include a literal ${...}
+					// in the value, escape it as $${...}.
+					value!: strings.MinRunes(
+						1)
+				}]
+
+				// The list of directories inside the image which should be added to extension_control_path.
+				// If not defined, defaults to "/share".
+				extension_control_path?: [...string]
+
+				// The image containing the extension.
+				image?: {
+					// Policy for pulling OCI objects. Possible values are:
+					// Always: the kubelet always attempts to pull the reference. Container creation
+					// will fail If the pull fails.
+					// Never: the kubelet never pulls the reference and only uses a local image or
+					// artifact. Container creation will fail if the reference isn't present.
+					// IfNotPresent: the kubelet pulls if the reference isn't already present on
+					// disk. Container creation will fail if the reference isn't present and the
+					// pull fails.
+					// Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+					pullPolicy?: string
+
+					// Required: Image or artifact reference to be used.
+					// Behaves in the same way as pod.spec.containers[*].image.
+					// Pull secrets will be assembled in the same way as for the container image by
+					// looking up node credentials, SA image pull secrets, and pod spec image pull
+					// secrets.
+					// More info: https://kubernetes.io/docs/concepts/containers/images
+					// This field is optional to allow higher level config management to default or override
+					// container images in workload controllers like Deployments and StatefulSets.
+					reference?: string
+				}
+
+				// The list of directories inside the image which should be added to ld_library_path.
+				ld_library_path?: [...string]
+
+				// The name of the extension, required. The limit of 59 characters
+				// leaves room for the prefix the operator adds when deriving the
+				// extension's Kubernetes Volume name (capped at 63 characters).
+				name!: strings.MaxRunes(
+					59) & strings.MinRunes(
+					1) & =~"^[a-z0-9]([-a-z0-9_]*[a-z0-9])?$"
+			}]
+
 			// Image is the image name
 			image!: string
 
@@ -4734,6 +4980,10 @@ import (
 			// plugin regarding the reconciler
 			operatorCapabilities?: [...string]
 
+			// PostgresCapabilities are the list of capabilities of the
+			// plugin regarding the PostgreSQL configuration
+			postgresCapabilities?: [...string]
+
 			// RestoreJobHookCapabilities are the list of capabilities of the
 			// plugin regarding the RestoreJobHook management
 			restoreJobHookCapabilities?: [...string]
@@ -4748,6 +4998,17 @@ import (
 			// WALCapabilities are the list of capabilities of the
 			// plugin regarding the WAL management
 			walCapabilities?: [...string]
+		}]
+
+		// PodSelectorRefs contains the resolved pod IPs for each named selector
+		// defined in spec.podSelectorRefs.
+		podSelectorRefs?: [...{
+			// IPs is the list of pod IPs matching the selector.
+			// Each IP is a single address (no CIDR notation).
+			ips?: [...string]
+
+			// Name corresponds to the name in the spec's PodSelectorRef.
+			name!: string
 		}]
 
 		// The integration needed by poolers referencing the cluster
@@ -4810,6 +5071,12 @@ import (
 			superuserSecretVersion?: string
 		}
 
+		// Selector is the serialized form of the label selector that identifies
+		// the pods managed by this cluster. Populated by the operator and exposed
+		// through the scale sub-resource so an autoscaler (such as HPA or VPA)
+		// can discover the managed instance pods.
+		selector?: string
+
 		// SwitchReplicaClusterStatus is the status of the switch to replica cluster
 		switchReplicaClusterStatus?: {
 			// InProgress indicates if there is an ongoing procedure of switching a cluster
@@ -4834,6 +5101,89 @@ import (
 			// State is the latest reconciliation state
 			state!: string
 		}]
+
+		// TargetPGDataImageInfo contains the details of the target image for an
+		// in-progress major upgrade. It is set before the upgrade Job is created,
+		// and cleared on successful completion or when the upgrade is rolled back.
+		targetPgDataImageInfo?: {
+			// Extensions contains the container image extensions available for the current Image
+			extensions?: [...{
+				// A list of directories within the image to be appended to the
+				// PostgreSQL process's `PATH` environment variable.
+				bin_path?: [...string]
+
+				// The list of directories inside the image which should be added to dynamic_library_path.
+				// If not defined, defaults to "/lib".
+				dynamic_library_path?: [...string]
+
+				// Env is a list of custom environment variables to be set in the
+				// PostgreSQL process for this extension. It is the responsibility of the
+				// cluster administrator to ensure the variables are correct for the
+				// specific extension. Note that changes to these variables require
+				// a manual cluster restart to take effect.
+				env?: [...{
+					// Name of the environment variable to be injected into the
+					// PostgreSQL process.
+					name!: strings.MinRunes(
+						1) & =~"^[a-zA-Z_][a-zA-Z0-9_]*$"
+
+					// Value of the environment variable. CloudNativePG performs a direct
+					// replacement of this value, with support for placeholder expansion.
+					// The ${`image_root`} placeholder resolves to the absolute mount path
+					// of the extension's volume (e.g., `/extensions/my-extension`). This
+					// is particularly useful for allowing applications or libraries to
+					// locate specific directories within the mounted image.
+					// Unrecognized placeholders are rejected. To include a literal ${...}
+					// in the value, escape it as $${...}.
+					value!: strings.MinRunes(
+						1)
+				}]
+
+				// The list of directories inside the image which should be added to extension_control_path.
+				// If not defined, defaults to "/share".
+				extension_control_path?: [...string]
+
+				// The image containing the extension.
+				image?: {
+					// Policy for pulling OCI objects. Possible values are:
+					// Always: the kubelet always attempts to pull the reference. Container creation
+					// will fail If the pull fails.
+					// Never: the kubelet never pulls the reference and only uses a local image or
+					// artifact. Container creation will fail if the reference isn't present.
+					// IfNotPresent: the kubelet pulls if the reference isn't already present on
+					// disk. Container creation will fail if the reference isn't present and the
+					// pull fails.
+					// Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+					pullPolicy?: string
+
+					// Required: Image or artifact reference to be used.
+					// Behaves in the same way as pod.spec.containers[*].image.
+					// Pull secrets will be assembled in the same way as for the container image by
+					// looking up node credentials, SA image pull secrets, and pod spec image pull
+					// secrets.
+					// More info: https://kubernetes.io/docs/concepts/containers/images
+					// This field is optional to allow higher level config management to default or override
+					// container images in workload controllers like Deployments and StatefulSets.
+					reference?: string
+				}
+
+				// The list of directories inside the image which should be added to ld_library_path.
+				ld_library_path?: [...string]
+
+				// The name of the extension, required. The limit of 59 characters
+				// leaves room for the prefix the operator adds when deriving the
+				// extension's Kubernetes Volume name (capped at 63 characters).
+				name!: strings.MaxRunes(
+					59) & strings.MinRunes(
+					1) & =~"^[a-z0-9]([-a-z0-9_]*[a-z0-9])?$"
+			}]
+
+			// Image is the image name
+			image!: string
+
+			// MajorVersion is the major version of the image
+			majorVersion!: int
+		}
 
 		// Target primary instance, this is different from the previous one
 		// during a switchover or a failover
