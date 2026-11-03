@@ -7,6 +7,6 @@ k: HelmRepository: "cloudnative-pg": spec: url: "https://cloudnative-pg.github.i
 k: HelmRelease: "cloudnative-pg": spec: {
 	chart: spec: {
 		chart:   "cloudnative-pg"
-		version: "v0.27.1"
+		version: "v0.29.1"
 	}
 }
