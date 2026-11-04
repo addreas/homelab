@@ -8,8 +8,6 @@ k: ["VMAlert" | "VMAgent" | "VMAlertmanager" | "VMSingle" | "VLAgent" | "VLSingl
 }
 
 k: CueExport: "homelab-monitoring": spec: {
-	interval:  "30m"
-	sourceRef: _homelab
 	paths: [
 		"./resources/system/monitoring/grafana",
 		"./resources/system/monitoring/kube-prometheus",

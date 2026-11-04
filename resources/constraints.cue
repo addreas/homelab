@@ -1,10 +1,6 @@
 package kube
 
-import (
-	"strings"
-
-	utils "github.com/addreas/homelab/util"
-)
+import "github.com/addreas/homelab/util"
 
 context: "admin@qb"
 
@@ -15,12 +11,6 @@ _namespace: string
 if _namespace != _|_ {
 	k: [string]: [string]: metadata: namespace: _namespace
 	k: Namespace: (_namespace): {}
-}
-
-_homelab: {
-	kind:      "GitRepository"
-	name:      "homelab"
-	namespace: "flux-system"
 }
 
 let podTemplate = {
@@ -173,8 +163,8 @@ k: HTTPRoute: [Name=string]: {
 
 	if _authproxy {
 		spec: rules: [{
-			matches: [utils.#TunnelMatch]
-			filters: [utils.#AuthProxy]
+			matches: [util.#TunnelMatch]
+			filters: [util.#AuthProxy]
 			backendRefs: [_defaultBackendRef]
 		}, {
 			backendRefs: [_defaultBackendRef]
@@ -187,47 +177,6 @@ k: SealedSecret: [string]: {
 	spec: template: "metadata": _ | *metadata
 }
 
-k: GrafanaDashboard: [string]: {
-	metadata: namespace: string
-	spec: {
-		allowCrossNamespaceImport: _ | *true
-		folder:                    _ | *strings.ToTitle(metadata.namespace)
-		contentCacheDuration:      _ | *"24h"
-	}
-}
-
-k: ["GrafanaDashboard" | "GrafanaDatasource"]: [string]: spec: {
-	instanceSelector: matchExpressions: [{key: "not-default", operator: "DoesNotExist"}]
-}
-
-k: GitRepository: [string]: spec: interval: _ | *"1h"
-
-k: HelmRepository: [string]: spec: interval: _ | *"1h"
-
-k: HelmRelease: [Name=string]: {
-	metadata: namespace: string
-	spec: {
-		interval: _ | *"1h"
-		chart: spec: {
-			interval: _ | *"1h"
-			sourceRef: _ | *{
-				kind:      "HelmRepository"
-				name:      _ | *Name
-				namespace: _ | *metadata.namespace
-			}
-		}
-	}
-}
-
-k: Kustomization: [Name=string]: spec: {
-	interval: _ | *"1h"
-	prune:    _ | *true
-	sourceRef: _ | *{
-		kind: "GitRepository"
-		name: _ | *Name
-	}
-}
-
 k: RoleBinding: [Name=string]: {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
@@ -238,27 +187,6 @@ k: RoleBinding: [Name=string]: {
 		kind: _ | *"ServiceAccount"
 		name: _ | *Name
 	}]
-}
-
-k: PersistentVolume: [Name = =~"sergio-.*"]: spec: {
-	volumeMode: "Filesystem"
-	accessModes: ["ReadWriteOnce"]
-	persistentVolumeReclaimPolicy: "Retain"
-	storageClassName:              "static-node-local-storage"
-	nodeAffinity: required: nodeSelectorTerms: [{
-		matchExpressions: [{
-			key:      "kubernetes.io/hostname"
-			operator: "In"
-			values: ["sergio"]
-		}]
-	}]
-	capacity: storage: _ | *k.PersistentVolumeClaim[Name].spec.resources.requests.storage
-}
-
-k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
-	storageClassName: "static-node-local-storage"
-	volumeMode:       "Filesystem"
-	volumeName:       Name
 }
 
 k: PersistentVolumeClaim: [string]: spec: {
@@ -275,49 +203,4 @@ k: OAuth2Client: [name=string]: spec: {
 	grantTypes: _ | *["client_credentials", "authorization_code", "refresh_token"]
 	scopeArray: _ | *["openid", "email", "profile"]
 	skipConsent: _ | *true
-}
-
-//
-// Adds an endpoint which can be called to delete all pods matching a label.
-//
-// TODO Move below to separate file?
-//
-_deploymentRestarter: {
-	_name:          string
-	_labelSelector: string
-	_itemName:      "\(_name)-deployment-restarter"
-
-	k: {
-		Ingress: (_itemName): {}
-		Service: (_itemName): {}
-		Deployment: (_itemName): spec: template: spec: {
-			serviceAccountName: _itemName
-			containers: [{
-				ports: [{containerPort: 8080, name: "http"}]
-				image: "ghcr.io/jonasdahl/deployment-restarter:sha-e6b7a26"
-				env: [
-					{name: "KEY", value: "VALUE"}, // TODO
-					{name: "NAMESPACE", valueFrom: fieldRef: fieldPath: "metadata.namespace"},
-					{name: "LABEL_SELECTOR", value: _labelSelector},
-				]
-			}]
-		}
-		ServiceAccount: (_itemName): {}
-		Role: (_itemName): rules: [{
-			apiGroups: ["apps"]
-			resources: ["deployments"]
-			verbs: ["patch", "list"]
-		}]
-		RoleBinding: (_itemName): {
-			roleRef: {
-				apiGroup: "rbac.authorization.k8s.io"
-				kind:     "Role"
-				name:     _itemName
-			}
-			subjects: [{
-				kind: "ServiceAccount"
-				name: _itemName
-			}]
-		}
-	}
 }

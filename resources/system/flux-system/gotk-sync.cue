@@ -6,7 +6,6 @@ k: GitRepository: "homelab": spec: {
 }
 
 k: CueExport: "homelab-system": spec: {
-	interval: "30m"
 	paths: [
 		"./resources/system/cert-manager",
 		"./resources/system/cnpg",
@@ -24,7 +23,6 @@ k: CueExport: "homelab-system": spec: {
 		provider: "sops"
 		secretRef: name: "qb-homelab"
 	}
-	sourceRef: _homelab
 }
 
 k: Receiver: "homelab": spec: {
