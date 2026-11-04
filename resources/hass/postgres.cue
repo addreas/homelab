@@ -1,6 +1,7 @@
 package kube
 
 k: StatefulSet: "hass-postgres-new": spec: {
+	replicas: 0
 	template: spec: containers: [{
 		name:  "postgres"
 		image: "postgres:17"

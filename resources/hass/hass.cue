@@ -14,6 +14,7 @@ k: StatefulSet: hass: spec: template: metadata:
 	}])
 
 k: StatefulSet: hass: spec: {
+	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		spec: {
