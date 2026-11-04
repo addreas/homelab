@@ -14,13 +14,15 @@ cilium.io
 hydra.ory.sh
 longhorn.io
 postgresql.cnpg.io
+barmancloud.cnpg.io
 gateway.networking.k8s.io
 "
 
 kubectl get crd -o name \
 	| grep "$(echo $groups | sed 's/\s/|/g')" \
+	| sed 's|.*/||' \
 	| xargs kubectl get crd -o yaml \
-	| yq -Y ".items[]" \
+	| yq -Y '.items[]? // .' \
 	> "$mod/gen/crds.yaml"
 
 for group in $groups; do

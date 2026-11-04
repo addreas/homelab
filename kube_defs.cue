@@ -41,6 +41,7 @@ import (
 
 	longhorn_v1beta2 "longhorn.io/v1beta2"
 	cnpg_v1 "postgresql.cnpg.io/v1"
+	barmancloud_v1 "barmancloud.cnpg.io/v1"
 
 	gateway_v1 "gateway.networking.k8s.io/v1"
 )
@@ -174,8 +175,9 @@ let prefixSchemas = {
 		// cnpg_v1.#ImageCatalog,
 		// cnpg_v1.#Pooler,
 		// cnpg_v1.#Publication,
-		// cnpg_v1.#ScheduledBackup,
+		cnpg_v1.#ScheduledBackup,
 		// cnpg_v1.#Subscription,
+		barmancloud_v1.#ObjectStore,
 	]
 }
 

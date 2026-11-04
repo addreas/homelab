@@ -21,7 +21,7 @@ k: HelmRelease: longhorn: spec: {
 
 			allowNodeDrainWithLastHealthyReplica: true
 
-			backupTarget:                 "s3://Backups@us-east-1/longhorn"
+			backupTarget:                 "s3://longhorn@us-east-1/"
 			backupTargetCredentialSecret: "longhorn-backup-creds"
 
 			createDefaultDiskLabeledNodes: true
@@ -41,6 +41,12 @@ k: HelmRelease: longhorn: spec: {
 			defaultDataLocality:      "best-effort"
 		}
 	}
+}
+
+k: LonghornBackupTarget: "default": spec: {
+	backupTargetURL:  "s3://longhorn@us-east-1/"
+	credentialSecret: "longhorn-backup-creds"
+	pollInterval:     "5m0s"
 }
 
 k: GitRepository: "external-snapshotter": spec: {

@@ -9,6 +9,7 @@ k: CueExport: "homelab-system": spec: {
 	interval: "30m"
 	paths: [
 		"./resources/system/cert-manager",
+		"./resources/system/cnpg",
 		"./resources/system/flux-system",
 		"./resources/system/net",
 		"./resources/system/ingress",

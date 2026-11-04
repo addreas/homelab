@@ -8,6 +8,8 @@ import (
 
 context: "admin@qb"
 
+_secrets: {...}
+
 _namespace: string
 
 if _namespace != _|_ {
