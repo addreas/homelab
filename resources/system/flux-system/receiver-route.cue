@@ -6,7 +6,7 @@ k: HTTPRoute: flux: spec: {
 		matches: [{path: {type: "PathPrefix", value: "/hook/"}}]
 		backendRefs: [{
 			name: "webhook-receiver"
-			port: "80"
+			port: 80
 		}]
 	}]
 }
