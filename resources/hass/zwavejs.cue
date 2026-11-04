@@ -7,7 +7,6 @@ import (
 )
 
 k: StatefulSet: "hass-zwavejs": spec: {
-	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 		spec: {
@@ -23,7 +22,7 @@ k: StatefulSet: "hass-zwavejs": spec: {
 			}]
 			containers: [{
 				name:  "zwavejs"
-				image: "ghcr.io/zwave-js/zwave-js-ui:11.23.0"
+				image: "ghcr.io/zwave-js/zwave-js-ui:11.25.1"
 				ports: [{containerPort: 3000}, {containerPort: 8091}]
 				env: [{
 					name: "NETWORK_KEY"

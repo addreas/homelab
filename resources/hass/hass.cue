@@ -14,7 +14,6 @@ k: StatefulSet: hass: spec: template: metadata:
 	}])
 
 k: StatefulSet: hass: spec: {
-	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."hass-config".data."configuration.yaml"))
 		spec: {
@@ -30,7 +29,7 @@ k: StatefulSet: hass: spec: {
 				},
 			]
 			containers: [{
-				image: "ghcr.io/home-assistant/home-assistant:2026.9.1"
+				image: "ghcr.io/home-assistant/home-assistant:2026.10.3"
 				command: ["hass", "-c", "/config", "--log-file", "/tmp/home-assistant.log"]
 				resources: {
 					limits: {
