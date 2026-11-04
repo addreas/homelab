@@ -46,6 +46,10 @@ t: Role: "base": {
 		extraArgs: "rotate-server-certificates": true
 	}, {
 		apiVersion: "v1alpha1"
+		kind:       "UdevRulesConfig"
+		rules: [#"SUBSYSTEM=="tty", SUBSYSTEMS=="usb", MODE="0666""#]
+	}, {
+		apiVersion: "v1alpha1"
 		kind:       "DiscoveryServiceConfig"
 		name:       "default"
 		$patch:     "delete"

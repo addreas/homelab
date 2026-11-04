@@ -15,9 +15,9 @@ host:        string                        @tag(host,var=hostname)
 factoryHost: string | *"factory.talos.dev" @tag(factory)
 
 // talosVersion: #githubLatest & {req: http.Get, $repo: "siderolabs/talos"}
-talosVersion: value: "v1.14.1"
+talosVersion: value: "v1.14.3"
 // k8sVersion: #githubLatest & {req: http.Get, $repo: "kubernetes/kubernetes"}
-k8sVersion: value: "v1.37.1"
+k8sVersion: value: "v1.37.2"
 
 secrets: exec.Run & {
 	cmd: ["sops", "decrypt", "secrets.yaml"]
