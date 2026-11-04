@@ -1,3 +1,4 @@
+@experiment(try)
 package kube
 
 import (
@@ -9,6 +10,7 @@ import (
 	discovery_v1 "cue.dev/x/k8s.io/api/discovery/v1"
 	meta_v1 "cue.dev/x/k8s.io/apimachinery/pkg/apis/meta/v1"
 	networking_v1 "cue.dev/x/k8s.io/api/networking/v1"
+	node_v1 "cue.dev/x/k8s.io/api/node/v1"
 	policy_v1 "cue.dev/x/k8s.io/api/policy/v1"
 	rbac_v1 "cue.dev/x/k8s.io/api/rbac/v1"
 	storage_v1 "cue.dev/x/k8s.io/api/storage/v1"
@@ -20,6 +22,7 @@ import (
 	flux_notification_v1beta3 "cue.dev/x/crd/fluxcd.io/notification/v1beta3"
 	flux_kustomize_v1 "cue.dev/x/crd/fluxcd.io/kustomize/v1"
 	flux_helm_v2 "cue.dev/x/crd/fluxcd.io/helm/v2"
+	cue_v1 "cue.toolkit.fluxcd.io/v1"
 
 	sealed_secrets_v1alpha1 "cue.dev/x/crd/bitnami.com/sealed-secrets/v1alpha1"
 
@@ -29,10 +32,17 @@ import (
 
 	cilium_v2 "cilium.io/v2"
 	cilium_v2alpha1 "cilium.io/v2alpha1"
-	cue_v1beta2 "cue.toolkit.fluxcd.io/v1beta2"
+
 	grafana_v1beta1 "grafana.integreatly.org/v1beta1"
+	vm_v1beta1 "operator.victoriametrics.com/v1beta1"
+	vm_v1 "operator.victoriametrics.com/v1"
 	hydra_v1alpha1 "hydra.ory.sh/v1alpha1"
 	cni_v1 "k8s.cni.cncf.io/v1"
+
+	longhorn_v1beta2 "longhorn.io/v1beta2"
+	cnpg_v1 "postgresql.cnpg.io/v1"
+
+	gateway_v1 "gateway.networking.k8s.io/v1"
 )
 
 let resourceSchemas = [
@@ -61,7 +71,18 @@ let resourceSchemas = [
 	networking_v1.#IngressClass,
 	networking_v1.#NetworkPolicy,
 
+	gateway_v1.#GatewayClass,
+	gateway_v1.#Gateway,
+	gateway_v1.#ListenerSet,
+	gateway_v1.#HTTPRoute,
+	gateway_v1.#GRPCRoute,
+	gateway_v1.#TLSRoute,
+	gateway_v1.#BackendTLSPolicy,
+	gateway_v1.#ReferenceGrant,
+
 	policy_v1.#PodDisruptionBudget,
+
+	node_v1.#RuntimeClass,
 
 	rbac_v1.#Role,
 	rbac_v1.#RoleBinding,
@@ -86,6 +107,8 @@ let resourceSchemas = [
 
 	flux_helm_v2.#HelmRelease,
 
+	cue_v1.#CueExport,
+
 	sealed_secrets_v1alpha1.#SealedSecret,
 
 	certmanager_v1.#Certificate,
@@ -99,7 +122,18 @@ let resourceSchemas = [
 	monitoring_v1.#Prometheus,
 	monitoring_v1.#PrometheusRule,
 
-	cue_v1beta2.#CueExport,
+	vm_v1beta1.#VMSingle,
+	vm_v1beta1.#VMAgent,
+	vm_v1beta1.#VMAlert,
+	vm_v1beta1.#VMAlertmanager,
+	vm_v1beta1.#VMRule,
+	vm_v1beta1.#VMNodeScrape,
+	vm_v1beta1.#VMAuth,
+	vm_v1beta1.#VMServiceScrape,
+	vm_v1beta1.#VMPodScrape,
+	vm_v1beta1.#VMProbe,
+	vm_v1.#VLAgent,
+	vm_v1.#VLSingle,
 
 	grafana_v1beta1.#Grafana,
 	grafana_v1beta1.#GrafanaDashboard,
@@ -108,39 +142,69 @@ let resourceSchemas = [
 	cni_v1.#NetworkAttachmentDefinition,
 
 	cilium_v2.#CiliumClusterwideNetworkPolicy,
-	cilium_v2.#CiliumEndpoint,
-	cilium_v2.#CiliumExternalWorkload,
-	cilium_v2.#CiliumIdentity,
-	cilium_v2.#CiliumLocalRedirectPolicy,
 	cilium_v2.#CiliumNetworkPolicy,
 	cilium_v2.#CiliumNode,
 	cilium_v2.#CiliumLoadBalancerIPPool,
 	cilium_v2.#CiliumBGPClusterConfig,
 	cilium_v2.#CiliumBGPPeerConfig,
 	cilium_v2.#CiliumBGPAdvertisement,
+	cilium_v2.#CiliumEgressGatewayPolicy,
 
 	cilium_v2alpha1.#CiliumEgressNATPolicy,
 	cilium_v2alpha1.#CiliumL2AnnouncementPolicy,
 	cilium_v2alpha1.#CiliumNodeConfig,
+	cilium_v2alpha1.#CiliumGatewayClassConfig,
 
 	hydra_v1alpha1.#OAuth2Client,
+
 ]
+
+let prefixSchemas = {
+	Longhorn: [
+		longhorn_v1beta2.#BackupTarget,
+		longhorn_v1beta2.#Node,
+		longhorn_v1beta2.#RecurringJob,
+	]
+	Postgres: [
+		// cnpg_v1.#Backup,
+		// cnpg_v1.#ClusterImageCatalog,
+		cnpg_v1.#Cluster,
+		cnpg_v1.#Database,
+		// cnpg_v1.#FailoverQuorum,
+		// cnpg_v1.#ImageCatalog,
+		// cnpg_v1.#Pooler,
+		// cnpg_v1.#Publication,
+		// cnpg_v1.#ScheduledBackup,
+		// cnpg_v1.#Subscription,
+	]
+}
+
+let metaName = {
+	$name: _
+
+	out: {
+		metadata: meta_v1.#ObjectMeta & {
+			if strings.Contains($name, "/") {
+				let splitName = strings.Split($name, "/")
+				namespace: _ | *splitName[0]
+				name:      _ | *splitName[1]
+			}
+			if !strings.Contains($name, "/") {
+				name: _ | *$name
+			}
+		}
+
+	}
+}
 
 k: close({
 	for resource in resourceSchemas {
-		(resource.kind): [Name=string]: resource & {
-			metadata: meta_v1.#ObjectMeta & {
-				name: _ | *Name
-			}
+		(resource.kind): [name=string]: resource & (metaName & {$name: name}).out
+	}
 
-			if strings.Contains(Name, "/") {
-				let splitName = strings.Split(Name, "/")
-				metadata: {
-					namespace: splitName[0]
-					name:      splitName[1]
-				}
-			}
-		}
+	for prefix, resources in prefixSchemas
+	for resource in resources {
+		(prefix + resource.kind): [name=string]: resource & (metaName & {$name: name}).out
 	}
 })
 

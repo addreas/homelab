@@ -1,12 +1,14 @@
 package kube
 
-k: HelmRepository: "cert-manager": spec: {
-	url: "https://charts.jetstack.io"
-}
+k: HelmRepository: "cert-manager": spec: url: "https://charts.jetstack.io"
 
 k: HelmRelease: "cert-manager": spec: {
 	chart: spec: {
-		version: githubReleases["cert-manager/cert-manager"]
+		chart:   "cert-manager"
+		version: "v1.21.1"
 	}
-	values: installCRDs: true
+	values: {
+		crds: enabled:            true
+		config: enableGatewayAPI: true
+	}
 }

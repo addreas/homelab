@@ -1,8 +1,8 @@
 package kube
 
-k: StatefulSet: postgres: spec: {
+k: StatefulSet: "atuin/postgres": spec: {
 	template: spec: containers: [{
-		image: "postgres:17"
+		image: "postgres:18"
 		ports: [{name: "postgres", containerPort: 5432}]
 		envFrom: [{
 			secretRef: name: "postgres-config"
@@ -34,4 +34,4 @@ k: StatefulSet: postgres: spec: {
 	}]
 }
 
-k: Service: postgres: {}
+k: Service: "atuin/postgres": {}

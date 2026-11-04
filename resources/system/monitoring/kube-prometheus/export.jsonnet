@@ -1,163 +1,68 @@
-local kp =
-  (import 'kube-prometheus/main.libsonnet') +
-  {
-    values+:: {
-      common+: {
-        namespace: 'monitoring',
-      },
-
-      kubernetesControlPlane+: {
-        kubeProxy: false,
-      },
-
-      kubeStateMetrics+: {
-        kubeRbacProxyMain+: {
-          resources+: {
-            limits+: { cpu: '140m' },
-          }
-        },
-        kubeRbacProxySelf+: {
-          resources+: {
-            limits+: { cpu: '140m' },
-          }
-        },
-      },
-
-      nodeExporter+: {
-        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } }
-      },
-
-      blackboxExporter+: {
-        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } },
-        resources+: { limits+: { cpu: '140m' } } // jsonnet defs seem to use this for kubeRbacProxy
-      },
-
-      prometheusOperator+: {
-        kubeRbacProxy+: { resources+: { limits+: { cpu: '140m' } } }
-      },
-
-      alertmanager+: {
-          config+: {
-            local critical = {
-                name: "Critical",
-                webhook_configs: [{
-                  url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
-                }]
-            },
-            local warning = {
-                name: "Warning",
-                webhook_configs: [{
-                  url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
-                }]
-            },
-            receivers: std.map(function(x) if x.name == "Critical" then critical else x, super.receivers) + [warning],
-            route+: {
-              group_by+: ["alertname"],
-              routes+: [{
-                matchers: ["severity = warning"],
-                receiver: "Warning"
-              }, {
-                matchers: ["severity = error"],
-                receiver: "Critical"
-              }]
-            }
-          },
-      },
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+      ruleLabels+: { ruler: 'metrics' },
     },
 
-
-    nodeExporter+: {
-      daemonset+: {
-        spec+: {
-          template+: {
-            spec+: {
-              local nodeExporterContainer = super.containers[0],
-              containers: [
-                nodeExporterContainer + {
-                  args:
-                    std.filter(function(x) !std.member([
-                                            '--no-collector.btrfs',
-                                            '--no-collector.hwmon'
-                                          ], x),
-                               nodeExporterContainer.args)
-                    + [
-                      '--collector.systemd'
-                    ],
-                    volumeMounts: nodeExporterContainer.volumeMounts + [{
-                      name: 'systemd-dbus',
-                      mountPath: '/var/run/dbus/system_bus_socket'
-                    }],
-                },
-                super.containers[1]
-              ],
-              volumes: super.volumes + [{
-                name: 'systemd-dbus',
-                hostPath: { path: '/var/run/dbus/system_bus_socket' }
-              }],
-            },
-          },
-        },
-      },
+    kubernetesControlPlane+: {
+      kubeProxy: false,
     },
-  };
-
-local resources(name, filter = function(r) true) = std.foldr(
-  function(r, acc) acc + {
-    k: if !std.endsWith(r.kind, "List") then {
-      [r.kind]+: {
-        [r.metadata.name]: r
-      }
-    } else {
-      [std.strReplace(r.kind, "List", "")]+: {
-        [rr.metadata.namespace + "/" + rr.metadata.name]+: rr for rr in r.items
-      }
-    }
   },
-  [r for r in std.objectValues(kp[name]) if filter(r)],
-  {});
 
-{
- "alertmanager.gen.json": resources("alertmanager", function(r) r.kind != "NetworkPolicy"),
- "blackboxExporter.gen.json": resources("blackboxExporter", function(r) r.kind != "NetworkPolicy"),
- "kubePrometheus.gen.json": resources("kubePrometheus", function(r) r.metadata.name == "kube-prometheus-rules"),
- "kubeStateMetrics.gen.json": resources("kubeStateMetrics", function(r) r.kind != "NetworkPolicy"),
- "kubernetesControlPlane.gen.json": resources("kubernetesControlPlane"),
- "nodeExporter.gen.json": resources("nodeExporter", function(r) r.kind != "NetworkPolicy"),
- "prometheus.gen.json": resources("prometheus", function(r) r.kind != "NetworkPolicy"),
- "prometheusAdapter.gen.json": resources("prometheusAdapter", function(r) r.kind != "NetworkPolicy"),
- "prometheusOperator.gen.json": resources("prometheusOperator", function(r) r.kind != "NetworkPolicy"),
+  kubernetesControlPlane+: {
+    serviceMonitorKubeScheduler:: {},
+    serviceMonitorKubeControllerManager:: {},
 
- "grafanaDashboards.gen.json": {
-  k: {
-    GrafanaDashboard: std.mapWithKey(function(k, v) {
-        spec: { source: { inline: { json: std.manifestJson(v) } } }
+    mixin+:: {
+      prometheusAlerts+:: {
+        groups: std.filter(
+          function(g) g.name != 'kubernetes-system-scheduler'
+          && g.name != 'kubernetes-system-controller-manager',
+          super.groups
+        ),
       },
-      (
-        kp.alertmanager.mixin.grafanaDashboards + 
-        kp.kubernetesControlPlane.mixin.grafanaDashboards + 
-        kp.nodeExporter.mixin.grafanaDashboards +
-        kp.prometheus.mixin.grafanaDashboards
-      ))
-    }
-  }
-}
+      prometheusRules+:: {
+        groups: std.filter(
+          function(g) g.name != 'kube-scheduler.rules',
+          super.groups
+        ),
+      },
+    },
+  },
+};
 
-//{["prometheusOperator" + name + ".json"]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) if std.endsWith(name, "CustomResourceDefinition")} +
-//{["prometheusAdapter" + name + ".json"]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter)} +
-//{["kubeStateMetrics" + name + ".json"]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics)} +
+local kubeletVMNodeScrape(e, sm=kp.kubernetesControlPlane.serviceMonitorKubelet) = {
+  local path = std.get(e, 'path', '/metrics'),
+  apiVersion: 'operator.victoriametrics.com/v1beta1',
+  kind: 'VMNodeScrape',
+  metadata: sm.metadata + {
+    name: sm.metadata.name + std.strReplace(path, '/', '-'),
+  },
+  spec: {
+    [std.get({
+      relabelings: 'relabelConfigs',
+      metricRelabelings: 'metricRelabelConfigs',
+    }, k, k)]: e[k]
+    for k in std.objectFields(e)
+    if k != 'port'
+  } + {
+    port: '10250',
+    max_scrape_size: '64MB',
+    relabelConfigs+: [{ targetLabel: 'job', replacement: 'kubelet' }],
+  },
+};
 
-//{[name + ".json"]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus)} +
-//{[name + ".json"]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter)} +
-//{[name + ".json"]: kp.prometheus[name] for name in std.objectFields(kp.prometheus)} +
+local resources = [
+  r
+  for r in std.objectValues(kp.kubePrometheus)
+  + std.objectValues(kp.kubernetesControlPlane)
+  if std.objectHas(r, 'kind')
+  && r.kind != 'Namespace'
+  && r.metadata.name != 'kubelet'
+] + [
+  kubeletVMNodeScrape(e)
+  for e in kp.kubernetesControlPlane.serviceMonitorKubelet.spec.endpoints
+];
 
-// {
- //"serviceMonitorApiserver.json": kp.kubernetesControlPlane.serviceMonitorApiserver,
- //"serviceMonitorCoreDNS.json": kp.kubernetesControlPlane.serviceMonitorCoreDNS,
- //"serviceMonitorKubeControllerManager.json": kp.kubernetesControlPlane.serviceMonitorKubeControllerManager,
- //"serviceMonitorKubeScheduler.json": kp.kubernetesControlPlane.serviceMonitorKubeScheduler,
- //"serviceMonitorKubelet.json": kp.kubernetesControlPlane.serviceMonitorKubelet,
-
- //"podMonitorKubeProxy.json": kp.kubernetesControlPlane.podMonitorKubeProxy,
-
- //"prometheusRuleKubePrometheus.json": kp.kubePrometheus.prometheusRule,
-// }
+{ ['%s.gen.json' % r.metadata.name]: r for r in resources }

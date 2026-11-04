@@ -1,19 +1,19 @@
 package kube
 
 import (
+	"strings"
 	"tool/exec"
 	"tool/file"
+	"tool/http"
 )
+
+_images: {}
 
 #FixTracing: {
 	schema: string
-	otelxSchema: exec.Run & {
-		cmd: [
-			"curl",
-			"-sSL",
-			"https://raw.githubusercontent.com/ory/x/master/otelx/config.schema.json",
-		]
-		stdout: string
+	otelxSchema: http.Get & {
+		url: "https://raw.githubusercontent.com/ory/x/master/otelx/config.schema.json"
+		response: body: string
 	}
 	setTracingConf: exec.Run & {
 		cmd: [
@@ -22,26 +22,23 @@ import (
 				. as [$schema, $otelxSchema]
 				| .[0]
 				| .definitions.OtelxTracingConfig = $otelxSchema
+				| del(.definitions.OtelxTracingConfig["$schema"])
 				| .properties.tracing["$ref"] = "#/definitions/OtelxTracingConfig"
 				""",
 		]
-		stdin:  "[\(schema), \(otelxSchema.stdout)]"
+		stdin:  "[\(schema), \(otelxSchema.response.body)]"
 		stdout: string
 	}
 	output: setTracingConf.stdout
 }
 
 command: "kratos-config-schema": task: {
-	kratosSchema: exec.Run & {
-		cmd: [
-			"curl",
-			"-sSL",
-			"https://raw.githubusercontent.com/ory/kratos/\(githubReleases["ory/kratos"])/embedx/config.schema.json",
-		]
-		stdout: string
+	kratosSchema: http.Get & {
+		url: "https://raw.githubusercontent.com/ory/kratos/\(strings.Split(_images.kratos, ":")[1])/embedx/config.schema.json"
+		response: body: string
 	}
 	fixTracing: #FixTracing & {
-		schema: kratosSchema.stdout
+		schema: kratosSchema.response.body
 	}
 	fixSchema: exec.Run & {
 		cmd: [
@@ -79,16 +76,12 @@ command: "kratos-config-schema": task: {
 }
 
 command: "hydra-config-schema": task: {
-	hydraSchema: exec.Run & {
-		cmd: [
-			"curl",
-			"-sSL",
-			"https://raw.githubusercontent.com/ory/hydra/\(githubReleases["ory/hydra"])/spec/config.json",
-		]
-		stdout: string
+	hydraSchema: http.Get & {
+		url: "https://raw.githubusercontent.com/ory/hydra/\(strings.Split(_images.hydra, ":")[1])/spec/config.json"
+		response: body: string
 	}
 	fixTracing: #FixTracing & {
-		schema: hydraSchema.stdout
+		schema: hydraSchema.response.body
 	}
 	writeHydraSchemaJson: file.Create & {
 		filename: "hydra-config-schema.json"

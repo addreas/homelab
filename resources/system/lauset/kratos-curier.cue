@@ -2,7 +2,7 @@ package kube
 
 k: StatefulSet: "kratos-courier": spec: template: spec: {
 	containers: [{
-		image: "oryd/kratos:\(githubReleases["ory/kratos"])"
+		image: _images.kratos
 		args: ["courier", "watch", "--config", "/etc/config/kratos.yaml"]
 		envFrom: [{secretRef: name: "kratos"}]
 		env: [{
@@ -11,16 +11,22 @@ k: StatefulSet: "kratos-courier": spec: template: spec: {
 		}, {
 			name:  "LOG_LEVEL"
 			value: "trace"
+		}, {
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "kratos-db-app"
+				key:  "uri"
+			}
 		}]
 		volumeMounts: [{
-			name:      "kratos-config-volume"
+			name:      "config"
 			mountPath: "/etc/config"
 			readOnly:  true
 		}]
 	}]
 	volumes: [{
-		name: "kratos-config-volume"
-		configMap: name: "kratos-config"
+		name: "config"
+		configMap: name: "kratos"
 	}]
 }
 

@@ -1,6 +1,5 @@
 package kube
 
-namespace: "default"
 
 k: Deployment: "nixery": spec: template: spec: {
 	containers: [{

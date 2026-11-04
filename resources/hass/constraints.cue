@@ -1,6 +1,6 @@
 package kube
 
-k: [string]: [string]: metadata: namespace: *"default" | string
+_namespace: "hass"
 
 k: CueExport: "homelab-hass": spec: {
 	interval:  "30m"
@@ -8,4 +8,8 @@ k: CueExport: "homelab-hass": spec: {
 	paths: ["./resources/hass"]
 	prune:   true
 	suspend: false
+	decryption: {
+		provider: "sops"
+		secretRef: name: "qb-homelab"
+	}
 }

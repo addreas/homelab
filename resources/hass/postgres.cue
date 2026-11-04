@@ -1,29 +1,11 @@
 package kube
 
-k: StatefulSet: "hass-postgres-new": spec: {
-	replicas: 0
-	template: spec: containers: [{
-		name:  "postgres"
-		image: "postgres:17"
-		envFrom: [{secretRef: name: "hass-postgres-credentials"}]
-		env: [{
-			name:  "POSTGRES_DB"
-			value: "hass"
-		}]
-		ports: [{name: "postgres", containerPort: 5432}]
-		volumeMounts: [{
-			name:      "data"
-			mountPath: "/var/lib/postgresql"
-			subPath:   "data"
-		}]
-	}]
-	volumeClaimTemplates: [{
-		metadata: name: "data"
-		spec: {
-			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "10Gi"
-		}
-	}]
+k: PostgresCluster: "hass-recorder": spec: {
+	instances: 2
+	imageName: "ghcr.io/cloudnative-pg/postgresql:18.1-standard-trixie"
+	storage: size: "10Gi"
+	bootstrap: initdb: {
+		database: "hass"
+		owner:    "hass"
+	}
 }
-
-k: Service: "hass-postgres-new": {}

@@ -1,71 +1,46 @@
 package kube
 
-import "strings"
-
-import "encoding/yaml"
-
-k: Namespace: "longhorn-system": {}
-
-k: HelmRepository: longhorn: {
-	spec: {
-		url: "https://charts.longhorn.io"
-	}
-}
+k: HelmRepository: longhorn: spec: url: "https://charts.longhorn.io"
 
 k: HelmRelease: longhorn: spec: {
 	chart: spec: {
-		version: strings.TrimPrefix(githubReleases["longhorn/longhorn"], "v")
+		chart:   "longhorn"
+		version: "1.13.0"
 	}
 	values: {
 		csi: kubeletRootDir: "/var/lib/kubelet"
+		global: tolerations: [{
+			key:    "node-role.kubernetes.io/control-plane"
+			effect: "NoSchedule"
+		}]
+		longhornManager: nodeSelector: "node-role.kubernetes.io/longhorn": ""
 		defaultSettings: {
-			autoSalvage:                          true
+			defaultReplicaCount: 2
+			replicaAutoBalance:  "best-effort"
+			autoSalvage:         true
+
 			allowNodeDrainWithLastHealthyReplica: true
-		}
 
-		persistence: defaultClassReplicaCount: 2
+			backupTarget:                 "s3://Backups@us-east-1/longhorn"
+			backupTargetCredentialSecret: "longhorn-backup-creds"
 
-		global: imageRegistry: ""
-		image: longhorn: {
-			manager: {
-				repository: "ghcr.io/addreas/longhorn-manager"
-				tag:        githubReleases["longhorn/longhorn"]
+			createDefaultDiskLabeledNodes: true
+			v2DataEngine:                  true
+			dataEngineInterruptModeEnabled: v2: "true"
+			defaultDataLocality: "best-effort"
+
+			replicaReplenishmentWaitInterval: 3600
+			snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: {
+				v1: "false"
+				v2: "true"
 			}
-			instanceManager: {
-				repository: "ghcr.io/addreas/longhorn-instance-manager"
-				tag:        githubReleases["longhorn/longhorn"]
-			}
 		}
-
-		defaultSettings: backupTarget: "nfs://nucles.localdomain:/export/longhorn-backup"
+		persistence: {
+			dataEngine:               "v2"
+			defaultClassReplicaCount: 2
+			defaultDataLocality:      "best-effort"
+		}
 	}
-	postRenderers: [{
-		kustomize: patches: [{
-			target: {
-				group:     "apps"
-				kind:      "DaemonSet"
-				name:      "longhorn-manager"
-				namespace: "longhorn-system"
-			}
-
-			patch: yaml.Marshal({
-				apiVersion: "apps/v1"
-				kind:       "DaemonSet"
-				metadata: {
-					name:      "longhorn-manager"
-					namespace: "longhorn-system"
-				}
-				spec: template: spec: containers: [{
-					name: "longhorn-manager"
-					env: [{
-						name:  "PATH"
-						value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
-					}]
-				}]
-			})
-		},
-		]
-	}]
 }
 
 k: GitRepository: "external-snapshotter": spec: {

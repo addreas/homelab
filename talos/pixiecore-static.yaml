@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixiecore-static
+  namespace: kube-system
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: pixiecore-static}}
+  template:
+    metadata: {labels: {app: pixiecore-static}}
+    spec:
+      hostNetwork: true
+      containers:
+        - name: pixiecore
+          image: nixery.dev/pixiecore
+          command: ["/bin/pixiecore"]
+          args:
+            - boot
+            - https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.14.1/kernel-amd64
+            - https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.14.1/initramfs-amd64.xz
+            - --cmdline
+            - "talos.platform=metal console=tty0 slab_nomerge pti=on consoleblank=0 printk.devkmsg=on selinux=1 module.sig_enforce=1 proc_mem.force_override=never"
+            - --port=9734
+            - --debug

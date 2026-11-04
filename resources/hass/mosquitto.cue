@@ -6,7 +6,6 @@ import (
 )
 
 k: Deployment: mosquitto: spec: {
-	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."mosquitto-config".data."mosquitto.conf"))
 		spec: {
@@ -30,7 +29,7 @@ k: Deployment: mosquitto: spec: {
 }
 
 k: Service: mosquitto: {
-	metadata: labels: advertise: "bgp"
+	metadata: labels: advertise: "arp"
 	spec: type: "LoadBalancer"
 }
 

@@ -3,8 +3,8 @@ package kube
 import "encoding/yaml"
 
 k: GitRepository: "flux-components": spec: {
-	ref: tag: githubReleases["fluxcd/flux2"]
 	url: "https://github.com/fluxcd/flux2"
+	ref: tag: "v2.9.5"
 }
 
 k: Kustomization: "flux-components": spec: {
@@ -13,7 +13,7 @@ k: Kustomization: "flux-components": spec: {
 }
 
 k: GitRepository: "cue-controller": spec: {
-	ref: branch: "main"
+	ref: branch: "sops-again"
 	url: "https://github.com/addreas/cue-controller"
 }
 
@@ -22,7 +22,7 @@ k: Kustomization: "cue-controller": spec: {
 	prune: false // dont prune this either
 	images: [{
 		name:   "ghcr.io/addreas/cue-controller"
-		newTag: "v1.7.2-cue"
+		newTag: "v1.8.2"
 	}]
 	patches: [{
 		patch: yaml.Marshal({
@@ -48,6 +48,8 @@ k: Kustomization: "cue-controller": spec: {
 
 k: Ingress: "flux-webhook": spec: rules: [{
 	http: paths: [{
+		path:     "/"
+		pathType: "Prefix"
 		backend: service: {
 			name: "webhook-receiver"
 			port: name: "http"

@@ -10,18 +10,17 @@ export PATH="$PATH:$(go env GOPATH 2>/dev/null)/bin"
 cd "$(dirname "$0")"
 
 # renovate: depName=prometheus-operator/kube-prometheus datasource=github-releases
-VERSION=v0.19.0
+VERSION=v0.18.0
 
 if [ ! -d vendor ]; then
   jb init
   jb install "github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@${VERSION}"
 fi
 
+rm -rf manifests
 jsonnet -J vendor -m manifests -c export.jsonnet
 
-cue import -p kube -f ./manifests/*.json
+cue import -p kube -f -l '"k"' -l kind -l metadata.name ./manifests/*.json
 
 mv manifests/*.cue .
 rm -r manifests
-
-rm -r vendor jsonnetfile.*

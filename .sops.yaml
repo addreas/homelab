@@ -1,0 +1,7 @@
+creation_rules:
+    - age: >-
+        ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAp7DrhFRPktGiPsSHrISBKQ2tl63s1Z3hj5DlZpJk6,
+        age1x4jtj7pdm6lewqqj3yp3g6gpw45lg4h9lqqw9jfed98dsr8h2smseykl3v
+
+# age-keygen -o identity.agekey
+# kubectl create secret generic qb-homelab -n flux-system --from-file identity.agekey

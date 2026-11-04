@@ -1,14 +1,12 @@
 package kube
 
 import (
-	"strings"
 	"crypto/md5"
 	"encoding/hex"
 	"github.com/addreas/homelab/util"
 )
 
 k: StatefulSet: "hass-zwavejs": spec: {
-	replicas: 0
 	template: {
 		metadata: labels: "config-hash": hex.Encode(md5.Sum(k.ConfigMap."zwave-js-settings-json".data."settings.json"))
 		spec: {
@@ -24,7 +22,7 @@ k: StatefulSet: "hass-zwavejs": spec: {
 			}]
 			containers: [{
 				name:  "zwavejs"
-				image: "ghcr.io/zwave-js/zwave-js-ui:\(strings.TrimPrefix(githubReleases["zwave-js/zwave-js-ui"], "v"))"
+				image: "ghcr.io/zwave-js/zwave-js-ui:11.25.1"
 				ports: [{containerPort: 3000}, {containerPort: 8091}]
 				env: [{
 					name: "NETWORK_KEY"
@@ -33,7 +31,7 @@ k: StatefulSet: "hass-zwavejs": spec: {
 						key:  "key"
 					}
 				}]
-				resources: limits: "addem.se/dev_aeotec_zstick": "1"
+				resources: limits: "addem.se/dev-aeotec-zstick": "1"
 				volumeMounts: [{
 					name:      "config"
 					mountPath: "/usr/src/app/store"

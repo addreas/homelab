@@ -1,15 +1,5 @@
 package kube
 
-import "encoding/yaml"
-
-k: Secret: hydra: stringData: {
-	SECRETS_SYSTEM: "NGc0QTY2Sk14NWpuTFZvN0p4ZFVmZlNQYzFpUk9wVkY="
-	SECRETS_COOKIE: "bHZPQUphY1o3WWNyN2RBMUprRnpxWU5HRmZrWmhpRTI="
-	DSN:            "postgres://hydra:hydra@postgres:5432/hydra"
-}
-
-k: ConfigMap: hydra: data: "config.yaml": yaml.Marshal(_hydra_config)
-
 k: Deployment: hydra: spec: template: spec: {
 	volumes: [{
 		name: "hydra-config-volume"
@@ -17,18 +7,26 @@ k: Deployment: hydra: spec: template: spec: {
 	}]
 	initContainers: [{
 		name:  "migrate"
-		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+		image: _images.hydra
 		command: ["hydra"]
 		args: [
 			"migrate",
 			"sql",
+			"up",
 			"-e",
 			"-y",
 		]
 		envFrom: [{secretRef: name: "hydra"}]
+		env: [{
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "hydra-db-app"
+				key:  "uri"
+			}
+		}]
 	}]
 	containers: [_probes & {
-		image: "oryd/hydra:\(githubReleases["ory/hydra"])"
+		image: _images.hydra
 		command: ["hydra"]
 		args: [
 			"serve",
@@ -37,6 +35,16 @@ k: Deployment: hydra: spec: template: spec: {
 			"/etc/config/config.yaml",
 		]
 		envFrom: [{secretRef: name: "hydra"}]
+		env: [{
+			name: "DSN"
+			valueFrom: secretKeyRef: {
+				name: "hydra-db-app"
+				key:  "uri"
+			}
+		}, {
+			name:  "ORY_SDK_URL"
+			value: "http://localhost:4445"
+		}]
 		ports: [{
 			name:          "http-public"
 			containerPort: 4444
@@ -68,4 +76,9 @@ k: Service: "hydra-public": spec: {
 		targetPort: "http-public"
 		name:       "http"
 	}]
+}
+
+k: PostgresCluster: "hydra-db": spec: {
+	instances: 2
+	storage: size: "1Gi"
 }

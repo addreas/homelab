@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixiecore
+  namespace: kube-system
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: pixiecore}}
+  template:
+    metadata: {labels: {app: pixiecore}}
+    spec:
+      hostNetwork: true
+      containers:
+        - name: pixiecore
+          image: nixery.dev/pixiecore
+          command: ["/bin/pixiecore"]
+          args: ["api", "http://10.0.0.22:8080", "--port=9734", "--debug"]

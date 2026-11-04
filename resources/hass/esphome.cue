@@ -16,9 +16,8 @@ k: Kustomization: "esphome-configs": {
 }
 
 k: StatefulSet: esphome: spec: {
-	replicas: 0
 	template: metadata: annotations: "k8s.v1.cni.cncf.io/networks": json.Marshal([{
-		name: "macvlan-conf"
+		name: "iot-bridge"
 		mac:  "02:00:00:00:00:07" // https://en.wikipedia.org/wiki/MAC_address#IEEE_802c_local_MAC_address_usage
 	}])
 
@@ -36,7 +35,7 @@ k: StatefulSet: esphome: spec: {
 			},
 		]
 		containers: [{
-			image: "esphome/esphome:\(githubReleases["esphome/esphome"])"
+			image: "esphome/esphome:2026.10.0"
 			ports: [{containerPort: 6052}]
 			volumeMounts: [{
 				name:      "data"
@@ -80,4 +79,4 @@ k: StatefulSet: esphome: spec: {
 
 k: Service: esphome: {}
 
-k: Ingress: esphome: _authproxy: true
+k: HTTPRoute: esphome: _authproxy: true

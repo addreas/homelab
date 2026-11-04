@@ -2,25 +2,23 @@ package v2alpha1
 
 import (
 	"strings"
+	"list"
+	"struct"
 	"time"
 )
 
 #CiliumGatewayClassConfig: {
 	_embeddedResource
 
-	// APIVersion defines the versioned schema of this representation
-	// of an object.
-	// Servers should convert recognized schemas to the latest
-	// internal value, and
+	// APIVersion defines the versioned schema of this representation of an object.
+	// Servers should convert recognized schemas to the latest internal value, and
 	// may reject unrecognized values.
 	// More info:
 	// https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
 	apiVersion?: string
 
-	// Kind is a string value representing the REST resource this
-	// object represents.
-	// Servers may infer this from the endpoint the client submits
-	// requests to.
+	// Kind is a string value representing the REST resource this object represents.
+	// Servers may infer this from the endpoint the client submits requests to.
 	// Cannot be updated.
 	// In CamelCase.
 	// More info:
@@ -30,37 +28,47 @@ import (
 
 	// Spec is a human-readable of a GatewayClass configuration.
 	spec?: {
-		// Description helps describe a GatewayClass configuration with
-		// more details.
+		// Description helps describe a GatewayClass configuration with more details.
 		description?: strings.MaxRunes(
 				64)
 
+		// Envoy specifies proxy configuration options.
+		// These settings control Envoy-specific behavior that is not part of the Gateway API standard.
+		envoy?: {
+			// ServerHeaderTransformation controls the HTTP "Server" response header.
+			// Defaults to OVERWRITE.
+			serverHeaderTransformation?: "OVERWRITE" | "APPEND_IF_ABSENT" | "PASS_THROUGH"
+		}
+
+		// HTTPOptions specifies HTTP connection manager options.
+		httpOptions?: {
+			// GRPCWebTranslation controls Envoy's gRPC-web to gRPC request translation.
+			grpcWebTranslation?: {
+				// Enabled controls Envoy's gRPC-web to gRPC request translation.
+				enabled?: bool
+			}
+		}
+
 		// Service specifies the configuration for the generated Service.
-		// Note that not all fields from upstream Service.Spec are
-		// supported
+		// Note that not all fields from upstream Service.Spec are supported
 		service?: {
-			// Sets the Service.Spec.AllocateLoadBalancerNodePorts in
-			// generated Service objects to the given value.
+			// Sets the Service.Spec.AllocateLoadBalancerNodePorts in generated Service
+			// objects to the given value.
 			allocateLoadBalancerNodePorts?: bool
 
-			// Sets the Service.Spec.ExternalTrafficPolicy in generated
-			// Service objects to the given value.
+			// Sets the Service.Spec.ExternalTrafficPolicy in generated Service objects to the given value.
 			externalTrafficPolicy?: string
 
-			// Sets the Service.Spec.IPFamilies in generated Service objects
-			// to the given value.
+			// Sets the Service.Spec.IPFamilies in generated Service objects to the given value.
 			ipFamilies?: [...string]
 
-			// Sets the Service.Spec.IPFamilyPolicy in generated Service
-			// objects to the given value.
+			// Sets the Service.Spec.IPFamilyPolicy in generated Service objects to the given value.
 			ipFamilyPolicy?: string
 
-			// Sets the Service.Spec.LoadBalancerClass in generated Service
-			// objects to the given value.
+			// Sets the Service.Spec.LoadBalancerClass in generated Service objects to the given value.
 			loadBalancerClass?: string
 
-			// Sets the Service.Spec.LoadBalancerSourceRanges in generated
-			// Service objects to the given value.
+			// Sets the Service.Spec.LoadBalancerSourceRanges in generated Service objects to the given value.
 			loadBalancerSourceRanges?: [...string]
 
 			// LoadBalancerSourceRangesPolicy defines the policy for the
@@ -68,14 +76,55 @@ import (
 			// is allowed or denied.
 			loadBalancerSourceRangesPolicy?: "Allow" | "Deny"
 
-			// Sets the Service.Spec.TrafficDistribution in generated Service
-			// objects to the given value.
+			// Sets the Service.Spec.TrafficDistribution in generated Service objects to the given value.
 			trafficDistribution?: string
 
-			// Sets the Service.Spec.Type in generated Service objects to the
-			// given value.
+			// Sets the Service.Spec.Type in generated Service objects to the given value.
 			// Only LoadBalancer and NodePort are supported.
 			type?: "LoadBalancer" | "NodePort"
+		}
+
+		// Telemetry specifies observability options for Gateways using this
+		// GatewayClass configuration.
+		telemetry?: {
+			// AccessLogs configures Envoy access logging for generated Gateway
+			// listeners.
+			accessLogs?: list.MaxItems(8) & [...{
+				// Format specifies the access log output format.
+				format!: "JSON" | "Text"
+
+				// JSON maps access log field names to Envoy command operators.
+				// It is used when Format is "JSON".
+				// For available format specifiers, see the Envoy documentation:
+				// - https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage
+				// Note: Always refer to the documentation matching the specific Envoy version you are running.
+				// The following Cilium-specific formatters are also supported:
+				// - %CILIUM_GATEWAY_NAME% -- replaced with the Gateway resource name.
+				// - %CILIUM_GATEWAY_NAMESPACE% -- replaced with the Gateway resource namespace.
+				json?: struct.MinFields(
+					1) & struct.MaxFields(
+					64) & {
+						[string]: string
+					}
+
+				// Targets specifies the generated Envoy proxy components where access logs
+				// are emitted. If omitted, access logs are emitted for HTTP traffic only.
+				// HTTP targets Envoy HTTP connection managers. TCP targets Envoy TCP proxies,
+				// including TLS passthrough.
+				targets?: [..."HTTP" | "TCP"] & [_, ...]
+
+				// Text specifies the Envoy access log format string.
+				// It is used when Format is "Text".
+				// For available format specifiers, see the Envoy documentation:
+				// - https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage
+				// Note: Always refer to the documentation matching the specific Envoy version you are running.
+				// The following Cilium-specific formatters are also supported:
+				// - %CILIUM_GATEWAY_NAME% -- replaced with the Gateway resource name.
+				// - %CILIUM_GATEWAY_NAMESPACE% -- replaced with the Gateway resource namespace.
+				text?: strings.MaxRunes(
+					4096) & strings.MinRunes(
+					1)
+			}] & [_, ...]
 		}
 	}
 
@@ -83,31 +132,25 @@ import (
 	status?: {
 		// Current service state
 		conditions?: [...{
-			// lastTransitionTime is the last time the condition transitioned
-			// from one status to another.
-			// This should be when the underlying condition changed. If that
-			// is not known, then using the time when the API field changed
-			// is acceptable.
+			// lastTransitionTime is the last time the condition transitioned from one status to another.
+			// This should be when the underlying condition changed. If that is not known,
+			// then using the time when the API field changed is acceptable.
 			lastTransitionTime!: time.Time
 
-			// message is a human readable message indicating details about
-			// the transition.
+			// message is a human readable message indicating details about the transition.
 			// This may be an empty string.
 			message!: strings.MaxRunes(
 					32768)
 
-			// observedGeneration represents the .metadata.generation that the
-			// condition was set based upon.
+			// observedGeneration represents the .metadata.generation that the condition was set based upon.
 			// For instance, if .metadata.generation is currently 12, but the
-			// .status.conditions[x].observedGeneration is 9, the condition
-			// is out of date
+			// .status.conditions[x].observedGeneration is 9, the condition is out of date
 			// with respect to the current state of the instance.
 			observedGeneration?: int64 & int & >=0
 
-			// reason contains a programmatic identifier indicating the reason
-			// for the condition's last transition.
-			// Producers of specific condition types may define expected
-			// values and meanings for this field,
+			// reason contains a programmatic identifier indicating the reason for the
+			// condition's last transition.
+			// Producers of specific condition types may define expected values and meanings for this field,
 			// and whether the values are considered a guaranteed API.
 			// The value should be a CamelCase string.
 			// This field may not be empty.

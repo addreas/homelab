@@ -1,6 +1,6 @@
 module: "github.com/addreas/homelab"
 language: {
-	version: "v0.14.2"
+	version: "v0.16.0"
 }
 deps: {
 	"cue.dev/x/crd/bitnami.com/sealed-secrets@v0": {

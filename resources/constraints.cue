@@ -2,7 +2,18 @@ package kube
 
 import (
 	"strings"
+
+	utils "github.com/addreas/homelab/util"
 )
+
+context: "admin@qb"
+
+_namespace: string
+
+if _namespace != _|_ {
+	k: [string]: [string]: metadata: namespace: _namespace
+	k: Namespace: (_namespace): {}
+}
 
 _homelab: {
 	kind:      "GitRepository"
@@ -11,7 +22,9 @@ _homelab: {
 }
 
 let podTemplate = {
-	metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
+	if len(spec.containers) > 1 {
+		metadata: annotations: "kubectl.kubernetes.io/default-container": spec.containers[0].name
+	}
 	spec: {
 		securityContext: {
 			fsGroup:             *1000 | int
@@ -19,9 +32,12 @@ let podTemplate = {
 		}
 		containers: [...{
 			securityContext: {
-				allowPrivilegeEscalation: *false | bool
+				runAsNonRoot:             *true | bool
 				runAsUser:                *1000 | int
 				runAsGroup:               *1000 | int
+				allowPrivilegeEscalation: *false | bool
+				capabilities: drop: ["ALL"]
+				seccompProfile: type: "RuntimeDefault"
 			}
 			ports: [...{protocol: *"TCP" | "UDP"}]
 		}]
@@ -40,17 +56,36 @@ k: ["Deployment" | "StatefulSet" | "DaemonSet"]: [Name=string]: {
 }
 
 k: Job: [string]: spec: {
-	ttlSecondsAfterFinished: 60 * 60
+	ttlSecondsAfterFinished: _ | *(60 * 60)
 	template: podTemplate & {
 		spec: restartPolicy: _ | *"OnFailure"
 	}
 }
 
+k: CronJob: [Name=string]: spec: {
+	successfulJobsHistoryLimit: _ | *1
+	jobTemplate: spec: {
+		template: podTemplate & {
+			spec: restartPolicy: _ | *"Never"
+		}
+	}
+}
+
 k: ["Deployment" | "StatefulSet"]: [string]: spec: replicas: *1 | int
 
-k: StatefulSet: [Name=string]: spec: serviceName: _ | *Name
+k: StatefulSet: [Name=string]: spec: {
+	serviceName: _ | *Name
+
+	volumeClaimTemplates: [...{
+		spec: accessModes: _ | *["ReadWriteOnce"]
+	}]
+}
 
 k: ["Deployment" | "StatefulSet" | "DaemonSet" | "Job"]: [Name=string]: spec: template: spec: containers: [{
+	name: _ | *Name
+}, ...]
+
+k: CronJob: [Name=string]: spec: jobTemplate: spec: template: spec: containers: [{
 	name: _ | *Name
 }, ...]
 
@@ -104,15 +139,9 @@ k: ServiceMonitor: [Name=string]: spec: {
 }
 
 k: Ingress: [Name=string]: {
-	_authproxy: true | *false
-	if _authproxy {
-		metadata: annotations: {
-			"ingress.kubernetes.io/auth-url":    "https://authproxy.addem.se/oauth2/auth"
-			"ingress.kubernetes.io/auth-signin": "https://authproxy.addem.se/oauth2/start?rd=https://%[hdr(host)]%[path]"
-		}
-	}
 	spec: rules: _ | *[{
-		host: _ | *"\(Name).addem.se"
+		host:             _ | *"\(Name).addem.se"
+		ingressClassName: _ | *"cilium"
 		http: paths: _ | *[{
 			path:     _ | *"/"
 			pathType: _ | *"Prefix"
@@ -128,6 +157,29 @@ k: Ingress: [Name=string]: {
 	}, ...]
 }
 
+k: HTTPRoute: [Name=string]: {
+	_authproxy: true | *false
+	_defaultBackendRef: _ | *{
+		name: Name
+		port: k.Service[Name].spec.ports[0].port
+	}
+	spec: {
+		hostnames: _ | *["\(Name).addem.se"]
+		parentRefs: _ | *[{name: "addem", namespace: "ingress"}]
+		rules: _ | *[{backendRefs: [_defaultBackendRef]}, ...]
+	}
+
+	if _authproxy {
+		spec: rules: [{
+			matches: [utils.#TunnelMatch]
+			filters: [utils.#AuthProxy]
+			backendRefs: [_defaultBackendRef]
+		}, {
+			backendRefs: [_defaultBackendRef]
+		}]
+	}
+}
+
 k: SealedSecret: [string]: {
 	metadata: _
 	spec: template: "metadata": _ | *metadata
@@ -136,16 +188,15 @@ k: SealedSecret: [string]: {
 k: GrafanaDashboard: [string]: {
 	metadata: namespace: string
 	spec: {
-		interval:                      _ | *"1h"
-		allowCrossNamespaceReferences: _ | *true
-		folder:                        _ | *strings.ToTitle(metadata.namespace)
-		source: _ | *close({
-			remote: contentCacheDuration: "24h"
-		})
+		allowCrossNamespaceImport: _ | *true
+		folder:                    _ | *strings.ToTitle(metadata.namespace)
+		contentCacheDuration:      _ | *"24h"
 	}
 }
 
-k: GrafanaDatasource: [string]: spec: interval: _ | *"1h"
+k: ["GrafanaDashboard" | "GrafanaDatasource"]: [string]: spec: {
+	instanceSelector: matchExpressions: [{key: "not-default", operator: "DoesNotExist"}]
+}
 
 k: GitRepository: [string]: spec: interval: _ | *"1h"
 
@@ -157,7 +208,6 @@ k: HelmRelease: [Name=string]: {
 		interval: _ | *"1h"
 		chart: spec: {
 			interval: _ | *"1h"
-			chart:    _ | *Name
 			sourceRef: _ | *{
 				kind:      "HelmRepository"
 				name:      _ | *Name
@@ -204,15 +254,25 @@ k: PersistentVolume: [Name = =~"sergio-.*"]: spec: {
 }
 
 k: PersistentVolumeClaim: [Name = =~"sergio-.*"]: spec: {
-	accessModes: ["ReadWriteOnce"]
 	storageClassName: "static-node-local-storage"
 	volumeMode:       "Filesystem"
 	volumeName:       Name
 }
 
+k: PersistentVolumeClaim: [string]: spec: {
+	accessModes: _ | *["ReadWriteOnce"]
+}
+
 k: ["PersistentVolume" | "PersistentVolumeClaim" | "CustomResourceDefinition"]: [string]: metadata: labels: {
 	"cue.toolkit.fluxcd.io/prune":       "true" | *"false"
 	"kustomize.toolkit.fluxcd.io/prune": "true" | *"false"
+}
+
+k: OAuth2Client: [name=string]: spec: {
+	clientName: _ | *name
+	grantTypes: _ | *["client_credentials", "authorization_code", "refresh_token"]
+	scopeArray: _ | *["openid", "email", "profile"]
+	skipConsent: _ | *true
 }
 
 //

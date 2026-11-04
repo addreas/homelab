@@ -1,12 +1,11 @@
 package kube
 
 let DS_PROMETHEUS = {
-	datasourceRef: name: "prometheus"
-	inputName: "DS_PROMETHEUS"
+	datasourceName: "prometheus"
+	inputName:      "DS_PROMETHEUS"
 }
 
 let grafanaComDsPrometheus = {
-	// https://github.com/dotdc/grafana-dashboards-kubernetes
 	"k8s-system-api-server": 15761
 	"k8s-views-global":      15757
 	"k8s-views-namespaces":  15758
@@ -16,7 +15,8 @@ let grafanaComDsPrometheus = {
 
 for name, grafanaComId in grafanaComDsPrometheus {
 	k: GrafanaDashboard: (name): spec: {
-		source: remote: grafanaCom: id: grafanaComId
+		grafanaCom: id: grafanaComId
+		instanceSelector: {}
 		datasources: [DS_PROMETHEUS]
 	}
 }
