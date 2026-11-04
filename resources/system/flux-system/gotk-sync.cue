@@ -2,7 +2,7 @@ package kube
 
 k: GitRepository: "homelab": spec: {
 	url: "https://github.com/addreas/homelab"
-	ref: branch: "qb"
+	ref: branch: "main"
 }
 
 k: CueExport: "homelab-system": spec: {
