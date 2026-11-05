@@ -8,7 +8,7 @@ k: Deployment: bitmagnet: spec: {
 		metadata: labels: "vpn-egress": "client"
 		spec: containers: [{
 			name:  "bitmagnet"
-			image: "ghcr.io/bitmagnet-io/bitmagnet:v0.10.0"
+			image: "ghcr.io/bitmagnet-io/bitmagnet:v0.10.1"
 			command: ["bitmagnet", "worker", "run", "--all"]
 			env: [{
 				name: "POSTGRES_DSN"

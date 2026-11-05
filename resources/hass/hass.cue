@@ -29,7 +29,7 @@ k: StatefulSet: hass: spec: {
 				},
 			]
 			containers: [{
-				image: "ghcr.io/home-assistant/home-assistant:2026.10.3"
+				image: "ghcr.io/home-assistant/home-assistant:2026.11.0"
 				command: ["hass", "-c", "/config", "--log-file", "/tmp/home-assistant.log"]
 				resources: {
 					limits: {

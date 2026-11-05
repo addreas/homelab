@@ -33,7 +33,7 @@ k: Grafana: grafana: spec: {
 	}
 	deployment: spec: template: spec: containers: [{
 		name:  "grafana"
-		image: "grafana/grafana:13.2.4"
+		image: "grafana/grafana:13.3.0"
 		env: [{
 			name:  "GF_INSTALL_PLUGINS_FORCE"
 			value: "true"

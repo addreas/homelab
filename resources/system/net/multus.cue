@@ -4,7 +4,7 @@ import "encoding/yaml"
 
 k: GitRepository: multus: spec: {
 	url: "https://github.com/k8snetworkplumbingwg/multus-cni"
-	ref: tag: "v4.2.4"
+	ref: tag: "v4.3.2"
 	ignore: """
 		/*
 		!/deployments/multus-daemonset.yml

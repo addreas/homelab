@@ -10,7 +10,7 @@ k: Deployment: bitwarden: spec: {
 	}
 	template: spec: {
 		containers: [{
-			image: "vaultwarden/server:1.37.4"
+			image: "vaultwarden/server:1.37.5"
 			envFrom: [{
 				configMapRef: name: "bitwarden"
 			}]

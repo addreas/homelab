@@ -6,7 +6,7 @@ k: StatefulSet: qbittorrent: spec: {
 		spec: {
 			containers: [{
 				name:  "qbittorrent"
-				image: "lscr.io/linuxserver/qbittorrent:5.2.3"
+				image: "lscr.io/linuxserver/qbittorrent:5.3.0"
 				command: ["/app/qbittorrent-nox", "--confirm-legal-notice"]
 				ports: [{
 					containerPort: 8080

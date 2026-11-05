@@ -4,7 +4,7 @@ import "encoding/yaml"
 
 k: GitRepository: "flux-components": spec: {
 	url: "https://github.com/fluxcd/flux2"
-	ref: tag: "v2.9.5"
+	ref: tag: "v2.10.0"
 }
 
 k: Kustomization: "flux-components": spec: {

@@ -143,7 +143,7 @@ t: Role: "talos-logs": patches: [{
 			dnsPolicy:   "ClusterFirstWithHostNet"
 			containers: [{
 				name:  "sink"
-				image: "alpine/socat:1.8.0.1"
+				image: "alpine/socat:1.8.1.3"
 				args: ["-u", "TCP-LISTEN:60514,reuseaddr,fork", "-"]
 				securityContext: {
 					allowPrivilegeEscalation: false
