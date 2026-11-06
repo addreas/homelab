@@ -13,7 +13,7 @@ k: Service: "tika": spec: {}
 
 k: Deployment: "gotenberg": spec: template: spec: {
 	containers: [{
-		image: "docker.io/gotenberg/gotenberg:8.40"
+		image: "docker.io/gotenberg/gotenberg:9.0"
 		command: [
 			"gotenberg",
 			"--chromium-disable-javascript=true",
