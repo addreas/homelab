@@ -127,7 +127,7 @@ command: "talosconfig": exec.Run & {
 		clusterName,
 		"https://\(apiHost):6443",
 		"--with-secrets", "/dev/stdin",
-		"--output-type", "talosconfig",
+		"--output-types", "talosconfig",
 	]
 }
 
