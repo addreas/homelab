@@ -9,8 +9,8 @@ k: HelmRelease: "victoria-metrics-operator": spec: {
 		sourceRef: name: "victoriametrics"
 	}
 	values: {
-		enable_converter_ownership: true
-		crds: enabled: false
+		crds: enabled:                        false
+		operator: enable_converter_ownership: true
 	}
 }
 
@@ -24,7 +24,7 @@ k: GitRepository: "victoria-metrics-operator-crds": spec: {
 }
 
 k: Kustomization: "victoria-metrics-operator-crds": spec: {
-	path: "./config/crd/overlay"
+	path:  "./config/crd/overlay"
 	prune: false
 	wait:  false
 }

@@ -40,5 +40,14 @@ k: HelmRelease: cilium: spec: {
 			loadbalancerMode: "shared"
 			service: labels: advertise: "arp"
 		}
+
+		prometheus: {
+			enabled:           true
+			serviceMonitor: enabled: false
+		}
+		operator: prometheus: {
+			enabled:           true
+			serviceMonitor: enabled: false
+		}
 	}
 }

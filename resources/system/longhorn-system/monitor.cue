@@ -1,41 +1,15 @@
-@if(monitoring)
-
 package kube
 
-let DS_PROMETHEUS = {
-	datasourceRef: {
-		namespace: "monitoring"
-		name:      "prometheus"
-	}
-	inputName: "DS_PROMETHEUS"
-}
+k: GrafanaDashboard: "longhorn": spec: grafanaCom: id: 16888
 
-let DS_OPENSHIFT_PROMETHEUS = {
-	datasourceRef: {
-		namespace: "monitoring"
-		name:      "prometheus"
-	}
-	inputName: "DS_OPENSHIFT_PROMETHEUS"
-}
-
-k: GrafanaDashboard: "longhorn": spec: {
-	grafanaCom: id: 13032
-	datasources: [DS_PROMETHEUS]
-}
-
-k: GrafanaDashboard: "kubernetes-persistent-volumes": spec: {
-	grafanaCom: id: 13646
-	datasources: [DS_PROMETHEUS]
-}
-
-k: GrafanaDashboard: "k8s-storage-volumes-cluster": spec: {
-	grafanaCom: id: 11454
-	datasources: [DS_OPENSHIFT_PROMETHEUS]
-}
-
-k: GrafanaDashboard: "k8s-storage-volumes-namespace": spec: {
-	grafanaCom: id: 11455
-	datasources: [DS_OPENSHIFT_PROMETHEUS]
+k: CiliumNetworkPolicy: "longhorn-prometheus-scrape": spec: {
+	endpointSelector: matchLabels: app: "longhorn-manager"
+	ingress: [{
+		fromEndpoints: [{matchLabels: {
+			"k8s:io.kubernetes.pod.namespace": "monitoring"
+		}}]
+		toPorts: [{ports: [{port: "9500", protocol: "TCP"}]}]
+	}]
 }
 
 k: ServiceMonitor: "longhorn-prometheus-servicemonitor": {
@@ -50,6 +24,7 @@ k: PrometheusRule: "prometheus-longhorn-rules": {
 		labels: {
 			prometheus: "longhorn"
 			role:       "alert-rules"
+			ruler:      "metrics"
 		}
 	}
 	spec: groups: [{

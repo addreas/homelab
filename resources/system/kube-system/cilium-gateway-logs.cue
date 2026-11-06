@@ -166,8 +166,6 @@ import cuejson "encoding/json"
 }
 
 k: GrafanaDashboard: "cilium-gateway-logs": spec: {
-	instanceSelector: {}
-
 	// access logs of the cilium-envoy gateway from VictoriaLogs
 	json: cuejson.Marshal(#dashboard)
 }

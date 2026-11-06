@@ -1,9 +1,7 @@
-@if(monitoring)
 package kube
 
 k: GrafanaDashboard: "flux-cluster": spec: url:       "https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json"
 k: GrafanaDashboard: "flux-control-plane": spec: url: "https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json"
-k: GrafanaDashboard: "flux-logs": spec: url:          "https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json"
 
 k: PodMonitor: "gotk-monitor": spec: {
 	podMetricsEndpoints: [{
@@ -15,9 +13,12 @@ k: PodMonitor: "gotk-monitor": spec: {
 		operator: "In"
 		values: [
 			"source-controller",
+			"source-watcher",
 			"kustomize-controller",
 			"helm-controller",
 			"notification-controller",
+			"image-reflector-controller",
+			"image-automation-controller",
 			"cue-controller",
 		]
 	}]
