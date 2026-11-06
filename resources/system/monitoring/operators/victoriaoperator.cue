@@ -16,7 +16,7 @@ k: HelmRelease: "victoria-metrics-operator": spec: {
 
 k: GitRepository: "victoria-metrics-operator-crds": spec: {
 	url: "https://github.com/VictoriaMetrics/operator"
-	ref: tag: "v0.75.0"
+	ref: tag: "v0.75.2"
 	ignore: """
 		/*
 		!/config/crd/overlay/crd.yaml

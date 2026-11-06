@@ -2,7 +2,7 @@ package kube
 
 k: Deployment: meilisearch: spec: template: spec: {
 	containers: [{
-		image: "getmeili/meilisearch:v1.11.1"
+		image: "getmeili/meilisearch:v1.56.1"
 		ports: [{
 			name:          "http"
 			containerPort: 7700

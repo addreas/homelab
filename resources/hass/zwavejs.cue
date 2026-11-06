@@ -22,7 +22,7 @@ k: StatefulSet: "hass-zwavejs": spec: {
 			}]
 			containers: [{
 				name:  "zwavejs"
-				image: "ghcr.io/zwave-js/zwave-js-ui:11.25.1"
+				image: "ghcr.io/zwave-js/zwave-js-ui:11.25.2"
 				ports: [{containerPort: 3000}, {containerPort: 8091}]
 				env: [{
 					name: "NETWORK_KEY"
