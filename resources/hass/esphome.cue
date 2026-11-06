@@ -80,3 +80,5 @@ k: StatefulSet: esphome: spec: {
 k: Service: esphome: {}
 
 k: HTTPRoute: esphome: _authproxy: true
+
+k: Probe: esphome: {}

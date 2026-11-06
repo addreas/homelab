@@ -94,3 +94,5 @@ k: ServiceMonitor: hass: spec: endpoints: [{
 		key:  "key"
 	}
 }]
+
+k: Probe: hass: {}

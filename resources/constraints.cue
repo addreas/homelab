@@ -172,6 +172,22 @@ k: HTTPRoute: [Name=string]: {
 	}
 }
 
+k: Probe: [Name=string]: {
+	_path: _ | *"/"
+	spec: {
+		jobName:  _ | *Name
+		module:   _ | *"http_2xx"
+		interval: _ | *"30s"
+		prober: url: _ | *"blackbox-exporter.monitoring.svc:9115"
+
+		if k.HTTPRoute[Name] != _|_ {
+			targets: staticConfig: static: _ | *[
+				for hostname in k.HTTPRoute[Name].spec.hostnames {"https://\(hostname)\(_path)"},
+			]
+		}
+	}
+}
+
 k: SealedSecret: [string]: {
 	metadata: _
 	spec: template: "metadata": _ | *metadata

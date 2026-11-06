@@ -41,3 +41,5 @@ k: StatefulSet: trilium: spec: {
 
 k: Service: trilium: {}
 k: HTTPRoute: trilium: {}
+
+k: Probe: trilium: {}

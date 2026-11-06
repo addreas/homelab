@@ -118,6 +118,7 @@ let resourceSchemas = [
 
 	monitoring_v1.#Alertmanager,
 	monitoring_v1alpha1.#AlertmanagerConfig,
+	monitoring_v1.#Probe,
 	monitoring_v1.#PodMonitor,
 	monitoring_v1.#ServiceMonitor,
 	monitoring_v1.#Prometheus,
@@ -132,7 +133,6 @@ let resourceSchemas = [
 	vm_v1beta1.#VMAuth,
 	vm_v1beta1.#VMServiceScrape,
 	vm_v1beta1.#VMPodScrape,
-	vm_v1beta1.#VMProbe,
 	vm_v1.#VLAgent,
 	vm_v1.#VLSingle,
 

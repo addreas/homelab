@@ -61,3 +61,5 @@ k: OAuth2Client: grafana: spec: {
 	secretName: "grafana-oauth2-client-credentials"
 	redirectUris: ["https://grafana.addem.se/login/generic_oauth"]
 }
+
+k: Probe: "grafana-httproute": spec: targets: staticConfig: static: ["https://grafana.addem.se/"]

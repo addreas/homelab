@@ -30,3 +30,5 @@ k: HTTPRoute: "auth": spec: {
 		}]
 	}]
 }
+
+k: Probe: auth: {}
