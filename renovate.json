@@ -55,6 +55,11 @@
   ],
   "packageRules": [
     {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["lscr.io/linuxserver/qbittorrent"],
+      "allowedVersions": "<20"
+    },
+    {
       "matchFileNames": ["**/export.sh"],
       "postUpgradeTasks": {
         "commands": ["{{{packageFileDir}}}/export.sh"],
