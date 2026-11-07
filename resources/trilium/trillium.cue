@@ -42,4 +42,4 @@ k: StatefulSet: trilium: spec: {
 k: Service: trilium: {}
 k: HTTPRoute: trilium: {}
 
-k: Probe: trilium: {}
+k: Probe: trilium: _path: "/api/health-check"

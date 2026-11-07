@@ -95,4 +95,4 @@ k: ServiceMonitor: hass: spec: endpoints: [{
 	}
 }]
 
-k: Probe: hass: {}
+k: Probe: hass: _path: "/auth/providers"

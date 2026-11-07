@@ -4,4 +4,4 @@ k: HTTPRoute: bitwarden: {}
 
 k: Service: bitwarden: {}
 
-k: Probe: bitwarden: {}
+k: Probe: bitwarden: _path: "/alive"

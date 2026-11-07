@@ -81,4 +81,4 @@ k: Service: esphome: {}
 
 k: HTTPRoute: esphome: _authproxy: true
 
-k: Probe: esphome: {}
+k: Probe: esphome: _path: "/version"

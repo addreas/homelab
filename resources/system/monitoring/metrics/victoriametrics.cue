@@ -64,37 +64,59 @@ k: VMAlert: metrics: spec: {
 }
 
 k: VMAlertmanager: alertmanager: spec: {
-	externalURL:  "https://alertmanager.addem.se"
+	externalURL:  "https://grafana.addem.se/alerting/list"
 	replicaCount: 1
 
 	configRawYaml: yaml.Marshal({
 		global: resolve_timeout: "5m"
 
+		inhibit_rules: [{
+			source_matchers: ["severity = critical"]
+			target_matchers: ["severity =~ warning|info"]
+			equal:           ["namespace", "alertname"]
+		}, {
+			source_matchers: ["severity = warning"]
+			target_matchers: ["severity = info"]
+			equal:           ["namespace", "alertname"]
+		}, {
+			source_matchers: ["alertname = InfoInhibitor"]
+			target_matchers: ["severity = info"]
+			equal:           ["namespace"]
+		}]
+
 		route: {
-			group_by: ["alertname", "cluster"]
+			group_by:        ["namespace"]
 			group_wait:      "30s"
 			group_interval:  "5m"
 			repeat_interval: "12h"
-			receiver:        "Critical"
+			receiver:        "Default"
 			routes: [{
+				matchers: ["alertname = Watchdog"]
+				receiver: "Watchdog"
+			}, {
+				matchers: ["alertname = InfoInhibitor"]
+				receiver: "null"
+			}, {
+				matchers: ["severity = critical"]
+				receiver: "Critical"
+			}, {
 				matchers: ["severity = warning"]
 				receiver: "Warning"
-			}, {
-				matchers: ["severity = error"]
-				receiver: "Critical"
 			}]
 		}
 
 		receivers: [{
+			name: "Default"
+		}, {
+			name: "Watchdog"
+		}, {
 			name: "Critical"
-			webhook_configs: [{
-				url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-critical"
-			}]
+			webhook_configs: [{url: "http://hass.hass.svc.cluster.local:8123/api/webhook/alertmanager-critical"}]
 		}, {
 			name: "Warning"
-			webhook_configs: [{
-				url: "http://hass.default.svc.cluster.local:8123/api/webhook/alertmanager-warning"
-			}]
+			webhook_configs: [{url: "http://hass.hass.svc.cluster.local:8123/api/webhook/alertmanager-warning"}]
+		}, {
+			name: "null"
 		}]
 	})
 

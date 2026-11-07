@@ -31,4 +31,4 @@ k: HTTPRoute: "auth": spec: {
 	}]
 }
 
-k: Probe: auth: {}
+k: Probe: auth: _path: "/.well-known/openid-configuration"
