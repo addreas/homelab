@@ -53,7 +53,7 @@ k: PrometheusRule: "prometheus-longhorn-rules": {
 			for:  "5m"
 			labels: {
 				issue:    "The actual used space of Longhorn volume {{$labels.volume}} on {{$labels.node}} is high."
-				severity: "warning"
+				severity: "info"
 			}
 		}, {
 			alert: "LonghornVolumeStatusCritical"
