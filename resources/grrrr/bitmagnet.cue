@@ -102,5 +102,5 @@ k: HTTPRoute: bitmagnet: _authproxy: true
 
 k: PostgresCluster: "bitmagnet-db": spec: {
 	instances: 2
-	storage: size: "5Gi"
+	storage: size: "25Gi"
 }

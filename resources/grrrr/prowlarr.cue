@@ -21,10 +21,10 @@ k: StatefulSet: prowlarr: spec: {
 			}]
 			resources: {
 				limits: {
-					cpu:    "100m"
+					cpu:    "1"
 					memory: "256Mi"
 				}
-				requests: cpu: "10m"
+				requests: cpu: "100m"
 			}
 		}]
 	}
