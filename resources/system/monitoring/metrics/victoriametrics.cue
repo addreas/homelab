@@ -109,6 +109,7 @@ k: VMAlertmanager: alertmanager: spec: {
 			name: "Default"
 		}, {
 			name: "Watchdog"
+			webhook_configs: [{url: "http://hass.hass.svc.cluster.local:8123/api/webhook/alertmanager-watchdog"}]
 		}, {
 			name: "Critical"
 			webhook_configs: [{url: "http://hass.hass.svc.cluster.local:8123/api/webhook/alertmanager-critical"}]
