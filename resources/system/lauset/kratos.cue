@@ -82,6 +82,6 @@ k: PostgresCluster: "kratos-db": {
 
 	spec: {
 		instances: 2
-		storage: size: "1Gi"
+		storage: size: "3Gi"
 	}
 }
