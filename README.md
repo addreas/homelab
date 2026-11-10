@@ -8,6 +8,7 @@ Kubernetes configuration as CUE, deployed with flux and
 - `kube_defs.cue` defines schema for `k: <Kind>: <name>: <resource>`. Kinds unified  against schemas from `cue.dev/x` deps and CRD defs generated into `cue.mod/gen/`.
 - `kube_tool.cue` contains `cue cmd` tools like `ls`, `apply`, `diff`, `dump-yaml`, `seal`/`unseal` (sops).
 - `renovate_tool.cue` contains a lint (`cue cmd lintrenovate ./resources/...`) that validates all referenced versions are in a format that the renovate regex managers pick up.
+- `authproxy_tool.cue` contains a lint (`cue cmd lintauthproxy ./resources/...`) that validates every `ExternalAuth` filter is covered by a `ReferenceGrant` — Cilium silently drops the filter instead of failing the route, so a missing grant means the app is served unauthenticated.
 - `resources/constraints.cue`: cross-cutting defaults and creature comforts (securityContext, automatic service/ingress mapping, `_namespace`).
 
 ## How evaluation works
