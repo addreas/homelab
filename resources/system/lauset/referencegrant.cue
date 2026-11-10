@@ -1,6 +1,6 @@
 package kube
 
-let namespaces = ["grrrr", "hass", "monitoring"]
+let namespaces = ["grrrr", "hass", "huset", "monitoring"]
 
 k: ReferenceGrant: "lauset-auth": spec: {
 	from: [
