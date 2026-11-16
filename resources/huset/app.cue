@@ -9,7 +9,7 @@ k: Deployment: huset: {
 	spec: template: spec: {
 		imagePullSecrets: [{name: "regcred"}]
 		containers: [{
-			image:           "ghcr.io/jonasdahl/huset:sha-f1070da"
+			image:           "ghcr.io/jonasdahl/huset:sha-a10b87b"
 			imagePullPolicy: "Always"
 			ports: [{containerPort: 8080, name: "http"}]
 			readinessProbe: httpGet: {path: "/healthz", port: "http"}
