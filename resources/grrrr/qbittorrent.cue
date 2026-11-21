@@ -2,8 +2,34 @@ package kube
 
 k: StatefulSet: qbittorrent: spec: {
 	template: {
-		metadata: labels: "vpn-egress": "client"
+		metadata: labels: "vpn-egress": "self"
 		spec: {
+			securityContext: {
+				sysctls: [{
+					name:  "net.ipv4.conf.all.src_valid_mark"
+					value: "1"
+				}]
+			}
+			dnsPolicy: "None"
+			dnsConfig: nameservers: ["10.0.0.1"]
+			initContainers: [{
+				name:    "wg-quick"
+				image:   "nixery.dev/shell/iproute2/wireguard-tools/iptables/curl/gnused"
+				command: ["wg-quick", "up", "/wg/wg0.conf"]
+				securityContext: {
+					privileged:   true
+					runAsUser:    0
+					runAsNonRoot: false
+				}
+				volumeMounts: [{
+					name:      "wg0-conf"
+					mountPath: "/wg"
+					readOnly:  true
+				}, {
+					name:      "config"
+					mountPath: "/config/qBittorrent"
+				}]
+			}]
 			containers: [{
 				name:  "qbittorrent"
 				image: "lscr.io/linuxserver/qbittorrent:5.2.3"
@@ -33,13 +59,23 @@ k: StatefulSet: qbittorrent: spec: {
 				}
 			}]
 			volumes: [{
+				name: "wg0-conf"
+				secret: {
+					secretName: "qbittorrent-vpn"
+					items: [{
+						key:  "wg0.conf"
+						path: "wg0.conf"
+					}]
+					defaultMode: 0o600
+				}
+			}, {
 				name: "videos"
 				persistentVolumeClaim: claimName: "videos"
 			}, {
 				name: "cache"
 				emptyDir: {}
 			}]
-			terminationGracePeriodSeconds: 5
+			terminationGracePeriodSeconds: 30
 		}
 	}
 	volumeClaimTemplates: [{

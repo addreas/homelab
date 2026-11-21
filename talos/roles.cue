@@ -44,6 +44,7 @@ t: Role: "base": {
 		kind:                                "KubeletConfig"
 		defaultRuntimeSeccompProfileEnabled: true
 		extraArgs: "rotate-server-certificates": true
+		config: allowedUnsafeSysctls: ["net.ipv4.conf.all.src_valid_mark"]
 	}, {
 		apiVersion: "v1alpha1"
 		kind:       "UdevRulesConfig"
